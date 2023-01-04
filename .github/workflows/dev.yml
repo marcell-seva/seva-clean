@@ -1,0 +1,46 @@
+name: Deploy to Dev
+
+on:
+  push:
+    branches:
+      - develop
+
+env:
+  REGION: ${{ secrets.REGION }}
+  DEV_GCP_IMAGE: seva-next
+  DEV_GCP_PROJECT: ${{ secrets.DEV_GCP_PROJECT }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v2
+      - name: Prepare Environment Variable
+        run: |
+          echo "CI=false" >> .env
+          echo "PUBLIC_URL=${{ secrets.DEV_PUBLIC_URL }}" >> .env
+          echo "NODE_ENV=development" >> .env
+
+      - name: Auth Cloud SDK
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.DEV_GCP_SA_KEY }}'
+
+      - name: Deploy Image to Google Container Registry
+        run: |
+          gcloud builds submit --timeout=1800s\
+            --tag gcr.io/$DEV_GCP_PROJECT/$DEV_GCP_IMAGE
+
+      - name: Update Cloud Run with latest Container Image
+        run: |
+          gcloud run deploy $DEV_GCP_IMAGE \
+            --region $REGION \
+            --image gcr.io/$DEV_GCP_PROJECT/$DEV_GCP_IMAGE \
+            --platform managed \
+            --allow-unauthenticated \
+            --min-instances 1 \
+            --max-instances 20 \
+            --concurrency 80 \
+            --cpu 2 \
+            --memory 512Mi
