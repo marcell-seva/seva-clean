@@ -23,6 +23,8 @@ export default function Home() {
         testingggg seva
       </h1>
       <h2 className={`dark ${styles.expand}`}>Hello Marcell Antonius</h2>
+      <h1 className="test">testing </h1>
+      <h1 className={styles.testing}>testing </h1>
       <button onClick={() => setDark(!dark)}>click</button>
       <Buttons />
     </>

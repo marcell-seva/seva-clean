@@ -10,6 +10,11 @@
 
 $color-primary: blueviolet;
 
+.test {
+  color: red;
+  font-family: 'Kanyon';
+}
+
 .title {
   color: $color-primary;
   border-bottom: solid 2px darken($color-primary, 10);
