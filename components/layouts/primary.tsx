@@ -1,9 +1,10 @@
-const primaryLayout = ({ children }: any) => {
+const PrimaryLayout = ({ children }: any) => {
   return (
     <div>
-      <h1>sideBar</h1>
-      {children}
+      <h1>sidemain</h1>
+      <main>{children}</main>
+      <h1>Footer</h1>
     </div>
   )
 }
-export default primaryLayout
+export default PrimaryLayout

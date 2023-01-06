@@ -4,12 +4,8 @@ import { Buttons } from '../components/atoms/'
 import { Headers } from '../components/molecules'
 import { useState } from 'react'
 import styles from '../styles/Home.module.scss'
-import MainLayout from '../components/layouts/main'
-import PrimaryLayout from '../components/layouts/primary'
 
-const inter = Inter({ subsets: ['latin'] })
-
-export default function Home() {
+const Home = () => {
   const [dark, setDark] = useState(false)
   return (
     <>
@@ -30,4 +26,4 @@ export default function Home() {
   )
 }
 
-Home.layout = MainLayout
+export default Home
