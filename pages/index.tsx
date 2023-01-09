@@ -2,11 +2,21 @@ import Head from 'next/head'
 import { Inter } from '@next/font/google'
 import { Buttons } from '../components/atoms/'
 import { Headers } from '../components/molecules'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from '../styles/Home.module.scss'
+import axios from 'axios'
+import { api } from '../services/api'
 
 const Home = () => {
   const [dark, setDark] = useState(false)
+  useEffect(() => {
+    console.log('testing marcell')
+    const data = {
+      name: 'morpheus',
+      job: 'zion resident',
+    }
+    api.getProduct().then()
+  })
   return (
     <>
       <Head>
