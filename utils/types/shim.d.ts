@@ -1,0 +1,6 @@
+declare module 'lodash.debounce'
+declare module 'animated-number-react'
+declare module 'dompurify'
+declare module 'react-moengage'
+declare module 'pannellum-react'
+declare module 'react-tridi'

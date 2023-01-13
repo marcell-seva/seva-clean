@@ -1,0 +1,40 @@
+{
+  "modelDetail": {
+    "brand": "Daihatsu",
+    "model": "Sigra",
+    "id": "a63e45ff-981e-4ca1-ae67-2464f2e8c558"
+  },
+  "variantDetail": {
+    "id": 182,
+    "name": "1.0 M MT",
+    "priceValue": 131050000,
+    "fuelType": "Bensin",
+    "transmission": "Otomatis",
+    "engineCapacity": 1998,
+    "bodyType": "COMMERCIAL",
+    "carSeats": 9,
+    "length": 4345,
+    "pdfUrl": "https://storage.googleapis.com/www.torqio.com/static/media/All_New_Camry.pdf",
+    "images":  [
+      "https://images.seva.id/sys-master/images/he5/h4a/8886667214878/TGN40QA_T32X_ATBM_main_banner_new_venturer_attitude_black.png_ProductDetail",
+      "https://images.seva.id/sys-master/images/h25/h47/8886667345950/TGN40QA_T32X_T1D6_main_banner_new_venturer_silver_metallic.png_ProductDetail",
+      "https://images.seva.id/sys-master/images/h66/h43/8886667477022/TGN40QA_T32X_T040_main_banner_new_venturer_super_white.png_ProductDetail",
+      "https://images.seva.id/sys-master/images/h6f/h9f/8886666887198/TGN40QA_T32X_RMM_main_banner_new_venturer_red_mica_metallic.png_ProductDetail",
+      "https://images.seva.id/sys-master/images/h6c/hdc/8885961719838/eksven1.jpg",
+      "https://images.seva.id/sys-master/images/h69/h48/8885963980830/eksven4.jpg",
+      "https://images.seva.id/sys-master/images/h67/h09/8885964275742/eksven5.jpg",
+      "https://images.seva.id/sys-master/images/h93/h4c/8885963816990/intven3.jpg",
+      "https://images.seva.id/sys-master/images/h3b/h4c/8885963849758/intven4.jpg"
+    ],
+    "description": {
+      "en": "There is no doubt that the Toyota New Avanza is the most loved MPV by the Indonesian people. Comes with proven reliability and comfort, plus a sportier exterior and a more powerful and economical Dual VVT-i engine.\nThe Toyota New Avanza now looks more modern, more complete, and also more comfortable, without leaving its main DNA, which has been well received by users and is one of the success factors for the best-selling vehicle products in Indonesia.",
+      "id": "Tidak diragukan, Toyota New Avanza merupakan MPV paling dicintai oleh masyarakat Indonesia. Hadir dengan keandalan dan kenyamanan yang sudah teruji, ditambah eksterior yang semakin sporty dan mesin dengan Dual VVT-i yang lebih bertenaga dan irit.\nToyota New Avanza kini memang tampil lebih modern, lebih lengkap, dan juga lebih nyaman, tanpa meninggalkan DNA utamanya yang memang sudah diterima dengan baik oleh pengguna dan menjadi salah satu faktor keberhasilan produk kendaraan terlaris di Indonesia."
+    }
+  },
+  "loanDetail": {
+    "loanRank": "Green",
+    "tenure": 2,
+    "dpAmount": 26210000,
+    "monthlyInstallment": 4995326
+  }
+}

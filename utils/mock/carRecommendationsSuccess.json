@@ -1,0 +1,54 @@
+{
+  "carRecommendations": [
+    {
+      "id": "9f381114-b87d-4c67-83ed-2e1b4a1d3ea4",
+      "assetBrand": "DAIHATSU",
+      "assetModel": "SIGRA",
+      "assetImage": "https://images.seva.id/sys-master/images/h1c/hc1/8848992501790/FT86A_TTRD03HM_Black_main_banner_FT86_black.png_ProductGrid",
+      "numberOfPopulation": 300,
+      "lowestAssetPrice": 120650000,
+      "highestAssetPrice": 131050000,
+      "loanRank": "Green"
+    },
+    {
+      "id": "3490661e-4f2d-4b91-a7a1-97bd140bac4a",
+      "assetBrand": "DAIHATSU",
+      "assetModel": "AYLA2",
+      "assetImage": "https://images.seva.id/sys-master/images/h8b/h46/8886448947230/ZYX10A_T13D_ABM_main_banner_toyota_c_hr_attitude_black_mica.png_ProductGrid",
+      "numberOfPopulation": 30,
+      "lowestAssetPrice": 100300000,
+      "highestAssetPrice": 140900000,
+      "loanRank": "Green"
+    },
+    {
+      "id": "1a366c92-964b-4a3a-be61-a2a82c6e61af",
+      "assetBrand": "DAIHATSU",
+      "assetModel": "AYLA",
+      "assetImage": "https://images.seva.id/sys-master/images/h8b/h46/8886448947230/ZYX10A_T13D_ABM_main_banner_toyota_c_hr_attitude_black_mica.png_ProductGrid",
+      "numberOfPopulation": 10,
+      "lowestAssetPrice": 103300000,
+      "highestAssetPrice": 144900000,
+      "loanRank": "Yellow"
+    },
+    {
+      "id": "8e50a55a-044d-4add-beca-f43a207f1977",
+      "assetBrand": "TOYOTA",
+      "assetModel": "RUSH",
+      "assetImage": "https://images.seva.id/sys-master/images/h45/h0c/8846282031134/VJ200FSA_T61M_ATB_main_banner_toyota_land_cruiser_attitude_black_mica1.png_ProductGrid",
+      "numberOfPopulation": 5,
+      "lowestAssetPrice": 249800000,
+      "highestAssetPrice": 252330000,
+      "loanRank": "Red"
+    },
+    {
+      "id": "ffdef11a-caf1-4982-b825-790150927642",
+      "assetBrand": "TOYOTA",
+      "assetModel": "INNOVA",
+      "assetImage": "https://images.seva.id/sys-master/images/hf9/h8b/8864612319262/GUN14VM_T00X_ATBM_main_banner_toyota_new_innova_attitude_black.png_ProductGrid",
+      "numberOfPopulation": 1,
+      "lowestAssetPrice": 342400000,
+      "highestAssetPrice": 372900000,
+      "loanRank": "Red"
+    }
+  ]
+}
