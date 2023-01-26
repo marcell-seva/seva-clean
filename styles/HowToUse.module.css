@@ -78,7 +78,7 @@
 
 .titleText {
   font-size: 14px;
-  font-family: KanyonMedium;
+  font-family: var(--kanyon-bold);
 }
 
 .descText {

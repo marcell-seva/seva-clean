@@ -9,8 +9,9 @@ export default function Card({ item }: any) {
         src={item.image}
         width={600}
         height={420}
-        alt="seva-banner"
+        alt="seva-product"
         quality={30}
+        sizes="(min-width: 1024px) 21.5vw, 17vw"
         className={styles.image}
       />
       <div className={styles.detail}>
