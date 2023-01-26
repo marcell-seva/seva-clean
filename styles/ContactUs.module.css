@@ -1,0 +1,168 @@
+.wrapper {
+  background-color: #f2f5f9;
+  max-width: 480px;
+  margin: auto;
+}
+
+.content {
+  margin: auto;
+  max-width: 1040px;
+  padding: 60px 17px;
+}
+
+.titleText {
+  font-size: 28px;
+  font-family: var(--kanyon-bold);
+  color: #031838;
+}
+
+.descText {
+  font-size: 16px;
+  color: #52627a;
+  margin-top: 15px;
+}
+
+.form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapperInput {
+  width: 100%;
+  display: flex;
+  padding: 10px;
+  border-style: solid;
+  border-color: #52627a;
+  border-width: 0.5px;
+  background-color: #ffffff;
+  border-radius: 15px;
+}
+
+.input {
+  display: flex;
+  width: 100%;
+  border-radius: 15px;
+  background-color: #ffffff;
+  font-family: var(--kanyon);
+  font-size: 14px;
+  line-height: 24px;
+  outline: none;
+  border: none;
+}
+
+.wrapperInputPhone {
+  margin-top: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-style: solid;
+  border-color: #52627a;
+  border-width: 0.5px;
+  background-color: #ffffff;
+  border-radius: 15px;
+}
+
+.input:focus {
+  outline: none;
+  border: none;
+}
+
+.button {
+  background-color: #9ea3ac;
+  border-radius: 15px;
+  border: 0;
+  margin-top: 15px;
+  height: 50px;
+  color: white;
+  font-size: 16px;
+  font-family: var(--kanyon-bold);
+}
+
+.phoneDetail {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.labelRegion {
+  font-size: 16px;
+  font-family: var(--kanyon-bold);
+  padding-left: 5px;
+}
+
+.separator {
+  margin-left: 5px;
+  color: #9ea3ac;
+}
+
+.agreementMobile {
+  display: flex;
+  flex-direction: row;
+  margin-top: 15px;
+}
+
+.agreementDesktop {
+  display: none;
+}
+
+.agreementText {
+  font-size: 16px;
+  color: #52627a;
+  margin-left: 10px;
+}
+
+@media only screen and (min-width: 1024px) {
+  .wrapper {
+    background-color: #f2f5f9;
+    max-width: none;
+  }
+
+  .content {
+    padding: 60px 0px;
+  }
+
+  .titleText {
+    font-size: 20px;
+  }
+
+  .descText {
+    font-size: 20px;
+  }
+
+  .form {
+    margin-top: 40px;
+    width: 90%;
+    flex-direction: row;
+  }
+
+  .input {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .wrapperInputPhone {
+    margin-top: 0px;
+    margin-left: 10px;
+    padding: 10px;
+    width: 70%;
+  }
+
+  .button {
+    margin-top: 0px;
+    margin-left: 20px;
+    width: 500px;
+  }
+
+  .agreementMobile {
+    display: none;
+  }
+
+  .agreementDesktop {
+    display: flex;
+    flex-direction: row;
+    margin-top: 25px;
+  }
+}

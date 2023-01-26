@@ -1,0 +1,166 @@
+.container {
+  margin: 40px 0px 15px 0px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerText {
+  font-size: 14px;
+  font-family: var(--kanyon-bold);
+}
+
+.redirectText {
+  font-size: 10px;
+  font-family: var(--kanyon-bold);
+  color: #246ed4;
+}
+
+.wrapperSwiper {
+  margin-top: 10px;
+}
+
+.brandList {
+  display: flex;
+  align-items: center;
+  width: auto;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.brandList::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.brandList {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.brandActive {
+  display: flex;
+  align-items: center;
+  width: 90px;
+  height: 64px;
+  border-radius: 5px;
+  margin-right: 10px;
+  border: 0.5px solid;
+}
+
+.brandInActive {
+  display: flex;
+  align-items: center;
+  width: 90px;
+  height: 64px;
+  border-radius: 5px;
+  margin-right: 10px;
+  border: 0.5px solid #dddddd;
+}
+
+.brandImage {
+  width: 90px;
+  padding: 2px 10px;
+  height: 40px;
+  object-fit: contain;
+  margin: auto;
+}
+
+.swipers {
+  padding-left: 30px;
+}
+
+.carListWrapper {
+  margin-top: 20px;
+  position: relative;
+}
+
+.navigation {
+  display: none;
+}
+
+.shadowSlider {
+  width: 140px;
+  height: 210px;
+}
+
+.navigationBackButton,
+.navigationNextButton {
+  display: none;
+}
+
+@media only screen and (min-width: 1024px) {
+  .headerText {
+    font-size: 24px;
+  }
+
+  .redirectText {
+    font-size: 14px;
+  }
+
+  .wrapperSwiper {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .brand {
+    width: 90px;
+    height: 64px;
+  }
+
+  .brandImage {
+    height: 44px;
+    padding: 2px 10px;
+    margin: auto;
+  }
+
+  .swipers {
+    padding-left: 30px;
+  }
+
+  .brandList {
+    margin-right: 40px;
+    display: block;
+  }
+
+  .brandActive {
+    margin-right: 0px;
+    margin-bottom: 8px;
+  }
+  .brandInActive {
+    margin-right: 0px;
+    margin-bottom: 8px;
+  }
+
+  .swipers {
+    padding-left: 30px;
+  }
+
+  .carListWrapper {
+    width: 87%;
+    position: relative;
+  }
+
+  .navigationBackButton {
+    display: block;
+    position: absolute;
+    align-items: center;
+    z-index: 3;
+    margin-top: 110px;
+    margin-left: -40px;
+  }
+  .navigationNextButton {
+    display: block;
+    position: absolute;
+    align-items: center;
+    z-index: 3;
+    right: 0;
+    margin-top: 110px;
+    margin-right: -40px;
+  }
+}

@@ -1,0 +1,109 @@
+import React from 'react'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination, Autoplay } from 'swiper'
+import 'swiper/css'
+import 'swiper/css/pagination'
+import styles from '../../../styles/Banner.module.css'
+import Image from 'next/image'
+import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
+export default function Banner({ data }: any) {
+  const SelectorList = () => (
+    <div className={styles.selector}>
+      <p className={styles.optionPlaceholder}>18-27</p>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        className="bi bi-chevron-down"
+        viewBox="0 0 16 16"
+      >
+        <path d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+      </svg>
+    </div>
+  )
+
+  const Form = () => (
+    <div className={styles.form}>
+      <h1 className={styles.title}>Cari mobil baru yang pas buat kamu</h1>
+      <div className={styles.wrapperRow}>
+        <div className={styles.wrapperLeft}>
+          <h6 className={styles.desc}>Pilih maksimal DP</h6>
+          <SelectorList />
+        </div>
+        <div className={styles.wrapperRight}>
+          <h6 className={styles.desc}>Pilih tahun tenor</h6>
+          <div className={styles.wrapperRow}>
+            <div className={styles.tenor}>1</div>
+            <div className={styles.tenor}>1</div>
+            <div className={styles.tenor}>1</div>
+            <div className={styles.tenor}>1</div>
+            <div className={styles.tenor}>1</div>
+          </div>
+        </div>
+      </div>
+      <p className={styles.desc}>
+        Ingin bertanya langsung ke tim SEVA? Tulis nomor hp kamu untuk kami
+        hubungi (Opsional)
+      </p>
+      <div className={styles.wrapperInputPhone}>
+        <div className={styles.phoneDetail}>
+          <Image
+            src={FlagIndonesia}
+            width={16}
+            height={16}
+            alt="indonesia-flag"
+          />
+          <p className={styles.labelRegion}>+62</p>
+          <p className={styles.separator}>|</p>
+        </div>
+        <input
+          type="text"
+          className={styles.input}
+          placeholder="Contoh : 0895401011469"
+        ></input>
+      </div>
+      <label className={styles.advanceSearch}>Advanced Search</label>
+      <div className={styles.wrapperRow}>
+        <div className={styles.wrapperLeft}>
+          <p className={styles.desc}>Kisaran pendapatan</p>
+          <SelectorList />
+        </div>
+        <div className={styles.wrapperRight}>
+          <p className={styles.desc}>Rentang Usia</p>
+          <SelectorList />
+        </div>
+      </div>
+      <button className={styles.button}>Temukan Mobilku</button>
+    </div>
+  )
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.wrapperForm}>
+        <Form />
+      </div>
+      <div className={styles.wraper}>
+        <Swiper
+          pagination={{ clickable: true }}
+          modules={[Pagination, Autoplay]}
+          className={`mySwiper`}
+        >
+          {data.map((item: any, key: number) => (
+            <SwiperSlide key={key}>
+              <Image
+                src={item.attribute.web_mobile}
+                width={600}
+                height={420}
+                priority
+                unoptimized
+                alt="seva-banner"
+                className={styles.banner}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </div>
+  )
+}

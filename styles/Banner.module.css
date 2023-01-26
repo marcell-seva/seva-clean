@@ -1,0 +1,182 @@
+.container {
+  position: relative;
+  background-color: #ffffff;
+  height: 580px;
+}
+
+.banner {
+  width: 100%;
+  height: 360px;
+}
+
+.form {
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 13px 10px;
+  margin-top: 180px;
+}
+
+.wrapperInputPhone {
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-style: solid;
+  border-color: #52627a;
+  border-width: 0.5px;
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+
+.input {
+  display: flex;
+  width: 100%;
+  border-radius: 5px;
+  background-color: #ffffff;
+  font-family: var(--kanyon);
+  font-size: 12x;
+  line-height: 24px;
+  outline: none;
+  border: none;
+}
+
+.input:focus {
+  outline: none;
+  border: none;
+}
+
+.phoneDetail {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.labelRegion {
+  font-size: 12px;
+  font-family: var(--kanyon-bold);
+  padding-left: 5px;
+}
+
+.separator {
+  margin-left: 5px;
+  color: #9ea3ac;
+}
+
+.wrapperRow {
+  display: flex;
+  flex-direction: row;
+}
+.wrapperLeft {
+  width: 100%;
+}
+.wrapperRight {
+  width: 100%;
+  margin-left: 10px;
+}
+
+.title {
+  font-size: 14px;
+  font-family: var(--kanyon-bold);
+  margin-bottom: 12px;
+}
+
+.desc {
+  font-size: 12px;
+  color: #404040;
+  margin: 8px 0px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.tenor {
+  background-color: #f2f5f9;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 35.09px;
+  border: '0.5px solid #05256E';
+  line-height: 22px;
+  color: #52627a;
+  cursor: pointer;
+  margin-right: 5px;
+}
+.advanceSearch {
+  font-size: 12px;
+  color: #246ed4;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.button {
+  width: 100%;
+  line-height: 24px;
+  background-color: #002373;
+  color: #eef6fb;
+  font-size: 14px;
+  font-family: var(--kanyon-bold);
+  border-radius: 5px;
+  text-align: center;
+  border: none;
+  padding: 10px 0px;
+  margin-top: 16px;
+}
+
+.iconDropdown {
+  fill: red;
+}
+
+.selector {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 5px;
+  height: 30px;
+  border-style: solid;
+  border-width: 0.5px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.list {
+  background-color: #ffffff;
+  padding: 5px;
+  position: absolute;
+  border-style: solid;
+  border-width: 0.5px;
+  border-radius: 5px;
+}
+
+.optionPlaceholder {
+  font-size: 12px;
+  color: grey;
+}
+
+.swiper {
+  position: absolute;
+  z-index: 1;
+}
+.wrapperForm {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  margin: 20px;
+}
+
+@media only screen and (min-width: 1024px) {
+  .container {
+    position: relative;
+    height: auto;
+  }
+
+  .banner {
+    height: 420px;
+  }
+
+  .form {
+    width: 340px;
+    margin-top: 0px;
+  }
+}

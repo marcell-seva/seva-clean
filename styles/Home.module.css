@@ -1,0 +1,26 @@
+.main {
+  width: 100%;
+  margin: auto;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 480px;
+  margin: auto;
+  padding: 180px 16px;
+}
+
+.testFont {
+  font-family: var(--kanyon);
+}
+
+.testFont1 {
+  font-family: var(--kanyon-bold);
+}
+
+@media only screen and (min-width: 1024px) {
+  .wrapper {
+    max-width: 1040px;
+    padding: 180px 16px;
+  }
+}
