@@ -7,6 +7,8 @@ import styles from '../../../styles/Banner.module.css'
 import Image from 'next/image'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
 export default function Banner({ data }: any) {
+  const apiBanner = 'https://api.sslpots.com'
+
   const SelectorList = () => (
     <div className={styles.selector}>
       <p className={styles.optionPlaceholder}>18-27</p>
@@ -97,7 +99,7 @@ export default function Banner({ data }: any) {
             <SwiperSlide key={key}>
               <a href={item.url}>
                 <Image
-                  src={item.attribute.web_mobile}
+                  src={apiBanner + item.attributes.mobile.data.attributes.url}
                   width={600}
                   height={420}
                   priority
@@ -125,7 +127,7 @@ export default function Banner({ data }: any) {
             <SwiperSlide key={key}>
               <a href={item.url}>
                 <Image
-                  src={item.attribute.web_desktop}
+                  src={apiBanner + item.attributes.desktop.data.attributes.url}
                   width={600}
                   height={420}
                   priority
