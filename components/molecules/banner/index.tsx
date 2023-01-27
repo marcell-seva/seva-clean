@@ -35,10 +35,10 @@ export default function Banner({ data }: any) {
           <h6 className={styles.desc}>Pilih tahun tenor</h6>
           <div className={styles.wrapperRow}>
             <div className={styles.tenor}>1</div>
-            <div className={styles.tenor}>1</div>
-            <div className={styles.tenor}>1</div>
-            <div className={styles.tenor}>1</div>
-            <div className={styles.tenor}>1</div>
+            <div className={styles.tenor}>2</div>
+            <div className={styles.tenor}>3</div>
+            <div className={styles.tenor}>4</div>
+            <div className={styles.tenor}>5</div>
           </div>
         </div>
       </div>
@@ -95,16 +95,18 @@ export default function Banner({ data }: any) {
         >
           {data.map((item: any, key: number) => (
             <SwiperSlide key={key}>
-              <Image
-                src={item.attribute.web_mobile}
-                width={600}
-                height={420}
-                priority
-                unoptimized
-                alt="seva-banner"
-                sizes="(max-width: 1024px) 55vw, 80vw"
-                className={styles.banner}
-              />
+              <a href={item.url}>
+                <Image
+                  src={item.attribute.web_mobile}
+                  width={600}
+                  height={420}
+                  priority
+                  unoptimized
+                  alt="seva-banner"
+                  sizes="(max-width: 1024px) 55vw, 80vw"
+                  className={styles.banner}
+                />
+              </a>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -121,16 +123,18 @@ export default function Banner({ data }: any) {
         >
           {data.map((item: any, key: number) => (
             <SwiperSlide key={key}>
-              <Image
-                src={item.attribute.web_desktop}
-                width={600}
-                height={420}
-                priority
-                unoptimized
-                alt="seva-banner"
-                sizes="(max-width: 1024px) 55vw, 80vw"
-                className={styles.banner}
-              />
+              <a href={item.url}>
+                <Image
+                  src={item.attribute.web_desktop}
+                  width={600}
+                  height={420}
+                  priority
+                  unoptimized
+                  alt="seva-banner"
+                  sizes="(max-width: 1024px) 55vw, 80vw"
+                  className={styles.banner}
+                />
+              </a>
             </SwiperSlide>
           ))}
         </Swiper>

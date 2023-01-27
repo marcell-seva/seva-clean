@@ -46,7 +46,12 @@ export default function CarList({ data }: any) {
     <div className={styles.container}>
       <div className={styles.header}>
         <h1 className={styles.headerText}>Mobil Baru Terpopuler</h1>
-        <h1 className={styles.redirectText}>LIHAT SEMUA</h1>
+        <a
+          href="https://www.seva.id/mobil-baru"
+          className={styles.redirectText}
+        >
+          LIHAT SEMUA
+        </a>
       </div>
       <div className={styles.wrapperSwiper}>
         <div className={styles.brandList}>

@@ -25,7 +25,12 @@ export default function Recommendation({ data, categoryCar }: any) {
     <div className={styles.container}>
       <div className={styles.header}>
         <h1 className={styles.headerText}>Tipe Mobil Baru</h1>
-        <h1 className={styles.redirectText}>LIHAT SEMUA</h1>
+        <a
+          href="https://www.seva.id/mobil-baru"
+          className={styles.redirectText}
+        >
+          LIHAT SEMUA
+        </a>
       </div>
       <div className={styles.wrapperType}>
         {categoryCar.map((item: any, key: number) => (

@@ -30,20 +30,24 @@ export default function HowToUse({ data }: any) {
   return (
     <div className={styles.stepWrapper}>
       <div className={styles.backgroundLayer}>
-        <Image
-          src={blueRoundedImage}
-          alt="seva-vector-blue-rounded"
-          width={200}
-          height={140}
-          className={styles.vectorBlueRounded}
-        />
-        <Image
-          src={redRoundedImage}
-          alt="seva-vector-red-rounded"
-          width={200}
-          height={140}
-          className={styles.vectorRedRounded}
-        />
+        <div className={styles.wrapperVectorBlue}>
+          <Image
+            src={blueRoundedImage}
+            alt="seva-vector-blue-rounded"
+            width={200}
+            height={140}
+            className={styles.vectorBlueRounded}
+          />
+        </div>
+        <div className={styles.wrapperVectorRed}>
+          <Image
+            src={redRoundedImage}
+            alt="seva-vector-red-rounded"
+            width={200}
+            height={140}
+            className={styles.vectorRedRounded}
+          />
+        </div>
       </div>
       <div className={styles.foreGroundLayer}>
         <h2 className={styles.headerText}>{data.head_title}</h2>
