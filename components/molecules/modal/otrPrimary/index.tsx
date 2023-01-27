@@ -35,6 +35,7 @@ export default function OTRPrimary({ data, onClick }: any) {
             src="https://www.seva.id/static/media/CitySelectorBackgroundMobile.0bda639bbb6387a2830874684c0af082.svg"
             width={320}
             height={388}
+            priority
             alt="seva-modal-mobile"
             className={styles.bgImageMobile}
           />
@@ -42,6 +43,7 @@ export default function OTRPrimary({ data, onClick }: any) {
             src="https://www.seva.id/static/media/CitySelectorBackgroundDesktop.c7c088fbdaf6912d331555837ab523be.svg"
             width={740}
             height={390}
+            priority
             alt="seva-modal-desktop"
             className={styles.bgImageDekstop}
           />
