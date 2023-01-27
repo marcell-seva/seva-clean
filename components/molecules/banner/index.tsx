@@ -99,16 +99,18 @@ export default function Banner({ data }: any) {
         >
           {data.map((item: any, key: number) => (
             <SwiperSlide key={key}>
-              <Image
-                src={apiBanner + item.attributes.mobile.data.attributes.url}
-                width={480}
-                height={360}
-                priority
-                unoptimized
-                alt="seva-banner"
-                sizes="(max-width: 1024px) 54vw, 92.4vw"
-                className={`swiper-lazy ${styles.banner}`}
-              />
+              <a href={item.url || '/'}>
+                <Image
+                  src={apiBanner + item.attributes.mobile.data.attributes.url}
+                  width={480}
+                  height={360}
+                  priority
+                  unoptimized
+                  alt="seva-banner"
+                  sizes="(max-width: 1024px) 54vw, 92.4vw"
+                  className={`swiper-lazy ${styles.banner}`}
+                />
+              </a>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -126,7 +128,7 @@ export default function Banner({ data }: any) {
         >
           {data.map((item: any, key: number) => (
             <SwiperSlide key={key}>
-              <a href={item.url}>
+              <a href={item.url || '/'}>
                 <Image
                   src={apiBanner + item.attributes.desktop.data.attributes.url}
                   width={1040}
@@ -137,6 +139,7 @@ export default function Banner({ data }: any) {
                   sizes="(max-width: 1024px) 54vw, 92.4vw"
                   className={`swiper-lazy ${styles.banner}`}
                 />
+                <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
               </a>
             </SwiperSlide>
           ))}
