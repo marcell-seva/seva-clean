@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from '../../../styles/Recommendation.module.css'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation } from 'swiper'
+import { Navigation, Lazy } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import { Card, IconBackButton, IconNextButton, TypeCar } from '../../atoms'
@@ -60,7 +60,8 @@ export default function Recommendation({ data, categoryCar }: any) {
         </div>
         <div className={styles.wrapperMobile}>
           <Swiper
-            modules={[Navigation]}
+            modules={[Navigation, Lazy]}
+            lazy={true}
             navigation={{
               nextEl: '.image-swiper-button-next-recommendation',
               prevEl: '.image-swiper-button-prev-recommendation',

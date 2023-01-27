@@ -173,7 +173,7 @@ export default function Header({ data, onOpenModalOTR }: any) {
                 item.menuName === 'Fasilitas Dana' ||
                 item.menuName === 'Teman SEVA'
               ) {
-                return <></>
+                return <div key={key}></div>
               } else {
                 return (
                   <ListNavBarMenu

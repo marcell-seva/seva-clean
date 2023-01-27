@@ -48,8 +48,8 @@ export default function Home({
         />
         {/* <Floating /> */}
         <div className={styles.wrapper}>
-          <LoanSection />
           <Banner data={dataBanner} />
+          <LoanSection />
           <HowToUse data={dataUsage} />
           <CarList data={dataRecToyota} />
           <Recommendation data={dataRecMVP} categoryCar={dataTypeCar} />

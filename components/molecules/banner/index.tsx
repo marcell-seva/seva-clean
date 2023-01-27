@@ -1,6 +1,6 @@
 import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination, Autoplay } from 'swiper'
+import { Pagination, Autoplay, Lazy } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import styles from '../../../styles/Banner.module.css'
@@ -88,7 +88,8 @@ export default function Banner({ data }: any) {
       <div className={styles.wrapperMobile}>
         <Swiper
           pagination={{ clickable: true }}
-          modules={[Pagination, Autoplay]}
+          modules={[Pagination, Autoplay, Lazy]}
+          lazy={true}
           className={`mySwiper`}
           autoplay={{
             delay: 2000,
@@ -114,7 +115,8 @@ export default function Banner({ data }: any) {
       <div className={styles.wrapperDesktop}>
         <Swiper
           pagination={{ clickable: true }}
-          modules={[Pagination, Autoplay]}
+          modules={[Pagination, Autoplay, Lazy]}
+          lazy={true}
           className={`mySwiper`}
           autoplay={{
             delay: 2000,

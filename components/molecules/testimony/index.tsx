@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation } from 'swiper'
+import { Lazy, Navigation } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 import styles from '../../../styles/Testimony.module.css'
 import Image from 'next/image'
-import { IconBackButton, IconNextButton, IconStar } from '../../atoms'
+import { IconBackButton, IconNextButton } from '../../atoms'
 
 export default function Testimony({ data }: any) {
   const [isMobile, setIsMobile] = useState(false)
@@ -67,7 +67,8 @@ export default function Testimony({ data }: any) {
             prevEl: '.image-swiper-button-prev',
             disabledClass: 'swiper-button-disabled',
           }}
-          modules={[Navigation]}
+          modules={[Navigation, Lazy]}
+          lazy={true}
           slidesPerGroup={1}
           slidesPerView={2}
           spaceBetween={170}

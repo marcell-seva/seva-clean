@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation } from 'swiper'
+import { Navigation, Lazy } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import Image from 'next/image'
@@ -72,7 +72,8 @@ export default function CarList({ data }: any) {
           </div>
           <div className={styles.wrapperMobile}>
             <Swiper
-              modules={[Navigation]}
+              modules={[Navigation, Lazy]}
+              lazy={true}
               navigation={{
                 nextEl: '.image-swiper-button-next-car-list',
                 prevEl: '.image-swiper-button-prev-car-list',
