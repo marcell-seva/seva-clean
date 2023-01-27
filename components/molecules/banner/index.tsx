@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination, Autoplay, Lazy } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/pagination'
+import 'swiper/css/lazy'
 import styles from '../../../styles/Banner.module.css'
 import Image from 'next/image'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
@@ -106,7 +107,7 @@ export default function Banner({ data }: any) {
                 unoptimized
                 alt="seva-banner"
                 sizes="(max-width: 1024px) 54vw, 92.4vw"
-                className={styles.banner}
+                className={`swiper-lazy ${styles.banner}`}
               />
             </SwiperSlide>
           ))}
@@ -134,7 +135,7 @@ export default function Banner({ data }: any) {
                   unoptimized
                   alt="seva-banner"
                   sizes="(max-width: 1024px) 54vw, 92.4vw"
-                  className={styles.banner}
+                  className={`swiper-lazy ${styles.banner}`}
                 />
               </a>
             </SwiperSlide>
