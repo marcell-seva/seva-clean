@@ -97,18 +97,16 @@ export default function Banner({ data }: any) {
         >
           {data.map((item: any, key: number) => (
             <SwiperSlide key={key}>
-              <a href={item.url}>
-                <Image
-                  src={apiBanner + item.attributes.mobile.data.attributes.url}
-                  width={600}
-                  height={420}
-                  priority
-                  unoptimized
-                  alt="seva-banner"
-                  sizes="(max-width: 1024px) 55vw, 80vw"
-                  className={styles.banner}
-                />
-              </a>
+              <Image
+                src={apiBanner + item.attributes.mobile.data.attributes.url}
+                width={480}
+                height={360}
+                priority
+                unoptimized
+                alt="seva-banner"
+                sizes="(max-width: 1024px) 54vw, 92.4vw"
+                className={styles.banner}
+              />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -128,12 +126,12 @@ export default function Banner({ data }: any) {
               <a href={item.url}>
                 <Image
                   src={apiBanner + item.attributes.desktop.data.attributes.url}
-                  width={600}
-                  height={420}
+                  width={1040}
+                  height={416}
                   priority
                   unoptimized
                   alt="seva-banner"
-                  sizes="(max-width: 1024px) 55vw, 80vw"
+                  sizes="(max-width: 1024px) 54vw, 92.4vw"
                   className={styles.banner}
                 />
               </a>

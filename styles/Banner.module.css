@@ -7,6 +7,7 @@
 .banner {
   width: 100%;
   height: 360px;
+  object-fit: cover;
 }
 
 .form {
@@ -176,7 +177,9 @@
   }
 
   .banner {
-    height: 420px;
+    width: 100%;
+    height: 416px;
+    border-radius: 15px;
   }
 
   .form {
