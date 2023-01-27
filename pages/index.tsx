@@ -7,7 +7,6 @@ import {
   HowToUse,
   LoanSection,
   ContactUs,
-  Banner,
   CarList,
   Testimony,
   Recommendation,
@@ -20,7 +19,6 @@ import { api } from '../services/api'
 import { useEffect, useState } from 'react'
 
 export default function Home({
-  dataBanner,
   dataMenu,
   dataCities,
   dataTestimony,
@@ -46,9 +44,8 @@ export default function Home({
           data={dataMenu}
           onOpenModalOTR={() => setIsModalOTROpen(true)}
         />
-        {/* <Floating /> */}
+        <Floating />
         <div className={styles.wrapper}>
-          <Banner data={dataBanner} />
           <LoanSection />
           <HowToUse data={dataUsage} />
           <CarList data={dataRecToyota} />
@@ -83,7 +80,6 @@ export async function getServerSideProps({ req, res }: any) {
 
   try {
     const [
-      bannerRes,
       menuRes,
       citiesRes,
       testimonyRes,
@@ -93,7 +89,6 @@ export async function getServerSideProps({ req, res }: any) {
       mainArticleRes,
       typeCarRes,
     ]: any = await Promise.all([
-      api.getBanner(),
       api.getMenu(),
       api.getCities(),
       api.getTestimony(),
@@ -104,7 +99,6 @@ export async function getServerSideProps({ req, res }: any) {
       api.getTypeCar('?city=jakarta'),
     ])
     const [
-      dataBanner,
       dataMenu,
       dataCities,
       dataTestimony,
@@ -114,7 +108,6 @@ export async function getServerSideProps({ req, res }: any) {
       dataMainArticle,
       dataTypeCar,
     ] = await Promise.all([
-      bannerRes.data,
       menuRes.data,
       citiesRes,
       testimonyRes.data,
@@ -126,7 +119,6 @@ export async function getServerSideProps({ req, res }: any) {
     ])
     return {
       props: {
-        dataBanner,
         dataMenu,
         dataCities,
         dataTestimony,
