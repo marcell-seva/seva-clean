@@ -165,6 +165,10 @@
   margin: 20px;
 }
 
+.wrapperDesktop {
+  display: none;
+}
+
 @media only screen and (min-width: 1024px) {
   .container {
     position: relative;
@@ -178,5 +182,13 @@
   .form {
     width: 340px;
     margin-top: 0px;
+  }
+
+  .wrapperDesktop {
+    display: block;
+  }
+
+  .wrapperMobile {
+    display: none;
   }
 }

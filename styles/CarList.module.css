@@ -90,6 +90,10 @@
   display: none;
 }
 
+.wrapperDesktop {
+  display: none;
+}
+
 @media only screen and (min-width: 1024px) {
   .headerText {
     font-size: 24px;
@@ -159,5 +163,13 @@
     right: 0;
     margin-top: 110px;
     margin-right: -40px;
+  }
+
+  .wrapperMobile {
+    display: none;
+  }
+
+  .wrapperDesktop {
+    display: block;
   }
 }

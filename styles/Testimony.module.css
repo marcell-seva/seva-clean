@@ -5,7 +5,6 @@
 .testimonyWrapper {
   margin-top: 15px;
   position: relative;
-  margin: 0px 40px 0px 30px;
 }
 
 .headerText {
@@ -116,6 +115,7 @@
   .testimonyWrapper {
     margin-top: 15px;
     position: relative;
+    margin: 0px 40px 0px 30px;
   }
 
   .image {

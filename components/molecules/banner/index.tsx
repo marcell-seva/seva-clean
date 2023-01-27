@@ -83,7 +83,33 @@ export default function Banner({ data }: any) {
       <div className={styles.wrapperForm}>
         <Form />
       </div>
-      <div className={styles.wraper}>
+      <div className={styles.wrapperMobile}>
+        <Swiper
+          pagination={{ clickable: true }}
+          modules={[Pagination, Autoplay]}
+          className={`mySwiper`}
+          autoplay={{
+            delay: 2000,
+            disableOnInteraction: false,
+          }}
+        >
+          {data.map((item: any, key: number) => (
+            <SwiperSlide key={key}>
+              <Image
+                src={item.attribute.web_mobile}
+                width={600}
+                height={420}
+                priority
+                unoptimized
+                alt="seva-banner"
+                sizes="(max-width: 1024px) 55vw, 80vw"
+                className={styles.banner}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+      <div className={styles.wrapperDesktop}>
         <Swiper
           pagination={{ clickable: true }}
           modules={[Pagination, Autoplay]}

@@ -53,27 +53,52 @@ export default function Recommendation({ data, categoryCar }: any) {
         >
           <IconNextButton width={80} height={80} />
         </div>
-        <Swiper
-          modules={[Navigation]}
-          navigation={{
-            nextEl: '.image-swiper-button-next-recommendation',
-            prevEl: '.image-swiper-button-prev-recommendation',
-            disabledClass: 'swiper-button-disabled',
-          }}
-          slidesPerView={4}
-          spaceBetween={200}
-          slidesPerGroup={3}
-          className="mySwiper"
-        >
-          {dataCar.slice(0, 5).map((item: any, key: number) => (
-            <SwiperSlide key={key}>
-              <Card item={item} />
+        <div className={styles.wrapperMobile}>
+          <Swiper
+            modules={[Navigation]}
+            navigation={{
+              nextEl: '.image-swiper-button-next-recommendation',
+              prevEl: '.image-swiper-button-prev-recommendation',
+              disabledClass: 'swiper-button-disabled',
+            }}
+            slidesPerView={4}
+            spaceBetween={140}
+            slidesPerGroup={3}
+            className="mySwiper"
+          >
+            {dataCar.slice(0, 5).map((item: any, key: number) => (
+              <SwiperSlide key={key}>
+                <Card item={item} />
+              </SwiperSlide>
+            ))}
+            <SwiperSlide>
+              <ShadowSlide />
             </SwiperSlide>
-          ))}
-          <SwiperSlide>
-            <ShadowSlide />
-          </SwiperSlide>
-        </Swiper>
+          </Swiper>
+        </div>
+        <div className={styles.wrapperDesktop}>
+          <Swiper
+            modules={[Navigation]}
+            navigation={{
+              nextEl: '.image-swiper-button-next-recommendation',
+              prevEl: '.image-swiper-button-prev-recommendation',
+              disabledClass: 'swiper-button-disabled',
+            }}
+            slidesPerView={4}
+            spaceBetween={250}
+            slidesPerGroup={3}
+            className="mySwiper"
+          >
+            {dataCar.slice(0, 5).map((item: any, key: number) => (
+              <SwiperSlide key={key}>
+                <Card item={item} />
+              </SwiperSlide>
+            ))}
+            <SwiperSlide>
+              <ShadowSlide />
+            </SwiperSlide>
+          </Swiper>
+        </div>
       </div>
     </div>
   )
