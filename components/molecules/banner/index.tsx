@@ -105,7 +105,6 @@ export default function Banner({ data }: any) {
                     src={apiBanner + item.attributes.mobile.data.attributes.url}
                     width={480}
                     height={360}
-                    priority
                     unoptimized
                     alt="seva-banner"
                     sizes="(max-width: 1024px) 54vw, 92.4vw"
@@ -138,7 +137,6 @@ export default function Banner({ data }: any) {
                     }
                     width={1040}
                     height={416}
-                    priority
                     unoptimized
                     alt="seva-banner"
                     sizes="(max-width: 1024px) 54vw, 92.4vw"
