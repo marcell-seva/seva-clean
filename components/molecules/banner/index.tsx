@@ -96,7 +96,7 @@ export default function Banner({ data }: any) {
           {data.map((item: any, key: number) => (
             <SwiperSlide key={key}>
               <Image
-                src={item.attribute.web_mobile}
+                src={item.attribute.web_desktop}
                 width={600}
                 height={420}
                 priority
