@@ -13,6 +13,7 @@ import {
   IconBackButton,
   IconStar,
   IconUser,
+  IconBurgerMenu,
 } from './icon'
 
 export {
@@ -30,4 +31,5 @@ export {
   IconBackButton,
   IconStar,
   IconUser,
+  IconBurgerMenu,
 }

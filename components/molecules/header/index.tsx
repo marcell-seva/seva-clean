@@ -3,11 +3,19 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import { api } from '../../../services/api'
 import styles from '../../../styles/Header.module.css'
-import { IconCross, IconDots, IconSearch, IconUser } from '../../atoms'
-import sevaHeader from '../../../assets/images/logo/seva-header.png'
+import {
+  IconBurgerMenu,
+  IconCross,
+  IconDots,
+  IconSearch,
+  IconTriangleDown,
+  IconUser,
+} from '../../atoms'
+import sevaHeader from '../../../assets/images/logo/seva-header.svg'
 interface ListNavbarProps {
   name: string
   redirect: string
+  isHaveChild?: boolean
 }
 
 interface ListSideBarProps {
@@ -31,11 +39,16 @@ export default function Header({ data, onOpenModalOTR }: any) {
   const [isVariantShow, setIsVariantShow] = useState<boolean>(false)
   const [variantList, setVariantList] = useState<Array<Variant>>([])
 
-  const ListNavBarMenu = ({ redirect, name }: ListNavbarProps) => (
+  const ListNavBarMenu = ({
+    redirect,
+    name,
+    isHaveChild = false,
+  }: ListNavbarProps) => (
     <li className={styles.navBar}>
       <Link className={styles.headerText} href={redirect}>
         {name}
       </Link>
+      {isHaveChild && <IconTriangleDown width={8} height={4} />}
     </li>
   )
 
@@ -87,55 +100,88 @@ export default function Header({ data, onOpenModalOTR }: any) {
     }
   }
 
+  const TopBarMobile = () => (
+    <div className={styles.barMobile}>
+      <div className={styles.bar}>
+        <IconBurgerMenu width={26} height={26} />
+        <Image
+          src={sevaHeader}
+          width={120}
+          height={75}
+          alt="seva-logo"
+          className={styles.logo}
+        />
+      </div>
+      <div className={styles.searchIcon}>
+        <IconSearch width={20} height={20} color="#002373" />
+      </div>
+    </div>
+  )
+
+  const TopBarDesktop = () => (
+    <div className={styles.barDesktop}>
+      <Image
+        src={sevaHeader}
+        width={120}
+        height={75}
+        alt="seva-logo"
+        className={styles.logo}
+      />
+      {isVariantShow && (
+        <div className={styles.wrapperListVariant}>
+          {variantList.map((item: Variant) => (
+            <button key={item.id} className={styles.list}>
+              {item.variant_title}
+            </button>
+          ))}
+        </div>
+      )}
+      <div className={styles.wrapperInput}>
+        <IconSearch width={18} height={18} color="grey" />
+        <input
+          type="text"
+          value={input}
+          className={styles.input}
+          placeholder="Cari Model Mobil..."
+          onChange={(e) => handleChange(e.target.value)}
+        />
+        {isCrossShow && (
+          <div onClick={() => clearInput()}>
+            <IconCross width={24} height={24} />
+          </div>
+        )}
+      </div>
+      <button className={styles.initialAuthMain}>
+        <IconUser width={15} height={15} color="#FFFFFF" />
+        <p className={styles.initialText}>Masuk / Daftar</p>
+      </button>
+    </div>
+  )
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
-        <div className={styles.main}>
-          <Image
-            src={sevaHeader}
-            width={120}
-            height={75}
-            alt="seva-logo"
-            className={styles.logo}
-          />
-          {isVariantShow && (
-            <div className={styles.wrapperListVariant}>
-              {variantList.map((item: Variant) => (
-                <button key={item.id} className={styles.list}>
-                  {item.variant_title}
-                </button>
-              ))}
-            </div>
-          )}
-          <div className={styles.wrapperInput}>
-            <IconSearch width={18} height={18} color="grey" />
-            <input
-              type="text"
-              value={input}
-              className={styles.input}
-              placeholder="Cari Model Mobil..."
-              onChange={(e) => handleChange(e.target.value)}
-            />
-            {isCrossShow && (
-              <div onClick={() => clearInput()}>
-                <IconCross width={24} height={24} />
-              </div>
-            )}
-          </div>
-          <div>
-            <button className={styles.initialAuthMain}>
-              <IconUser width={15} height={15} color="#FFFFFF" />
-              <p className={styles.initialText}>Masuk / Daftar</p>
-            </button>
-          </div>
-        </div>
+        <TopBarMobile />
+        <TopBarDesktop />
       </div>
       <div className={styles.wrapperSubMain}>
         <div className={styles.subMain}>
           <ul className={styles.wrapperMain}>
-            {data.map((item: any, key: number) => (
-              <ListNavBarMenu key={key} name={item.menuName} redirect="#" />
-            ))}
+            {data.map((item: any, key: number) => {
+              if (
+                item.menuName !== 'Fasilitas Dana' ||
+                item.menuName !== 'Teman Seva'
+              ) {
+                return (
+                  <ListNavBarMenu
+                    key={key}
+                    name={item.menuName}
+                    redirect="#"
+                    isHaveChild={item.subMenu.length > 0}
+                  />
+                )
+              }
+            })}
           </ul>
           <div onClick={onOpenModalOTR}>
             <p className={styles.labelText}>Beli Mobil di </p>
