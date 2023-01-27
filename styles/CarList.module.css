@@ -11,16 +11,13 @@
 .headerText {
   font-size: 14px;
   font-family: var(--kanyon-bold);
+  margin: 20px 0px;
 }
 
 .redirectText {
   font-size: 10px;
   font-family: var(--kanyon-bold);
   color: #246ed4;
-}
-
-.wrapperSwiper {
-  margin-top: 10px;
 }
 
 .brandList {
@@ -103,9 +100,9 @@
   }
 
   .wrapperSwiper {
-    margin-top: 10px;
     display: flex;
     align-items: center;
+    margin: 0px 35px 0px 0px;
   }
 
   .brand {
@@ -142,7 +139,7 @@
   }
 
   .carListWrapper {
-    width: 87%;
+    width: 86%;
     position: relative;
   }
 

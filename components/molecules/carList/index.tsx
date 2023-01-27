@@ -74,7 +74,7 @@ export default function CarList({ data }: any) {
             }}
             slidesPerGroup={3}
             slidesPerView={4}
-            spaceBetween={220}
+            spaceBetween={140}
           >
             {carList.slice(0, 5).map((item: any, key: number) => (
               <SwiperSlide key={key}>

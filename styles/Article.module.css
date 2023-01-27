@@ -6,6 +6,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 20px 0px;
 }
 
 .headerText {
@@ -200,9 +201,10 @@
   }
 
   .category {
-    width: 100%;
+    width: 99%;
     margin: 0px;
     position: relative;
+    padding-right: 75px;
   }
   .selectorActive {
     font-size: 14px;
@@ -235,6 +237,7 @@
     margin-top: -20px;
     margin-left: -30px;
   }
+
   .navigationNextButton {
     display: block;
     position: absolute;
@@ -242,6 +245,5 @@
     z-index: 3;
     right: 0;
     margin-top: -20px;
-    margin-right: -30px;
   }
 }

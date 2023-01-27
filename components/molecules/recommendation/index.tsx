@@ -41,6 +41,7 @@ export default function Recommendation({ data, categoryCar }: any) {
           />
         ))}
       </div>
+
       <div className={styles.recommendationWrapper}>
         <div
           className={`image-swiper-button-prev-recommendation ${styles.navigationBackButton}`}

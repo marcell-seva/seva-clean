@@ -11,6 +11,7 @@
 .headerText {
   font-size: 14px;
   font-family: var(--kanyon-bold);
+  margin: 10px 0px;
 }
 
 .redirectText {
@@ -21,7 +22,7 @@
 
 .wrapperType {
   display: flex;
-  padding: 20px 1px;
+  padding: 10px 1px;
   overflow-x: scroll;
   white-space: nowrap;
 }
@@ -61,8 +62,8 @@
 
   .recommendationWrapper {
     position: relative;
+    margin: 0px 40px 0px 30px;
   }
-
   .navigationBackButton {
     display: block;
     position: absolute;

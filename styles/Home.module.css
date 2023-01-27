@@ -10,17 +10,9 @@
   padding: 180px 16px;
 }
 
-.testFont {
-  font-family: var(--kanyon);
-}
-
-.testFont1 {
-  font-family: var(--kanyon-bold);
-}
-
 @media only screen and (min-width: 1024px) {
   .wrapper {
     max-width: 1040px;
-    padding: 180px 16px;
+    padding: 180px 0px 0px;
   }
 }

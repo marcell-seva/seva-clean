@@ -106,13 +106,27 @@
   color: #000000;
 }
 
+.modalOTR {
+  display: flex;
+  align-items: center;
+}
+
+.selectLocation {
+  margin-left: 10px;
+}
+
 .labelText {
   font-size: 10px;
   font-family: var(--kanyon);
 }
 
+.iconTriangleDown {
+  padding-left: 10px;
+}
+
 .cityText {
   font-size: 12px;
+  padding-top: 5px;
   font-family: var(--kanyon);
 }
 

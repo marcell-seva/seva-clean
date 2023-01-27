@@ -7,6 +7,7 @@ import {
   IconBurgerMenu,
   IconCross,
   IconDots,
+  IconLocation,
   IconSearch,
   IconTriangleDown,
   IconUser,
@@ -169,9 +170,11 @@ export default function Header({ data, onOpenModalOTR }: any) {
           <ul className={styles.wrapperMain}>
             {data.map((item: any, key: number) => {
               if (
-                item.menuName !== 'Fasilitas Dana' ||
-                item.menuName !== 'Teman Seva'
+                item.menuName === 'Fasilitas Dana' ||
+                item.menuName === 'Teman SEVA'
               ) {
+                return <></>
+              } else {
                 return (
                   <ListNavBarMenu
                     key={key}
@@ -183,9 +186,17 @@ export default function Header({ data, onOpenModalOTR }: any) {
               }
             })}
           </ul>
-          <div onClick={onOpenModalOTR}>
-            <p className={styles.labelText}>Beli Mobil di </p>
-            <p className={styles.cityText}>Pilih Kota</p>
+          <div onClick={onOpenModalOTR} className={styles.modalOTR}>
+            <IconLocation width={16} height={16} color="#002373" />
+            <div className={styles.selectLocation}>
+              <p className={styles.labelText}>
+                Beli Mobil di
+                <span className={styles.iconTriangleDown}>
+                  <IconTriangleDown width={8} height={8} />
+                </span>
+              </p>
+              <p className={styles.cityText}>Pilih Kota</p>
+            </div>
           </div>
         </div>
       </div>

@@ -5,11 +5,13 @@
 .testimonyWrapper {
   margin-top: 15px;
   position: relative;
+  margin: 0px 40px 0px 30px;
 }
 
 .headerText {
   font-size: 14px;
   font-family: var(--kanyon-bold);
+  margin: 20px 0px;
 }
 
 .wrapperInfo {

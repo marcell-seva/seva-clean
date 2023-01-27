@@ -35,6 +35,7 @@
   justify-content: center;
   align-items: center;
   max-width: 632px;
+  height: 100%;
   z-index: 2;
   padding: 0px 30px;
 }
@@ -45,7 +46,7 @@
   color: #000000;
   text-align: center;
   margin-top: 20px;
-  padding: 0px 17%;
+  padding: 0px 15%;
 }
 
 .descText {
@@ -70,7 +71,6 @@
 .input {
   display: flex;
   width: 100%;
-  border-radius: 15px;
   background-color: #ffffff;
   font-family: var(--kanyon);
   font-size: 16px;

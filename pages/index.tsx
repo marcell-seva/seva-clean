@@ -31,7 +31,7 @@ export default function Home({
   dataTypeCar,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isModalOTROpen, setIsModalOTROpen] = useState<boolean>(false)
-  const [isModalLocationOpen, setIsModalLocationOpen] = useState<boolean>(false)
+  const [isModalLocationOpen, setIsModalLocationOpen] = useState<boolean>(true)
   useEffect(() => {})
   return (
     <>
@@ -46,11 +46,11 @@ export default function Home({
           data={dataMenu}
           onOpenModalOTR={() => setIsModalOTROpen(true)}
         />
-        <Floating />
+        {/* <Floating /> */}
         <div className={styles.wrapper}>
           <Banner data={dataBanner} />
           <LoanSection />
-          <HowToUse data={dataUsage} />
+          {/* <HowToUse data={dataUsage} /> */}
           <CarList data={dataRecToyota} />
           <Recommendation data={dataRecMVP} categoryCar={dataTypeCar} />
           <Testimony data={dataTestimony} />
