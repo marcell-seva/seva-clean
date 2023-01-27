@@ -7,7 +7,6 @@ import {
   HowToUse,
   LoanSection,
   ContactUs,
-  Banner,
   CarList,
   Testimony,
   Recommendation,
@@ -18,7 +17,8 @@ import {
 } from '../components/molecules'
 import { api } from '../services/api'
 import { useEffect, useState } from 'react'
-
+import dynamic from 'next/dynamic'
+const Banner = dynamic(() => import('../components/molecules/banner'))
 export default function Home({
   dataBanner,
   dataMenu,
@@ -32,6 +32,7 @@ export default function Home({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isModalOTROpen, setIsModalOTROpen] = useState<boolean>(false)
   const [isModalLocationOpen, setIsModalLocationOpen] = useState<boolean>(true)
+
   useEffect(() => {})
   return (
     <>
@@ -49,6 +50,7 @@ export default function Home({
         <Floating />
         <div className={styles.wrapper}>
           <Banner data={dataBanner} />
+
           <LoanSection />
           <HowToUse data={dataUsage} />
           <CarList data={dataRecToyota} />
