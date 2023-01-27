@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination, Autoplay, Lazy } from 'swiper'
 import 'swiper/css'
@@ -100,7 +100,7 @@ export default function Banner({ data }: any) {
           {data &&
             data.map((item: any, key: number) => (
               <SwiperSlide key={key}>
-                <a href={item.url}>
+                <a href={item.attributes.url}>
                   <Image
                     src={apiBanner + item.attributes.mobile.data.attributes.url}
                     width={480}
@@ -131,7 +131,7 @@ export default function Banner({ data }: any) {
           {data &&
             data.map((item: any, key: number) => (
               <SwiperSlide key={key}>
-                <a href={item.url || '/'}>
+                <a href={item.attributes.url}>
                   <Image
                     src={
                       apiBanner + item.attributes.desktop.data.attributes.url
