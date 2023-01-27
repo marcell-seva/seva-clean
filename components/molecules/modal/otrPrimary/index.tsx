@@ -43,7 +43,6 @@ export default function OTRPrimary({ data, onClick }: any) {
             src="https://www.seva.id/static/media/CitySelectorBackgroundDesktop.c7c088fbdaf6912d331555837ab523be.svg"
             width={740}
             height={390}
-            priority
             alt="seva-modal-desktop"
             className={styles.bgImageDekstop}
           />
