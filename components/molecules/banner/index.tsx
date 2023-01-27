@@ -95,9 +95,9 @@ export default function Banner({ data }: any) {
                 src={item.attribute.web_mobile}
                 width={600}
                 height={420}
-                priority
                 unoptimized
                 alt="seva-banner"
+                sizes="(min-width: 1024px) 80vw, 55vw"
                 className={styles.banner}
               />
             </SwiperSlide>
