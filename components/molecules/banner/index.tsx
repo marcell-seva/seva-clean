@@ -91,39 +91,58 @@ export default function Banner({ data }: any) {
       <div className={styles.wrapperMobile}>
         <div className="swiper mySwiper">
           <div className="swiper-wrapper">
-            {data.map((item: any, key: number) => (
-              <div className="swiper-slide" key={key}>
-                <Image
-                  src={apiBanner + item.attributes.mobile.data.attributes.url}
-                  width={480}
-                  height={360}
-                  alt="seva-banner"
-                  sizes="(max-width: 1024px) 54vw, 92.4vw"
-                  className={`swiper-lazy ${styles.banner}`}
-                />
-              </div>
-            ))}
+            {data.map((item: any, key: number) => {
+              if (key === 0) {
+                return (
+                  <div className="swiper-slide" key={key}>
+                    <Image
+                      src={
+                        apiBanner + item.attributes.mobile.data.attributes.url
+                      }
+                      width={480}
+                      height={360}
+                      priority
+                      alt="seva-banner"
+                      sizes="(max-width: 1024px) 54vw, 92.4vw"
+                      className={`swiper-lazy ${styles.banner}`}
+                    />
+                  </div>
+                )
+              } else {
+                return (
+                  <div className="swiper-slide" key={key}>
+                    <Image
+                      src={
+                        apiBanner + item.attributes.mobile.data.attributes.url
+                      }
+                      width={480}
+                      height={360}
+                      alt="seva-banner"
+                      sizes="(max-width: 1024px) 54vw, 92.4vw"
+                      className={`swiper-lazy ${styles.banner}`}
+                    />
+                  </div>
+                )
+              }
+            })}
           </div>
         </div>
       </div>
       <div className={styles.wrapperDesktop}>
         <div className="swiper mySwiper">
           <div className="swiper-wrapper">
-            {data &&
-              data.map((item: any, key: number) => (
-                <div className="swiper-slide" key={key}>
-                  <Image
-                    src={
-                      apiBanner + item.attributes.desktop.data.attributes.url
-                    }
-                    width={1040}
-                    height={416}
-                    alt="seva-banner"
-                    sizes="(max-width: 1024px) 54vw, 92.4vw"
-                    className={`lazy-loader swiper-lazy ${styles.banner}`}
-                  />
-                </div>
-              ))}
+            {data.map((item: any, key: number) => (
+              <div className="swiper-slide" key={key}>
+                <Image
+                  src={apiBanner + item.attributes.desktop.data.attributes.url}
+                  width={1040}
+                  height={416}
+                  alt="seva-banner"
+                  sizes="(max-width: 1024px) 54vw, 92.4vw"
+                  className={`lazy-loader swiper-lazy ${styles.banner}`}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
