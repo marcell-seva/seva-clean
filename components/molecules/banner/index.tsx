@@ -7,6 +7,7 @@ import 'swiper/css/lazy'
 import styles from '../../../styles/Banner.module.css'
 import Image from 'next/image'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
+import Script from 'next/script'
 export default function Banner({ data }: any) {
   const apiBanner = 'https://api.sslpots.com'
 
@@ -83,66 +84,48 @@ export default function Banner({ data }: any) {
 
   return (
     <div className={styles.container}>
+      <Script src="/lazy.js" />
       <div className={styles.wrapperForm}>
         <Form />
       </div>
       <div className={styles.wrapperMobile}>
-        <Swiper
-          pagination={{ clickable: true }}
-          modules={[Pagination, Autoplay, Lazy]}
-          lazy={true}
-          className={`mySwiper`}
-          autoplay={{
-            delay: 6000,
-            disableOnInteraction: false,
-          }}
-        >
-          {data &&
-            data.map((item: any, key: number) => (
-              <SwiperSlide key={key}>
+        <div className="swiper mySwiper">
+          <div className="swiper-wrapper">
+            {data.map((item: any, key: number) => (
+              <div className="swiper-slide" key={key}>
                 <Image
                   src={apiBanner + item.attributes.mobile.data.attributes.url}
                   width={480}
                   height={360}
-                  priority
-                  unoptimized
                   alt="seva-banner"
                   sizes="(max-width: 1024px) 54vw, 92.4vw"
                   className={`swiper-lazy ${styles.banner}`}
                 />
-                <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
-              </SwiperSlide>
+              </div>
             ))}
-        </Swiper>
+          </div>
+        </div>
       </div>
       <div className={styles.wrapperDesktop}>
-        <Swiper
-          pagination={{ clickable: true }}
-          modules={[Pagination, Autoplay, Lazy]}
-          lazy={true}
-          className={`mySwiper`}
-          autoplay={{
-            delay: 6000,
-            disableOnInteraction: false,
-          }}
-        >
-          {data &&
-            data.map((item: any, key: number) => (
-              <SwiperSlide key={key}>
-                <Image
-                  src={apiBanner + item.attributes.desktop.data.attributes.url}
-                  width={1040}
-                  height={416}
-                  priority
-                  unoptimized
-                  alt="seva-banner"
-                  sizes="(max-width: 1024px) 54vw, 92.4vw"
-                  className={`swiper-lazy ${styles.banner}`}
-                />
-                <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
-              </SwiperSlide>
-            ))}
-        </Swiper>
+        <div className="swiper mySwiper">
+          <div className="swiper-wrapper">
+            {data &&
+              data.map((item: any, key: number) => (
+                <div className="swiper-slide" key={key}>
+                  <Image
+                    src={
+                      apiBanner + item.attributes.desktop.data.attributes.url
+                    }
+                    width={1040}
+                    height={416}
+                    alt="seva-banner"
+                    sizes="(max-width: 1024px) 54vw, 92.4vw"
+                    className={`lazy-loader swiper-lazy ${styles.banner}`}
+                  />
+                </div>
+              ))}
+          </div>
+        </div>
       </div>
     </div>
   )
