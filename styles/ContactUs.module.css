@@ -42,7 +42,6 @@
 .input {
   display: flex;
   width: 100%;
-  border-radius: 15px;
   background-color: #ffffff;
   font-family: var(--kanyon);
   font-size: 14px;

@@ -7,7 +7,13 @@
   width: 100%;
   max-width: 480px;
   margin: auto;
-  padding: 100px 16px 0px 16px;
+  padding: 100px 0px 0px 0px;
+}
+
+@media only screen and (max-width: 510px) {
+  .wrapper {
+    padding: 180px 16px 0px 16px;
+  }
 }
 
 @media only screen and (min-width: 1024px) {

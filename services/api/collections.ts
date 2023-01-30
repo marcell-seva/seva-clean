@@ -10,6 +10,7 @@ const product = {
   recommendation: 'https://api.seva.id/recommendations/new-funnel',
   variant: 'https://api.seva.id/variants',
   type: 'https://api.seva.id/cars/body-type-data',
+  carofTheMonth: 'https://api.seva.id/car-of-the-month',
 }
 
 const article = {

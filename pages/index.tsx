@@ -14,11 +14,18 @@ import {
   OTRSecondary,
   Floating,
   OTRPrimary,
+  Search,
+  LocationList,
+  LocationSelector,
+  Refinancing,
+  CarofTheMonth,
+  Offering,
 } from '../components/molecules'
 import { api } from '../services/api'
 import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 const Banner = dynamic(() => import('../components/molecules/banner'))
+
 export default function Home({
   dataBanner,
   dataMenu,
@@ -29,11 +36,15 @@ export default function Home({
   dataUsage,
   dataMainArticle,
   dataTypeCar,
+  dataCarofTheMonth,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isModalOTROpen, setIsModalOTROpen] = useState<boolean>(false)
   const [isModalLocationOpen, setIsModalLocationOpen] = useState<boolean>(true)
+  const [isSearchBarMobileShow, setIsSearchBarMobileShow] =
+    useState<boolean>(false)
+  const [isLocationSelectorShow, setIsLocationSelectorShow] =
+    useState<boolean>(false)
 
-  useEffect(() => {})
   return (
     <>
       <Head>
@@ -46,18 +57,22 @@ export default function Home({
         <Header
           data={dataMenu}
           onOpenModalOTR={() => setIsModalOTROpen(true)}
+          onSearchClick={() => setIsSearchBarMobileShow(true)}
         />
         <Floating />
+        <LocationList onClick={() => setIsLocationSelectorShow(true)} />
         <div className={styles.wrapper}>
           <Banner data={dataBanner} />
-
           <LoanSection />
           <HowToUse data={dataUsage} />
           <CarList data={dataRecToyota} />
           <Recommendation data={dataRecMVP} categoryCar={dataTypeCar} />
+          <Refinancing />
+          <CarofTheMonth data={dataCarofTheMonth} />
           <Testimony data={dataTestimony} />
           <Article data={dataMainArticle} />
         </div>
+        {/* <Offering /> */}
         {isModalOTROpen && (
           <OTRSecondary
             data={dataCities}
@@ -68,6 +83,15 @@ export default function Home({
           <OTRPrimary
             data={dataCities}
             onClick={() => setIsModalLocationOpen(!isModalLocationOpen)}
+          />
+        )}
+        {isSearchBarMobileShow && (
+          <Search onSearchMobileClose={() => setIsSearchBarMobileShow(false)} />
+        )}
+        {isLocationSelectorShow && (
+          <LocationSelector
+            data={dataCities}
+            onCloseSelector={() => setIsLocationSelectorShow(false)}
           />
         )}
         <ContactUs />
@@ -94,6 +118,7 @@ export async function getServerSideProps({ req, res }: any) {
       usageRes,
       mainArticleRes,
       typeCarRes,
+      carofTheMonthRes,
     ]: any = await Promise.all([
       api.getBanner(),
       api.getMenu(),
@@ -104,6 +129,7 @@ export async function getServerSideProps({ req, res }: any) {
       api.getUsage(),
       api.getMainArticle('65'),
       api.getTypeCar('?city=jakarta'),
+      api.getCarofTheMonth(),
     ])
     const [
       dataBanner,
@@ -115,6 +141,7 @@ export async function getServerSideProps({ req, res }: any) {
       dataUsage,
       dataMainArticle,
       dataTypeCar,
+      dataCarofTheMonth,
     ] = await Promise.all([
       bannerRes.data,
       menuRes.data,
@@ -125,6 +152,7 @@ export async function getServerSideProps({ req, res }: any) {
       usageRes.data.attributes,
       mainArticleRes,
       typeCarRes,
+      carofTheMonthRes.data,
     ])
     return {
       props: {
@@ -137,6 +165,7 @@ export async function getServerSideProps({ req, res }: any) {
         dataUsage,
         dataMainArticle,
         dataTypeCar,
+        dataCarofTheMonth,
       },
     }
   } catch (error) {

@@ -48,6 +48,7 @@ const getVariantCar = (params: string) =>
   get(collections.product.variant + params)
 const getTypeCar = (params: string) => get(collections.product.type + params)
 const getBanner = () => get(collections.utils.banner)
+const getCarofTheMonth = () => get(collections.product.carofTheMonth)
 
 export const api = {
   getMenu,
@@ -60,4 +61,5 @@ export const api = {
   getVariantCar,
   getTypeCar,
   getBanner,
+  getCarofTheMonth,
 }

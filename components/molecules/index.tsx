@@ -11,6 +11,13 @@ import Article from './article'
 import OTRPrimary from './modal/otrPrimary'
 import OTRSecondary from './modal/otrSecondary'
 import Floating from './floating'
+import LocationList from './locationList'
+import Search from './section/search'
+import LocationSelector from './section/locationSelector'
+import Refinancing from './refinancing'
+import CarofTheMonth from './carofTheMonth'
+import Offering from './modal/offering'
+
 export {
   Header,
   Footer,
@@ -25,4 +32,10 @@ export {
   OTRPrimary,
   OTRSecondary,
   Floating,
+  LocationList,
+  Search,
+  LocationSelector,
+  Refinancing,
+  CarofTheMonth,
+  Offering,
 }

@@ -315,3 +315,44 @@ export function IconBurgerMenu({ width, height, color = '#52627A' }: Props) {
     </svg>
   )
 }
+
+export function IconChevrongRight({ width, height, color = '#14142B' }: Props) {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 9 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ width: width, height: height }}
+    >
+      <path
+        d="M1 1L7.96317 7.96317L1 14.9263"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export function IconChevronLeft({ width, height, color = '#52627A' }: Props) {
+  return (
+    <svg
+      width={width}
+      height={height}
+      fill={color}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 384 512"
+    >
+      <path
+        stroke={color}
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 278.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"
+      />
+    </svg>
+  )
+}

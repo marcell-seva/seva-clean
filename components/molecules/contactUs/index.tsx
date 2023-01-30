@@ -34,7 +34,7 @@ export default function ContactUs() {
               type="text"
               className={styles.input}
               placeholder="Contoh : 0895401011469"
-            ></input>
+            />
           </div>
           <label className={styles.agreementMobile}>
             <input type="checkbox" name="checkbox" />

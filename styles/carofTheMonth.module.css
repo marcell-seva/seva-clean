@@ -1,0 +1,174 @@
+.wrapper {
+  margin: 40px 0px;
+}
+
+.categoryMobile {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  bottom: 3%;
+}
+
+.categoryDesktop {
+  display: none;
+}
+
+.buttonCategoryActive {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: var(--kanyon-bold);
+  width: 145px;
+  height: 35px;
+  padding-bottom: 5px;
+  background-color: transparent;
+  border-bottom: 4px solid #ffffff;
+}
+
+.buttonCategoryInActive {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: #ffffff;
+  font-size: 14px;
+  font-family: var(--kanyon-bold);
+  width: 145px;
+  height: 35px;
+  padding-bottom: 5px;
+  background-color: transparent;
+  border-bottom: 1px solid #ffffff;
+}
+
+.headerText {
+  font-size: 14px;
+  font-family: var(--kanyon-bold);
+}
+
+.content {
+  background-color: #404040;
+  position: relative;
+}
+
+.image {
+  width: 100%;
+  height: 168px;
+  object-fit: cover;
+}
+
+.description {
+  padding: 14px 35px 33px;
+  background-color: #404040;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 290px;
+}
+
+.titleText {
+  font-size: 16px;
+  font-family: var(--kanyon-bold);
+  color: #ffffff;
+}
+
+.descText {
+  padding-top: 10px;
+  font-size: 12px;
+  color: #ffffff;
+  width: 80%;
+}
+
+.wrapperButton {
+  display: flex;
+}
+
+.buttonDetail {
+  outline: 0.5px solid #ffffff;
+  border: none;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 10px;
+  background-color: transparent;
+}
+
+.buttonOffering {
+  margin-left: 10px;
+  outline: 0.5px solid #ffffff;
+  border: none;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 10px;
+  background-color: transparent;
+}
+
+@media only screen and (min-width: 1024px) {
+  .bundle {
+    width: 100%;
+    display: flex;
+    height: 325px;
+  }
+
+  .categoryMobile {
+    display: none;
+  }
+
+  .categoryDesktop {
+    position: absolute;
+    left: 7%;
+    right: 7%;
+    bottom: 3%;
+    display: block;
+  }
+
+  .image {
+    width: 685px;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .description {
+    width: 360px;
+    height: 325px;
+    padding: 32px 35px;
+  }
+
+  .titleText {
+    font-size: 24px;
+  }
+
+  .descText {
+    padding-top: 10px;
+    width: 100%;
+    font-size: 14px;
+  }
+  .buttonCategoryActive {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    color: #ffffff;
+    font-size: 16px;
+    font-family: var(--kanyon-bold);
+    width: 90px;
+    height: 35px;
+    padding-bottom: 20px;
+    background-color: transparent;
+    border-bottom: 4px solid #ffffff;
+  }
+
+  .buttonCategoryInActive {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    color: #ffffff;
+    font-size: 16px;
+    font-family: var(--kanyon-bold);
+    width: 90px;
+    height: 35px;
+    padding-bottom: 20px;
+    background-color: transparent;
+    border-bottom: 1px solid #ffffff;
+  }
+}

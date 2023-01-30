@@ -5,6 +5,7 @@ import { api } from '../../../services/api'
 import styles from '../../../styles/Header.module.css'
 import {
   IconBurgerMenu,
+  IconChevrongRight,
   IconCross,
   IconDots,
   IconLocation,
@@ -33,12 +34,13 @@ interface Variant {
   price_value: number
   price_formatted_value: string
 }
-export default function Header({ data, onOpenModalOTR }: any) {
+export default function Header({ data, onOpenModalOTR, onSearchClick }: any) {
   const [isShow, setIsShow] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
   const [isCrossShow, setIsCrossShow] = useState<boolean>(false)
   const [isVariantShow, setIsVariantShow] = useState<boolean>(false)
   const [variantList, setVariantList] = useState<Array<Variant>>([])
+  const [isSubShown, setIsSubShown] = useState<boolean>(false)
 
   const ListNavBarMenu = ({
     redirect,
@@ -49,6 +51,26 @@ export default function Header({ data, onOpenModalOTR }: any) {
       <Link className={styles.headerText} href={redirect}>
         {name}
       </Link>
+
+      <ul className={styles.mainDropDown}>
+        <li className={styles.listMain}>
+          <div className={styles.wrapperListMenu}>
+            <a href="#" className={styles.listMainText}>
+              Merek
+            </a>
+            <div className={styles.bundleIconRight}>
+              <IconChevrongRight width={16} height={16} />
+            </div>
+          </div>
+          <ul className={styles.subDropDown}>
+            <li className={styles.listSubMain}>
+              <Link href="#" className={styles.listMainText}>
+                Toyota
+              </Link>
+            </li>
+          </ul>
+        </li>
+      </ul>
       {isHaveChild && <IconTriangleDown width={8} height={4} />}
     </li>
   )
@@ -113,7 +135,7 @@ export default function Header({ data, onOpenModalOTR }: any) {
           className={styles.logo}
         />
       </div>
-      <div className={styles.searchIcon}>
+      <div className={styles.searchIcon} onClick={onSearchClick}>
         <IconSearch width={20} height={20} color="#002373" />
       </div>
     </div>
