@@ -7,11 +7,13 @@ import Image from 'next/image'
 import styles from '../../../styles/CarList.module.css'
 import { Card, IconBackButton, IconNextButton } from '../../atoms'
 import { api } from '../../../services/api'
+import { useIsMobile } from '../../../utils'
 
 export default function CarList({ data }: any) {
   const brandList = ['Toyota', 'Daihatsu', 'Isuzu', 'BMW', 'Peugeot']
   const [carList, setCarList] = useState<any>(data)
-  const [typeActive, setTypeActive] = useState<any>('oyota')
+  const [typeActive, setTypeActive] = useState<any>('toyota')
+  const isMobile = useIsMobile()
 
   const ShadowSlide = () => <div className={styles.shadowSlider} />
 
@@ -24,7 +26,7 @@ export default function CarList({ data }: any) {
       throw error
     }
   }
-  const Brand = ({ name, isActive }: any) => (
+  const Brand = ({ name, src, isActive }: any) => (
     <div
       className={isActive ? styles.brandActive : styles.brandInActive}
       onClick={() => {
@@ -33,7 +35,7 @@ export default function CarList({ data }: any) {
       }}
     >
       <Image
-        src={require(`../../../assets/images/brandCar/${name}.png`)}
+        src={src}
         width={50}
         height={40}
         className={styles.brandImage}
@@ -56,20 +58,29 @@ export default function CarList({ data }: any) {
       <div className={styles.wrapperSwiper}>
         <div className={styles.brandList}>
           {brandList.map((item: string, key: number) => (
-            <Brand key={key} name={item} isActive={typeActive === item} />
+            <Brand
+              key={key}
+              src={require(`../../../assets/images/brandCar/${item}.png`)}
+              name={item}
+              isActive={typeActive === item}
+            />
           ))}
         </div>
         <div className={styles.carListWrapper}>
-          <div
-            className={`image-swiper-button-prev-car-list ${styles.navigationBackButton}`}
-          >
-            <IconBackButton width={80} height={80} />
-          </div>
-          <div
-            className={`image-swiper-button-next-car-list ${styles.navigationNextButton}`}
-          >
-            <IconNextButton width={80} height={80} />
-          </div>
+          {!isMobile && (
+            <>
+              <div
+                className={`image-swiper-button-prev-car-list ${styles.navigationBackButton}`}
+              >
+                <IconBackButton width={80} height={80} />
+              </div>
+              <div
+                className={`image-swiper-button-next-car-list ${styles.navigationNextButton}`}
+              >
+                <IconNextButton width={80} height={80} />
+              </div>
+            </>
+          )}
           <div className={styles.wrapperMobile}>
             <Swiper
               modules={[Navigation, Lazy]}
@@ -81,29 +92,7 @@ export default function CarList({ data }: any) {
               }}
               slidesPerGroup={3}
               slidesPerView={4}
-              spaceBetween={140}
-            >
-              {carList.slice(0, 5).map((item: any, key: number) => (
-                <SwiperSlide key={key}>
-                  <Card item={item} />
-                </SwiperSlide>
-              ))}
-              <SwiperSlide>
-                <ShadowSlide />
-              </SwiperSlide>
-            </Swiper>
-          </div>
-          <div className={styles.wrapperDesktop}>
-            <Swiper
-              modules={[Navigation]}
-              navigation={{
-                nextEl: '.image-swiper-button-next-car-list',
-                prevEl: '.image-swiper-button-prev-car-list',
-                disabledClass: 'swiper-button-disabled',
-              }}
-              slidesPerGroup={3}
-              slidesPerView={4}
-              spaceBetween={240}
+              spaceBetween={isMobile ? 140 : 240}
             >
               {carList.slice(0, 5).map((item: any, key: number) => (
                 <SwiperSlide key={key}>

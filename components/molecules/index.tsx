@@ -17,6 +17,7 @@ import LocationSelector from './section/locationSelector'
 import Refinancing from './refinancing'
 import CarofTheMonth from './carofTheMonth'
 import Offering from './modal/offering'
+import Video from './modal/video'
 
 export {
   Header,
@@ -38,4 +39,5 @@ export {
   Refinancing,
   CarofTheMonth,
   Offering,
+  Video,
 }

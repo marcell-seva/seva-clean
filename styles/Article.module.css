@@ -127,11 +127,6 @@
   display: none;
 }
 
-.navigationBackButton,
-.navigationNextButton {
-  display: none;
-}
-
 @media only screen and (min-width: 1024px) {
   .flexRow {
     display: flex;
@@ -230,7 +225,6 @@
   }
 
   .navigationBackButton {
-    display: block;
     position: absolute;
     align-items: center;
     z-index: 3;
@@ -239,7 +233,6 @@
   }
 
   .navigationNextButton {
-    display: block;
     position: absolute;
     align-items: center;
     z-index: 3;

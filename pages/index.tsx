@@ -20,6 +20,7 @@ import {
   Refinancing,
   CarofTheMonth,
   Offering,
+  Video,
 } from '../components/molecules'
 import { api } from '../services/api'
 import { useEffect, useState } from 'react'
@@ -40,6 +41,7 @@ export default function Home({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isModalOTROpen, setIsModalOTROpen] = useState<boolean>(false)
   const [isModalLocationOpen, setIsModalLocationOpen] = useState<boolean>(true)
+  const [isModalVideoShow, setIsModalVideoShow] = useState<boolean>(false)
   const [isSearchBarMobileShow, setIsSearchBarMobileShow] =
     useState<boolean>(false)
   const [isLocationSelectorShow, setIsLocationSelectorShow] =
@@ -59,7 +61,7 @@ export default function Home({
           onOpenModalOTR={() => setIsModalOTROpen(true)}
           onSearchClick={() => setIsSearchBarMobileShow(true)}
         />
-        <Floating />
+        <Floating onClickImage={() => setIsModalVideoShow(true)} />
         <LocationList onClick={() => setIsLocationSelectorShow(true)} />
         <div className={styles.wrapper}>
           <Banner data={dataBanner} />
@@ -93,6 +95,9 @@ export default function Home({
             data={dataCities}
             onCloseSelector={() => setIsLocationSelectorShow(false)}
           />
+        )}
+        {isModalVideoShow && (
+          <Video onClick={() => setIsModalVideoShow(false)} />
         )}
         <ContactUs />
         <Footer />

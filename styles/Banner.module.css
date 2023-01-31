@@ -13,8 +13,6 @@
   background-color: #ffffff;
   border-radius: 5px;
   padding: 13px 10px;
-  margin-top: 180px;
-  display: none;
 }
 
 .wrapperInputPhone {
@@ -69,9 +67,11 @@
 }
 .wrapperLeft {
   width: 100%;
+  position: relative;
 }
 .wrapperRight {
   width: 100%;
+  position: relative;
   margin-left: 10px;
 }
 
@@ -87,9 +87,25 @@
   margin: 8px 0px;
   font-weight: 400;
   line-height: 16px;
+  position: relative;
 }
 
-.tenor {
+.tenorActive {
+  background-color: #f2f5f9;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 35.09px;
+  line-height: 22px;
+  color: #52627a;
+  cursor: pointer;
+  margin-right: 5px;
+  border: 0.3px solid #002373;
+}
+
+.tenorInActive {
   background-color: #f2f5f9;
   border-radius: 4px;
   display: flex;
@@ -102,13 +118,17 @@
   color: #52627a;
   cursor: pointer;
   margin-right: 5px;
+  outline: none;
+  border: none;
 }
+
 .advanceSearch {
   font-size: 12px;
   color: #246ed4;
   text-decoration: underline;
   cursor: pointer;
 }
+
 .button {
   width: 100%;
   line-height: 24px;
@@ -134,11 +154,12 @@
   align-items: center;
   background-color: #ffffff;
   padding: 5px;
-  height: 30px;
-  border-style: solid;
-  border-width: 0.5px;
+  border: 0.3px solid #52627a;
+  height: 40px;
+  width: 100%;
   border-radius: 5px;
   position: relative;
+  outline: none;
 }
 
 .list {
@@ -150,18 +171,30 @@
   border-radius: 5px;
 }
 
-.optionPlaceholder {
+.placeholderText {
   font-size: 12px;
   color: grey;
+  width: 90%;
+  height: 100%;
+  border: none;
+}
+
+.placeholderText:disabled {
+  background-color: #ffffff;
+}
+
+.placeholderText:focus {
+  outline: none;
 }
 
 .swiper {
   position: absolute;
   z-index: 1;
 }
+
 .wrapperForm {
   position: absolute;
-  top: 0;
+  bottom: 0;
   z-index: 2;
   margin: 20px;
 }
@@ -174,6 +207,37 @@
   display: block;
 }
 
+.list {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  z-index: 3;
+  border: 0.3px solid #52627a;
+}
+
+.buttonIncome {
+  outline: none;
+  border: none;
+  text-align: start;
+  height: 30px;
+  background-color: #ffffff;
+  padding: 5px 8px;
+  font-weight: '200';
+}
+
+.buttonIncome:hover {
+  background-color: #cbe5f4;
+  border-radius: 5px;
+}
+
+.buttonListText {
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+}
 @media only screen and (min-width: 1024px) {
   .container {
     position: relative;

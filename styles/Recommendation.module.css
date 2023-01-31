@@ -22,7 +22,7 @@
 
 .wrapperType {
   display: flex;
-  padding: 10px 1px;
+  padding: 10px 2px;
   overflow-x: scroll;
   white-space: nowrap;
 }
@@ -39,15 +39,6 @@
 
 .recommendationWrapper {
   position: relative;
-}
-
-.navigationBackButton,
-.navigationNextButton {
-  display: none;
-}
-
-.wrapperDesktop {
-  display: none;
 }
 
 .shadowSlider {
@@ -69,7 +60,6 @@
     margin: 0px 40px 0px 30px;
   }
   .navigationBackButton {
-    display: block;
     position: absolute;
     align-items: center;
     z-index: 3;
@@ -78,20 +68,11 @@
   }
 
   .navigationNextButton {
-    display: block;
     position: absolute;
     align-items: center;
     z-index: 3;
     right: 0;
     margin-top: 110px;
     margin-right: -40px;
-  }
-
-  .wrapperMobile {
-    display: none;
-  }
-
-  .wrapperDesktop {
-    display: block;
   }
 }

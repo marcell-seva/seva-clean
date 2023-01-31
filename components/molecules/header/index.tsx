@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { api } from '../../../services/api'
 import styles from '../../../styles/Header.module.css'
 import {
@@ -14,6 +14,7 @@ import {
   IconUser,
 } from '../../atoms'
 import sevaHeader from '../../../assets/images/logo/seva-header.svg'
+import { useIsMobile } from '../../../utils'
 interface ListNavbarProps {
   name: string
   redirect: string
@@ -34,44 +35,80 @@ interface Variant {
   price_value: number
   price_formatted_value: string
 }
+
 export default function Header({ data, onOpenModalOTR, onSearchClick }: any) {
   const [isShow, setIsShow] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
   const [isCrossShow, setIsCrossShow] = useState<boolean>(false)
   const [isVariantShow, setIsVariantShow] = useState<boolean>(false)
   const [variantList, setVariantList] = useState<Array<Variant>>([])
-  const [isSubShown, setIsSubShown] = useState<boolean>(false)
+  const isMobile = useIsMobile()
 
-  const ListNavBarMenu = ({
-    redirect,
-    name,
-    isHaveChild = false,
-  }: ListNavbarProps) => (
-    <li className={styles.navBar}>
-      <Link className={styles.headerText} href={redirect}>
-        {name}
-      </Link>
-
-      <ul className={styles.mainDropDown}>
-        <li className={styles.listMain}>
-          <div className={styles.wrapperListMenu}>
-            <a href="#" className={styles.listMainText}>
-              Merek
-            </a>
-            <div className={styles.bundleIconRight}>
-              <IconChevrongRight width={16} height={16} />
-            </div>
+  const DropDownWithChild = ({ item }: any) => {
+    return (
+      <li className={styles.listMain}>
+        <div className={styles.wrapperListMenu}>
+          <p className={styles.listMainText}>{item.menuName}</p>
+          <div className={styles.bundleIconRight}>
+            <IconChevrongRight width={16} height={16} />
           </div>
-          <ul className={styles.subDropDown}>
-            <li className={styles.listSubMain}>
-              <Link href="#" className={styles.listMainText}>
-                Toyota
+        </div>
+        <ul className={styles.subDropDown}>
+          {item.subMenu.map((listSubMenu: any, key: number) => (
+            <li key={key} className={styles.listSubMain}>
+              <Link
+                href={listSubMenu.menuUrl}
+                className={styles.listSubMainText}
+              >
+                {listSubMenu.menuName}
               </Link>
             </li>
-          </ul>
-        </li>
-      </ul>
+          ))}
+        </ul>
+      </li>
+    )
+  }
+
+  const DropDownWithOutChild = ({ item }: any) => {
+    return (
+      <li className={styles.listMain}>
+        <a
+          href={item.menuUrl}
+          target="_blank"
+          className={styles.wrapperListMenu}
+          rel="noreferrer"
+        >
+          <p className={styles.listMainText}>{item.menuName}</p>
+        </a>
+      </li>
+    )
+  }
+
+  const ListNavBarMenu = ({ redirect, item, isHaveChild = false }: any) => (
+    <li className={styles.navBar}>
+      <Link className={styles.headerText} href={redirect}>
+        {item.menuName}
+      </Link>
       {isHaveChild && <IconTriangleDown width={8} height={4} />}
+
+      {item.subMenu.length > 0 && (
+        <ul className={styles.mainDropDown}>
+          {item.subMenu.map((listMain: any, key: number) => {
+            if (listMain.subMenu.length > 0)
+              return (
+                <div key={key}>
+                  <DropDownWithChild item={listMain} key={key} />
+                </div>
+              )
+            else
+              return (
+                <div key={key}>
+                  <DropDownWithOutChild item={listMain} />
+                </div>
+              )
+          })}
+        </ul>
+      )}
     </li>
   )
 
@@ -184,13 +221,24 @@ export default function Header({ data, onOpenModalOTR, onSearchClick }: any) {
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
-        <TopBarMobile />
-        <TopBarDesktop />
+        {isMobile ? <TopBarMobile /> : <TopBarDesktop />}
       </div>
       <div className={styles.wrapperSubMain}>
         <div className={styles.subMain}>
           <ul className={styles.wrapperMain}>
             {data.map((item: any, key: number) => {
+              if (key === 1) {
+                return (
+                  <li key={key} className={styles.navBar}>
+                    <Link
+                      className={styles.headerText}
+                      href="https://www.seva.id/info/promo/}"
+                    >
+                      Promo
+                    </Link>
+                  </li>
+                )
+              }
               if (
                 item.menuName === 'Fasilitas Dana' ||
                 item.menuName === 'Teman SEVA'
@@ -200,7 +248,7 @@ export default function Header({ data, onOpenModalOTR, onSearchClick }: any) {
                 return (
                   <ListNavBarMenu
                     key={key}
-                    name={item.menuName}
+                    item={item}
                     redirect="#"
                     isHaveChild={item.subMenu.length > 0}
                   />

@@ -6,8 +6,10 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import { Card, IconBackButton, IconNextButton, TypeCar } from '../../atoms'
 import { api } from '../../../services/api'
+import { useIsMobile } from '../../../utils'
 
 export default function Recommendation({ data, categoryCar }: any) {
+  const isMobile = useIsMobile()
   const ShadowSlide = () => <div className={styles.shadowSlider}></div>
   const [typeCar, setTypeCar] = useState<string>('MPV')
   const [dataCar, setDataCar] = useState<any>(data)
@@ -48,63 +50,40 @@ export default function Recommendation({ data, categoryCar }: any) {
       </div>
 
       <div className={styles.recommendationWrapper}>
-        <div
-          className={`image-swiper-button-prev-recommendation ${styles.navigationBackButton}`}
+        {!isMobile && (
+          <>
+            <div
+              className={`image-swiper-button-prev-recommendation ${styles.navigationBackButton}`}
+            >
+              <IconBackButton width={80} height={80} />
+            </div>
+            <div
+              className={`image-swiper-button-next-recommendation ${styles.navigationNextButton}`}
+            >
+              <IconNextButton width={80} height={80} />
+            </div>
+          </>
+        )}
+        <Swiper
+          modules={[Navigation]}
+          navigation={{
+            nextEl: '.image-swiper-button-next-recommendation',
+            prevEl: '.image-swiper-button-prev-recommendation',
+            disabledClass: 'swiper-button-disabled',
+          }}
+          slidesPerView={4}
+          spaceBetween={isMobile ? 120 : 200}
+          slidesPerGroup={3}
         >
-          <IconBackButton width={80} height={80} />
-        </div>
-        <div
-          className={`image-swiper-button-next-recommendation ${styles.navigationNextButton}`}
-        >
-          <IconNextButton width={80} height={80} />
-        </div>
-        <div className={styles.wrapperMobile}>
-          <Swiper
-            modules={[Navigation, Lazy]}
-            lazy={true}
-            navigation={{
-              nextEl: '.image-swiper-button-next-recommendation',
-              prevEl: '.image-swiper-button-prev-recommendation',
-              disabledClass: 'swiper-button-disabled',
-            }}
-            slidesPerView={4}
-            spaceBetween={140}
-            slidesPerGroup={3}
-            className="mySwiper"
-          >
-            {dataCar.slice(0, 5).map((item: any, key: number) => (
-              <SwiperSlide key={key}>
-                <Card item={item} />
-              </SwiperSlide>
-            ))}
-            <SwiperSlide>
-              <ShadowSlide />
+          {dataCar.slice(0, 5).map((item: any, key: number) => (
+            <SwiperSlide key={key}>
+              <Card item={item} />
             </SwiperSlide>
-          </Swiper>
-        </div>
-        <div className={styles.wrapperDesktop}>
-          <Swiper
-            modules={[Navigation]}
-            navigation={{
-              nextEl: '.image-swiper-button-next-recommendation',
-              prevEl: '.image-swiper-button-prev-recommendation',
-              disabledClass: 'swiper-button-disabled',
-            }}
-            slidesPerView={4}
-            spaceBetween={250}
-            slidesPerGroup={3}
-            className="mySwiper"
-          >
-            {dataCar.slice(0, 5).map((item: any, key: number) => (
-              <SwiperSlide key={key}>
-                <Card item={item} />
-              </SwiperSlide>
-            ))}
-            <SwiperSlide>
-              <ShadowSlide />
-            </SwiperSlide>
-          </Swiper>
-        </div>
+          ))}
+          <SwiperSlide>
+            <ShadowSlide />
+          </SwiperSlide>
+        </Swiper>
       </div>
     </div>
   )

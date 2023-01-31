@@ -6,7 +6,8 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
-import { IconBackButton, IconNextButton } from '../../atoms'
+import { IconBackButton, IconNextButton, Test } from '../../atoms'
+import { useIsMobile } from '../../../utils'
 
 interface Article {
   title: string
@@ -26,10 +27,20 @@ interface CategoryProps {
   isActive?: boolean
 }
 
-export default function Article({ data, getArticle }: any) {
+export default function Article({ data }: any) {
+  const isMobile = useIsMobile()
   const [categoryActive, setCategoryActive] = useState<string>('Semua Artikel')
   const [subArticle, setSubArticle] = useState<any>(data)
   const redirectArticle = 'https://www.seva.id/blog/'
+  const categoryList = [
+    { title: 'Semua Artikel', id: 65 },
+    { title: 'Modifikasi', id: 796 },
+    { title: 'Review Otomotif', id: 972 },
+    { title: 'Tips & Rekomendasi', id: 974 },
+    { title: 'Keuangan', id: 979 },
+    { title: 'Travel & Lifestyle', id: 981 },
+    { title: 'Hobi & Komunitas', id: 993 },
+  ]
 
   const getArticleByCategory = async (payload: string) => {
     try {
@@ -95,36 +106,35 @@ export default function Article({ data, getArticle }: any) {
     </div>
   )
 
-  const MainArticleDesktop = ({ item }: any) => {
-    return (
-      <div className={styles.wrapperMainInfoDekstop}>
-        <Image
-          src={item.featured_image}
-          alt="article-main-image"
-          width={470}
-          height={280}
-          className={styles.mainImage}
-        />
-        <div className={styles.flexRowBetween}>
-          <div className={styles.capsuleWrapper}>
-            <p className={styles.capsuleText}>{item.category}</p>
-          </div>
-          <p className={styles.dateText}>{item.publish_date}</p>
+  const MainArticleDesktop = ({ item }: any) => (
+    <div className={styles.wrapperMainInfoDekstop}>
+      <Image
+        src={item.featured_image}
+        alt="article-main-image"
+        width={470}
+        height={280}
+        defaultValue={item.featured_image}
+        className={styles.mainImage}
+      />
+      <div className={styles.flexRowBetween}>
+        <div className={styles.capsuleWrapper}>
+          <p className={styles.capsuleText}>{item.category}</p>
         </div>
-        <div>
-          <h4 className={styles.titleText}>{item.title}</h4>
-          <p className={styles.descText}>{item.excerpt}</p>
-          <button className={styles.wrapperButton}>Baca Selengkapnya</button>
-        </div>
+        <p className={styles.dateText}>{item.publish_date}</p>
       </div>
-    )
-  }
+      <div>
+        <h4 className={styles.titleText}>{item.title}</h4>
+        <p className={styles.descText}>{item.excerpt}</p>
+        <button className={styles.wrapperButton}>Baca Selengkapnya</button>
+      </div>
+    </div>
+  )
 
   const Category = ({ name, id, isActive }: CategoryProps) => (
     <button
       onClick={() => {
         setCategoryActive(name)
-        if (id === undefined) setSubArticle(data)
+        if (id === undefined || id.toString() === '65') setSubArticle(data)
         else getArticleByCategory(id)
       }}
       className={isActive ? styles.selectorActive : styles.selectorInActive}
@@ -154,16 +164,20 @@ export default function Article({ data, getArticle }: any) {
 
         <div className={styles.subArticle}>
           <div className={styles.category}>
-            <div
-              className={`image-swiper-button-prev-article-list ${styles.navigationBackButton}`}
-            >
-              <IconBackButton width={80} height={80} />
-            </div>
-            <div
-              className={`image-swiper-button-next-article-list ${styles.navigationNextButton}`}
-            >
-              <IconNextButton width={80} height={80} />
-            </div>
+            {!isMobile && (
+              <>
+                <div
+                  className={`image-swiper-button-prev-article-list ${styles.navigationBackButton}`}
+                >
+                  <IconBackButton width={80} height={80} />
+                </div>
+                <div
+                  className={`image-swiper-button-next-article-list ${styles.navigationNextButton}`}
+                >
+                  <IconNextButton width={80} height={80} />
+                </div>
+              </>
+            )}
             <Swiper
               modules={[Navigation]}
               navigation={{
@@ -175,54 +189,15 @@ export default function Article({ data, getArticle }: any) {
               slidesPerView={4}
               spaceBetween={10}
             >
-              <SwiperSlide>
-                <Category
-                  name="Semua Artikel"
-                  isActive={categoryActive === 'Semua Artikel'}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Category
-                  name="Modifikasi"
-                  id="974"
-                  isActive={categoryActive === 'Modifikasi'}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Category
-                  name="Review Otomotif"
-                  id="972"
-                  isActive={categoryActive === 'Review Otomotif'}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Category
-                  name="Tips & Rekomendasi"
-                  id="993"
-                  isActive={categoryActive === 'Tips & Rekomendasi'}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Category
-                  name="Keuangan"
-                  id="979"
-                  isActive={categoryActive === 'Keuangan'}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Category
-                  name="Travel & Lifestyle"
-                  id="796"
-                  isActive={categoryActive === 'Travel & Lifestyle'}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Category
-                  name="Hobi & Komunitas"
-                  id="981"
-                  isActive={categoryActive === 'Hobi & Komunitas'}
-                />
-              </SwiperSlide>
+              {categoryList.map((item: any) => (
+                <SwiperSlide key={item.id}>
+                  <Category
+                    name={item.title}
+                    isActive={categoryActive === item.title}
+                    id={item.id}
+                  />
+                </SwiperSlide>
+              ))}
             </Swiper>
           </div>
 

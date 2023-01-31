@@ -27,7 +27,7 @@
 }
 
 .barDesktop {
-  display: none;
+  display: block;
 }
 
 .bar {
@@ -125,8 +125,22 @@
 
 .listMainText {
   font-size: 14px;
+  color: #000000;
   font-family: var(--kanyon);
+  padding: 0px 10px;
 }
+
+.listSubMainText {
+  font-size: 14px;
+  color: #000000;
+  font-family: var(--kanyon);
+  padding: 0px 10px;
+}
+
+.bundleIconRight {
+  padding-right: 10px;
+}
+
 .wrapperListMenu {
   display: flex;
   width: 90%;
@@ -158,6 +172,10 @@
   display: block;
 }
 
+.listMain:hover .listMainText {
+  font-weight: bold;
+}
+
 .listSubMain {
   display: flex;
   justify-content: space-between;
@@ -166,8 +184,10 @@
   width: 100%;
   border-radius: 5px;
 }
+
 .listSubMain:hover {
   background-color: #cbe5f4;
+  font-weight: bold;
 }
 
 .headerText {
@@ -341,7 +361,7 @@
 }
 
 .wrapperListVariant {
-  width: 49%;
+  width: 50%;
   height: min-content;
   max-height: 200px;
   background-color: #ffffff;
@@ -349,6 +369,7 @@
   border-radius: 5px;
   top: 90%;
   left: 22%;
+  z-index: 4;
   padding: 5px;
   overflow-x: auto;
 }
@@ -373,7 +394,7 @@
   }
 
   .barMobile {
-    display: none;
+    display: block;
   }
 
   .barDesktop {

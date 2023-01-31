@@ -42,8 +42,9 @@
 }
 
 .image {
-  width: 295px;
+  width: 100%;
   height: auto;
+  object-fit: cover;
   border-radius: 5px;
 }
 
@@ -90,9 +91,10 @@
   width: 295px;
 }
 
-.navigationBackButton,
-.navigationNextButton {
-  display: none;
+@media only screen and (max-width: 360px) {
+  .card {
+    width: 270px;
+  }
 }
 
 @media only screen and (min-width: 1024px) {
@@ -102,10 +104,6 @@
 
   .wrapperInfo {
     border-radius: 0px 0px 20px 20px;
-  }
-
-  .swiperMobile {
-    display: none;
   }
 
   .card {
@@ -138,7 +136,6 @@
   }
 
   .navigationBackButton {
-    display: block;
     position: absolute;
     align-items: center;
     z-index: 3;
@@ -146,7 +143,6 @@
     margin-left: -40px;
   }
   .navigationNextButton {
-    display: block;
     position: absolute;
     align-items: center;
     z-index: 3;

@@ -13,3 +13,7 @@ body {
 a {
   text-decoration: none;
 }
+
+.swiper-button-disabled {
+  display: none;
+}
