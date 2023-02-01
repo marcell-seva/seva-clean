@@ -85,7 +85,7 @@ export default function Search({ onSearchMobileClose }: any) {
           type="text"
           value={input}
           className={styles.input}
-          placeholder="Cari Model Mobil..s."
+          placeholder="Cari Model Mobil..."
           onChange={(e) => handleChange(e.target.value)}
         />
         {isCrossShow ? (

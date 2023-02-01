@@ -38,7 +38,6 @@ export default function Card({ item }: any) {
           width={600}
           height={420}
           alt="seva-product"
-          quality={30}
           sizes="(min-width: 1024px) 21.5vw, 17vw"
           className={styles.image}
         />

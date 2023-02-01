@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Lazy } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
-import Image from 'next/image'
 import styles from '../../../styles/CarList.module.css'
-import { Card, IconBackButton, IconNextButton } from '../../atoms'
+import { Brand, Card, IconBackButton, IconNextButton } from '../../atoms'
 import { api } from '../../../services/api'
 import Script from 'next/script'
 import { useIsMobile } from '../../../utils'
@@ -20,6 +17,7 @@ export default function CarList({ data }: any) {
 
   const getRecommendationCar = async (params: string) => {
     try {
+      setCarList([])
       const query = `?brand=${params}&city=jakarta&cityId=189`
       const res: any = await api.getRecommendation(query)
       setCarList(res.carRecommendations)
@@ -27,23 +25,6 @@ export default function CarList({ data }: any) {
       throw error
     }
   }
-  const Brand = ({ name, src, isActive }: any) => (
-    <div
-      className={isActive ? styles.brandActive : styles.brandInActive}
-      onClick={() => {
-        setTypeActive(name)
-        getRecommendationCar(name)
-      }}
-    >
-      <Image
-        src={src}
-        width={50}
-        height={40}
-        className={styles.brandImage}
-        alt={name}
-      />
-    </div>
-  )
 
   return (
     <div className={styles.container}>
@@ -62,6 +43,10 @@ export default function CarList({ data }: any) {
           {brandList.map((item: string, key: number) => (
             <Brand
               key={key}
+              onClick={() => {
+                setTypeActive(item)
+                getRecommendationCar(item)
+              }}
               src={require(`../../../assets/images/brandCar/${item}.png`)}
               name={item}
               isActive={typeActive === item}
@@ -85,7 +70,7 @@ export default function CarList({ data }: any) {
           )}
           <div className="swiper mySwiperProduct">
             <div className="swiper-wrapper">
-              {carList.slice(0, 5).map((item: any, key: number) => (
+              {carList.slice(0, 10).map((item: any, key: number) => (
                 <div className="swiper-slide" key={key}>
                   <Card item={item} />
                 </div>

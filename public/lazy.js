@@ -26,9 +26,10 @@ const swiperOptionsProduct = {
     nextEl: '.image-swiper-button-next-car-list',
     prevEl: '.image-swiper-button-prev-car-list',
   },
-  slidesPerGroup: 1,
-  slidesPerView: 2,
-  spaceBetween: 20,
+  slidesPerGroup: 2,
+  cssMode: true,
+  slidesPerView: 3,
+  spaceBetween: 140,
   breakpoints: {
     1024: {
       slidesPerGroup: 3,
@@ -39,15 +40,6 @@ const swiperOptionsProduct = {
       slidesPerGroup: 3,
       slidesPerView: 4,
       spaceBetween: 120,
-    },
-  },
-  on: {
-    // LazyLoad swiper images after swiper initialization
-    afterInit: (swiper) => {
-      new LazyLoad({
-        container: swiper.el,
-        cancel_on_exit: false,
-      })
     },
   },
 }

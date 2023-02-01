@@ -18,6 +18,7 @@ import {
   IconBurgerMenu,
 } from './icon'
 import Test from './test'
+import Brand from './brand'
 
 export {
   Card,
@@ -38,4 +39,5 @@ export {
   IconUser,
   IconBurgerMenu,
   Test,
+  Brand,
 }
