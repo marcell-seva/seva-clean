@@ -351,6 +351,7 @@
 .wrapperUserName {
   margin-left: 10px;
 }
+
 .userWelcomeText {
   font-size: 12px;
   font-family: var(--open-sans-semi-bold);
@@ -447,5 +448,18 @@
     width: 200px;
     height: 40px;
     cursor: pointer;
+  }
+
+  .userWelcomeText {
+    text-align: right;
+  }
+
+  .userNameText {
+    font-size: 14px;
+    text-align: right;
+  }
+
+  .initialUsernameText {
+    margin-left: 15px;
   }
 }

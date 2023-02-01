@@ -35,7 +35,12 @@ interface Variant {
   price_formatted_value: string
 }
 
-export default function Header({ data, onOpenModalOTR, onSearchClick }: any) {
+export default function Header({
+  data,
+  onOpenModalOTR,
+  onSearchClick,
+  isLoggedIn,
+}: any) {
   const [isShow, setIsShow] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
   const [isCrossShow, setIsCrossShow] = useState<boolean>(false)
@@ -181,6 +186,12 @@ export default function Header({ data, onOpenModalOTR, onSearchClick }: any) {
     return url
   }
 
+  const getUserInitial = (payload: string) => {
+    const name = payload.split(' ')
+    const firstName = name[0].slice(0, 1)
+    const lastName = name[1].slice(0, 1)
+    return firstName + lastName
+  }
   const TopBarDesktop = () => (
     <div className={styles.barDesktop}>
       <Image
@@ -220,13 +231,25 @@ export default function Header({ data, onOpenModalOTR, onSearchClick }: any) {
           </div>
         )}
       </div>
-      <a
-        href="https://www.seva.id/masuk-akun"
-        className={styles.initialAuthMain}
-      >
-        <IconUser width={15} height={15} color="#FFFFFF" />
-        <p className={styles.initialText}>Masuk / Daftar</p>
-      </a>
+      {!isLoggedIn ? (
+        <a
+          href="https://www.seva.id/masuk-akun"
+          className={styles.initialAuthMain}
+        >
+          <IconUser width={15} height={15} color="#FFFFFF" />
+          <p className={styles.initialText}>Masuk / Daftar</p>
+        </a>
+      ) : (
+        <div className={styles.userInfo}>
+          <div className={styles.wrapperUserName}>
+            <p className={styles.userWelcomeText}>Selamat Datang</p>
+            <p className={styles.userNameText}>Marcell Antonius Dermawan</p>
+          </div>
+          <div className={styles.initialUsernameText}>
+            {getUserInitial('Marcell Antonius Dermawan')}
+          </div>
+        </div>
+      )}
     </div>
   )
 
@@ -282,14 +305,17 @@ export default function Header({ data, onOpenModalOTR, onSearchClick }: any) {
       {isShow && (
         <div className={styles.wrapperSideBar}>
           <div className={styles.sideBar}>
-            <button onClick={() => setIsShow(!isShow)}>test</button>
             <div className={styles.authSection}>
               <div className={styles.userAuth}>
                 <div className={styles.userInfo}>
-                  <div className={styles.initialUsernameText}>MA</div>
+                  <div className={styles.initialUsernameText}>
+                    {getUserInitial('Marcell Antonius Dermawan')}
+                  </div>
                   <div className={styles.wrapperUserName}>
                     <p className={styles.userWelcomeText}>Selamat Datang</p>
-                    <p className={styles.userNameText}>Marcell Antonius</p>
+                    <p className={styles.userNameText}>
+                      Marcell Antonius Dermawan
+                    </p>
                   </div>
                 </div>
                 <div>

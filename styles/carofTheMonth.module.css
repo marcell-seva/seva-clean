@@ -94,8 +94,7 @@
 }
 
 .buttonDetail {
-  outline: 0.5px solid #ffffff;
-  border: none;
+  border: 0.5px solid #ffffff;
   color: #ffffff;
   font-size: 12px;
   font-weight: bold;
@@ -105,8 +104,7 @@
 
 .buttonOffering {
   margin-left: 10px;
-  outline: 0.5px solid #ffffff;
-  border: none;
+  border: 0.5px solid #ffffff;
   color: #ffffff;
   font-size: 12px;
   font-weight: bold;

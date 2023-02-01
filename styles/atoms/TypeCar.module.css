@@ -1,28 +1,28 @@
 .active {
-  outline: 0.5px solid #246ed4;
+  border: 0.8px solid #246ed4;
   display: flex;
   align-items: center;
   border-radius: 3px;
   padding: 1px 20px;
   margin-right: 20px;
   background-color: #ffffff;
-  border: none;
 }
 
 .inActive {
-  outline: 0.5px solid #dddddd;
+  border: 0.5px solid #dddddd;
   display: flex;
   align-items: center;
+  background-color: red;
   border-radius: 3px;
   padding: 1px 20px;
   margin-right: 20px;
   background-color: #ffffff;
-  border: none;
 }
 
 .labelType {
   font-size: 12px;
   font-family: var(--kanyon);
+  color: #404040;
   padding-left: 8px;
 }
 
