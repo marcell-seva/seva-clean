@@ -1,17 +1,17 @@
 .container {
-  margin: 40px 0px 15px 0px;
+  margin: 20px 0px;
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .headerText {
   font-size: 14px;
   font-family: var(--kanyon-bold);
-  margin: 20px 0px;
 }
 
 .redirectText {
@@ -72,7 +72,6 @@
 }
 
 .carListWrapper {
-  margin-top: 20px;
   position: relative;
 }
 
@@ -90,6 +89,10 @@
 }
 
 @media only screen and (min-width: 1024px) {
+  .container {
+    margin: 40px 0px;
+  }
+
   .headerText {
     font-size: 24px;
   }
@@ -139,6 +142,7 @@
 
   .carListWrapper {
     width: 86%;
+    margin: 0px;
     position: relative;
   }
 

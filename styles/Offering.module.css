@@ -31,6 +31,7 @@
   display: flex;
   width: 100%;
   justify-content: flex-end;
+  cursor: pointer;
 }
 
 .headerText {
@@ -47,11 +48,11 @@
 }
 
 .inputName {
-  margin-top: 10px;
+  margin-top: 15px;
   padding: 15px;
   border-radius: 15px;
   font-size: var(--open-sans);
-  border: 0.5px solid #52617a;
+  border: 0.3px solid #52617a;
   display: flex;
   width: 100%;
   border-radius: 15px;
@@ -62,24 +63,23 @@
 }
 
 .wrapperInputPhone {
-  margin-top: 10px;
+  margin-top: 15px;
   padding: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-style: solid;
-  border-color: #52627a;
-  border-width: 0.5px;
+  border: 0.3px solid #52617a;
   background-color: #ffffff;
   border-radius: 15px;
 }
 
-.input {
+.inputPhone {
   display: flex;
   width: 100%;
   background-color: #ffffff;
   font-family: var(--kanyon);
-  font-size: 14px;
+  font-size: 16px;
+  padding: 5px;
   line-height: 24px;
   outline: none;
   border: none;
@@ -105,7 +105,7 @@
 .agreement {
   display: flex;
   align-items: center;
-  padding-top: 15px;
+  padding: 20px 0px;
 }
 
 .agreementText {
@@ -114,7 +114,20 @@
   padding-left: 10px;
 }
 
-.button {
+.buttonActive {
+  outline: none;
+  border: none;
+  background-color: #002373;
+  color: #f7f7fc;
+  font-size: 16px;
+  width: 100%;
+  height: 50px;
+  border-radius: 15px;
+  font-family: var(--kanyon-bold);
+  cursor: pointer;
+}
+
+.buttonInActive {
   outline: none;
   border: none;
   background-color: #9ea3ac;
@@ -122,7 +135,6 @@
   font-size: 16px;
   width: 100%;
   height: 50px;
-  border-radius: 10px;
+  border-radius: 15px;
   font-family: var(--kanyon-bold);
-  margin-top: 15px;
 }

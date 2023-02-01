@@ -38,6 +38,13 @@ export default function LoanSection() {
     setVariantList([])
   }
 
+  const parseProductUrl = (variant: string, type: string) => {
+    const variantParsed: string = variant?.split(' ')[0].toLowerCase()
+    const typeParsed: string = type.replace(/ /g, '-').toLowerCase()
+    const url: string = `https://www.seva.id/mobil-baru/${variantParsed}/${typeParsed}/kredit`
+    return url
+  }
+
   const getVariantProduct = async (value: string) => {
     try {
       const params: string = `?query=${value}&city=jakarta&cityId=118`
@@ -80,10 +87,14 @@ export default function LoanSection() {
         {isVarianShow && (
           <div className={styles.wrapperListVariant}>
             {variantList.map((item: Variant) => (
-              <button key={item.id} className={styles.list}>
+              <a
+                href={parseProductUrl(item.variant_title, item.model)}
+                key={item.id}
+                className={styles.list}
+              >
                 <p className={styles.titleText}>{item.variant_title}</p>
                 <p className={styles.priceText}>{item.price_formatted_value}</p>
-              </button>
+              </a>
             ))}
           </div>
         )}

@@ -7,7 +7,11 @@ import { Navigation } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 
-export default function CarofTheMonth({ data }: any) {
+interface Props {
+  data: any
+  openModalOffering: React.ButtonHTMLAttributes<HTMLButtonElement>['onClick']
+}
+export default function CarofTheMonth({ data, openModalOffering }: Props) {
   const [activeType, setActiveType] = useState<string>('Toyota')
   const [info, setInfo] = useState(data[0])
 
@@ -34,6 +38,7 @@ export default function CarofTheMonth({ data }: any) {
       <h1 className={styles.headerText}>SEVA Car of The Month</h1>
       <div className={styles.bundle}>
         <div className={styles.content}>
+          <div className={styles.bgContent}></div>
           <Image
             src={info.model.data.image}
             width={480}
@@ -42,7 +47,6 @@ export default function CarofTheMonth({ data }: any) {
             alt="seva-car-of-the-month"
             className={styles.image}
           />
-
           <div className={styles.categoryMobile}>
             <Swiper
               modules={[Navigation]}
@@ -102,7 +106,12 @@ export default function CarofTheMonth({ data }: any) {
             <a href={info.model.url} className={styles.buttonDetail}>
               LIHAT RINCIAN
             </a>
-            <button className={styles.buttonOffering}>MINTA PENAWARAN</button>
+            <button
+              onClick={openModalOffering}
+              className={styles.buttonOffering}
+            >
+              MINTA PENAWARAN
+            </button>
           </div>
         </div>
       </div>

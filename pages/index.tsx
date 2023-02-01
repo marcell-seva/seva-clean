@@ -21,12 +21,12 @@ import {
   CarofTheMonth,
   Offering,
   Video,
+  Simple,
 } from '../components/molecules'
 import { api } from '../services/api'
 import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 const Banner = dynamic(() => import('../components/molecules/banner'))
-
 export default function Home({
   dataBanner,
   dataMenu,
@@ -39,14 +39,7 @@ export default function Home({
   dataTypeCar,
   dataCarofTheMonth,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [isModalOTROpen, setIsModalOTROpen] = useState<boolean>(false)
-  const [isModalLocationOpen, setIsModalLocationOpen] = useState<boolean>(true)
-  const [isModalVideoShow, setIsModalVideoShow] = useState<boolean>(false)
-  const [isSearchBarMobileShow, setIsSearchBarMobileShow] =
-    useState<boolean>(false)
-  const [isLocationSelectorShow, setIsLocationSelectorShow] =
-    useState<boolean>(false)
-
+  const [modalType, setModalType] = useState<string>('modalOTRPrimary')
   return (
     <>
       <Head>
@@ -58,48 +51,55 @@ export default function Home({
       <main className={styles.main}>
         <Header
           data={dataMenu}
-          onOpenModalOTR={() => setIsModalOTROpen(true)}
-          onSearchClick={() => setIsSearchBarMobileShow(true)}
+          onOpenModalOTR={() => setModalType('modalOTRSecondary')}
+          onSearchClick={() => setModalType('modalSearch')}
         />
-        <Floating onClickImage={() => setIsModalVideoShow(true)} />
-        <LocationList onClick={() => setIsLocationSelectorShow(true)} />
+        <Floating onClickImage={() => setModalType('modalVideo')} />
+        <LocationList onClick={() => setModalType('modalLocationList')} />
         <div className={styles.wrapper}>
           <Banner data={dataBanner} />
-          <LoanSection />
-          <HowToUse data={dataUsage} />
           <CarList data={dataRecToyota} />
+          <HowToUse data={dataUsage} />
+          <LoanSection />
           <Recommendation data={dataRecMVP} categoryCar={dataTypeCar} />
           <Refinancing />
-          <CarofTheMonth data={dataCarofTheMonth} />
+          <CarofTheMonth
+            data={dataCarofTheMonth}
+            openModalOffering={() => setModalType('modalOffering')}
+          />
           <Testimony data={dataTestimony} />
           <Article data={dataMainArticle} />
         </div>
-        {/* <Offering /> */}
-        {isModalOTROpen && (
-          <OTRSecondary
-            data={dataCities}
-            onClick={() => setIsModalOTROpen(!isModalOTROpen)}
-          />
+        {modalType === 'modalOTRSecondary' && (
+          <OTRSecondary data={dataCities} onClick={() => setModalType('')} />
         )}
-        {isModalLocationOpen && (
-          <OTRPrimary
-            data={dataCities}
-            onClick={() => setIsModalLocationOpen(!isModalLocationOpen)}
-          />
+        {modalType === 'modalOTRPrimary' && (
+          <OTRPrimary data={dataCities} onClick={() => setModalType('')} />
         )}
-        {isSearchBarMobileShow && (
-          <Search onSearchMobileClose={() => setIsSearchBarMobileShow(false)} />
+        {modalType === 'modalSearch' && (
+          <Search onSearchMobileClose={() => setModalType('')} />
         )}
-        {isLocationSelectorShow && (
+        {modalType === 'modalLocationList' && (
           <LocationSelector
             data={dataCities}
-            onCloseSelector={() => setIsLocationSelectorShow(false)}
+            onCloseSelector={() => setModalType('')}
           />
         )}
-        {isModalVideoShow && (
-          <Video onClick={() => setIsModalVideoShow(false)} />
+        {modalType === 'modalVideo' && (
+          <Video onClick={() => setModalType('')} />
         )}
-        <ContactUs />
+        {modalType === 'modalThankyou' && (
+          <Simple onCloseModal={() => setModalType('')} />
+        )}
+        {modalType === 'modalOffering' && (
+          <Offering
+            openThankyouModal={() => {
+              setModalType('modalThankyou')
+            }}
+            closeOfferingModal={() => setModalType('')}
+          />
+        )}
+        <ContactUs openThankyouModal={() => setModalType('modalThankyou')} />
         <Footer />
       </main>
     </>

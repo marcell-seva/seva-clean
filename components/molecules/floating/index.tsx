@@ -13,7 +13,7 @@ export default function Floating({ onClickImage }: any) {
         src={selectorImage}
         width={30}
         height={80}
-        alt="seva-content"
+        alt="seva-how-to-use"
         unoptimized
         className={styles.selectorImage}
       />

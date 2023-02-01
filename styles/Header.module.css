@@ -131,10 +131,11 @@
 }
 
 .listSubMainText {
+  width: 100%;
   font-size: 14px;
   color: #000000;
   font-family: var(--kanyon);
-  padding: 0px 10px;
+  padding: 10px;
 }
 
 .bundleIconRight {
@@ -148,6 +149,7 @@
   justify-content: space-between;
   align-items: center;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .listMain:hover .wrapperListMenu {
@@ -202,6 +204,7 @@
 .modalOTR {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .selectLocation {
@@ -366,25 +369,26 @@
   max-height: 200px;
   background-color: #ffffff;
   position: absolute;
-  border-radius: 5px;
+  border-radius: 10px;
+  box-shadow: rgb(3 24 56 / 10%) 0px 1px 16px;
   top: 90%;
-  left: 22%;
+  left: 23%;
   z-index: 4;
   padding: 5px;
   overflow-x: auto;
 }
 
 .list {
-  width: 100%;
+  display: flex;
   font-size: 16px;
   padding: 20px;
-  border: none;
-  text-align: start;
-  background-color: #ffffff;
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
 }
 
 .list:hover {
-  background-color: cornflowerblue;
+  background-color: #cbe5f4;
   border-radius: 3px;
 }
 
@@ -442,5 +446,6 @@
     border-radius: 8px;
     width: 200px;
     height: 40px;
+    cursor: pointer;
   }
 }

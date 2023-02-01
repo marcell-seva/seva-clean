@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from '../../../styles/Recommendation.module.css'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Lazy } from 'swiper'
+import { Navigation } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import { Card, IconBackButton, IconNextButton, TypeCar } from '../../atoms'

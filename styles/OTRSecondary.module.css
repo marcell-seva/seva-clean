@@ -27,6 +27,7 @@
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  cursor: pointer;
 }
 
 .info {
@@ -84,6 +85,7 @@
   display: flex;
   text-align: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .cityList {
@@ -113,6 +115,6 @@
 }
 
 .buttonCityList:hover {
-  background-color: cornflowerblue;
+  background-color: #cbe5f4;
   border-radius: 10px;
 }

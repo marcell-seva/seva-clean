@@ -52,7 +52,7 @@ export default function Article({ data }: any) {
   }
 
   const ItemMobile = ({ item }: any) => (
-    <div className={styles.itemArticleMobile}>
+    <a href={item.url} className={styles.itemArticleMobile}>
       <Image
         src={item.featured_image}
         alt="article-sub-main-image"
@@ -67,11 +67,11 @@ export default function Article({ data }: any) {
         <h4 className={styles.titleText}>{item.title}</h4>
         <p className={styles.dateText}>{item.publish_date}</p>
       </div>
-    </div>
+    </a>
   )
 
   const ItemDekstop = ({ item }: any) => (
-    <div className={styles.itemArticleDekstop}>
+    <a href={item.url} className={styles.itemArticleDekstop}>
       <Image
         src={item.featured_image}
         alt="article-sub-main-image"
@@ -84,11 +84,11 @@ export default function Article({ data }: any) {
       </div>
       <p className={styles.dateText}>{item.publish_date}</p>
       <p className={styles.descSubText}>{item.title}</p>
-    </div>
+    </a>
   )
 
   const MainArticleMobile = ({ item }: any) => (
-    <div className={styles.wrapperMainInfoMobile}>
+    <a href={item.url} className={styles.wrapperMainInfoMobile}>
       <Image
         src={item.featured_image}
         alt="article-main-image"
@@ -103,11 +103,11 @@ export default function Article({ data }: any) {
         <h4 className={styles.titleText}>{item.title}</h4>
         <p className={styles.dateText}>{item.publish_date}</p>
       </div>
-    </div>
+    </a>
   )
 
   const MainArticleDesktop = ({ item }: any) => (
-    <div className={styles.wrapperMainInfoDekstop}>
+    <a href={item.url} className={styles.wrapperMainInfoDekstop}>
       <Image
         src={item.featured_image}
         alt="article-main-image"
@@ -127,7 +127,7 @@ export default function Article({ data }: any) {
         <p className={styles.descText}>{item.excerpt}</p>
         <button className={styles.wrapperButton}>Baca Selengkapnya</button>
       </div>
-    </div>
+    </a>
   )
 
   const Category = ({ name, id, isActive }: CategoryProps) => (

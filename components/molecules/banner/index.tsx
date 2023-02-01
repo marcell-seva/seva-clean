@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination, Autoplay, Lazy } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/lazy'
@@ -8,11 +6,14 @@ import styles from '../../../styles/Banner.module.css'
 import Image from 'next/image'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
 import Script from 'next/script'
+import { IconChevronDown } from '../../atoms'
 export default function Banner({ data }: any) {
-  const [form, setForm] = useState<any>({})
+  const [form, setForm] = useState<any>({
+    tenor: '5',
+  })
   const [phone, setPhone] = useState()
   const [selectorActive, setSelectorActive] = useState<string>('')
-
+  const [isDetailShow, setIsDetailShow] = useState<boolean>(false)
   const selectorData = {
     dp: ['Rp 30 jt', 'Rp 40 jt', , 'Rp 50 jt', 'Rp 75 jt', 'Rp 100 jt'],
     income: [
@@ -83,14 +84,12 @@ export default function Banner({ data }: any) {
     console.log('phone', form)
   }
 
-  const ButtonTenor = ({ termin }: any) => (
+  const ButtonTenor = ({ termin, isActive }: any) => (
     <button
       onClick={() => {
         setForm((prevState: any) => ({ ...prevState, tenor: termin }))
       }}
-      className={
-        form.tenor === termin ? styles.tenorActive : styles.tenorInActive
-      }
+      className={isActive ? styles.tenorActive : styles.tenorInActive}
     >
       {termin}
     </button>
@@ -118,11 +117,11 @@ export default function Banner({ data }: any) {
         <div className={styles.wrapperRight}>
           <h6 className={styles.desc}>Pilih tahun tenor</h6>
           <div className={styles.wrapperRow}>
-            <ButtonTenor termin="1" />
-            <ButtonTenor termin="2" />
-            <ButtonTenor termin="3" />
-            <ButtonTenor termin="4" />
-            <ButtonTenor termin="5" />
+            <ButtonTenor isActive={form.tenor === '1'} termin="1" />
+            <ButtonTenor isActive={form.tenor === '2'} termin="2" />
+            <ButtonTenor isActive={form.tenor === '3'} termin="3" />
+            <ButtonTenor isActive={form.tenor === '4'} termin="4" />
+            <ButtonTenor isActive={form.tenor === '5'} termin="5" />
           </div>
         </div>
       </div>
@@ -150,31 +149,41 @@ export default function Banner({ data }: any) {
           onChange={onChangeDataMobile}
         ></input>
       </div>
-      <label className={styles.advanceSearch}>Advanced Search</label>
-      <div className={styles.wrapperRow}>
-        <div className={styles.wrapperLeft}>
-          <p className={styles.desc}>Kisaran pendapatan</p>
-          <SelectorList
-            indexKey="income"
-            placeholder="< 2 juta/bulan"
-            onClick={() => handleClickDP('income')}
-          />
-          {selectorActive === 'income' && (
-            <DetailList indexKey="income" data={selectorData.income} />
-          )}
+      <p
+        className={styles.advanceSearch}
+        onClick={() => setIsDetailShow(!isDetailShow)}
+      >
+        Advanced search
+        <span className={styles.iconDropDown}>
+          <IconChevronDown width={10} height={10} color="#246ed4" />
+        </span>
+      </p>
+      {isDetailShow && (
+        <div className={styles.wrapperRow}>
+          <div className={styles.wrapperLeft}>
+            <p className={styles.desc}>Kisaran pendapatan</p>
+            <SelectorList
+              indexKey="income"
+              placeholder="< 2 juta/bulan"
+              onClick={() => handleClickDP('income')}
+            />
+            {selectorActive === 'income' && (
+              <DetailList indexKey="income" data={selectorData.income} />
+            )}
+          </div>
+          <div className={styles.wrapperRight}>
+            <p className={styles.desc}>Rentang Usia</p>
+            <SelectorList
+              indexKey="age"
+              placeholder="18-27"
+              onClick={() => handleClickDP('age')}
+            />
+            {selectorActive === 'age' && (
+              <DetailList indexKey="age" data={selectorData.age} />
+            )}
+          </div>
         </div>
-        <div className={styles.wrapperRight}>
-          <p className={styles.desc}>Rentang Usia</p>
-          <SelectorList
-            indexKey="age"
-            placeholder="18-27"
-            onClick={() => handleClickDP('age')}
-          />
-          {selectorActive === 'age' && (
-            <DetailList indexKey="age" data={selectorData.age} />
-          )}
-        </div>
-      </div>
+      )}
       <button className={styles.button} onClick={() => sendRequest()}>
         Temukan Mobilku
       </button>
@@ -193,7 +202,11 @@ export default function Banner({ data }: any) {
             {data.map((item: any, key: number) => {
               if (key === 0) {
                 return (
-                  <div className="swiper-slide" key={key}>
+                  <a
+                    href={item.attributes.url}
+                    className="swiper-slide"
+                    key={key}
+                  >
                     <Image
                       src={
                         apiBanner + item.attributes.mobile.data.attributes.url
@@ -205,11 +218,15 @@ export default function Banner({ data }: any) {
                       sizes="(max-width: 1024px) 54vw, 92.4vw"
                       className={`swiper-lazy ${styles.banner}`}
                     />
-                  </div>
+                  </a>
                 )
               } else {
                 return (
-                  <div className="swiper-slide" key={key}>
+                  <a
+                    href={item.attributes.url}
+                    className="swiper-slide"
+                    key={key}
+                  >
                     <Image
                       src={
                         apiBanner + item.attributes.mobile.data.attributes.url
@@ -220,18 +237,19 @@ export default function Banner({ data }: any) {
                       sizes="(max-width: 1024px) 54vw, 92.4vw"
                       className={`swiper-lazy ${styles.banner}`}
                     />
-                  </div>
+                  </a>
                 )
               }
             })}
           </div>
+          <div className={`swiper-pagination ${styles.paginationBullet}`}></div>
         </div>
       </div>
       <div className={styles.wrapperDesktop}>
         <div className="swiper mySwiper">
           <div className="swiper-wrapper">
             {data.map((item: any, key: number) => (
-              <div className="swiper-slide" key={key}>
+              <a href={item.attributes.url} className="swiper-slide" key={key}>
                 <Image
                   src={apiBanner + item.attributes.desktop.data.attributes.url}
                   width={1040}
@@ -240,9 +258,10 @@ export default function Banner({ data }: any) {
                   sizes="(max-width: 1024px) 54vw, 92.4vw"
                   className={`lazy-loader swiper-lazy ${styles.banner}`}
                 />
-              </div>
+              </a>
             ))}
           </div>
+          <div className="swiper-pagination"></div>
         </div>
       </div>
     </div>

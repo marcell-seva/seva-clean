@@ -1,9 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../../../styles/ContactUs.module.css'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
 import Image from 'next/image'
 
-export default function ContactUs() {
+interface Form {
+  name: string
+  phone: any
+  whatsapp: boolean
+}
+
+interface Props {
+  openThankyouModal: any
+}
+export default function ContactUs({ openThankyouModal }: Props) {
+  const [active, setActive] = useState<boolean>(false)
+  const [form, setForm] = useState<Form>({
+    name: '',
+    phone: 0,
+    whatsapp: false,
+  })
+
+  const handleChange = (indexKey: string, payload: string | boolean) => {
+    setForm((prevState: any) => ({ ...prevState, [indexKey]: payload }))
+  }
+
+  const sendForm = () => {
+    openThankyouModal()
+  }
+
+  useEffect(() => {
+    setActive(form.name !== '' && form.phone.length > 3)
+  }, [form])
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
@@ -17,6 +45,7 @@ export default function ContactUs() {
               type="text"
               className={styles.input}
               placeholder="Nama Lengkap"
+              onChange={(e) => handleChange('name', e.target.value)}
             ></input>
           </div>
           <div className={styles.wrapperInputPhone}>
@@ -31,21 +60,39 @@ export default function ContactUs() {
               <p className={styles.separator}>|</p>
             </div>
             <input
-              type="text"
-              className={styles.input}
-              placeholder="Contoh : 0895401011469"
+              className={`inputNumber ${styles.input}`}
+              placeholder="Contoh : 81212345678"
+              type="number"
+              onChange={(e) => handleChange('phone', e.target.value)}
             />
           </div>
           <label className={styles.agreementMobile}>
-            <input type="checkbox" name="checkbox" />
+            <input
+              type="checkbox"
+              name="checkbox"
+              checked={form.whatsapp}
+              onChange={() => handleChange('whatsapp', !form.whatsapp)}
+            />
             <p className={styles.agreementText}>
               Saya memilih untuk dihubungi via WhatsApp
             </p>
           </label>
-          <button className={styles.button}>Kirim Rincian</button>
+          <button
+            className={active ? styles.buttonActive : styles.buttonInActive}
+            onClick={() => {
+              active && sendForm()
+            }}
+          >
+            Kirim Rincian
+          </button>
         </div>
         <label className={styles.agreementDesktop}>
-          <input type="checkbox" name="checkbox" />
+          <input
+            type="checkbox"
+            name="checkbox"
+            checked={form.whatsapp}
+            onChange={() => handleChange('whatsapp', !form.whatsapp)}
+          />
           <p className={styles.agreementText}>
             Saya memilih untuk dihubungi via WhatsApp
           </p>

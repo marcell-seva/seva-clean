@@ -46,6 +46,7 @@
   font-family: var(--kanyon);
   font-size: 14px;
   line-height: 24px;
+  padding-left: 5px;
   outline: none;
   border: none;
 }
@@ -68,7 +69,7 @@
   border: none;
 }
 
-.button {
+.buttonInActive {
   background-color: #9ea3ac;
   border-radius: 15px;
   border: 0;
@@ -77,6 +78,18 @@
   color: white;
   font-size: 16px;
   font-family: var(--kanyon-bold);
+}
+
+.buttonActive {
+  background-color: #002373;
+  border-radius: 15px;
+  border: 0;
+  margin-top: 15px;
+  height: 50px;
+  color: white;
+  font-size: 16px;
+  font-family: var(--kanyon-bold);
+  cursor: pointer;
 }
 
 .phoneDetail {
@@ -149,7 +162,13 @@
     width: 70%;
   }
 
-  .button {
+  .buttonActive {
+    margin-top: 0px;
+    margin-left: 20px;
+    width: 500px;
+  }
+
+  .buttonInActive {
     margin-top: 0px;
     margin-left: 20px;
     width: 500px;

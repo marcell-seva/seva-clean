@@ -1,12 +1,12 @@
 .container {
   position: relative;
-  background-color: #ffffff;
-  height: 580px;
+  height: 500px;
 }
 
 .banner {
   width: 100%;
   height: 360px;
+  cursor: pointer;
 }
 
 .form {
@@ -65,10 +65,12 @@
   display: flex;
   flex-direction: row;
 }
+
 .wrapperLeft {
   width: 100%;
   position: relative;
 }
+
 .wrapperRight {
   width: 100%;
   position: relative;
@@ -77,8 +79,8 @@
 
 .title {
   font-size: 14px;
+  color: #404040;
   font-family: var(--kanyon-bold);
-  margin-bottom: 12px;
 }
 
 .desc {
@@ -124,9 +126,16 @@
 
 .advanceSearch {
   font-size: 12px;
+  padding-top: 10px;
   color: #246ed4;
   text-decoration: underline;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.iconDropDown {
+  padding-left: 5px;
 }
 
 .button {
@@ -139,8 +148,8 @@
   border-radius: 5px;
   text-align: center;
   border: none;
+  margin-top: 10px;
   padding: 10px 0px;
-  margin-top: 16px;
 }
 
 .iconDropdown {
@@ -176,6 +185,7 @@
   color: grey;
   width: 90%;
   height: 100%;
+  padding: 5px;
   border: none;
 }
 
@@ -197,6 +207,7 @@
   bottom: 0;
   z-index: 2;
   margin: 20px;
+  box-shadow: rgb(3 24 56 / 10%) 0px 1px 16px;
 }
 
 .wrapperDesktop {
@@ -238,6 +249,10 @@
   font-weight: 400;
   text-align: center;
 }
+
+.paginationBullet {
+  margin-bottom: 160px !important;
+}
 @media only screen and (min-width: 1024px) {
   .container {
     position: relative;
@@ -262,5 +277,8 @@
 
   .wrapperMobile {
     display: none;
+  }
+  .wrapperForm {
+    top: 2%;
   }
 }

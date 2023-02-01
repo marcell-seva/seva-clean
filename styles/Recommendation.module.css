@@ -1,5 +1,5 @@
 .container {
-  margin: 40px 0px 15px 0px;
+  margin: 20px 0px 15px 0px;
 }
 
 .header {
@@ -11,7 +11,6 @@
 .headerText {
   font-size: 14px;
   font-family: var(--kanyon-bold);
-  margin: 10px 0px;
 }
 
 .redirectText {
@@ -47,6 +46,10 @@
 }
 
 @media only screen and (min-width: 1024px) {
+  .container {
+    margin: 40px 0px 15px 0px;
+  }
+
   .headerText {
     font-size: 24px;
   }

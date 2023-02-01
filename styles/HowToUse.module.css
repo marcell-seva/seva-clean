@@ -63,7 +63,7 @@
 }
 
 .foreGroundLayer {
-  padding: 10px 23px;
+  padding: 17px 23px;
   position: relative;
   z-index: 2;
 }
@@ -86,7 +86,7 @@
 
 .headerText {
   font-size: 14px;
-  color: #05256e;
+  color: #252525;
   font-family: var(--kanyon-bold);
 }
 

@@ -2,6 +2,10 @@ import React from 'react'
 import styles from '../../../styles/Footer.module.css'
 
 export default function Footer() {
+  const aboutUsUrl = 'https://ext.seva.id/tentang-kami'
+  const termUrl = 'https://ext.seva.id/syarat-ketentuan'
+  const privacyUrl = 'https://ext.seva.id/kebijakan-privasi'
+  const contactUsUrl = 'https://ext.seva.id/hubungi-kami'
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
@@ -13,16 +17,16 @@ export default function Footer() {
           </p>
         </div>
         <div className={styles.wrapperInfo}>
-          <a className={styles.redirectText} href="#" target="_self">
+          <a className={styles.redirectText} href={aboutUsUrl}>
             <p>Tentang kami</p>
           </a>
-          <a className={styles.redirectText} href="#" target="_self">
+          <a className={styles.redirectText} href={termUrl}>
             <p>Syarat & ketentuan</p>
           </a>
-          <a className={styles.redirectText} href="#" target="_self">
+          <a className={styles.redirectText} href={privacyUrl}>
             <p>Kebijakan privasi</p>
           </a>
-          <a className={styles.redirectText} href="#" target="_self">
+          <a className={styles.redirectText} href={contactUsUrl}>
             <p>Hubungi kami</p>
           </a>
         </div>

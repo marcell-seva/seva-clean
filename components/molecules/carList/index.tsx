@@ -12,7 +12,7 @@ import { useIsMobile } from '../../../utils'
 export default function CarList({ data }: any) {
   const brandList = ['Toyota', 'Daihatsu', 'Isuzu', 'BMW', 'Peugeot']
   const [carList, setCarList] = useState<any>(data)
-  const [typeActive, setTypeActive] = useState<any>('toyota')
+  const [typeActive, setTypeActive] = useState<any>('Toyota')
   const isMobile = useIsMobile()
 
   const ShadowSlide = () => <div className={styles.shadowSlider} />
@@ -81,29 +81,27 @@ export default function CarList({ data }: any) {
               </div>
             </>
           )}
-          <div className={styles.wrapperMobile}>
-            <Swiper
-              modules={[Navigation, Lazy]}
-              lazy={true}
-              navigation={{
-                nextEl: '.image-swiper-button-next-car-list',
-                prevEl: '.image-swiper-button-prev-car-list',
-                disabledClass: 'swiper-button-disabled',
-              }}
-              slidesPerGroup={3}
-              slidesPerView={4}
-              spaceBetween={isMobile ? 140 : 240}
-            >
-              {carList.slice(0, 5).map((item: any, key: number) => (
-                <SwiperSlide key={key}>
-                  <Card item={item} />
-                </SwiperSlide>
-              ))}
-              <SwiperSlide>
-                <ShadowSlide />
+          <Swiper
+            modules={[Navigation, Lazy]}
+            lazy={true}
+            navigation={{
+              nextEl: '.image-swiper-button-next-car-list',
+              prevEl: '.image-swiper-button-prev-car-list',
+              disabledClass: 'swiper-button-disabled',
+            }}
+            slidesPerGroup={3}
+            slidesPerView={4}
+            spaceBetween={isMobile ? 140 : 240}
+          >
+            {carList.slice(0, 5).map((item: any, key: number) => (
+              <SwiperSlide key={key}>
+                <Card item={item} />
               </SwiperSlide>
-            </Swiper>
-          </div>
+            ))}
+            <SwiperSlide>
+              <ShadowSlide />
+            </SwiperSlide>
+          </Swiper>
         </div>
       </div>
     </div>

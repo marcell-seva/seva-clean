@@ -18,6 +18,7 @@ import Refinancing from './refinancing'
 import CarofTheMonth from './carofTheMonth'
 import Offering from './modal/offering'
 import Video from './modal/video'
+import Simple from './modal/simple'
 
 export {
   Header,
@@ -40,4 +41,5 @@ export {
   CarofTheMonth,
   Offering,
   Video,
+  Simple,
 }
