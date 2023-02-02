@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
+import { isVariableDeclarationList } from 'typescript'
 import styles from '../../../styles/atoms/Card.module.css'
 
 export default function Card({ item }: any) {
@@ -48,7 +49,10 @@ export default function Card({ item }: any) {
           <div>
             <p className={styles.subTitleText}>Cicilan mulai dari </p>
             <p className={styles.price}>
-              Rp {getNumber(item.highestAssetPrice)}
+              Rp{' '}
+              {getNumber(
+                item.variants[item.variants.length - 1].monthlyInstallment,
+              )}
             </p>
           </div>
         </div>
