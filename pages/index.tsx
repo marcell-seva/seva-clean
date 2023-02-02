@@ -26,6 +26,7 @@ import {
 } from '../components/molecules'
 import { api } from '../services/api'
 import { useEffect, useState } from 'react'
+import TagManager from 'react-gtm-module'
 export default function Home({
   dataBanner,
   dataMenu,
@@ -40,6 +41,7 @@ export default function Home({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [modalType, setModalType] = useState<string>('')
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+
   useEffect(() => {
     const dataLocalUser = window.localStorage.getItem('seva-cust')
     const userData = dataLocalUser !== null ? JSON.parse(dataLocalUser) : null

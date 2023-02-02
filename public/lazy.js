@@ -6,7 +6,7 @@ const swiperOptions = {
   autoplay: {
     delay: 8000,
   },
-  cssMode: false,
+  cssMode: true,
   breakpoints: {
     1024: {
       cssMode: false,

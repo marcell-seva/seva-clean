@@ -3,7 +3,7 @@ const utils = {
   cities: 'https://api.seva.id/city/fe-selector',
   testimonials: 'https://api.seva.id/testimonials',
   usage: 'https://api.sslpots.com/api/how-to-use-seva-config?populate=*',
-  banner: 'https://api.sslpots.com/api/banners/?populate=*&sort[0]=age',
+  banner: 'https://api.seva.id/banner-image/homepage',
 }
 
 const product = {

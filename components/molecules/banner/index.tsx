@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../../../styles/Banner.module.css'
 import Image from 'next/image'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
 import Script from 'next/script'
 import { IconChevronDown } from '../../atoms'
+import TagManager from 'react-gtm-module'
+
 export default function Banner({ data }: any) {
   const [form, setForm] = useState<any>({
     tenor: '5',
@@ -22,7 +24,33 @@ export default function Banner({ data }: any) {
     ],
     age: ['18-27', '29-34', '25-50', '>51'],
   }
-  const apiBanner = 'https://api.sslpots.com'
+
+  useEffect(() => {
+    if (data.length > 0) {
+      data.map((item: any) => pushDataLayerInit(item))
+    }
+  }, [])
+
+  const pushDataLayerInit = (payload: any): void => {
+    TagManager.dataLayer({
+      dataLayer: {
+        ecommerce: {
+          promoView: {
+            promotions: [
+              {
+                name: payload.name,
+                creative: payload.creativeContext,
+                position: payload.slot,
+              },
+            ],
+          },
+        },
+        eventCategory: 'Ecommerce',
+        eventAction: 'Promotion View - Control',
+        eventLable: 'Homebanner',
+      },
+    })
+  }
 
   const SelectorList = ({ placeholder, onClick, indexKey }: any) => (
     <button className={styles.selector} onClick={onClick}>
@@ -73,12 +101,45 @@ export default function Banner({ data }: any) {
     setPhone(payload)
   }
 
+  const pushDataLayerOnClick = () => {
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'interaction',
+        eventCategory: 'Leads Generator',
+        eventAction: 'Homepage - Search Widget',
+        eventLabel: 'Temukan Mobilku',
+      },
+    })
+  }
+
+  const pushDataLayerWidgetOnClick = (index: number) => {
+    TagManager.dataLayer({
+      dataLayer: {
+        ecommerce: {
+          promoClick: {
+            promotions: [
+              {
+                name: data[index].name,
+                creative: data[index].creativeContext,
+                position: data[index].slot,
+              },
+            ],
+          },
+        },
+        eventCategory: 'Ecommerce',
+        eventAction: 'PromotionClick - Control',
+        eventLabel: 'HomepagePromoClick',
+      },
+    })
+  }
+
   const sendRequest = () => {
     setForm((prevState: any) => ({
       ...prevState,
       phone: phone,
     }))
     console.log('phone', form)
+    pushDataLayerOnClick()
   }
 
   const ButtonTenor = ({ termin, isActive }: any) => (
@@ -199,15 +260,9 @@ export default function Banner({ data }: any) {
             {data.map((item: any, key: number) => {
               if (key === 0) {
                 return (
-                  <a
-                    href={item.attributes.url}
-                    className="swiper-slide"
-                    key={key}
-                  >
+                  <a href={item.url} className="swiper-slide" key={key}>
                     <Image
-                      src={
-                        apiBanner + item.attributes.mobile.data.attributes.url
-                      }
+                      src={item.attribute.web_mobile}
                       width={480}
                       height={360}
                       priority
@@ -219,15 +274,9 @@ export default function Banner({ data }: any) {
                 )
               } else {
                 return (
-                  <a
-                    href={item.attributes.url}
-                    className="swiper-slide"
-                    key={key}
-                  >
+                  <a href={item.url} className="swiper-slide" key={key}>
                     <Image
-                      src={
-                        apiBanner + item.attributes.mobile.data.attributes.url
-                      }
+                      src={item.attribute.web_mobile}
                       width={480}
                       height={360}
                       alt="seva-banner"
@@ -246,9 +295,14 @@ export default function Banner({ data }: any) {
         <div className="swiper mySwiper">
           <div className="swiper-wrapper">
             {data.map((item: any, key: number) => (
-              <a href={item.attributes.url} className="swiper-slide" key={key}>
+              <a
+                href={item.url}
+                className="swiper-slide"
+                key={key}
+                onClick={() => pushDataLayerWidgetOnClick(key)}
+              >
                 <Image
-                  src={apiBanner + item.attributes.desktop.data.attributes.url}
+                  src={item.attribute.web_desktop}
                   width={1040}
                   height={416}
                   alt="seva-banner"
