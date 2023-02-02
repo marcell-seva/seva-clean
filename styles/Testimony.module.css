@@ -1,5 +1,5 @@
 .container {
-  margin: 40px 0px 15px 0px;
+  margin: 40px 16px;
 }
 
 .testimonyWrapper {
@@ -98,6 +98,10 @@
 }
 
 @media only screen and (min-width: 1024px) {
+  .container {
+    margin: 40px 0px;
+  }
+
   .headerText {
     font-size: 20px;
   }
@@ -113,7 +117,6 @@
   .testimonyWrapper {
     margin-top: 15px;
     position: relative;
-    margin: 0px 40px 0px 30px;
   }
 
   .image {

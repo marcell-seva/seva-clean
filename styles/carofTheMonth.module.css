@@ -40,7 +40,7 @@
 
 .headerText {
   font-size: 14px;
-  margin: 20px 0px;
+  margin: 15px 16px;
   font-family: var(--kanyon-bold);
 }
 
@@ -133,6 +133,7 @@
 
   .headerText {
     font-size: 20px;
+    margin: 15px 0px;
   }
 
   .bundle {

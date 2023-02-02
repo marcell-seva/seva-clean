@@ -28,7 +28,7 @@ export default function HowToUse({ data }: any) {
     </div>
   )
   return (
-    <div className={styles.stepWrapper}>
+    <div className={styles.wrapper}>
       <div className={styles.backgroundLayer}>
         <div className={styles.wrapperVectorBlue}>
           <Image

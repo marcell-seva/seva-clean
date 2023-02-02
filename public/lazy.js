@@ -39,7 +39,7 @@ const swiperOptionsProduct = {
     1024: {
       slidesPerGroup: 3,
       slidesPerView: 4,
-      spaceBetween: 240,
+      spaceBetween: 260,
       cssMode: false,
     },
     480: {

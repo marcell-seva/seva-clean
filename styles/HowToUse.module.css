@@ -1,7 +1,8 @@
-.stepWrapper {
+.wrapper {
   background-color: #f3f5f9;
   border-radius: 10px;
   position: relative;
+  margin: 40px 16px;
 }
 
 .backgroundLayer {
@@ -115,6 +116,10 @@
 }
 
 @media only screen and (min-width: 1024px) {
+  .wrapper {
+    margin: 40px 0px;
+  }
+
   .backgroundLayer {
     position: absolute;
   }

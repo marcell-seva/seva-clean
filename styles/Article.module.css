@@ -1,5 +1,5 @@
 .container {
-  margin: 40px 0px;
+  margin: 40px 16px;
 }
 
 .flexRowBetween {
@@ -140,6 +140,10 @@
 }
 
 @media only screen and (min-width: 1024px) {
+  .container {
+    margin: 40px 0px;
+  }
+
   .flexRow {
     display: flex;
     flex-direction: row;
@@ -212,7 +216,6 @@
     width: 100%;
     margin: 0px;
     position: relative;
-    padding-right: 75px;
   }
   .selectorActive {
     font-size: 14px;
@@ -249,7 +252,7 @@
     position: absolute;
     align-items: center;
     z-index: 3;
-    right: 0;
+    right: -35px;
     margin-top: -20px;
   }
 }
