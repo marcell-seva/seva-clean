@@ -1,6 +1,6 @@
 import Header from './header'
 import Footer from './footer'
-import HowToUse from './howToUse/howToUse'
+import HowToUse from './howToUse'
 import LoanSection from './loanSection'
 import ContactUs from './contactUs'
 import Banner from './banner'

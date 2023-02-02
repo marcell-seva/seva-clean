@@ -55,9 +55,9 @@ export default function LocationSelector({ data, onCloseSelector }: any) {
       {isLocationShow && (
         <div className={styles.wrapperCityList}>
           {city.map((item: any) => (
-            <button key={item.id} className={styles.buttonCityList}>
+            <div key={item.id} className={styles.buttonCityList}>
               {item.cityName}
-            </button>
+            </div>
           ))}
         </div>
       )}

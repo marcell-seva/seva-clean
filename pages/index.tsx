@@ -6,6 +6,7 @@ import {
   Header,
   HowToUse,
   LoanSection,
+  Banner,
   ContactUs,
   CarList,
   Testimony,
@@ -25,8 +26,6 @@ import {
 } from '../components/molecules'
 import { api } from '../services/api'
 import { useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
-const Banner = dynamic(() => import('../components/molecules/banner'))
 export default function Home({
   dataBanner,
   dataMenu,
@@ -47,6 +46,45 @@ export default function Home({
     const isLoggedIn = userData !== null
     setIsLoggedIn(isLoggedIn)
   }, [])
+
+  const renderModal = (key: string) => {
+    switch (key) {
+      case 'modalOTRSecondary':
+        return (
+          <OTRSecondary data={dataCities} onClick={() => setModalType('')} />
+        )
+      case 'modalOTRPrimary':
+        return <OTRPrimary data={dataCities} onClick={() => setModalType('')} />
+      case 'modalSearch':
+        return <Search onSearchMobileClose={() => setModalType('')} />
+      case 'modalLocationList':
+        return (
+          <LocationSelector
+            data={dataCities}
+            onCloseSelector={() => setModalType('')}
+          />
+        )
+      case 'modalVideo':
+        return <Video onClick={() => setModalType('')} />
+      case 'modalThankyou':
+        return <Simple onCloseModal={() => setModalType('')} />
+      case 'modalOffering':
+        return (
+          <Offering
+            openThankyouModal={() => {
+              setModalType('modalThankyou')
+            }}
+            closeOfferingModal={() => setModalType('')}
+          />
+        )
+      case 'modalSearch':
+        return <Search onSearchMobileClose={() => setModalType('')} />
+      case 'modalSearch':
+        return <Search onSearchMobileClose={() => setModalType('')} />
+      default:
+        return <></>
+    }
+  }
   return (
     <>
       <Head>
@@ -78,35 +116,7 @@ export default function Home({
           <Testimony data={dataTestimony} />
           <Article data={dataMainArticle} />
         </div>
-        {modalType === 'modalOTRSecondary' && (
-          <OTRSecondary data={dataCities} onClick={() => setModalType('')} />
-        )}
-        {modalType === 'modalOTRPrimary' && (
-          <OTRPrimary data={dataCities} onClick={() => setModalType('')} />
-        )}
-        {modalType === 'modalSearch' && (
-          <Search onSearchMobileClose={() => setModalType('')} />
-        )}
-        {modalType === 'modalLocationList' && (
-          <LocationSelector
-            data={dataCities}
-            onCloseSelector={() => setModalType('')}
-          />
-        )}
-        {modalType === 'modalVideo' && (
-          <Video onClick={() => setModalType('')} />
-        )}
-        {modalType === 'modalThankyou' && (
-          <Simple onCloseModal={() => setModalType('')} />
-        )}
-        {modalType === 'modalOffering' && (
-          <Offering
-            openThankyouModal={() => {
-              setModalType('modalThankyou')
-            }}
-            closeOfferingModal={() => setModalType('')}
-          />
-        )}
+        {renderModal(modalType)}
         <ContactUs openThankyouModal={() => setModalType('modalThankyou')} />
         <Footer />
       </main>

@@ -228,13 +228,15 @@ export default function Header({
         )}
       </div>
       {!isLoggedIn ? (
-        <a
-          href="https://www.seva.id/masuk-akun"
-          className={styles.initialAuthMain}
-        >
-          <IconUser width={15} height={15} color="#FFFFFF" />
-          <p className={styles.initialText}>Masuk / Daftar</p>
-        </a>
+        <div className={styles.wrapperInitialAuth}>
+          <a
+            href="https://www.seva.id/masuk-akun"
+            className={styles.initialAuthMain}
+          >
+            <IconUser width={15} height={15} color="#FFFFFF" />
+            <p className={styles.initialText}>Masuk / Daftar</p>
+          </a>
+        </div>
       ) : (
         <div className={styles.userInfo}>
           <div className={styles.wrapperUserName}>

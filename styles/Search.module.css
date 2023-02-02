@@ -51,8 +51,9 @@
 .list {
   display: flex;
   font-size: 16px;
-  padding: 16px;
-  border: none;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
   text-align: start;
   cursor: pointer;
   color: #404040;
@@ -61,7 +62,6 @@
 
 .list:hover {
   background-color: #cbe5f4;
-  border-radius: 3px;
 }
 
 .iconChevronLeft {

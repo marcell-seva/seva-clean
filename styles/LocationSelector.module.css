@@ -68,12 +68,13 @@
 }
 
 .buttonCityList {
-  width: 100%;
+  display: flex;
   outline: none;
   border: none;
   font-size: 16px;
   font-family: var(--kanyon);
-  padding: 20px;
+  padding: 10px;
+  margin: 10px;
   text-align: start;
   background-color: #fff;
 }

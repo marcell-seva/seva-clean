@@ -6,9 +6,11 @@ const swiperOptions = {
   autoplay: {
     delay: 8000,
   },
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
+  cssMode: false,
+  breakpoints: {
+    1024: {
+      cssMode: false,
+    },
   },
   on: {
     // LazyLoad swiper images after swiper initialization

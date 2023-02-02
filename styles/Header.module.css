@@ -373,9 +373,10 @@
   border-radius: 10px;
   box-shadow: rgb(3 24 56 / 10%) 0px 1px 16px;
   top: 90%;
-  left: 23%;
+  left: 21%;
   z-index: 4;
   padding: 5px;
+  margin: auto;
   overflow-x: auto;
 }
 
@@ -391,6 +392,10 @@
 .list:hover {
   background-color: #cbe5f4;
   border-radius: 3px;
+}
+
+.searchIcon {
+  cursor: pointer;
 }
 
 @media only screen and (min-width: 1024px) {
@@ -435,6 +440,12 @@
     border-radius: 15px;
     background-color: #ffffff;
     padding: 10px 20px;
+  }
+
+  .wrapperInitialAuth {
+    width: 250px;
+    display: flex;
+    justify-content: flex-end;
   }
 
   .initialAuthMain {
