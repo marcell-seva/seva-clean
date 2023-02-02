@@ -214,6 +214,7 @@ export default function Banner({ data }: any) {
                       width={480}
                       height={360}
                       priority
+                      unoptimized
                       alt="seva-banner"
                       sizes="(max-width: 1024px) 54vw, 92.4vw"
                       className={`swiper-lazy ${styles.banner}`}

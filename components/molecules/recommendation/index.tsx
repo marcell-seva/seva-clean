@@ -1,18 +1,33 @@
 import React, { useState } from 'react'
 import styles from '../../../styles/Recommendation.module.css'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation } from 'swiper'
-import 'swiper/css'
-import 'swiper/css/navigation'
-import { Card, IconBackButton, IconNextButton, TypeCar } from '../../atoms'
+import {
+  Card,
+  IconArrowRight,
+  IconBackButton,
+  IconNextButton,
+  TypeCar,
+} from '../../atoms'
 import { api } from '../../../services/api'
 import { useIsMobile } from '../../../utils'
-
+import Script from 'next/script'
+interface ShadowProps {
+  type: string
+}
 export default function Recommendation({ data, categoryCar }: any) {
   const isMobile = useIsMobile()
   const ShadowSlide = () => <div className={styles.shadowSlider}></div>
   const [typeCar, setTypeCar] = useState<string>('MPV')
   const [dataCar, setDataCar] = useState<any>(data)
+
+  const ShadowSlideWithContent = ({ type }: ShadowProps) => (
+    <a href="https://www.seva.id/mobil-baru" className={styles.shadowSlider}>
+      <IconArrowRight width={24} height={24} />
+      <div className={styles.wrapperLabel}>
+        <p className={styles.labelText}>Lihat semua</p>
+        <p className={styles.labelText}>mobil {type}</p>
+      </div>
+    </a>
+  )
 
   const getRecommendationCar = async (params: string) => {
     try {
@@ -25,6 +40,7 @@ export default function Recommendation({ data, categoryCar }: any) {
   }
   return (
     <div className={styles.container}>
+      <Script src="/lazy.js" />
       <div className={styles.header}>
         <h1 className={styles.headerText}>Tipe Mobil Baru</h1>
         <a
@@ -64,26 +80,22 @@ export default function Recommendation({ data, categoryCar }: any) {
             </div>
           </>
         )}
-        <Swiper
-          modules={[Navigation]}
-          navigation={{
-            nextEl: '.image-swiper-button-next-recommendation',
-            prevEl: '.image-swiper-button-prev-recommendation',
-            disabledClass: 'swiper-button-disabled',
-          }}
-          slidesPerView={4}
-          spaceBetween={isMobile ? 120 : 200}
-          slidesPerGroup={3}
-        >
-          {dataCar.slice(0, 5).map((item: any, key: number) => (
-            <SwiperSlide key={key}>
-              <Card item={item} />
-            </SwiperSlide>
-          ))}
-          <SwiperSlide>
-            <ShadowSlide />
-          </SwiperSlide>
-        </Swiper>
+
+        <div className="swiper mySwiperRecommendation">
+          <div className="swiper-wrapper">
+            {dataCar.slice(0, 5).map((item: any, key: number) => (
+              <div className="swiper-slide" key={key}>
+                <Card item={item} />
+              </div>
+            ))}
+            <div className="swiper-slide">
+              <ShadowSlideWithContent type={typeCar} />
+            </div>
+            <div className="swiper-slide">
+              <ShadowSlide />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

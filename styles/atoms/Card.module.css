@@ -3,7 +3,7 @@
   height: 210px;
   background-color: #ffffff;
   border-radius: 5px;
-  margin: 13px;
+  margin: 13px 0px;
   box-shadow: rgb(3 24 56 / 10%) 0px 1px 16px;
 }
 
@@ -44,6 +44,7 @@
   .card {
     width: 265px;
     height: 350px;
+    margin: 13px 0px;
   }
 
   .image {

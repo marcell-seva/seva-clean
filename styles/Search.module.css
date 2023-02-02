@@ -5,6 +5,7 @@
   left: 0;
   top: 0;
   width: 100%;
+  padding: 0px 20px;
   height: 100%;
   overflow: hidden;
 }
@@ -16,7 +17,7 @@
   border-radius: 15px;
   height: 46px;
   top: 20px;
-  width: 95%;
+  width: 100%;
   margin: auto;
   padding: 0px 20px;
   background-color: #ffffff;
@@ -43,8 +44,6 @@
   top: 80px;
   left: 20px;
   right: 20px;
-  padding: 5px;
-  margin: 10px;
   overflow-x: auto;
   box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
 }

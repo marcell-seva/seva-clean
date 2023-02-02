@@ -45,7 +45,7 @@ export default function LocationSelector({ data, onCloseSelector }: any) {
     <div className={styles.wrapper}>
       <div className={styles.header}>
         <p className={styles.headerText}>
-          Pilih kotamu{' '}
+          Pilih kotamu
           <span className={styles.optText}>(Pilih sesuai KTP)</span>
         </p>
         <div onClick={onCloseSelector}>

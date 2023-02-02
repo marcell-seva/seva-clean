@@ -43,8 +43,20 @@
 .shadowSlider {
   width: 140px;
   height: 210px;
+  display: flex;
+  padding: 0px 0px 10px 10px;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
+.wrapperLabel {
+  padding-top: 10px;
+}
+
+.labelText {
+  font-size: 10px;
+  color: #404040;
+}
 @media only screen and (min-width: 1024px) {
   .container {
     margin: 40px 0px 15px 0px;
@@ -59,7 +71,6 @@
   }
 
   .recommendationWrapper {
-    position: relative;
     margin: 0px 40px 0px 30px;
   }
   .navigationBackButton {
@@ -77,5 +88,10 @@
     right: 0;
     margin-top: 110px;
     margin-right: -40px;
+  }
+
+  .shadowSlider {
+    width: 265px;
+    height: 350px;
   }
 }

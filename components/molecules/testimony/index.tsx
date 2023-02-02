@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Lazy, Navigation } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
@@ -8,6 +6,8 @@ import styles from '../../../styles/Testimony.module.css'
 import Image from 'next/image'
 import { IconBackButton, IconNextButton, IconStar } from '../../atoms'
 import { timeSince, useIsMobile } from '../../../utils'
+import Script from 'next/script'
+
 export default function Testimony({ data }: any) {
   const isMobile = useIsMobile()
 
@@ -46,6 +46,7 @@ export default function Testimony({ data }: any) {
 
   return (
     <div className={styles.container}>
+      <Script src="/lazy.js" />
       <h1 className={styles.headerText}>Cerita Pengguna SEVA</h1>
       <div className={styles.testimonyWrapper}>
         {!isMobile && (
@@ -62,28 +63,19 @@ export default function Testimony({ data }: any) {
             </div>
           </>
         )}
-        <Swiper
-          navigation={{
-            nextEl: '.image-swiper-button-next-testimony',
-            prevEl: '.image-swiper-button-prev-testimony',
-            disabledClass: 'swiper-button-disabled',
-          }}
-          modules={[Navigation, Lazy]}
-          lazy={true}
-          slidesPerGroup={2}
-          slidesPerView={3}
-          spaceBetween={isMobile ? 250 : 120}
-          className={styles.swiperMobile}
-        >
-          {data.map((item: any, key: number) => (
-            <SwiperSlide key={key}>
-              <Slide item={item} />
-            </SwiperSlide>
-          ))}
-          <SwiperSlide>
-            <ShadowSlide />
-          </SwiperSlide>
-        </Swiper>
+
+        <div className="swiper mySwiperTestimony">
+          <div className="swiper-wrapper">
+            {data.map((item: any, key: number) => (
+              <div key={key} className="swiper-slide">
+                <Slide item={item} />
+              </div>
+            ))}
+            <div className="swiper-slide">
+              <ShadowSlide />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

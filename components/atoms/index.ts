@@ -16,6 +16,7 @@ import {
   IconStar,
   IconUser,
   IconBurgerMenu,
+  IconArrowRight,
 } from './icon'
 import Test from './test'
 import Brand from './brand'
@@ -38,6 +39,7 @@ export {
   IconStar,
   IconUser,
   IconBurgerMenu,
+  IconArrowRight,
   Test,
   Brand,
 }
