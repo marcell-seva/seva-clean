@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import 'swiper/css'
-import 'swiper/css/pagination'
-import 'swiper/css/navigation'
 import styles from '../../../styles/Testimony.module.css'
 import Image from 'next/image'
 import { IconBackButton, IconNextButton, IconStar } from '../../atoms'

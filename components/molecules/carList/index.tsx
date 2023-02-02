@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import 'swiper/css'
-import 'swiper/css/navigation'
 import styles from '../../../styles/CarList.module.css'
 import {
   Brand,
