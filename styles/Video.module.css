@@ -33,7 +33,8 @@
 }
 
 .buttonClose {
-  width: 100%;
+  width: auto;
+  margin: auto;
   display: flex;
   justify-content: center;
   outline: none;

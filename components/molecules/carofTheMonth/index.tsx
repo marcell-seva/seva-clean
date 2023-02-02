@@ -1,12 +1,8 @@
 import Image from 'next/image'
+import Script from 'next/script'
 import React, { useState } from 'react'
 import styles from '../../../styles/carofTheMonth.module.css'
-import { Swiper, SwiperSlide } from 'swiper/react'
-
-import { Navigation } from 'swiper'
-import 'swiper/css'
-import 'swiper/css/navigation'
-
+import { IconForwardRight } from '../../atoms'
 interface Props {
   data: any
   openModalOffering: React.ButtonHTMLAttributes<HTMLButtonElement>['onClick']
@@ -35,6 +31,7 @@ export default function CarofTheMonth({ data, openModalOffering }: Props) {
 
   return (
     <div className={styles.wrapper}>
+      <Script src="/lazy.js" />
       <h1 className={styles.headerText}>SEVA Car of The Month</h1>
       <div className={styles.bundle}>
         <div className={styles.content}>
@@ -48,34 +45,36 @@ export default function CarofTheMonth({ data, openModalOffering }: Props) {
             className={styles.image}
           />
           <div className={styles.categoryMobile}>
-            <Swiper
-              modules={[Navigation]}
-              navigation={{
-                nextEl: '.image-swiper-button-next-car-list',
-                prevEl: '.image-swiper-button-prev-car-list',
-                disabledClass: 'swiper-button-disabled',
-              }}
-              slidesPerGroup={2}
-              slidesPerView={3}
-              spaceBetween={1}
+            <div
+              className={`image-swiper-button-prev-car-month ${styles.navigationBackButton}`}
             >
-              {data.map((item: any) => {
-                return (
-                  <SwiperSlide key={item.id}>
-                    <button
-                      onClick={() => handleClick(item.brand)}
-                      className={
-                        activeType === item.brand
-                          ? styles.buttonCategoryActive
-                          : styles.buttonCategoryInActive
-                      }
-                    >
-                      {item.brand}
-                    </button>
-                  </SwiperSlide>
-                )
-              })}
-            </Swiper>
+              <IconForwardRight width={15} height={15} />
+            </div>
+            <div
+              className={`image-swiper-button-next-car-month ${styles.navigationNextButton}`}
+            >
+              <IconForwardRight width={15} height={15} />
+            </div>
+            <div className="swiper mySwiperCarofTheMonth">
+              <div className="swiper-wrapper">
+                {data.map((item: any) => {
+                  return (
+                    <div className="swiper-slide" key={item.id}>
+                      <button
+                        onClick={() => handleClick(item.brand)}
+                        className={
+                          activeType === item.brand
+                            ? styles.buttonCategoryActive
+                            : styles.buttonCategoryInActive
+                        }
+                      >
+                        {item.brand}
+                      </button>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
           </div>
           <div className={styles.categoryDesktop}>
             {data.map((item: any) => {

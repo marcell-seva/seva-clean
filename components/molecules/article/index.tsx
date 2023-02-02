@@ -8,7 +8,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import { IconBackButton, IconNextButton, Test } from '../../atoms'
 import { useIsMobile } from '../../../utils'
-
+import Script from 'next/script'
 interface Article {
   title: string
   category: string
@@ -42,6 +42,7 @@ export default function Article({ data }: any) {
     { title: 'Hobi & Komunitas', id: 993 },
   ]
 
+  const ShadowSlider = () => <div className={styles.shadowSlider}></div>
   const getArticleByCategory = async (payload: string) => {
     try {
       const res = await api.getSubArticle(payload)
@@ -145,6 +146,7 @@ export default function Article({ data }: any) {
 
   return (
     <div className={styles.container}>
+      <Script src="/lazy.js" />
       <div className={styles.flexRowBetween}>
         <h1 className={styles.headerText}>Baca Artikel Terkini</h1>
         <a
@@ -167,40 +169,44 @@ export default function Article({ data }: any) {
             {!isMobile && (
               <>
                 <div
-                  className={`image-swiper-button-prev-article-list ${styles.navigationBackButton}`}
+                  className={`image-swiper-button-prev-article ${styles.navigationBackButton}`}
                 >
                   <IconBackButton width={80} height={80} />
                 </div>
                 <div
-                  className={`image-swiper-button-next-article-list ${styles.navigationNextButton}`}
+                  className={`image-swiper-button-next-article ${styles.navigationNextButton}`}
                 >
                   <IconNextButton width={80} height={80} />
                 </div>
               </>
             )}
-            <Swiper
-              modules={[Navigation]}
-              navigation={{
-                nextEl: '.image-swiper-button-next-article-list',
-                prevEl: '.image-swiper-button-prev-article-list',
-                disabledClass: 'swiper-button-disabled',
-              }}
-              slidesPerGroup={3}
-              slidesPerView={4}
-              spaceBetween={10}
-            >
-              {categoryList.map((item: any) => (
-                <SwiperSlide key={item.id}>
-                  <Category
-                    name={item.title}
-                    isActive={categoryActive === item.title}
-                    id={item.id}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
+            <div className="swiper mySwiperArticle">
+              <div className="swiper-wrapper">
+                {categoryList.map((item: any) => (
+                  <div className={`swiper-slide ${styles.slide}`} key={item.id}>
+                    <Category
+                      name={item.title}
+                      isActive={categoryActive === item.title}
+                      id={item.id}
+                    />
+                  </div>
+                ))}
+                {!isMobile && (
+                  <>
+                    <div className={`swiper-slide ${styles.slide}`}>
+                      <ShadowSlider />
+                    </div>
+                    <div className={`swiper-slide ${styles.slide}`}>
+                      <ShadowSlider />
+                    </div>
+                    <div className={`swiper-slide ${styles.slide}`}>
+                      <ShadowSlider />
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
-
           <div className={styles.collectionArticle}>
             {subArticle.slice(0, 3).map((item: any, key: number) => (
               <ItemMobile key={key} item={item} />

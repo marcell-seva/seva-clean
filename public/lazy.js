@@ -105,6 +105,50 @@ const swiperOptionsRecommendation = {
   },
 }
 
+const swiperOptionsArticle = {
+  pagination: {
+    el: '.swiper-pagination',
+  },
+  navigation: {
+    nextEl: '.image-swiper-button-next-article',
+    prevEl: '.image-swiper-button-prev-article',
+  },
+  cssMode: true,
+  slidesPerGroup: 3,
+  slidesPerView: 4,
+  spaceBetween: 10,
+  breakpoints: {
+    1024: {
+      slidesPerGroup: 3,
+      slidesPerView: 4,
+      spaceBetween: 10,
+      cssMode: false,
+    },
+  },
+}
+
+const swiperOptionsCarofTheMonth = {
+  pagination: {
+    el: '.swiper-pagination',
+  },
+  navigation: {
+    nextEl: '.image-swiper-button-next-car-month',
+    prevEl: '.image-swiper-button-prev-car-month',
+  },
+  cssMode: true,
+  slidesPerGroup: 2,
+  slidesPerView: 3,
+  spaceBetween: 10,
+  breakpoints: {
+    1024: {
+      slidesPerGroup: 3,
+      slidesPerView: 4,
+      spaceBetween: 10,
+      cssMode: false,
+    },
+  },
+}
+
 // Initialize the first swiper right away
 const eagerSwiper = new Swiper('.mySwiper', swiperOptions)
 const eagerSwiperProduct = new Swiper('.mySwiperProduct', swiperOptionsProduct)
@@ -115,6 +159,11 @@ const eagerSwiperTestimony = new Swiper(
 const eagerSwiperRecommendation = new Swiper(
   '.mySwiperRecommendation',
   swiperOptionsRecommendation,
+)
+const eagerSwiperArticle = new Swiper('.mySwiperArticle', swiperOptionsArticle)
+const eagerSwiperCarofTheMonth = new Swiper(
+  '.mySwiperCarofTheMonth',
+  swiperOptionsCarofTheMonth,
 )
 
 new LazyLoad({

@@ -17,10 +17,11 @@ import {
   IconUser,
   IconBurgerMenu,
   IconArrowRight,
+  IconForwardRight,
 } from './icon'
 import Test from './test'
 import Brand from './brand'
-
+import Logo from './logo'
 export {
   Card,
   TypeCar,
@@ -42,4 +43,6 @@ export {
   IconArrowRight,
   Test,
   Brand,
+  Logo,
+  IconForwardRight,
 }

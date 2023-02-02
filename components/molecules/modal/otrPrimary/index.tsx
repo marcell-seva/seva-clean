@@ -47,8 +47,10 @@ export default function OTRPrimary({ data, onClick }: any) {
             className={styles.bgImageDekstop}
           />
           <div className={styles.info}>
-            <div className={styles.closeModal} onClick={onClick}>
-              <IconCross width={24} height={24} color="#FFFFFF" />
+            <div className={styles.closeModal}>
+              <div onClick={onClick}>
+                <IconCross width={24} height={24} color="#FFFFFF" />
+              </div>
             </div>
             <h1 className={styles.mobileHeader}>
               <pre className={styles.headerText}>Pilih kota dulu </pre>

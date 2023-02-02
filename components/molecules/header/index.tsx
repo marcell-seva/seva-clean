@@ -11,6 +11,7 @@ import {
   IconSearch,
   IconTriangleDown,
   IconUser,
+  Logo,
 } from '../../atoms'
 import sevaHeader from '../../../assets/images/logo/seva-header.svg'
 import { useIsMobile } from '../../../utils'
@@ -192,15 +193,10 @@ export default function Header({
     const lastName = name[1].slice(0, 1)
     return firstName + lastName
   }
+
   const TopBarDesktop = () => (
     <div className={styles.barDesktop}>
-      <Image
-        src={sevaHeader}
-        width={120}
-        height={75}
-        alt="seva-logo"
-        className={styles.logo}
-      />
+      <Logo />
       {isVariantShow && (
         <div className={styles.wrapperListVariant}>
           {variantList.map((item: Variant) => {

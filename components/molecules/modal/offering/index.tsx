@@ -39,8 +39,10 @@ export default function Offering({
     <div className={styles.modal}>
       <div className={styles.wrapper}>
         <div className={styles.content}>
-          <div className={styles.bundleIcon} onClick={closeOfferingModal}>
-            <IconCross width={24} height={24} />
+          <div className={styles.bundleIcon}>
+            <div className={styles.buttonClose} onClick={closeOfferingModal}>
+              <IconCross width={24} height={24} />
+            </div>
           </div>
           <h1 className={styles.headerText}>Punya Pertanyaan ?</h1>
           <p className={styles.descText}>

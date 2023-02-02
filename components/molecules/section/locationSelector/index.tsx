@@ -46,9 +46,9 @@ export default function LocationSelector({ data, onCloseSelector }: any) {
       <div className={styles.header}>
         <p className={styles.headerText}>
           Pilih kotamu
-          <span className={styles.optText}>(Pilih sesuai KTP)</span>
+          <span className={styles.optText}> (Pilih sesuai KTP)</span>
         </p>
-        <div onClick={onCloseSelector}>
+        <div onClick={onCloseSelector} className={styles.buttonClose}>
           <IconCross width={24} height={24} color="#002373" />
         </div>
       </div>

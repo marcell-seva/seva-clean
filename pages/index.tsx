@@ -39,7 +39,7 @@ export default function Home({
   dataTypeCar,
   dataCarofTheMonth,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [modalType, setModalType] = useState<string>('modalOTRPrimary')
+  const [modalType, setModalType] = useState<string>('')
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
   useEffect(() => {
     const dataLocalUser = window.localStorage.getItem('seva-cust')
