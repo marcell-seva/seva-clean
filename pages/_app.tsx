@@ -4,6 +4,9 @@ import type { AppProps } from 'next/app'
 import localFont from '@next/font/local'
 import TagManager from 'react-gtm-module'
 import { useEffect } from 'react'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 import Script from 'next/script'
 
 const kanyon = localFont({
