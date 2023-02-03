@@ -8,7 +8,7 @@ COPY package*.json ./
 RUN npm ci 
 
 COPY . .
-RUN npm run export
+RUN npm run build
 
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
