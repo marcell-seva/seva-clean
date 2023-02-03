@@ -1,0 +1,142 @@
+.modal {
+  position: fixed;
+  z-index: 5;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.wrapper {
+  position: absolute;
+  width: 90%;
+  max-width: 670px;
+  top: 50%;
+  left: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.bundleIcon {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.buttonClose {
+  cursor: pointer;
+}
+
+.headerText {
+  font-size: 20px;
+  font-family: var(--kanyon-bold);
+  text-align: center;
+}
+
+.descText {
+  font-size: 14px;
+  color: #52617a;
+  padding-top: 10px;
+  text-align: center;
+}
+
+.inputName {
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 15px;
+  font-size: var(--open-sans);
+  border: 0.3px solid #52617a;
+  display: flex;
+  width: 100%;
+  border-radius: 15px;
+  font-family: var(--kanyon);
+  font-size: 16px;
+  line-height: 24px;
+  outline: none;
+}
+
+.wrapperInputPhone {
+  margin-top: 15px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 0.3px solid #52617a;
+  background-color: #ffffff;
+  border-radius: 15px;
+}
+
+.inputPhone {
+  display: flex;
+  width: 100%;
+  background-color: #ffffff;
+  font-family: var(--kanyon);
+  font-size: 16px;
+  padding: 5px;
+  line-height: 24px;
+  outline: none;
+  border: none;
+}
+
+.phoneDetail {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.labelRegion {
+  font-size: 16px;
+  font-family: var(--kanyon-bold);
+  padding-left: 5px;
+}
+
+.separator {
+  margin-left: 5px;
+  color: #9ea3ac;
+}
+.agreement {
+  display: flex;
+  align-items: center;
+  padding: 20px 0px;
+}
+
+.agreementText {
+  font-size: 14px;
+  color: #52617a;
+  padding-left: 10px;
+}
+
+.buttonActive {
+  outline: none;
+  border: none;
+  background-color: #002373;
+  color: #f7f7fc;
+  font-size: 16px;
+  width: 100%;
+  height: 50px;
+  border-radius: 15px;
+  font-family: var(--kanyon-bold);
+  cursor: pointer;
+}
+
+.buttonInActive {
+  outline: none;
+  border: none;
+  background-color: #9ea3ac;
+  color: #f7f7fc;
+  font-size: 16px;
+  width: 100%;
+  height: 50px;
+  border-radius: 15px;
+  font-family: var(--kanyon-bold);
+}
