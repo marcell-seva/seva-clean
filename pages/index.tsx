@@ -26,7 +26,8 @@ import {
 } from '../components/molecules'
 import { api } from '../services/api'
 import { useEffect, useState } from 'react'
-import TagManager from 'react-gtm-module'
+import amplitude from 'amplitude-js'
+
 export default function Home({
   dataBanner,
   dataMenu,
@@ -48,6 +49,8 @@ export default function Home({
     const isLoggedIn = userData !== null
     setIsLoggedIn(isLoggedIn)
   }, [])
+
+  amplitude.getInstance().logEvent('cartButtonClicked')
 
   const renderModal = (key: string) => {
     switch (key) {

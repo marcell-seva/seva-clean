@@ -8,7 +8,9 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import Script from 'next/script'
+import { initAmplitude } from '../services/amplitude/'
 
+initAmplitude()
 const kanyon = localFont({
   src: '../public/Kanyon-Regular.otf',
   style: 'normal',
