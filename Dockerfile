@@ -5,7 +5,7 @@ LABEL org.opencontainers.image.authors="Samsul Ma'arif <samsul@dot-indonesia.com
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install 
+RUN npm ci 
 
 COPY . .
 RUN npm run export
