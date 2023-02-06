@@ -23,6 +23,7 @@ import {
   Offering,
   Video,
   Simple,
+  AnnouncementBox,
 } from '../components/molecules'
 import { api } from '../services/api'
 import { useEffect, useState } from 'react'
@@ -39,8 +40,11 @@ export default function Home({
   dataMainArticle,
   dataTypeCar,
   dataCarofTheMonth,
+  dataAnnouncementBox,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [modalType, setModalType] = useState<string>('')
+  const [isAnnouncementBoxShow, setIsAnnouncementBoxShow] =
+    useState<boolean>(true)
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
 
   useEffect(() => {
@@ -48,9 +52,8 @@ export default function Home({
     const userData = dataLocalUser !== null ? JSON.parse(dataLocalUser) : null
     const isLoggedIn = userData !== null
     setIsLoggedIn(isLoggedIn)
+    amplitude.getInstance().logEvent('WEB_LANDING_PAGE_VIEW')
   }, [])
-
-  amplitude.getInstance().logEvent('cartButtonClicked')
 
   const renderModal = (key: string) => {
     switch (key) {
@@ -107,6 +110,12 @@ export default function Home({
         />
         <Floating onClickImage={() => setModalType('modalVideo')} />
         <LocationList onClick={() => setModalType('modalLocationList')} />
+        {isAnnouncementBoxShow && (
+          <AnnouncementBox
+            data={dataAnnouncementBox}
+            onCloseButton={() => setIsAnnouncementBoxShow(false)}
+          />
+        )}
         <div className={styles.wrapper}>
           <Banner data={dataBanner} />
           <CarList data={dataRecToyota} />
@@ -147,6 +156,7 @@ export async function getServerSideProps({ req, res }: any) {
       mainArticleRes,
       typeCarRes,
       carofTheMonthRes,
+      annoucementBoxRes,
     ]: any = await Promise.all([
       api.getBanner(),
       api.getMenu(),
@@ -158,6 +168,7 @@ export async function getServerSideProps({ req, res }: any) {
       api.getMainArticle('65'),
       api.getTypeCar('?city=jakarta'),
       api.getCarofTheMonth(),
+      api.getAnnouncementBox(),
     ])
     const [
       dataBanner,
@@ -170,6 +181,7 @@ export async function getServerSideProps({ req, res }: any) {
       dataMainArticle,
       dataTypeCar,
       dataCarofTheMonth,
+      dataAnnouncementBox,
     ] = await Promise.all([
       bannerRes.data,
       menuRes.data,
@@ -181,6 +193,7 @@ export async function getServerSideProps({ req, res }: any) {
       mainArticleRes,
       typeCarRes,
       carofTheMonthRes.data,
+      annoucementBoxRes.data,
     ])
     return {
       props: {
@@ -194,6 +207,7 @@ export async function getServerSideProps({ req, res }: any) {
         dataMainArticle,
         dataTypeCar,
         dataCarofTheMonth,
+        dataAnnouncementBox,
       },
     }
   } catch (error) {

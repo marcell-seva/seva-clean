@@ -1,30 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styles from '../../../styles/Banner.module.css'
 import Image from 'next/image'
-import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
 import Script from 'next/script'
-import { IconChevronDown } from '../../atoms'
 import TagManager from 'react-gtm-module'
+import Widget from '../widget'
 
 export default function Banner({ data }: any) {
-  const [form, setForm] = useState<any>({
-    tenor: '5',
-  })
-  const [phone, setPhone] = useState()
-  const [selectorActive, setSelectorActive] = useState<string>('')
-  const [isDetailShow, setIsDetailShow] = useState<boolean>(false)
-  const selectorData = {
-    dp: ['Rp 30 jt', 'Rp 40 jt', , 'Rp 50 jt', 'Rp 75 jt', 'Rp 100 jt'],
-    income: [
-      '< 2 juta/bulan',
-      '2-4 juta/bulan',
-      '4-6 juta/bulan',
-      '6-8 juta/bulan',
-      '8-10 juta/bulan',
-    ],
-    age: ['18-27', '29-34', '25-50', '>51'],
-  }
-
   useEffect(() => {
     if (data.length > 0) {
       data.map((item: any) => pushDataLayerInit(item))
@@ -52,66 +33,6 @@ export default function Banner({ data }: any) {
     })
   }
 
-  const SelectorList = ({ placeholder, onClick, indexKey }: any) => (
-    <button className={styles.selector} onClick={onClick}>
-      <input
-        className={styles.placeholderText}
-        type="text"
-        disabled
-        placeholder={placeholder}
-        value={form[indexKey]}
-      />
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        fill="currentColor"
-        className="bi bi-chevron-down"
-        viewBox="0 0 16 16"
-      >
-        <path d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
-      </svg>
-    </button>
-  )
-
-  const DetailList = ({ data, indexKey }: any) => {
-    return (
-      <div className={styles.list}>
-        {data.map((item: any, key: number) => (
-          <button
-            key={key}
-            className={styles.buttonIncome}
-            onClick={() => {
-              setSelectorActive('')
-              setForm((prevState: any) => ({ ...prevState, [indexKey]: item }))
-            }}
-          >
-            <label className={styles.buttonListText}>{item}</label>
-          </button>
-        ))}
-      </div>
-    )
-  }
-
-  const handleClickDP = (payload: string) => {
-    setSelectorActive(payload)
-  }
-
-  const handleChange = (payload: any) => {
-    setPhone(payload)
-  }
-
-  const pushDataLayerOnClick = () => {
-    TagManager.dataLayer({
-      dataLayer: {
-        event: 'interaction',
-        eventCategory: 'Leads Generator',
-        eventAction: 'Homepage - Search Widget',
-        eventLabel: 'Temukan Mobilku',
-      },
-    })
-  }
-
   const pushDataLayerWidgetOnClick = (index: number) => {
     TagManager.dataLayer({
       dataLayer: {
@@ -133,126 +54,11 @@ export default function Banner({ data }: any) {
     })
   }
 
-  const sendRequest = () => {
-    setForm((prevState: any) => ({
-      ...prevState,
-      phone: phone,
-    }))
-    console.log('phone', form)
-    pushDataLayerOnClick()
-  }
-
-  const ButtonTenor = ({ termin, isActive }: any) => (
-    <button
-      onClick={() => {
-        setForm((prevState: any) => ({ ...prevState, tenor: termin }))
-      }}
-      className={isActive ? styles.tenorActive : styles.tenorInActive}
-    >
-      {termin}
-    </button>
-  )
-
-  interface Props {
-    onChangeDataMobile: any
-  }
-
-  const Form: React.FC<Props> = ({ onChangeDataMobile }: any) => (
-    <div className={styles.form}>
-      <h1 className={styles.title}>Cari mobil baru yang pas buat kamu</h1>
-      <div className={styles.wrapperRow}>
-        <div className={styles.wrapperLeft}>
-          <h6 className={styles.desc}>Pilih maksimal DP</h6>
-          <SelectorList
-            placeholder=">Rp 350 Jt"
-            indexKey="dp"
-            onClick={() => handleClickDP('dp')}
-          />
-          {selectorActive === 'dp' && (
-            <DetailList indexKey="dp" data={selectorData.dp} />
-          )}
-        </div>
-        <div className={styles.wrapperRight}>
-          <h6 className={styles.desc}>Pilih tahun tenor</h6>
-          <div className={styles.wrapperRow}>
-            <ButtonTenor isActive={form.tenor === '1'} termin="1" />
-            <ButtonTenor isActive={form.tenor === '2'} termin="2" />
-            <ButtonTenor isActive={form.tenor === '3'} termin="3" />
-            <ButtonTenor isActive={form.tenor === '4'} termin="4" />
-            <ButtonTenor isActive={form.tenor === '5'} termin="5" />
-          </div>
-        </div>
-      </div>
-      <p className={styles.desc}>
-        Ingin bertanya langsung ke tim SEVA? Tulis nomor hp kamu untuk kami
-        hubungi (Opsional)
-      </p>
-      <div className={styles.wrapperInputPhone}>
-        <div className={styles.phoneDetail}>
-          <Image
-            src={FlagIndonesia}
-            width={16}
-            height={16}
-            priority
-            alt="indonesia-flag"
-          />
-          <p className={styles.labelRegion}>+62</p>
-          <p className={styles.separator}>|</p>
-        </div>
-        <input
-          type="text"
-          value={phone}
-          className={styles.input}
-          placeholder="Contoh : 0895401011469"
-          onChange={onChangeDataMobile}
-        ></input>
-      </div>
-      <p
-        className={styles.advanceSearch}
-        onClick={() => setIsDetailShow(!isDetailShow)}
-      >
-        Advanced search
-        <span className={styles.iconDropDown}>
-          <IconChevronDown width={10} height={10} color="#246ed4" />
-        </span>
-      </p>
-      {isDetailShow && (
-        <div className={styles.wrapperRow}>
-          <div className={styles.wrapperLeft}>
-            <p className={styles.desc}>Kisaran pendapatan</p>
-            <SelectorList
-              indexKey="income"
-              placeholder="< 2 juta/bulan"
-              onClick={() => handleClickDP('income')}
-            />
-            {selectorActive === 'income' && (
-              <DetailList indexKey="income" data={selectorData.income} />
-            )}
-          </div>
-          <div className={styles.wrapperRight}>
-            <p className={styles.desc}>Rentang Usia</p>
-            <SelectorList
-              indexKey="age"
-              placeholder="18-27"
-              onClick={() => handleClickDP('age')}
-            />
-            {selectorActive === 'age' && (
-              <DetailList indexKey="age" data={selectorData.age} />
-            )}
-          </div>
-        </div>
-      )}
-      <button className={styles.button} onClick={() => sendRequest()}>
-        Temukan Mobilku
-      </button>
-    </div>
-  )
-
   return (
     <div className={styles.container}>
       <Script src="/lazy.js" />
       <div className={styles.wrapperForm}>
-        <Form onChangeDataMobile={(e: any) => handleChange(e.target.value)} />
+        <Widget />
       </div>
       <div className={styles.wrapperMobile}>
         <div className="swiper mySwiper">
