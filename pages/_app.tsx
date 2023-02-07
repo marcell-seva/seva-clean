@@ -3,14 +3,12 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import localFont from '@next/font/local'
 import TagManager from 'react-gtm-module'
-import { Provider } from 'react-redux'
 import { useEffect } from 'react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import Script from 'next/script'
 import { initAmplitude } from '../services/amplitude/'
-import { wrapper } from '../services/redux/store'
 
 initAmplitude()
 const kanyon = localFont({
@@ -30,14 +28,12 @@ const OpenSansSemiBold = localFont({
   style: 'normal',
 })
 
-export default function App({ Component, ...rest }: AppProps) {
-  const { store, props } = wrapper.useWrappedStore(rest)
-  const { pageProps } = props
+export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     TagManager.initialize({ gtmId: 'GTM-TV9J5JM' })
   }, [])
   return (
-    <Provider store={store}>
+    <>
       <style jsx global>{`
         :root {
           --kanyon: ${kanyon.style.fontFamily};
@@ -124,6 +120,6 @@ export default function App({ Component, ...rest }: AppProps) {
         }`,
         }}
       ></Script>
-    </Provider>
+    </>
   )
 }
