@@ -30,18 +30,18 @@ import { useEffect, useState } from 'react'
 import amplitude from 'amplitude-js'
 
 export default function Home({
-  dataBanner,
+  // dataBanner,
   dataMenu,
   dataCities,
-  dataTestimony,
-  dataRecToyota,
-  dataRecMVP,
-  dataUsage,
-  dataMainArticle,
-  dataTypeCar,
-  dataCarofTheMonth,
-  dataAnnouncementBox,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: // dataTestimony,
+// dataRecToyota,
+// dataRecMVP,
+// dataUsage,
+// dataMainArticle,
+// dataTypeCar,
+// dataCarofTheMonth,
+// dataAnnouncementBox,
+InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [modalType, setModalType] = useState<string>('')
   const [isAnnouncementBoxShow, setIsAnnouncementBoxShow] =
     useState<boolean>(true)
@@ -109,12 +109,12 @@ export default function Home({
             onOpenModalOTR={() => setModalType('modalOTRSecondary')}
             onSearchClick={() => setModalType('modalSearch')}
           />
-          {isAnnouncementBoxShow && (
+          {/* {isAnnouncementBoxShow && (
             <AnnouncementBox
               data={dataAnnouncementBox}
               onCloseButton={() => setIsAnnouncementBoxShow(false)}
             />
-          )}
+          )} */}
         </div>
         <Floating onClickImage={() => setModalType('modalVideo')} />
         <LocationList onClick={() => setModalType('modalLocationList')} />
@@ -125,18 +125,18 @@ export default function Home({
               : styles.wrapperSecondary
           }
         >
-          <Banner data={dataBanner} />
+          {/* <Banner data={dataBanner} />
           <CarList data={dataRecToyota} />
-          <HowToUse data={dataUsage} />
+          <HowToUse data={dataUsage} /> */}
           <LoanSection />
-          <Recommendation data={dataRecMVP} categoryCar={dataTypeCar} />
+          {/* <Recommendation data={dataRecMVP} categoryCar={dataTypeCar} /> */}
           <Refinancing />
-          <CarofTheMonth
+          {/* <CarofTheMonth
             data={dataCarofTheMonth}
             openModalOffering={() => setModalType('modalOffering')}
           />
           <Testimony data={dataTestimony} />
-          <Article data={dataMainArticle} />
+          <Article data={dataMainArticle} /> */}
         </div>
         {renderModal(modalType)}
         <ContactUs openThankyouModal={() => setModalType('modalThankyou')} />
@@ -154,68 +154,68 @@ export async function getServerSideProps({ req, res }: any) {
 
   try {
     const [
-      bannerRes,
+      // bannerRes,
       menuRes,
       citiesRes,
-      testimonyRes,
-      recTotoyaRes,
-      MVPRes,
-      usageRes,
-      mainArticleRes,
-      typeCarRes,
-      carofTheMonthRes,
-      annoucementBoxRes,
-    ]: any = await Promise.all([
-      api.getBanner(),
+    ]: // testimonyRes,
+    // recTotoyaRes,
+    // MVPRes,
+    // usageRes,
+    // mainArticleRes,
+    // typeCarRes,
+    // carofTheMonthRes,
+    // annoucementBoxRes,
+    any = await Promise.all([
+      // api.getBanner(),
       api.getMenu(),
       api.getCities(),
-      api.getTestimony(),
-      api.getRecommendation('?brand=Toyota&city=jakarta&cityId=118'),
-      api.getRecommendation('?bodyType=MPV&city=jakarta&cityId=118'),
-      api.getUsage(),
-      api.getMainArticle('65'),
-      api.getTypeCar('?city=jakarta'),
-      api.getCarofTheMonth(),
-      api.getAnnouncementBox(),
+      // api.getTestimony(),
+      // api.getRecommendation('?brand=Toyota&city=jakarta&cityId=118'),
+      // api.getRecommendation('?bodyType=MPV&city=jakarta&cityId=118'),
+      // api.getUsage(),
+      // api.getMainArticle('65'),
+      // api.getTypeCar('?city=jakarta'),
+      // api.getCarofTheMonth(),
+      // api.getAnnouncementBox(),
     ])
     const [
-      dataBanner,
+      // dataBanner,
       dataMenu,
       dataCities,
-      dataTestimony,
-      dataRecToyota,
-      dataRecMVP,
-      dataUsage,
-      dataMainArticle,
-      dataTypeCar,
-      dataCarofTheMonth,
-      dataAnnouncementBox,
+      // dataTestimony,
+      // dataRecToyota,
+      // dataRecMVP,
+      // dataUsage,
+      // dataMainArticle,
+      // dataTypeCar,
+      // dataCarofTheMonth,
+      // dataAnnouncementBox,
     ] = await Promise.all([
-      bannerRes.data,
+      // bannerRes.data,
       menuRes.data,
       citiesRes,
-      testimonyRes.data,
-      recTotoyaRes.carRecommendations,
-      MVPRes.carRecommendations,
-      usageRes.data.attributes,
-      mainArticleRes,
-      typeCarRes,
-      carofTheMonthRes.data,
-      annoucementBoxRes.data,
+      // testimonyRes.data,
+      // recTotoyaRes.carRecommendations,
+      // MVPRes.carRecommendations,
+      // usageRes.data.attributes,
+      // mainArticleRes,
+      // typeCarRes,
+      // carofTheMonthRes.data,
+      // annoucementBoxRes.data,
     ])
     return {
       props: {
-        dataBanner,
+        // dataBanner,
         dataMenu,
         dataCities,
-        dataTestimony,
-        dataRecToyota,
-        dataRecMVP,
-        dataUsage,
-        dataMainArticle,
-        dataTypeCar,
-        dataCarofTheMonth,
-        dataAnnouncementBox,
+        // dataTestimony,
+        // dataRecToyota,
+        // dataRecMVP,
+        // dataUsage,
+        // dataMainArticle,
+        // dataTypeCar,
+        // dataCarofTheMonth,
+        // dataAnnouncementBox,
       },
     }
   } catch (error) {
