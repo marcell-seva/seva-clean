@@ -12,6 +12,7 @@ export default function Brand({ name, src, isActive, onClick }: any) {
         width={50}
         height={40}
         unoptimized
+        sizes="9vw"
         className={styles.brandImage}
         alt={name}
       />
