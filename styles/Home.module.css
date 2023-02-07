@@ -3,15 +3,32 @@
   margin: auto;
 }
 
-.wrapper {
+.wrapperPrimary {
+  width: 100%;
+  max-width: 480px;
+  margin: auto;
+}
+
+.wrapperSecondary {
   width: 100%;
   max-width: 480px;
   margin: auto;
 }
 
 @media only screen and (min-width: 1024px) {
-  .wrapper {
+  .wrapperPrimary {
     max-width: 1120px;
-    padding: 40px;
+    padding: 250px 40px 40px 40px;
+  }
+
+  .wrapperSecondary {
+    max-width: 1120px;
+    padding: 180px 40px 40px 40px;
+  }
+
+  .wrapperHeader {
+    position: fixed;
+    width: 100%;
+    z-index: 5;
   }
 }
