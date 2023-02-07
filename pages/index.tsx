@@ -116,6 +116,7 @@ InferGetServerSidePropsType<typeof getServerSideProps>) {
             />
           )} */}
         </div>
+
         <Floating onClickImage={() => setModalType('modalVideo')} />
         <LocationList onClick={() => setModalType('modalLocationList')} />
         <div
@@ -137,6 +138,7 @@ InferGetServerSidePropsType<typeof getServerSideProps>) {
           />
           <Testimony data={dataTestimony} />
           <Article data={dataMainArticle} /> */}
+          <h1>asd</h1>
         </div>
         {renderModal(modalType)}
         <ContactUs openThankyouModal={() => setModalType('modalThankyou')} />
