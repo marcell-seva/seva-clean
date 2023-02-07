@@ -17,6 +17,7 @@ export default function Testimony({ data }: any) {
             width={360}
             height={230}
             alt="seva-testimony"
+            sizes="(max-width: 1024px) 46vw, 27vw"
             className={styles.image}
           />
           <div className={styles.wrapperInfo}>

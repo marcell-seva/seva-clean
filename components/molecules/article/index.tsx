@@ -55,6 +55,7 @@ export default function Article({ data }: any) {
         alt="article-sub-main-image"
         width={86}
         height={86}
+        sizes="(max-width: 1024px) 12vw, 20vw"
         className={styles.subMainImage}
       />
       <div className={styles.mainInfo}>
@@ -74,6 +75,7 @@ export default function Article({ data }: any) {
         alt="article-sub-main-image"
         width={245}
         height={135}
+        sizes="(max-width: 1024px) 12vw, 20vw"
         className={styles.subMainImage}
       />
       <div className={styles.capsuleWrapper}>
