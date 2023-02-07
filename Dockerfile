@@ -1,18 +1,23 @@
-FROM node:16-alpine as builder
+FROM node:16-alpine  as dependencies
+WORKDIR /my-project
+COPY package.json package-lock.json ./
+RUN npm install --frozen-lockfile
 
-LABEL org.opencontainers.image.authors="Samsul Ma'arif <samsul@dot-indonesia.com>"
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm ci 
-
+FROM node:16-alpine  as builder
+WORKDIR /my-project
 COPY . .
-RUN npm run export
+COPY --from=dependencies /my-project/node_modules ./node_modules
+RUN npm run build
 
-FROM nginx:alpine
-WORKDIR /usr/share/nginx/html
-COPY --from=builder /app/out /usr/share/nginx/html
-COPY .docker/nginx.conf /etc/nginx/nginx.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+FROM node:16-alpine  as runner
+WORKDIR /my-project
+ENV NODE_ENV production
+
+COPY --from=builder /my-project/next.config.js ./
+COPY --from=builder /my-project/public ./public
+COPY --from=builder /my-project/.next ./.next
+COPY --from=builder /my-project/node_modules ./node_modules
+COPY --from=builder /my-project/package.json ./package.json
+
+EXPOSE 3000
+CMD ["npm", "run", "start"]

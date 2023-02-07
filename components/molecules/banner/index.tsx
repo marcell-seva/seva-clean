@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../../../styles/Banner.module.css'
 import Image from 'next/image'
 import Script from 'next/script'
@@ -54,11 +54,14 @@ export default function Banner({ data }: any) {
     })
   }
 
+  const [isExpandForm, setIsExpandForm] = useState<boolean>(false)
   return (
-    <div className={styles.container}>
+    <div className={isExpandForm ? styles.containerActive : styles.container}>
       <Script src="/lazy.js" />
-      <div className={styles.wrapperForm}>
-        <Widget />
+      <div
+        className={isExpandForm ? styles.wrapperFormActive : styles.wrapperForm}
+      >
+        <Widget expandForm={() => setIsExpandForm(!isExpandForm)} />
       </div>
       <div className={styles.wrapperMobile}>
         <div className="swiper mySwiper">

@@ -8,7 +8,7 @@ import { useComponentVisible } from '../../../utils'
 import { IconChevronDown, IconChevronUp } from '../../atoms'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
 
-export default function Widget() {
+export default function Widget({ expandForm }: any) {
   const [form, setForm] = useState<any>({
     tenor: '5',
   })
@@ -188,7 +188,10 @@ export default function Widget() {
       </div>
       <p
         className={styles.advanceSearch}
-        onClick={() => setIsDetailShow(!isDetailShow)}
+        onClick={() => {
+          setIsDetailShow(!isDetailShow)
+          expandForm()
+        }}
       >
         Advanced search
         <span className={styles.iconDropDown}>

@@ -102,21 +102,29 @@ export default function Home({
         <link rel="icon" href="/favicon.png" />
       </Head>
       <main className={styles.main}>
-        <Header
-          data={dataMenu}
-          isLoggedIn={isLoggedIn}
-          onOpenModalOTR={() => setModalType('modalOTRSecondary')}
-          onSearchClick={() => setModalType('modalSearch')}
-        />
+        <div className={styles.wrapperHeader}>
+          <Header
+            data={dataMenu}
+            isLoggedIn={isLoggedIn}
+            onOpenModalOTR={() => setModalType('modalOTRSecondary')}
+            onSearchClick={() => setModalType('modalSearch')}
+          />
+          {isAnnouncementBoxShow && (
+            <AnnouncementBox
+              data={dataAnnouncementBox}
+              onCloseButton={() => setIsAnnouncementBoxShow(false)}
+            />
+          )}
+        </div>
         <Floating onClickImage={() => setModalType('modalVideo')} />
         <LocationList onClick={() => setModalType('modalLocationList')} />
-        {isAnnouncementBoxShow && (
-          <AnnouncementBox
-            data={dataAnnouncementBox}
-            onCloseButton={() => setIsAnnouncementBoxShow(false)}
-          />
-        )}
-        <div className={styles.wrapper}>
+        <div
+          className={
+            isAnnouncementBoxShow
+              ? styles.wrapperPrimary
+              : styles.wrapperSecondary
+          }
+        >
           <Banner data={dataBanner} />
           <CarList data={dataRecToyota} />
           <HowToUse data={dataUsage} />

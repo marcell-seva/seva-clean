@@ -3,6 +3,11 @@
   height: 500px;
 }
 
+.containerActive {
+  position: relative;
+  height: 580px;
+}
+
 .banner {
   width: 100%;
   height: 360px;
@@ -204,7 +209,15 @@
 
 .wrapperForm {
   position: absolute;
-  bottom: 0;
+  top: 40.6%;
+  z-index: 2;
+  margin: 20px;
+  box-shadow: rgb(3 24 56 / 10%) 0px 1px 16px;
+}
+
+.wrapperFormActive {
+  position: absolute;
+  top: 35%;
   z-index: 2;
   margin: 20px;
   box-shadow: rgb(3 24 56 / 10%) 0px 1px 16px;
@@ -251,10 +264,15 @@
 }
 
 .paginationBullet {
-  margin-bottom: 160px !important;
+  margin-bottom: 140px !important;
 }
 @media only screen and (min-width: 1024px) {
   .container {
+    position: relative;
+    height: auto;
+  }
+
+  .containerActive {
     position: relative;
     height: auto;
   }
@@ -278,7 +296,20 @@
   .wrapperMobile {
     display: none;
   }
+
   .wrapperForm {
-    top: 2%;
+    top: 10%;
+    bottom: 10%;
+    height: max-content;
+    box-shadow: none;
+    transition: height 0.5s linear;
+  }
+
+  .wrapperFormActive {
+    top: 5%;
+    bottom: 5%;
+    height: min-content;
+    box-shadow: none;
+    transition: height 0.5s linear;
   }
 }
