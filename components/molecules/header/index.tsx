@@ -4,7 +4,9 @@ import { api } from '../../../services/api'
 import styles from '../../../styles/Header.module.css'
 import {
   IconBurgerMenu,
+  IconChevronDown,
   IconChevrongRight,
+  IconChevronLeft,
   IconCross,
   IconDots,
   IconLocation,
@@ -15,6 +17,8 @@ import {
 } from '../../atoms'
 import sevaHeader from '../../../assets/images/logo/seva-header.svg'
 import { useIsMobile } from '../../../utils'
+import TopBarDesktop from './components/topBarDekstop'
+import TopBarMobile from './components/topBarMobile'
 interface ListNavbarProps {
   name: string
   redirect: string
@@ -22,7 +26,7 @@ interface ListNavbarProps {
 }
 
 interface ListSideBarProps {
-  name: string
+  item: any
   isNew?: boolean
 }
 interface Variant {
@@ -42,11 +46,6 @@ export default function Header({
   onSearchClick,
   isLoggedIn,
 }: any) {
-  const [isShow, setIsShow] = useState<boolean>(false)
-  const [input, setInput] = useState<string>('')
-  const [isCrossShow, setIsCrossShow] = useState<boolean>(false)
-  const [isVariantShow, setIsVariantShow] = useState<boolean>(false)
-  const [variantList, setVariantList] = useState<Array<Variant>>([])
   const isMobile = useIsMobile()
   const redirectRootPath = 'https://seva.id'
 
@@ -111,150 +110,18 @@ export default function Header({
     </li>
   )
 
-  const ListSideBarMenu = ({ name, isNew }: ListSideBarProps) => {
-    return isNew ? (
-      <a className={styles.mainSelector} href="#">
-        <div className={styles.wrapperTag}>
-          <p className={styles.titleTextNew}>{name}</p>
-          <div className={styles.newTag}>BARU!</div>
-        </div>
-        <p>seva</p>
-      </a>
-    ) : (
-      <a className={styles.mainSelector} href="#">
-        <p className={styles.titleText}>{name}</p>
-        <p>seva</p>
-      </a>
-    )
-  }
-
-  const handleChange = (payload: string) => {
-    setInput(payload)
-    if (payload === '') {
-      setIsCrossShow(false)
-      setVariantList([])
-    } else {
-      setIsCrossShow(true)
-      getVariantProduct(payload)
-    }
-  }
-
-  const clearInput = () => {
-    setInput('')
-    setIsCrossShow(false)
-    setVariantList([])
-    setIsVariantShow(false)
-  }
-
-  const getVariantProduct = async (value: string) => {
-    try {
-      const params: string = `?query=${value}&city=jakarta&cityId=118`
-      const res: any = await api.getVariantCar(params)
-      if (res.length > 0) {
-        setIsVariantShow(true)
-        setVariantList(res)
-      } else {
-        setVariantList([])
-        setIsVariantShow(false)
-      }
-    } catch (error) {
-      throw error
-    }
-  }
-
-  const TopBarMobile = () => (
-    <div className={styles.barMobile}>
-      <div className={styles.bar}>
-        <IconBurgerMenu width={26} height={26} />
-        <Image
-          src={sevaHeader}
-          width={120}
-          height={75}
-          alt="seva-logo"
-          className={styles.logo}
-        />
-      </div>
-      <div className={styles.searchIcon} onClick={onSearchClick}>
-        <IconSearch width={20} height={20} color="#002373" />
-      </div>
-    </div>
-  )
-
-  const parseProductUrl = (variant: string, type: string) => {
-    const variantParsed: string = variant.split(' ')[0].toLowerCase()
-    const typeParsed: string = type.replace(/ /g, '-').toLowerCase()
-    const url: string = `https://www.seva.id/mobil-baru/${variantParsed}/${typeParsed}`
-    return url
-  }
-
-  const getUserInitial = (payload: string) => {
-    const name = payload.split(' ')
-    const firstName = name[0].slice(0, 1)
-    const lastName = name[1].slice(0, 1)
-    return firstName + lastName
-  }
-
-  const TopBarDesktop = () => (
-    <div className={styles.barDesktop}>
-      <Logo />
-      {isVariantShow && (
-        <div className={styles.wrapperListVariant}>
-          {variantList.map((item: Variant) => {
-            return (
-              <a
-                href={parseProductUrl(item.variant_title, item.model)}
-                key={item.id}
-                className={styles.list}
-              >
-                {item.variant_title}
-              </a>
-            )
-          })}
-        </div>
-      )}
-      <div className={styles.wrapperInput}>
-        <IconSearch width={18} height={18} color="grey" />
-        <input
-          type="text"
-          value={input}
-          className={styles.input}
-          placeholder="Cari Model Mobil..."
-          onChange={(e) => handleChange(e.target.value)}
-        />
-        {isCrossShow && (
-          <div onClick={() => clearInput()}>
-            <IconCross width={24} height={24} />
-          </div>
-        )}
-      </div>
-      {!isLoggedIn ? (
-        <div className={styles.wrapperInitialAuth}>
-          <a
-            href="https://www.seva.id/masuk-akun"
-            className={styles.initialAuthMain}
-          >
-            <IconUser width={15} height={15} color="#FFFFFF" />
-            <p className={styles.initialText}>Masuk / Daftar</p>
-          </a>
-        </div>
-      ) : (
-        <div className={styles.userInfo}>
-          <div className={styles.wrapperUserName}>
-            <p className={styles.userWelcomeText}>Selamat Datang</p>
-            <p className={styles.userNameText}>Marcell Antonius Dermawan</p>
-          </div>
-          <div className={styles.initialUsernameText}>
-            {getUserInitial('Marcell Antonius Dermawan')}
-          </div>
-        </div>
-      )}
-    </div>
-  )
-
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
-        {isMobile ? <TopBarMobile /> : <TopBarDesktop />}
+        {isMobile ? (
+          <TopBarMobile
+            data={data}
+            isLoggedIn={isLoggedIn}
+            onSearchClick={onSearchClick}
+          />
+        ) : (
+          <TopBarDesktop isLoggedIn={isLoggedIn} />
+        )}
       </div>
       <div className={styles.wrapperSubMain}>
         <div className={styles.subMain}>
@@ -300,43 +167,6 @@ export default function Header({
           </div>
         </div>
       </div>
-      {isShow && (
-        <div className={styles.wrapperSideBar}>
-          <div className={styles.sideBar}>
-            <div className={styles.authSection}>
-              <div className={styles.userAuth}>
-                <div className={styles.userInfo}>
-                  <div className={styles.initialUsernameText}>
-                    {getUserInitial('Marcell Antonius Dermawan')}
-                  </div>
-                  <div className={styles.wrapperUserName}>
-                    <p className={styles.userWelcomeText}>Selamat Datang</p>
-                    <p className={styles.userNameText}>
-                      Marcell Antonius Dermawan
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <IconDots width={20} height={20} />
-                </div>
-              </div>
-              {/* <button className={styles.initialAuth}>
-                <Image
-                  src="https://www.seva.id/static/media/Profile.1dd80031bfb540b10391f2274639eee3.svg"
-                  width={15}
-                  height={15}
-                  alt="profile-icon"
-                  className={styles.profileIcon}
-                />
-                <p className={styles.initialText}>Masuk / Daftar</p>
-              </button> */}
-            </div>
-            {data.map((item: any, key: number) => (
-              <ListSideBarMenu key={key} name={item.menuName} isNew />
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   )
 }

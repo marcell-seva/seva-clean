@@ -49,6 +49,11 @@ const getVariantCar = (params: string) =>
 const getTypeCar = (params: string) => get(collections.product.type + params)
 const getBanner = () => get(collections.utils.banner)
 const getCarofTheMonth = () => get(collections.product.carofTheMonth)
+const getAnnouncementBox = () => get(collections.utils.announcementBox)
+
+// post request
+const postUnverfiedLeads = (body: any) =>
+  post(collections.leads.unverified, body)
 
 export const api = {
   getMenu,
@@ -62,4 +67,6 @@ export const api = {
   getTypeCar,
   getBanner,
   getCarofTheMonth,
+  getAnnouncementBox,
+  postUnverfiedLeads,
 }

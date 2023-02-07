@@ -19,6 +19,8 @@ import CarofTheMonth from './carofTheMonth'
 import Offering from './modal/offering'
 import Video from './modal/video'
 import Simple from './modal/simple'
+import AnnouncementBox from './announcementBox'
+import Widget from './widget'
 
 export {
   Header,
@@ -42,4 +44,6 @@ export {
   Offering,
   Video,
   Simple,
+  AnnouncementBox,
+  Widget,
 }

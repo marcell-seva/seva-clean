@@ -4,6 +4,7 @@ const utils = {
   testimonials: 'https://api.seva.id/testimonials',
   usage: 'https://api.sslpots.com/api/how-to-use-seva-config?populate=*',
   banner: 'https://api.seva.id/banner-image/homepage',
+  announcementBox: 'https://api.seva.id/announcement-box',
 }
 
 const product = {
@@ -18,8 +19,13 @@ const article = {
   subArticle: 'https://www.seva.id/wp-json/seva/latest-posts/',
 }
 
+const leads = {
+  unverified: 'https://api.seva.id/unverifiedLeads',
+}
+
 export const collections = {
   utils,
   product,
   article,
+  leads,
 }

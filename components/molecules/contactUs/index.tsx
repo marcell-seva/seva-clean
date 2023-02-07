@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import styles from '../../../styles/ContactUs.module.css'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
 import Image from 'next/image'
+import TagManager from 'react-gtm-module'
+import amplitude from 'amplitude-js'
 
 interface Form {
   name: string
@@ -25,6 +27,18 @@ export default function ContactUs({ openThankyouModal }: Props) {
   }
 
   const sendForm = () => {
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'interaction',
+        eventCategory: 'Leads Generator',
+        eventAction: 'Homepage - Leads Form - Control',
+        eventLabel: 'Kirim Rincian',
+      },
+    })
+
+    if (form.whatsapp)
+      amplitude.getInstance().logEvent('SELECT_HOME_SEND_DETAILS')
+    amplitude.getInstance().logEvent('WEB_LANDING_PAGE_LEADS_FORM_SUBMIT')
     openThankyouModal()
   }
 
