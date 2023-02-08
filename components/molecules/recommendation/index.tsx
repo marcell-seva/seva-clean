@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styles from '../../../styles/Recommendation.module.css'
 import {
   Card,
@@ -10,10 +10,18 @@ import {
 import { api } from '../../../services/api'
 import { useIsMobile } from '../../../utils'
 import Script from 'next/script'
+import {
+  LocationContext,
+  LocationContextType,
+} from '../../../services/context/locationContext'
 interface ShadowProps {
   type: string
 }
+
 export default function Recommendation({ data, categoryCar }: any) {
+  const { location, isInit } = useContext(
+    LocationContext,
+  ) as LocationContextType
   const isMobile = useIsMobile()
   const ShadowSlide = () => <div className={styles.shadowSlider}></div>
   const [typeCar, setTypeCar] = useState<string>('MPV')
@@ -29,16 +37,31 @@ export default function Recommendation({ data, categoryCar }: any) {
     </a>
   )
 
+  const handleClick = (payload: string) => {
+    setTypeCar(payload)
+    const params = isInit
+      ? `?bodyType=${payload}&city=jakarta&cityId=189`
+      : `?bodyType=${payload}&city=${location.cityName}&cityId=${location.id}`
+    getRecommendationCar(params)
+  }
+
   const getRecommendationCar = async (params: string) => {
     try {
       setDataCar([])
-      const query = `?bodyType=${params}&city=jakarta&cityId=118`
-      const res: any = await api.getRecommendation(query)
+      const res: any = await api.getRecommendation(params)
       setDataCar(res.carRecommendations)
     } catch (error) {
       throw error
     }
   }
+
+  useEffect(() => {
+    if (!isInit) {
+      const params = `?bodyType=${typeCar}&city=${location.cityCode}&cityId=${location.id}`
+      getRecommendationCar(params)
+    }
+  }, [location.cityCode])
+
   return (
     <div className={styles.container}>
       <Script src="/lazy.js" />
@@ -57,10 +80,7 @@ export default function Recommendation({ data, categoryCar }: any) {
             src={require(`../../../assets/images/typeCar/${item?.body_type}.png`)}
             key={key}
             isActive={typeCar === item.body_type}
-            onClick={() => {
-              setTypeCar(item.body_type)
-              getRecommendationCar(item.body_type)
-            }}
+            onClick={() => handleClick(item.body_type)}
             name={`${item.body_type} (${item.data_count})`}
           />
         ))}

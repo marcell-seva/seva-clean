@@ -1,9 +1,18 @@
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styles from '../../../../styles/OTRPrimary.module.css'
 import { Capsule, IconCross, IconLocation } from '../../../atoms'
+import { LocationContext } from '../../../../services/context/locationContext'
+
+type LocationContextType = {
+  location: Location
+  saveLocation: (data: Location) => void
+}
 
 export default function OTRPrimary({ data, onClick }: any) {
+  const { saveLocation } = useContext(
+    LocationContext,
+  ) as unknown as LocationContextType
   const [isListShow, setIsListShow] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
   const [city, setCity] = useState<any>(data)
@@ -11,6 +20,12 @@ export default function OTRPrimary({ data, onClick }: any) {
   const handleChange = (payload: string) => {
     setInput(payload)
     filterData(payload)
+  }
+
+  const selectLocation = (payload: any) => {
+    saveLocation(payload)
+    setIsListShow(false)
+    onClick()
   }
 
   const filterData = (params: string) => {
@@ -88,7 +103,11 @@ export default function OTRPrimary({ data, onClick }: any) {
             {isListShow && (
               <div className={styles.wrapperList}>
                 {city.map((item: any) => (
-                  <button key={item.id} className={styles.list}>
+                  <button
+                    key={item.id}
+                    className={styles.list}
+                    onClick={() => selectLocation(item)}
+                  >
                     {item.cityName}
                   </button>
                 ))}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styles from '../../../styles/CarList.module.css'
 import {
   Brand,
@@ -10,6 +10,10 @@ import {
 import { api } from '../../../services/api'
 import Script from 'next/script'
 import { useIsMobile } from '../../../utils'
+import {
+  LocationContext,
+  LocationContextType,
+} from '../../../services/context/locationContext'
 interface ShadowProps {
   type: string
 }
@@ -18,8 +22,19 @@ export default function CarList({ data }: any) {
   const [carList, setCarList] = useState<any>(data)
   const [typeActive, setTypeActive] = useState<any>('Toyota')
   const isMobile = useIsMobile()
+  const { location, isInit } = useContext(
+    LocationContext,
+  ) as LocationContextType
 
   const ShadowSlide = () => <div className={styles.shadowSlider}></div>
+
+  const handleClick = (payload: string) => {
+    setTypeActive(payload)
+    const params = isInit
+      ? `?brand=${payload}&city=jakarta&cityId=189`
+      : `?brand=${payload}&city=${location.cityName}&cityId=${location.id}`
+    getRecommendationCar(params)
+  }
 
   const ShadowSlideWithContent = ({ type }: ShadowProps) => (
     <a href="https://www.seva.id/mobil-baru" className={styles.shadowSlider}>
@@ -34,13 +49,19 @@ export default function CarList({ data }: any) {
   const getRecommendationCar = async (params: string) => {
     try {
       setCarList([])
-      const query = `?brand=${params}&city=jakarta&cityId=189`
-      const res: any = await api.getRecommendation(query)
+      const res: any = await api.getRecommendation(params)
       setCarList(res.carRecommendations)
     } catch (error) {
       throw error
     }
   }
+
+  useEffect(() => {
+    if (!isInit) {
+      const params = `?brand=${typeActive}&city=${location.cityCode}&cityId=${location.id}`
+      getRecommendationCar(params)
+    }
+  }, [location.cityCode])
 
   return (
     <div className={styles.container}>
@@ -59,10 +80,7 @@ export default function CarList({ data }: any) {
           {brandList.map((item: string, key: number) => (
             <Brand
               key={key}
-              onClick={() => {
-                setTypeActive(item)
-                getRecommendationCar(item)
-              }}
+              onClick={() => handleClick(item)}
               src={require(`../../../assets/images/brandCar/${item}.png`)}
               name={item}
               isActive={typeActive === item}

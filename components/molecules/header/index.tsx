@@ -1,24 +1,13 @@
-import Image from 'next/image'
-import React, { useState } from 'react'
-import { api } from '../../../services/api'
+import React, { useContext, useState } from 'react'
 import styles from '../../../styles/Header.module.css'
-import {
-  IconBurgerMenu,
-  IconChevronDown,
-  IconChevrongRight,
-  IconChevronLeft,
-  IconCross,
-  IconDots,
-  IconLocation,
-  IconSearch,
-  IconTriangleDown,
-  IconUser,
-  Logo,
-} from '../../atoms'
-import sevaHeader from '../../../assets/images/logo/seva-header.svg'
+import { IconChevrongRight, IconLocation, IconTriangleDown } from '../../atoms'
 import { useIsMobile } from '../../../utils'
 import TopBarDesktop from './components/topBarDekstop'
 import TopBarMobile from './components/topBarMobile'
+import {
+  LocationContext,
+  LocationContextType,
+} from '../../../services/context/locationContext'
 interface ListNavbarProps {
   name: string
   redirect: string
@@ -48,6 +37,9 @@ export default function Header({
 }: any) {
   const isMobile = useIsMobile()
   const redirectRootPath = 'https://seva.id'
+  const { location, isInit } = useContext(
+    LocationContext,
+  ) as LocationContextType
 
   const DropDownWithChild = ({ item }: any) => {
     return (
@@ -162,7 +154,9 @@ export default function Header({
                   <IconTriangleDown width={8} height={8} />
                 </span>
               </p>
-              <p className={styles.cityText}>Pilih Kota</p>
+              <p className={styles.cityText}>
+                {isInit ? 'Pilih Kota ' : location.cityName}
+              </p>
             </div>
           </div>
         </div>

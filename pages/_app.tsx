@@ -9,6 +9,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import Script from 'next/script'
 import { initAmplitude } from '../services/amplitude/'
+import { LocationProvider } from '../services/context/locationContext'
 
 initAmplitude()
 const kanyon = localFont({
@@ -33,7 +34,7 @@ export default function App({ Component, pageProps }: AppProps) {
     TagManager.initialize({ gtmId: 'GTM-TV9J5JM' })
   }, [])
   return (
-    <>
+    <LocationProvider>
       <style jsx global>{`
         :root {
           --kanyon: ${kanyon.style.fontFamily};
@@ -120,6 +121,6 @@ export default function App({ Component, pageProps }: AppProps) {
         }`,
         }}
       ></Script>
-    </>
+    </LocationProvider>
   )
 }

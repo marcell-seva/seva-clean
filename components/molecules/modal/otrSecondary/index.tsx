@@ -1,4 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import {
+  LocationContext,
+  LocationContextType,
+} from '../../../../services/context/locationContext'
 import styles from '../../../../styles/OTRSecondary.module.css'
 import { IconCross, IconLocation, IconSearch } from '../../../atoms'
 
@@ -8,11 +12,21 @@ export default function OTRSecondary({ data, onClick }: any) {
   const [input, setInput] = useState<string>('')
   const [city, setCity] = useState<any>(data)
 
+  const { location, isInit, saveLocation } = useContext(
+    LocationContext,
+  ) as LocationContextType
+
   const handleChange = (payload: string) => {
     setInput(payload)
     filterData(payload)
     if (payload === '') setIsCrossShow(false)
     else setIsCrossShow(true)
+  }
+
+  const selectLocation = (payload: any) => {
+    setIsListShow(false)
+    saveLocation(payload)
+    onClick()
   }
 
   const clearInput = () => {
@@ -53,7 +67,7 @@ export default function OTRSecondary({ data, onClick }: any) {
               value={input}
               onChange={(e) => handleChange(e.target.value)}
               className={styles.input}
-              placeholder="Jakarta Utara"
+              placeholder={isInit ? 'Jakarta Utara' : location.cityName}
             />
             {isCrossShow ? (
               <div
@@ -70,7 +84,11 @@ export default function OTRSecondary({ data, onClick }: any) {
           {isListShow && (
             <div className={styles.cityList}>
               {city.map((item: any) => (
-                <button key={item.id} className={styles.buttonCityList}>
+                <button
+                  key={item.id}
+                  className={styles.buttonCityList}
+                  onClick={() => selectLocation(item)}
+                >
                   {item.cityName}
                 </button>
               ))}
