@@ -31,6 +31,7 @@ export default function Recommendation({ data, categoryCar }: any) {
 
   const getRecommendationCar = async (params: string) => {
     try {
+      setDataCar([])
       const query = `?bodyType=${params}&city=jakarta&cityId=118`
       const res: any = await api.getRecommendation(query)
       setDataCar(res.carRecommendations)

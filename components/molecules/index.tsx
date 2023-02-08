@@ -21,6 +21,7 @@ import Video from './modal/video'
 import Simple from './modal/simple'
 import AnnouncementBox from './announcementBox'
 import Widget from './widget'
+import LoginModal from './modal/loginModal'
 
 export {
   Header,
@@ -46,4 +47,5 @@ export {
   Simple,
   AnnouncementBox,
   Widget,
+  LoginModal,
 }

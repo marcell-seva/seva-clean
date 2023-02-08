@@ -24,6 +24,7 @@ import {
   Video,
   Simple,
   AnnouncementBox,
+  LoginModal,
 } from '../components/molecules'
 import { api } from '../services/api'
 import { useEffect, useState } from 'react'
@@ -42,7 +43,7 @@ export default function Home({
   dataCarofTheMonth,
   dataAnnouncementBox,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [modalType, setModalType] = useState<string>('')
+  const [modalType, setModalType] = useState<string>('modalOTRPrimary')
   const [isAnnouncementBoxShow, setIsAnnouncementBoxShow] =
     useState<boolean>(true)
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
@@ -85,10 +86,9 @@ export default function Home({
             closeOfferingModal={() => setModalType('')}
           />
         )
-      case 'modalSearch':
-        return <Search onSearchMobileClose={() => setModalType('')} />
-      case 'modalSearch':
-        return <Search onSearchMobileClose={() => setModalType('')} />
+      case 'modalLogin':
+        console.log('log')
+        return <LoginModal onCloseModal={() => setModalType('')} />
       default:
         return <></>
     }
@@ -138,8 +138,12 @@ export default function Home({
           <Testimony data={dataTestimony} />
           <Article data={dataMainArticle} />
         </div>
+        <ContactUs
+          isLoggedIn
+          openThankyouModal={() => setModalType('modalThankyou')}
+          openLoginModal={() => setModalType('modalLogin')}
+        />
         {renderModal(modalType)}
-        <ContactUs openThankyouModal={() => setModalType('modalThankyou')} />
         <Footer />
       </main>
     </>

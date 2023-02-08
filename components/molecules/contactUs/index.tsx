@@ -4,6 +4,8 @@ import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
 import Image from 'next/image'
 import TagManager from 'react-gtm-module'
 import amplitude from 'amplitude-js'
+import { api } from '../../../services/api'
+import { setTrackEventMoEngageWithoutValue } from '../../../services/moengage'
 
 interface Form {
   name: string
@@ -13,8 +15,14 @@ interface Form {
 
 interface Props {
   openThankyouModal: any
+  openLoginModal: any
+  isLoggedIn: boolean
 }
-export default function ContactUs({ openThankyouModal }: Props) {
+export default function ContactUs({
+  openThankyouModal,
+  openLoginModal,
+  isLoggedIn,
+}: Props) {
   const [active, setActive] = useState<boolean>(false)
   const [form, setForm] = useState<Form>({
     name: '',
@@ -27,6 +35,38 @@ export default function ContactUs({ openThankyouModal }: Props) {
   }
 
   const sendForm = () => {
+    if (form.whatsapp)
+      amplitude.getInstance().logEvent('SELECT_HOME_SEND_DETAILS')
+    sendUnverifiedLeads(form)
+  }
+
+  const sendUnverifiedLeads = (payload: any) => {
+    const data = {
+      contactType: payload.whatsapp ? 'whatsapp' : 'phone',
+      maxDp: 30000000, // uniq masalah dp, utm , dan token
+      name: payload.name,
+      phoneNumber: `+62${payload.phone}`,
+      origination: 'Homepage - Hubungi Kami',
+      adSet: null,
+      utmCampaign: null,
+      utmContent: null,
+      utmId: null,
+      utmMedium: null,
+      utmSource: null,
+      utmTerm: null,
+    }
+    try {
+      api.postUnverfiedLeads(data)
+      openThankyouModal()
+      setTrackEventMoEngageWithoutValue('leads-created')
+      amplitude.getInstance().logEvent('WEB_LANDING_PAGE_LEADS_FORM_SUBMIT')
+      pushDataLayer()
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const pushDataLayer = () => {
     TagManager.dataLayer({
       dataLayer: {
         event: 'interaction',
@@ -35,16 +75,16 @@ export default function ContactUs({ openThankyouModal }: Props) {
         eventLabel: 'Kirim Rincian',
       },
     })
-
-    if (form.whatsapp)
-      amplitude.getInstance().logEvent('SELECT_HOME_SEND_DETAILS')
-    amplitude.getInstance().logEvent('WEB_LANDING_PAGE_LEADS_FORM_SUBMIT')
-    openThankyouModal()
   }
 
   useEffect(() => {
     setActive(form.name !== '' && form.phone.length > 3)
   }, [form])
+
+  const validateForm = () => {
+    if (active && isLoggedIn) sendForm()
+    else if (active && !isLoggedIn) openLoginModal()
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -93,9 +133,7 @@ export default function ContactUs({ openThankyouModal }: Props) {
           </label>
           <button
             className={active ? styles.buttonActive : styles.buttonInActive}
-            onClick={() => {
-              active && sendForm()
-            }}
+            onClick={() => validateForm()}
           >
             Kirim Rincian
           </button>

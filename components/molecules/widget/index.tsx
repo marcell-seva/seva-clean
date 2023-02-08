@@ -9,17 +9,18 @@ import { IconChevronDown, IconChevronUp } from '../../atoms'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
 
 export default function Widget({ expandForm }: any) {
+  const carListUrl = 'https://seva.id/mobil-baru'
   const [form, setForm] = useState<any>({
-    tenor: '5',
+    tenure: '5',
   })
 
   const { innerBorderRef } = useComponentVisible(() => setSelectorActive(''))
 
-  const [phone, setPhone] = useState()
+  const [phone, setPhone] = useState('')
   const [selectorActive, setSelectorActive] = useState<string>('')
   const [isDetailShow, setIsDetailShow] = useState<boolean>(false)
   const selectorData = {
-    dp: ['Rp 30 jt', 'Rp 40 jt', , 'Rp 50 jt', 'Rp 75 jt', 'Rp 100 jt'],
+    dp: [30000000, 40000000, 50000000, 75000000, 100000000],
     income: [
       '< 2 juta/bulan',
       '2-4 juta/bulan',
@@ -30,14 +31,35 @@ export default function Widget({ expandForm }: any) {
     age: ['18-27', '29-34', '25-50', '>51'],
   }
 
-  const ButtonTenor = ({ termin, isActive }: any) => (
+  const getNumber = (num: number) => {
+    const lookup = [
+      { value: 1, symbol: '' },
+      { value: 1e6, symbol: ' Jt' },
+    ]
+    const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
+    var item = lookup
+      .slice()
+      .reverse()
+      .find(function (item) {
+        return num >= item.value
+      })
+
+    const fixedNumber = item
+      ? (num / item.value).toFixed(2).replace(rx, '$1') + item.symbol
+      : '0'
+
+    const result = `Rp ${fixedNumber.replace('.', ',')}`
+    return result
+  }
+
+  const ButtonTenure = ({ tenure, isActive }: any) => (
     <button
       onClick={() => {
-        setForm((prevState: any) => ({ ...prevState, tenor: termin }))
+        setForm((prevState: any) => ({ ...prevState, tenure: tenure }))
       }}
-      className={isActive ? styles.tenorActive : styles.tenorInActive}
+      className={isActive ? styles.tenureActive : styles.tenureInActive}
     >
-      {termin}
+      {tenure}
     </button>
   )
 
@@ -48,45 +70,43 @@ export default function Widget({ expandForm }: any) {
         type="text"
         disabled
         placeholder={placeholder}
-        value={form[indexKey]}
+        value={
+          indexKey === 'dp' && form[indexKey] !== undefined
+            ? getNumber(form[indexKey])
+            : form[indexKey]
+        }
       />
       {selectorActive === indexKey ? (
-        <IconChevronUp width={15} height={15} />
+        <IconChevronUp width={15} height={15} color="#002373" />
       ) : (
         <IconChevronDown width={15} height={15} />
       )}
     </button>
   )
 
-  const pushDataLayerOnClick = () => {
-    TagManager.dataLayer({
-      dataLayer: {
-        event: 'interaction',
-        eventCategory: 'Leads Generator',
-        eventAction: 'Homepage - Search Widget',
-        eventLabel: 'Temukan Mobilku',
-      },
-    })
-  }
-
   const sendRequest = () => {
-    const isValidPhoneNumber = form.phoneNumber.length > 3
     setForm((prevState: any) => ({
       ...prevState,
       phone: phone,
     }))
+    execUnverifiedLeads(form)
     pushDataLayerOnClick()
+    window.location.href = carListUrl
+  }
+
+  const execUnverifiedLeads = (payload: any) => {
+    const isValidPhoneNumber = phone.length > 3
 
     if (isValidPhoneNumber) {
       trackGALead()
       const data = {
-        age: '18-26',
-        income: '2M -4M',
-        maxDp: 10000000,
+        age: payload.age,
+        income: payload.income,
+        maxDp: payload.dp,
+        phoneNumber: `+62${phone}`,
+        tenure: payload.tenure,
         origination: 'Web_Homepage_Search_Widget',
         userTouchpoints: 'Web_Homepage_Search_Widget',
-        phoneNumber: '+6212312312',
-        tenure: '1',
         adSet: null,
         utmCampaign: null,
         utmContent: null,
@@ -99,10 +119,20 @@ export default function Widget({ expandForm }: any) {
     } else trackGAContact()
   }
 
+  const pushDataLayerOnClick = () => {
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'interaction',
+        eventCategory: 'Leads Generator',
+        eventAction: 'Homepage - Search Widget',
+        eventLabel: 'Temukan Mobilku',
+      },
+    })
+  }
+
   const handleClickDP = (payload: string) => {
     if (selectorActive === payload) setSelectorActive('')
     else setSelectorActive(payload)
-    console.log('das', payload)
   }
 
   const onChangeDataMobile = (payload: any) => {
@@ -129,7 +159,11 @@ export default function Widget({ expandForm }: any) {
               setForm((prevState: any) => ({ ...prevState, [indexKey]: item }))
             }}
           >
-            <label className={styles.buttonListText}>{item}</label>
+            {indexKey === 'dp' ? (
+              <label className={styles.buttonListText}>{getNumber(item)}</label>
+            ) : (
+              <label className={styles.buttonListText}>{item}</label>
+            )}
           </button>
         ))}
       </div>
@@ -154,11 +188,11 @@ export default function Widget({ expandForm }: any) {
         <div className={styles.wrapperRight}>
           <h6 className={styles.desc}>Pilih tahun tenor</h6>
           <div className={styles.wrapperRow}>
-            <ButtonTenor isActive={form.tenor === '1'} termin="1" />
-            <ButtonTenor isActive={form.tenor === '2'} termin="2" />
-            <ButtonTenor isActive={form.tenor === '3'} termin="3" />
-            <ButtonTenor isActive={form.tenor === '4'} termin="4" />
-            <ButtonTenor isActive={form.tenor === '5'} termin="5" />
+            <ButtonTenure isActive={form.tenure === '1'} tenure="1" />
+            <ButtonTenure isActive={form.tenure === '2'} tenure="2" />
+            <ButtonTenure isActive={form.tenure === '3'} tenure="3" />
+            <ButtonTenure isActive={form.tenure === '4'} tenure="4" />
+            <ButtonTenure isActive={form.tenure === '5'} tenure="5" />
           </div>
         </div>
       </div>
@@ -179,7 +213,7 @@ export default function Widget({ expandForm }: any) {
           <p className={styles.separator}>|</p>
         </div>
         <input
-          type="text"
+          type="number"
           value={phone}
           className={styles.input}
           placeholder="Contoh : 0895401011469"

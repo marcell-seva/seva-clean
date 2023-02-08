@@ -24,7 +24,6 @@
   font-family: var(--kanyon);
   font-size: 12x;
   line-height: 24px;
-  outline: none;
   border: none;
 }
 
@@ -81,7 +80,7 @@
   position: relative;
 }
 
-.tenorActive {
+.tenureActive {
   background-color: #f2f5f9;
   border-radius: 4px;
   display: flex;
@@ -96,7 +95,7 @@
   border: 0.3px solid #002373;
 }
 
-.tenorInActive {
+.tenureInActive {
   background-color: #f2f5f9;
   border-radius: 4px;
   display: flex;
@@ -120,6 +119,7 @@
   text-decoration: underline;
   cursor: pointer;
   display: flex;
+  width: 120px;
   align-items: center;
 }
 
