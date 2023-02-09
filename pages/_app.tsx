@@ -37,7 +37,6 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
       <LocationProvider>
-        <Script src="/lazy.js" />
         <style jsx global>{`
           :root {
             --kanyon: ${kanyon.style.fontFamily};

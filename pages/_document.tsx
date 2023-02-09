@@ -7,11 +7,6 @@ export default function Document() {
       <Head />
       <body>
         <Main />
-
-        <script
-          src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"
-          async
-        ></script>
         <NextScript />
       </body>
     </Html>
