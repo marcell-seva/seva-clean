@@ -312,4 +312,7 @@
     box-shadow: none;
     transition: height 0.5s linear;
   }
+  .paginationBullet {
+    margin-bottom: 10px !important;
+  }
 }
