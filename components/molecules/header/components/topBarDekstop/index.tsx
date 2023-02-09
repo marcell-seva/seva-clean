@@ -1,7 +1,19 @@
-import { useState } from 'react'
-import { IconCross, IconSearch, IconUser, Logo } from '../../../../atoms'
+import { useContext, useState } from 'react'
+import {
+  IconCross,
+  IconLogout,
+  IconSearch,
+  IconUser,
+  Logo,
+} from '../../../../atoms'
 import styles from '../../../../../styles/Header.module.css'
 import { api } from '../../../../../services/api'
+import { destroySessionMoEngage } from '../../../../../services/moengage'
+import { setAmplitudeUserId } from '../../../../../services/amplitude'
+import {
+  AuthContext,
+  AuthContextType,
+} from '../../../../../services/context/authContext'
 interface Variant {
   id: string
   model: string
@@ -13,11 +25,13 @@ interface Variant {
   price_formatted_value: string
 }
 
-export default function TopBarDesktop({ isLoggedIn }: any) {
+export default function TopBarDesktop() {
+  const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
   const [isCrossShow, setIsCrossShow] = useState<boolean>(false)
   const [isVariantShow, setIsVariantShow] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
   const [variantList, setVariantList] = useState<Array<Variant>>([])
+  const [isUserInfoShow, setIsUserInfoShow] = useState<boolean>(false)
 
   const getVariantProduct = async (value: string) => {
     try {
@@ -48,8 +62,8 @@ export default function TopBarDesktop({ isLoggedIn }: any) {
   }
   const getUserInitial = (payload: string) => {
     const name = payload.split(' ')
-    const firstName = name[0].slice(0, 1)
-    const lastName = name[1].slice(0, 1)
+    const firstName = name[0]?.slice(0, 1)
+    const lastName = name[1]?.slice(0, 1)
     return firstName + lastName
   }
 
@@ -70,6 +84,21 @@ export default function TopBarDesktop({ isLoggedIn }: any) {
     setIsCrossShow(false)
     setVariantList([])
     setIsVariantShow(false)
+  }
+
+  const handleUserInfoClick = () => {
+    setIsUserInfoShow(!isUserInfoShow)
+  }
+
+  const logout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('customerId')
+    localStorage.removeItem('seva-cust')
+    sessionStorage.removeItem('customerId')
+
+    destroySessionMoEngage()
+    setAmplitudeUserId(null)
+    window.location.reload()
   }
 
   return (
@@ -105,7 +134,20 @@ export default function TopBarDesktop({ isLoggedIn }: any) {
           </div>
         )}
       </div>
-      {!isLoggedIn ? (
+      {isLoggedIn && userData !== null ? (
+        <div className={styles.userInfo}>
+          <div className={styles.wrapperUserName}>
+            <p className={styles.userWelcomeText}>Selamat Datang</p>
+            <p className={styles.userNameText}>{userData!.fullName}</p>
+          </div>
+          <button
+            className={styles.initialUsernameText}
+            onClick={() => handleUserInfoClick()}
+          >
+            {getUserInitial(userData!.fullName)}
+          </button>
+        </div>
+      ) : (
         <div className={styles.wrapperInitialAuth}>
           <a
             href="https://www.seva.id/masuk-akun"
@@ -115,15 +157,20 @@ export default function TopBarDesktop({ isLoggedIn }: any) {
             <p className={styles.initialText}>Masuk / Daftar</p>
           </a>
         </div>
-      ) : (
-        <div className={styles.userInfo}>
-          <div className={styles.wrapperUserName}>
-            <p className={styles.userWelcomeText}>Selamat Datang</p>
-            <p className={styles.userNameText}>Marcell Antonius Dermawan</p>
-          </div>
-          <div className={styles.initialUsernameText}>
-            {getUserInitial('Marcell Antonius Dermawan')}
-          </div>
+      )}
+      {isUserInfoShow && (
+        <div className={styles.accountInfo}>
+          <a
+            href="https://www.seva.id/akun/profil"
+            className={styles.accountSelector}
+          >
+            <IconUser width={22} height={22} color="#52627A" />
+            <p className={styles.accountText}>Akun Saya</p>
+          </a>
+          <button onClick={() => logout()} className={styles.accountSelector}>
+            <IconLogout width={22} height={22} color="#52627a" />
+            <p className={styles.accountText}>Keluar</p>
+          </button>
         </div>
       )}
     </div>

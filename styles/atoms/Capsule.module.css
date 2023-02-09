@@ -1,8 +1,11 @@
 .location {
   margin: 3px;
-  padding: 3px 12px;
+  padding: 4px 12px;
   background-color: #f2f5f9;
   border-radius: 10px;
+  cursor: pointer;
+  outline: none;
+  border: none;
 }
 
 .locationText {

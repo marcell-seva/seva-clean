@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styles from '../../../styles/ContactUs.module.css'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
 import Image from 'next/image'
@@ -6,6 +6,10 @@ import TagManager from 'react-gtm-module'
 import amplitude from 'amplitude-js'
 import { api } from '../../../services/api'
 import { setTrackEventMoEngageWithoutValue } from '../../../services/moengage'
+import {
+  AuthContext,
+  AuthContextType,
+} from '../../../services/context/authContext'
 
 interface Form {
   name: string
@@ -16,17 +20,17 @@ interface Form {
 interface Props {
   openThankyouModal: any
   openLoginModal: any
-  isLoggedIn: boolean
 }
 export default function ContactUs({
   openThankyouModal,
   openLoginModal,
-  isLoggedIn,
 }: Props) {
+  const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
+  console.log('dats', userData)
   const [active, setActive] = useState<boolean>(false)
   const [form, setForm] = useState<Form>({
-    name: '',
-    phone: 0,
+    name: userData === null ? '' : userData.fullName,
+    phone: userData === null ? '' : userData.phoneNumber,
     whatsapp: false,
   })
 
@@ -98,6 +102,7 @@ export default function ContactUs({
             <input
               type="text"
               className={styles.input}
+              value={form.name}
               placeholder="Nama Lengkap"
               onChange={(e) => handleChange('name', e.target.value)}
             ></input>

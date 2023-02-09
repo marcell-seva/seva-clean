@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styles from '../../../../../styles/Header.module.css'
 import {
   IconBurgerMenu,
@@ -10,13 +10,18 @@ import {
   IconSearch,
 } from '../../../../atoms'
 import sevaHeader from '../../../../../assets/images/logo/seva-header.svg'
+import {
+  AuthContext,
+  AuthContextType,
+} from '../../../../../services/context/authContext'
 
 interface ListSideBarProps {
   item: any
   isNew?: boolean
 }
 
-export default function TopBarMobile({ data, isLoggedIn, onSearchClick }: any) {
+export default function TopBarMobile({ data, onSearchClick }: any) {
+  const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
   const [isShow, setIsShow] = useState<boolean>(false)
   const [isSubSideBarShow, setIsSubSideBarShow] = useState<boolean>(false)
   const [typeSubSideBar, setTypeSubSideBar] = useState<string>('')
@@ -147,32 +152,38 @@ export default function TopBarMobile({ data, isLoggedIn, onSearchClick }: any) {
           ) : (
             <>
               <div className={styles.authSection}>
-                <div className={styles.userAuth}>
-                  <div className={styles.userInfo}>
-                    <div className={styles.initialUsernameText}>
-                      {getUserInitial('Marcell Antonius Dermawan')}
+                {isLoggedIn ? (
+                  <a
+                    href="https://www.seva.id/akun/profil"
+                    className={styles.userAuth}
+                  >
+                    <div className={styles.userInfo}>
+                      <div className={styles.initialUsernameText}>
+                        {getUserInitial('Marcell Antonius Dermawan')}
+                      </div>
+                      <div className={styles.wrapperUserName}>
+                        <p className={styles.userWelcomeText}>Selamat Datang</p>
+                        <p className={styles.userNameText}>
+                          {userData!.fullName}
+                        </p>
+                      </div>
                     </div>
-                    <div className={styles.wrapperUserName}>
-                      <p className={styles.userWelcomeText}>Selamat Datang</p>
-                      <p className={styles.userNameText}>
-                        Marcell Antonius Dermawan
-                      </p>
+                    <div>
+                      <IconDots width={20} height={20} />
                     </div>
-                  </div>
-                  <div>
-                    <IconDots width={20} height={20} />
-                  </div>
-                </div>
-                {/* <button className={styles.initialAuth}>
-                <Image
-                  src="https://www.seva.id/static/media/Profile.1dd80031bfb540b10391f2274639eee3.svg"
-                  width={15}
-                  height={15}
-                  alt="profile-icon"
-                  className={styles.profileIcon}
-                />
-                <p className={styles.initialText}>Masuk / Daftar</p>
-              </button> */}
+                  </a>
+                ) : (
+                  <button className={styles.initialAuth}>
+                    <Image
+                      src="https://www.seva.id/static/media/Profile.1dd80031bfb540b10391f2274639eee3.svg"
+                      width={15}
+                      height={15}
+                      alt="profile-icon"
+                      className={styles.profileIcon}
+                    />
+                    <p className={styles.initialText}>Masuk / Daftar</p>
+                  </button>
+                )}
               </div>
               {data.map((item: any, key: number) => (
                 <ListSideBarMenu key={key} item={item} isNew={item.toggleNew} />

@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 
 interface Location {
   cityCode: string
@@ -15,6 +15,11 @@ export type LocationContextType = {
 
 export const LocationContext = createContext<LocationContextType | null>(null)
 
+const getDataLocation = () => {
+  const res = localStorage.getItem('seva-loc')
+  const loc = res !== null ? JSON.parse(res) : null
+  return loc
+}
 export const LocationProvider = ({ children }: any) => {
   const [location, setLocation] = useState<Location>({
     cityCode: '',
@@ -23,7 +28,13 @@ export const LocationProvider = ({ children }: any) => {
     province: '',
   })
 
+  useEffect(() => {
+    const data = getDataLocation()
+    if (data !== null) setLocation(data)
+  }, [])
+
   const saveLocation = (location: Location) => {
+    localStorage.setItem('seva-loc', JSON.stringify(location))
     setLocation(location)
   }
 

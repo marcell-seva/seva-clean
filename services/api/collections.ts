@@ -14,6 +14,11 @@ const product = {
   carofTheMonth: 'https://api.seva.id/car-of-the-month',
 }
 
+const auth = {
+  user: 'https://api.seva.id/customers/info',
+  refresh: 'https://api.seva.id/auth/token',
+}
+
 const article = {
   mainArticle: 'https://www.seva.id/wp-json/foodicious/latest-posts/',
   subArticle: 'https://www.seva.id/wp-json/seva/latest-posts/',
@@ -27,5 +32,6 @@ export const collections = {
   utils,
   product,
   article,
+  auth,
   leads,
 }

@@ -8,6 +8,10 @@ import {
   LocationContext,
   LocationContextType,
 } from '../../../services/context/locationContext'
+import {
+  AuthContext,
+  AuthContextType,
+} from '../../../services/context/authContext'
 interface ListNavbarProps {
   name: string
   redirect: string
@@ -30,16 +34,18 @@ interface Variant {
 }
 
 export default function Header({
-  data,
+  dataMenu,
+  dataUser,
   onOpenModalOTR,
   onSearchClick,
-  isLoggedIn,
 }: any) {
   const isMobile = useIsMobile()
   const redirectRootPath = 'https://seva.id'
   const { location, isInit } = useContext(
     LocationContext,
   ) as LocationContextType
+
+  const { isLoggedIn } = useContext(AuthContext) as AuthContextType
 
   const DropDownWithChild = ({ item }: any) => {
     return (
@@ -107,18 +113,18 @@ export default function Header({
       <div className={styles.wrapper}>
         {isMobile ? (
           <TopBarMobile
-            data={data}
+            data={dataMenu}
             isLoggedIn={isLoggedIn}
             onSearchClick={onSearchClick}
           />
         ) : (
-          <TopBarDesktop isLoggedIn={isLoggedIn} />
+          <TopBarDesktop />
         )}
       </div>
       <div className={styles.wrapperSubMain}>
         <div className={styles.subMain}>
           <ul className={styles.wrapperMain}>
-            {data.map((item: any, key: number) => {
+            {dataMenu.map((item: any, key: number) => {
               if (key === 1) {
                 return (
                   <ListNavBarMenuSingle

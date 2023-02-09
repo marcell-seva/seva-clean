@@ -16,10 +16,47 @@ export default function OTRPrimary({ data, onClick }: any) {
   const [isListShow, setIsListShow] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
   const [city, setCity] = useState<any>(data)
+  const staticCity = [
+    {
+      cityCode: 'bekasi',
+      cityName: 'Bekasi',
+      id: 180,
+      province: 'Jawa Barat',
+    },
+    {
+      cityCode: 'medan',
+      cityName: 'Medan',
+      id: 153,
+      province: 'Sumatera Utara',
+    },
+    {
+      cityCode: 'tangerang',
+      cityName: 'Tangerang',
+      id: 222,
+      province: 'Banten',
+    },
+    {
+      cityCode: 'jakarta',
+      cityName: 'Jakarta Selatan',
+      id: 119,
+      province: 'DKI Jakarta',
+    },
+    {
+      cityCode: 'surabaya',
+      cityName: 'Surabaya',
+      id: 218,
+      province: 'Jawa Timur',
+    },
+  ]
 
   const handleChange = (payload: string) => {
     setInput(payload)
     filterData(payload)
+  }
+
+  const handleOnClick = (payload: Location) => {
+    saveLocation(payload)
+    onClick()
   }
 
   const selectLocation = (payload: any) => {
@@ -83,11 +120,15 @@ export default function OTRPrimary({ data, onClick }: any) {
               </pre>
             </h1>
             <div className={styles.suggestedLocation}>
-              <Capsule name="Bekasi" />
-              <Capsule name="Medan" />
-              <Capsule name="Tanggerang" />
-              <Capsule name="Jakarta Selatan" />
-              <Capsule name="Surabaya" />
+              {staticCity.map((item: any) => {
+                return (
+                  <Capsule
+                    key={item.id}
+                    item={item}
+                    onClick={() => handleOnClick(item)}
+                  />
+                )
+              })}
             </div>
             <p className={styles.descText}>atau cari Kota yang sesuai KTP</p>
             <div className={styles.wrapperInput}>
