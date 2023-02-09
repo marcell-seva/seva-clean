@@ -6,7 +6,7 @@ import TagManager from 'react-gtm-module'
 import Widget from '../widget'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, Pagination } from 'swiper'
-
+import LazyLoad from 'vanilla-lazyload'
 export default function Banner({ data }: any) {
   useEffect(() => {
     if (data.length > 0) {
@@ -66,6 +66,14 @@ export default function Banner({ data }: any) {
       </div>
       <div className={styles.wrapperMobile}>
         <Swiper
+          on={{
+            afterInit: (swiper) => {
+              new LazyLoad({
+                container: swiper.el,
+                cancel_on_exit: false,
+              })
+            },
+          }}
           loop
           cssMode
           pagination={{
@@ -121,6 +129,14 @@ export default function Banner({ data }: any) {
       <div className={styles.wrapperDesktop}>
         <Swiper
           loop
+          on={{
+            afterInit: (swiper) => {
+              new LazyLoad({
+                container: swiper.el,
+                cancel_on_exit: false,
+              })
+            },
+          }}
           cssMode
           pagination={{
             clickable: true,
