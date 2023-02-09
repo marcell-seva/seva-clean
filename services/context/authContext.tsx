@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from 'react'
+import { setAmplitudeUserId } from '../amplitude'
 import { api } from '../api'
 
 interface User {
@@ -45,6 +46,7 @@ export const AuthProvider = ({ children }: any) => {
       const dataUser: any = res[0]
       saveAuthData(dataUser)
       localStorage.setItem('seva-cust', JSON.stringify(dataUser))
+      setAmplitudeUserId(dataUser.id)
     } catch (error) {
       throw error
     }
