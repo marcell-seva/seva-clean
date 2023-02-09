@@ -1,28 +1,4 @@
 
-const swiperOptions = {
-  loop: true,
-  pagination: {
-    el: '.swiper-pagination',
-  },
-  autoplay: {
-    delay: 8000,
-  },
-  cssMode: true,
-  breakpoints: {
-    1024: {
-      cssMode: false,
-    },
-  },
-  on: {
-    // LazyLoad swiper images after swiper initialization
-    afterInit: (swiper) => {
-      new LazyLoad({
-        container: swiper.el,
-        cancel_on_exit: false,
-      })
-    },
-  },
-}
 
 const swiperOptionsProduct = {
   pagination: {
@@ -153,7 +129,6 @@ const swiperOptionsCarofTheMonth = {
 }
 
 // Initialize the first swiper right away
-const eagerSwiper = new Swiper('.mySwiper', swiperOptions)
 const eagerSwiperProduct = new Swiper('.mySwiperProduct', swiperOptionsProduct)
 const eagerSwiperTestimony = new Swiper(
   '.mySwiperTestimony',
