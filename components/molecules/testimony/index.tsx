@@ -3,8 +3,6 @@ import styles from '../../../styles/Testimony.module.css'
 import Image from 'next/image'
 import { IconBackButton, IconNextButton, IconStar } from '../../atoms'
 import { timeSince, useIsMobile } from '../../../utils'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation } from 'swiper'
 
 export default function Testimony({ data }: any) {
   const isMobile = useIsMobile()
@@ -62,40 +60,18 @@ export default function Testimony({ data }: any) {
           </>
         )}
 
-        <Swiper
-          cssMode
-          slidesPerGroup={1}
-          slidesPerView={2}
-          spaceBetween={270}
-          navigation={{
-            nextEl: '.image-swiper-button-next-testimony',
-            prevEl: '.image-swiper-button-prev-testimony',
-          }}
-          breakpoints={{
-            1024: {
-              slidesPerGroup: 2,
-              slidesPerView: 3,
-              spaceBetween: 80,
-              cssMode: false,
-            },
-            480: {
-              slidesPerGroup: 1,
-              slidesPerView: 2,
-              spaceBetween: 160,
-              cssMode: false,
-            },
-          }}
-          modules={[Navigation]}
-        >
-          {data.map((item: any, key: number) => (
-            <SwiperSlide key={key}>
-              <Slide item={item} />
-            </SwiperSlide>
-          ))}
-          <SwiperSlide>
-            <ShadowSlide />
-          </SwiperSlide>
-        </Swiper>
+        <div className="swiper mySwiperTestimony">
+          <div className="swiper-wrapper">
+            {data.map((item: any, key: number) => (
+              <div key={key} className="swiper-slide">
+                <Slide item={item} />
+              </div>
+            ))}
+            <div className="swiper-slide">
+              <ShadowSlide />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

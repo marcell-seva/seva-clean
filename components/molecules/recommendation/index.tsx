@@ -13,8 +13,6 @@ import {
   LocationContext,
   LocationContextType,
 } from '../../../services/context/locationContext'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation } from 'swiper'
 interface ShadowProps {
   type: string
 }
@@ -102,43 +100,21 @@ export default function Recommendation({ data, categoryCar }: any) {
           </>
         )}
 
-        <Swiper
-          slidesPerGroup={2}
-          cssMode
-          slidesPerView={3}
-          spaceBetween={140}
-          navigation={{
-            nextEl: '.image-swiper-button-next-recommendation',
-            prevEl: '.image-swiper-button-prev-recommendation',
-          }}
-          breakpoints={{
-            1024: {
-              slidesPerGroup: 3,
-              slidesPerView: 4,
-              spaceBetween: 160,
-              cssMode: false,
-            },
-            480: {
-              slidesPerGroup: 3,
-              slidesPerView: 4,
-              spaceBetween: 140,
-              cssMode: false,
-            },
-          }}
-          modules={[Navigation]}
-        >
-          {dataCar.slice(0, 5).map((item: any, key: number) => (
-            <SwiperSlide className="swiper-slide" key={key}>
-              <Card item={item} />
-            </SwiperSlide>
-          ))}
-          <SwiperSlide className="swiper-slide">
-            <ShadowSlideWithContent type={typeCar} />
-          </SwiperSlide>
-          <SwiperSlide className="swiper-slide">
-            <ShadowSlide />
-          </SwiperSlide>
-        </Swiper>
+        <div className="swiper mySwiperRecommendation">
+          <div className="swiper-wrapper">
+            {dataCar.slice(0, 5).map((item: any, key: number) => (
+              <div className="swiper-slide" key={key}>
+                <Card item={item} />
+              </div>
+            ))}
+            <div className="swiper-slide">
+              <ShadowSlideWithContent type={typeCar} />
+            </div>
+            <div className="swiper-slide">
+              <ShadowSlide />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -13,8 +13,6 @@ import {
   LocationContext,
   LocationContextType,
 } from '../../../services/context/locationContext'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation } from 'swiper'
 interface ShadowProps {
   type: string
 }
@@ -102,45 +100,21 @@ export default function CarList({ data }: any) {
               </div>
             </>
           )}
-          <Swiper
-            navigation={{
-              nextEl: '.image-swiper-button-next-car-list',
-              prevEl: '.image-swiper-button-prev-car-list',
-            }}
-            slidesPerGroup={2}
-            cssMode={true}
-            slidesPerView={3}
-            spaceBetween={140}
-            breakpoints={{
-              1024: {
-                slidesPerGroup: 3,
-                slidesPerView: 4,
-                spaceBetween: 260,
-                cssMode: false,
-              },
-              480: {
-                slidesPerGroup: 3,
-                slidesPerView: 4,
-                spaceBetween: 140,
-                cssMode: false,
-              },
-            }}
-            modules={[Navigation]}
-          >
-            <div className={styles.swiperWrap}>
+          <div className="swiper mySwiperProduct">
+            <div className={`swiper-wrapper ${styles.swiperWrap}`}>
               {carList.slice(0, 5).map((item: any, key: number) => (
-                <SwiperSlide key={key}>
+                <div className="swiper-slide" key={key}>
                   <Card item={item} />
-                </SwiperSlide>
+                </div>
               ))}
-              <SwiperSlide>
+              <div className="swiper-slide">
                 <ShadowSlideWithContent type={typeActive} />
-              </SwiperSlide>
-              <SwiperSlide>
+              </div>
+              <div className="swiper-slide">
                 <ShadowSlide />
-              </SwiperSlide>
+              </div>
             </div>
-          </Swiper>
+          </div>
         </div>
       </div>
     </div>

@@ -4,8 +4,6 @@ import styles from '../../../styles/Article.module.css'
 import { api } from '../../../services/api'
 import { IconBackButton, IconNextButton, Test } from '../../atoms'
 import { useIsMobile } from '../../../utils'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation } from 'swiper'
 interface Article {
   title: string
   category: string
@@ -178,48 +176,32 @@ export default function Article({ data }: any) {
                 </div>
               </>
             )}
-            <Swiper
-              cssMode
-              navigation={{
-                nextEl: '.image-swiper-button-next-article',
-                prevEl: '.image-swiper-button-prev-article',
-              }}
-              slidesPerGroup={3}
-              slidesPerView={4}
-              spaceBetween={10}
-              breakpoints={{
-                1024: {
-                  slidesPerGroup: 3,
-                  slidesPerView: 4,
-                  spaceBetween: 10,
-                  cssMode: false,
-                },
-              }}
-              modules={[Navigation]}
-            >
-              {categoryList.map((item: any) => (
-                <SwiperSlide className={styles.slide} key={item.id}>
-                  <Category
-                    name={item.title}
-                    isActive={categoryActive === item.title}
-                    id={item.id}
-                  />
-                </SwiperSlide>
-              ))}
-              {!isMobile && (
-                <>
-                  <SwiperSlide className={styles.slide}>
-                    <ShadowSlider />
-                  </SwiperSlide>
-                  <SwiperSlide className={styles.slide}>
-                    <ShadowSlider />
-                  </SwiperSlide>
-                  <SwiperSlide className={styles.slide}>
-                    <ShadowSlider />
-                  </SwiperSlide>
-                </>
-              )}
-            </Swiper>
+            <div className="swiper mySwiperArticle">
+              <div className="swiper-wrapper">
+                {categoryList.map((item: any) => (
+                  <div className={`swiper-slide ${styles.slide}`} key={item.id}>
+                    <Category
+                      name={item.title}
+                      isActive={categoryActive === item.title}
+                      id={item.id}
+                    />
+                  </div>
+                ))}
+                {!isMobile && (
+                  <>
+                    <div className={`swiper-slide ${styles.slide}`}>
+                      <ShadowSlider />
+                    </div>
+                    <div className={`swiper-slide ${styles.slide}`}>
+                      <ShadowSlider />
+                    </div>
+                    <div className={`swiper-slide ${styles.slide}`}>
+                      <ShadowSlider />
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
           <div className={styles.collectionArticle}>
             {subArticle.slice(0, 3).map((item: any, key: number) => (
