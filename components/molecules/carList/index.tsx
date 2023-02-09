@@ -8,7 +8,6 @@ import {
   IconNextButton,
 } from '../../atoms'
 import { api } from '../../../services/api'
-import Script from 'next/script'
 import { useIsMobile } from '../../../utils'
 import {
   LocationContext,
@@ -65,7 +64,6 @@ export default function CarList({ data }: any) {
 
   return (
     <div className={styles.container}>
-      <Script src="/lazy.js" />
       <div className={styles.header}>
         <h1 className={styles.headerText}>Mobil Baru Terpopuler</h1>
         <a

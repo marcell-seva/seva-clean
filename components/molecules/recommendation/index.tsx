@@ -9,7 +9,6 @@ import {
 } from '../../atoms'
 import { api } from '../../../services/api'
 import { useIsMobile } from '../../../utils'
-import Script from 'next/script'
 import {
   LocationContext,
   LocationContextType,
@@ -64,7 +63,6 @@ export default function Recommendation({ data, categoryCar }: any) {
 
   return (
     <div className={styles.container}>
-      <Script src="/lazy.js" />
       <div className={styles.header}>
         <h1 className={styles.headerText}>Tipe Mobil Baru</h1>
         <a

@@ -31,7 +31,6 @@ export default function CarofTheMonth({ data, openModalOffering }: Props) {
 
   return (
     <div className={styles.wrapper}>
-      <Script src="/lazy.js" />
       <h1 className={styles.headerText}>SEVA Car of The Month</h1>
       <div className={styles.bundle}>
         <div className={styles.content}>

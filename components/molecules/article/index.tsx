@@ -4,7 +4,6 @@ import styles from '../../../styles/Article.module.css'
 import { api } from '../../../services/api'
 import { IconBackButton, IconNextButton, Test } from '../../atoms'
 import { useIsMobile } from '../../../utils'
-import Script from 'next/script'
 interface Article {
   title: string
   category: string
@@ -144,7 +143,6 @@ export default function Article({ data }: any) {
 
   return (
     <div className={styles.container}>
-      <Script src="/lazy.js" />
       <div className={styles.flexRowBetween}>
         <h1 className={styles.headerText}>Baca Artikel Terkini</h1>
         <a

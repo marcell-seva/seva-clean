@@ -57,7 +57,6 @@ export default function Banner({ data }: any) {
   const [isExpandForm, setIsExpandForm] = useState<boolean>(false)
   return (
     <div className={isExpandForm ? styles.containerActive : styles.container}>
-      <Script src="/lazy.js" />
       <div
         className={isExpandForm ? styles.wrapperFormActive : styles.wrapperForm}
       >

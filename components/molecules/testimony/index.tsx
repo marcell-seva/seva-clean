@@ -44,7 +44,6 @@ export default function Testimony({ data }: any) {
 
   return (
     <div className={styles.container}>
-      <Script src="/lazy.js" />
       <h1 className={styles.headerText}>Cerita Pengguna SEVA</h1>
       <div className={styles.testimonyWrapper}>
         {!isMobile && (

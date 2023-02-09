@@ -9,11 +9,11 @@ export default function Document() {
         <Main />
         <script
           src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"
-          defer
+          async
         ></script>
         <script
           src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"
-          defer
+          async
         ></script>
         <NextScript />
       </body>
