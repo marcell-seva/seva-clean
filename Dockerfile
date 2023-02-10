@@ -1,7 +1,7 @@
 FROM node:16-alpine  as dependencies
 WORKDIR /my-project
 COPY package.json package-lock.json ./
-RUN npm install --legacy-peer-deps --frozen-lockfile 
+RUN npm install  --frozen-lockfile --force
 
 FROM node:16-alpine  as builder
 WORKDIR /my-project
