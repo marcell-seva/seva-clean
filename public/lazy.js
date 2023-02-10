@@ -52,34 +52,6 @@ const swiperOptions = {
     },
   }
   
-  const swiperOptionsRecommendation = {
-    pagination: {
-      el: '.swiper-pagination',
-    },
-    navigation: {
-      nextEl: '.image-swiper-button-next-recommendation',
-      prevEl: '.image-swiper-button-prev-recommendation',
-    },
-    slidesPerGroup: 2,
-    cssMode: true,
-    slidesPerView: 3,
-    spaceBetween: 140,
-    breakpoints: {
-      1024: {
-        slidesPerGroup: 3,
-        slidesPerView: 4,
-        spaceBetween: 160,
-        cssMode: false,
-      },
-      480: {
-        slidesPerGroup: 3,
-        slidesPerView: 4,
-        spaceBetween: 140,
-        cssMode: false,
-      },
-    },
-  }
-  
   const swiperOptionsArticle = {
     pagination: {
       el: '.swiper-pagination',
@@ -129,10 +101,6 @@ const swiperOptions = {
   const eagerSwiperTestimony = new Swiper(
     '.mySwiperTestimony',
     swiperOptionsTestimony,
-  )
-  const eagerSwiperRecommendation = new Swiper(
-    '.mySwiperRecommendation',
-    swiperOptionsRecommendation,
   )
   const eagerSwiperArticle = new Swiper('.mySwiperArticle', swiperOptionsArticle)
   const eagerSwiperCarofTheMonth = new Swiper(
