@@ -395,6 +395,7 @@
 .initialUsernameText {
   height: 40px;
   width: 40px;
+  flex: none;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -403,9 +404,13 @@
   text-align: center;
   background-color: #002373;
   border-radius: 20px;
+  outline: none;
+  border: none;
+  cursor: pointer;
 }
 
 .userAuth {
+  cursor: pointer;
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -465,6 +470,43 @@
 
 .searchIcon {
   cursor: pointer;
+}
+
+.accountInfo {
+  position: absolute;
+  right: 0;
+  top: 80px;
+  z-index: 4;
+  background-color: #ffffff;
+  width: 260px;
+  border-radius: 15px;
+  padding: 8px;
+  box-shadow: rgb(3 24 56 / 20%) 0px 1px 16px;
+}
+
+.accountSelector {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  background-color: #ffffff;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 10px;
+}
+
+.accountSelector:hover {
+  background-color: #cbe5f4;
+}
+
+.accountText {
+  font-size: 16px;
+  font-family: var(--kanyon);
+  color: #52627a;
+  padding-left: 10px;
 }
 
 @media only screen and (min-width: 1024px) {

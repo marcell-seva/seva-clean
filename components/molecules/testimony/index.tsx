@@ -3,7 +3,6 @@ import styles from '../../../styles/Testimony.module.css'
 import Image from 'next/image'
 import { IconBackButton, IconNextButton, IconStar } from '../../atoms'
 import { timeSince, useIsMobile } from '../../../utils'
-import Script from 'next/script'
 
 export default function Testimony({ data }: any) {
   const isMobile = useIsMobile()
@@ -17,6 +16,7 @@ export default function Testimony({ data }: any) {
             width={360}
             height={230}
             alt="seva-testimony"
+            sizes="(max-width: 1024px) 46vw, 27vw"
             className={styles.image}
           />
           <div className={styles.wrapperInfo}>
@@ -43,7 +43,6 @@ export default function Testimony({ data }: any) {
 
   return (
     <div className={styles.container}>
-      <Script src="/lazy.js" />
       <h1 className={styles.headerText}>Cerita Pengguna SEVA</h1>
       <div className={styles.testimonyWrapper}>
         {!isMobile && (

@@ -306,10 +306,13 @@
   }
 
   .wrapperFormActive {
-    top: 5%;
+    top: 3%;
     bottom: 5%;
     height: min-content;
     box-shadow: none;
     transition: height 0.5s linear;
+  }
+  .paginationBullet {
+    margin-bottom: 10px !important;
   }
 }

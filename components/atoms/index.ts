@@ -18,6 +18,7 @@ import {
   IconBurgerMenu,
   IconArrowRight,
   IconForwardRight,
+  IconLogout,
 } from './icon'
 import Test from './test'
 import Brand from './brand'
@@ -41,6 +42,7 @@ export {
   IconUser,
   IconBurgerMenu,
   IconArrowRight,
+  IconLogout,
   Test,
   Brand,
   Logo,

@@ -4,7 +4,6 @@ import styles from '../../../styles/Article.module.css'
 import { api } from '../../../services/api'
 import { IconBackButton, IconNextButton, Test } from '../../atoms'
 import { useIsMobile } from '../../../utils'
-import Script from 'next/script'
 interface Article {
   title: string
   category: string
@@ -55,6 +54,7 @@ export default function Article({ data }: any) {
         alt="article-sub-main-image"
         width={86}
         height={86}
+        sizes="(max-width: 1024px) 12vw, 20vw"
         className={styles.subMainImage}
       />
       <div className={styles.mainInfo}>
@@ -74,6 +74,7 @@ export default function Article({ data }: any) {
         alt="article-sub-main-image"
         width={245}
         height={135}
+        sizes="(max-width: 1024px) 12vw, 20vw"
         className={styles.subMainImage}
       />
       <div className={styles.capsuleWrapper}>
@@ -142,7 +143,6 @@ export default function Article({ data }: any) {
 
   return (
     <div className={styles.container}>
-      <Script src="/lazy.js" />
       <div className={styles.flexRowBetween}>
         <h1 className={styles.headerText}>Baca Artikel Terkini</h1>
         <a

@@ -1,4 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import {
+  LocationContext,
+  LocationContextType,
+} from '../../../../services/context/locationContext'
 import styles from '../../../../styles/LocationSelector.module.css'
 import { IconCross, IconSearch } from '../../../atoms'
 
@@ -7,6 +11,9 @@ export default function LocationSelector({ data, onCloseSelector }: any) {
   const [isCrossShow, setIsCrossShow] = useState<boolean>(false)
   const [isLocationShow, setIsLocationShow] = useState<boolean>(false)
   const [city, setCity] = useState<Array<any>>([])
+  const { location, isInit, saveLocation } = useContext(
+    LocationContext,
+  ) as LocationContextType
 
   const handleChange = (payload: string) => {
     setInput(payload)
@@ -19,6 +26,12 @@ export default function LocationSelector({ data, onCloseSelector }: any) {
       filterData(payload)
     }
     filterData(payload)
+  }
+
+  const handleClick = (payload: any) => {
+    saveLocation(payload)
+    setIsLocationShow(false)
+    onCloseSelector()
   }
 
   const clearInput = () => {
@@ -55,7 +68,11 @@ export default function LocationSelector({ data, onCloseSelector }: any) {
       {isLocationShow && (
         <div className={styles.wrapperCityList}>
           {city.map((item: any) => (
-            <div key={item.id} className={styles.buttonCityList}>
+            <div
+              key={item.id}
+              className={styles.buttonCityList}
+              onClick={() => handleClick(item)}
+            >
               {item.cityName}
             </div>
           ))}
@@ -66,7 +83,7 @@ export default function LocationSelector({ data, onCloseSelector }: any) {
           type="text"
           value={input}
           className={styles.input}
-          placeholder="Jakarta Barat"
+          placeholder={isInit ? 'Jakarta Pusat' : location.cityName}
           onChange={(e) => handleChange(e.target.value)}
         />
         {isCrossShow ? (

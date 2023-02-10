@@ -11,7 +11,7 @@ export default function AnnouncementBox({ data, onCloseButton }: any) {
     <div className={styles.wrapper}>
       <Image
         src={CustomDesktopLeft}
-        width={105}
+        width={125}
         height={64}
         className={styles.iconCustomLeft}
         alt="annoucement-box-dekstop-left"

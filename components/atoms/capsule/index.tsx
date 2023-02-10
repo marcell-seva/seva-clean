@@ -1,12 +1,20 @@
 import React from 'react'
 import styles from '../../../styles/atoms/Capsule.module.css'
-interface Props {
-  name: string
+
+interface Location {
+  cityName: string
+  cityCode: string
+  id: number
+  province: string
 }
-export default function Capsule({ name }: Props) {
+interface Props {
+  item: Location
+  onClick: any
+}
+export default function Capsule({ item, onClick }: Props) {
   return (
-    <div className={styles.location}>
-      <p className={styles.locationText}>{name}</p>
-    </div>
+    <button className={styles.location} onClick={onClick}>
+      <p className={styles.locationText}>{item.cityName}</p>
+    </button>
   )
 }

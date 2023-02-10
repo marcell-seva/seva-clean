@@ -84,6 +84,8 @@
   }
 
   .iconCustomLeft {
+    width: 125px;
+    height: 64px;
     display: block;
   }
 

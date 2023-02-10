@@ -24,9 +24,10 @@ import {
   Video,
   Simple,
   AnnouncementBox,
+  LoginModal,
 } from '../components/molecules'
 import { api } from '../services/api'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import amplitude from 'amplitude-js'
 
 export default function Home({
@@ -42,16 +43,11 @@ export default function Home({
   dataCarofTheMonth,
   dataAnnouncementBox,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [modalType, setModalType] = useState<string>('')
+  const [modalType, setModalType] = useState<string>('modalOTRPrimary')
   const [isAnnouncementBoxShow, setIsAnnouncementBoxShow] =
     useState<boolean>(true)
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
 
   useEffect(() => {
-    const dataLocalUser = window.localStorage.getItem('seva-cust')
-    const userData = dataLocalUser !== null ? JSON.parse(dataLocalUser) : null
-    const isLoggedIn = userData !== null
-    setIsLoggedIn(isLoggedIn)
     amplitude.getInstance().logEvent('WEB_LANDING_PAGE_VIEW')
   }, [])
 
@@ -85,10 +81,8 @@ export default function Home({
             closeOfferingModal={() => setModalType('')}
           />
         )
-      case 'modalSearch':
-        return <Search onSearchMobileClose={() => setModalType('')} />
-      case 'modalSearch':
-        return <Search onSearchMobileClose={() => setModalType('')} />
+      case 'modalLogin':
+        return <LoginModal onCloseModal={() => setModalType('')} />
       default:
         return <></>
     }
@@ -104,8 +98,7 @@ export default function Home({
       <main className={styles.main}>
         <div className={styles.wrapperHeader}>
           <Header
-            data={dataMenu}
-            isLoggedIn={isLoggedIn}
+            dataMenu={dataMenu}
             onOpenModalOTR={() => setModalType('modalOTRSecondary')}
             onSearchClick={() => setModalType('modalSearch')}
           />
@@ -138,8 +131,11 @@ export default function Home({
           <Testimony data={dataTestimony} />
           <Article data={dataMainArticle} />
         </div>
+        <ContactUs
+          openThankyouModal={() => setModalType('modalThankyou')}
+          openLoginModal={() => setModalType('modalLogin')}
+        />
         {renderModal(modalType)}
-        <ContactUs openThankyouModal={() => setModalType('modalThankyou')} />
         <Footer />
       </main>
     </>
@@ -151,7 +147,6 @@ export async function getServerSideProps({ req, res }: any) {
     'Cache-Control',
     'public, s-maxage=10, stale-while-revalidate=59',
   )
-
   try {
     const [
       bannerRes,

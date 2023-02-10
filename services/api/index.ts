@@ -2,6 +2,8 @@ import get from './get'
 import post from './post'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { collections } from './collections'
+import { useContext } from 'react'
+import { AuthContext, AuthContextType } from '../context/authContext'
 
 // axios.interceptors.request.use(
 //   (config): AxiosRequestConfig => {
@@ -13,25 +15,55 @@ import { collections } from './collections'
 //   (error) => Promise.reject(error),
 // )
 
-// axios.interceptors.response.use(
-//   (res) => {
-//     return res
-//   },
-//   async (err) => {
-//     const originalConfig = err.config
+const getDataToken = () => {
+  const dataToken = localStorage.getItem('token')
+  const token = dataToken !== null ? JSON.parse(dataToken) : null
+  return token
+}
 
-//     if (err.response?.status === 401) {
-//       originalConfig._retry = true
-//       originalConfig.headers.Authorization = 'marcell'
-//       console.log('new', originalConfig)
+const setDataToken = (payload: any) => {
+  localStorage.setItem('token', JSON.stringify(payload))
+}
 
-//       return axios(originalConfig)
-//     }
+const requestNewToken = async (payload: any) => {
+  try {
+    const res = await api.postRefreshToken({ refreshToken: payload })
+    return res
+  } catch (error) {
+    throw error
+  }
+}
 
-//     return Promise.reject(err)
-//   },
-// )
+axios.interceptors.response.use(
+  (res) => {
+    return res
+  },
+  async (err) => {
+    const originalConfig = err.config
+    const statusCode = err.response.status
+    const dataToken = getDataToken()
 
+    if (statusCode === 400)
+      window.location.href = 'https://www.seva.id/masuk-akun'
+    else if (statusCode === 401) {
+      const userToken: any = await requestNewToken(dataToken.refreshToken)
+      setDataToken(userToken)
+      originalConfig._retry = true
+      originalConfig.headers.Authorization = userToken.idToken
+      return axios(originalConfig)
+    }
+    return Promise.reject(err)
+  },
+)
+
+const getConfigToken = () => {
+  const dataToken = localStorage.getItem('token')
+  const userToken = dataToken !== null ? JSON.parse(dataToken).idToken : null
+  const config = {
+    headers: { Authorization: userToken },
+  }
+  return config
+}
 // get request
 const getMenu = () => get(collections.utils.menu)
 const getCities = () => get(collections.utils.cities)
@@ -51,9 +83,12 @@ const getBanner = () => get(collections.utils.banner)
 const getCarofTheMonth = () => get(collections.product.carofTheMonth)
 const getAnnouncementBox = () => get(collections.utils.announcementBox)
 
+const getUserInfo = () => get(collections.auth.user, getConfigToken())
+
 // post request
 const postUnverfiedLeads = (body: any) =>
   post(collections.leads.unverified, body)
+const postRefreshToken = (body: any) => post(collections.auth.refresh, body)
 
 export const api = {
   getMenu,
@@ -68,5 +103,7 @@ export const api = {
   getBanner,
   getCarofTheMonth,
   getAnnouncementBox,
+  getUserInfo,
   postUnverfiedLeads,
+  postRefreshToken,
 }
