@@ -82,7 +82,6 @@ export default function Home({
           />
         )
       case 'modalLogin':
-        console.log('log')
         return <LoginModal onCloseModal={() => setModalType('')} />
       default:
         return <></>

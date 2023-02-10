@@ -10,7 +10,6 @@ export default function Banner({ data }: any) {
 
   const handleScroll = () => {
     const position: number = window.pageYOffset
-    console.log('pos', position)
     if (position > 470) setIsUserOnBannerScreen(false)
     else setIsUserOnBannerScreen(true)
   }

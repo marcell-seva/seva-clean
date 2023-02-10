@@ -28,7 +28,6 @@ export default function Offering({
   }
 
   const sendForm = () => {
-    console.log(form)
     openThankyouModal()
   }
 
