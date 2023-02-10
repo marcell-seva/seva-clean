@@ -26,7 +26,6 @@ export default function ContactUs({
   openLoginModal,
 }: Props) {
   const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
-  console.log('dats', userData)
   const [active, setActive] = useState<boolean>(false)
   const [form, setForm] = useState<Form>({
     name: userData === null ? '' : userData.fullName,

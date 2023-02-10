@@ -13,6 +13,10 @@ import {
   LocationContext,
   LocationContextType,
 } from '../../../services/context/locationContext'
+
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation } from 'swiper'
+import { ShimmerCardProduct } from '../../atoms/shimmer'
 interface ShadowProps {
   type: string
 }
@@ -23,8 +27,19 @@ export default function Recommendation({ data, categoryCar }: any) {
   ) as LocationContextType
   const isMobile = useIsMobile()
   const ShadowSlide = () => <div className={styles.shadowSlider}></div>
-  const [typeCar, setTypeCar] = useState<string>('MPV')
+  const [typeCarActive, setTypeCarActive] = useState<string>('MPV')
+  const [category, setCategory] = useState<any>(categoryCar)
+  const [loading, setLoading] = useState<boolean>(false)
   const [dataCar, setDataCar] = useState<any>(data)
+
+  useEffect(() => {
+    if (!isInit) {
+      const params = `?bodyType=${typeCarActive}&city=${location.cityCode}&cityId=${location.id}`
+      const paramsCategory = `?city=${location.cityCode}`
+      getRecommendationCar(params)
+      getTypeCar(paramsCategory)
+    }
+  }, [location.cityCode])
 
   const ShadowSlideWithContent = ({ type }: ShadowProps) => (
     <a href="https://www.seva.id/mobil-baru" className={styles.shadowSlider}>
@@ -37,29 +52,114 @@ export default function Recommendation({ data, categoryCar }: any) {
   )
 
   const handleClick = (payload: string) => {
-    setTypeCar(payload)
+    setTypeCarActive(payload)
     const params = isInit
       ? `?bodyType=${payload}&city=jakarta&cityId=189`
-      : `?bodyType=${payload}&city=${location.cityName}&cityId=${location.id}`
+      : `?bodyType=${payload}&city=${location.cityCode}&cityId=${location.id}`
     getRecommendationCar(params)
   }
 
-  const getRecommendationCar = async (params: string) => {
+  const getTypeCar = async (params: string) => {
     try {
-      setDataCar([])
-      const res: any = await api.getRecommendation(params)
-      setDataCar(res.carRecommendations)
+      setLoading(true)
+      const res: any = await api.getTypeCar(params)
+      setCategory(res)
     } catch (error) {
       throw error
     }
   }
 
-  useEffect(() => {
-    if (!isInit) {
-      const params = `?bodyType=${typeCar}&city=${location.cityCode}&cityId=${location.id}`
-      getRecommendationCar(params)
+  const getRecommendationCar = async (params: string) => {
+    try {
+      setLoading(true)
+      setDataCar([])
+      const res: any = await api.getRecommendation(params)
+      setDataCar(res.carRecommendations)
+      setLoading(false)
+    } catch (error) {
+      throw error
     }
-  }, [location.cityCode])
+  }
+
+  const Undefined = () => (
+    <div className={styles.undefined}>
+      <h1 className={styles.undefinedTitleText}>
+        Tipe mobil yang kamu pilih belum tersedia di kotamu.
+      </h1>
+      <p className={styles.undefinedDescText}>Silakan pilih tipe mobil lain.</p>
+    </div>
+  )
+
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <div className={styles.shimmer}>
+          <ShimmerCardProduct />
+          <ShimmerCardProduct />
+          <ShimmerCardProduct />
+          <ShimmerCardProduct />
+        </div>
+      )
+    } else if (dataCar.length !== 0) {
+      return (
+        <>
+          {!isMobile && (
+            <>
+              <div
+                className={`image-swiper-button-prev-recommendation ${styles.navigationBackButton}`}
+              >
+                <IconBackButton width={80} height={80} />
+              </div>
+              <div
+                className={`image-swiper-button-next-recommendation ${styles.navigationNextButton}`}
+              >
+                <IconNextButton width={80} height={80} />
+              </div>
+            </>
+          )}
+          <Swiper
+            navigation={{
+              nextEl: '.image-swiper-button-next-recommendation',
+              prevEl: '.image-swiper-button-prev-recommendation',
+            }}
+            slidesPerGroup={2}
+            cssMode={true}
+            slidesPerView={3}
+            spaceBetween={140}
+            breakpoints={{
+              1024: {
+                slidesPerGroup: 3,
+                slidesPerView: 4,
+                spaceBetween: 260,
+                cssMode: false,
+              },
+              480: {
+                slidesPerGroup: 3,
+                slidesPerView: 4,
+                spaceBetween: 140,
+                cssMode: false,
+              },
+            }}
+            modules={[Navigation]}
+          >
+            {dataCar.slice(0, 5).map((item: any, key: number) => (
+              <SwiperSlide key={key}>
+                <Card item={item} />
+              </SwiperSlide>
+            ))}
+            <SwiperSlide>
+              <ShadowSlideWithContent type={typeCarActive} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <ShadowSlide />
+            </SwiperSlide>
+          </Swiper>
+        </>
+      )
+    } else if (dataCar.length === 0) {
+      return <Undefined />
+    }
+  }
 
   return (
     <div className={styles.container}>
@@ -73,49 +173,18 @@ export default function Recommendation({ data, categoryCar }: any) {
         </a>
       </div>
       <div className={styles.wrapperType}>
-        {categoryCar.map((item: any, key: number) => (
+        {category.map((item: any, key: number) => (
           <TypeCar
             src={require(`../../../assets/images/typeCar/${item?.body_type}.png`)}
             key={key}
-            isActive={typeCar === item.body_type}
+            isActive={typeCarActive === item.body_type}
             onClick={() => handleClick(item.body_type)}
             name={`${item.body_type} (${item.data_count})`}
           />
         ))}
       </div>
 
-      <div className={styles.recommendationWrapper}>
-        {!isMobile && (
-          <>
-            <div
-              className={`image-swiper-button-prev-recommendation ${styles.navigationBackButton}`}
-            >
-              <IconBackButton width={80} height={80} />
-            </div>
-            <div
-              className={`image-swiper-button-next-recommendation ${styles.navigationNextButton}`}
-            >
-              <IconNextButton width={80} height={80} />
-            </div>
-          </>
-        )}
-
-        <div className="swiper mySwiperRecommendation">
-          <div className="swiper-wrapper">
-            {dataCar.slice(0, 5).map((item: any, key: number) => (
-              <div className="swiper-slide" key={key}>
-                <Card item={item} />
-              </div>
-            ))}
-            <div className="swiper-slide">
-              <ShadowSlideWithContent type={typeCar} />
-            </div>
-            <div className="swiper-slide">
-              <ShadowSlide />
-            </div>
-          </div>
-        </div>
-      </div>
+      <div className={styles.recommendationWrapper}>{renderContent()}</div>
     </div>
   )
 }

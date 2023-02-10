@@ -1,0 +1,23 @@
+.cardShimmer {
+  width: 140px;
+  height: 210px;
+  border-radius: 5px;
+  box-shadow: rgb(3 24 56 / 10%) 0px 1px 16px;
+}
+
+.cardShimmerChild {
+  margin-top: -10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+@media only screen and (min-width: 1024px) {
+  .cardShimmer {
+    width: 264px;
+    height: 350px;
+  }
+
+  .cardShimmerChild {
+    margin: 10px 15px;
+  }
+}

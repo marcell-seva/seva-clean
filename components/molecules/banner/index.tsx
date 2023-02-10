@@ -5,9 +5,20 @@ import Script from 'next/script'
 import TagManager from 'react-gtm-module'
 import Widget from '../widget'
 export default function Banner({ data }: any) {
+  const [isUserOnBannerScreen, setIsUserOnBannerScreen] =
+    useState<boolean>(false)
+
+  const handleScroll = () => {
+    const position: number = window.pageYOffset
+    console.log('pos', position)
+    if (position > 470) setIsUserOnBannerScreen(false)
+    else setIsUserOnBannerScreen(true)
+  }
+
   useEffect(() => {
-    if (data.length > 0) {
-      data.map((item: any) => pushDataLayerInit(item))
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
     }
   }, [])
 
