@@ -130,7 +130,7 @@ export default function Recommendation({ data, categoryCar }: any) {
               1024: {
                 slidesPerGroup: 3,
                 slidesPerView: 4,
-                spaceBetween: 260,
+                spaceBetween: 100,
                 cssMode: false,
               },
               480: {

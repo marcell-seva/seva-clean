@@ -106,6 +106,7 @@
   font-size: 12px;
   font-weight: bold;
   padding: 10px;
+  font-family: var(--open-sans);
   background-color: transparent;
   cursor: pointer;
 }

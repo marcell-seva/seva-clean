@@ -284,6 +284,7 @@
   align-items: center;
   padding: 16px;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .titleText {
@@ -321,12 +322,21 @@
   padding: 20px 0px;
   border-bottom: 0.5px solid #e4e9f1;
   align-items: center;
+  cursor: pointer;
 }
 
 .childTitleText {
   font-size: 16px;
   font-family: var(--kanyon-bold);
   color: #002373;
+  padding-left: 10px;
+  text-decoration: none;
+}
+
+.subChildTitleText {
+  font-size: 16px;
+  font-family: var(--kanyon-bold);
+  color: #404040;
   padding-left: 10px;
   text-decoration: none;
 }
@@ -353,6 +363,7 @@
   align-items: center;
   padding: 20px 16px;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .authSection {
@@ -361,6 +372,7 @@
   justify-content: center;
   align-items: center;
   padding: 20px;
+  margin-bottom: 15px;
 }
 
 .initialAuthMain {
@@ -507,6 +519,10 @@
   font-family: var(--kanyon);
   color: #52627a;
   padding-left: 10px;
+}
+
+.iconBurger {
+  cursor: pointer;
 }
 
 @media only screen and (min-width: 1024px) {

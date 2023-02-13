@@ -7,14 +7,14 @@ interface User {
   phoneNumber: string
   fullName: string
   gender: string
-  dob: string
+  dob: any
   email: string
   createdAt: string
   updatedAt: string
   registType: any
   alreadyLogin: boolean
   marital: string
-  promoSubscription: boolean
+  promoSubscription: any
   temanSevaTrxCode: any
   customerUuid: any
   isSales: boolean

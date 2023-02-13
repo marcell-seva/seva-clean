@@ -12,7 +12,7 @@ import {
 } from '../../../services/context/authContext'
 
 interface Form {
-  name: string
+  name: string | undefined
   phone: any
   whatsapp: boolean
 }
@@ -28,10 +28,21 @@ export default function ContactUs({
   const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
   const [active, setActive] = useState<boolean>(false)
   const [form, setForm] = useState<Form>({
-    name: userData === null ? '' : userData.fullName,
-    phone: userData === null ? '' : userData.phoneNumber,
+    name: '',
+    phone: '',
     whatsapp: false,
   })
+
+  useEffect(() => {
+    if (userData !== null) {
+      const parsedPhone = userData.phoneNumber.toString().replace('+62', '')
+      setForm((prevState: any) => ({ ...prevState, name: userData.fullName }))
+      setForm((prevState: any) => ({
+        ...prevState,
+        phone: parseInt(parsedPhone),
+      }))
+    }
+  }, [userData])
 
   const handleChange = (indexKey: string, payload: string | boolean) => {
     setForm((prevState: any) => ({ ...prevState, [indexKey]: payload }))
@@ -81,7 +92,8 @@ export default function ContactUs({
   }
 
   useEffect(() => {
-    setActive(form.name !== '' && form.phone.length > 3)
+    if (isLoggedIn) setActive(true)
+    else setActive(form.name !== '' && form.phone.length > 3)
   }, [form])
 
   const validateForm = () => {
@@ -119,8 +131,9 @@ export default function ContactUs({
             </div>
             <input
               className={`inputNumber ${styles.input}`}
-              placeholder="Contoh : 81212345678"
+              value={form.phone}
               type="number"
+              placeholder="Contoh : 81212345678"
               onChange={(e) => handleChange('phone', e.target.value)}
             />
           </div>

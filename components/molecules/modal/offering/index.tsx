@@ -1,8 +1,18 @@
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styles from '../../../../styles/Offering.module.css'
 import { IconCross } from '../../../atoms'
 import FlagIndonesia from '../../../../assets/images/flagIndonesia.png'
+import {
+  AuthContext,
+  AuthContextType,
+} from '../../../../services/context/authContext'
+import amplitude from 'amplitude-js'
+import { CarContext } from '../../../../services/context'
+import { CarContextType } from '../../../../services/context/carContext'
+import TagManager from 'react-gtm-module'
+import { api } from '../../../../services/api'
+
 interface Form {
   name: string
   phone: any
@@ -10,13 +20,18 @@ interface Form {
 }
 interface Props {
   openThankyouModal: any
+  openLoginModal: any
   closeOfferingModal: any
 }
+
 export default function Offering({
   openThankyouModal,
+  openLoginModal,
   closeOfferingModal,
 }: Props) {
+  const { car } = useContext(CarContext) as CarContextType
   const [active, setActive] = useState<boolean>(false)
+  const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
   const [form, setForm] = useState<Form>({
     name: '',
     phone: 0,
@@ -28,13 +43,45 @@ export default function Offering({
   }
 
   const sendForm = () => {
-    console.log(form)
-    openThankyouModal()
+    if (isLoggedIn) {
+      sendUnverifiedLeads()
+    } else openLoginModal()
+  }
+
+  const sendUnverifiedLeads = () => {
+    const data = {
+      contactType: form.whatsapp ? 'whatsapp' : 'phone',
+      maxDp: 30000000, // uniq masalah dp, utm , dan token
+      name: form.name,
+      phoneNumber: `+62${form.phone}`,
+      adSet: null,
+      utmCampaign: null,
+      utmContent: null,
+      utmId: null,
+      utmMedium: null,
+      utmSource: null,
+      utmTerm: null,
+    }
+    try {
+      api.postUnverfiedLeads(data)
+      openThankyouModal()
+      sendAmplitude(car)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const sendAmplitude = (car: any) => {
+    amplitude.getInstance().logEvent('WEB_CAR_OF_THE_MONTH_LEADS_FORM_SUBMIT', {
+      Car_Brand: car.model.carModel.brand,
+      Car_Model: car.model.carModel.model,
+    })
   }
 
   useEffect(() => {
     setActive(form.name !== '' && form.phone.length > 3)
   }, [form])
+
   return (
     <div className={styles.modal}>
       <div className={styles.wrapper}>

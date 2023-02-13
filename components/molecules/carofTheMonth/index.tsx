@@ -1,13 +1,18 @@
 import Image from 'next/image'
 import Script from 'next/script'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { CarContext } from '../../../services/context'
+import { CarContextType } from '../../../services/context/carContext'
 import styles from '../../../styles/carofTheMonth.module.css'
 import { IconForwardRight } from '../../atoms'
 interface Props {
   data: any
-  openModalOffering: React.ButtonHTMLAttributes<HTMLButtonElement>['onClick']
+  openModalOffering: any
 }
+import amplitude from 'amplitude-js'
+
 export default function CarofTheMonth({ data, openModalOffering }: Props) {
+  const { saveCar } = useContext(CarContext) as CarContextType
   const [activeType, setActiveType] = useState<string>('Toyota')
   const [info, setInfo] = useState(data[0])
 
@@ -29,6 +34,17 @@ export default function CarofTheMonth({ data, openModalOffering }: Props) {
     else setInfo(data[0])
   }
 
+  const handleClickDetails = () => {
+    amplitude.getInstance().logEvent('WEB_LP_CAROFTHEMONTH_CAR_CLICK', {
+      Car_Brand: info.model.carModel.brand,
+      Car_Model: info.model.carModel.model,
+    })
+  }
+
+  const handleModalOffering = () => {
+    saveCar(info)
+    openModalOffering()
+  }
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.headerText}>SEVA Car of The Month</h1>
@@ -101,11 +117,14 @@ export default function CarofTheMonth({ data, openModalOffering }: Props) {
             </p>
           </div>
           <div className={styles.wrapperButton}>
-            <a href={info.model.url} className={styles.buttonDetail}>
+            <a
+              className={styles.buttonDetail}
+              onClick={() => handleClickDetails()}
+            >
               LIHAT RINCIAN
             </a>
             <button
-              onClick={openModalOffering}
+              onClick={() => handleModalOffering()}
               className={styles.buttonOffering}
             >
               MINTA PENAWARAN

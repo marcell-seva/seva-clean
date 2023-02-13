@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import TagManager from 'react-gtm-module'
 import { api } from '../../../services/api'
 import { trackGAContact, trackGALead } from '../../../services/googleAds'
@@ -7,8 +7,11 @@ import styles from '../../../styles/Widget.module.css'
 import { useComponentVisible } from '../../../utils'
 import { IconChevronDown, IconChevronUp } from '../../atoms'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
+import { AuthContext } from '../../../services/context'
+import { AuthContextType } from '../../../services/context/authContext'
 
 export default function Widget({ expandForm }: any) {
+  const { userData } = useContext(AuthContext) as AuthContextType
   const carListUrl = 'https://seva.id/mobil-baru'
   const [form, setForm] = useState<any>({
     tenure: '5',
@@ -16,7 +19,7 @@ export default function Widget({ expandForm }: any) {
 
   const { innerBorderRef } = useComponentVisible(() => setSelectorActive(''))
 
-  const [phone, setPhone] = useState('')
+  const [phone, setPhone] = useState<string | number>('')
   const [selectorActive, setSelectorActive] = useState<string>('')
   const [isDetailShow, setIsDetailShow] = useState<boolean>(false)
   const selectorData = {
@@ -30,6 +33,14 @@ export default function Widget({ expandForm }: any) {
     ],
     age: ['18-27', '29-34', '25-50', '>51'],
   }
+
+  useEffect(() => {
+    console.log('datas', userData)
+    if (userData !== null) {
+      const parsedPhone = userData.phoneNumber.toString().replace('+62', '')
+      setPhone(parseInt(parsedPhone))
+    }
+  }, [userData])
 
   const getNumber = (num: number) => {
     const lookup = [
@@ -95,7 +106,7 @@ export default function Widget({ expandForm }: any) {
   }
 
   const execUnverifiedLeads = (payload: any) => {
-    const isValidPhoneNumber = phone.length > 3
+    const isValidPhoneNumber = phone.toString().length > 3
 
     if (isValidPhoneNumber) {
       trackGALead()

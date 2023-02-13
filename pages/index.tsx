@@ -75,6 +75,7 @@ export default function Home({
       case 'modalOffering':
         return (
           <Offering
+            openLoginModal={() => setModalType('modalLogin')}
             openThankyouModal={() => {
               setModalType('modalThankyou')
             }}
