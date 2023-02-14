@@ -22,10 +22,16 @@ interface User {
   isCrmCustomer: boolean
 }
 
+interface DP {
+  downPaymentAmount: string
+  downPaymentType: string
+}
 export type AuthContextType = {
+  isLoggedIn: boolean
+  dp: string
   userData: User | null
   saveAuthData: (data: User) => void
-  isLoggedIn: boolean
+  saveDp: (data: string) => void
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -36,9 +42,15 @@ const getDataToken = () => {
   return token
 }
 
+const getDataDp = () => {
+  const dataDp = localStorage.getItem('filter')
+  const dp = dataDp !== null ? JSON.parse(dataDp) : null
+  return dp
+}
 export const AuthProvider = ({ children }: any) => {
   const [userData, setUserData] = useState<User | null>(null)
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+  const [dp, setDp] = useState<string>('')
 
   const getUserInfo = async () => {
     try {
@@ -54,18 +66,29 @@ export const AuthProvider = ({ children }: any) => {
 
   useEffect(() => {
     const dataToken = getDataToken()
+    const dataDp = getDataDp()
     setIsLoggedIn(dataToken !== null)
-    if (dataToken !== null) {
-      getUserInfo()
-    }
+    if (dataToken !== null) getUserInfo()
+    if (dataDp !== null) setDp(dataDp.downPaymentAmount)
   }, [])
 
   const saveAuthData = (auth: User) => {
     setUserData(auth)
   }
 
+  const saveDp = (payload: string) => {
+    const data = {
+      downPaymentAmount: payload,
+      downPaymentType: 'amount',
+    }
+    localStorage.setItem('filter', JSON.stringify(data))
+    setDp(payload)
+  }
+
   return (
-    <AuthContext.Provider value={{ userData, saveAuthData, isLoggedIn }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, userData, saveAuthData, dp, saveDp }}
+    >
       {children}
     </AuthContext.Provider>
   )

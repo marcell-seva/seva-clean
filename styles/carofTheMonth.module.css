@@ -94,8 +94,8 @@
   border: 0.5px solid #ffffff;
   color: #ffffff;
   font-size: 12px;
-  font-weight: bold;
   padding: 10px;
+  font-family: var(--open-sans-semi-bold);
   background-color: transparent;
 }
 
@@ -104,9 +104,8 @@
   border: 0.5px solid #ffffff;
   color: #ffffff;
   font-size: 12px;
-  font-weight: bold;
   padding: 10px;
-  font-family: var(--open-sans);
+  font-family: var(--open-sans-semi-bold);
   background-color: transparent;
   cursor: pointer;
 }

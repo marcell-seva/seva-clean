@@ -79,8 +79,17 @@
   border-radius: 0px 0px 5px 5px;
   margin: 0px 15px;
   padding: 15px 16px;
-  height: 155px;
   background-color: #f2f5f9;
+  /**Major Properties**/
+  overflow: hidden;
+  height: 155px;
+  max-height: 155px;
+  -webkit-box-orient: vertical;
+  display: block;
+  display: -webkit-box;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 7;
 }
 
 .navigation {
@@ -161,5 +170,9 @@
   .shadowSlide {
     width: 360px;
     height: 350px;
+  }
+
+  .desc {
+    -webkit-line-clamp: 6;
   }
 }

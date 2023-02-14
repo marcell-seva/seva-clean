@@ -118,6 +118,7 @@ export default function CarofTheMonth({ data, openModalOffering }: Props) {
           </div>
           <div className={styles.wrapperButton}>
             <a
+              href={info.model.url}
               className={styles.buttonDetail}
               onClick={() => handleClickDetails()}
             >

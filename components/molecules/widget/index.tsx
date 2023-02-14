@@ -11,14 +11,13 @@ import { AuthContext } from '../../../services/context'
 import { AuthContextType } from '../../../services/context/authContext'
 
 export default function Widget({ expandForm }: any) {
-  const { userData } = useContext(AuthContext) as AuthContextType
+  const { userData, dp, saveDp } = useContext(AuthContext) as AuthContextType
+  const [isFieldError, setIsFieldError] = useState<boolean>(false)
   const carListUrl = 'https://seva.id/mobil-baru'
   const [form, setForm] = useState<any>({
     tenure: '5',
   })
-
   const { innerBorderRef } = useComponentVisible(() => setSelectorActive(''))
-
   const [phone, setPhone] = useState<string | number>('')
   const [selectorActive, setSelectorActive] = useState<string>('')
   const [isDetailShow, setIsDetailShow] = useState<boolean>(false)
@@ -35,12 +34,12 @@ export default function Widget({ expandForm }: any) {
   }
 
   useEffect(() => {
-    console.log('datas', userData)
     if (userData !== null) {
       const parsedPhone = userData.phoneNumber.toString().replace('+62', '')
       setPhone(parseInt(parsedPhone))
     }
-  }, [userData])
+    if (dp !== '') setForm((prevState: any) => ({ ...prevState, dp: dp }))
+  }, [userData, dp])
 
   const getNumber = (num: number) => {
     const lookup = [
@@ -74,35 +73,66 @@ export default function Widget({ expandForm }: any) {
     </button>
   )
 
-  const SelectorList = ({ placeholder, onClick, indexKey }: any) => (
-    <button className={styles.selector} onClick={onClick}>
-      <input
-        className={styles.placeholderText}
-        type="text"
-        disabled
-        placeholder={placeholder}
-        value={
-          indexKey === 'dp' && form[indexKey] !== undefined
-            ? getNumber(form[indexKey])
-            : form[indexKey]
-        }
-      />
-      {selectorActive === indexKey ? (
-        <IconChevronUp width={15} height={15} color="#002373" />
-      ) : (
-        <IconChevronDown width={15} height={15} />
-      )}
-    </button>
-  )
+  const SelectorList = ({ placeholder, onClick, indexKey, isError }: any) => {
+    if (isError) {
+      return (
+        <div>
+          <button className={styles.selectorError} onClick={onClick}>
+            <input
+              className={styles.placeholderText}
+              type="text"
+              disabled
+              placeholder={placeholder}
+              value={
+                indexKey === 'dp' && form[indexKey] !== undefined
+                  ? getNumber(form[indexKey])
+                  : form[indexKey]
+              }
+            />
+            {selectorActive === indexKey ? (
+              <IconChevronUp width={15} height={15} color="#e01f29" />
+            ) : (
+              <IconChevronDown width={15} height={15} color="#e01f29" />
+            )}
+          </button>
+          <p className={styles.infoErrorText}>* Wajib diisi</p>
+        </div>
+      )
+    } else {
+      return (
+        <button className={styles.selector} onClick={onClick}>
+          <input
+            className={styles.placeholderText}
+            type="text"
+            disabled
+            placeholder={placeholder}
+            value={
+              indexKey === 'dp' && form[indexKey] !== undefined
+                ? getNumber(form[indexKey])
+                : form[indexKey]
+            }
+          />
+          {selectorActive === indexKey ? (
+            <IconChevronUp width={15} height={15} color="#002373" />
+          ) : (
+            <IconChevronDown width={15} height={15} />
+          )}
+        </button>
+      )
+    }
+  }
 
   const sendRequest = () => {
-    setForm((prevState: any) => ({
-      ...prevState,
-      phone: phone,
-    }))
-    execUnverifiedLeads(form)
-    pushDataLayerOnClick()
-    window.location.href = carListUrl
+    if (form.dp === undefined) setIsFieldError(true)
+    else {
+      setForm((prevState: any) => ({
+        ...prevState,
+        phone: phone,
+      }))
+      execUnverifiedLeads(form)
+      pushDataLayerOnClick()
+      window.location.href = carListUrl
+    }
   }
 
   const execUnverifiedLeads = (payload: any) => {
@@ -166,6 +196,10 @@ export default function Widget({ expandForm }: any) {
             key={key}
             className={styles.buttonIncome}
             onClick={() => {
+              if (indexKey === 'dp') {
+                setIsFieldError(false)
+                saveDp(item.toString())
+              }
               setSelectorActive('')
               setForm((prevState: any) => ({ ...prevState, [indexKey]: item }))
             }}
@@ -190,7 +224,10 @@ export default function Widget({ expandForm }: any) {
           <SelectorList
             placeholder=">Rp 350 Jt"
             indexKey="dp"
-            onClick={() => handleClickDP('dp')}
+            isError={isFieldError}
+            onClick={() => {
+              handleClickDP('dp')
+            }}
           />
           {selectorActive === 'dp' && (
             <DetailList indexKey="dp" data={selectorData.dp} />

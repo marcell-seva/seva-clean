@@ -15,6 +15,12 @@
   margin: auto;
 }
 
+.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+}
+
 @media only screen and (min-width: 1024px) {
   .wrapperPrimary {
     max-width: 1120px;

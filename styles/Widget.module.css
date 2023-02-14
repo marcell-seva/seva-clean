@@ -155,10 +155,50 @@
   border: 0.3px solid #52627a;
   height: 40px;
   width: 100%;
-
   border-radius: 5px;
   position: relative;
   outline: none;
+}
+
+.selectorError {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 5px;
+  border: 0.3px solid #e01f29;
+  height: 40px;
+  width: 100%;
+  border-radius: 5px;
+  position: relative;
+  outline: none;
+  animation: horizontal-shaking 0.35s ease-in-out 0s 2;
+}
+
+.infoErrorText {
+  font-family: var(--open-sans);
+  font-size: 10px;
+  color: #e01f29;
+  padding-top: 4px;
+}
+
+@keyframes horizontal-shaking {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(5px);
+  }
+  50% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .list {

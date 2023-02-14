@@ -25,7 +25,9 @@ export default function ContactUs({
   openThankyouModal,
   openLoginModal,
 }: Props) {
-  const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
+  const { isLoggedIn, userData, dp } = useContext(
+    AuthContext,
+  ) as AuthContextType
   const [active, setActive] = useState<boolean>(false)
   const [form, setForm] = useState<Form>({
     name: '',
@@ -54,10 +56,9 @@ export default function ContactUs({
     sendUnverifiedLeads(form)
   }
 
-  const sendUnverifiedLeads = (payload: any) => {
-    const data = {
+  const generateLeadsData = (payload: any) => {
+    const data: any = {
       contactType: payload.whatsapp ? 'whatsapp' : 'phone',
-      maxDp: 30000000, // uniq masalah dp, utm , dan token
       name: payload.name,
       phoneNumber: `+62${payload.phone}`,
       origination: 'Homepage - Hubungi Kami',
@@ -69,6 +70,11 @@ export default function ContactUs({
       utmSource: null,
       utmTerm: null,
     }
+    if (dp !== '') data.maxDp = parseInt(dp)
+    return data
+  }
+  const sendUnverifiedLeads = (payload: any) => {
+    const data = generateLeadsData(payload)
     try {
       api.postUnverfiedLeads(data)
       openThankyouModal()
@@ -97,7 +103,7 @@ export default function ContactUs({
   }, [form])
 
   const validateForm = () => {
-    if (active && isLoggedIn) sendForm()
+    if (active && !isLoggedIn) sendForm()
     else if (active && !isLoggedIn) openLoginModal()
   }
 

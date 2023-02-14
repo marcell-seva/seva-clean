@@ -29,6 +29,7 @@ import {
 import { api } from '../services/api'
 import { useContext, useEffect, useState } from 'react'
 import amplitude from 'amplitude-js'
+import { useIsMobile } from '../utils'
 
 export default function Home({
   dataBanner,
@@ -43,6 +44,7 @@ export default function Home({
   dataCarofTheMonth,
   dataAnnouncementBox,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const isMobile = useIsMobile()
   const [modalType, setModalType] = useState<string>('modalOTRPrimary')
   const [isAnnouncementBoxShow, setIsAnnouncementBoxShow] =
     useState<boolean>(true)
@@ -104,15 +106,23 @@ export default function Home({
             onOpenModalOTR={() => setModalType('modalOTRSecondary')}
             onSearchClick={() => setModalType('modalSearch')}
           />
-          {isAnnouncementBoxShow && (
+          <LocationList onClick={() => setModalType('modalLocationList')} />
+          {!isMobile && isAnnouncementBoxShow && (
             <AnnouncementBox
               data={dataAnnouncementBox}
               onCloseButton={() => setIsAnnouncementBoxShow(false)}
             />
           )}
         </div>
+        {isAnnouncementBoxShow && isMobile && (
+          <div className={styles.sticky}>
+            <AnnouncementBox
+              data={dataAnnouncementBox}
+              onCloseButton={() => setIsAnnouncementBoxShow(false)}
+            />
+          </div>
+        )}
         <Floating onClickImage={() => setModalType('modalVideo')} />
-        <LocationList onClick={() => setModalType('modalLocationList')} />
         <div
           className={
             isAnnouncementBoxShow

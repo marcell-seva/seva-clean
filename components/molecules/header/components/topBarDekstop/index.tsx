@@ -94,6 +94,7 @@ export default function TopBarDesktop() {
     localStorage.removeItem('token')
     localStorage.removeItem('customerId')
     localStorage.removeItem('seva-cust')
+    localStorage.removeItem('filter')
     sessionStorage.removeItem('customerId')
 
     destroySessionMoEngage()

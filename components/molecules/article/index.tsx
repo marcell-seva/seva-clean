@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import styles from '../../../styles/Article.module.css'
 import { api } from '../../../services/api'
-import { IconBackButton, IconNextButton, Test } from '../../atoms'
+import {
+  IconBackButton,
+  IconNextButton,
+  ShimmerCardArticle,
+  Test,
+} from '../../atoms'
 import { useIsMobile } from '../../../utils'
 interface Article {
   title: string
@@ -40,6 +45,7 @@ export default function Article({ data }: any) {
   const ShadowSlider = () => <div className={styles.shadowSlider}></div>
   const getArticleByCategory = async (payload: string) => {
     try {
+      setSubArticle([])
       const res = await api.getSubArticle(payload)
       setSubArticle(res)
     } catch (error) {
@@ -141,6 +147,27 @@ export default function Article({ data }: any) {
     </button>
   )
 
+  const renderSubArticle = () => {
+    if (subArticle.length === 0) {
+      return (
+        <div className={styles.shimmerWrapper}>
+          <ShimmerCardArticle />
+          <ShimmerCardArticle />
+          <ShimmerCardArticle />
+          <ShimmerCardArticle />
+        </div>
+      )
+    } else if (isMobile && subArticle.length > 0) {
+      return subArticle
+        .slice(0, 3)
+        .map((item: any, key: number) => <ItemMobile key={key} item={item} />)
+    } else {
+      return subArticle
+        .slice(0, 4)
+        .map((item: any, key: number) => <ItemDekstop key={key} item={item} />)
+    }
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.flexRowBetween}>
@@ -203,15 +230,7 @@ export default function Article({ data }: any) {
               </div>
             </div>
           </div>
-          <div className={styles.collectionArticle}>
-            {subArticle.slice(0, 3).map((item: any, key: number) => (
-              <ItemMobile key={key} item={item} />
-            ))}
-            {/* desktop */}
-            {subArticle.slice(0, 4).map((item: any, key: number) => (
-              <ItemDekstop key={key} item={item} />
-            ))}
-          </div>
+          <div className={styles.collectionArticle}>{renderSubArticle()}</div>
         </div>
       </div>
     </div>

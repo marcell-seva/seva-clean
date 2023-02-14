@@ -23,6 +23,8 @@ import {
 import Test from './test'
 import Brand from './brand'
 import Logo from './logo'
+import { ShimmerCardArticle, ShimmerCardProduct } from './shimmer'
+
 export {
   Card,
   TypeCar,
@@ -47,4 +49,6 @@ export {
   Brand,
   Logo,
   IconForwardRight,
+  ShimmerCardProduct,
+  ShimmerCardArticle,
 }
