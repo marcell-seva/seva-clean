@@ -30,6 +30,7 @@ export default function Offering({
   closeOfferingModal,
 }: Props) {
   const { car } = useContext(CarContext) as CarContextType
+  const { dp } = useContext(AuthContext) as AuthContextType
   const [active, setActive] = useState<boolean>(false)
   const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
   const [form, setForm] = useState<Form>({
@@ -44,16 +45,16 @@ export default function Offering({
 
   const sendForm = () => {
     if (isLoggedIn) {
-      sendUnverifiedLeads()
+      sendUnverifiedLeads(form)
     } else openLoginModal()
   }
 
-  const sendUnverifiedLeads = () => {
-    const data = {
-      contactType: form.whatsapp ? 'whatsapp' : 'phone',
-      maxDp: 30000000, // uniq masalah dp, utm , dan token
-      name: form.name,
-      phoneNumber: `+62${form.phone}`,
+  const generateLeadsData = (payload: any) => {
+    const data: any = {
+      contactType: payload.whatsapp ? 'whatsapp' : 'phone',
+      name: payload.name,
+      phoneNumber: `+62${payload.phone}`,
+      origination: 'Homepage - Hubungi Kami',
       adSet: null,
       utmCampaign: null,
       utmContent: null,
@@ -62,6 +63,12 @@ export default function Offering({
       utmSource: null,
       utmTerm: null,
     }
+    if (dp !== '') data.maxDp = parseInt(dp)
+    return data
+  }
+
+  const sendUnverifiedLeads = (payload: any) => {
+    const data = generateLeadsData(payload)
     try {
       api.postUnverfiedLeads(data)
       openThankyouModal()

@@ -1,11 +1,13 @@
 .container {
   position: relative;
-  height: 500px;
+  height: 510px;
+  transition: height 0.2s;
 }
 
 .containerActive {
   position: relative;
   height: 580px;
+  transition: height 0.2s;
 }
 
 .banner {
@@ -209,17 +211,17 @@
 
 .wrapperForm {
   position: absolute;
-  top: 40.6%;
-  z-index: 2;
+  top: 200px;
   margin: 20px;
+  z-index: 2;
   box-shadow: rgb(3 24 56 / 10%) 0px 1px 16px;
 }
 
 .wrapperFormActive {
   position: absolute;
-  top: 35%;
-  z-index: 2;
+  top: 200px;
   margin: 20px;
+  z-index: 2;
   box-shadow: rgb(3 24 56 / 10%) 0px 1px 16px;
 }
 
@@ -298,19 +300,17 @@
   }
 
   .wrapperForm {
-    top: 10%;
-    bottom: 10%;
+    top: 55px;
     height: max-content;
     box-shadow: none;
-    transition: height 0.5s linear;
+    transition: top 0.5s, bottom 0.5s;
   }
 
   .wrapperFormActive {
-    top: 3%;
-    bottom: 5%;
+    top: 15px;
     height: min-content;
     box-shadow: none;
-    transition: height 0.5s linear;
+    transition: top 0.5s, bottom 0.5s;
   }
   .paginationBullet {
     margin-bottom: 10px !important;

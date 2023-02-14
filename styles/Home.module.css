@@ -18,7 +18,7 @@
 .sticky {
   position: sticky;
   top: 0;
-  z-index: 4;
+  z-index: 3;
 }
 
 @media only screen and (min-width: 1024px) {

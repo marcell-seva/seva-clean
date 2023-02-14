@@ -173,7 +173,7 @@
   border-radius: 5px;
   position: relative;
   outline: none;
-  animation: horizontal-shaking 0.35s ease-in-out 0s 2;
+  animation: horizontal-shaking 0.35s 1;
 }
 
 .infoErrorText {

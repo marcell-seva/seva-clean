@@ -214,21 +214,16 @@ export default function TopBarMobile({ data, onSearchClick }: any) {
               {data.map((item: any, key: number) => {
                 if (key === 3) {
                   return (
-                    <>
+                    <div key={key}>
                       <a
-                        key={key}
                         className={styles.mainSelector}
                         href={redirectCouponUrl}
                       >
                         <p className={styles.titleText}>Promo</p>
                         <IconChevrongRight width={13} height={13} />
                       </a>
-                      <ListSideBarMenu
-                        key={key}
-                        item={item}
-                        isNew={item.toggleNew}
-                      />
-                    </>
+                      <ListSideBarMenu item={item} isNew={item.toggleNew} />
+                    </div>
                   )
                 } else
                   return (
