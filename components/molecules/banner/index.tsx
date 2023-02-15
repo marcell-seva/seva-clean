@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { lazy, useEffect, useState } from 'react'
 import styles from '../../../styles/Banner.module.css'
 import Image from 'next/image'
 import Script from 'next/script'
 import TagManager from 'react-gtm-module'
 import Widget from '../widget'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Autoplay, Navigation } from 'swiper'
+import LazyLoad from 'vanilla-lazyload'
 export default function Banner({ data }: any) {
+  const [isExpandForm, setIsExpandForm] = useState<boolean>(false)
   const [isUserOnBannerScreen, setIsUserOnBannerScreen] =
     useState<boolean>(false)
 
@@ -62,8 +66,31 @@ export default function Banner({ data }: any) {
       },
     })
   }
+  const swiperOptions = {
+    loop: true,
+    pagination: {
+      el: '.swiper-pagination',
+    },
+    autoplay: {
+      delay: 8000,
+    },
+    cssMode: true,
+    breakpoints: {
+      1024: {
+        cssMode: false,
+      },
+    },
+    on: {
+      // LazyLoad swiper images after swiper initialization
+      afterInit: (swiper: any) => {
+        new LazyLoad({
+          container: swiper.el,
+          cancel_on_exit: false,
+        })
+      },
+    },
+  }
 
-  const [isExpandForm, setIsExpandForm] = useState<boolean>(false)
   return (
     <div className={isExpandForm ? styles.containerActive : styles.container}>
       <Script src="/lazy.js" />
@@ -73,12 +100,28 @@ export default function Banner({ data }: any) {
         <Widget expandForm={() => setIsExpandForm(!isExpandForm)} />
       </div>
       <div className={styles.wrapperMobile}>
-        <div className="swiper mySwiper">
-          <div className="swiper-wrapper">
-            {data.map((item: any, key: number) => {
-              if (key === 0) {
-                return (
-                  <a href={item.url} className="swiper-slide" key={key}>
+        <Swiper
+          cssMode={true}
+          pagination={{
+            el: '.swiper-pagination',
+          }}
+          autoplay={{ delay: 8000 }}
+          modules={[Autoplay]}
+          breakpoints={{ 1024: { cssMode: false } }}
+          on={{
+            afterInit: (swiper: any) => {
+              new LazyLoad({
+                container: swiper.el,
+                cancel_on_exit: false,
+              })
+            },
+          }}
+        >
+          {data.map((item: any, key: number) => {
+            if (key === 0) {
+              return (
+                <SwiperSlide key={key}>
+                  <a href={item.url}>
                     <Image
                       src={item.attribute.web_mobile}
                       width={480}
@@ -89,10 +132,12 @@ export default function Banner({ data }: any) {
                       className={`swiper-lazy ${styles.banner}`}
                     />
                   </a>
-                )
-              } else {
-                return (
-                  <a href={item.url} className="swiper-slide" key={key}>
+                </SwiperSlide>
+              )
+            } else {
+              return (
+                <SwiperSlide key={key}>
+                  <a href={item.url}>
                     <Image
                       src={item.attribute.web_mobile}
                       width={480}
@@ -102,21 +147,35 @@ export default function Banner({ data }: any) {
                       className={`swiper-lazy ${styles.banner}`}
                     />
                   </a>
-                )
-              }
-            })}
-          </div>
+                </SwiperSlide>
+              )
+            }
+          })}
           <div className={`swiper-pagination ${styles.paginationBullet}`}></div>
-        </div>
+        </Swiper>
       </div>
       <div className={styles.wrapperDesktop}>
-        <div className="swiper mySwiper">
-          <div className="swiper-wrapper">
-            {data.map((item: any, key: number) => (
+        <Swiper
+          cssMode={true}
+          pagination={{
+            el: '.swiper-pagination',
+          }}
+          autoplay={{ delay: 8000 }}
+          modules={[Autoplay]}
+          breakpoints={{ 1024: { cssMode: false } }}
+          on={{
+            afterInit: (swiper: any) => {
+              new LazyLoad({
+                container: swiper.el,
+                cancel_on_exit: false,
+              })
+            },
+          }}
+        >
+          {data.map((item: any, key: number) => (
+            <SwiperSlide key={key}>
               <a
                 href={item.url}
-                className="swiper-slide"
-                key={key}
                 onClick={() => pushDataLayerWidgetOnClick(key)}
               >
                 <Image
@@ -128,10 +187,10 @@ export default function Banner({ data }: any) {
                   className={`lazy-loader swiper-lazy ${styles.banner}`}
                 />
               </a>
-            ))}
-          </div>
+            </SwiperSlide>
+          ))}
           <div className="swiper-pagination"></div>
-        </div>
+        </Swiper>
       </div>
     </div>
   )
