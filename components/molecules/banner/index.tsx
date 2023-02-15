@@ -1,7 +1,6 @@
 import React, { lazy, useEffect, useState } from 'react'
 import styles from '../../../styles/Banner.module.css'
 import Image from 'next/image'
-import Script from 'next/script'
 import TagManager from 'react-gtm-module'
 import Widget from '../widget'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -93,7 +92,6 @@ export default function Banner({ data }: any) {
 
   return (
     <div className={isExpandForm ? styles.containerActive : styles.container}>
-      <Script src="/lazy.js" />
       <div
         className={isExpandForm ? styles.wrapperFormActive : styles.wrapperForm}
       >
