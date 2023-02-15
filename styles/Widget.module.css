@@ -137,6 +137,7 @@
   border-radius: 5px;
   text-align: center;
   border: none;
+  cursor: pointer;
   margin-top: 10px;
   padding: 10px 0px;
 }

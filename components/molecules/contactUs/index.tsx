@@ -25,7 +25,7 @@ export default function ContactUs({
   openThankyouModal,
   openLoginModal,
 }: Props) {
-  const { isLoggedIn, userData, dp } = useContext(
+  const { isLoggedIn, userData, filter } = useContext(
     AuthContext,
   ) as AuthContextType
   const [active, setActive] = useState<boolean>(false)
@@ -70,7 +70,7 @@ export default function ContactUs({
       utmSource: null,
       utmTerm: null,
     }
-    if (dp !== '') data.maxDp = parseInt(dp)
+    if (filter !== null) data.maxDp = parseInt(filter.downPaymentAmount)
     return data
   }
   const sendUnverifiedLeads = (payload: any) => {

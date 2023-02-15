@@ -30,7 +30,7 @@ export default function Offering({
   closeOfferingModal,
 }: Props) {
   const { car } = useContext(CarContext) as CarContextType
-  const { dp } = useContext(AuthContext) as AuthContextType
+  const { filter } = useContext(AuthContext) as AuthContextType
   const [active, setActive] = useState<boolean>(false)
   const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
   const [form, setForm] = useState<Form>({
@@ -63,7 +63,7 @@ export default function Offering({
       utmSource: null,
       utmTerm: null,
     }
-    if (dp !== '') data.maxDp = parseInt(dp)
+    if (filter !== null) data.maxDp = parseInt(filter.downPaymentAmount)
     return data
   }
 

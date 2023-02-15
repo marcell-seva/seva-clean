@@ -37,6 +37,7 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     TagManager.initialize({ gtmId: 'GTM-TV9J5JM' })
   }, [])
+
   return (
     <AuthProvider>
       <LocationProvider>
