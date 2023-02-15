@@ -14,6 +14,7 @@ import {
   LocationProvider,
   CarProvider,
 } from '../services/context'
+import { utmCollector } from '../utils'
 
 initAmplitude()
 const kanyon = localFont({
@@ -36,6 +37,7 @@ const OpenSansSemiBold = localFont({
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     TagManager.initialize({ gtmId: 'GTM-TV9J5JM' })
+    utmCollector()
   }, [])
 
   return (
