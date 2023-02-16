@@ -2,7 +2,6 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import localFont from '@next/font/local'
-import TagManager from 'react-gtm-module'
 import { useContext, useEffect } from 'react'
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -35,10 +34,6 @@ const OpenSansSemiBold = localFont({
 })
 
 export default function App({ Component, pageProps }: AppProps) {
-  useEffect(() => {
-    TagManager.initialize({ gtmId: 'GTM-TV9J5JM' })
-  }, [])
-
   return (
     <ConfigProvider>
       <AuthProvider>
@@ -54,8 +49,17 @@ export default function App({ Component, pageProps }: AppProps) {
               }
             `}</style>
             <Component {...pageProps} />
+            <Script id="google-tag-manager" strategy="afterInteractive">
+              {`
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-TV9J5JM');
+      `}
+            </Script>
             <Script
-              type="text/javascript"
+              type="text/partytown"
               strategy="worker"
               dangerouslySetInnerHTML={{
                 __html: `(function(i, s, o, g, r, a, m, n) {

@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import styles from '../../../styles/ContactUs.module.css'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
 import Image from 'next/image'
-import TagManager from 'react-gtm-module'
 import amplitude from 'amplitude-js'
 import { api } from '../../../services/api'
 import { setTrackEventMoEngageWithoutValue } from '../../../services/moengage'
@@ -92,13 +91,11 @@ export default function ContactUs({
   }
 
   const pushDataLayer = () => {
-    TagManager.dataLayer({
-      dataLayer: {
-        event: 'interaction',
-        eventCategory: 'Leads Generator',
-        eventAction: 'Homepage - Leads Form - Control',
-        eventLabel: 'Kirim Rincian',
-      },
+    window.dataLayer.push({
+      event: 'interaction',
+      eventCategory: 'Leads Generator',
+      eventAction: 'Homepage - Leads Form - Control',
+      eventLabel: 'Kirim Rincian',
     })
   }
 

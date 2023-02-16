@@ -1,9 +1,13 @@
 import React, { lazy, useEffect, useState } from 'react'
 import styles from '../../../styles/Banner.module.css'
 import Image from 'next/image'
-import TagManager from 'react-gtm-module'
 import Widget from '../widget'
 import amplitude from 'amplitude-js'
+declare global {
+  interface Window {
+    dataLayer: any
+  }
+}
 export default function Banner({ data }: any) {
   const [isExpandForm, setIsExpandForm] = useState<boolean>(false)
   const [index, setIndex] = useState<number>(0)
@@ -13,18 +17,16 @@ export default function Banner({ data }: any) {
     useState<boolean>(true)
 
   const pushDataLayerInit = (payload: any): void => {
-    TagManager.dataLayer({
-      dataLayer: {
-        ecommerce: {
-          promoView: {
-            promotions: [
-              {
-                name: payload.name,
-                creative: payload.creativeContext,
-                position: payload.slot,
-              },
-            ],
-          },
+    window.dataLayer.push({
+      ecommerce: {
+        promoView: {
+          promotions: [
+            {
+              name: payload.name,
+              creative: payload.creativeContext,
+              position: payload.slot,
+            },
+          ],
         },
         eventCategory: 'Ecommerce',
         eventAction: 'Promotion View - Control',
@@ -34,18 +36,16 @@ export default function Banner({ data }: any) {
   }
 
   const pushDataLayerWidgetOnClick = (index: number) => {
-    TagManager.dataLayer({
-      dataLayer: {
-        ecommerce: {
-          promoClick: {
-            promotions: [
-              {
-                name: data[index].name,
-                creative: data[index].creativeContext,
-                position: data[index].slot,
-              },
-            ],
-          },
+    window.dataLayer.push({
+      ecommerce: {
+        promoClick: {
+          promotions: [
+            {
+              name: data[index].name,
+              creative: data[index].creativeContext,
+              position: data[index].slot,
+            },
+          ],
         },
         eventCategory: 'Ecommerce',
         eventAction: 'PromotionClick - Control',

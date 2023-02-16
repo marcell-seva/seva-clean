@@ -8,6 +8,11 @@ export default function Document() {
         <Main />
         <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TV9J5JM" height="0" width="0" style="display: none; visibility: hidden;" />`,
+          }}
+        />
         <NextScript />
       </body>
     </Html>

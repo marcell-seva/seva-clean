@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react'
-import TagManager from 'react-gtm-module'
 import { api } from '../../../services/api'
 import { trackGAContact, trackGALead } from '../../../services/googleAds'
 import styles from '../../../styles/Widget.module.css'
@@ -193,13 +192,11 @@ export default function Widget({ expandForm }: any) {
   }
 
   const pushDataLayerOnClick = () => {
-    TagManager.dataLayer({
-      dataLayer: {
-        event: 'interaction',
-        eventCategory: 'Leads Generator',
-        eventAction: 'Homepage - Search Widget',
-        eventLabel: 'Temukan Mobilku',
-      },
+    window.dataLayer.push({
+      event: 'interaction',
+      eventCategory: 'Leads Generator',
+      eventAction: 'Homepage - Search Widget',
+      eventLabel: 'Temukan Mobilku',
     })
   }
 

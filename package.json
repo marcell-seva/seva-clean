@@ -22,7 +22,6 @@
     "next": "13.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-gtm-module": "^2.0.11",
     "react-shimmer-effects": "^1.0.2",
     "sharp": "^0.31.3",
     "swiper": "^8.4.5",
@@ -31,7 +30,6 @@
   },
   "devDependencies": {
     "@builder.io/partytown": "^0.7.5",
-    "@types/amplitude-js": "^8.16.2",
-    "@types/react-gtm-module": "^2.0.1"
+    "@types/amplitude-js": "^8.16.2"
   }
 }
