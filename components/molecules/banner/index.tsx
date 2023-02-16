@@ -150,6 +150,9 @@ export default function Banner({ data }: any) {
             el: '.swiper-pagination',
           }}
           loop={true}
+          onRealIndexChange={(element: any) => {
+            setIndex(element.realIndex)
+          }}
           autoplay={{ delay: 3000 }}
           modules={[Autoplay]}
           breakpoints={{ 1024: { cssMode: false } }}

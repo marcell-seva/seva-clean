@@ -119,7 +119,7 @@ export default function Offering({
                 alt="indonesia-flag"
               />
               <p className={styles.labelRegion}>+62</p>
-              <p className={styles.separator}>|</p>
+              <div className={styles.separator} />
             </div>
             <input
               type="number"

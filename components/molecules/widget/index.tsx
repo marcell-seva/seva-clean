@@ -303,7 +303,7 @@ export default function Widget({ expandForm }: any) {
             alt="indonesia-flag"
           />
           <p className={styles.labelRegion}>+62</p>
-          <p className={styles.separator}>|</p>
+          <div className={styles.separator} />
         </div>
         <input
           type="number"
@@ -355,7 +355,7 @@ export default function Widget({ expandForm }: any) {
             <SelectorList
               indexKey="age"
               placeholder="18-27"
-              isError={isFieldErrorType === 'age' && form.income === undefined}
+              isError={isFieldErrorType === 'age' && form.age === undefined}
               onClick={() => handleClickDP('age')}
             />
             {selectorActive === 'age' && (

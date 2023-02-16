@@ -106,8 +106,10 @@
 }
 
 .separator {
-  margin-left: 5px;
-  color: #9ea3ac;
+  height: 22px;
+  width: 2px;
+  margin: 0px 8px;
+  background-color: #9ea3ac;
 }
 
 .agreementMobile {

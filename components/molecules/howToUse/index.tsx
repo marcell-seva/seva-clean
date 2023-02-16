@@ -62,7 +62,7 @@ export default function HowToUse({ data }: any) {
             desc={data.subtitle_2}
             icon={`${rootUrl}${data.icon_2.data.attributes.url}`}
           />
-          <div className={styles.separator}></div>
+          <div className={styles.separator} />
           <Info
             title={data.title_3}
             desc={data.subtitle_3}

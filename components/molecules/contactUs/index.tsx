@@ -138,7 +138,7 @@ export default function ContactUs({
                 alt="indonesia-flag"
               />
               <p className={styles.labelRegion}>+62</p>
-              <p className={styles.separator}>|</p>
+              <div className={styles.separator} />
             </div>
             <input
               className={`inputNumber ${styles.input}`}
