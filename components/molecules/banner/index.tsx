@@ -3,9 +3,6 @@ import styles from '../../../styles/Banner.module.css'
 import Image from 'next/image'
 import TagManager from 'react-gtm-module'
 import Widget from '../widget'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, Navigation, Pagination } from 'swiper'
-import LazyLoad from 'vanilla-lazyload'
 import amplitude from 'amplitude-js'
 export default function Banner({ data }: any) {
   const [isExpandForm, setIsExpandForm] = useState<boolean>(false)
@@ -144,33 +141,12 @@ export default function Banner({ data }: any) {
         <Widget expandForm={() => setIsExpandForm(!isExpandForm)} />
       </div>
       <div className={styles.wrapperMobile}>
-        <Swiper
-          className=".mySwiper"
-          cssMode={true}
-          pagination={{
-            el: '.swiper-pagination',
-          }}
-          loop={true}
-          onRealIndexChange={(element: any) => {
-            setIndex(element.realIndex)
-          }}
-          autoplay={{ delay: 3000 }}
-          modules={[Autoplay, Pagination]}
-          breakpoints={{ 1024: { cssMode: false } }}
-          on={{
-            afterInit: (swiper: any) => {
-              new LazyLoad({
-                container: swiper.el,
-                cancel_on_exit: false,
-              })
-            },
-          }}
-        >
-          {data.map((item: any, key: number) => {
-            if (key === 0) {
-              return (
-                <SwiperSlide key={key}>
-                  <a href={item.url}>
+        <div className="swiper mySwiper">
+          <div className="swiper-wrapper">
+            {data.map((item: any, key: number) => {
+              if (key === 0) {
+                return (
+                  <a href={item.url} key={key} className="swiper-slide">
                     <Image
                       src={item.attribute.web_mobile}
                       width={480}
@@ -181,12 +157,10 @@ export default function Banner({ data }: any) {
                       className={`swiper-lazy ${styles.banner}`}
                     />
                   </a>
-                </SwiperSlide>
-              )
-            } else {
-              return (
-                <SwiperSlide key={key}>
-                  <a href={item.url}>
+                )
+              } else {
+                return (
+                  <a href={item.url} key={key} className="swiper-slide">
                     <Image
                       src={item.attribute.web_mobile}
                       width={480}
@@ -196,39 +170,22 @@ export default function Banner({ data }: any) {
                       className={`swiper-lazy ${styles.banner}`}
                     />
                   </a>
-                </SwiperSlide>
-              )
-            }
-          })}
-          <div className={`swiper-pagination ${styles.paginationBullet}`}></div>
-        </Swiper>
+                )
+              }
+            })}
+            <div
+              className={`swiper-pagination ${styles.paginationBullet}`}
+            ></div>
+          </div>
+        </div>
       </div>
       <div className={styles.wrapperDesktop}>
-        <Swiper
-          className=".mySwiper"
-          cssMode={true}
-          pagination={{
-            el: '.swiper-pagination',
-          }}
-          loop={true}
-          autoplay={{ delay: 4000 }}
-          modules={[Autoplay, Pagination]}
-          breakpoints={{ 1024: { cssMode: false } }}
-          onRealIndexChange={(element: any) => {
-            setIndex(element.realIndex)
-          }}
-          on={{
-            afterInit: (swiper: any) => {
-              new LazyLoad({
-                container: swiper.el,
-                cancel_on_exit: false,
-              })
-            },
-          }}
-        >
-          {data.map((item: any, key: number) => (
-            <SwiperSlide key={key}>
+        <div className="swiper mySwiper">
+          <div className="swiper-wrapper">
+            {data.map((item: any, key: number) => (
               <a
+                key={key}
+                className="swiper-slide"
                 href={item.url}
                 onClick={() => pushDataLayerWidgetOnClick(key)}
               >
@@ -241,10 +198,10 @@ export default function Banner({ data }: any) {
                   className={`lazy-loader swiper-lazy ${styles.banner}`}
                 />
               </a>
-            </SwiperSlide>
-          ))}
-          <div className="swiper-pagination"></div>
-        </Swiper>
+            ))}
+            <div className="swiper-pagination"></div>
+          </div>
+        </div>
       </div>
     </div>
   )
