@@ -17,22 +17,22 @@ export default function Banner({ data }: any) {
     useState<boolean>(true)
 
   const pushDataLayerInit = (payload: any): void => {
-    window.dataLayer.push({
-      ecommerce: {
-        promoView: {
-          promotions: [
-            {
-              name: payload.name,
-              creative: payload.creativeContext,
-              position: payload.slot,
-            },
-          ],
-        },
-        eventCategory: 'Ecommerce',
-        eventAction: 'Promotion View - Control',
-        eventLable: 'Homebanner',
-      },
-    })
+    // window.dataLayer.push({
+    //   ecommerce: {
+    //     promoView: {
+    //       promotions: [
+    //         {
+    //           name: payload.name,
+    //           creative: payload.creativeContext,
+    //           position: payload.slot,
+    //         },
+    //       ],
+    //     },
+    //     eventCategory: 'Ecommerce',
+    //     eventAction: 'Promotion View - Control',
+    //     eventLable: 'Homebanner',
+    //   },
+    // })
   }
 
   const pushDataLayerWidgetOnClick = (index: number) => {
