@@ -16,6 +16,7 @@ interface PropsDetailList {
   indexKey: string
   fallback?: any
 }
+
 interface PropsSelectorList {
   placeholder: string
   onClick: any
@@ -262,7 +263,7 @@ export default function Widget({ expandForm }: any) {
       <h1 className={styles.title}>Cari mobil baru yang pas buat kamu</h1>
       <div className={styles.wrapperRow}>
         <div className={styles.wrapperLeft}>
-          <h6 className={styles.desc}>Pilih maksimal DP</h6>
+          <p className={styles.desc}>Pilih maksimal DP</p>
           <SelectorList
             placeholder=">Rp 350 Jt"
             indexKey="dp"

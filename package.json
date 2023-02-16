@@ -29,6 +29,7 @@
     "vanilla-lazyload": "^17.8.3"
   },
   "devDependencies": {
+    "@builder.io/partytown": "^0.7.5",
     "@types/amplitude-js": "^8.16.2",
     "@types/react-gtm-module": "^2.0.1"
   }

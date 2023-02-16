@@ -1,13 +1,9 @@
 import React from 'react'
-import {
-  ShimmerThumbnail,
-  ShimmerTitle,
-  ShimmerButton,
-} from 'react-shimmer-effects'
+import { ShimmerThumbnail, ShimmerTitle } from 'react-shimmer-effects'
 import styles from '../../../styles/atoms/Shimmer.module.css'
 import { useIsMobile } from '../../../utils'
 
-export function ShimmerCardProduct({}) {
+const ShimmerCardProduct: React.FC = (): JSX.Element => {
   const isMobile = useIsMobile()
   return isMobile ? (
     <div className={styles.cardShimmer}>
@@ -27,7 +23,7 @@ export function ShimmerCardProduct({}) {
   )
 }
 
-export function ShimmerCardArticle({}) {
+const ShimmerCardArticle: React.FC = (): JSX.Element => {
   const isMobile = useIsMobile()
   return isMobile ? (
     <div className={styles.cardArticleShimmer}>
@@ -60,3 +56,4 @@ export function ShimmerCardArticle({}) {
     </div>
   )
 }
+export { ShimmerCardProduct, ShimmerCardArticle }

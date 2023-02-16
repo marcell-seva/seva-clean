@@ -1,19 +1,14 @@
 import Image from 'next/image'
 import React from 'react'
 import styles from '../../../styles/atoms/TypeCar.module.css'
+import { PropsTypeCar } from '../../../utils/types/props'
 
-interface PropsType {
-  name: string
-  src: string
-  onClick: any
-  isActive?: boolean
-}
-export default function TypeCar({
+const TypeCar: React.FC<PropsTypeCar> = ({
   name,
   src,
   onClick,
   isActive = false,
-}: PropsType) {
+}): JSX.Element => {
   return (
     <button
       className={isActive ? `${styles.active}` : `${styles.inActive}`}
@@ -30,3 +25,5 @@ export default function TypeCar({
     </button>
   )
 }
+
+export default TypeCar

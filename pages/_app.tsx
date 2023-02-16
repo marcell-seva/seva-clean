@@ -56,7 +56,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
             <Script
               type="text/javascript"
-              strategy="afterInteractive"
+              strategy="worker"
               dangerouslySetInnerHTML={{
                 __html: `(function(i, s, o, g, r, a, m, n) {
         i.moengage_object = r

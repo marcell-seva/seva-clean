@@ -173,9 +173,7 @@ export default function Banner({ data }: any) {
                 )
               }
             })}
-            <div
-              className={`swiper-pagination ${styles.paginationBullet}`}
-            ></div>
+            <div className={`swiper-pagination ${styles.paginationBullet}`} />
           </div>
         </div>
       </div>
@@ -199,8 +197,8 @@ export default function Banner({ data }: any) {
                 />
               </a>
             ))}
-            <div className="swiper-pagination"></div>
           </div>
+          <div className={`swiper-pagination ${styles.paginationBullet}`} />
         </div>
       </div>
     </div>

@@ -1,11 +1,11 @@
 import React from 'react'
-interface Props {
-  width: number
-  height: number
-  color?: string
-}
+import { PropsIcon } from '../../../utils/types/props'
 
-export function IconChevronUp({ width, height, color = '#9EA3AC' }: Props) {
+const IconChevronUp: React.FC<PropsIcon> = ({
+  width,
+  height,
+  color = '#9EA3AC',
+}): JSX.Element => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -21,7 +21,11 @@ export function IconChevronUp({ width, height, color = '#9EA3AC' }: Props) {
   )
 }
 
-export function IconChevronDown({ width, height, color = '#9EA3AC' }: Props) {
+const IconChevronDown: React.FC<PropsIcon> = ({
+  width,
+  height,
+  color = '#9EA3AC',
+}): JSX.Element => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +41,10 @@ export function IconChevronDown({ width, height, color = '#9EA3AC' }: Props) {
   )
 }
 
-export function IconTriangleDown({ width, height }: Props) {
+const IconTriangleDown: React.FC<PropsIcon> = ({
+  width,
+  height,
+}): JSX.Element => {
   return (
     <svg
       viewBox="0 0 8 4"
@@ -50,7 +57,11 @@ export function IconTriangleDown({ width, height }: Props) {
     </svg>
   )
 }
-export function IconSearch({ width, height, color = '#9EA3AC' }: Props) {
+const IconSearch: React.FC<PropsIcon> = ({
+  width,
+  height,
+  color = '#9EA3AC',
+}): JSX.Element => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -77,7 +88,7 @@ export function IconSearch({ width, height, color = '#9EA3AC' }: Props) {
   )
 }
 
-export function IconDots({ width, height }: Props) {
+const IconDots: React.FC<PropsIcon> = ({ width, height }): JSX.Element => {
   return (
     <svg
       viewBox="0 0 20 20"
@@ -94,7 +105,11 @@ export function IconDots({ width, height }: Props) {
   )
 }
 
-export function IconCross({ width, height, color = '#9EA3AC' }: Props) {
+const IconCross: React.FC<PropsIcon> = ({
+  width,
+  height,
+  color = '#9EA3AC',
+}): JSX.Element => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -121,7 +136,11 @@ export function IconCross({ width, height, color = '#9EA3AC' }: Props) {
   )
 }
 
-export function IconLocation({ width, height, color = '#002373' }: Props) {
+const IconLocation: React.FC<PropsIcon> = ({
+  width,
+  height,
+  color = '#002373',
+}): JSX.Element => {
   return (
     <svg
       width={width}
@@ -146,7 +165,11 @@ export function IconLocation({ width, height, color = '#002373' }: Props) {
   )
 }
 
-export function IconNextButton({ width, height, color = '#05256E' }: Props) {
+const IconNextButton: React.FC<PropsIcon> = ({
+  width,
+  height,
+  color = '#05256E',
+}): JSX.Element => {
   return (
     <svg
       width={width}
@@ -213,7 +236,11 @@ export function IconNextButton({ width, height, color = '#05256E' }: Props) {
   )
 }
 
-export function IconBackButton({ width, height, color = '#05256E' }: Props) {
+const IconBackButton: React.FC<PropsIcon> = ({
+  width,
+  height,
+  color = '#05256E',
+}): JSX.Element => {
   return (
     <svg
       width={width}
@@ -272,7 +299,11 @@ export function IconBackButton({ width, height, color = '#05256E' }: Props) {
   )
 }
 
-export function IconStar({ width, height, color = '#FFC107' }: Props) {
+const IconStar: React.FC<PropsIcon> = ({
+  width,
+  height,
+  color = '#FFC107',
+}): JSX.Element => {
   return (
     <svg
       width={width}
@@ -289,7 +320,11 @@ export function IconStar({ width, height, color = '#FFC107' }: Props) {
   )
 }
 
-export function IconUser({ width, height, color = '#52627A' }: Props) {
+const IconUser: React.FC<PropsIcon> = ({
+  width,
+  height,
+  color = '#52627A',
+}): JSX.Element => {
   return (
     <svg
       width={width}
@@ -306,7 +341,11 @@ export function IconUser({ width, height, color = '#52627A' }: Props) {
   )
 }
 
-export function IconBurgerMenu({ width, height, color = '#52627A' }: Props) {
+const IconBurgerMenu: React.FC<PropsIcon> = ({
+  width,
+  height,
+  color = '#52627A',
+}): JSX.Element => {
   return (
     <svg
       width={width}
@@ -322,7 +361,11 @@ export function IconBurgerMenu({ width, height, color = '#52627A' }: Props) {
   )
 }
 
-export function IconChevrongRight({ width, height, color = '#14142B' }: Props) {
+const IconChevrongRight: React.FC<PropsIcon> = ({
+  width,
+  height,
+  color = '#14142B',
+}): JSX.Element => {
   return (
     <svg
       width={width}
@@ -343,7 +386,11 @@ export function IconChevrongRight({ width, height, color = '#14142B' }: Props) {
   )
 }
 
-export function IconChevronLeft({ width, height, color = '#52627A' }: Props) {
+const IconChevronLeft: React.FC<PropsIcon> = ({
+  width,
+  height,
+  color = '#52627A',
+}): JSX.Element => {
   return (
     <svg
       width={width}
@@ -363,7 +410,11 @@ export function IconChevronLeft({ width, height, color = '#52627A' }: Props) {
   )
 }
 
-export function IconArrowRight({ width, height, color = '#52627A' }: Props) {
+const IconArrowRight: React.FC<PropsIcon> = ({
+  width,
+  height,
+  color = '#52627A',
+}): JSX.Element => {
   return (
     <svg
       width={width}
@@ -392,7 +443,11 @@ export function IconArrowRight({ width, height, color = '#52627A' }: Props) {
   )
 }
 
-export function IconForwardRight({ width, height, color = '#FFFFFF' }: Props) {
+const IconForwardRight: React.FC<PropsIcon> = ({
+  width,
+  height,
+  color = '#FFFFFF',
+}): JSX.Element => {
   return (
     <svg
       width={width}
@@ -408,7 +463,11 @@ export function IconForwardRight({ width, height, color = '#FFFFFF' }: Props) {
   )
 }
 
-export function IconLogout({ width, height, color = '#52627A' }: Props) {
+const IconLogout: React.FC<PropsIcon> = ({
+  width,
+  height,
+  color = '#52627A',
+}): JSX.Element => {
   return (
     <svg
       width={width}
@@ -440,4 +499,24 @@ export function IconLogout({ width, height, color = '#52627A' }: Props) {
       />
     </svg>
   )
+}
+
+export {
+  IconSearch,
+  IconChevronDown,
+  IconChevronUp,
+  IconChevrongRight,
+  IconChevronLeft,
+  IconTriangleDown,
+  IconDots,
+  IconCross,
+  IconLocation,
+  IconNextButton,
+  IconBackButton,
+  IconStar,
+  IconUser,
+  IconBurgerMenu,
+  IconArrowRight,
+  IconForwardRight,
+  IconLogout,
 }

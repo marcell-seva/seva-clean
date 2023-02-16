@@ -2,12 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import styles from '../../../styles/Article.module.css'
 import { api } from '../../../services/api'
-import {
-  IconBackButton,
-  IconNextButton,
-  ShimmerCardArticle,
-  Test,
-} from '../../atoms'
+import { IconBackButton, IconNextButton, ShimmerCardArticle } from '../../atoms'
 import { useIsMobile } from '../../../utils'
 interface Article {
   title: string
@@ -67,7 +62,7 @@ export default function Article({ data }: any) {
         <div className={styles.capsuleWrapper}>
           <p className={styles.capsuleText}>{item.category}</p>
         </div>
-        <h4 className={styles.titleText}>{item.title}</h4>
+        <h1 className={styles.titleText}>{item.title}</h1>
         <p className={styles.dateText}>{item.publish_date}</p>
       </div>
     </a>
@@ -104,7 +99,7 @@ export default function Article({ data }: any) {
         <div className={styles.capsuleWrapper}>
           <p className={styles.capsuleText}>{item.category}</p>
         </div>
-        <h4 className={styles.titleText}>{item.title}</h4>
+        <h1 className={styles.titleText}>{item.title}</h1>
         <p className={styles.dateText}>{item.publish_date}</p>
       </div>
     </a>
@@ -127,7 +122,7 @@ export default function Article({ data }: any) {
         <p className={styles.dateText}>{item.publish_date}</p>
       </div>
       <div>
-        <h4 className={styles.titleText}>{item.title}</h4>
+        <h1 className={styles.titleText}>{item.title}</h1>
         <p className={styles.descText}>{item.excerpt}</p>
         <button className={styles.wrapperButton}>Baca Selengkapnya</button>
       </div>
