@@ -4,7 +4,7 @@ import Image from 'next/image'
 import TagManager from 'react-gtm-module'
 import Widget from '../widget'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, Navigation } from 'swiper'
+import { Autoplay, Navigation, Pagination } from 'swiper'
 import LazyLoad from 'vanilla-lazyload'
 import amplitude from 'amplitude-js'
 export default function Banner({ data }: any) {
@@ -154,7 +154,7 @@ export default function Banner({ data }: any) {
             setIndex(element.realIndex)
           }}
           autoplay={{ delay: 3000 }}
-          modules={[Autoplay]}
+          modules={[Autoplay, Pagination]}
           breakpoints={{ 1024: { cssMode: false } }}
           on={{
             afterInit: (swiper: any) => {
@@ -210,7 +210,7 @@ export default function Banner({ data }: any) {
           }}
           loop={true}
           autoplay={{ delay: 4000 }}
-          modules={[Autoplay]}
+          modules={[Autoplay, Pagination]}
           breakpoints={{ 1024: { cssMode: false } }}
           onRealIndexChange={(element: any) => {
             setIndex(element.realIndex)
