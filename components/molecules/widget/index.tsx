@@ -7,8 +7,9 @@ import styles from '../../../styles/Widget.module.css'
 import { useComponentVisible } from '../../../utils'
 import { IconChevronDown, IconChevronUp } from '../../atoms'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
-import { AuthContext } from '../../../services/context'
+import { AuthContext, ConfigContext } from '../../../services/context'
 import { AuthContextType } from '../../../services/context/authContext'
+import { ConfigContextType } from '../../../services/context/configContext'
 
 interface PropsDetailList {
   data: any
@@ -26,6 +27,7 @@ export default function Widget({ expandForm }: any) {
   const { userData, filter, saveFilterData } = useContext(
     AuthContext,
   ) as AuthContextType
+  const { utm } = useContext(ConfigContext) as ConfigContextType
   const [isFieldErrorType, setIsFieldErrorType] = useState<string>('')
   const carListUrl = 'https://seva.id/mobil-baru'
   const [form, setForm] = useState<any>({
@@ -174,13 +176,13 @@ export default function Widget({ expandForm }: any) {
         tenure: payload.tenure.toString(),
         origination: 'Web_Homepage_Search_Widget',
         userTouchpoints: 'Web_Homepage_Search_Widget',
-        adSet: null,
-        utmCampaign: null,
-        utmContent: null,
-        utmId: null,
-        utmMedium: null,
-        utmSource: null,
-        utmTerm: null,
+        adSet: utm?.adset,
+        utmCampaign: utm?.utm_campaign,
+        utmContent: utm?.utm_content,
+        utmId: utm?.utm_id,
+        utmMedium: utm?.utm_medium,
+        utmSource: utm?.utm_source,
+        utmTerm: utm?.utm_term,
       }
       sendUnverifiedLeads(data)
     } else {

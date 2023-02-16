@@ -10,6 +10,10 @@ import {
   AuthContext,
   AuthContextType,
 } from '../../../services/context/authContext'
+import {
+  ConfigContext,
+  ConfigContextType,
+} from '../../../services/context/configContext'
 
 interface Form {
   name: string | undefined
@@ -28,6 +32,7 @@ export default function ContactUs({
   const { isLoggedIn, userData, filter } = useContext(
     AuthContext,
   ) as AuthContextType
+  const { utm } = useContext(ConfigContext) as ConfigContextType
   const [active, setActive] = useState<boolean>(false)
   const [form, setForm] = useState<Form>({
     name: '',
@@ -62,13 +67,13 @@ export default function ContactUs({
       name: payload.name,
       phoneNumber: `+62${payload.phone}`,
       origination: 'Homepage - Hubungi Kami',
-      adSet: null,
-      utmCampaign: null,
-      utmContent: null,
-      utmId: null,
-      utmMedium: null,
-      utmSource: null,
-      utmTerm: null,
+      adSet: utm?.adset,
+      utmCampaign: utm?.utm_campaign,
+      utmContent: utm?.utm_content,
+      utmId: utm?.utm_id,
+      utmMedium: utm?.utm_medium,
+      utmSource: utm?.utm_source,
+      utmTerm: utm?.utm_term,
     }
     if (filter !== null) data.maxDp = parseInt(filter.downPaymentAmount)
     return data

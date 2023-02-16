@@ -8,9 +8,9 @@ import {
   AuthContextType,
 } from '../../../../services/context/authContext'
 import amplitude from 'amplitude-js'
-import { CarContext } from '../../../../services/context'
+import { CarContext, ConfigContext } from '../../../../services/context'
 import { CarContextType } from '../../../../services/context/carContext'
-import TagManager from 'react-gtm-module'
+import { ConfigContextType } from '../../../../services/context/configContext'
 import { api } from '../../../../services/api'
 
 interface Form {
@@ -30,6 +30,7 @@ export default function Offering({
   closeOfferingModal,
 }: Props) {
   const { car } = useContext(CarContext) as CarContextType
+  const { utm } = useContext(ConfigContext) as ConfigContextType
   const { filter } = useContext(AuthContext) as AuthContextType
   const [active, setActive] = useState<boolean>(false)
   const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
@@ -55,13 +56,13 @@ export default function Offering({
       name: payload.name,
       phoneNumber: `+62${payload.phone}`,
       origination: 'Homepage - Hubungi Kami',
-      adSet: null,
-      utmCampaign: null,
-      utmContent: null,
-      utmId: null,
-      utmMedium: null,
-      utmSource: null,
-      utmTerm: null,
+      adSet: utm?.adset,
+      utmCampaign: utm?.utm_campaign,
+      utmContent: utm?.utm_content,
+      utmId: utm?.utm_id,
+      utmMedium: utm?.utm_medium,
+      utmSource: utm?.utm_source,
+      utmTerm: utm?.utm_term,
     }
     if (filter !== null) data.maxDp = parseInt(filter.downPaymentAmount)
     return data
