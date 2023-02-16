@@ -145,6 +145,7 @@ export default function Banner({ data }: any) {
       </div>
       <div className={styles.wrapperMobile}>
         <Swiper
+          className=".mySwiper"
           cssMode={true}
           pagination={{
             el: '.swiper-pagination',
@@ -204,6 +205,7 @@ export default function Banner({ data }: any) {
       </div>
       <div className={styles.wrapperDesktop}>
         <Swiper
+          className=".mySwiper"
           cssMode={true}
           pagination={{
             el: '.swiper-pagination',
