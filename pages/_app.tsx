@@ -16,7 +16,6 @@ import {
 } from '../services/context'
 import { ConfigProvider } from '../services/context/configContext'
 
-initAmplitude()
 const kanyon = localFont({
   src: '../public/Kanyon-Regular.otf',
   style: 'normal',
@@ -33,6 +32,8 @@ const OpenSansSemiBold = localFont({
   src: '../public/OpenSans-SemiBold.woff2',
   style: 'normal',
 })
+
+initAmplitude()
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {

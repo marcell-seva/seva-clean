@@ -74,7 +74,7 @@ const getRecommendation = (params: string) =>
 const getUsage = () => get(collections.utils.usage)
 const getMainArticle = (params: string) =>
   get(collections.article.mainArticle + params)
-const getSubArticle = (params: string) =>
+const getSubArticle = (params: number) =>
   get(collections.article.subArticle + params)
 
 const getVariantCar = (params: string) =>

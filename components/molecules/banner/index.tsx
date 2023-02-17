@@ -4,12 +4,13 @@ import Image from 'next/image'
 import Widget from '../widget'
 import amplitude from 'amplitude-js'
 import TagManager from 'react-gtm-module'
-declare global {
-  interface Window {
-    dataLayer: any
-  }
+import { Banner } from '../../../utils/types'
+
+type TypesBanner = {
+  data: Array<Banner>
 }
-export default function Banner({ data }: any) {
+
+const Banner: React.FC<TypesBanner> = ({ data }): JSX.Element => {
   const [isExpandForm, setIsExpandForm] = useState<boolean>(false)
   const [index, setIndex] = useState<number>(0)
   const [isActiveSending, setIsActiveSending] = useState<boolean>(true)
@@ -74,16 +75,31 @@ export default function Banner({ data }: any) {
     return diffTime <= constrainTime
   }
 
-  const isDataExist = (data: Array<number>, key: number) => {
-    const filtered = data.filter((item: number) => item === key)
+  const isDataExist = (data: Array<number>, key: number): boolean => {
+    const filtered: Array<number> = data.filter((item: number) => item === key)
     return filtered.length > 0
   }
 
-  const handleScroll = () => {
+  const handleScroll = (): void => {
     const position: number = window.pageYOffset
     if (position > 470) {
       setIsUserOnBannerScreen(false)
     } else setIsUserOnBannerScreen(true)
+  }
+
+  const sendAmplitudeBanner = (payload: any): void => {
+    amplitude.getInstance().logEvent('WEB_TOP_BANNER_VIEW', {
+      Name: payload.name,
+      Page_direction_URL: payload.url,
+      Creative_context: payload.creativeContext,
+    })
+  }
+
+  const eventListenerScroll = () => {
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
   }
 
   useEffect(() => {
@@ -109,25 +125,11 @@ export default function Banner({ data }: any) {
     eventListenerScroll()
   }, [])
 
-  const eventListenerScroll = () => {
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }
-
-  const sendAmplitudeBanner = (payload: any): void => {
-    amplitude.getInstance().logEvent('WEB_TOP_BANNER_VIEW', {
-      Name: data[index].name,
-      Page_direction_URL: data[index].url,
-      Creative_context: data[index].creativeContext,
-    })
-  }
   useEffect(() => {
     if (isActiveSending && data.length > 0 && isUserOnBannerScreen) {
       const isDataSlideExists = isDataExist(dataSentIndex, index)
       if (!isDataSlideExists) {
-        const dataIndex = dataSentIndex
+        const dataIndex: Array<number> = dataSentIndex
         dataIndex.push(index)
         setDataSentIndex(dataIndex)
         pushDataLayerInit(data[index])
@@ -146,7 +148,7 @@ export default function Banner({ data }: any) {
       <div className={styles.wrapperMobile}>
         <div className="swiper mySwiper">
           <div className="swiper-wrapper">
-            {data.map((item: any, key: number) => {
+            {data.map((item: Banner, key: number) => {
               if (key === 0) {
                 return (
                   <a href={item.url} key={key} className="swiper-slide">
@@ -183,7 +185,7 @@ export default function Banner({ data }: any) {
       <div className={styles.wrapperDesktop}>
         <div className="swiper mySwiper">
           <div className="swiper-wrapper">
-            {data.map((item: any, key: number) => (
+            {data.map((item: Banner, key: number) => (
               <a
                 key={key}
                 className="swiper-slide"
@@ -207,3 +209,5 @@ export default function Banner({ data }: any) {
     </div>
   )
 }
+
+export default Banner

@@ -2,24 +2,19 @@ import React, { useState } from 'react'
 import { api } from '../../../services/api'
 import styles from '../../../styles/LoanSection.module.css'
 import { IconCross, IconSearch } from '../../atoms'
-interface Variant {
-  id: string
-  model: string
-  code: string
-  variant_name: string
-  variant_title: string
-  price_currency: string
-  price_value: number
-  price_formatted_value: string
-}
+import { Variant } from '../../../utils/types'
 
-export default function LoanSection() {
+const LoanSection: React.FC = (): JSX.Element => {
   const [input, setInput] = useState<string>('')
   const [isCrossShow, setIsCrossShow] = useState<boolean>(false)
   const [variantList, setVariantList] = useState<Array<Variant>>([])
   const [isVarianShow, setIsVariantShow] = useState<boolean>(false)
+  const headerText: string = 'Yuk, coba hitung sekarang!'
+  const descText: string =
+    'Buat kamu yang serba #JelasDariAwal, langsung hitung cicilan buat mobil impianmu.'
+  const labelExampleText: string = 'Contoh: Fortuner'
 
-  const handleChange = (payload: string) => {
+  const handleChange = (payload: string): void => {
     setInput(payload)
     if (payload === '') {
       setIsCrossShow(false)
@@ -31,21 +26,21 @@ export default function LoanSection() {
     }
   }
 
-  const clearInput = () => {
+  const clearInput = (): void => {
     setInput('')
     setIsCrossShow(false)
     setIsVariantShow(false)
     setVariantList([])
   }
 
-  const parseProductUrl = (variant: string, type: string) => {
+  const parseProductUrl = (variant: string, type: string): string => {
     const variantParsed: string = variant?.split(' ')[0].toLowerCase()
     const typeParsed: string = type.replace(/ /g, '-').toLowerCase()
     const url: string = `https://www.seva.id/mobil-baru/${variantParsed}/${typeParsed}/kredit`
     return url
   }
 
-  const getVariantProduct = async (value: string) => {
+  const getVariantProduct = async (value: string): Promise<void> => {
     try {
       const params: string = `?query=${value}&city=jakarta&cityId=118`
       const res: any = await api.getVariantCar(params)
@@ -64,11 +59,8 @@ export default function LoanSection() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
-        <h1 className={styles.title}>Yuk, coba hitung sekarang!</h1>
-        <p className={styles.desc}>
-          Buat kamu yang serba #JelasDariAwal, langsung hitung cicilan buat
-          mobil impianmu.
-        </p>
+        <h1 className={styles.title}>{headerText}</h1>
+        <p className={styles.desc}>{descText}</p>
         <div className={styles.wrapperInput}>
           <IconSearch width={18} height={18} color="grey" />
           <input
@@ -98,8 +90,9 @@ export default function LoanSection() {
             ))}
           </div>
         )}
-        <p className={styles.info}>Contoh: Fortuner</p>
+        <p className={styles.info}>{labelExampleText}</p>
       </div>
     </div>
   )
 }
+export default LoanSection

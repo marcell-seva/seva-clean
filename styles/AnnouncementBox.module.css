@@ -57,6 +57,9 @@
   margin-left: 20px;
   cursor: pointer;
   z-index: 3;
+  background-color: transparent;
+  outline: none;
+  border: none;
 }
 
 .iconDekstopRight {

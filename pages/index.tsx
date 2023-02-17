@@ -59,12 +59,12 @@ export default function Home({
     saveDataUTM()
   }, [])
 
-  const saveDataUTM = () => {
+  const saveDataUTM = (): void => {
     const dataUTM = utmCollector()
     saveUTM(dataUTM)
   }
 
-  const renderModal = (key: string) => {
+  const renderModal = (key: string): JSX.Element => {
     switch (key) {
       case 'modalOTRSecondary':
         return (
@@ -165,7 +165,7 @@ export default function Home({
   )
 }
 
-export async function getServerSideProps({ req, res }: any) {
+export async function getServerSideProps({ res }: any) {
   res.setHeader(
     'Cache-Control',
     'public, s-maxage=10, stale-while-revalidate=59',

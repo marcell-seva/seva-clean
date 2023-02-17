@@ -1,30 +1,17 @@
 import { createContext, useEffect, useState } from 'react'
-
-interface Car {
-  id: number
-  brand: string
-  model: any
-  order: number
-  status: boolean
-}
+import { CarDetail } from '../../utils/types'
 
 export type CarContextType = {
-  car: Car
-  saveCar: (data: Car) => void
+  car: CarDetail | null
+  saveCar: (data: CarDetail) => void
 }
 
 export const CarContext = createContext<CarContextType | null>(null)
 
 export const CarProvider = ({ children }: any) => {
-  const [car, setCar] = useState<Car>({
-    id: 0,
-    brand: '',
-    model: {},
-    order: 0,
-    status: false,
-  })
+  const [car, setCar] = useState<CarDetail | null>(null)
 
-  const saveCar = (car: Car) => {
+  const saveCar = (car: CarDetail) => {
     setCar(car)
   }
 

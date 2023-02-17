@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import styles from '../../../styles/atoms/TypeCar.module.css'
-import { PropsTypeCar } from '../../../utils/types/props'
+import { PropsTypeCar } from '../../../utils/types'
 
 const TypeCar: React.FC<PropsTypeCar> = ({
   name,

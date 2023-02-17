@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import styles from '../../../styles/atoms/Brand.module.css'
-import { PropsBrand } from '../../../utils/types/props'
+import { PropsBrand } from '../../../utils/types'
 
 const Brand: React.FC<PropsBrand> = ({
   name,
@@ -10,7 +10,7 @@ const Brand: React.FC<PropsBrand> = ({
   onClick,
 }): JSX.Element => {
   return (
-    <div
+    <button
       className={isActive ? styles.brandActive : styles.brandInActive}
       onClick={onClick}
     >
@@ -22,7 +22,7 @@ const Brand: React.FC<PropsBrand> = ({
         className={styles.brandImage}
         alt={name}
       />
-    </div>
+    </button>
   )
 }
 export default Brand

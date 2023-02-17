@@ -2,9 +2,11 @@ import Image from 'next/image'
 import React from 'react'
 import styles from '../../../styles/atoms/Card.module.css'
 import { rupiah } from '../../../utils'
-import { PropsCard } from '../../../utils/types/props'
-
-const Card: React.FC<PropsCard> = ({ item }): JSX.Element => {
+import { Car } from '../../../utils/types'
+type TypesCar = {
+  item: Car
+}
+const Card: React.FC<TypesCar> = ({ item }): JSX.Element => {
   const parseProductUrl = (variant: string, type: string) => {
     const variantParsed: string = variant.split(' ')[0].toLowerCase()
     const typeParsed: string = type.replace(/ /g, '-').toLowerCase()

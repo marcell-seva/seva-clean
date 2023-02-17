@@ -5,8 +5,17 @@ import {
 } from '../../../../services/context/locationContext'
 import styles from '../../../../styles/LocationSelector.module.css'
 import { IconCross, IconSearch } from '../../../atoms'
+import { Location } from '../../../../utils/types'
 
-export default function LocationSelector({ data, onCloseSelector }: any) {
+type TypesLocation = {
+  data: Array<Location>
+  onCloseSelector: () => void
+}
+
+const LocationSelector: React.FC<TypesLocation> = ({
+  data,
+  onCloseSelector,
+}): JSX.Element => {
   const [input, setInput] = useState<string>('')
   const [isCrossShow, setIsCrossShow] = useState<boolean>(false)
   const [isLocationShow, setIsLocationShow] = useState<boolean>(false)
@@ -15,7 +24,11 @@ export default function LocationSelector({ data, onCloseSelector }: any) {
     LocationContext,
   ) as LocationContextType
 
-  const handleChange = (payload: string) => {
+  const titleText: string = 'Pilih kotamu'
+  const labelText: string = '(Pilih sesuai KTP)'
+  const defaultLocationText: string = 'Jakarta Pusat'
+
+  const handleChange = (payload: string): void => {
     setInput(payload)
     if (payload === '') {
       setIsCrossShow(false)
@@ -28,24 +41,23 @@ export default function LocationSelector({ data, onCloseSelector }: any) {
     filterData(payload)
   }
 
-  const handleClick = (payload: any) => {
+  const handleClick = (payload: any): void => {
     saveLocation(payload)
     setIsLocationShow(false)
     onCloseSelector()
   }
 
-  const clearInput = () => {
+  const clearInput = (): void => {
     setInput('')
     setIsCrossShow(false)
     setIsLocationShow(false)
   }
 
-  const filterData = (params: string) => {
+  const filterData = (params: string): void => {
     const tempData = data
     const newData = tempData.filter((item: any) => {
       const itemData = `${item.cityName.toUpperCase()}`
       const paramsData = params.toUpperCase()
-
       return itemData.indexOf(paramsData) > -1
     })
     if (newData.length > 0 && params !== '') {
@@ -58,8 +70,8 @@ export default function LocationSelector({ data, onCloseSelector }: any) {
     <div className={styles.wrapper}>
       <div className={styles.header}>
         <p className={styles.headerText}>
-          Pilih kotamu
-          <span className={styles.optText}> (Pilih sesuai KTP)</span>
+          {titleText}
+          <span className={styles.optText}>{labelText}</span>
         </p>
         <div onClick={onCloseSelector} className={styles.buttonClose}>
           <IconCross width={24} height={24} color="#002373" />
@@ -67,7 +79,7 @@ export default function LocationSelector({ data, onCloseSelector }: any) {
       </div>
       {isLocationShow && (
         <div className={styles.wrapperCityList}>
-          {city.map((item: any) => (
+          {city.map((item: Location) => (
             <div
               key={item.id}
               className={styles.buttonCityList}
@@ -83,8 +95,8 @@ export default function LocationSelector({ data, onCloseSelector }: any) {
           type="text"
           value={input}
           className={styles.input}
-          placeholder={isInit ? 'Jakarta Pusat' : location.cityName}
-          onChange={(e) => handleChange(e.target.value)}
+          placeholder={isInit ? defaultLocationText : location.cityName}
+          onChange={(e: any) => handleChange(e.target.value)}
         />
         {isCrossShow ? (
           <div onClick={() => clearInput()}>
@@ -97,3 +109,5 @@ export default function LocationSelector({ data, onCloseSelector }: any) {
     </div>
   )
 }
+
+export default LocationSelector

@@ -1,32 +1,36 @@
 import Image from 'next/image'
-import Script from 'next/script'
 import React, { useContext, useState } from 'react'
 import { CarContext } from '../../../services/context'
 import { CarContextType } from '../../../services/context/carContext'
 import styles from '../../../styles/carofTheMonth.module.css'
 import { IconForwardRight } from '../../atoms'
-interface Props {
-  data: any
+import amplitude from 'amplitude-js'
+import { CarDetail } from '../../../utils/types'
+type TypesCarOfTheMonth = {
+  data: Array<CarDetail>
   openModalOffering: any
 }
-import amplitude from 'amplitude-js'
-
-export default function CarofTheMonth({ data, openModalOffering }: Props) {
+const CarofTheMonth: React.FC<TypesCarOfTheMonth> = ({
+  data,
+  openModalOffering,
+}): JSX.Element => {
   const { saveCar } = useContext(CarContext) as CarContextType
   const [activeType, setActiveType] = useState<string>('Toyota')
-  const [info, setInfo] = useState(data[0])
+  const [info, setInfo] = useState<CarDetail>(data[0])
+  const headerText: string = 'SEVA Car of The Month'
+  const redirectDetailText: string = 'LIHAT RINCIAN'
+  const buttonOfferingText: string = 'MINTA PENAWARAN'
 
-  const handleClick = (payload: string) => {
+  const handleClick = (payload: string): void => {
     setActiveType(payload)
     filterData(payload)
   }
 
-  const filterData = (type: string) => {
+  const filterData = (type: string): void => {
     const tempData = data
     const newData = tempData.filter((item: any) => {
       const itemData = `${item.brand.toUpperCase()}`
       const paramsData = type.toUpperCase()
-
       return itemData.indexOf(paramsData) > -1
     })
 
@@ -34,20 +38,20 @@ export default function CarofTheMonth({ data, openModalOffering }: Props) {
     else setInfo(data[0])
   }
 
-  const handleClickDetails = () => {
+  const handleClickDetails = (payload: CarDetail): void => {
     amplitude.getInstance().logEvent('WEB_LP_CAROFTHEMONTH_CAR_CLICK', {
-      Car_Brand: info.model.carModel.brand,
-      Car_Model: info.model.carModel.model,
+      Car_Brand: payload.model.carModel.brand,
+      Car_Model: payload.model.carModel.model,
     })
   }
 
-  const handleModalOffering = () => {
-    saveCar(info)
+  const handleModalOffering = (payload: CarDetail): void => {
+    saveCar(payload)
     openModalOffering()
   }
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.headerText}>SEVA Car of The Month</h1>
+      <h1 className={styles.headerText}>{headerText}</h1>
       <div className={styles.bundle}>
         <div className={styles.content}>
           <div className={styles.bgContent}></div>
@@ -120,15 +124,15 @@ export default function CarofTheMonth({ data, openModalOffering }: Props) {
             <a
               href={info.model.url}
               className={styles.buttonDetail}
-              onClick={() => handleClickDetails()}
+              onClick={() => handleClickDetails(info)}
             >
-              LIHAT RINCIAN
+              {redirectDetailText}
             </a>
             <button
-              onClick={() => handleModalOffering()}
+              onClick={() => handleModalOffering(info)}
               className={styles.buttonOffering}
             >
-              MINTA PENAWARAN
+              {buttonOfferingText}
             </button>
           </div>
         </div>
@@ -136,3 +140,5 @@ export default function CarofTheMonth({ data, openModalOffering }: Props) {
     </div>
   )
 }
+
+export default CarofTheMonth

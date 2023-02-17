@@ -6,6 +6,8 @@
   border-radius: 5px;
   margin-right: 10px;
   border: 0.5px solid;
+  background-color: #ffffff;
+  cursor: pointer;
 }
 
 .brandInActive {
@@ -16,6 +18,8 @@
   border-radius: 5px;
   margin-right: 10px;
   border: 0.5px solid #dddddd;
+  background-color: #ffffff;
+  cursor: pointer;
 }
 
 .brandImage {
