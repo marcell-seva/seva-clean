@@ -31,9 +31,6 @@ const nextConfig = {
     ],
   },
   reactStrictMode: false,
-  experimental: {
-    nextScriptWorkers: true,
-  },
   async headers() {
     return [
       {

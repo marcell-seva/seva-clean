@@ -9,7 +9,7 @@ import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
 import { AuthContext, ConfigContext } from '../../../services/context'
 import { AuthContextType } from '../../../services/context/authContext'
 import { ConfigContextType } from '../../../services/context/configContext'
-
+import TagManager from 'react-gtm-module'
 interface PropsDetailList {
   data: any
   indexKey: string
@@ -192,11 +192,13 @@ export default function Widget({ expandForm }: any) {
   }
 
   const pushDataLayerOnClick = () => {
-    window.dataLayer.push({
-      event: 'interaction',
-      eventCategory: 'Leads Generator',
-      eventAction: 'Homepage - Search Widget',
-      eventLabel: 'Temukan Mobilku',
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'interaction',
+        eventCategory: 'Leads Generator',
+        eventAction: 'Homepage - Search Widget',
+        eventLabel: 'Temukan Mobilku',
+      },
     })
   }
 

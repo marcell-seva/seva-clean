@@ -3,6 +3,7 @@ import styles from '../../../styles/Banner.module.css'
 import Image from 'next/image'
 import Widget from '../widget'
 import amplitude from 'amplitude-js'
+import TagManager from 'react-gtm-module'
 declare global {
   interface Window {
     dataLayer: any
@@ -17,27 +18,29 @@ export default function Banner({ data }: any) {
     useState<boolean>(true)
 
   const pushDataLayerInit = (payload: any): void => {
-    // window.dataLayer.push({
-    //   ecommerce: {
-    //     promoView: {
-    //       promotions: [
-    //         {
-    //           name: payload.name,
-    //           creative: payload.creativeContext,
-    //           position: payload.slot,
-    //         },
-    //       ],
-    //     },
-    //     eventCategory: 'Ecommerce',
-    //     eventAction: 'Promotion View - Control',
-    //     eventLable: 'Homebanner',
-    //   },
-    // })
+    TagManager.dataLayer({
+      dataLayer: {
+        ecommerce: {
+          promoView: {
+            promotions: [
+              {
+                name: payload.name,
+                creative: payload.creativeContext,
+                position: payload.slot,
+              },
+            ],
+          },
+        },
+        eventCategory: 'Ecommerce',
+        eventAction: 'Promotion View - Control',
+        eventLable: 'Homebanner',
+      },
+    })
   }
 
   const pushDataLayerWidgetOnClick = (index: number) => {
-    window.dataLayer.push({
-      ecommerce: {
+    TagManager.dataLayer({
+      dataLayer: {
         promoClick: {
           promotions: [
             {

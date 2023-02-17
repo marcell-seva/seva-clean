@@ -13,6 +13,7 @@ import {
   ConfigContext,
   ConfigContextType,
 } from '../../../services/context/configContext'
+import TagManager from 'react-gtm-module'
 
 interface Form {
   name: string | undefined
@@ -91,11 +92,13 @@ export default function ContactUs({
   }
 
   const pushDataLayer = () => {
-    window.dataLayer.push({
-      event: 'interaction',
-      eventCategory: 'Leads Generator',
-      eventAction: 'Homepage - Leads Form - Control',
-      eventLabel: 'Kirim Rincian',
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'interaction',
+        eventCategory: 'Leads Generator',
+        eventAction: 'Homepage - Leads Form - Control',
+        eventLabel: 'Kirim Rincian',
+      },
     })
   }
 

@@ -8,6 +8,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import Script from 'next/script'
 import { initAmplitude } from '../services/amplitude/'
+import TagManager from 'react-gtm-module'
 import {
   AuthProvider,
   LocationProvider,
@@ -34,6 +35,9 @@ const OpenSansSemiBold = localFont({
 })
 
 export default function App({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    TagManager.initialize({ gtmId: 'GTM-TV9J5JM' })
+  }, [])
   return (
     <ConfigProvider>
       <AuthProvider>
@@ -49,20 +53,9 @@ export default function App({ Component, pageProps }: AppProps) {
               }
             `}</style>
             <Component {...pageProps} />
-            <script type="text/partytown">
-              <Script id="google-tag-manager" strategy="afterInteractive">
-                {`
-        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-TV9J5JM');
-      `}
-              </Script>
-            </script>
             <Script
-              type="text/partytown"
-              strategy="worker"
+              type="text/javascript"
+              strategy="afterInteractive"
               dangerouslySetInnerHTML={{
                 __html: `(function(i, s, o, g, r, a, m, n) {
         i.moengage_object = r
