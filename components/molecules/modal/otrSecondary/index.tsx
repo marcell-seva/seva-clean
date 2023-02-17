@@ -5,37 +5,48 @@ import {
 } from '../../../../services/context/locationContext'
 import styles from '../../../../styles/OTRSecondary.module.css'
 import { IconCross, IconLocation, IconSearch } from '../../../atoms'
+import { Location } from '../../../../utils/types'
 
-export default function OTRSecondary({ data, onClick }: any) {
+type TypesOTRSecondary = {
+  data: Array<Location>
+  onClick: () => void
+}
+const OTRSecondary: React.FC<TypesOTRSecondary> = ({
+  data,
+  onClick,
+}): JSX.Element => {
   const [isCrossShow, setIsCrossShow] = useState<boolean>(false)
   const [isListShow, setIsListShow] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
-  const [city, setCity] = useState<any>(data)
+  const [city, setCity] = useState<Array<Location>>(data)
+  const titleText: string =
+    'Pilih kota Kamu untuk menampilkan harga yang sesuai'
+  const descText: string = '(Pilih sesuai KTP)'
 
   const { location, isInit, saveLocation } = useContext(
     LocationContext,
   ) as LocationContextType
 
-  const handleChange = (payload: string) => {
+  const handleChange = (payload: string): void => {
     setInput(payload)
     filterData(payload)
     if (payload === '') setIsCrossShow(false)
     else setIsCrossShow(true)
   }
 
-  const selectLocation = (payload: any) => {
+  const selectLocation = (payload: any): void => {
     setIsListShow(false)
     saveLocation(payload)
     onClick()
   }
 
-  const clearInput = () => {
+  const clearInput = (): void => {
     setInput('')
     setIsCrossShow(false)
     setIsListShow(false)
   }
 
-  const filterData = (params: string) => {
+  const filterData = (params: string): void => {
     const tempData = data
     const newData = tempData.filter((item: any) => {
       const itemData = `${item.cityName.toUpperCase()}`
@@ -57,10 +68,8 @@ export default function OTRSecondary({ data, onClick }: any) {
         </div>
         <div className={styles.info}>
           <IconLocation width={30} height={30} />
-          <h2 className={styles.headerText}>
-            Pilih kota Kamu untuk menampilkan harga yang sesuai
-          </h2>
-          <p className={styles.descText}>(Pilih sesuai KTP) </p>
+          <h2 className={styles.headerText}>{titleText}</h2>
+          <p className={styles.descText}>{descText}</p>
           <div className={styles.wrapperInput}>
             <input
               type="text"
@@ -99,3 +108,5 @@ export default function OTRSecondary({ data, onClick }: any) {
     </div>
   )
 }
+
+export default OTRSecondary

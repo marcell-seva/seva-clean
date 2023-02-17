@@ -12,42 +12,36 @@ import { CarContext, ConfigContext } from '../../../../services/context'
 import { CarContextType } from '../../../../services/context/carContext'
 import { ConfigContextType } from '../../../../services/context/configContext'
 import { api } from '../../../../services/api'
+import { PropsOffering, Form } from '../../../../utils/types'
 
-interface Form {
-  name: string
-  phone: any
-  whatsapp: boolean
-}
-interface Props {
-  openThankyouModal: any
-  openLoginModal: any
-  closeOfferingModal: any
-}
-
-export default function Offering({
+const Offering: React.FC<PropsOffering> = ({
   openThankyouModal,
   openLoginModal,
   closeOfferingModal,
-}: Props) {
+}) => {
   const { car } = useContext(CarContext) as CarContextType
   const { utm } = useContext(ConfigContext) as ConfigContextType
   const { filter } = useContext(AuthContext) as AuthContextType
+  const { isLoggedIn } = useContext(AuthContext) as AuthContextType
   const [active, setActive] = useState<boolean>(false)
-  const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
   const [form, setForm] = useState<Form>({
     name: '',
-    phone: 0,
+    phone: '',
     whatsapp: false,
   })
+  const headerText: string = 'Punya Pertanyaan ?'
+  const descText: string =
+    'Tulis rincian kontakmu supaya agen kami bisa segera menghubungi kamu.'
+  const labelText: string = 'Saya memilih untuk dihubungi via WhatsApp'
+  const buttonText: string = 'Kirim Rincian'
 
-  const handleChange = (indexKey: string, payload: string | boolean) => {
+  const handleChange = (indexKey: string, payload: string | boolean): void => {
     setForm((prevState: any) => ({ ...prevState, [indexKey]: payload }))
   }
 
-  const sendForm = () => {
-    if (isLoggedIn) {
-      sendUnverifiedLeads(form)
-    } else openLoginModal()
+  const sendForm = (): void => {
+    if (isLoggedIn) sendUnverifiedLeads(form)
+    else openLoginModal()
   }
 
   const generateLeadsData = (payload: any) => {
@@ -79,7 +73,7 @@ export default function Offering({
     }
   }
 
-  const sendAmplitude = (car: any) => {
+  const sendAmplitude = (car: any): void => {
     amplitude.getInstance().logEvent('WEB_CAR_OF_THE_MONTH_LEADS_FORM_SUBMIT', {
       Car_Brand: car.model.carModel.brand,
       Car_Model: car.model.carModel.model,
@@ -99,11 +93,8 @@ export default function Offering({
               <IconCross width={24} height={24} />
             </div>
           </div>
-          <h1 className={styles.headerText}>Punya Pertanyaan ?</h1>
-          <p className={styles.descText}>
-            Tulis rincian kontakmu supaya agen kami bisa segera menghubungi
-            kamu.
-          </p>
+          <h1 className={styles.headerText}>{headerText}</h1>
+          <p className={styles.descText}>{descText}</p>
           <input
             type="text"
             className={styles.inputName}
@@ -134,9 +125,7 @@ export default function Offering({
               name="checkbox"
               onChange={() => handleChange('whatsapp', !form.whatsapp)}
             />
-            <p className={styles.agreementText}>
-              Saya memilih untuk dihubungi via WhatsApp
-            </p>
+            <p className={styles.agreementText}>{labelText}</p>
           </label>
           <button
             onClick={() => {
@@ -144,10 +133,11 @@ export default function Offering({
             }}
             className={active ? styles.buttonActive : styles.buttonInActive}
           >
-            Kirim Rincian
+            {buttonText}
           </button>
         </div>
       </div>
     </div>
   )
 }
+export default Offering

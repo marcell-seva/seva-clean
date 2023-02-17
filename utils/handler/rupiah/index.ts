@@ -1,4 +1,4 @@
-export const rupiah = (num: number) => {
+export const rupiah = (num: number): string => {
   const lookup = [
     { value: 1, symbol: '' },
     { value: 1e6, symbol: ' Jt' },

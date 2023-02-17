@@ -53,3 +53,38 @@ export interface PropsFloatingSection {
 export interface PropsSearchMobile {
   onSearchMobileClose: (e: React.MouseEvent<HTMLDivElement>) => void
 }
+
+export interface PropsOffering {
+  openThankyouModal: () => void
+  openLoginModal: () => void
+  closeOfferingModal: () => void
+}
+
+export interface PropsContactUs {
+  openThankyouModal: () => void
+  openLoginModal: () => void
+}
+
+export interface PropsSelectorList {
+  placeholder: string
+  onClick: any
+  indexKey: string
+  isError?: boolean
+  fallback?: any
+}
+
+export interface PropsButtonTenure {
+  tenure: number
+  isActive: boolean
+}
+
+export interface PropsDetailList {
+  data: Array<string | number>
+  indexKey: string
+  fallback?: any
+}
+
+export interface PropsListNavBarMenu {
+  menuName: string
+  url: string
+}

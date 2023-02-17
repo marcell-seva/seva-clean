@@ -4,8 +4,17 @@ import modal from '../../../../assets/svg/modal.svg'
 import Image from 'next/image'
 import { IconCross } from '../../../atoms'
 
-export default function LoginModal({ onCloseModal }: any) {
-  const loginUrl = 'https://www.seva.id/masuk-akun'
+interface PropsLoginModal {
+  onCloseModal: (e: React.MouseEvent<HTMLDivElement>) => void
+}
+const LoginModal: React.FC<PropsLoginModal> = ({
+  onCloseModal,
+}): JSX.Element => {
+  const loginUrl: string = 'https://www.seva.id/masuk-akun'
+  const infoText: string =
+    'Masuk dengan akunmu untuk lanjut ke tahap berikutnya'
+  const redirectLoginText: string = 'Masuk'
+
   return (
     <div className={styles.bgWrapper}>
       <div className={styles.wrapper}>
@@ -24,11 +33,9 @@ export default function LoginModal({ onCloseModal }: any) {
             </div>
           </div>
           <div className={styles.detail}>
-            <p className={styles.text}>
-              Masuk dengan akunmu untuk lanjut ke tahap berikutnya
-            </p>
+            <p className={styles.text}>{infoText}</p>
             <a href={loginUrl} className={styles.link}>
-              Masuk
+              {redirectLoginText}
             </a>
           </div>
         </div>
@@ -36,3 +43,4 @@ export default function LoginModal({ onCloseModal }: any) {
     </div>
   )
 }
+export default LoginModal

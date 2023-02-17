@@ -15,13 +15,22 @@ import {
   AuthContext,
   AuthContextType,
 } from '../../../../../services/context/authContext'
+import { Menu } from '../../../../../utils/types'
 
-interface ListSideBarProps {
-  item: any
-  isNew?: boolean
+type TypeTopBarMobile = {
+  data: Array<Menu>
+  onSearchClick: (e: React.MouseEvent<HTMLDivElement>) => void
 }
 
-export default function TopBarMobile({ data, onSearchClick }: any) {
+type TypeMenu = {
+  item: Menu
+}
+
+type TypeMenuSide = {
+  item: Menu
+  isNew: boolean
+}
+const TopBarMobile: React.FC<TypeTopBarMobile> = ({ data, onSearchClick }) => {
   const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
   const [isShow, setIsShow] = useState<boolean>(false)
   const [isSubSideBarShow, setIsSubSideBarShow] = useState<boolean>(false)
@@ -33,14 +42,14 @@ export default function TopBarMobile({ data, onSearchClick }: any) {
   const redirectPartnerUrl = 'https://www.seva.id/teman-seva/onboarding'
   const redirectCouponUrl = 'https://www.seva.id/info/promo/'
 
-  const getUserInitial = (payload: string) => {
+  const getUserInitial = (payload: string): string => {
     const name = payload.split(' ')
     const firstName = name[0].slice(0, 1)
     const lastName = name[1].slice(0, 1)
     return firstName + lastName
   }
 
-  const ListSubMenuBar = ({ item }: any) => {
+  const ListSubMenuBar: React.FC<TypeMenu> = ({ item }): JSX.Element => {
     return (
       <div key={item.id}>
         <div
@@ -76,7 +85,10 @@ export default function TopBarMobile({ data, onSearchClick }: any) {
     )
   }
 
-  const ListSideBarMenu = ({ item, isNew }: ListSideBarProps) => {
+  const ListSideBarMenu: React.FC<TypeMenuSide> = ({
+    item,
+    isNew,
+  }): JSX.Element => {
     if (isNew) {
       return (
         <a className={styles.mainSelector} href={redirectFundingUrl}>
@@ -112,7 +124,7 @@ export default function TopBarMobile({ data, onSearchClick }: any) {
     }
   }
 
-  const ListSubMenuBarSingle = ({ item }: any) => {
+  const ListSubMenuBarSingle: React.FC<TypeMenu> = ({ item }): JSX.Element => {
     return (
       <a
         href={`https://${item.menuUrl}`}
@@ -124,11 +136,12 @@ export default function TopBarMobile({ data, onSearchClick }: any) {
     )
   }
 
-  const handleClickShowSideBar = () => {
+  const handleClickShowSideBar = (): void => {
     setIsShow(!isShow)
     if (isShow) document.body.style.overflow = 'auto'
     else document.body.style.overflow = 'hidden'
   }
+
   return (
     <div className={styles.barMobile}>
       <div className={styles.bar}>
@@ -241,3 +254,5 @@ export default function TopBarMobile({ data, onSearchClick }: any) {
     </div>
   )
 }
+
+export default TopBarMobile

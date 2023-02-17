@@ -3,33 +3,31 @@ import React, { useContext, useEffect, useState } from 'react'
 import { api } from '../../../services/api'
 import { trackGAContact, trackGALead } from '../../../services/googleAds'
 import styles from '../../../styles/Widget.module.css'
-import { useComponentVisible } from '../../../utils'
+import { rupiah, useComponentVisible } from '../../../utils'
 import { IconChevronDown, IconChevronUp } from '../../atoms'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
 import { AuthContext, ConfigContext } from '../../../services/context'
 import { AuthContextType } from '../../../services/context/authContext'
 import { ConfigContextType } from '../../../services/context/configContext'
 import TagManager from 'react-gtm-module'
-interface PropsDetailList {
-  data: any
-  indexKey: string
-  fallback?: any
+import {
+  FormWidget,
+  PropsButtonTenure,
+  PropsSelectorList,
+  PropsDetailList,
+} from '../../../utils/types'
+
+interface PropsWidget {
+  expandForm: () => void
 }
 
-interface PropsSelectorList {
-  placeholder: string
-  onClick: any
-  indexKey: string
-  isError?: boolean
-  fallback?: any
-}
-export default function Widget({ expandForm }: any) {
+const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
   const { userData, filter, saveFilterData } = useContext(
     AuthContext,
   ) as AuthContextType
   const { utm } = useContext(ConfigContext) as ConfigContextType
   const [isFieldErrorType, setIsFieldErrorType] = useState<string>('')
-  const carListUrl = 'https://seva.id/mobil-baru'
+  const carListUrl: string = 'https://seva.id/mobil-baru'
   const [form, setForm] = useState<any>({
     tenure: 5,
   })
@@ -42,6 +40,10 @@ export default function Widget({ expandForm }: any) {
     income: ['<2M', '2M-4M', '4M-6M', '6M-8M', '8-M10M'],
     age: ['18-27', '29-34', '25-50', '>51'],
   }
+  const buttonText: string = 'Temukan Mobilku'
+  const headerText: string = 'Cari mobil baru yang pas buat kamu'
+  const descText: string =
+    'Ingin bertanya langsung ke tim SEVA? Tulis nomor hp kamu untuk kami hubungi (Opsional)'
 
   useEffect(() => {
     if (userData !== null) {
@@ -55,28 +57,10 @@ export default function Widget({ expandForm }: any) {
       }))
   }, [userData, filter])
 
-  const getNumber = (num: number) => {
-    const lookup = [
-      { value: 1, symbol: '' },
-      { value: 1e6, symbol: ' Jt' },
-    ]
-    const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
-    var item = lookup
-      .slice()
-      .reverse()
-      .find(function (item) {
-        return num >= item.value
-      })
-
-    const fixedNumber = item
-      ? (num / item.value).toFixed(2).replace(rx, '$1') + item.symbol
-      : '0'
-
-    const result = `Rp ${fixedNumber.replace('.', ',')}`
-    return result
-  }
-
-  const ButtonTenure = ({ tenure, isActive }: any) => (
+  const ButtonTenure: React.FC<PropsButtonTenure> = ({
+    tenure,
+    isActive,
+  }): JSX.Element => (
     <button
       onClick={() => {
         setForm((prevState: any) => ({ ...prevState, tenure: tenure }))
@@ -87,13 +71,13 @@ export default function Widget({ expandForm }: any) {
     </button>
   )
 
-  const SelectorList = ({
+  const SelectorList: React.FC<PropsSelectorList> = ({
     placeholder,
     onClick,
     indexKey,
     isError,
     fallback,
-  }: PropsSelectorList) => {
+  }): JSX.Element => {
     if (isError) {
       return (
         <div>
@@ -142,7 +126,7 @@ export default function Widget({ expandForm }: any) {
     }
   }
 
-  const sendRequest = () => {
+  const sendRequest = (): void => {
     if (form.dp === undefined) setIsFieldErrorType('dp')
     else if (form.age === undefined && form.income !== undefined)
       setIsFieldErrorType('age')
@@ -163,7 +147,8 @@ export default function Widget({ expandForm }: any) {
     const result = payload.replace(/M/g, '')
     return result + ' juta/bulan'
   }
-  const execUnverifiedLeads = (payload: any) => {
+
+  const execUnverifiedLeads = (payload: FormWidget): void => {
     const isValidPhoneNumber = phone.toString().length > 3
 
     if (isValidPhoneNumber) {
@@ -191,7 +176,7 @@ export default function Widget({ expandForm }: any) {
     }
   }
 
-  const pushDataLayerOnClick = () => {
+  const pushDataLayerOnClick = (): void => {
     TagManager.dataLayer({
       dataLayer: {
         event: 'interaction',
@@ -202,16 +187,12 @@ export default function Widget({ expandForm }: any) {
     })
   }
 
-  const handleClickDP = (payload: string) => {
+  const handleClickDP = (payload: string): void => {
     if (selectorActive === payload) setSelectorActive('')
     else setSelectorActive(payload)
   }
 
-  const onChangeDataMobile = (payload: any) => {
-    setPhone(payload)
-  }
-
-  const sendUnverifiedLeads = (payload: any) => {
+  const sendUnverifiedLeads = (payload: any): void => {
     try {
       api.postUnverfiedLeads(payload)
       window.location.href = carListUrl
@@ -220,21 +201,24 @@ export default function Widget({ expandForm }: any) {
     }
   }
 
-  const setDataFilterLocalStorage = (payload: any): void => {
-    const data = {
+  const setDataFilterLocalStorage = (payload: FormWidget): void => {
+    saveFilterData({
       age: payload.age,
       downPaymentAmount: payload.dp,
       monthlyIncome: payload.income,
       tenure: payload.tenure,
       carModel: '',
       downPaymentType: 'amount',
-      monthlyInstallment: null,
+      monthlyInstallment: '',
       sortBy: 'highToLow',
-    }
-    localStorage.setItem('filter', JSON.stringify(data))
+    })
   }
 
-  const DetailList = ({ data, indexKey, fallback }: PropsDetailList): any => {
+  const DetailList: React.FC<PropsDetailList> = ({
+    data,
+    indexKey,
+    fallback,
+  }): JSX.Element => {
     return (
       <div className={styles.list}>
         {data.map((item: any, key: number) => (
@@ -259,7 +243,7 @@ export default function Widget({ expandForm }: any) {
 
   return (
     <div className={styles.form}>
-      <h1 className={styles.title}>Cari mobil baru yang pas buat kamu</h1>
+      <h1 className={styles.title}>{headerText}</h1>
       <div className={styles.wrapperRow}>
         <div className={styles.wrapperLeft}>
           <p className={styles.desc}>Pilih maksimal DP</p>
@@ -268,13 +252,13 @@ export default function Widget({ expandForm }: any) {
             indexKey="dp"
             isError={isFieldErrorType === 'dp' && form.dp === undefined}
             onClick={() => handleClickDP('dp')}
-            fallback={getNumber}
+            fallback={rupiah}
           />
           {selectorActive === 'dp' && (
             <DetailList
               indexKey="dp"
               data={selectorData.dp}
-              fallback={getNumber}
+              fallback={rupiah}
             />
           )}
         </div>
@@ -289,10 +273,7 @@ export default function Widget({ expandForm }: any) {
           </div>
         </div>
       </div>
-      <p className={styles.desc}>
-        Ingin bertanya langsung ke tim SEVA? Tulis nomor hp kamu untuk kami
-        hubungi (Opsional)
-      </p>
+      <p className={styles.desc}>{descText}</p>
       <div className={styles.wrapperInputPhone}>
         <div className={styles.phoneDetail}>
           <Image
@@ -310,7 +291,7 @@ export default function Widget({ expandForm }: any) {
           value={phone}
           className={styles.input}
           placeholder="Contoh : 0895401011469"
-          onChange={(e: any) => onChangeDataMobile(e.target.value)}
+          onChange={(e: any) => setPhone(e.target.value)}
         ></input>
       </div>
       <p
@@ -365,8 +346,10 @@ export default function Widget({ expandForm }: any) {
         </div>
       )}
       <button className={styles.button} onClick={() => sendRequest()}>
-        Temukan Mobilku
+        {buttonText}
       </button>
     </div>
   )
 }
+
+export default Widget

@@ -30,7 +30,7 @@ interface Token {
 interface Filter {
   age: string
   downPaymentAmount: string
-  monthlyIncome: number
+  monthlyIncome: string
   tenure: number
   carModel: string
   downPaymentType: string

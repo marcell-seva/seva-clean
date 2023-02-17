@@ -80,3 +80,39 @@ export interface Variant {
   price_value: number
   price_formatted_value: string
 }
+
+export interface Form {
+  name: string
+  phone: string
+  whatsapp: boolean
+}
+export interface FormWidget {
+  age: string
+  dp: string
+  income: string
+  tenure: number
+}
+
+export interface Menu {
+  id: number
+  menuCode: string
+  menuDesc: string
+  menuLevel: string
+  menuName: string
+  menuOrder: number
+  menuParent: string
+  menuUrl: string
+  status: boolean
+  toogleNew: boolean
+  subMenu: Array<Menu>
+}
+
+export interface UTMCollector {
+  utm_id: string | null
+  utm_source: string | null
+  utm_medium: string | null
+  utm_campaign: string | null
+  utm_content: string | null
+  utm_term: string | null
+  adset: string | null
+}

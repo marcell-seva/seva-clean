@@ -14,21 +14,12 @@ import {
   ConfigContextType,
 } from '../../../services/context/configContext'
 import TagManager from 'react-gtm-module'
+import { Form, PropsContactUs } from '../../../utils/types'
 
-interface Form {
-  name: string | undefined
-  phone: any
-  whatsapp: boolean
-}
-
-interface Props {
-  openThankyouModal: any
-  openLoginModal: any
-}
-export default function ContactUs({
+const ContactUs: React.FC<PropsContactUs> = ({
   openThankyouModal,
   openLoginModal,
-}: Props) {
+}): JSX.Element => {
   const { isLoggedIn, userData, filter } = useContext(
     AuthContext,
   ) as AuthContextType
@@ -39,6 +30,10 @@ export default function ContactUs({
     phone: '',
     whatsapp: false,
   })
+  const headerText: string = 'Ngobrol langsung dengan agen kami'
+  const subHeaderText: string =
+    'Tulis rincian kontakmu supaya agen kami bisa segera menghubungi kamu.'
+  const labelText: string = 'Saya memilih untuk dihubungi via WhatsApp'
 
   useEffect(() => {
     if (userData !== null) {
@@ -51,17 +46,17 @@ export default function ContactUs({
     }
   }, [userData])
 
-  const handleChange = (indexKey: string, payload: string | boolean) => {
+  const handleChange = (indexKey: string, payload: string | boolean): void => {
     setForm((prevState: any) => ({ ...prevState, [indexKey]: payload }))
   }
 
-  const sendForm = () => {
+  const sendForm = (): void => {
     if (form.whatsapp)
       amplitude.getInstance().logEvent('SELECT_HOME_SEND_DETAILS')
     sendUnverifiedLeads(form)
   }
 
-  const generateLeadsData = (payload: any) => {
+  const generateLeadsData = (payload: Form) => {
     const data: any = {
       contactType: payload.whatsapp ? 'whatsapp' : 'phone',
       name: payload.name,
@@ -78,7 +73,7 @@ export default function ContactUs({
     if (filter !== null) data.maxDp = parseInt(filter.downPaymentAmount)
     return data
   }
-  const sendUnverifiedLeads = (payload: any) => {
+  const sendUnverifiedLeads = (payload: any): void => {
     const data = generateLeadsData(payload)
     try {
       api.postUnverfiedLeads(data)
@@ -91,7 +86,7 @@ export default function ContactUs({
     }
   }
 
-  const pushDataLayer = () => {
+  const pushDataLayer = (): void => {
     TagManager.dataLayer({
       dataLayer: {
         event: 'interaction',
@@ -107,7 +102,7 @@ export default function ContactUs({
     else setActive(form.name !== '' && form.phone.length > 3)
   }, [form])
 
-  const validateForm = () => {
+  const validateForm = (): void => {
     if (active && !isLoggedIn) sendForm()
     else if (active && !isLoggedIn) openLoginModal()
   }
@@ -115,10 +110,8 @@ export default function ContactUs({
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
-        <h2 className={styles.titleText}>Ngobrol langsung dengan agen kami</h2>
-        <p className={styles.descText}>
-          Tulis rincian kontakmu supaya agen kami bisa segera menghubungi kamu.
-        </p>
+        <h2 className={styles.titleText}>{headerText}</h2>
+        <p className={styles.descText}>{subHeaderText}</p>
         <div className={styles.form}>
           <div className={styles.wrapperInput}>
             <input
@@ -155,9 +148,7 @@ export default function ContactUs({
               checked={form.whatsapp}
               onChange={() => handleChange('whatsapp', !form.whatsapp)}
             />
-            <p className={styles.agreementText}>
-              Saya memilih untuk dihubungi via WhatsApp
-            </p>
+            <p className={styles.agreementText}>{labelText}</p>
           </label>
           <button
             className={active ? styles.buttonActive : styles.buttonInActive}
@@ -173,11 +164,11 @@ export default function ContactUs({
             checked={form.whatsapp}
             onChange={() => handleChange('whatsapp', !form.whatsapp)}
           />
-          <p className={styles.agreementText}>
-            Saya memilih untuk dihubungi via WhatsApp
-          </p>
+          <p className={styles.agreementText}>{labelText}</p>
         </label>
       </div>
     </div>
   )
 }
+
+export default ContactUs

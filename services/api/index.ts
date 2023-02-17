@@ -2,18 +2,6 @@ import get from './get'
 import post from './post'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { collections } from './collections'
-import { useContext } from 'react'
-import { AuthContext, AuthContextType } from '../context/authContext'
-
-// axios.interceptors.request.use(
-//   (config): AxiosRequestConfig => {
-//     const token = getLocalStorage('token')?.idToken
-//     config.headers = config.headers ?? {}
-//     config.headers.Authorization = token
-//     return config
-//   },
-//   (error) => Promise.reject(error),
-// )
 
 const getDataToken = () => {
   const dataToken = localStorage.getItem('token')

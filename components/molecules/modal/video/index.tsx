@@ -2,7 +2,10 @@ import React from 'react'
 import styles from '../../../../styles/Video.module.css'
 import { IconCross } from '../../../atoms'
 
-export default function Video({ onClick }: any) {
+interface PropsVideo {
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+}
+const Video: React.FC<PropsVideo> = ({ onClick }): JSX.Element => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.position}>
@@ -22,3 +25,4 @@ export default function Video({ onClick }: any) {
     </div>
   )
 }
+export default Video

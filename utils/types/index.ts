@@ -9,6 +9,12 @@ import {
   PropsHowToUse,
   PropsFloatingSection,
   PropsSearchMobile,
+  PropsOffering,
+  PropsContactUs,
+  PropsSelectorList,
+  PropsButtonTenure,
+  PropsDetailList,
+  PropsListNavBarMenu,
 } from './props'
 
 import {
@@ -20,6 +26,10 @@ import {
   Testimony,
   HowToUse,
   Variant,
+  Form,
+  FormWidget,
+  Menu,
+  UTMCollector,
 } from './utils'
 
 export type {
@@ -31,6 +41,14 @@ export type {
   PropsHowToUse,
   PropsArticle,
   PropsCategory,
+  PropsFloatingSection,
+  PropsSearchMobile,
+  PropsOffering,
+  PropsContactUs,
+  PropsSelectorList,
+  PropsButtonTenure,
+  PropsDetailList,
+  PropsListNavBarMenu,
   Location,
   Article,
   Banner,
@@ -39,6 +57,8 @@ export type {
   Testimony,
   HowToUse,
   Variant,
-  PropsFloatingSection,
-  PropsSearchMobile,
+  Form,
+  FormWidget,
+  Menu,
+  UTMCollector,
 }
