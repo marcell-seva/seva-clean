@@ -41,6 +41,8 @@ const TopBarMobile: React.FC<TypeTopBarMobile> = ({ data, onSearchClick }) => {
   const redirectFundingUrl = 'https://www.seva.id/fasilitas-dana'
   const redirectPartnerUrl = 'https://www.seva.id/teman-seva/onboarding'
   const redirectCouponUrl = 'https://www.seva.id/info/promo/'
+  const redirectLoginUrl: string = 'https://www.seva.id/masuk-akun'
+  const redirectProfileUrl: string = 'https://www.seva.id/akun/profil'
 
   const getUserInitial = (payload: string): string => {
     const name = payload.split(' ')
@@ -192,10 +194,7 @@ const TopBarMobile: React.FC<TypeTopBarMobile> = ({ data, onSearchClick }) => {
             <>
               <div className={styles.authSection}>
                 {userData !== null ? (
-                  <a
-                    href="https://www.seva.id/akun/profil"
-                    className={styles.userAuth}
-                  >
+                  <a href={redirectProfileUrl} className={styles.userAuth}>
                     <div className={styles.userInfo}>
                       <div className={styles.initialUsernameText}>
                         {getUserInitial('Marcell Antonius Dermawan')}
@@ -220,7 +219,9 @@ const TopBarMobile: React.FC<TypeTopBarMobile> = ({ data, onSearchClick }) => {
                       alt="profile-icon"
                       className={styles.profileIcon}
                     />
-                    <p className={styles.initialText}>Masuk / Daftar</p>
+                    <a href={redirectLoginUrl} className={styles.initialText}>
+                      Masuk / Daftar
+                    </a>
                   </button>
                 )}
               </div>

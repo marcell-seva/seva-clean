@@ -22,12 +22,12 @@ const Article: React.FC<PropsArticle> = ({ data }): JSX.Element => {
   const redirectArticle: string = 'https://www.seva.id/blog/'
   const categoryList: Array<{ id: number; title: string }> = [
     { title: 'Semua Artikel', id: 65 },
-    { title: 'Modifikasi', id: 796 },
+    { title: 'Modifikasi', id: 974 },
     { title: 'Review Otomotif', id: 972 },
-    { title: 'Tips & Rekomendasi', id: 974 },
+    { title: 'Tips & Rekomendasi', id: 993 },
     { title: 'Keuangan', id: 979 },
-    { title: 'Travel & Lifestyle', id: 981 },
-    { title: 'Hobi & Komunitas', id: 993 },
+    { title: 'Travel & Lifestyle', id: 796 },
+    { title: 'Hobi & Komunitas', id: 981 },
   ]
   const ShadowSlider: React.FC = (): JSX.Element => (
     <div className={styles.shadowSlider} />

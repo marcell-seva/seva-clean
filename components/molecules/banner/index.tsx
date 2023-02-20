@@ -1,4 +1,4 @@
-import React, { lazy, useEffect, useState } from 'react'
+import React, { lazy, useEffect, useRef, useState } from 'react'
 import styles from '../../../styles/Banner.module.css'
 import Image from 'next/image'
 import Widget from '../widget'

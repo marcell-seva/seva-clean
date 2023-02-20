@@ -23,6 +23,8 @@ const TopBarDesktop: React.FC = () => {
   const [input, setInput] = useState<string>('')
   const [variantList, setVariantList] = useState<Array<Variant>>([])
   const [isUserInfoShow, setIsUserInfoShow] = useState<boolean>(false)
+  const redirectLoginUrl: string = 'https://www.seva.id/masuk-akun'
+  const redirectProfileUrl: string = 'https://www.seva.id/akun/profil'
 
   const getVariantProduct = async (value: string): Promise<any> => {
     try {
@@ -140,10 +142,7 @@ const TopBarDesktop: React.FC = () => {
         </div>
       ) : (
         <div className={styles.wrapperInitialAuth}>
-          <a
-            href="https://www.seva.id/masuk-akun"
-            className={styles.initialAuthMain}
-          >
+          <a href={redirectLoginUrl} className={styles.initialAuthMain}>
             <IconUser width={15} height={15} color="#FFFFFF" />
             <p className={styles.initialText}>Masuk / Daftar</p>
           </a>
@@ -151,10 +150,7 @@ const TopBarDesktop: React.FC = () => {
       )}
       {isUserInfoShow && (
         <div className={styles.accountInfo}>
-          <a
-            href="https://www.seva.id/akun/profil"
-            className={styles.accountSelector}
-          >
+          <a href={redirectProfileUrl} className={styles.accountSelector}>
             <IconUser width={22} height={22} color="#52627A" />
             <p className={styles.accountText}>Akun Saya</p>
           </a>

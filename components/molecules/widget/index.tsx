@@ -36,8 +36,24 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
   const [selectorActive, setSelectorActive] = useState<string>('')
   const [isDetailShow, setIsDetailShow] = useState<boolean>(false)
   const selectorData = {
-    dp: [30000000, 40000000, 50000000, 75000000, 100000000],
-    income: ['<2M', '2M-4M', '4M-6M', '6M-8M', '8-M10M'],
+    dp: [
+      30000000, 40000000, 50000000, 75000000, 100000000, 150000000, 250000000,
+      350000000,
+    ],
+    income: [
+      '< 2M',
+      '2M-4M',
+      '4M-6M',
+      '6M-8M',
+      '8-M10M',
+      '10M-20M',
+      '20M-50M',
+      '50M-75M',
+      '75M-100M',
+      '100M-150M',
+      '150M-200M',
+      '> 200M',
+    ],
     age: ['18-27', '29-34', '25-50', '>51'],
   }
   const buttonText: string = 'Temukan Mobilku'
@@ -214,6 +230,8 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
     })
   }
 
+  const constraintTopDownPayment: number = 350000000
+
   const DetailList: React.FC<PropsDetailList> = ({
     data,
     indexKey,
@@ -231,7 +249,9 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
             }}
           >
             {fallback !== undefined ? (
-              <label className={styles.buttonListText}>{fallback(item)}</label>
+              <label className={styles.buttonListText}>
+                {fallback(item, item === constraintTopDownPayment)}
+              </label>
             ) : (
               <label className={styles.buttonListText}>{item}</label>
             )}

@@ -32,7 +32,7 @@ axios.interceptors.response.use(
     const dataToken = getDataToken()
     console.log('error', statusCode)
 
-    if (statusCode === 400)
+    if (statusCode === 4000)
       window.location.href = 'https://www.seva.id/masuk-akun'
     else if (statusCode === 401) {
       const userToken: any = await requestNewToken(dataToken.refreshToken)

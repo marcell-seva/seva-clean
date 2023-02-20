@@ -59,10 +59,7 @@ const Header: React.FC<TypeHeader> = ({
   const DropDownWithOutChild: React.FC<TypeMenu> = ({ item }): JSX.Element => {
     return (
       <li className={styles.listMain}>
-        <a
-          href={redirectRootPath + item.menuUrl}
-          className={styles.wrapperListMenu}
-        >
+        <a href={`https://${item.menuUrl}`} className={styles.wrapperListMenu}>
           <p className={styles.listMainText}>{item.menuName}</p>
         </a>
       </li>

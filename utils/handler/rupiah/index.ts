@@ -1,4 +1,4 @@
-export const rupiah = (num: number): string => {
+export const rupiah = (num: number, isLargerThan?: boolean): string => {
   const lookup = [
     { value: 1, symbol: '' },
     { value: 1e6, symbol: ' Jt' },
@@ -11,9 +11,10 @@ export const rupiah = (num: number): string => {
       return num >= item.value
     })
 
-  const result = item
+  const parsed = item
     ? (num / item.value).toFixed(2).replace(rx, '$1') + item.symbol
     : '0'
 
-  return result.replace('.', ',')
+  if (isLargerThan) return `Rp > ${parsed.replace('.', ',')}`
+  else return `Rp ${parsed.replace('.', ',')}`
 }
