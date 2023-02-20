@@ -1,8 +1,8 @@
 # Base on offical Node.js Alpine image
-FROM node:alpine
+FROM node:16-alpine
 
 # Set working directory
-WORKDIR /usr/app
+WORKDIR /app
 
 # Install PM2 globally
 RUN npm install --global pm2
@@ -25,7 +25,7 @@ EXPOSE 3000
 
 # Run container as non-root (unprivileged) user
 # The node user is provided in the Node.js Alpine base image
-USER node
+# USER node
 
 # Run npm start script with PM2 when container starts
 CMD [ "pm2-runtime", "npm", "--", "start" ]
