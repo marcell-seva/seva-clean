@@ -54,7 +54,7 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
       '150M-200M',
       '> 200M',
     ],
-    age: ['18-27', '29-34', '25-50', '>51'],
+    age: ['18-27', '28-34', '35-50', '>51'],
   }
   const buttonText: string = 'Temukan Mobilku'
   const headerText: string = 'Cari mobil baru yang pas buat kamu'
