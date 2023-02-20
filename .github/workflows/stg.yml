@@ -30,7 +30,8 @@ jobs:
       - name: Deploy Image to Google Container Registry
         run: |
           gcloud builds submit --timeout=1800s\
-            --tag gcr.io/$STG_GCP_PROJECT/$STG_GCP_IMAGE
+            --tag gcr.io/$STG_GCP_PROJECT/$STG_GCP_IMAGE \
+            --gcs-log-dir gs://torq-build-logs/container
 
       - name: Update Cloud Run with latest Container Image
         run: |
