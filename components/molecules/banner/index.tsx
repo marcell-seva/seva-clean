@@ -1,10 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { lazy, useEffect, useRef, useState } from 'react'
 import styles from '../../../styles/Banner.module.css'
 import Image from 'next/image'
-import Script from 'next/script'
-import TagManager from 'react-gtm-module'
 import Widget from '../widget'
-export default function Banner({ data }: any) {
+import amplitude from 'amplitude-js'
+import TagManager from 'react-gtm-module'
+import { Banner } from '../../../utils/types'
+
+type TypesBanner = {
+  data: Array<Banner>
+}
+
+const Banner: React.FC<TypesBanner> = ({ data }): JSX.Element => {
+  const [isExpandForm, setIsExpandForm] = useState<boolean>(false)
+  const [index, setIndex] = useState<number>(0)
+  const [isActiveSending, setIsActiveSending] = useState<boolean>(true)
+  const [dataSentIndex, setDataSentIndex] = useState<Array<number>>([0])
   const [isUserOnBannerScreen, setIsUserOnBannerScreen] =
     useState<boolean>(false)
 
@@ -45,16 +55,14 @@ export default function Banner({ data }: any) {
   const pushDataLayerWidgetOnClick = (index: number) => {
     TagManager.dataLayer({
       dataLayer: {
-        ecommerce: {
-          promoClick: {
-            promotions: [
-              {
-                name: data[index].name,
-                creative: data[index].creativeContext,
-                position: data[index].slot,
-              },
-            ],
-          },
+        promoClick: {
+          promotions: [
+            {
+              name: data[index].name,
+              creative: data[index].creativeContext,
+              position: data[index].slot,
+            },
+          ],
         },
         eventCategory: 'Ecommerce',
         eventAction: 'PromotionClick - Control',
@@ -63,10 +71,81 @@ export default function Banner({ data }: any) {
     })
   }
 
-  const [isExpandForm, setIsExpandForm] = useState<boolean>(false)
+  const getTimeStamp = (): string | null => {
+    const timestamp: string | null = sessionStorage.getItem('timestamp')
+    return timestamp
+  }
+
+  const setTimestamp = (): void => {
+    const currentTime = new Date().getTime()
+    sessionStorage.setItem('timestamp', currentTime.toString())
+  }
+
+  const isInBorderTime = (payload: number): boolean => {
+    const currentTime = new Date().getTime()
+    const constrainTime = 5 * 60 * 1000
+    const diffTime = currentTime - payload
+    return diffTime <= constrainTime
+  }
+
+  const isDataExist = (data: Array<number>, key: number): boolean => {
+    const filtered: Array<number> = data.filter((item: number) => item === key)
+    return filtered.length > 0
+  }
+
+  const sendAmplitudeBanner = (payload: any): void => {
+    amplitude.getInstance().logEvent('WEB_TOP_BANNER_VIEW', {
+      Name: payload.name,
+      Page_direction_URL: payload.url,
+      Creative_context: payload.creativeContext,
+    })
+  }
+
+  const eventListenerScroll = () => {
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }
+
+  useEffect(() => {
+    const timestamp: string | null = getTimeStamp()
+    if (timestamp === null) {
+      setTimestamp()
+      setIsActiveSending(true)
+      pushDataLayerInit(data[0])
+      sendAmplitudeBanner(data[0])
+    } else {
+      if (isInBorderTime(parseInt(timestamp))) {
+        setIsActiveSending(false)
+      } else {
+        setTimestamp()
+        setIsActiveSending(true)
+        pushDataLayerInit(data[0])
+        sendAmplitudeBanner(data[0])
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    eventListenerScroll()
+  }, [])
+
+  useEffect(() => {
+    if (isActiveSending && data.length > 0 && isUserOnBannerScreen) {
+      const isDataSlideExists = isDataExist(dataSentIndex, index)
+      if (!isDataSlideExists) {
+        const dataIndex: Array<number> = dataSentIndex
+        dataIndex.push(index)
+        setDataSentIndex(dataIndex)
+        pushDataLayerInit(data[index])
+        sendAmplitudeBanner(data[index])
+      }
+    }
+  }, [isActiveSending, index, data])
+
   return (
     <div className={isExpandForm ? styles.containerActive : styles.container}>
-      <Script src="/lazy.js" />
       <div
         className={isExpandForm ? styles.wrapperFormActive : styles.wrapperForm}
       >
@@ -75,10 +154,10 @@ export default function Banner({ data }: any) {
       <div className={styles.wrapperMobile}>
         <div className="swiper mySwiper">
           <div className="swiper-wrapper">
-            {data.map((item: any, key: number) => {
+            {data.map((item: Banner, key: number) => {
               if (key === 0) {
                 return (
-                  <a href={item.url} className="swiper-slide" key={key}>
+                  <a href={item.url} key={key} className="swiper-slide">
                     <Image
                       src={item.attribute.web_mobile}
                       width={480}
@@ -92,7 +171,7 @@ export default function Banner({ data }: any) {
                 )
               } else {
                 return (
-                  <a href={item.url} className="swiper-slide" key={key}>
+                  <a href={item.url} key={key} className="swiper-slide">
                     <Image
                       src={item.attribute.web_mobile}
                       width={480}
@@ -105,18 +184,18 @@ export default function Banner({ data }: any) {
                 )
               }
             })}
+            <div className={`swiper-pagination ${styles.paginationBullet}`} />
           </div>
-          <div className={`swiper-pagination ${styles.paginationBullet}`}></div>
         </div>
       </div>
       <div className={styles.wrapperDesktop}>
         <div className="swiper mySwiper">
           <div className="swiper-wrapper">
-            {data.map((item: any, key: number) => (
+            {data.map((item: Banner, key: number) => (
               <a
-                href={item.url}
-                className="swiper-slide"
                 key={key}
+                className="swiper-slide"
+                href={item.url}
                 onClick={() => pushDataLayerWidgetOnClick(key)}
               >
                 <Image
@@ -130,9 +209,11 @@ export default function Banner({ data }: any) {
               </a>
             ))}
           </div>
-          <div className="swiper-pagination"></div>
+          <div className={`swiper-pagination ${styles.paginationBullet}`} />
         </div>
       </div>
     </div>
   )
 }
+
+export default Banner

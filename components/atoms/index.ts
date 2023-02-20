@@ -20,9 +20,10 @@ import {
   IconForwardRight,
   IconLogout,
 } from './icon'
-import Test from './test'
 import Brand from './brand'
 import Logo from './logo'
+import { ShimmerCardArticle, ShimmerCardProduct } from './shimmer'
+
 export {
   Card,
   TypeCar,
@@ -43,8 +44,9 @@ export {
   IconBurgerMenu,
   IconArrowRight,
   IconLogout,
-  Test,
   Brand,
   Logo,
   IconForwardRight,
+  ShimmerCardProduct,
+  ShimmerCardArticle,
 }

@@ -19,18 +19,18 @@ const sendGAData = (conversionLabel: string) => {
     })
   }
 }
-export const trackGAContact = () => {
+export const trackGAContact = (): void => {
   sendGAData(conversionLabelMap.contact)
 }
-export const trackGALead = () => {
+export const trackGALead = (): void => {
   sendGAData(conversionLabelMap.lead)
 }
-export const trackGASubmitContactInfo = () => {
+export const trackGASubmitContactInfo = (): void => {
   sendGAData(conversionLabelMap.sendContactDetail)
 }
-export const trackGALoanCalcPageView = () => {
+export const trackGALoanCalcPageView = (): void => {
   sendGAData(conversionLabelMap.loanCalcView)
 }
-export const trackGAPreApprovalPageView = () => {
+export const trackGAPreApprovalPageView = (): void => {
   sendGAData(conversionLabelMap.preApprovalView)
 }

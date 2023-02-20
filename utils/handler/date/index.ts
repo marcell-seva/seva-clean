@@ -1,4 +1,4 @@
-export const timeSince = (date: string) => {
+export const timeSince = (date: string): string => {
   const todayDate: any = new Date()
   const parsedDate: any = new Date(date)
   const restDate = todayDate - parsedDate

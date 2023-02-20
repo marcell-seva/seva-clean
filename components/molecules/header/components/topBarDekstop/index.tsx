@@ -14,26 +14,19 @@ import {
   AuthContext,
   AuthContextType,
 } from '../../../../../services/context/authContext'
-interface Variant {
-  id: string
-  model: string
-  code: string
-  variant_name: string
-  variant_title: string
-  price_currency: string
-  price_value: number
-  price_formatted_value: string
-}
+import { Variant } from '../../../../../utils/types'
 
-export default function TopBarDesktop() {
+const TopBarDesktop: React.FC = () => {
   const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
   const [isCrossShow, setIsCrossShow] = useState<boolean>(false)
   const [isVariantShow, setIsVariantShow] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
   const [variantList, setVariantList] = useState<Array<Variant>>([])
   const [isUserInfoShow, setIsUserInfoShow] = useState<boolean>(false)
+  const redirectLoginUrl: string = 'https://www.seva.id/masuk-akun'
+  const redirectProfileUrl: string = 'https://www.seva.id/akun/profil'
 
-  const getVariantProduct = async (value: string) => {
+  const getVariantProduct = async (value: string): Promise<any> => {
     try {
       const params: string = `?query=${value}&city=jakarta&cityId=118`
       const res: any = await api.getVariantCar(params)
@@ -50,7 +43,7 @@ export default function TopBarDesktop() {
     }
   }
 
-  const parseProductUrl = (variant: string, type: string) => {
+  const parseProductUrl = (variant: string, type: string): string => {
     if (variant === null) {
       return '/'
     } else {
@@ -60,14 +53,15 @@ export default function TopBarDesktop() {
       return url
     }
   }
-  const getUserInitial = (payload: string) => {
+
+  const getUserInitial = (payload: string): string => {
     const name = payload.split(' ')
     const firstName = name[0]?.slice(0, 1)
     const lastName = name[1]?.slice(0, 1)
     return firstName + lastName
   }
 
-  const handleChange = (payload: string) => {
+  const handleChange = (payload: string): void => {
     setInput(payload)
     if (payload === '') {
       setIsVariantShow(false)
@@ -79,21 +73,20 @@ export default function TopBarDesktop() {
     }
   }
 
-  const clearInput = () => {
+  const clearInput = (): void => {
     setInput('')
     setIsCrossShow(false)
     setVariantList([])
     setIsVariantShow(false)
   }
 
-  const handleUserInfoClick = () => {
-    setIsUserInfoShow(!isUserInfoShow)
-  }
+  const handleUserInfoClick = () => setIsUserInfoShow(!isUserInfoShow)
 
-  const logout = () => {
+  const logout = (): void => {
     localStorage.removeItem('token')
     localStorage.removeItem('customerId')
     localStorage.removeItem('seva-cust')
+    localStorage.removeItem('filter')
     sessionStorage.removeItem('customerId')
 
     destroySessionMoEngage()
@@ -149,10 +142,7 @@ export default function TopBarDesktop() {
         </div>
       ) : (
         <div className={styles.wrapperInitialAuth}>
-          <a
-            href="https://www.seva.id/masuk-akun"
-            className={styles.initialAuthMain}
-          >
+          <a href={redirectLoginUrl} className={styles.initialAuthMain}>
             <IconUser width={15} height={15} color="#FFFFFF" />
             <p className={styles.initialText}>Masuk / Daftar</p>
           </a>
@@ -160,10 +150,7 @@ export default function TopBarDesktop() {
       )}
       {isUserInfoShow && (
         <div className={styles.accountInfo}>
-          <a
-            href="https://www.seva.id/akun/profil"
-            className={styles.accountSelector}
-          >
+          <a href={redirectProfileUrl} className={styles.accountSelector}>
             <IconUser width={22} height={22} color="#52627A" />
             <p className={styles.accountText}>Akun Saya</p>
           </a>
@@ -176,3 +163,5 @@ export default function TopBarDesktop() {
     </div>
   )
 }
+
+export default TopBarDesktop

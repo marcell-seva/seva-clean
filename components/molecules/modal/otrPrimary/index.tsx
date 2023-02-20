@@ -2,21 +2,34 @@ import Image from 'next/image'
 import React, { useContext, useState } from 'react'
 import styles from '../../../../styles/OTRPrimary.module.css'
 import { Capsule, IconCross, IconLocation } from '../../../atoms'
-import { LocationContext } from '../../../../services/context/locationContext'
+import {
+  LocationContext,
+  LocationContextType,
+} from '../../../../services/context/locationContext'
+import { Location } from '../../../../utils/types'
+import citySelectorMobile from '../../../../assets/images/modal/CitySelectorBackgroundMobile.svg'
+import citySelectorDesktop from '../../../../assets/images/modal/CitySelectorBackgroundDesktop.svg'
 
-type LocationContextType = {
-  location: Location
-  saveLocation: (data: Location) => void
+type TypeOTRPrimary = {
+  data: Array<Location>
+  onClick: () => void
 }
-
-export default function OTRPrimary({ data, onClick }: any) {
-  const { saveLocation } = useContext(
-    LocationContext,
-  ) as unknown as LocationContextType
+const OTRPrimary: React.FC<TypeOTRPrimary> = ({
+  data,
+  onClick,
+}): JSX.Element => {
+  const { saveLocation } = useContext(LocationContext) as LocationContextType
   const [isListShow, setIsListShow] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
-  const [city, setCity] = useState<any>(data)
-  const staticCity = [
+  const [city, setCity] = useState<Array<Location>>(data)
+  const headerMobileFirstText: string = 'Pilih kota dulu'
+  const headerMobileSecondText: string = 'untuk info harga OTR'
+  const headerMobileThirdText: string = 'dan stok yang lebih akurat'
+  const headerDesktopFirstText: string = 'Pilih kota dulu untuk info harga OTR'
+  const headerDesktopSecondText: string = 'dan stok yang lebih akurat'
+  const labelText: string = 'atau cari Kota yang sesuai KTP'
+
+  const staticCity: Array<Location> = [
     {
       cityCode: 'bekasi',
       cityName: 'Bekasi',
@@ -49,23 +62,23 @@ export default function OTRPrimary({ data, onClick }: any) {
     },
   ]
 
-  const handleChange = (payload: string) => {
+  const handleChange = (payload: string): void => {
     setInput(payload)
     filterData(payload)
   }
 
-  const handleOnClick = (payload: Location) => {
+  const handleOnClick = (payload: Location): void => {
     saveLocation(payload)
     onClick()
   }
 
-  const selectLocation = (payload: any) => {
+  const selectLocation = (payload: any): void => {
     saveLocation(payload)
     setIsListShow(false)
     onClick()
   }
 
-  const filterData = (params: string) => {
+  const filterData = (params: string): void => {
     const tempData = data
     const newData = tempData.filter((item: any) => {
       const itemData = `${item.cityName.toUpperCase()}`
@@ -84,7 +97,7 @@ export default function OTRPrimary({ data, onClick }: any) {
       <div className={styles.wrapper}>
         <div className={styles.wrapperLocator}>
           <Image
-            src="https://www.seva.id/static/media/CitySelectorBackgroundMobile.0bda639bbb6387a2830874684c0af082.svg"
+            src={citySelectorMobile}
             width={320}
             height={388}
             priority
@@ -92,7 +105,7 @@ export default function OTRPrimary({ data, onClick }: any) {
             className={styles.bgImageMobile}
           />
           <Image
-            src="https://www.seva.id/static/media/CitySelectorBackgroundDesktop.c7c088fbdaf6912d331555837ab523be.svg"
+            src={citySelectorDesktop}
             width={740}
             height={390}
             alt="seva-modal-desktop"
@@ -105,19 +118,13 @@ export default function OTRPrimary({ data, onClick }: any) {
               </div>
             </div>
             <h1 className={styles.mobileHeader}>
-              <pre className={styles.headerText}>Pilih kota dulu </pre>
-              <pre className={styles.headerText}>untuk info harga OTR </pre>
-              <pre className={styles.headerText}>
-                dan stok yang lebih akurat
-              </pre>
+              <pre className={styles.headerText}>{headerMobileFirstText}</pre>
+              <pre className={styles.headerText}>{headerMobileSecondText} </pre>
+              <pre className={styles.headerText}>{headerMobileThirdText}</pre>
             </h1>
             <h1 className={styles.dekstopHeader}>
-              <pre className={styles.headerText}>
-                Pilih kota dulu untuk info harga OTR
-              </pre>
-              <pre className={styles.headerText}>
-                dan stok yang lebih akurat
-              </pre>
+              <pre className={styles.headerText}>{headerDesktopFirstText}</pre>
+              <pre className={styles.headerText}>{headerDesktopSecondText}</pre>
             </h1>
             <div className={styles.suggestedLocation}>
               {staticCity.map((item: any) => {
@@ -130,7 +137,7 @@ export default function OTRPrimary({ data, onClick }: any) {
                 )
               })}
             </div>
-            <p className={styles.descText}>atau cari Kota yang sesuai KTP</p>
+            <p className={styles.descText}>{labelText}</p>
             <div className={styles.wrapperInput}>
               <IconLocation width={17} height={18} color="#D83130" />
               <input
@@ -160,3 +167,5 @@ export default function OTRPrimary({ data, onClick }: any) {
     </div>
   )
 }
+
+export default OTRPrimary

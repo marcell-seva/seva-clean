@@ -1,20 +1,13 @@
 import React from 'react'
 import styles from '../../../styles/atoms/Capsule.module.css'
+import { PropsCapsule } from '../../../utils/types'
 
-interface Location {
-  cityName: string
-  cityCode: string
-  id: number
-  province: string
-}
-interface Props {
-  item: Location
-  onClick: any
-}
-export default function Capsule({ item, onClick }: Props) {
+const Capsule: React.FC<PropsCapsule> = ({ item, onClick }): JSX.Element => {
   return (
     <button className={styles.location} onClick={onClick}>
       <p className={styles.locationText}>{item.cityName}</p>
     </button>
   )
 }
+
+export default Capsule

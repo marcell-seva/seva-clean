@@ -2,52 +2,38 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import styles from '../../../styles/Article.module.css'
 import { api } from '../../../services/api'
-import { IconBackButton, IconNextButton, Test } from '../../atoms'
+import { IconBackButton, IconNextButton, ShimmerCardArticle } from '../../atoms'
 import { useIsMobile } from '../../../utils'
-interface Article {
-  title: string
-  category: string
-  category_link: string
-  url: string
-  excerpt: string
-  publish_date: string
-  writer_name: string
-  writer_initial: string
-  featured_image: string
+import { Article, PropsArticle, PropsCategory } from '../../../utils/types'
+
+type TypesArticle = {
+  item: Article
 }
 
-interface CategoryProps {
-  name: string
-  id?: string
-  isActive?: boolean
-}
-
-export default function Article({ data }: any) {
+const Article: React.FC<PropsArticle> = ({ data }): JSX.Element => {
   const isMobile = useIsMobile()
+  const headerText = 'Baca Artikel Terkini'
+  const buttonText = 'LIHAT SEMUA'
+  const articleText = 'Baca Selengkapnya'
   const [categoryActive, setCategoryActive] = useState<string>('Semua Artikel')
-  const [subArticle, setSubArticle] = useState<any>(data)
-  const redirectArticle = 'https://www.seva.id/blog/'
-  const categoryList = [
+  const [subArticle, setSubArticle] = useState<Array<Article> | Array<any>>(
+    data,
+  )
+  const redirectArticle: string = 'https://www.seva.id/blog/'
+  const categoryList: Array<{ id: number; title: string }> = [
     { title: 'Semua Artikel', id: 65 },
-    { title: 'Modifikasi', id: 796 },
+    { title: 'Modifikasi', id: 974 },
     { title: 'Review Otomotif', id: 972 },
-    { title: 'Tips & Rekomendasi', id: 974 },
+    { title: 'Tips & Rekomendasi', id: 993 },
     { title: 'Keuangan', id: 979 },
-    { title: 'Travel & Lifestyle', id: 981 },
-    { title: 'Hobi & Komunitas', id: 993 },
+    { title: 'Travel & Lifestyle', id: 796 },
+    { title: 'Hobi & Komunitas', id: 981 },
   ]
+  const ShadowSlider: React.FC = (): JSX.Element => (
+    <div className={styles.shadowSlider} />
+  )
 
-  const ShadowSlider = () => <div className={styles.shadowSlider}></div>
-  const getArticleByCategory = async (payload: string) => {
-    try {
-      const res = await api.getSubArticle(payload)
-      setSubArticle(res)
-    } catch (error) {
-      throw error
-    }
-  }
-
-  const ItemMobile = ({ item }: any) => (
+  const ItemMobile: React.FC<TypesArticle> = ({ item }): JSX.Element => (
     <a href={item.url} className={styles.itemArticleMobile}>
       <Image
         src={item.featured_image}
@@ -61,13 +47,13 @@ export default function Article({ data }: any) {
         <div className={styles.capsuleWrapper}>
           <p className={styles.capsuleText}>{item.category}</p>
         </div>
-        <h4 className={styles.titleText}>{item.title}</h4>
+        <h1 className={styles.titleText}>{item.title}</h1>
         <p className={styles.dateText}>{item.publish_date}</p>
       </div>
     </a>
   )
 
-  const ItemDekstop = ({ item }: any) => (
+  const ItemDekstop: React.FC<TypesArticle> = ({ item }): JSX.Element => (
     <a href={item.url} className={styles.itemArticleDekstop}>
       <Image
         src={item.featured_image}
@@ -85,7 +71,7 @@ export default function Article({ data }: any) {
     </a>
   )
 
-  const MainArticleMobile = ({ item }: any) => (
+  const MainArticleMobile: React.FC<TypesArticle> = ({ item }): JSX.Element => (
     <a href={item.url} className={styles.wrapperMainInfoMobile}>
       <Image
         src={item.featured_image}
@@ -98,13 +84,15 @@ export default function Article({ data }: any) {
         <div className={styles.capsuleWrapper}>
           <p className={styles.capsuleText}>{item.category}</p>
         </div>
-        <h4 className={styles.titleText}>{item.title}</h4>
+        <h1 className={styles.titleText}>{item.title}</h1>
         <p className={styles.dateText}>{item.publish_date}</p>
       </div>
     </a>
   )
 
-  const MainArticleDesktop = ({ item }: any) => (
+  const MainArticleDesktop: React.FC<TypesArticle> = ({
+    item,
+  }): JSX.Element => (
     <a href={item.url} className={styles.wrapperMainInfoDekstop}>
       <Image
         src={item.featured_image}
@@ -121,18 +109,22 @@ export default function Article({ data }: any) {
         <p className={styles.dateText}>{item.publish_date}</p>
       </div>
       <div>
-        <h4 className={styles.titleText}>{item.title}</h4>
+        <h1 className={styles.titleText}>{item.title}</h1>
         <p className={styles.descText}>{item.excerpt}</p>
-        <button className={styles.wrapperButton}>Baca Selengkapnya</button>
+        <button className={styles.wrapperButton}>{articleText}</button>
       </div>
     </a>
   )
 
-  const Category = ({ name, id, isActive }: CategoryProps) => (
+  const Category: React.FC<PropsCategory> = ({
+    name,
+    id,
+    isActive,
+  }): JSX.Element => (
     <button
       onClick={() => {
         setCategoryActive(name)
-        if (id === undefined || id.toString() === '65') setSubArticle(data)
+        if (id === undefined || id === 65) setSubArticle(data)
         else getArticleByCategory(id)
       }}
       className={isActive ? styles.selectorActive : styles.selectorInActive}
@@ -141,17 +133,48 @@ export default function Article({ data }: any) {
     </button>
   )
 
+  const getArticleByCategory = async (payload: number): Promise<any> => {
+    try {
+      setSubArticle([])
+      const res: any = await api.getSubArticle(payload)
+      setSubArticle(res)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const renderSubArticle = (): JSX.Element | Array<JSX.Element> => {
+    if (subArticle.length === 0) {
+      return (
+        <div className={styles.shimmerWrapper}>
+          <ShimmerCardArticle />
+          <ShimmerCardArticle />
+          <ShimmerCardArticle />
+          <ShimmerCardArticle />
+        </div>
+      )
+    } else if (isMobile && subArticle.length > 0) {
+      return subArticle
+        .slice(0, 3)
+        .map((item: any, key: number) => <ItemMobile key={key} item={item} />)
+    } else {
+      return subArticle
+        .slice(0, 4)
+        .map((item: any, key: number) => <ItemDekstop key={key} item={item} />)
+    }
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.flexRowBetween}>
-        <h1 className={styles.headerText}>Baca Artikel Terkini</h1>
+        <h1 className={styles.headerText}>{headerText}</h1>
         <a
           href={redirectArticle}
           target="_blank"
           className={styles.redirectText}
           rel="noreferrer"
         >
-          LIHAT SEMUA
+          {buttonText}
         </a>
       </div>
       <div className={styles.flexRow}>
@@ -203,17 +226,10 @@ export default function Article({ data }: any) {
               </div>
             </div>
           </div>
-          <div className={styles.collectionArticle}>
-            {subArticle.slice(0, 3).map((item: any, key: number) => (
-              <ItemMobile key={key} item={item} />
-            ))}
-            {/* desktop */}
-            {subArticle.slice(0, 4).map((item: any, key: number) => (
-              <ItemDekstop key={key} item={item} />
-            ))}
-          </div>
+          <div className={styles.collectionArticle}>{renderSubArticle()}</div>
         </div>
       </div>
     </div>
   )
 }
+export default Article

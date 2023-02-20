@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import styles from '../../../styles/ContactUs.module.css'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
 import Image from 'next/image'
-import TagManager from 'react-gtm-module'
 import amplitude from 'amplitude-js'
 import { api } from '../../../services/api'
 import { setTrackEventMoEngageWithoutValue } from '../../../services/moengage'
@@ -10,54 +9,72 @@ import {
   AuthContext,
   AuthContextType,
 } from '../../../services/context/authContext'
+import {
+  ConfigContext,
+  ConfigContextType,
+} from '../../../services/context/configContext'
+import TagManager from 'react-gtm-module'
+import { Form, PropsContactUs } from '../../../utils/types'
 
-interface Form {
-  name: string
-  phone: any
-  whatsapp: boolean
-}
-
-interface Props {
-  openThankyouModal: any
-  openLoginModal: any
-}
-export default function ContactUs({
+const ContactUs: React.FC<PropsContactUs> = ({
   openThankyouModal,
   openLoginModal,
-}: Props) {
-  const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
+}): JSX.Element => {
+  const { isLoggedIn, userData, filter } = useContext(
+    AuthContext,
+  ) as AuthContextType
+  const { utm } = useContext(ConfigContext) as ConfigContextType
   const [active, setActive] = useState<boolean>(false)
   const [form, setForm] = useState<Form>({
-    name: userData === null ? '' : userData.fullName,
-    phone: userData === null ? '' : userData.phoneNumber,
+    name: '',
+    phone: '',
     whatsapp: false,
   })
+  const headerText: string = 'Ngobrol langsung dengan agen kami'
+  const subHeaderText: string =
+    'Tulis rincian kontakmu supaya agen kami bisa segera menghubungi kamu.'
+  const labelText: string = 'Saya memilih untuk dihubungi via WhatsApp'
 
-  const handleChange = (indexKey: string, payload: string | boolean) => {
+  useEffect(() => {
+    if (userData !== null) {
+      const parsedPhone = userData.phoneNumber.toString().replace('+62', '')
+      setForm((prevState: any) => ({ ...prevState, name: userData.fullName }))
+      setForm((prevState: any) => ({
+        ...prevState,
+        phone: parseInt(parsedPhone),
+      }))
+    }
+  }, [userData])
+
+  const handleChange = (indexKey: string, payload: string | boolean): void => {
     setForm((prevState: any) => ({ ...prevState, [indexKey]: payload }))
   }
 
-  const sendForm = () => {
+  const sendForm = (): void => {
     if (form.whatsapp)
       amplitude.getInstance().logEvent('SELECT_HOME_SEND_DETAILS')
     sendUnverifiedLeads(form)
   }
 
-  const sendUnverifiedLeads = (payload: any) => {
-    const data = {
+  const generateLeadsData = (payload: Form) => {
+    const data: any = {
       contactType: payload.whatsapp ? 'whatsapp' : 'phone',
-      maxDp: 30000000, // uniq masalah dp, utm , dan token
       name: payload.name,
       phoneNumber: `+62${payload.phone}`,
       origination: 'Homepage - Hubungi Kami',
-      adSet: null,
-      utmCampaign: null,
-      utmContent: null,
-      utmId: null,
-      utmMedium: null,
-      utmSource: null,
-      utmTerm: null,
+      adSet: utm?.adset,
+      utmCampaign: utm?.utm_campaign,
+      utmContent: utm?.utm_content,
+      utmId: utm?.utm_id,
+      utmMedium: utm?.utm_medium,
+      utmSource: utm?.utm_source,
+      utmTerm: utm?.utm_term,
     }
+    if (filter !== null) data.maxDp = parseInt(filter.downPaymentAmount)
+    return data
+  }
+  const sendUnverifiedLeads = (payload: any): void => {
+    const data = generateLeadsData(payload)
     try {
       api.postUnverfiedLeads(data)
       openThankyouModal()
@@ -69,7 +86,7 @@ export default function ContactUs({
     }
   }
 
-  const pushDataLayer = () => {
+  const pushDataLayer = (): void => {
     TagManager.dataLayer({
       dataLayer: {
         event: 'interaction',
@@ -81,21 +98,20 @@ export default function ContactUs({
   }
 
   useEffect(() => {
-    setActive(form.name !== '' && form.phone.length > 3)
+    if (isLoggedIn) setActive(true)
+    else setActive(form.name !== '' && form.phone.length > 3)
   }, [form])
 
-  const validateForm = () => {
-    if (active && isLoggedIn) sendForm()
+  const validateForm = (): void => {
+    if (active && !isLoggedIn) sendForm()
     else if (active && !isLoggedIn) openLoginModal()
   }
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
-        <h2 className={styles.titleText}>Ngobrol langsung dengan agen kami</h2>
-        <p className={styles.descText}>
-          Tulis rincian kontakmu supaya agen kami bisa segera menghubungi kamu.
-        </p>
+        <h2 className={styles.titleText}>{headerText}</h2>
+        <p className={styles.descText}>{subHeaderText}</p>
         <div className={styles.form}>
           <div className={styles.wrapperInput}>
             <input
@@ -115,12 +131,13 @@ export default function ContactUs({
                 alt="indonesia-flag"
               />
               <p className={styles.labelRegion}>+62</p>
-              <p className={styles.separator}>|</p>
+              <div className={styles.separator} />
             </div>
             <input
               className={`inputNumber ${styles.input}`}
-              placeholder="Contoh : 81212345678"
+              value={form.phone}
               type="number"
+              placeholder="Contoh : 81212345678"
               onChange={(e) => handleChange('phone', e.target.value)}
             />
           </div>
@@ -131,9 +148,7 @@ export default function ContactUs({
               checked={form.whatsapp}
               onChange={() => handleChange('whatsapp', !form.whatsapp)}
             />
-            <p className={styles.agreementText}>
-              Saya memilih untuk dihubungi via WhatsApp
-            </p>
+            <p className={styles.agreementText}>{labelText}</p>
           </label>
           <button
             className={active ? styles.buttonActive : styles.buttonInActive}
@@ -149,11 +164,11 @@ export default function ContactUs({
             checked={form.whatsapp}
             onChange={() => handleChange('whatsapp', !form.whatsapp)}
           />
-          <p className={styles.agreementText}>
-            Saya memilih untuk dihubungi via WhatsApp
-          </p>
+          <p className={styles.agreementText}>{labelText}</p>
         </label>
       </div>
     </div>
   )
 }
+
+export default ContactUs

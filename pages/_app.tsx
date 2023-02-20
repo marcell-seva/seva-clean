@@ -2,17 +2,20 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import localFont from '@next/font/local'
-import TagManager from 'react-gtm-module'
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import Script from 'next/script'
 import { initAmplitude } from '../services/amplitude/'
-import { LocationProvider } from '../services/context/locationContext'
-import { AuthProvider } from '../services/context/authContext'
+import TagManager from 'react-gtm-module'
+import {
+  AuthProvider,
+  LocationProvider,
+  CarProvider,
+} from '../services/context'
+import { ConfigProvider } from '../services/context/configContext'
 
-initAmplitude()
 const kanyon = localFont({
   src: '../public/Kanyon-Regular.otf',
   style: 'normal',
@@ -30,28 +33,32 @@ const OpenSansSemiBold = localFont({
   style: 'normal',
 })
 
+initAmplitude()
+
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     TagManager.initialize({ gtmId: 'GTM-TV9J5JM' })
   }, [])
   return (
-    <AuthProvider>
-      <LocationProvider>
-        <Script src="/lazy.js" />
-        <style jsx global>{`
-          :root {
-            --kanyon: ${kanyon.style.fontFamily};
-            --kanyon-bold: ${kanyonBold.style.fontFamily};
-            --open-sans: ${OpenSans.style.fontFamily};
-            --open-sans-semi-bold: ${OpenSansSemiBold.style.fontFamily};
-          }
-        `}</style>
-        <Component {...pageProps} />
-        <Script
-          type="text/javascript"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(i, s, o, g, r, a, m, n) {
+    <ConfigProvider>
+      <AuthProvider>
+        <LocationProvider>
+          <CarProvider>
+            <Script src="/lazy.js" />
+            <style jsx global>{`
+              :root {
+                --kanyon: ${kanyon.style.fontFamily};
+                --kanyon-bold: ${kanyonBold.style.fontFamily};
+                --open-sans: ${OpenSans.style.fontFamily};
+                --open-sans-semi-bold: ${OpenSansSemiBold.style.fontFamily};
+              }
+            `}</style>
+            <Component {...pageProps} />
+            <Script
+              type="text/javascript"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `(function(i, s, o, g, r, a, m, n) {
         i.moengage_object = r
         t = {}
         q = function (f) {
@@ -122,9 +129,11 @@ export default function App({ Component, pageProps }: AppProps) {
           debug_logs: 0,
         })
         }`,
-          }}
-        ></Script>
-      </LocationProvider>
-    </AuthProvider>
+              }}
+            ></Script>
+          </CarProvider>
+        </LocationProvider>
+      </AuthProvider>
+    </ConfigProvider>
   )
 }

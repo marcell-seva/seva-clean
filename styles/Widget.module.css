@@ -45,8 +45,10 @@
 }
 
 .separator {
-  margin-left: 5px;
-  color: #9ea3ac;
+  height: 22px;
+  width: 2px;
+  margin: 0px 8px;
+  background-color: #9ea3ac;
 }
 
 .wrapperRow {
@@ -125,6 +127,7 @@
 
 .iconDropDown {
   padding-left: 5px;
+  padding-top: 3px;
 }
 
 .button {
@@ -137,6 +140,7 @@
   border-radius: 5px;
   text-align: center;
   border: none;
+  cursor: pointer;
   margin-top: 10px;
   padding: 10px 0px;
 }
@@ -155,10 +159,50 @@
   border: 0.3px solid #52627a;
   height: 40px;
   width: 100%;
-
   border-radius: 5px;
   position: relative;
   outline: none;
+}
+
+.selectorError {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 5px;
+  border: 0.3px solid #e01f29;
+  height: 40px;
+  width: 100%;
+  border-radius: 5px;
+  position: relative;
+  outline: none;
+  animation: horizontal-shaking 0.35s 1;
+}
+
+.infoErrorText {
+  font-family: var(--open-sans);
+  font-size: 10px;
+  color: #e01f29;
+  padding-top: 4px;
+}
+
+@keyframes horizontal-shaking {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(5px);
+  }
+  50% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .list {
@@ -168,6 +212,9 @@
   border-style: solid;
   border-width: 0.5px;
   border-radius: 5px;
+  height: min-content;
+  max-height: 175px;
+  overflow-y: scroll;
 }
 
 .placeholderText {
@@ -216,16 +263,15 @@
   margin-top: 5px;
   z-index: 3;
   border: 0.3px solid #52627a;
+  margin-right: 10px;
 }
 
 .buttonIncome {
   outline: none;
   border: none;
   text-align: start;
-  height: 30px;
   background-color: #ffffff;
-  padding: 5px 8px;
-  font-weight: '200';
+  padding: 8px;
 }
 
 .buttonIncome:hover {
@@ -271,5 +317,20 @@
 
   .wrapperForm {
     top: 2%;
+  }
+
+  .list::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  /* Track */
+  .list::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Handle */
+  .list::-webkit-scrollbar-thumb {
+    background: #e4e9f1;
+    border-radius: 20px;
   }
 }

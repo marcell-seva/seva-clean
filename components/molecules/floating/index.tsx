@@ -3,8 +3,11 @@ import React, { useState } from 'react'
 import styles from '../../../styles/Floating.module.css'
 import selectorImage from '../../../assets/images/floating/selector.webp'
 import contentImage from '../../../assets/images/floating/content.png'
+import { PropsFloatingSection } from '../../../utils/types'
 
-export default function Floating({ onClickImage }: any) {
+const Floating: React.FC<PropsFloatingSection> = ({
+  onClickImage,
+}): JSX.Element => {
   const [isShow, setIsShow] = useState<boolean>(false)
   return (
     <div className={styles.wrapper}>
@@ -32,3 +35,5 @@ export default function Floating({ onClickImage }: any) {
     </div>
   )
 }
+
+export default Floating

@@ -3,47 +3,52 @@ import styles from '../../../styles/Testimony.module.css'
 import Image from 'next/image'
 import { IconBackButton, IconNextButton, IconStar } from '../../atoms'
 import { timeSince, useIsMobile } from '../../../utils'
-
-export default function Testimony({ data }: any) {
+import { Testimony } from '../../../utils/types'
+type TypesTestimony = {
+  data: Array<Testimony>
+}
+type TypesTestimonyDetail = {
+  item: Testimony
+}
+const Testimony: React.FC<TypesTestimony> = ({ data }): JSX.Element => {
   const isMobile = useIsMobile()
+  const headerText = 'Cerita Pengguna SEVA'
 
-  const Slide = ({ item }: any) => {
-    return (
-      <div className={styles.card}>
-        <div className={styles.imagesWrapper}>
-          <Image
-            src={item.pictureUrl}
-            width={360}
-            height={230}
-            alt="seva-testimony"
-            sizes="(max-width: 1024px) 46vw, 27vw"
-            className={styles.image}
-          />
-          <div className={styles.wrapperInfo}>
-            <p className={styles.name}>{item.name}</p>
-            <div className={styles.info}>
-              <p className={styles.date}>
-                {timeSince(item.purchaseDate)} | {item.cityName}
-              </p>
-              <div className={styles.rating}>
-                {[...Array(item.rating).fill(0)].map((_, i) => (
-                  <div key={i} className={styles.star}>
-                    <IconStar width={14} height={14} />
-                  </div>
-                ))}
-              </div>
+  const Slide: React.FC<TypesTestimonyDetail> = ({ item }): JSX.Element => (
+    <div className={styles.card}>
+      <div className={styles.imagesWrapper}>
+        <Image
+          src={item.pictureUrl}
+          width={360}
+          height={230}
+          alt="seva-testimony"
+          sizes="(max-width: 1024px) 46vw, 27vw"
+          className={styles.image}
+        />
+        <div className={styles.wrapperInfo}>
+          <p className={styles.name}>{item.name}</p>
+          <div className={styles.info}>
+            <p className={styles.date}>
+              {timeSince(item.purchaseDate)} | {item.cityName}
+            </p>
+            <div className={styles.rating}>
+              {[...Array(item.rating).fill(0)].map((_, i) => (
+                <div key={i} className={styles.star}>
+                  <IconStar width={14} height={14} />
+                </div>
+              ))}
             </div>
           </div>
         </div>
-        <p className={styles.desc}>{item.detail}</p>
       </div>
-    )
-  }
-  const ShadowSlide = () => <div className={styles.shadowSlide}></div>
+      <p className={styles.desc}>{item.detail}</p>
+    </div>
+  )
+  const ShadowSlide = (): JSX.Element => <div className={styles.shadowSlide} />
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.headerText}>Cerita Pengguna SEVA</h1>
+      <h1 className={styles.headerText}>{headerText}</h1>
       <div className={styles.testimonyWrapper}>
         {!isMobile && (
           <>
@@ -76,3 +81,5 @@ export default function Testimony({ data }: any) {
     </div>
   )
 }
+
+export default Testimony
