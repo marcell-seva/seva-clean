@@ -1,6 +1,8 @@
 # Base on offical Node.js Alpine image
 FROM node:16-alpine
 
+ENV PORT=8080
+
 # Set working directory
 WORKDIR /app
 
