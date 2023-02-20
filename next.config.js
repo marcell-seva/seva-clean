@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  distDir: 'next-seva',
+  distDir: 'next-seva-dir',
   images: {
     remotePatterns: [
       {
