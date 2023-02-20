@@ -220,7 +220,7 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
   const setDataFilterLocalStorage = (payload: FormWidget): void => {
     saveFilterData({
       age: payload.age,
-      downPaymentAmount: payload.dp,
+      downPaymentAmount: payload.dp.toString(),
       monthlyIncome: payload.income,
       tenure: payload.tenure,
       carModel: '',
