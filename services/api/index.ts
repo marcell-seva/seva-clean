@@ -2,18 +2,6 @@ import get from './get'
 import post from './post'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { collections } from './collections'
-import { useContext } from 'react'
-import { AuthContext, AuthContextType } from '../context/authContext'
-
-// axios.interceptors.request.use(
-//   (config): AxiosRequestConfig => {
-//     const token = getLocalStorage('token')?.idToken
-//     config.headers = config.headers ?? {}
-//     config.headers.Authorization = token
-//     return config
-//   },
-//   (error) => Promise.reject(error),
-// )
 
 const getDataToken = () => {
   const dataToken = localStorage.getItem('token')
@@ -43,7 +31,7 @@ axios.interceptors.response.use(
     const statusCode = err.response.status
     const dataToken = getDataToken()
 
-    if (statusCode === 400)
+    if (statusCode === 4000)
       window.location.href = 'https://www.seva.id/masuk-akun'
     else if (statusCode === 401) {
       const userToken: any = await requestNewToken(dataToken.refreshToken)
@@ -73,7 +61,7 @@ const getRecommendation = (params: string) =>
 const getUsage = () => get(collections.utils.usage)
 const getMainArticle = (params: string) =>
   get(collections.article.mainArticle + params)
-const getSubArticle = (params: string) =>
+const getSubArticle = (params: number) =>
   get(collections.article.subArticle + params)
 
 const getVariantCar = (params: string) =>

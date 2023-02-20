@@ -1,58 +1,82 @@
 import Image from 'next/image'
-import React, { useState } from 'react'
-import TagManager from 'react-gtm-module'
+import React, { useContext, useEffect, useState } from 'react'
 import { api } from '../../../services/api'
 import { trackGAContact, trackGALead } from '../../../services/googleAds'
 import styles from '../../../styles/Widget.module.css'
-import { useComponentVisible } from '../../../utils'
+import { rupiah, useComponentVisible } from '../../../utils'
 import { IconChevronDown, IconChevronUp } from '../../atoms'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
+import { AuthContext, ConfigContext } from '../../../services/context'
+import { AuthContextType } from '../../../services/context/authContext'
+import { ConfigContextType } from '../../../services/context/configContext'
+import TagManager from 'react-gtm-module'
+import {
+  FormWidget,
+  PropsButtonTenure,
+  PropsSelectorList,
+  PropsDetailList,
+} from '../../../utils/types'
 
-export default function Widget({ expandForm }: any) {
-  const carListUrl = 'https://seva.id/mobil-baru'
+interface PropsWidget {
+  expandForm: () => void
+}
+
+const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
+  const { userData, filter, saveFilterData } = useContext(
+    AuthContext,
+  ) as AuthContextType
+  const { utm } = useContext(ConfigContext) as ConfigContextType
+  const [isFieldErrorType, setIsFieldErrorType] = useState<string>('')
+  const carListUrl: string = 'https://seva.id/mobil-baru'
   const [form, setForm] = useState<any>({
-    tenure: '5',
+    tenure: 5,
   })
-
   const { innerBorderRef } = useComponentVisible(() => setSelectorActive(''))
-
-  const [phone, setPhone] = useState('')
+  const [phone, setPhone] = useState<string | number>('')
   const [selectorActive, setSelectorActive] = useState<string>('')
   const [isDetailShow, setIsDetailShow] = useState<boolean>(false)
   const selectorData = {
-    dp: [30000000, 40000000, 50000000, 75000000, 100000000],
+    dp: [
+      30000000, 40000000, 50000000, 75000000, 100000000, 150000000, 250000000,
+      350000000,
+    ],
     income: [
-      '< 2 juta/bulan',
-      '2-4 juta/bulan',
-      '4-6 juta/bulan',
-      '6-8 juta/bulan',
-      '8-10 juta/bulan',
+      '< 2M',
+      '2M-4M',
+      '4M-6M',
+      '6M-8M',
+      '8-M10M',
+      '10M-20M',
+      '20M-50M',
+      '50M-75M',
+      '75M-100M',
+      '100M-150M',
+      '150M-200M',
+      '> 200M',
     ],
     age: ['18-27', '29-34', '25-50', '>51'],
   }
+  const buttonText: string = 'Temukan Mobilku'
+  const headerText: string = 'Cari mobil baru yang pas buat kamu'
+  const descText: string =
+    'Ingin bertanya langsung ke tim SEVA? Tulis nomor hp kamu untuk kami hubungi (Opsional)'
 
-  const getNumber = (num: number) => {
-    const lookup = [
-      { value: 1, symbol: '' },
-      { value: 1e6, symbol: ' Jt' },
-    ]
-    const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
-    var item = lookup
-      .slice()
-      .reverse()
-      .find(function (item) {
-        return num >= item.value
-      })
+  useEffect(() => {
+    if (userData !== null) {
+      const parsedPhone = userData.phoneNumber.toString().replace('+62', '')
+      setPhone(parseInt(parsedPhone))
+    }
+    if (filter !== null)
+      setForm((prevState: any) => ({
+        ...prevState,
+        dp: filter.downPaymentAmount,
+      }))
+  }, [userData, filter])
 
-    const fixedNumber = item
-      ? (num / item.value).toFixed(2).replace(rx, '$1') + item.symbol
-      : '0'
-
-    const result = `Rp ${fixedNumber.replace('.', ',')}`
-    return result
-  }
-
-  const ButtonTenure = ({ tenure, isActive }: any) => (
+  const ButtonTenure: React.FC<PropsButtonTenure> = ({
+    tenure,
+    isActive,
+  }): JSX.Element => (
     <button
       onClick={() => {
         setForm((prevState: any) => ({ ...prevState, tenure: tenure }))
@@ -63,63 +87,112 @@ export default function Widget({ expandForm }: any) {
     </button>
   )
 
-  const SelectorList = ({ placeholder, onClick, indexKey }: any) => (
-    <button className={styles.selector} onClick={onClick}>
-      <input
-        className={styles.placeholderText}
-        type="text"
-        disabled
-        placeholder={placeholder}
-        value={
-          indexKey === 'dp' && form[indexKey] !== undefined
-            ? getNumber(form[indexKey])
-            : form[indexKey]
-        }
-      />
-      {selectorActive === indexKey ? (
-        <IconChevronUp width={15} height={15} color="#002373" />
-      ) : (
-        <IconChevronDown width={15} height={15} />
-      )}
-    </button>
-  )
-
-  const sendRequest = () => {
-    setForm((prevState: any) => ({
-      ...prevState,
-      phone: phone,
-    }))
-    execUnverifiedLeads(form)
-    pushDataLayerOnClick()
-    window.location.href = carListUrl
+  const SelectorList: React.FC<PropsSelectorList> = ({
+    placeholder,
+    onClick,
+    indexKey,
+    isError,
+    fallback,
+  }): JSX.Element => {
+    if (isError) {
+      return (
+        <div>
+          <button className={styles.selectorError} onClick={onClick}>
+            <input
+              className={styles.placeholderText}
+              type="text"
+              disabled
+              placeholder={placeholder}
+              value={
+                fallback !== undefined && form[indexKey] !== undefined
+                  ? fallback(form[indexKey])
+                  : form[indexKey]
+              }
+            />
+            {selectorActive === indexKey ? (
+              <IconChevronUp width={15} height={15} color="#e01f29" />
+            ) : (
+              <IconChevronDown width={15} height={15} color="#e01f29" />
+            )}
+          </button>
+          <p className={styles.infoErrorText}>* Wajib diisi</p>
+        </div>
+      )
+    } else {
+      return (
+        <button className={styles.selector} onClick={onClick}>
+          <input
+            className={styles.placeholderText}
+            type="text"
+            disabled
+            placeholder={placeholder}
+            value={
+              fallback !== undefined && form[indexKey] !== undefined
+                ? fallback(form[indexKey])
+                : form[indexKey]
+            }
+          />
+          {selectorActive === indexKey ? (
+            <IconChevronUp width={15} height={15} color="#002373" />
+          ) : (
+            <IconChevronDown width={15} height={15} />
+          )}
+        </button>
+      )
+    }
   }
 
-  const execUnverifiedLeads = (payload: any) => {
-    const isValidPhoneNumber = phone.length > 3
+  const sendRequest = (): void => {
+    if (form.dp === undefined) setIsFieldErrorType('dp')
+    else if (form.age === undefined && form.income !== undefined)
+      setIsFieldErrorType('age')
+    else if (form.age !== undefined && form.income === undefined)
+      setIsFieldErrorType('income')
+    else {
+      setForm((prevState: any) => ({
+        ...prevState,
+        phone: phone,
+      }))
+      execUnverifiedLeads(form)
+      setDataFilterLocalStorage(form)
+      pushDataLayerOnClick()
+    }
+  }
+
+  const incomeTextSplitter = (payload: string): string => {
+    const result = payload.replace(/M/g, '')
+    return result + ' juta/bulan'
+  }
+
+  const execUnverifiedLeads = (payload: FormWidget): void => {
+    const isValidPhoneNumber = phone.toString().length > 3
 
     if (isValidPhoneNumber) {
       trackGALead()
       const data = {
-        age: payload.age,
-        income: payload.income,
-        maxDp: payload.dp,
+        age: payload.age || '',
+        income: payload.income || '',
+        maxDp: parseInt(payload.dp),
         phoneNumber: `+62${phone}`,
-        tenure: payload.tenure,
+        tenure: payload.tenure.toString(),
         origination: 'Web_Homepage_Search_Widget',
         userTouchpoints: 'Web_Homepage_Search_Widget',
-        adSet: null,
-        utmCampaign: null,
-        utmContent: null,
-        utmId: null,
-        utmMedium: null,
-        utmSource: null,
-        utmTerm: null,
+        adSet: utm?.adset,
+        utmCampaign: utm?.utm_campaign,
+        utmContent: utm?.utm_content,
+        utmId: utm?.utm_id,
+        utmMedium: utm?.utm_medium,
+        utmSource: utm?.utm_source,
+        utmTerm: utm?.utm_term,
       }
       sendUnverifiedLeads(data)
-    } else trackGAContact()
+    } else {
+      trackGAContact()
+      window.location.href = carListUrl
+    }
   }
 
-  const pushDataLayerOnClick = () => {
+  const pushDataLayerOnClick = (): void => {
     TagManager.dataLayer({
       dataLayer: {
         event: 'interaction',
@@ -130,24 +203,40 @@ export default function Widget({ expandForm }: any) {
     })
   }
 
-  const handleClickDP = (payload: string) => {
+  const handleClickDP = (payload: string): void => {
     if (selectorActive === payload) setSelectorActive('')
     else setSelectorActive(payload)
   }
 
-  const onChangeDataMobile = (payload: any) => {
-    setPhone(payload)
-  }
-
-  const sendUnverifiedLeads = (payload: any) => {
+  const sendUnverifiedLeads = (payload: any): void => {
     try {
       api.postUnverfiedLeads(payload)
+      window.location.href = carListUrl
     } catch (error) {
       throw error
     }
   }
 
-  const DetailList = ({ data, indexKey }: any) => {
+  const setDataFilterLocalStorage = (payload: FormWidget): void => {
+    saveFilterData({
+      age: payload.age,
+      downPaymentAmount: payload.dp,
+      monthlyIncome: payload.income,
+      tenure: payload.tenure,
+      carModel: '',
+      downPaymentType: 'amount',
+      monthlyInstallment: '',
+      sortBy: 'highToLow',
+    })
+  }
+
+  const constraintTopDownPayment: number = 350000000
+
+  const DetailList: React.FC<PropsDetailList> = ({
+    data,
+    indexKey,
+    fallback,
+  }): JSX.Element => {
     return (
       <div className={styles.list}>
         {data.map((item: any, key: number) => (
@@ -159,8 +248,10 @@ export default function Widget({ expandForm }: any) {
               setForm((prevState: any) => ({ ...prevState, [indexKey]: item }))
             }}
           >
-            {indexKey === 'dp' ? (
-              <label className={styles.buttonListText}>{getNumber(item)}</label>
+            {fallback !== undefined ? (
+              <label className={styles.buttonListText}>
+                {fallback(item, item === constraintTopDownPayment)}
+              </label>
             ) : (
               <label className={styles.buttonListText}>{item}</label>
             )}
@@ -172,34 +263,37 @@ export default function Widget({ expandForm }: any) {
 
   return (
     <div className={styles.form}>
-      <h1 className={styles.title}>Cari mobil baru yang pas buat kamu</h1>
+      <h1 className={styles.title}>{headerText}</h1>
       <div className={styles.wrapperRow}>
         <div className={styles.wrapperLeft}>
-          <h6 className={styles.desc}>Pilih maksimal DP</h6>
+          <p className={styles.desc}>Pilih maksimal DP</p>
           <SelectorList
             placeholder=">Rp 350 Jt"
             indexKey="dp"
+            isError={isFieldErrorType === 'dp' && form.dp === undefined}
             onClick={() => handleClickDP('dp')}
+            fallback={rupiah}
           />
           {selectorActive === 'dp' && (
-            <DetailList indexKey="dp" data={selectorData.dp} />
+            <DetailList
+              indexKey="dp"
+              data={selectorData.dp}
+              fallback={rupiah}
+            />
           )}
         </div>
         <div className={styles.wrapperRight}>
           <h6 className={styles.desc}>Pilih tahun tenor</h6>
           <div className={styles.wrapperRow}>
-            <ButtonTenure isActive={form.tenure === '1'} tenure="1" />
-            <ButtonTenure isActive={form.tenure === '2'} tenure="2" />
-            <ButtonTenure isActive={form.tenure === '3'} tenure="3" />
-            <ButtonTenure isActive={form.tenure === '4'} tenure="4" />
-            <ButtonTenure isActive={form.tenure === '5'} tenure="5" />
+            <ButtonTenure isActive={form.tenure === 1} tenure={1} />
+            <ButtonTenure isActive={form.tenure === 2} tenure={2} />
+            <ButtonTenure isActive={form.tenure === 3} tenure={3} />
+            <ButtonTenure isActive={form.tenure === 4} tenure={4} />
+            <ButtonTenure isActive={form.tenure === 5} tenure={5} />
           </div>
         </div>
       </div>
-      <p className={styles.desc}>
-        Ingin bertanya langsung ke tim SEVA? Tulis nomor hp kamu untuk kami
-        hubungi (Opsional)
-      </p>
+      <p className={styles.desc}>{descText}</p>
       <div className={styles.wrapperInputPhone}>
         <div className={styles.phoneDetail}>
           <Image
@@ -210,14 +304,14 @@ export default function Widget({ expandForm }: any) {
             alt="indonesia-flag"
           />
           <p className={styles.labelRegion}>+62</p>
-          <p className={styles.separator}>|</p>
+          <div className={styles.separator} />
         </div>
         <input
           type="number"
           value={phone}
           className={styles.input}
           placeholder="Contoh : 0895401011469"
-          onChange={(e: any) => onChangeDataMobile(e.target.value)}
+          onChange={(e: any) => setPhone(e.target.value)}
         ></input>
       </div>
       <p
@@ -243,10 +337,18 @@ export default function Widget({ expandForm }: any) {
             <SelectorList
               indexKey="income"
               placeholder="< 2 juta/bulan"
+              isError={
+                isFieldErrorType === 'income' && form.income === undefined
+              }
               onClick={() => handleClickDP('income')}
+              fallback={incomeTextSplitter}
             />
             {selectorActive === 'income' && (
-              <DetailList indexKey="income" data={selectorData.income} />
+              <DetailList
+                indexKey="income"
+                data={selectorData.income}
+                fallback={incomeTextSplitter}
+              />
             )}
           </div>
           <div className={styles.wrapperRight}>
@@ -254,6 +356,7 @@ export default function Widget({ expandForm }: any) {
             <SelectorList
               indexKey="age"
               placeholder="18-27"
+              isError={isFieldErrorType === 'age' && form.age === undefined}
               onClick={() => handleClickDP('age')}
             />
             {selectorActive === 'age' && (
@@ -263,8 +366,10 @@ export default function Widget({ expandForm }: any) {
         </div>
       )}
       <button className={styles.button} onClick={() => sendRequest()}>
-        Temukan Mobilku
+        {buttonText}
       </button>
     </div>
   )
 }
+
+export default Widget

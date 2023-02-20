@@ -16,37 +16,39 @@ import {
 import { ShimmerCardProduct } from '../../atoms/shimmer'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
-interface ShadowProps {
+import { Car } from '../../../utils/types'
+type TypesShadow = {
   type: string
 }
-export default function CarList({ data }: any) {
-  const brandList = ['Toyota', 'Daihatsu', 'Isuzu', 'BMW', 'Peugeot']
+type TypesCar = {
+  data: Car
+}
+const CarList: React.FC<TypesCar> = ({ data }): JSX.Element => {
+  const isMobile = useIsMobile()
+  const brandList: Array<string> = [
+    'Toyota',
+    'Daihatsu',
+    'Isuzu',
+    'BMW',
+    'Peugeot',
+  ]
   const [carList, setCarList] = useState<any>(data)
   const [loading, setLoading] = useState<boolean>(false)
   const [typeActive, setTypeActive] = useState<any>('Toyota')
-  const isMobile = useIsMobile()
   const { location, isInit } = useContext(
     LocationContext,
   ) as LocationContextType
+  const headerText = 'Mobil Baru Terpopuler'
+  const buttonText = 'LIHAT SEMUA'
+  const redirectUrlNewCar = 'https://www.seva.id/mobil-baru'
 
-  useEffect(() => {
-    if (!isInit) {
-      const params = `?brand=${typeActive}&city=${location.cityCode}&cityId=${location.id}`
-      getRecommendationCar(params)
-    }
-  }, [location.cityCode])
+  const ShadowSlide: React.FC = (): JSX.Element => (
+    <div className={styles.shadowSlider}></div>
+  )
 
-  const ShadowSlide = () => <div className={styles.shadowSlider}></div>
-
-  const handleClick = (payload: string) => {
-    setTypeActive(payload)
-    const params = isInit
-      ? `?brand=${payload}&city=jakarta&cityId=189`
-      : `?brand=${payload}&city=${location.cityCode}&cityId=${location.id}`
-    getRecommendationCar(params)
-  }
-
-  const ShadowSlideWithContent = ({ type }: ShadowProps) => (
+  const ShadowSlideWithContent: React.FC<TypesShadow> = ({
+    type,
+  }): JSX.Element => (
     <a href="https://www.seva.id/mobil-baru" className={styles.shadowSlider}>
       <IconArrowRight width={24} height={24} />
       <div className={styles.wrapperLabel}>
@@ -56,7 +58,15 @@ export default function CarList({ data }: any) {
     </a>
   )
 
-  const getRecommendationCar = async (params: string) => {
+  const Undefined: React.FC = (): JSX.Element => (
+    <div className={styles.undefined}>
+      <h1 className={styles.undefinedTitleText}>
+        Merk yang kamu pilih belum tersedia di kotamu.
+      </h1>
+      <p className={styles.undefinedDescText}>Silakan pilih merk lain.</p>
+    </div>
+  )
+  const getRecommendationCar = async (params: string): Promise<any> => {
     try {
       setLoading(true)
       setCarList([])
@@ -68,16 +78,15 @@ export default function CarList({ data }: any) {
     }
   }
 
-  const Undefined = () => (
-    <div className={styles.undefined}>
-      <h1 className={styles.undefinedTitleText}>
-        Merk yang kamu pilih belum tersedia di kotamu.
-      </h1>
-      <p className={styles.undefinedDescText}>Silakan pilih merk lain.</p>
-    </div>
-  )
+  const handleClick = (payload: string): void => {
+    setTypeActive(payload)
+    const params = isInit
+      ? `?brand=${payload}&city=jakarta&cityId=189`
+      : `?brand=${payload}&city=${location.cityCode}&cityId=${location.id}`
+    getRecommendationCar(params)
+  }
 
-  const renderContent = () => {
+  const RenderContent: React.FC = (): JSX.Element => {
     if (loading) {
       return (
         <div className={styles.shimmer}>
@@ -142,20 +151,22 @@ export default function CarList({ data }: any) {
           </Swiper>
         </div>
       )
-    } else if (carList.length === 0) {
-      return <Undefined />
-    }
+    } else return <Undefined />
   }
+
+  useEffect(() => {
+    if (!isInit) {
+      const params = `?brand=${typeActive}&city=${location.cityCode}&cityId=${location.id}`
+      getRecommendationCar(params)
+    }
+  }, [location.cityCode])
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.headerText}>Mobil Baru Terpopuler</h1>
-        <a
-          href="https://www.seva.id/mobil-baru"
-          className={styles.redirectText}
-        >
-          LIHAT SEMUA
+        <h1 className={styles.headerText}>{headerText}</h1>
+        <a href={redirectUrlNewCar} className={styles.redirectText}>
+          {buttonText}
         </a>
       </div>
       <div className={styles.wrapperSwiper}>
@@ -170,8 +181,12 @@ export default function CarList({ data }: any) {
             />
           ))}
         </div>
-        <div className={styles.carListWrapper}>{renderContent()}</div>
+        <div className={styles.carListWrapper}>
+          <RenderContent />
+        </div>
       </div>
     </div>
   )
 }
+
+export default CarList

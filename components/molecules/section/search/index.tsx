@@ -2,25 +2,17 @@ import React, { useState } from 'react'
 import { api } from '../../../../services/api'
 import styles from '../../../../styles/Search.module.css'
 import { IconChevronLeft, IconCross, IconSearch } from '../../../atoms'
+import { Variant, PropsSearchMobile } from '../../../../utils/types'
 
-interface Variant {
-  id: string
-  model: string
-  code: string
-  variant_name: string
-  variant_title: string
-  price_currency: string
-  price_value: number
-  price_formatted_value: string
-}
-
-export default function Search({ onSearchMobileClose }: any) {
+const Search: React.FC<PropsSearchMobile> = ({
+  onSearchMobileClose,
+}): JSX.Element => {
   const [input, setInput] = useState<string>('')
   const [isCrossShow, setIsCrossShow] = useState<boolean>(false)
   const [isVariantShow, setIsVariantShow] = useState<boolean>(false)
   const [variantList, setVariantList] = useState<Array<Variant>>([])
 
-  const getVariantProduct = async (value: string) => {
+  const getVariantProduct = async (value: string): Promise<any> => {
     try {
       const params: string = `?query=${value}&city=jakarta&cityId=189`
       const res: any = await api.getVariantCar(params)
@@ -36,7 +28,7 @@ export default function Search({ onSearchMobileClose }: any) {
     }
   }
 
-  const handleChange = (payload: string) => {
+  const handleChange = (payload: string): void => {
     setInput(payload)
     if (payload === '') {
       setIsCrossShow(false)
@@ -48,14 +40,14 @@ export default function Search({ onSearchMobileClose }: any) {
     }
   }
 
-  const clearInput = () => {
+  const clearInput = (): void => {
     setInput('')
     setIsCrossShow(false)
     setVariantList([])
     setIsVariantShow(false)
   }
 
-  const parseProductUrl = (variant: string, type: string) => {
+  const parseProductUrl = (variant: string, type: string): string => {
     const variantParsed: string = variant.split(' ')[0].toLowerCase()
     const typeParsed: string = type.replace(/ /g, '-').toLowerCase()
     const url: string = `https://www.seva.id/mobil-baru/${variantParsed}/${typeParsed}`
@@ -99,3 +91,4 @@ export default function Search({ onSearchMobileClose }: any) {
     </div>
   )
 }
+export default Search

@@ -5,8 +5,12 @@ import { IconCross } from '../../atoms'
 import CustomDesktopLeft from '../../../assets/images/annoucementBox/custom/custom-desktop-left.webp'
 import CustomDesktopRight from '../../../assets/images/annoucementBox/custom/custom-desktop-right.webp'
 import CustomMobileRight from '../../../assets/images/annoucementBox/custom/custom-mobile-right.webp'
+import { PropsAnnouncementBox } from '../../../utils/types'
 
-export default function AnnouncementBox({ data, onCloseButton }: any) {
+const AnnouncementBox: React.FC<PropsAnnouncementBox> = ({
+  data,
+  onCloseButton,
+}): JSX.Element => {
   return (
     <div className={styles.wrapper}>
       <Image
@@ -36,9 +40,9 @@ export default function AnnouncementBox({ data, onCloseButton }: any) {
             </a>
           </div>
         </div>
-        <div className={styles.wrapperCloseButton} onClick={onCloseButton}>
+        <button className={styles.wrapperCloseButton} onClick={onCloseButton}>
           <IconCross width={17} height={17} color="#FFFFFF" />
-        </div>
+        </button>
       </div>
       <Image
         width={150}
@@ -57,3 +61,5 @@ export default function AnnouncementBox({ data, onCloseButton }: any) {
     </div>
   )
 }
+
+export default AnnouncementBox

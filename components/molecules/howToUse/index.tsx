@@ -3,14 +3,20 @@ import styles from '../../../styles/HowToUse.module.css'
 import Image from 'next/image'
 import blueRoundedImage from '/assets/vector/howToUse/blueRounded.png'
 import redRoundedImage from '/assets/vector/howToUse/redRounded.png'
-interface IconProps {
-  title: string
-  desc: string
-  icon: string
+import { HowToUse, PropsHowToUse } from '../../../utils/types'
+
+type TypesHowToUse = {
+  data: HowToUse
 }
-export default function HowToUse({ data }: any) {
-  const rootUrl = 'https://api.sslpots.com'
-  const Info = ({ title, desc, icon }: IconProps) => (
+
+const HowToUse: React.FC<TypesHowToUse> = ({ data }): JSX.Element => {
+  const imageRootPath = 'https://api.sslpots.com'
+
+  const Info: React.FC<PropsHowToUse> = ({
+    title,
+    desc,
+    icon,
+  }): JSX.Element => (
     <div className={styles.detailWrapper}>
       <div className={styles.bundleIcon}>
         <Image
@@ -27,6 +33,7 @@ export default function HowToUse({ data }: any) {
       </div>
     </div>
   )
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.backgroundLayer}>
@@ -55,21 +62,23 @@ export default function HowToUse({ data }: any) {
           <Info
             title={data.title_1}
             desc={data.subtitle_1}
-            icon={`${rootUrl}${data.icon_1.data.attributes.url}`}
+            icon={`${imageRootPath}${data.icon_1.data.attributes.url}`}
           />
           <Info
             title={data.title_2}
             desc={data.subtitle_2}
-            icon={`${rootUrl}${data.icon_2.data.attributes.url}`}
+            icon={`${imageRootPath}${data.icon_2.data.attributes.url}`}
           />
-          <div className={styles.separator}></div>
+          <div className={styles.separator} />
           <Info
             title={data.title_3}
             desc={data.subtitle_3}
-            icon={`${rootUrl}${data.icon_3.data.attributes.url}`}
+            icon={`${imageRootPath}${data.icon_3.data.attributes.url}`}
           />
         </div>
       </div>
     </div>
   )
 }
+
+export default HowToUse

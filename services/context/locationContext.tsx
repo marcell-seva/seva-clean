@@ -21,6 +21,7 @@ const getDataLocation = () => {
   return loc
 }
 export const LocationProvider = ({ children }: any) => {
+  const [isInit, setIsInit] = useState<boolean>(true)
   const [location, setLocation] = useState<Location>({
     cityCode: '',
     cityName: '',
@@ -30,15 +31,17 @@ export const LocationProvider = ({ children }: any) => {
 
   useEffect(() => {
     const data = getDataLocation()
-    if (data !== null) setLocation(data)
+    if (data !== null) {
+      setLocation(data)
+      setIsInit(false)
+    }
   }, [])
 
   const saveLocation = (location: Location) => {
     localStorage.setItem('seva-loc', JSON.stringify(location))
+    setIsInit(false)
     setLocation(location)
   }
-
-  const isInit = location.cityName === ''
 
   return (
     <LocationContext.Provider value={{ location, saveLocation, isInit }}>

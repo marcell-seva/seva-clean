@@ -5,7 +5,7 @@
   height: 64px;
   justify-content: space-between;
   padding: 0px 15px;
-  position: relative;
+  position: sticky;
 }
 
 .content {
@@ -57,6 +57,9 @@
   margin-left: 20px;
   cursor: pointer;
   z-index: 3;
+  background-color: transparent;
+  outline: none;
+  border: none;
 }
 
 .iconDekstopRight {

@@ -1,9 +1,16 @@
 import Image from 'next/image'
 import React from 'react'
 import styles from '../../../styles/atoms/Brand.module.css'
-export default function Brand({ name, src, isActive, onClick }: any) {
+import { PropsBrand } from '../../../utils/types'
+
+const Brand: React.FC<PropsBrand> = ({
+  name,
+  src,
+  isActive,
+  onClick,
+}): JSX.Element => {
   return (
-    <div
+    <button
       className={isActive ? styles.brandActive : styles.brandInActive}
       onClick={onClick}
     >
@@ -15,6 +22,7 @@ export default function Brand({ name, src, isActive, onClick }: any) {
         className={styles.brandImage}
         alt={name}
       />
-    </div>
+    </button>
   )
 }
+export default Brand

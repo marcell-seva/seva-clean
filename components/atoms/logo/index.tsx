@@ -3,7 +3,7 @@ import React from 'react'
 import styles from '../../../styles/atoms/Logo.module.css'
 import logoSeva from '../../../assets/images/logo/seva-header.svg'
 
-export default function Logo() {
+const Logo: React.FC = (): JSX.Element => {
   const rootUrl: string = 'https://seva.id'
   return (
     <a href={rootUrl} className={styles.wrapperLogo}>
@@ -18,3 +18,5 @@ export default function Logo() {
     </a>
   )
 }
+
+export default Logo

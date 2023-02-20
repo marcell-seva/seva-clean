@@ -7,14 +7,14 @@ interface User {
   phoneNumber: string
   fullName: string
   gender: string
-  dob: string
+  dob: any
   email: string
   createdAt: string
   updatedAt: string
   registType: any
   alreadyLogin: boolean
   marital: string
-  promoSubscription: boolean
+  promoSubscription: any
   temanSevaTrxCode: any
   customerUuid: any
   isSales: boolean
@@ -22,22 +22,46 @@ interface User {
   isCrmCustomer: boolean
 }
 
+interface Token {
+  expires: string
+  idToken: string
+  refreshToken: string
+}
+interface Filter {
+  age: string
+  downPaymentAmount: string
+  monthlyIncome: string
+  tenure: number
+  carModel: string
+  downPaymentType: string
+  monthlyInstallment: any
+  sortBy: string
+}
 export type AuthContextType = {
+  isLoggedIn: boolean
+  filter: Filter | null
   userData: User | null
   saveAuthData: (data: User) => void
-  isLoggedIn: boolean
+  saveFilterData: (data: Filter) => void
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
 
-const getDataToken = () => {
+const getDataToken = (): Token => {
   const dataToken = localStorage.getItem('token')
   const token = dataToken !== null ? JSON.parse(dataToken) : null
   return token
 }
 
+const getDataFilter = (): Filter => {
+  const dataFilter = localStorage.getItem('filter')
+  const filter = dataFilter !== null ? JSON.parse(dataFilter) : null
+  return filter
+}
+
 export const AuthProvider = ({ children }: any) => {
   const [userData, setUserData] = useState<User | null>(null)
+  const [filter, setFilter] = useState<Filter | null>(null)
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
 
   const getUserInfo = async () => {
@@ -54,18 +78,25 @@ export const AuthProvider = ({ children }: any) => {
 
   useEffect(() => {
     const dataToken = getDataToken()
+    const dataFilter = getDataFilter()
     setIsLoggedIn(dataToken !== null)
-    if (dataToken !== null) {
-      getUserInfo()
-    }
+    if (dataToken !== null) getUserInfo()
+    if (dataFilter !== null) setFilter(dataFilter)
   }, [])
 
   const saveAuthData = (auth: User) => {
     setUserData(auth)
   }
 
+  const saveFilterData = (payload: Filter) => {
+    localStorage.setItem('filter', JSON.stringify(payload))
+    setFilter(payload)
+  }
+
   return (
-    <AuthContext.Provider value={{ userData, saveAuthData, isLoggedIn }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, userData, saveAuthData, filter, saveFilterData }}
+    >
       {children}
     </AuthContext.Provider>
   )

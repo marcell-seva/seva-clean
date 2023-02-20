@@ -1,39 +1,89 @@
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styles from '../../../../styles/Offering.module.css'
 import { IconCross } from '../../../atoms'
 import FlagIndonesia from '../../../../assets/images/flagIndonesia.png'
-interface Form {
-  name: string
-  phone: any
-  whatsapp: boolean
-}
-interface Props {
-  openThankyouModal: any
-  closeOfferingModal: any
-}
-export default function Offering({
+import {
+  AuthContext,
+  AuthContextType,
+} from '../../../../services/context/authContext'
+import amplitude from 'amplitude-js'
+import { CarContext, ConfigContext } from '../../../../services/context'
+import { CarContextType } from '../../../../services/context/carContext'
+import { ConfigContextType } from '../../../../services/context/configContext'
+import { api } from '../../../../services/api'
+import { PropsOffering, Form } from '../../../../utils/types'
+
+const Offering: React.FC<PropsOffering> = ({
   openThankyouModal,
+  openLoginModal,
   closeOfferingModal,
-}: Props) {
+}) => {
+  const { car } = useContext(CarContext) as CarContextType
+  const { utm } = useContext(ConfigContext) as ConfigContextType
+  const { filter } = useContext(AuthContext) as AuthContextType
+  const { isLoggedIn } = useContext(AuthContext) as AuthContextType
   const [active, setActive] = useState<boolean>(false)
   const [form, setForm] = useState<Form>({
     name: '',
-    phone: 0,
+    phone: '',
     whatsapp: false,
   })
+  const headerText: string = 'Punya Pertanyaan ?'
+  const descText: string =
+    'Tulis rincian kontakmu supaya agen kami bisa segera menghubungi kamu.'
+  const labelText: string = 'Saya memilih untuk dihubungi via WhatsApp'
+  const buttonText: string = 'Kirim Rincian'
 
-  const handleChange = (indexKey: string, payload: string | boolean) => {
+  const handleChange = (indexKey: string, payload: string | boolean): void => {
     setForm((prevState: any) => ({ ...prevState, [indexKey]: payload }))
   }
 
-  const sendForm = () => {
-    openThankyouModal()
+  const sendForm = (): void => {
+    if (isLoggedIn) sendUnverifiedLeads(form)
+    else openLoginModal()
+  }
+
+  const generateLeadsData = (payload: any) => {
+    const data: any = {
+      contactType: payload.whatsapp ? 'whatsapp' : 'phone',
+      name: payload.name,
+      phoneNumber: `+62${payload.phone}`,
+      origination: 'Homepage - Hubungi Kami',
+      adSet: utm?.adset,
+      utmCampaign: utm?.utm_campaign,
+      utmContent: utm?.utm_content,
+      utmId: utm?.utm_id,
+      utmMedium: utm?.utm_medium,
+      utmSource: utm?.utm_source,
+      utmTerm: utm?.utm_term,
+    }
+    if (filter !== null) data.maxDp = parseInt(filter.downPaymentAmount)
+    return data
+  }
+
+  const sendUnverifiedLeads = (payload: any) => {
+    const data = generateLeadsData(payload)
+    try {
+      api.postUnverfiedLeads(data)
+      openThankyouModal()
+      sendAmplitude(car)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const sendAmplitude = (car: any): void => {
+    amplitude.getInstance().logEvent('WEB_CAR_OF_THE_MONTH_LEADS_FORM_SUBMIT', {
+      Car_Brand: car.model.carModel.brand,
+      Car_Model: car.model.carModel.model,
+    })
   }
 
   useEffect(() => {
     setActive(form.name !== '' && form.phone.length > 3)
   }, [form])
+
   return (
     <div className={styles.modal}>
       <div className={styles.wrapper}>
@@ -43,11 +93,8 @@ export default function Offering({
               <IconCross width={24} height={24} />
             </div>
           </div>
-          <h1 className={styles.headerText}>Punya Pertanyaan ?</h1>
-          <p className={styles.descText}>
-            Tulis rincian kontakmu supaya agen kami bisa segera menghubungi
-            kamu.
-          </p>
+          <h1 className={styles.headerText}>{headerText}</h1>
+          <p className={styles.descText}>{descText}</p>
           <input
             type="text"
             className={styles.inputName}
@@ -63,7 +110,7 @@ export default function Offering({
                 alt="indonesia-flag"
               />
               <p className={styles.labelRegion}>+62</p>
-              <p className={styles.separator}>|</p>
+              <div className={styles.separator} />
             </div>
             <input
               type="number"
@@ -78,9 +125,7 @@ export default function Offering({
               name="checkbox"
               onChange={() => handleChange('whatsapp', !form.whatsapp)}
             />
-            <p className={styles.agreementText}>
-              Saya memilih untuk dihubungi via WhatsApp
-            </p>
+            <p className={styles.agreementText}>{labelText}</p>
           </label>
           <button
             onClick={() => {
@@ -88,10 +133,11 @@ export default function Offering({
             }}
             className={active ? styles.buttonActive : styles.buttonInActive}
           >
-            Kirim Rincian
+            {buttonText}
           </button>
         </div>
       </div>
     </div>
   )
 }
+export default Offering

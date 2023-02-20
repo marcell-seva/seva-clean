@@ -11,6 +11,20 @@
   margin-right: 10px;
 }
 
+.cardArticleShimmer {
+  display: flex;
+}
+
+.articleChildWrapper {
+  margin-top: 20px;
+  margin-left: 15px;
+}
+
+.articleChild {
+  height: 20px;
+  margin-top: -15px;
+}
+
 @media only screen and (min-width: 1024px) {
   .cardShimmer {
     width: 264px;
@@ -19,5 +33,14 @@
 
   .cardShimmerChild {
     margin: 10px 15px;
+  }
+
+  .cardArticleShimmer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cardChildArticle {
+    margin-top: -10px;
   }
 }

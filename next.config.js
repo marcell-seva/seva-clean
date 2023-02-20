@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: '/v3',
+  poweredByHeader: false,
   reactStrictMode: true,
+  // distDir: 'next-seva-dir',
   images: {
     remotePatterns: [
       {
@@ -30,6 +33,7 @@ const nextConfig = {
       },
     ],
   },
+
   async headers() {
     return [
       {

@@ -8,46 +8,30 @@ import {
   LocationContext,
   LocationContextType,
 } from '../../../services/context/locationContext'
-import {
-  AuthContext,
-  AuthContextType,
-} from '../../../services/context/authContext'
-interface ListNavbarProps {
-  name: string
-  redirect: string
-  isHaveChild?: boolean
+import { Menu, PropsListNavBarMenu } from '../../../utils/types'
+
+type TypeHeader = {
+  dataMenu: Array<Menu>
+  onOpenModalOTR: (e: React.MouseEvent<HTMLDivElement>) => void
+  onSearchClick: () => void
 }
 
-interface ListSideBarProps {
-  item: any
-  isNew?: boolean
-}
-interface Variant {
-  id: string
-  model: string
-  code: string
-  variant_name: string
-  variant_title: string
-  price_currency: string
-  price_value: number
-  price_formatted_value: string
+type TypeMenu = {
+  item: Menu
 }
 
-export default function Header({
+const Header: React.FC<TypeHeader> = ({
   dataMenu,
-  dataUser,
   onOpenModalOTR,
   onSearchClick,
-}: any) {
+}): JSX.Element => {
   const isMobile = useIsMobile()
-  const redirectRootPath = 'https://seva.id'
+  const redirectRootPath: string = 'https://seva.id'
   const { location, isInit } = useContext(
     LocationContext,
   ) as LocationContextType
 
-  const { isLoggedIn } = useContext(AuthContext) as AuthContextType
-
-  const DropDownWithChild = ({ item }: any) => {
+  const DropDownWithChild: React.FC<TypeMenu> = ({ item }): JSX.Element => {
     return (
       <li className={styles.listMain}>
         <div className={styles.wrapperListMenu}>
@@ -72,20 +56,20 @@ export default function Header({
     )
   }
 
-  const DropDownWithOutChild = ({ item }: any) => {
+  const DropDownWithOutChild: React.FC<TypeMenu> = ({ item }): JSX.Element => {
     return (
       <li className={styles.listMain}>
-        <a
-          href={redirectRootPath + item.menuUrl}
-          className={styles.wrapperListMenu}
-        >
+        <a href={`https://${item.menuUrl}`} className={styles.wrapperListMenu}>
           <p className={styles.listMainText}>{item.menuName}</p>
         </a>
       </li>
     )
   }
 
-  const ListNavBarMenuSingle = ({ menuName, url }: any) => (
+  const ListNavBarMenuSingle: React.FC<PropsListNavBarMenu> = ({
+    menuName,
+    url,
+  }): JSX.Element => (
     <li className={styles.navBar}>
       <a href={url} className={styles.headerText}>
         {menuName}
@@ -93,7 +77,7 @@ export default function Header({
     </li>
   )
 
-  const ListNavBarMenu = ({ item }: any) => (
+  const ListNavBarMenu: React.FC<TypeMenu> = ({ item }): JSX.Element => (
     <li className={styles.navBar}>
       <p className={styles.headerText}>{item.menuName}</p>
       <IconTriangleDown width={8} height={4} />
@@ -112,11 +96,7 @@ export default function Header({
     <div className={styles.container}>
       <div className={styles.wrapper}>
         {isMobile ? (
-          <TopBarMobile
-            data={dataMenu}
-            isLoggedIn={isLoggedIn}
-            onSearchClick={onSearchClick}
-          />
+          <TopBarMobile data={dataMenu} onSearchClick={onSearchClick} />
         ) : (
           <TopBarDesktop />
         )}
@@ -170,3 +150,5 @@ export default function Header({
     </div>
   )
 }
+
+export default Header
