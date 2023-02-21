@@ -54,7 +54,7 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
       '150M-200M',
       '> 200M',
     ],
-    age: ['18-27', '29-34', '25-50', '>51'],
+    age: ['18-27', '28-34', '35-50', '>51'],
   }
   const buttonText: string = 'Temukan Mobilku'
   const headerText: string = 'Cari mobil baru yang pas buat kamu'
@@ -69,8 +69,15 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
     if (filter !== null)
       setForm((prevState: any) => ({
         ...prevState,
-        dp: filter.downPaymentAmount,
+        dp:
+          filter.downPaymentAmount === ''
+            ? undefined
+            : filter.downPaymentAmount,
+        income: filter.monthlyIncome === '' ? undefined : filter.monthlyIncome,
+        tenure: filter.tenure,
+        age: filter.age,
       }))
+    console.log('datas', filter)
   }, [userData, filter])
 
   const ButtonTenure: React.FC<PropsButtonTenure> = ({
@@ -219,14 +226,16 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
 
   const setDataFilterLocalStorage = (payload: FormWidget): void => {
     saveFilterData({
-      age: payload.age,
-      downPaymentAmount: payload.dp,
-      monthlyIncome: payload.income,
+      age: payload.age || '',
+      downPaymentAmount: payload.dp.toString(),
+      monthlyIncome: payload.income || '',
       tenure: payload.tenure,
       carModel: '',
       downPaymentType: 'amount',
       monthlyInstallment: '',
       sortBy: 'highToLow',
+      brand: [],
+      bodyType: [],
     })
   }
 

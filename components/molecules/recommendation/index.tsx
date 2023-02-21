@@ -31,6 +31,7 @@ export default function Recommendation({ data, categoryCar }: any) {
   const [category, setCategory] = useState<any>(categoryCar)
   const [loading, setLoading] = useState<boolean>(false)
   const [dataCar, setDataCar] = useState<any>(data)
+  const redirectUrlNewCar = 'https://www.seva.id/mobil-baru'
 
   useEffect(() => {
     if (!isInit) {
@@ -41,8 +42,30 @@ export default function Recommendation({ data, categoryCar }: any) {
     }
   }, [location.cityCode])
 
+  const removeUnnecessaryDataFilter = (type: string): void => {
+    const dataFilterLocal = localStorage.getItem('filter')
+    const dataFilterParsed =
+      dataFilterLocal !== null ? JSON.parse(dataFilterLocal) : null
+    const newDataFilter = {
+      ...dataFilterParsed,
+      brand: [],
+      bodyType: [type],
+      tenure: 5,
+      downPaymentAmount: '',
+      monthlyIncome: '',
+      age: '',
+      sortBy: 'highToLow',
+    }
+
+    localStorage.setItem('filter', JSON.stringify(newDataFilter))
+  }
+
   const ShadowSlideWithContent = ({ type }: ShadowProps) => (
-    <a href="https://www.seva.id/mobil-baru" className={styles.shadowSlider}>
+    <a
+      href={redirectUrlNewCar}
+      onClick={() => removeUnnecessaryDataFilter(type)}
+      className={styles.shadowSlider}
+    >
       <IconArrowRight width={24} height={24} />
       <div className={styles.wrapperLabel}>
         <p className={styles.labelText}>Lihat semua</p>

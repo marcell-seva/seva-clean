@@ -18,7 +18,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
 import { Car } from '../../../utils/types'
 type TypesShadow = {
-  type: string
+  brand: string
 }
 type TypesCar = {
   data: Car
@@ -47,13 +47,17 @@ const CarList: React.FC<TypesCar> = ({ data }): JSX.Element => {
   )
 
   const ShadowSlideWithContent: React.FC<TypesShadow> = ({
-    type,
+    brand,
   }): JSX.Element => (
-    <a href="https://www.seva.id/mobil-baru" className={styles.shadowSlider}>
+    <a
+      href={redirectUrlNewCar}
+      onClick={() => removeUnnecessaryDataFilter(brand)}
+      className={styles.shadowSlider}
+    >
       <IconArrowRight width={24} height={24} />
       <div className={styles.wrapperLabel}>
         <p className={styles.labelText}>Lihat semua</p>
-        <p className={styles.labelText}>mobil {type}</p>
+        <p className={styles.labelText}>mobil {brand}</p>
       </div>
     </a>
   )
@@ -66,6 +70,24 @@ const CarList: React.FC<TypesCar> = ({ data }): JSX.Element => {
       <p className={styles.undefinedDescText}>Silakan pilih merk lain.</p>
     </div>
   )
+
+  const removeUnnecessaryDataFilter = (brand: string): void => {
+    const dataFilterLocal = localStorage.getItem('filter')
+    const dataFilterParsed =
+      dataFilterLocal !== null ? JSON.parse(dataFilterLocal) : null
+    const newDataFilter = {
+      ...dataFilterParsed,
+      brand: [brand],
+      bodyType: [],
+      tenure: 5,
+      downPaymentAmount: '',
+      monthlyIncome: '',
+      age: '',
+      sortBy: 'highToLow',
+    }
+
+    localStorage.setItem('filter', JSON.stringify(newDataFilter))
+  }
   const getRecommendationCar = async (params: string): Promise<any> => {
     try {
       setLoading(true)
@@ -143,7 +165,7 @@ const CarList: React.FC<TypesCar> = ({ data }): JSX.Element => {
               </SwiperSlide>
             ))}
             <SwiperSlide>
-              <ShadowSlideWithContent type={typeActive} />
+              <ShadowSlideWithContent brand={typeActive} />
             </SwiperSlide>
             <SwiperSlide>
               <ShadowSlide />
