@@ -38,9 +38,9 @@ const CarList: React.FC<TypesCar> = ({ data }): JSX.Element => {
   const { location, isInit } = useContext(
     LocationContext,
   ) as LocationContextType
-  const headerText = 'Mobil Baru Terpopuler'
-  const buttonText = 'LIHAT SEMUA'
-  const redirectUrlNewCar = 'https://www.seva.id/mobil-baru'
+  const headerText: string = 'Mobil Baru Terpopuler'
+  const buttonText: string = 'LIHAT SEMUA'
+  const redirectUrlNewCar: string = 'https://www.seva.id/mobil-baru'
 
   const ShadowSlide: React.FC = (): JSX.Element => (
     <div className={styles.shadowSlider}></div>

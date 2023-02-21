@@ -66,7 +66,7 @@ export default function Home({
   }, [])
 
   const isDataLocationNull = () => {
-    const dataLocal = localStorage.getItem('seva-loc')
+    const dataLocal = localStorage.getItem('cityOtr')
     return dataLocal === null
   }
 

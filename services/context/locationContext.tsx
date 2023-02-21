@@ -16,7 +16,7 @@ export type LocationContextType = {
 export const LocationContext = createContext<LocationContextType | null>(null)
 
 const getDataLocation = () => {
-  const res = localStorage.getItem('seva-loc')
+  const res = localStorage.getItem('cityOtr')
   const loc = res !== null ? JSON.parse(res) : null
   return loc
 }
@@ -38,7 +38,7 @@ export const LocationProvider = ({ children }: any) => {
   }, [])
 
   const saveLocation = (location: Location) => {
-    localStorage.setItem('seva-loc', JSON.stringify(location))
+    localStorage.setItem('cityOtr', JSON.stringify(location))
     setIsInit(false)
     setLocation(location)
   }
