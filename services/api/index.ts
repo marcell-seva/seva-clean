@@ -30,7 +30,6 @@ axios.interceptors.response.use(
     const originalConfig = err.config
     const statusCode = err.response.status
     const dataToken = getDataToken()
-    console.log('error', statusCode)
 
     if (statusCode === 4000)
       window.location.href = 'https://www.seva.id/masuk-akun'
