@@ -36,6 +36,8 @@ interface Filter {
   downPaymentType: string
   monthlyInstallment: any
   sortBy: string
+  bodyType: Array<string>
+  brand: Array<string>
 }
 export type AuthContextType = {
   isLoggedIn: boolean

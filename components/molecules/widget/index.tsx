@@ -69,8 +69,15 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
     if (filter !== null)
       setForm((prevState: any) => ({
         ...prevState,
-        dp: filter.downPaymentAmount,
+        dp:
+          filter.downPaymentAmount === ''
+            ? undefined
+            : filter.downPaymentAmount,
+        income: filter.monthlyIncome === '' ? undefined : filter.monthlyIncome,
+        tenure: filter.tenure,
+        age: filter.age,
       }))
+    console.log('datas', filter)
   }, [userData, filter])
 
   const ButtonTenure: React.FC<PropsButtonTenure> = ({
@@ -219,14 +226,16 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
 
   const setDataFilterLocalStorage = (payload: FormWidget): void => {
     saveFilterData({
-      age: payload.age,
+      age: payload.age || '',
       downPaymentAmount: payload.dp.toString(),
-      monthlyIncome: payload.income,
+      monthlyIncome: payload.income || '',
       tenure: payload.tenure,
       carModel: '',
       downPaymentType: 'amount',
       monthlyInstallment: '',
       sortBy: 'highToLow',
+      brand: [],
+      bodyType: [],
     })
   }
 
