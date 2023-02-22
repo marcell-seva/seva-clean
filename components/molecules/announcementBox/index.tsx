@@ -56,7 +56,7 @@ const AnnouncementBox: React.FC<PropsAnnouncementBox> = ({
         height={64}
         src={CustomMobileRight}
         className={styles.iconCustomMobileRight}
-        alt="annoucement-box-dekstop-right"
+        alt="annoucement-box-mobile-right"
       />
     </div>
   )

@@ -36,6 +36,7 @@ const Refinancing: React.FC = (): JSX.Element => {
               height={165}
               alt="seva-fund-services-model"
               src={model}
+              className={styles.modelImage}
               unoptimized
             />
           </div>
