@@ -22,7 +22,7 @@ const Refinancing: React.FC = (): JSX.Element => {
           </div>
           <div className={styles.wrapperBgImage}>
             <Image
-              width={350}
+              width={360}
               height={165}
               alt="seva-bg-fund-services"
               src={circle}

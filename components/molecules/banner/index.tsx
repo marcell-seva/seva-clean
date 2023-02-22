@@ -133,7 +133,6 @@ const Banner: React.FC<TypesBanner> = ({ data }): JSX.Element => {
     if (isActiveSending && data.length > 0 && isUserOnBannerScreen) {
       const isDataSlideExists = isDataExist(dataSentIndex, index)
       if (!isDataSlideExists) {
-        console.log('datas sent', index)
         const dataIndex: Array<number> = dataSentIndex
         dataIndex.push(index)
         setDataSentIndex(dataIndex)

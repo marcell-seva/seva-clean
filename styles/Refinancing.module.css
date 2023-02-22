@@ -49,12 +49,7 @@
 }
 
 .circleImage {
-  width: 350px;
-  height: 165px;
-}
-
-.modelImage {
-  width: 189px;
+  width: 400px;
   height: 165px;
 }
 
@@ -63,6 +58,11 @@
   right: 0;
   height: 165px;
   z-index: 1;
+}
+
+.modelImage {
+  width: 189px;
+  height: 165px;
 }
 
 @media only screen and (min-width: 1024px) {
