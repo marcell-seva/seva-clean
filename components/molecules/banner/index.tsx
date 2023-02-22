@@ -262,7 +262,6 @@ const Banner: React.FC<TypesBanner> = ({ data }): JSX.Element => {
           ))}
           <div className={`swiper-pagination ${styles.paginationBullet}`} />
         </Swiper>
-        asd
       </div>
     </div>
   )
