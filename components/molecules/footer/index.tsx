@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from '../../../styles/Footer.module.css'
 
-export default function Footer() {
+const Footer: React.FC = (): JSX.Element => {
   const aboutUsUrl: string = 'https://ext.seva.id/tentang-kami'
   const termUrl: string = 'https://ext.seva.id/syarat-ketentuan'
   const privacyUrl: string = 'https://ext.seva.id/kebijakan-privasi'
@@ -36,3 +36,5 @@ export default function Footer() {
     </div>
   )
 }
+
+export default Footer

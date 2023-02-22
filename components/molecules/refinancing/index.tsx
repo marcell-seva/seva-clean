@@ -5,7 +5,7 @@ import circle from '../../../assets/images/refinancing/circle.webp'
 import model from '../../../assets/images/refinancing/model.webp'
 import Link from 'next/link'
 
-export default function Refinancing() {
+const Refinancing: React.FC = (): JSX.Element => {
   const headerText: string = 'Butuh Dana Cepat?'
   const descText: string =
     'SEVA menyediakan fasilitas dana pinjaman dengan jaminan BPKB mobil'
@@ -45,3 +45,5 @@ export default function Refinancing() {
     </div>
   )
 }
+
+export default Refinancing

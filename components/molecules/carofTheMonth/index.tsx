@@ -13,10 +13,10 @@ type TypesCarOfTheMonth = {
   data: Array<CarDetail>
   openModalOffering: any
 }
-export default function CarofTheMonth({
+const CarofTheMonth: React.FC<TypesCarOfTheMonth> = ({
   data,
   openModalOffering,
-}: TypesCarOfTheMonth) {
+}): JSX.Element => {
   const { saveCar } = useContext(CarContext) as CarContextType
   const [activeType, setActiveType] = useState<string>('Toyota')
   const [info, setInfo] = useState<CarDetail>(data[0])
@@ -159,3 +159,5 @@ export default function CarofTheMonth({
     </div>
   )
 }
+
+export default CarofTheMonth
