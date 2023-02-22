@@ -6,21 +6,19 @@ import { IconBackButton, IconNextButton, ShimmerCardArticle } from '../../atoms'
 import { useIsMobile } from '../../../utils'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
-import { Article, PropsArticle, PropsCategory } from '../../../utils/types'
+import { PropsArticle, PropsCategory } from '../../../utils/types'
 
 type TypesArticle = {
-  item: Article
+  item: any
 }
 
-const Article: React.FC<PropsArticle> = ({ data }): JSX.Element => {
+export default function Article({ data }: PropsArticle) {
   const isMobile = useIsMobile()
   const headerText = 'Baca Artikel Terkini'
   const buttonText = 'LIHAT SEMUA'
   const articleText = 'Baca Selengkapnya'
   const [categoryActive, setCategoryActive] = useState<string>('Semua Artikel')
-  const [subArticle, setSubArticle] = useState<Array<Article> | Array<any>>(
-    data,
-  )
+  const [subArticle, setSubArticle] = useState<Array<any> | Array<any>>(data)
   const redirectArticle: string = 'https://www.seva.id/blog/'
   const categoryList: Array<{ id: number; title: string }> = [
     { title: 'Semua Artikel', id: 65 },
@@ -252,4 +250,3 @@ const Article: React.FC<PropsArticle> = ({ data }): JSX.Element => {
     </div>
   )
 }
-export default Article

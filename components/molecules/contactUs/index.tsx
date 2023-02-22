@@ -16,10 +16,10 @@ import {
 import TagManager from 'react-gtm-module'
 import { Form, PropsContactUs } from '../../../utils/types'
 
-const ContactUs: React.FC<PropsContactUs> = ({
+export default function ContactUs({
   openThankyouModal,
   openLoginModal,
-}): JSX.Element => {
+}: PropsContactUs) {
   const { isLoggedIn, userData, filter } = useContext(
     AuthContext,
   ) as AuthContextType
@@ -170,5 +170,3 @@ const ContactUs: React.FC<PropsContactUs> = ({
     </div>
   )
 }
-
-export default ContactUs

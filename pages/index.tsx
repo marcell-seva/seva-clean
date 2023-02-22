@@ -5,21 +5,15 @@ import {
   Footer,
   Header,
   HowToUse,
-  LoanSection,
   Banner,
-  ContactUs,
   CarList,
   Testimony,
-  Recommendation,
-  Article,
   OTRSecondary,
   Floating,
   OTRPrimary,
   Search,
   LocationList,
   LocationSelector,
-  Refinancing,
-  CarofTheMonth,
   Offering,
   Video,
   Simple,
@@ -36,6 +30,14 @@ import {
 } from '../services/context/configContext'
 import { LocationContext } from '../services/context'
 import { LocationContextType } from '../services/context/locationContext'
+
+import dynamic from 'next/dynamic'
+const Refinancing = dynamic(import('../components/molecules/refinancing'))
+const LoanSection = dynamic(import('../components/molecules/loanSection'))
+const Recommendation = dynamic(import('../components/molecules/recommendation'))
+const CarofTheMonth = dynamic(import('../components/molecules/carofTheMonth'))
+const Article = dynamic(import('../components/molecules/article'))
+const ContactUs = dynamic(import('../components/molecules/contactUs'))
 
 export default function Home({
   dataBanner,

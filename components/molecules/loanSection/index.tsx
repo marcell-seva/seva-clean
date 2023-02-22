@@ -4,7 +4,7 @@ import styles from '../../../styles/LoanSection.module.css'
 import { IconCross, IconSearch } from '../../atoms'
 import { Variant } from '../../../utils/types'
 
-const LoanSection: React.FC = (): JSX.Element => {
+export default function LoanSection() {
   const [input, setInput] = useState<string>('')
   const [isCrossShow, setIsCrossShow] = useState<boolean>(false)
   const [variantList, setVariantList] = useState<Array<Variant>>([])
@@ -95,4 +95,3 @@ const LoanSection: React.FC = (): JSX.Element => {
     </div>
   )
 }
-export default LoanSection
