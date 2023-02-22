@@ -77,7 +77,6 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
         tenure: filter.tenure,
         age: filter.age,
       }))
-    console.log('datas', filter)
   }, [userData, filter])
 
   const ButtonTenure: React.FC<PropsButtonTenure> = ({

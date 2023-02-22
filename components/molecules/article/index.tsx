@@ -4,6 +4,8 @@ import styles from '../../../styles/Article.module.css'
 import { api } from '../../../services/api'
 import { IconBackButton, IconNextButton, ShimmerCardArticle } from '../../atoms'
 import { useIsMobile } from '../../../utils'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation } from 'swiper'
 import { Article, PropsArticle, PropsCategory } from '../../../utils/types'
 
 type TypesArticle = {
@@ -200,30 +202,48 @@ const Article: React.FC<PropsArticle> = ({ data }): JSX.Element => {
               </>
             )}
             <div className="swiper mySwiperArticle">
-              <div className="swiper-wrapper">
+              <Swiper
+                cssMode
+                navigation={{
+                  nextEl: '.image-swiper-button-next-article',
+                  prevEl: '.image-swiper-button-prev-article',
+                }}
+                slidesPerGroup={3}
+                slidesPerView={4}
+                spaceBetween={10}
+                breakpoints={{
+                  1024: {
+                    slidesPerGroup: 3,
+                    slidesPerView: 4,
+                    spaceBetween: 10,
+                    cssMode: false,
+                  },
+                }}
+                modules={[Navigation]}
+              >
                 {categoryList.map((item: any) => (
-                  <div className={`swiper-slide ${styles.slide}`} key={item.id}>
+                  <SwiperSlide className={styles.slide} key={item.id}>
                     <Category
                       name={item.title}
                       isActive={categoryActive === item.title}
                       id={item.id}
                     />
-                  </div>
+                  </SwiperSlide>
                 ))}
                 {!isMobile && (
                   <>
-                    <div className={`swiper-slide ${styles.slide}`}>
+                    <SwiperSlide className={styles.slide}>
                       <ShadowSlider />
-                    </div>
-                    <div className={`swiper-slide ${styles.slide}`}>
+                    </SwiperSlide>
+                    <SwiperSlide className={styles.slide}>
                       <ShadowSlider />
-                    </div>
-                    <div className={`swiper-slide ${styles.slide}`}>
+                    </SwiperSlide>
+                    <SwiperSlide className={styles.slide}>
                       <ShadowSlider />
-                    </div>
+                    </SwiperSlide>
                   </>
                 )}
-              </div>
+              </Swiper>
             </div>
           </div>
           <div className={styles.collectionArticle}>{renderSubArticle()}</div>
