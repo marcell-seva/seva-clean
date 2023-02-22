@@ -22,8 +22,8 @@ const Refinancing: React.FC = (): JSX.Element => {
           </div>
           <div className={styles.wrapperBgImage}>
             <Image
-              width={189}
-              height={162}
+              width={350}
+              height={165}
               alt="seva-bg-fund-services"
               src={circle}
               unoptimized
@@ -33,8 +33,8 @@ const Refinancing: React.FC = (): JSX.Element => {
           <div className={styles.wrapperImage}>
             <Image
               width={189}
-              height={162}
-              alt="seva-fund-services"
+              height={165}
+              alt="seva-fund-services-model"
               src={model}
               unoptimized
             />

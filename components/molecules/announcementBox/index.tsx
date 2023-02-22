@@ -40,9 +40,9 @@ const AnnouncementBox: React.FC<PropsAnnouncementBox> = ({
             </a>
           </div>
         </div>
-        <button className={styles.wrapperCloseButton} onClick={onCloseButton}>
+        <div className={styles.wrapperCloseButton} onClick={onCloseButton}>
           <IconCross width={17} height={17} color="#FFFFFF" />
-        </button>
+        </div>
       </div>
       <Image
         width={150}

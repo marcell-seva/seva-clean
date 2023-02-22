@@ -291,7 +291,7 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
           )}
         </div>
         <div className={styles.wrapperRight}>
-          <h6 className={styles.desc}>Pilih tahun tenor</h6>
+          <p className={styles.desc}>Pilih tahun tenor</p>
           <div className={styles.wrapperRow}>
             <ButtonTenure isActive={form.tenure === 1} tenure={1} />
             <ButtonTenure isActive={form.tenure === 2} tenure={2} />

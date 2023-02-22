@@ -27,7 +27,7 @@ export interface PropsTypeCar {
 
 export interface PropsAnnouncementBox {
   data: any
-  onCloseButton: (e: React.MouseEvent<HTMLButtonElement>) => void
+  onCloseButton: (e: React.MouseEvent<HTMLDivElement>) => void
 }
 
 export interface PropsArticle {
