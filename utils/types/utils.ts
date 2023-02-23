@@ -116,3 +116,8 @@ export interface UTMCollector {
   utm_term: string | null
   adset: string | null
 }
+
+export interface BodyType {
+  body_type: string
+  data_count: number
+}

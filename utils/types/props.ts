@@ -88,3 +88,7 @@ export interface PropsListNavBarMenu {
   menuName: string
   url: string
 }
+
+export interface PropsShadow {
+  type: string
+}

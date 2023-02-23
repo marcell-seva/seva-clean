@@ -37,7 +37,7 @@ const CarList: React.FC<TypesCar> = ({ data }): JSX.Element => {
   const [carList, setCarList] = useState<any>(data)
   const { saveFilterData } = useContext(AuthContext) as AuthContextType
   const [loading, setLoading] = useState<boolean>(false)
-  const [typeActive, setTypeActive] = useState<any>('Toyota')
+  const [typeActive, setTypeActive] = useState<string>('Toyota')
   const { location, isInit } = useContext(
     LocationContext,
   ) as LocationContextType
