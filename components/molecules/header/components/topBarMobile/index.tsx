@@ -11,10 +11,7 @@ import {
   IconSearch,
 } from '../../../../atoms'
 import sevaHeader from '../../../../../assets/images/logo/seva-header.svg'
-import {
-  AuthContext,
-  AuthContextType,
-} from '../../../../../services/context/authContext'
+import { AuthContext, AuthContextType } from '../../../../../services/context'
 import { Menu } from '../../../../../utils/types'
 
 type TypeTopBarMobile = {
@@ -31,7 +28,9 @@ type TypeMenuSide = {
   isNew: boolean
 }
 const TopBarMobile: React.FC<TypeTopBarMobile> = ({ data, onSearchClick }) => {
-  const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
+  const { userData, saveFilterData } = useContext(
+    AuthContext,
+  ) as AuthContextType
   const [isShow, setIsShow] = useState<boolean>(false)
   const [isSubSideBarShow, setIsSubSideBarShow] = useState<boolean>(false)
   const [typeSubSideBar, setTypeSubSideBar] = useState<string>('')
@@ -53,11 +52,7 @@ const TopBarMobile: React.FC<TypeTopBarMobile> = ({ data, onSearchClick }) => {
 
   const removeUnnecessaryDataFilter = (payload: string): void => {
     let brand = payload === 'Semua Merek' ? [] : [payload]
-    const dataFilterLocal = localStorage.getItem('filter')
-    const dataFilterParsed =
-      dataFilterLocal !== null ? JSON.parse(dataFilterLocal) : null
     const newDataFilter = {
-      ...dataFilterParsed,
       bodyType: [],
       brand: brand,
       carModel: '',
@@ -67,8 +62,7 @@ const TopBarMobile: React.FC<TypeTopBarMobile> = ({ data, onSearchClick }) => {
       age: '',
       sortBy: 'highToLow',
     }
-
-    localStorage.setItem('filter', JSON.stringify(newDataFilter))
+    saveFilterData(newDataFilter)
   }
 
   const ListSubMenuBar: React.FC<TypeMenu> = ({ item }): JSX.Element => {

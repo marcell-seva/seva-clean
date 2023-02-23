@@ -32,6 +32,7 @@ import {
   UTMCollector,
 } from './utils'
 
+import { User, Token, Filter, UTM } from './context'
 export type {
   PropsBrand,
   PropsCapsule,
@@ -61,4 +62,8 @@ export type {
   FormWidget,
   Menu,
   UTMCollector,
+  User,
+  Token,
+  Filter,
+  UTM,
 }

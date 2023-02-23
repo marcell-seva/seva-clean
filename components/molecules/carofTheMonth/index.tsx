@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import React, { useContext, useState } from 'react'
-import { CarContext } from '../../../services/context'
-import { CarContextType } from '../../../services/context/carContext'
+import { CarContext, CarContextType } from '../../../services/context'
 import styles from '../../../styles/carofTheMonth.module.css'
 import { IconForwardRight } from '../../atoms'
 import amplitude from 'amplitude-js'

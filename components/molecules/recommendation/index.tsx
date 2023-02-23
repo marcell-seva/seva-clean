@@ -10,10 +10,11 @@ import {
 import { api } from '../../../services/api'
 import { useIsMobile } from '../../../utils'
 import {
+  AuthContext,
+  AuthContextType,
   LocationContext,
   LocationContextType,
-} from '../../../services/context/locationContext'
-
+} from '../../../services/context'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
 import { ShimmerCardProduct } from '../../atoms/shimmer'
@@ -25,6 +26,8 @@ export default function Recommendation({ data, categoryCar }: any) {
   const { location, isInit } = useContext(
     LocationContext,
   ) as LocationContextType
+  const { saveFilterData } = useContext(AuthContext) as AuthContextType
+
   const isMobile = useIsMobile()
   const ShadowSlide = () => <div className={styles.shadowSlider}></div>
   const [typeCarActive, setTypeCarActive] = useState<string>('MPV')
@@ -43,12 +46,9 @@ export default function Recommendation({ data, categoryCar }: any) {
   }, [location.cityCode])
 
   const removeUnnecessaryDataFilter = (type: string): void => {
-    const dataFilterLocal = localStorage.getItem('filter')
-    const dataFilterParsed =
-      dataFilterLocal !== null ? JSON.parse(dataFilterLocal) : null
     const newDataFilter = {
-      ...dataFilterParsed,
       brand: [],
+      carModel: '',
       bodyType: [type],
       tenure: 5,
       downPaymentAmount: '',
@@ -56,7 +56,7 @@ export default function Recommendation({ data, categoryCar }: any) {
       age: '',
       sortBy: 'highToLow',
     }
-
+    saveFilterData(newDataFilter)
     localStorage.setItem('filter', JSON.stringify(newDataFilter))
   }
 

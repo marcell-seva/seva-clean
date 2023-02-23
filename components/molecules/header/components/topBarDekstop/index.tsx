@@ -10,10 +10,7 @@ import styles from '../../../../../styles/Header.module.css'
 import { api } from '../../../../../services/api'
 import { destroySessionMoEngage } from '../../../../../services/moengage'
 import { setAmplitudeUserId } from '../../../../../services/amplitude'
-import {
-  AuthContext,
-  AuthContextType,
-} from '../../../../../services/context/authContext'
+import { AuthContext, AuthContextType } from '../../../../../services/context'
 import { Variant } from '../../../../../utils/types'
 
 const TopBarDesktop: React.FC = () => {

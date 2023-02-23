@@ -6,9 +6,12 @@ import styles from '../../../styles/Widget.module.css'
 import { rupiah, useComponentVisible } from '../../../utils'
 import { IconChevronDown, IconChevronUp } from '../../atoms'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
-import { AuthContext, ConfigContext } from '../../../services/context'
-import { AuthContextType } from '../../../services/context/authContext'
-import { ConfigContextType } from '../../../services/context/configContext'
+import {
+  AuthContext,
+  ConfigContext,
+  AuthContextType,
+  ConfigContextType,
+} from '../../../services/context'
 import TagManager from 'react-gtm-module'
 import {
   FormWidget,

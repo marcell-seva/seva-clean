@@ -1,7 +1,15 @@
-import { AuthContext, AuthProvider } from './authContext'
-import { CarContext, CarProvider } from './carContext'
-import { LocationContext, LocationProvider } from './locationContext'
-import { ConfigContext, ConfigProvider } from './configContext'
+import { AuthContext, AuthProvider, AuthContextType } from './authContext'
+import { CarContext, CarProvider, CarContextType } from './carContext'
+import {
+  LocationContext,
+  LocationProvider,
+  LocationContextType,
+} from './locationContext'
+import {
+  ConfigContext,
+  ConfigProvider,
+  ConfigContextType,
+} from './configContext'
 
 export {
   AuthContext,
@@ -12,4 +20,11 @@ export {
   LocationProvider,
   ConfigContext,
   ConfigProvider,
+}
+
+export type {
+  AuthContextType,
+  CarContextType,
+  LocationContextType,
+  ConfigContextType,
 }

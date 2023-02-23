@@ -1,14 +1,5 @@
 import { createContext, useEffect, useState } from 'react'
-
-interface UTM {
-  utm_id: string | null
-  utm_source: string | null
-  utm_medium: string | null
-  utm_campaign: string | null
-  utm_content: string | null
-  utm_term: string | null
-  adset: string | null
-}
+import { UTM } from '../../utils/types'
 
 export type ConfigContextType = {
   utm: UTM | null

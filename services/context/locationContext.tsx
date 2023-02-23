@@ -1,11 +1,5 @@
 import { createContext, useEffect, useState } from 'react'
-
-interface Location {
-  cityCode: string
-  cityName: string
-  id: number
-  province: string
-}
+import { Location } from '../../utils/types'
 
 export type LocationContextType = {
   location: Location

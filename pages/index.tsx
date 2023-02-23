@@ -30,12 +30,7 @@ import { api } from '../services/api'
 import { useContext, useEffect, useState } from 'react'
 import amplitude from 'amplitude-js'
 import { useIsMobile, utmCollector } from '../utils'
-import {
-  ConfigContext,
-  ConfigContextType,
-} from '../services/context/configContext'
-import { LocationContext } from '../services/context'
-import { LocationContextType } from '../services/context/locationContext'
+import { ConfigContext, ConfigContextType } from '../services/context'
 
 export default function Home({
   dataBanner,
@@ -52,9 +47,6 @@ export default function Home({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const isMobile = useIsMobile()
   const { saveUTM } = useContext(ConfigContext) as ConfigContextType
-  const { isInit, location } = useContext(
-    LocationContext,
-  ) as LocationContextType
   const [modalType, setModalType] = useState<string>('')
   const [isAnnouncementBoxShow, setIsAnnouncementBoxShow] =
     useState<boolean>(true)

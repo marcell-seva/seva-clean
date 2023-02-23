@@ -12,7 +12,9 @@ import { useIsMobile } from '../../../utils'
 import {
   LocationContext,
   LocationContextType,
-} from '../../../services/context/locationContext'
+  AuthContext,
+  AuthContextType,
+} from '../../../services/context'
 import { ShimmerCardProduct } from '../../atoms/shimmer'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
@@ -33,6 +35,7 @@ const CarList: React.FC<TypesCar> = ({ data }): JSX.Element => {
     'Peugeot',
   ]
   const [carList, setCarList] = useState<any>(data)
+  const { saveFilterData } = useContext(AuthContext) as AuthContextType
   const [loading, setLoading] = useState<boolean>(false)
   const [typeActive, setTypeActive] = useState<any>('Toyota')
   const { location, isInit } = useContext(
@@ -72,11 +75,7 @@ const CarList: React.FC<TypesCar> = ({ data }): JSX.Element => {
   )
 
   const removeUnnecessaryDataFilter = (brand: string): void => {
-    const dataFilterLocal = localStorage.getItem('filter')
-    const dataFilterParsed =
-      dataFilterLocal !== null ? JSON.parse(dataFilterLocal) : null
     const newDataFilter = {
-      ...dataFilterParsed,
       brand: [brand],
       bodyType: [],
       tenure: 5,
@@ -85,8 +84,7 @@ const CarList: React.FC<TypesCar> = ({ data }): JSX.Element => {
       age: '',
       sortBy: 'highToLow',
     }
-
-    localStorage.setItem('filter', JSON.stringify(newDataFilter))
+    saveFilterData(newDataFilter)
   }
   const getRecommendationCar = async (params: string): Promise<any> => {
     try {
