@@ -57,7 +57,7 @@
 .wrapperImage {
   position: absolute;
   right: 0;
-  width: max-content;
+  width: 189px;
   height: 165px;
   z-index: 1;
 }
