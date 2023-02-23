@@ -49,20 +49,21 @@
 }
 
 .circleImage {
-  width: 400px;
-  height: 165px;
+  width: 100%;
+  height: 100%;
 }
 
 .wrapperImage {
   position: absolute;
   right: 0;
+  width: auto;
   height: 165px;
   z-index: 1;
 }
 
 .modelImage {
-  width: 189px;
-  height: 165px;
+  width: 100%;
+  height: 100%;
 }
 
 @media only screen and (min-width: 1024px) {

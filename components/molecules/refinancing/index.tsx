@@ -3,17 +3,17 @@ import React from 'react'
 import styles from '../../../styles/Refinancing.module.css'
 import circle from '../../../assets/images/refinancing/circle.webp'
 import model from '../../../assets/images/refinancing/model.webp'
-import Link from 'next/link'
 
 const Refinancing: React.FC = (): JSX.Element => {
   const headerText: string = 'Butuh Dana Cepat?'
   const descText: string =
     'SEVA menyediakan fasilitas dana pinjaman dengan jaminan BPKB mobil'
   const buttonText: string = 'Ajukan Pinjaman'
+  const redirectUrlRefinancing: string = 'https://www.seva.id/fasilitas-dana'
 
   return (
     <div className={styles.wrapper}>
-      <Link href="https://www.seva.id/fasilitas-dana">
+      <a href={redirectUrlRefinancing}>
         <div className={styles.fgLayer}>
           <div className={styles.info}>
             <p className={styles.headerText}>{headerText}</p>
@@ -41,7 +41,7 @@ const Refinancing: React.FC = (): JSX.Element => {
             />
           </div>
         </div>
-      </Link>
+      </a>
     </div>
   )
 }
