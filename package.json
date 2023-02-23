@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run partytown && next build",
-    "partytown": "partytown copylib public/~partytown",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "export": "next build && next export"
@@ -32,7 +31,6 @@
     "vanilla-lazyload": "^17.8.3"
   },
   "devDependencies": {
-    "@builder.io/partytown": "^0.7.5",
     "@types/amplitude-js": "^8.16.2"
   }
 }
