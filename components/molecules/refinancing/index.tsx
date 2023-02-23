@@ -30,16 +30,14 @@ const Refinancing: React.FC = (): JSX.Element => {
               className={styles.circleImage}
             />
           </div>
-          <div className={styles.wrapperImage}>
-            <Image
-              width={189}
-              height={165}
-              alt="seva-fund-services-model"
-              src={model}
-              className={styles.modelImage}
-              unoptimized
-            />
-          </div>
+          <Image
+            width={189}
+            height={165}
+            alt="seva-fund-services-model"
+            src={model}
+            className={styles.modelImage}
+            unoptimized
+          />
         </div>
       </a>
     </div>
