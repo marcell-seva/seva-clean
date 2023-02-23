@@ -1,5 +1,8 @@
 const nextConfig = {
+  basePath: '/v3',
+  poweredByHeader: false,
   reactStrictMode: true,
+  // distDir: 'next-seva-dir',
   images: {
     remotePatterns: [
       {
@@ -29,7 +32,7 @@ const nextConfig = {
       },
     ],
   },
-  reactStrictMode: false,
+
   async headers() {
     return [
       {

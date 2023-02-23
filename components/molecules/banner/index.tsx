@@ -20,7 +20,20 @@ const Banner: React.FC<TypesBanner> = ({ data }): JSX.Element => {
   const [isActiveSending, setIsActiveSending] = useState<boolean>(true)
   const [dataSentIndex, setDataSentIndex] = useState<Array<number>>([0])
   const [isUserOnBannerScreen, setIsUserOnBannerScreen] =
-    useState<boolean>(true)
+    useState<boolean>(false)
+
+  const handleScroll = () => {
+    const position: number = window.pageYOffset
+    if (position > 470) setIsUserOnBannerScreen(false)
+    else setIsUserOnBannerScreen(true)
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   const pushDataLayerInit = (payload: any): void => {
     TagManager.dataLayer({
@@ -82,13 +95,6 @@ const Banner: React.FC<TypesBanner> = ({ data }): JSX.Element => {
   const isDataExist = (data: Array<number>, key: number): boolean => {
     const filtered: Array<number> = data.filter((item: number) => item === key)
     return filtered.length > 0
-  }
-
-  const handleScroll = (): void => {
-    const position: number = window.pageYOffset
-    if (position > 470) {
-      setIsUserOnBannerScreen(false)
-    } else setIsUserOnBannerScreen(true)
   }
 
   const sendAmplitudeBanner = (payload: any): void => {
