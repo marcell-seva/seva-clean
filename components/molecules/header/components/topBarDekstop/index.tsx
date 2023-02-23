@@ -10,14 +10,13 @@ import styles from '../../../../../styles/Header.module.css'
 import { api } from '../../../../../services/api'
 import { destroySessionMoEngage } from '../../../../../services/moengage'
 import { setAmplitudeUserId } from '../../../../../services/amplitude'
-import {
-  AuthContext,
-  AuthContextType,
-} from '../../../../../services/context/authContext'
+import { AuthContext, AuthContextType } from '../../../../../services/context'
 import { Variant } from '../../../../../utils/types'
 
 const TopBarDesktop: React.FC = () => {
-  const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
+  const { isLoggedIn, userData, filter, saveFilterData } = useContext(
+    AuthContext,
+  ) as AuthContextType
   const [isCrossShow, setIsCrossShow] = useState<boolean>(false)
   const [isVariantShow, setIsVariantShow] = useState<boolean>(false)
   const [input, setInput] = useState<string>('')
@@ -25,6 +24,7 @@ const TopBarDesktop: React.FC = () => {
   const [isUserInfoShow, setIsUserInfoShow] = useState<boolean>(false)
   const redirectLoginUrl: string = 'https://www.seva.id/masuk-akun'
   const redirectProfileUrl: string = 'https://www.seva.id/akun/profil'
+  const redirectUrlNewCar: string = 'https://www.seva.id/mobil-baru'
 
   const getVariantProduct = async (value: string): Promise<any> => {
     try {
@@ -73,6 +73,23 @@ const TopBarDesktop: React.FC = () => {
     }
   }
 
+  const handlePressEnter = (payload: string) => {
+    const dataFilter = {
+      carModel: payload,
+      bodyType: [],
+      brand: [],
+      tenure: 5,
+      downPaymentAmount: '',
+      downPaymentType: '',
+      monthlyIncome: '',
+      monthlyInstallment: '',
+      age: '',
+      sortBy: 'highToLow',
+    }
+    saveFilterData(dataFilter)
+    window.location.href = redirectUrlNewCar
+  }
+
   const clearInput = (): void => {
     setInput('')
     setIsCrossShow(false)
@@ -119,6 +136,9 @@ const TopBarDesktop: React.FC = () => {
           value={input}
           className={styles.input}
           placeholder="Cari Model Mobil..."
+          onKeyDown={(e: any) =>
+            e.key === 'Enter' && handlePressEnter(e.target.value)
+          }
           onChange={(e) => handleChange(e.target.value)}
         />
         {isCrossShow && (

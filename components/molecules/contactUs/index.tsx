@@ -8,11 +8,9 @@ import { setTrackEventMoEngageWithoutValue } from '../../../services/moengage'
 import {
   AuthContext,
   AuthContextType,
-} from '../../../services/context/authContext'
-import {
   ConfigContext,
   ConfigContextType,
-} from '../../../services/context/configContext'
+} from '../../../services/context'
 import TagManager from 'react-gtm-module'
 import { Form, PropsContactUs } from '../../../utils/types'
 
@@ -70,7 +68,8 @@ const ContactUs: React.FC<PropsContactUs> = ({
       utmSource: utm?.utm_source,
       utmTerm: utm?.utm_term,
     }
-    if (filter !== null) data.maxDp = parseInt(filter.downPaymentAmount)
+    if (filter !== null && filter.downPaymentAmount !== undefined)
+      data.maxDp = parseInt(filter.downPaymentAmount)
     return data
   }
   const sendUnverifiedLeads = (payload: any): void => {

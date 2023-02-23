@@ -6,9 +6,12 @@ import styles from '../../../styles/Widget.module.css'
 import { rupiah, useComponentVisible } from '../../../utils'
 import { IconChevronDown, IconChevronUp } from '../../atoms'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
-import { AuthContext, ConfigContext } from '../../../services/context'
-import { AuthContextType } from '../../../services/context/authContext'
-import { ConfigContextType } from '../../../services/context/configContext'
+import {
+  AuthContext,
+  ConfigContext,
+  AuthContextType,
+  ConfigContextType,
+} from '../../../services/context'
 import TagManager from 'react-gtm-module'
 import {
   FormWidget,
@@ -77,7 +80,6 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
         tenure: filter.tenure,
         age: filter.age,
       }))
-    console.log('datas', filter)
   }, [userData, filter])
 
   const ButtonTenure: React.FC<PropsButtonTenure> = ({
@@ -292,7 +294,7 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
           )}
         </div>
         <div className={styles.wrapperRight}>
-          <h6 className={styles.desc}>Pilih tahun tenor</h6>
+          <p className={styles.desc}>Pilih tahun tenor</p>
           <div className={styles.wrapperRow}>
             <ButtonTenure isActive={form.tenure === 1} tenure={1} />
             <ButtonTenure isActive={form.tenure === 2} tenure={2} />

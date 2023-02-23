@@ -6,6 +6,10 @@ import amplitude from 'amplitude-js'
 import TagManager from 'react-gtm-module'
 import { Banner } from '../../../utils/types'
 
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Autoplay, Pagination } from 'swiper'
+import LazyLoad from 'vanilla-lazyload'
+
 type TypesBanner = {
   data: Array<Banner>
 }
@@ -72,13 +76,13 @@ const Banner: React.FC<TypesBanner> = ({ data }): JSX.Element => {
   }
 
   const getTimeStamp = (): string | null => {
-    const timestamp: string | null = sessionStorage.getItem('timestamp')
+    const timestamp: string | null = localStorage.getItem('timestamp')
     return timestamp
   }
 
   const setTimestamp = (): void => {
     const currentTime = new Date().getTime()
-    sessionStorage.setItem('timestamp', currentTime.toString())
+    localStorage.setItem('timestamp', currentTime.toString())
   }
 
   const isInBorderTime = (payload: number): boolean => {
@@ -152,12 +156,38 @@ const Banner: React.FC<TypesBanner> = ({ data }): JSX.Element => {
         <Widget expandForm={() => setIsExpandForm(!isExpandForm)} />
       </div>
       <div className={styles.wrapperMobile}>
-        <div className="swiper mySwiper">
-          <div className="swiper-wrapper">
-            {data.map((item: Banner, key: number) => {
-              if (key === 0) {
-                return (
-                  <a href={item.url} key={key} className="swiper-slide">
+        <Swiper
+          onActiveIndexChange={(swiper) => {
+            setIndex(swiper.realIndex)
+          }}
+          on={{
+            afterInit: (swiper) => {
+              new LazyLoad({
+                container: swiper.el,
+                cancel_on_exit: false,
+              })
+            },
+          }}
+          loop
+          cssMode
+          pagination={{
+            clickable: true,
+            el: '.swiper-pagination',
+          }}
+          breakpoints={{
+            1024: {
+              cssMode: false,
+            },
+          }}
+          lazy
+          autoplay={{ delay: 8000 }}
+          modules={[Pagination, Autoplay]}
+        >
+          {data.map((item: Banner, key: number) => {
+            if (key === 0) {
+              return (
+                <SwiperSlide key={key}>
+                  <a href={item.url} className="swiper-slide">
                     <Image
                       src={item.attribute.web_mobile}
                       width={480}
@@ -168,10 +198,12 @@ const Banner: React.FC<TypesBanner> = ({ data }): JSX.Element => {
                       className={`swiper-lazy ${styles.banner}`}
                     />
                   </a>
-                )
-              } else {
-                return (
-                  <a href={item.url} key={key} className="swiper-slide">
+                </SwiperSlide>
+              )
+            } else {
+              return (
+                <SwiperSlide key={key}>
+                  <a href={item.url} className="swiper-slide">
                     <Image
                       src={item.attribute.web_mobile}
                       width={480}
@@ -181,20 +213,44 @@ const Banner: React.FC<TypesBanner> = ({ data }): JSX.Element => {
                       className={`swiper-lazy ${styles.banner}`}
                     />
                   </a>
-                )
-              }
-            })}
-            <div className={`swiper-pagination ${styles.paginationBullet}`} />
-          </div>
-        </div>
+                </SwiperSlide>
+              )
+            }
+          })}
+          <div className={`swiper-pagination ${styles.paginationBullet}`} />
+        </Swiper>
       </div>
       <div className={styles.wrapperDesktop}>
-        <div className="swiper mySwiper">
-          <div className="swiper-wrapper">
-            {data.map((item: Banner, key: number) => (
+        <Swiper
+          loop
+          onActiveIndexChange={(swiper) => {
+            setIndex(swiper.realIndex)
+          }}
+          on={{
+            afterInit: (swiper) => {
+              new LazyLoad({
+                container: swiper.el,
+                cancel_on_exit: false,
+              })
+            },
+          }}
+          cssMode
+          pagination={{
+            clickable: true,
+            el: '.swiper-pagination',
+          }}
+          breakpoints={{
+            1024: {
+              cssMode: false,
+            },
+          }}
+          lazy
+          autoplay={{ delay: 8000 }}
+          modules={[Pagination, Autoplay]}
+        >
+          {data.map((item: Banner, key: number) => (
+            <SwiperSlide key={key}>
               <a
-                key={key}
-                className="swiper-slide"
                 href={item.url}
                 onClick={() => pushDataLayerWidgetOnClick(key)}
               >
@@ -207,10 +263,10 @@ const Banner: React.FC<TypesBanner> = ({ data }): JSX.Element => {
                   className={`lazy-loader swiper-lazy ${styles.banner}`}
                 />
               </a>
-            ))}
-          </div>
+            </SwiperSlide>
+          ))}
           <div className={`swiper-pagination ${styles.paginationBullet}`} />
-        </div>
+        </Swiper>
       </div>
     </div>
   )

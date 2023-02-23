@@ -12,7 +12,9 @@ import { useIsMobile } from '../../../utils'
 import {
   LocationContext,
   LocationContextType,
-} from '../../../services/context/locationContext'
+  AuthContext,
+  AuthContextType,
+} from '../../../services/context'
 import { ShimmerCardProduct } from '../../atoms/shimmer'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
@@ -33,14 +35,15 @@ const CarList: React.FC<TypesCar> = ({ data }): JSX.Element => {
     'Peugeot',
   ]
   const [carList, setCarList] = useState<any>(data)
+  const { saveFilterData } = useContext(AuthContext) as AuthContextType
   const [loading, setLoading] = useState<boolean>(false)
-  const [typeActive, setTypeActive] = useState<any>('Toyota')
+  const [typeActive, setTypeActive] = useState<string>('Toyota')
   const { location, isInit } = useContext(
     LocationContext,
   ) as LocationContextType
-  const headerText = 'Mobil Baru Terpopuler'
-  const buttonText = 'LIHAT SEMUA'
-  const redirectUrlNewCar = 'https://www.seva.id/mobil-baru'
+  const headerText: string = 'Mobil Baru Terpopuler'
+  const buttonText: string = 'LIHAT SEMUA'
+  const redirectUrlNewCar: string = 'https://www.seva.id/mobil-baru'
 
   const ShadowSlide: React.FC = (): JSX.Element => (
     <div className={styles.shadowSlider}></div>
@@ -72,11 +75,7 @@ const CarList: React.FC<TypesCar> = ({ data }): JSX.Element => {
   )
 
   const removeUnnecessaryDataFilter = (brand: string): void => {
-    const dataFilterLocal = localStorage.getItem('filter')
-    const dataFilterParsed =
-      dataFilterLocal !== null ? JSON.parse(dataFilterLocal) : null
     const newDataFilter = {
-      ...dataFilterParsed,
       brand: [brand],
       bodyType: [],
       tenure: 5,
@@ -85,8 +84,7 @@ const CarList: React.FC<TypesCar> = ({ data }): JSX.Element => {
       age: '',
       sortBy: 'highToLow',
     }
-
-    localStorage.setItem('filter', JSON.stringify(newDataFilter))
+    saveFilterData(newDataFilter)
   }
   const getRecommendationCar = async (params: string): Promise<any> => {
     try {

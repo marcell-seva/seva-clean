@@ -1,16 +1,18 @@
 import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react'
 import styles from '../../../../styles/Offering.module.css'
-import { IconCross } from '../../../atoms'
+import amplitude from 'amplitude-js'
 import FlagIndonesia from '../../../../assets/images/flagIndonesia.png'
+import {} from '../../../../services/context'
+import { IconCross } from '../../../atoms'
 import {
+  CarContext,
+  CarContextType,
+  ConfigContext,
+  ConfigContextType,
   AuthContext,
   AuthContextType,
-} from '../../../../services/context/authContext'
-import amplitude from 'amplitude-js'
-import { CarContext, ConfigContext } from '../../../../services/context'
-import { CarContextType } from '../../../../services/context/carContext'
-import { ConfigContextType } from '../../../../services/context/configContext'
+} from '../../../../services/context'
 import { api } from '../../../../services/api'
 import { PropsOffering, Form } from '../../../../utils/types'
 
@@ -58,7 +60,8 @@ const Offering: React.FC<PropsOffering> = ({
       utmSource: utm?.utm_source,
       utmTerm: utm?.utm_term,
     }
-    if (filter !== null) data.maxDp = parseInt(filter.downPaymentAmount)
+    if (filter !== null && filter.downPaymentAmount !== undefined)
+      data.maxDp = parseInt(filter.downPaymentAmount)
     return data
   }
 

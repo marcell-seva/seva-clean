@@ -11,10 +11,7 @@ import {
   IconSearch,
 } from '../../../../atoms'
 import sevaHeader from '../../../../../assets/images/logo/seva-header.svg'
-import {
-  AuthContext,
-  AuthContextType,
-} from '../../../../../services/context/authContext'
+import { AuthContext, AuthContextType } from '../../../../../services/context'
 import { Menu } from '../../../../../utils/types'
 
 type TypeTopBarMobile = {
@@ -31,7 +28,9 @@ type TypeMenuSide = {
   isNew: boolean
 }
 const TopBarMobile: React.FC<TypeTopBarMobile> = ({ data, onSearchClick }) => {
-  const { isLoggedIn, userData } = useContext(AuthContext) as AuthContextType
+  const { userData, saveFilterData } = useContext(
+    AuthContext,
+  ) as AuthContextType
   const [isShow, setIsShow] = useState<boolean>(false)
   const [isSubSideBarShow, setIsSubSideBarShow] = useState<boolean>(false)
   const [typeSubSideBar, setTypeSubSideBar] = useState<string>('')
@@ -49,6 +48,21 @@ const TopBarMobile: React.FC<TypeTopBarMobile> = ({ data, onSearchClick }) => {
     const firstName = name[0].slice(0, 1)
     const lastName = name[1].slice(0, 1)
     return firstName + lastName
+  }
+
+  const removeUnnecessaryDataFilter = (payload: string): void => {
+    let brand = payload === 'Semua Merek' ? [] : [payload]
+    const newDataFilter = {
+      bodyType: [],
+      brand: brand,
+      carModel: '',
+      tenure: 5,
+      downPaymentAmount: '',
+      monthlyIncome: '',
+      age: '',
+      sortBy: 'highToLow',
+    }
+    saveFilterData(newDataFilter)
   }
 
   const ListSubMenuBar: React.FC<TypeMenu> = ({ item }): JSX.Element => {
@@ -73,6 +87,7 @@ const TopBarMobile: React.FC<TypeTopBarMobile> = ({ data, onSearchClick }) => {
             {item.subMenu.map((subMenu: any) => {
               return (
                 <a
+                  onClick={() => removeUnnecessaryDataFilter(subMenu.menuName)}
                   href={redirectRootUrl + subMenu.menuUrl}
                   key={subMenu.id}
                   className={styles.descText}
