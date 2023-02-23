@@ -51,6 +51,26 @@ const TopBarMobile: React.FC<TypeTopBarMobile> = ({ data, onSearchClick }) => {
     return firstName + lastName
   }
 
+  const removeUnnecessaryDataFilter = (payload: string): void => {
+    let brand = payload === 'Semua Merek' ? [] : [payload]
+    const dataFilterLocal = localStorage.getItem('filter')
+    const dataFilterParsed =
+      dataFilterLocal !== null ? JSON.parse(dataFilterLocal) : null
+    const newDataFilter = {
+      ...dataFilterParsed,
+      bodyType: [],
+      brand: brand,
+      carModel: '',
+      tenure: 5,
+      downPaymentAmount: '',
+      monthlyIncome: '',
+      age: '',
+      sortBy: 'highToLow',
+    }
+
+    localStorage.setItem('filter', JSON.stringify(newDataFilter))
+  }
+
   const ListSubMenuBar: React.FC<TypeMenu> = ({ item }): JSX.Element => {
     return (
       <div key={item.id}>
@@ -73,6 +93,7 @@ const TopBarMobile: React.FC<TypeTopBarMobile> = ({ data, onSearchClick }) => {
             {item.subMenu.map((subMenu: any) => {
               return (
                 <a
+                  onClick={() => removeUnnecessaryDataFilter(subMenu.menuName)}
                   href={redirectRootUrl + subMenu.menuUrl}
                   key={subMenu.id}
                   className={styles.descText}

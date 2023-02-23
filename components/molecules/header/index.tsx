@@ -31,6 +31,25 @@ const Header: React.FC<TypeHeader> = ({
     LocationContext,
   ) as LocationContextType
 
+  const removeUnnecessaryDataFilter = (payload: string): void => {
+    let brand = payload === 'Semua Merek' ? [] : [payload]
+    const dataFilterLocal = localStorage.getItem('filter')
+    const dataFilterParsed =
+      dataFilterLocal !== null ? JSON.parse(dataFilterLocal) : null
+    const newDataFilter = {
+      ...dataFilterParsed,
+      bodyType: [],
+      brand: brand,
+      carModel: '',
+      tenure: 5,
+      downPaymentAmount: '',
+      monthlyIncome: '',
+      age: '',
+      sortBy: 'highToLow',
+    }
+
+    localStorage.setItem('filter', JSON.stringify(newDataFilter))
+  }
   const DropDownWithChild: React.FC<TypeMenu> = ({ item }): JSX.Element => {
     return (
       <li className={styles.listMain}>
@@ -44,6 +63,9 @@ const Header: React.FC<TypeHeader> = ({
           {item.subMenu.map((listSubMenu: any, key: number) => (
             <li key={key} className={styles.listSubMain}>
               <a
+                onClick={() =>
+                  removeUnnecessaryDataFilter(listSubMenu.menuName)
+                }
                 href={redirectRootPath + listSubMenu.menuUrl}
                 className={styles.listSubMainText}
               >
