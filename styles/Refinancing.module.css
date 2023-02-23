@@ -57,7 +57,7 @@
 .wrapperImage {
   position: absolute;
   right: 0;
-  width: auto;
+  width: max-content;
   height: 165px;
   z-index: 1;
   background-color: red;
