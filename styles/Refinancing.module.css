@@ -55,7 +55,7 @@
 }
 
 .modelImage {
-  width: 189px;
+  width: auto;
   height: 100%;
   position: absolute;
   right: 0;
