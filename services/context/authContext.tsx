@@ -1,42 +1,8 @@
 import { createContext, useEffect, useState } from 'react'
 import { setAmplitudeUserId } from '../amplitude'
 import { api } from '../api'
+import { User, Token, Filter } from '../../utils/types'
 
-interface User {
-  id: number
-  phoneNumber: string
-  fullName: string
-  gender: string
-  dob: any
-  email: string
-  createdAt: string
-  updatedAt: string
-  registType: any
-  alreadyLogin: boolean
-  marital: string
-  promoSubscription: any
-  temanSevaTrxCode: any
-  customerUuid: any
-  isSales: boolean
-  salesBu: any
-  isCrmCustomer: boolean
-}
-
-interface Token {
-  expires: string
-  idToken: string
-  refreshToken: string
-}
-interface Filter {
-  age: string
-  downPaymentAmount: string
-  monthlyIncome: string
-  tenure: number
-  carModel: string
-  downPaymentType: string
-  monthlyInstallment: any
-  sortBy: string
-}
 export type AuthContextType = {
   isLoggedIn: boolean
   filter: Filter | null
@@ -89,8 +55,15 @@ export const AuthProvider = ({ children }: any) => {
   }
 
   const saveFilterData = (payload: Filter) => {
-    localStorage.setItem('filter', JSON.stringify(payload))
-    setFilter(payload)
+    const dataFilterLocal = localStorage.getItem('filter')
+    const dataFilterParsed =
+      dataFilterLocal !== null ? JSON.parse(dataFilterLocal) : null
+    const newDataFilter = {
+      ...dataFilterParsed,
+      ...payload,
+    }
+    localStorage.setItem('filter', JSON.stringify(newDataFilter))
+    setFilter(newDataFilter)
   }
 
   return (

@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import {
   LocationContext,
   LocationContextType,
-} from '../../../../services/context/locationContext'
+} from '../../../../services/context'
 import styles from '../../../../styles/OTRSecondary.module.css'
 import { IconCross, IconLocation, IconSearch } from '../../../atoms'
 import { Location } from '../../../../utils/types'

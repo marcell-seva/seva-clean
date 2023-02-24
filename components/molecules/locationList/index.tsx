@@ -1,9 +1,6 @@
 import React, { useContext } from 'react'
-import {
-  LocationContext,
-  LocationContextType,
-} from '../../../services/context/locationContext'
 import styles from '../../../styles/LocationList.module.css'
+import { LocationContext, LocationContextType } from '../../../services/context'
 import { IconLocation } from '../../atoms'
 interface PropsLocation {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void

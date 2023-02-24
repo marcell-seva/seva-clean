@@ -6,9 +6,12 @@ import styles from '../../../styles/Widget.module.css'
 import { rupiah, useComponentVisible } from '../../../utils'
 import { IconChevronDown, IconChevronUp } from '../../atoms'
 import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
-import { AuthContext, ConfigContext } from '../../../services/context'
-import { AuthContextType } from '../../../services/context/authContext'
-import { ConfigContextType } from '../../../services/context/configContext'
+import {
+  AuthContext,
+  ConfigContext,
+  AuthContextType,
+  ConfigContextType,
+} from '../../../services/context'
 import TagManager from 'react-gtm-module'
 import {
   FormWidget,
@@ -54,7 +57,7 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
       '150M-200M',
       '> 200M',
     ],
-    age: ['18-27', '29-34', '25-50', '>51'],
+    age: ['18-27', '28-34', '35-50', '>51'],
   }
   const buttonText: string = 'Temukan Mobilku'
   const headerText: string = 'Cari mobil baru yang pas buat kamu'
@@ -69,7 +72,13 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
     if (filter !== null)
       setForm((prevState: any) => ({
         ...prevState,
-        dp: filter.downPaymentAmount,
+        dp:
+          filter.downPaymentAmount === ''
+            ? undefined
+            : filter.downPaymentAmount,
+        income: filter.monthlyIncome === '' ? undefined : filter.monthlyIncome,
+        tenure: filter.tenure,
+        age: filter.age,
       }))
   }, [userData, filter])
 
@@ -219,14 +228,16 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
 
   const setDataFilterLocalStorage = (payload: FormWidget): void => {
     saveFilterData({
-      age: payload.age,
-      downPaymentAmount: payload.dp,
-      monthlyIncome: payload.income,
+      age: payload.age || '',
+      downPaymentAmount: payload.dp.toString(),
+      monthlyIncome: payload.income || '',
       tenure: payload.tenure,
       carModel: '',
       downPaymentType: 'amount',
       monthlyInstallment: '',
       sortBy: 'highToLow',
+      brand: [],
+      bodyType: [],
     })
   }
 
@@ -283,7 +294,7 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
           )}
         </div>
         <div className={styles.wrapperRight}>
-          <h6 className={styles.desc}>Pilih tahun tenor</h6>
+          <p className={styles.desc}>Pilih tahun tenor</p>
           <div className={styles.wrapperRow}>
             <ButtonTenure isActive={form.tenure === 1} tenure={1} />
             <ButtonTenure isActive={form.tenure === 2} tenure={2} />

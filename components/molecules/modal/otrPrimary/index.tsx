@@ -1,11 +1,11 @@
 import Image from 'next/image'
-import React, { useContext, useState } from 'react'
 import styles from '../../../../styles/OTRPrimary.module.css'
+import React, { useContext, useState } from 'react'
 import { Capsule, IconCross, IconLocation } from '../../../atoms'
 import {
   LocationContext,
   LocationContextType,
-} from '../../../../services/context/locationContext'
+} from '../../../../services/context'
 import { Location } from '../../../../utils/types'
 import citySelectorMobile from '../../../../assets/images/modal/CitySelectorBackgroundMobile.svg'
 import citySelectorDesktop from '../../../../assets/images/modal/CitySelectorBackgroundDesktop.svg'

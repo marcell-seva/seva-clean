@@ -12,13 +12,15 @@ import { useIsMobile } from '../../../utils'
 import {
   LocationContext,
   LocationContextType,
-} from '../../../services/context/locationContext'
+  AuthContext,
+  AuthContextType,
+} from '../../../services/context'
 import { ShimmerCardProduct } from '../../atoms/shimmer'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
 import { Car } from '../../../utils/types'
 type TypesShadow = {
-  type: string
+  brand: string
 }
 type TypesCar = {
   data: Car
@@ -33,27 +35,32 @@ const CarList: React.FC<TypesCar> = ({ data }): JSX.Element => {
     'Peugeot',
   ]
   const [carList, setCarList] = useState<any>(data)
+  const { saveFilterData } = useContext(AuthContext) as AuthContextType
   const [loading, setLoading] = useState<boolean>(false)
-  const [typeActive, setTypeActive] = useState<any>('Toyota')
+  const [typeActive, setTypeActive] = useState<string>('Toyota')
   const { location, isInit } = useContext(
     LocationContext,
   ) as LocationContextType
-  const headerText = 'Mobil Baru Terpopuler'
-  const buttonText = 'LIHAT SEMUA'
-  const redirectUrlNewCar = 'https://www.seva.id/mobil-baru'
+  const headerText: string = 'Mobil Baru Terpopuler'
+  const buttonText: string = 'LIHAT SEMUA'
+  const redirectUrlNewCar: string = 'https://www.seva.id/mobil-baru'
 
   const ShadowSlide: React.FC = (): JSX.Element => (
     <div className={styles.shadowSlider}></div>
   )
 
   const ShadowSlideWithContent: React.FC<TypesShadow> = ({
-    type,
+    brand,
   }): JSX.Element => (
-    <a href="https://www.seva.id/mobil-baru" className={styles.shadowSlider}>
+    <a
+      href={redirectUrlNewCar}
+      onClick={() => removeUnnecessaryDataFilter(brand)}
+      className={styles.shadowSlider}
+    >
       <IconArrowRight width={24} height={24} />
       <div className={styles.wrapperLabel}>
         <p className={styles.labelText}>Lihat semua</p>
-        <p className={styles.labelText}>mobil {type}</p>
+        <p className={styles.labelText}>mobil {brand}</p>
       </div>
     </a>
   )
@@ -66,6 +73,19 @@ const CarList: React.FC<TypesCar> = ({ data }): JSX.Element => {
       <p className={styles.undefinedDescText}>Silakan pilih merk lain.</p>
     </div>
   )
+
+  const removeUnnecessaryDataFilter = (brand: string): void => {
+    const newDataFilter = {
+      brand: [brand],
+      bodyType: [],
+      tenure: 5,
+      downPaymentAmount: '',
+      monthlyIncome: '',
+      age: '',
+      sortBy: 'highToLow',
+    }
+    saveFilterData(newDataFilter)
+  }
   const getRecommendationCar = async (params: string): Promise<any> => {
     try {
       setLoading(true)
@@ -143,7 +163,7 @@ const CarList: React.FC<TypesCar> = ({ data }): JSX.Element => {
               </SwiperSlide>
             ))}
             <SwiperSlide>
-              <ShadowSlideWithContent type={typeActive} />
+              <ShadowSlideWithContent brand={typeActive} />
             </SwiperSlide>
             <SwiperSlide>
               <ShadowSlide />

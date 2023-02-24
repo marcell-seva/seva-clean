@@ -1,11 +1,13 @@
 import Image from 'next/image'
 import React, { useContext, useState } from 'react'
-import { CarContext } from '../../../services/context'
-import { CarContextType } from '../../../services/context/carContext'
+import { CarContext, CarContextType } from '../../../services/context'
 import styles from '../../../styles/carofTheMonth.module.css'
 import { IconForwardRight } from '../../atoms'
 import amplitude from 'amplitude-js'
 import { CarDetail } from '../../../utils/types'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation } from 'swiper'
+
 type TypesCarOfTheMonth = {
   data: Array<CarDetail>
   openModalOffering: any
@@ -74,26 +76,42 @@ const CarofTheMonth: React.FC<TypesCarOfTheMonth> = ({
             >
               <IconForwardRight width={15} height={15} />
             </div>
-            <div className="swiper mySwiperCarofTheMonth">
-              <div className="swiper-wrapper">
-                {data.map((item: any) => {
-                  return (
-                    <div className="swiper-slide" key={item.id}>
-                      <button
-                        onClick={() => handleClick(item.brand)}
-                        className={
-                          activeType === item.brand
-                            ? styles.buttonCategoryActive
-                            : styles.buttonCategoryInActive
-                        }
-                      >
-                        {item.brand}
-                      </button>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
+            <Swiper
+              navigation={{
+                nextEl: '.image-swiper-button-next-car-month',
+                prevEl: '.image-swiper-button-prev-car-month',
+              }}
+              cssMode
+              slidesPerGroup={2}
+              slidesPerView={3}
+              spaceBetween={10}
+              breakpoints={{
+                1024: {
+                  slidesPerGroup: 3,
+                  slidesPerView: 4,
+                  spaceBetween: 10,
+                  cssMode: false,
+                },
+              }}
+              modules={[Navigation]}
+            >
+              {data.map((item: any) => {
+                return (
+                  <SwiperSlide key={item.id}>
+                    <button
+                      onClick={() => handleClick(item.brand)}
+                      className={
+                        activeType === item.brand
+                          ? styles.buttonCategoryActive
+                          : styles.buttonCategoryInActive
+                      }
+                    >
+                      {item.brand}
+                    </button>
+                  </SwiperSlide>
+                )
+              })}
+            </Swiper>
           </div>
           <div className={styles.categoryDesktop}>
             {data.map((item: any) => {

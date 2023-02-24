@@ -15,6 +15,7 @@ import {
   PropsButtonTenure,
   PropsDetailList,
   PropsListNavBarMenu,
+  PropsShadow,
 } from './props'
 
 import {
@@ -30,8 +31,10 @@ import {
   FormWidget,
   Menu,
   UTMCollector,
+  BodyType,
 } from './utils'
 
+import { User, Token, Filter, UTM } from './context'
 export type {
   PropsBrand,
   PropsCapsule,
@@ -49,6 +52,7 @@ export type {
   PropsButtonTenure,
   PropsDetailList,
   PropsListNavBarMenu,
+  PropsShadow,
   Location,
   Article,
   Banner,
@@ -61,4 +65,9 @@ export type {
   FormWidget,
   Menu,
   UTMCollector,
+  User,
+  Token,
+  Filter,
+  UTM,
+  BodyType,
 }

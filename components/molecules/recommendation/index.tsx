@@ -8,41 +8,72 @@ import {
   TypeCar,
 } from '../../atoms'
 import { api } from '../../../services/api'
-import { useIsMobile } from '../../../utils'
 import {
+  AuthContext,
+  AuthContextType,
   LocationContext,
   LocationContextType,
-} from '../../../services/context/locationContext'
-
+} from '../../../services/context'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
 import { ShimmerCardProduct } from '../../atoms/shimmer'
-interface ShadowProps {
-  type: string
+import { Car, BodyType, PropsShadow } from '../../../utils/types'
+
+type TypesCar = {
+  data: Array<Car>
+  categoryCar: Array<BodyType>
 }
 
-export default function Recommendation({ data, categoryCar }: any) {
+const Recommendation: React.FC<TypesCar> = ({
+  data,
+  categoryCar,
+}): JSX.Element => {
   const { location, isInit } = useContext(
     LocationContext,
   ) as LocationContextType
-  const isMobile = useIsMobile()
-  const ShadowSlide = () => <div className={styles.shadowSlider}></div>
+  const { saveFilterData } = useContext(AuthContext) as AuthContextType
   const [typeCarActive, setTypeCarActive] = useState<string>('MPV')
-  const [category, setCategory] = useState<any>(categoryCar)
+  const [category, setCategory] = useState<Array<BodyType>>(categoryCar)
   const [loading, setLoading] = useState<boolean>(false)
-  const [dataCar, setDataCar] = useState<any>(data)
+  const [dataCar, setDataCar] = useState<Array<Car>>(data)
+  const redirectUrlNewCar: string = 'https://www.seva.id/mobil-baru'
+  const headerText: string = 'Tipe Mobil Baru'
+  const buttonText: string = 'LIHAT SEMUA'
 
   useEffect(() => {
     if (!isInit) {
-      const params = `?bodyType=${typeCarActive}&city=${location.cityCode}&cityId=${location.id}`
-      const paramsCategory = `?city=${location.cityCode}`
+      const params: string = `?bodyType=${typeCarActive}&city=${location.cityCode}&cityId=${location.id}`
+      const paramsCategory: string = `?city=${location.cityCode}`
       getRecommendationCar(params)
       getTypeCar(paramsCategory)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.cityCode])
 
-  const ShadowSlideWithContent = ({ type }: ShadowProps) => (
-    <a href="https://www.seva.id/mobil-baru" className={styles.shadowSlider}>
+  const ShadowSlide: React.FC = (): JSX.Element => (
+    <div className={styles.shadowSlider}></div>
+  )
+
+  const removeUnnecessaryDataFilter = (type: string): void => {
+    const newDataFilter = {
+      brand: [],
+      carModel: '',
+      bodyType: [type],
+      tenure: 5,
+      downPaymentAmount: '',
+      monthlyIncome: '',
+      age: '',
+      sortBy: 'highToLow',
+    }
+    saveFilterData(newDataFilter)
+  }
+
+  const ShadowSlideWithContent = ({ type }: PropsShadow) => (
+    <a
+      href={redirectUrlNewCar}
+      onClick={() => removeUnnecessaryDataFilter(type)}
+      className={styles.shadowSlider}
+    >
       <IconArrowRight width={24} height={24} />
       <div className={styles.wrapperLabel}>
         <p className={styles.labelText}>Lihat semua</p>
@@ -51,7 +82,7 @@ export default function Recommendation({ data, categoryCar }: any) {
     </a>
   )
 
-  const handleClick = (payload: string) => {
+  const handleClick = (payload: string): void => {
     setTypeCarActive(payload)
     const params = isInit
       ? `?bodyType=${payload}&city=jakarta&cityId=189`
@@ -59,7 +90,7 @@ export default function Recommendation({ data, categoryCar }: any) {
     getRecommendationCar(params)
   }
 
-  const getTypeCar = async (params: string) => {
+  const getTypeCar = async (params: string): Promise<any> => {
     try {
       setLoading(true)
       const res: any = await api.getTypeCar(params)
@@ -69,7 +100,7 @@ export default function Recommendation({ data, categoryCar }: any) {
     }
   }
 
-  const getRecommendationCar = async (params: string) => {
+  const getRecommendationCar = async (params: string): Promise<any> => {
     try {
       setLoading(true)
       setDataCar([])
@@ -81,7 +112,7 @@ export default function Recommendation({ data, categoryCar }: any) {
     }
   }
 
-  const Undefined = () => (
+  const Undefined: React.FC = (): JSX.Element => (
     <div className={styles.undefined}>
       <h1 className={styles.undefinedTitleText}>
         Tipe mobil yang kamu pilih belum tersedia di kotamu.
@@ -103,20 +134,18 @@ export default function Recommendation({ data, categoryCar }: any) {
     } else if (dataCar.length !== 0) {
       return (
         <>
-          {!isMobile && (
-            <>
-              <div
-                className={`image-swiper-button-prev-recommendation ${styles.navigationBackButton}`}
-              >
-                <IconBackButton width={80} height={80} />
-              </div>
-              <div
-                className={`image-swiper-button-next-recommendation ${styles.navigationNextButton}`}
-              >
-                <IconNextButton width={80} height={80} />
-              </div>
-            </>
-          )}
+          <div className={styles.navigationWrapper}>
+            <div
+              className={`image-swiper-button-prev-recommendation ${styles.navigationBackButton}`}
+            >
+              <IconBackButton width={80} height={80} />
+            </div>
+            <div
+              className={`image-swiper-button-next-recommendation ${styles.navigationNextButton}`}
+            >
+              <IconNextButton width={80} height={80} />
+            </div>
+          </div>
           <Swiper
             navigation={{
               nextEl: '.image-swiper-button-next-recommendation',
@@ -164,12 +193,9 @@ export default function Recommendation({ data, categoryCar }: any) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.headerText}>Tipe Mobil Baru</h1>
-        <a
-          href="https://www.seva.id/mobil-baru"
-          className={styles.redirectText}
-        >
-          LIHAT SEMUA
+        <h1 className={styles.headerText}>{headerText}</h1>
+        <a href={redirectUrlNewCar} className={styles.redirectText}>
+          {buttonText}
         </a>
       </div>
       <div className={styles.wrapperType}>
@@ -188,3 +214,5 @@ export default function Recommendation({ data, categoryCar }: any) {
     </div>
   )
 }
+
+export default Recommendation
