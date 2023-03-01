@@ -15,6 +15,7 @@ import {
   CarProvider,
 } from '../services/context'
 import { ConfigProvider } from '../services/context/configContext'
+import { applyPolyfills, defineCustomElements } from 'seva-ui-kit/loader'
 
 const kanyon = localFont({
   src: '../public/Kanyon-Regular.otf',
@@ -34,6 +35,9 @@ const OpenSansSemiBold = localFont({
 })
 
 initAmplitude()
+applyPolyfills().then(() => {
+  defineCustomElements()
+})
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
