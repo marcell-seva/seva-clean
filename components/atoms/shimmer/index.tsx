@@ -1,6 +1,6 @@
 import React from 'react'
-import styles from '../../../styles/atoms/Shimmer.module.css'
-import { useIsMobile } from '../../../utils'
+import styles from 'styles/atoms/Shimmer.module.css'
+import { useIsMobile } from 'utils'
 
 const ShimmerCardProduct: React.FC = (): JSX.Element => {
   const isMobile = useIsMobile()

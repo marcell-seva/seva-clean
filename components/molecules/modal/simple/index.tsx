@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../../../../styles/Simple.module.css'
+import styles from '/styles/Simple.module.css'
 
 interface PropsModalSimple {
   onCloseModal: (e: React.MouseEvent<HTMLButtonElement>) => void

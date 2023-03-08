@@ -24,7 +24,6 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-gtm-module": "^2.0.11",
-    "react-shimmer-effects": "^1.0.2",
     "seva-ui-kit": "^0.0.1",
     "sharp": "^0.31.3",
     "swiper": "^8.4.5",
@@ -32,6 +31,7 @@
     "vanilla-lazyload": "^17.8.3"
   },
   "devDependencies": {
-    "@types/amplitude-js": "^8.16.2"
+    "@types/amplitude-js": "^8.16.2",
+    "sass": "^1.58.3"
   }
 }

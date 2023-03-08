@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../../../styles/Footer.module.css'
+import styles from 'styles/Footer.module.css'
 
 const Footer: React.FC = (): JSX.Element => {
   const aboutUsUrl: string = 'https://ext.seva.id/tentang-kami'

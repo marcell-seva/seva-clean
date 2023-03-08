@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
-import styles from '../../../styles/atoms/Logo.module.css'
-import logoSeva from '../../../assets/images/logo/seva-header.svg'
+import styles from 'styles/atoms/Logo.module.css'
+import logoSeva from 'assets/images/logo/seva-header.svg'
 
 const Logo: React.FC = (): JSX.Element => {
   const rootUrl: string = 'https://seva.id'

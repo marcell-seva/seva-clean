@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react'
-import styles from '../../../../../styles/Header.module.css'
+import styles from 'styles/Header.module.css'
 import {
   IconBurgerMenu,
   IconChevronDown,
@@ -9,10 +9,10 @@ import {
   IconChevronUp,
   IconDots,
   IconSearch,
-} from '../../../../atoms'
-import sevaHeader from '../../../../../assets/images/logo/seva-header.svg'
-import { AuthContext, AuthContextType } from '../../../../../services/context'
-import { Menu } from '../../../../../utils/types'
+} from 'components/atoms'
+import sevaHeader from 'assets/images/logo/seva-header.svg'
+import { AuthContext, AuthContextType } from 'services/context'
+import { Menu } from 'utils/types'
 
 type TypeTopBarMobile = {
   data: Array<Menu>

@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import styles from '/styles/saas/pages/index.module.scss'
 import { InferGetServerSidePropsType } from 'next'
 import {
   Footer,
@@ -26,11 +26,11 @@ import {
   AnnouncementBox,
   LoginModal,
 } from '../components/molecules'
-import { api } from '../services/api'
+import { api } from '/services/api'
 import { useContext, useEffect, useState } from 'react'
 import amplitude from 'amplitude-js'
 import { useIsMobile, utmCollector } from '../utils'
-import { ConfigContext, ConfigContextType } from '../services/context'
+import { ConfigContext, ConfigContextType } from '/services/context'
 
 export default function Home({
   dataBanner,

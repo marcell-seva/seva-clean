@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from 'react'
 import { setAmplitudeUserId } from '../amplitude'
 import { api } from '../api'
-import { User, Token, Filter } from '../../utils/types'
+import { User, Token, Filter } from 'utils/types'
 
 export type AuthContextType = {
   isLoggedIn: boolean

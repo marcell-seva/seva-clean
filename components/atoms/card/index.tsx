@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import React from 'react'
-import styles from '../../../styles/atoms/Card.module.css'
-import { rupiah } from '../../../utils'
-import { Car } from '../../../utils/types'
+import styles from 'styles/atoms/Card.module.css'
+import { rupiah } from 'utils'
+import { Car } from 'utils/types'
 type TypesCar = {
   item: Car
 }

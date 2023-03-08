@@ -1,6 +1,6 @@
 import React from 'react'
-import styles from '../../../../styles/Video.module.css'
-import { IconCross } from '../../../atoms'
+import styles from '/styles/Video.module.css'
+import { IconCross } from 'components/atoms'
 
 interface PropsVideo {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void

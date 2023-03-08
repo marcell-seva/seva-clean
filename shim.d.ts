@@ -3,3 +3,5 @@ declare namespace JSX {
     'seva-shimmer': any
   }
 }
+
+declare module '*.scss'

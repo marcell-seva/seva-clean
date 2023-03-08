@@ -1,6 +1,6 @@
 import React from 'react'
-import styles from '../../../styles/atoms/Capsule.module.css'
-import { PropsCapsule } from '../../../utils/types'
+import styles from 'styles/atoms/Capsule.module.css'
+import { PropsCapsule } from 'utils/types'
 
 const Capsule: React.FC<PropsCapsule> = ({ item, onClick }): JSX.Element => {
   return (

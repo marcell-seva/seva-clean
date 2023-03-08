@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react'
-import { CarDetail } from '../../utils/types'
+import { CarDetail } from 'utils/types'
 
 export type CarContextType = {
   car: CarDetail | null

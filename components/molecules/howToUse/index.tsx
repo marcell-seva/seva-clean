@@ -1,9 +1,9 @@
 import React from 'react'
-import styles from '../../../styles/HowToUse.module.css'
+import styles from 'styles/HowToUse.module.css'
 import Image from 'next/image'
 import blueRoundedImage from '/assets/vector/howToUse/blueRounded.png'
 import redRoundedImage from '/assets/vector/howToUse/redRounded.png'
-import { HowToUse, PropsHowToUse } from '../../../utils/types'
+import { HowToUse, PropsHowToUse } from 'utils/types'
 
 type TypesHowToUse = {
   data: HowToUse

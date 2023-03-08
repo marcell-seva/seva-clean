@@ -1,10 +1,10 @@
 import React, { lazy, useEffect, useRef, useState } from 'react'
-import styles from '../../../styles/Banner.module.css'
+import styles from 'styles/Banner.module.css'
 import Image from 'next/image'
 import Widget from '../widget'
 import amplitude from 'amplitude-js'
 import TagManager from 'react-gtm-module'
-import { Banner } from '../../../utils/types'
+import { Banner } from 'utils/types'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, Pagination } from 'swiper'
