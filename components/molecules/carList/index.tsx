@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import styles from 'styles/CarList.module.css'
+import styles from 'styles/saas/components/molecules/CarList.module.scss'
 import {
   Brand,
   Card,

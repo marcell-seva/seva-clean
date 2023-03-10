@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/inline-script-id */
-import '/styles/globals.css'
 import '/styles/saas/main.scss'
 
 import type { AppProps } from 'next/app'
@@ -9,10 +8,10 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import Script from 'next/script'
-import { initAmplitude } from '/services/amplitude/'
+import { initAmplitude } from 'services/amplitude/'
 import TagManager from 'react-gtm-module'
-import { AuthProvider, LocationProvider, CarProvider } from '/services/context'
-import { ConfigProvider } from '/services/context/configContext'
+import { AuthProvider, LocationProvider, CarProvider } from 'services/context'
+import { ConfigProvider } from 'services/context/configContext'
 import { applyPolyfills, defineCustomElements } from 'seva-ui-kit/loader'
 
 const kanyon = localFont({
@@ -59,9 +58,8 @@ export default function App({ Component, pageProps }: AppProps) {
               }
             `}</style>
             <Component {...pageProps} />
-            <Script
+            <script
               type="text/javascript"
-              strategy="afterInteractive"
               dangerouslySetInnerHTML={{
                 __html: `(function(i, s, o, g, r, a, m, n) {
         i.moengage_object = r
@@ -135,7 +133,7 @@ export default function App({ Component, pageProps }: AppProps) {
         })
         }`,
               }}
-            ></Script>
+            ></script>
           </CarProvider>
         </LocationProvider>
       </AuthProvider>

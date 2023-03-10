@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { api } from 'services/api'
-import styles from 'styles/LoanSection.module.css'
+import styles from 'styles/saas/components/molecules/LoanSection.module.scss'
 import { IconCross, IconSearch } from 'components/atoms'
 import { Variant } from 'utils/types'
 

@@ -25,12 +25,12 @@ import {
   Simple,
   AnnouncementBox,
   LoginModal,
-} from '../components/molecules'
-import { api } from '/services/api'
+} from 'components/molecules'
+import { api } from 'services/api'
 import { useContext, useEffect, useState } from 'react'
 import amplitude from 'amplitude-js'
-import { useIsMobile, utmCollector } from '../utils'
-import { ConfigContext, ConfigContextType } from '/services/context'
+import { useIsMobile, utmCollector } from 'utils'
+import { ConfigContext, ConfigContextType } from 'services/context'
 
 export default function Home({
   dataBanner,

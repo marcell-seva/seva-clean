@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from 'styles/HowToUse.module.css'
+import styles from 'styles/saas/components/molecules/HowToUse.module.scss'
 import Image from 'next/image'
 import blueRoundedImage from '/assets/vector/howToUse/blueRounded.png'
 import redRoundedImage from '/assets/vector/howToUse/redRounded.png'

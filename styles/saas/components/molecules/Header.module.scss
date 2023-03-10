@@ -1,0 +1,606 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  z-index: 4;
+  width: 100%;
+  transition: 0.5s;
+}
+
+.wrapper {
+  background-color: #{$white};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid #{$quartenaryGrey};
+  padding: 8px 16px;
+}
+
+.wrapperSubMain {
+  display: none;
+}
+
+.barMobile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1300px;
+  margin: auto;
+  position: relative;
+}
+
+.barDesktop {
+  display: block;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 80px;
+  height: auto;
+  margin-left: 20px;
+}
+
+.wrapperInput {
+  display: none;
+}
+
+.input {
+  display: flex;
+  width: 100%;
+  border-radius: 15px;
+  background-color: #{$white};
+  font-family: var(--kanyon);
+  font-size: 16px;
+  line-height: 24px;
+  padding-left: 8px;
+  outline: none;
+  border: none;
+}
+
+.subMain {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  max-width: 1300px;
+  margin: auto;
+}
+
+.buttonLogin {
+  border: none;
+  background-color: #{$secondaryBlue};
+  color: white;
+  font-size: 14px;
+  font-family: var(--kanyon);
+  text-align: center;
+  border-radius: 5px;
+  padding: 10px 20px;
+}
+
+.wrapperMain {
+  display: flex;
+  align-items: center;
+  list-style-type: none;
+}
+
+.navBar {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  margin: 0px 10px;
+  position: relative;
+}
+
+.navBar:hover {
+  border-top: 3px solid #{$secondaryBlue};
+}
+
+.navBar:hover .mainDropDown {
+  display: block;
+}
+
+.mainDropDown {
+  display: none;
+  top: 80%;
+  position: absolute;
+  background-color: #f9f9f9;
+  width: 230px;
+  border: 0.5px solid #{$secondaryBlue};
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 3;
+}
+
+.listMain {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+  width: 100%;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.listMainText {
+  font-size: 14px;
+  color: #{$black};
+  font-family: var(--kanyon);
+  padding: 0px 10px;
+}
+
+.listSubMainText {
+  width: 100%;
+  font-size: 14px;
+  color: #{$black};
+  font-family: var(--kanyon);
+  padding: 10px;
+}
+
+.bundleIconRight {
+  padding-right: 10px;
+}
+
+.wrapperListMenu {
+  display: flex;
+  width: 90%;
+  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.listMain:hover .wrapperListMenu {
+  background-color: #{$primarySkyBlue};
+}
+
+.subDropDown {
+  display: none;
+  top: 0;
+  left: 100%;
+  position: absolute;
+  background-color: #f9f9f9;
+  width: 230px;
+  border: 0.5px solid #{$secondaryBlue};
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  z-index: 4;
+}
+
+.listMain:hover > .subDropDown {
+  display: block;
+}
+
+.listMain:hover .listMainText {
+  font-weight: bold;
+}
+
+.listSubMain {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.listSubMain:hover {
+  background-color: #{$primarySkyBlue};
+  font-weight: bold;
+}
+
+.headerText {
+  font-size: 12px;
+  font-family: var(--kanyon);
+  padding: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  color: #{$black};
+}
+
+.modalOTR {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.selectLocation {
+  margin-left: 10px;
+}
+
+.labelText {
+  font-size: 10px;
+  font-family: var(--kanyon);
+}
+
+.iconTriangleDown {
+  padding-left: 10px;
+}
+
+.cityText {
+  font-size: 12px;
+  padding-top: 5px;
+  font-family: var(--kanyon);
+}
+
+.wrapperSideBar {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  opacity: 100;
+
+  z-index: 4;
+  top: 65px;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: opacity 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.wrapperSideBarClose {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 4;
+  opacity: 0;
+  top: 65px;
+  left: -100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: opacity 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.sideBar {
+  height: 100%;
+  width: 290px;
+  position: fixed;
+  z-index: 1;
+  opacity: 100;
+  top: 65px;
+  left: 0px;
+  background-color: #{$white};
+  overflow-x: hidden;
+  transition: opacity 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.sideBarClose {
+  height: 100%;
+  width: 0px;
+  position: fixed;
+  opacity: 0;
+  z-index: 1;
+  top: 65px;
+  left: -300px;
+  background-color: #{$white};
+  overflow-x: hidden;
+  transition: opacity 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.mainSelector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.titleText {
+  font-size: 16px;
+  font-family: var(--kanyon-bold);
+  color: #{$secondaryGrey};
+  text-decoration: none;
+}
+
+.titleTextNew {
+  font-size: 16px;
+  font-family: var(--kanyon-bold);
+  color: #{$tertiaryBlue};
+  text-decoration: none;
+}
+
+.wrapperTag {
+  display: flex;
+  align-items: center;
+}
+
+.newTag {
+  background-color: #{$tertiaryBlue};
+  color: #{$white};
+  font-size: 10px;
+  font-family: var(--kanyon-bold);
+  border-radius: 10px;
+  padding: 2px 7px;
+  margin-left: 10px;
+}
+
+.childSelector {
+  display: flex;
+  margin: 0px 16px;
+  padding: 20px 0px;
+  border-bottom: 0.5px solid #{$quartenaryGrey};
+  align-items: center;
+  cursor: pointer;
+}
+
+.childTitleText {
+  font-size: 16px;
+  font-family: var(--kanyon-bold);
+  color: #{$primaryBlue};
+  padding-left: 10px;
+  text-decoration: none;
+}
+
+.subChildTitleText {
+  font-size: 16px;
+  font-family: var(--kanyon-bold);
+  color: #{$secondaryGrey};
+  padding-left: 10px;
+  text-decoration: none;
+}
+
+.selectorDetail {
+  margin: 0px 16px;
+  padding: 16px 0px;
+  border-top: 0.5px solid #{$quartenaryGrey};
+  border-bottom: 0.5px solid #{$quartenaryGrey};
+}
+
+.descText {
+  display: flex;
+  font-size: 16px;
+  font-family: var(--kanyon-bold);
+  color: #{$secondaryGrey};
+  padding: 16px;
+  text-decoration: none;
+}
+
+.childContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 16px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.authSection {
+  background-color: #{$tertiaryWhite};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.initialAuthMain {
+  display: none;
+}
+
+.initialText {
+  font-size: 14px;
+  font-family: var(--kanyon);
+  color: #{$white};
+  padding-left: 5px;
+}
+
+.initialAuth {
+  background-color: #{$primaryBlue};
+  outline: none;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  width: 248px;
+  height: 41px;
+}
+
+.profileIcon {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+}
+
+.initialUsernameText {
+  height: 40px;
+  width: 40px;
+  flex: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #{$white};
+  font-size: 14px;
+  text-align: center;
+  background-color: #{$primaryBlue};
+  border-radius: 20px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.userAuth {
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+}
+
+.wrapperUserName {
+  margin-left: 10px;
+}
+
+.userWelcomeText {
+  font-size: 12px;
+  font-family: var(--open-sans-semi-bold);
+  color: #9ea39c;
+}
+
+.userNameText {
+  font-size: 16px;
+  font-family: var(--kanyon);
+  color: #{$tertiaryGrey};
+}
+
+.wrapperListVariant {
+  width: 50%;
+  height: min-content;
+  max-height: 200px;
+  background-color: #{$white};
+  position: absolute;
+  border-radius: 10px;
+  box-shadow: rgb(3 24 56 / 10%) 0px 1px 16px;
+  top: 90%;
+  left: 21%;
+  z-index: 4;
+  padding: 5px;
+  margin: auto;
+  overflow-x: auto;
+}
+
+.list {
+  display: flex;
+  font-size: 16px;
+  padding: 20px;
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+}
+
+.list:hover {
+  background-color: #{$primarySkyBlue};
+  border-radius: 3px;
+}
+
+.searchIcon {
+  cursor: pointer;
+}
+
+.accountInfo {
+  position: absolute;
+  right: 0;
+  top: 80px;
+  z-index: 4;
+  background-color: #{$white};
+  width: 260px;
+  border-radius: 15px;
+  padding: 8px;
+  box-shadow: rgb(3 24 56 / 20%) 0px 1px 16px;
+}
+
+.accountSelector {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  background-color: #{$white};
+  height: 50px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 10px;
+}
+
+.accountSelector:hover {
+  background-color: #{$primarySkyBlue};
+}
+
+.accountText {
+  font-size: 16px;
+  font-family: var(--kanyon);
+  color: #{$tertiaryGrey};
+  padding-left: 10px;
+}
+
+.iconBurger {
+  cursor: pointer;
+}
+
+@include lg {
+  .wrapper {
+    padding: 3px 70px;
+  }
+
+  .barMobile {
+    display: block;
+  }
+
+  .barDesktop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1300px;
+    margin: auto;
+    position: relative;
+  }
+
+  .wrapperSubMain {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    box-shadow: 0 4px 2px -2px #dadadd;
+    padding: 0px 70px;
+  }
+
+  .logo {
+    width: 120px;
+  }
+
+  .wrapperInput {
+    width: 50%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 0.5px solid #{$tertiaryGrey};
+    border-radius: 15px;
+    background-color: #{$white};
+    padding: 10px 20px;
+  }
+
+  .wrapperInitialAuth {
+    width: 250px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .initialAuthMain {
+    background-color: #{$primaryBlue};
+    outline: none;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    width: 200px;
+    height: 40px;
+    cursor: pointer;
+  }
+
+  .userWelcomeText {
+    text-align: right;
+  }
+
+  .userNameText {
+    font-size: 14px;
+    text-align: right;
+  }
+
+  .initialUsernameText {
+    margin-left: 15px;
+  }
+}

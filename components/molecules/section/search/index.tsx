@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { api } from '/services/api'
-import styles from '/styles/Search.module.css'
+import { api } from 'services/api'
+import styles from 'styles/saas/components/molecules/Search.module.scss'
 import { IconChevronLeft, IconCross, IconSearch } from 'components/atoms'
-import { Variant, PropsSearchMobile } from '../utils/types'
+import { Variant, PropsSearchMobile } from 'utils/types'
 
 const Search: React.FC<PropsSearchMobile> = ({
   onSearchMobileClose,

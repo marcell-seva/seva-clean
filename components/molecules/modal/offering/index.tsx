@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react'
-import styles from '/styles/Offering.module.css'
+import styles from '/styles/saas/components/molecules/Offering.module.scss'
 import amplitude from 'amplitude-js'
 import FlagIndonesia from '/assets/images/flagIndonesia.png'
 import { IconCross } from 'components/atoms'

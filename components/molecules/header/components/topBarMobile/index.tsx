@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react'
-import styles from 'styles/Header.module.css'
+import styles from 'styles/saas/components/molecules/Header.module.scss'
 import {
   IconBurgerMenu,
   IconChevronDown,

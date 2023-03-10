@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import styles from 'styles/Recommendation.module.css'
+import styles from 'styles/saas/components/molecules/Recommendation.module.scss'
 import {
   Card,
   IconArrowRight,

@@ -6,7 +6,7 @@ import {
   IconUser,
   Logo,
 } from 'components/atoms'
-import styles from 'styles/Header.module.css'
+import styles from 'styles/saas/components/molecules/Header.module.scss'
 import { api } from 'services/api'
 import { destroySessionMoEngage } from 'services/moengage'
 import { setAmplitudeUserId } from 'services/amplitude'

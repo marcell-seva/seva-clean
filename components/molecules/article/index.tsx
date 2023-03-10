@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import styles from 'styles/Article.module.css'
+import styles from 'styles/saas/components/molecules/Article.module.scss'
 import { api } from 'services/api'
 import {
   IconBackButton,

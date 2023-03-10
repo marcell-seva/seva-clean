@@ -1,5 +1,5 @@
 import React, { lazy, useEffect, useRef, useState } from 'react'
-import styles from 'styles/Banner.module.css'
+import styles from 'styles/saas/components/molecules/Banner.module.scss'
 import Image from 'next/image'
 import Widget from '../widget'
 import amplitude from 'amplitude-js'

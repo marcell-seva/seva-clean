@@ -1,6 +1,5 @@
 import React from 'react'
 import { PropsIcon } from 'utils/types'
-
 const IconChevronUp: React.FC<PropsIcon> = ({
   width,
   height,
