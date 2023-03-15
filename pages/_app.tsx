@@ -12,6 +12,7 @@ import TagManager from 'react-gtm-module'
 import { AuthProvider, LocationProvider, CarProvider } from 'services/context'
 import { ConfigProvider } from 'services/context/configContext'
 import { applyPolyfills, defineCustomElements } from 'seva-ui-kit/loader'
+import Script from 'next/script'
 
 const kanyon = localFont({
   src: '../public/Kanyon-Regular.otf',
@@ -56,8 +57,10 @@ export default function App({ Component, pageProps }: AppProps) {
                 --open-sans-semi-bold: ${OpenSansSemiBold.style.fontFamily};
               }
             `}</style>
-            <script
+            <Component {...pageProps} />
+            <Script
               type="text/javascript"
+              strategy="afterInteractive"
               dangerouslySetInnerHTML={{
                 __html: `(function(i, s, o, g, r, a, m, n) {
         i.moengage_object = r
@@ -131,8 +134,7 @@ export default function App({ Component, pageProps }: AppProps) {
         })
         }`,
               }}
-            ></script>
-            <Component {...pageProps} />
+            ></Script>
           </CarProvider>
         </LocationProvider>
       </AuthProvider>
