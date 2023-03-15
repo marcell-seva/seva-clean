@@ -5,7 +5,7 @@ import { PropsCapsule } from 'utils/types'
 const Capsule: React.FC<PropsCapsule> = ({ item, onClick }): JSX.Element => {
   return (
     <button className={styles.capsule} onClick={onClick}>
-      <p className={styles.capsuleLabel}>{item.cityName}asdadsasd</p>
+      <p className={styles.capsuleLabel}>{item.cityName}</p>
     </button>
   )
 }

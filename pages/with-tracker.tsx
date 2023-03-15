@@ -32,7 +32,7 @@ import amplitude from 'amplitude-js'
 import { useIsMobile, utmCollector } from 'utils'
 import { ConfigContext, ConfigContextType } from 'services/context'
 
-export default function Home({
+export default function WithTracker({
   dataBanner,
   dataMenu,
   dataCities,
