@@ -1,0 +1,98 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.wrapper {
+  background-color: #{$white};
+  position: fixed;
+  z-index: 5;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: 20px 24px 19px;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  border-bottom: 0.5px solid #{$quartenaryGrey};
+}
+
+.headerText {
+  font-size: 12px;
+  font-family: var(--kanyon);
+  font-weight: 600;
+}
+
+.optText {
+  color: #{$tertiaryGrey};
+  font-weight: normal;
+}
+
+.wrapperInput {
+  display: flex;
+  align-items: center;
+  border: 0.5px solid #{$tertiaryGrey};
+  border-radius: 15px;
+  height: 46px;
+  margin-top: 25px;
+  padding: 10px;
+  position: relative;
+  background-color: #{$white};
+}
+
+.input {
+  display: flex;
+  width: 100%;
+  border-radius: 15px;
+  background-color: #{$white};
+  font-family: var(--kanyon);
+  font-size: 16px;
+  line-height: 24px;
+  padding-left: 8px;
+  outline: none;
+  border: none;
+}
+
+.wrapperCityList {
+  background-color: #{$white};
+  max-height: 250px;
+  position: absolute;
+  border-radius: 10px;
+  top: 140px;
+  left: 15px;
+  right: 15px;
+  margin: 10px;
+  overflow-x: auto;
+  box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+}
+
+.buttonCityList {
+  display: flex;
+  outline: none;
+  border: none;
+  font-size: 16px;
+  font-family: var(--kanyon);
+  padding: 10px;
+  margin: 10px;
+  text-align: start;
+  background-color: #fff;
+}
+
+.buttonCityList:hover {
+  background-color: #{$primarySkyBlue};
+  border-radius: 10px;
+}
+
+.buttonClose {
+  cursor: pointer;
+}
+
+@include lg {
+  .wrapper {
+    display: none;
+  }
+}

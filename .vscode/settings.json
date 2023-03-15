@@ -1,0 +1,17 @@
+{
+  "editor.formatOnSave": true,
+  "eslint.codeActionsOnSave.rules": null,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "eslint.format.enable": true,
+  "[typescriptreact]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "typescript.format.enable": false,
+}

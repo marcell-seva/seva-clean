@@ -1,0 +1,36 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.wrapper {
+  background-color: #{$tertiaryWhite};
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 6px 19px;
+}
+
+.descText {
+  font-size: 10px;
+  padding-left: 10px;
+}
+
+.locText {
+  font-weight: 600;
+}
+
+.button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  text-decoration: underline;
+  color: #{$secondaryGrey};
+  font-size: 10px;
+  padding-left: 5px;
+  cursor: pointer;
+}
+
+@include lg {
+  .wrapper {
+    display: none;
+  }
+}
