@@ -3,7 +3,6 @@ import React, { useContext, useState } from 'react'
 import { CarContext, CarContextType } from 'services/context'
 import styles from 'styles/saas/components/molecules/CarofTheMonth.module.scss'
 import { IconForwardRight } from 'components/atoms'
-import amplitude from 'amplitude-js'
 import { CarDetail } from 'utils/types'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
@@ -38,13 +37,6 @@ const CarofTheMonth: React.FC<TypesCarOfTheMonth> = ({
 
     if (newData.length > 0) setInfo(newData[0])
     else setInfo(data[0])
-  }
-
-  const handleClickDetails = (payload: CarDetail): void => {
-    amplitude.getInstance().logEvent('WEB_LP_CAROFTHEMONTH_CAR_CLICK', {
-      Car_Brand: payload.model.carModel.brand,
-      Car_Model: payload.model.carModel.model,
-    })
   }
 
   const handleModalOffering = (payload: CarDetail): void => {
@@ -139,11 +131,7 @@ const CarofTheMonth: React.FC<TypesCarOfTheMonth> = ({
             </p>
           </div>
           <div className={styles.wrapperButton}>
-            <a
-              href={info.model.url}
-              className={styles.buttonDetail}
-              onClick={() => handleClickDetails(info)}
-            >
+            <a href={info.model.url} className={styles.buttonDetail}>
               {redirectDetailText}
             </a>
             <button

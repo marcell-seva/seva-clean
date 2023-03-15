@@ -15,7 +15,6 @@
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.10",
     "@types/react-gtm-module": "^2.0.1",
-    "amplitude-js": "^8.21.4",
     "axios": "^1.2.3",
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
@@ -23,7 +22,6 @@
     "next-pwa": "^5.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-gtm-module": "^2.0.11",
     "seva-ui-kit": "^0.0.1",
     "sharp": "^0.31.3",
     "swiper": "^8.4.5",
@@ -31,7 +29,6 @@
     "vanilla-lazyload": "^17.8.3"
   },
   "devDependencies": {
-    "@types/amplitude-js": "^8.16.2",
     "sass": "^1.58.3"
   }
 }

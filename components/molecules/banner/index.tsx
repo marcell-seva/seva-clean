@@ -2,8 +2,6 @@ import React, { lazy, useEffect, useRef, useState } from 'react'
 import styles from 'styles/saas/components/molecules/Banner.module.scss'
 import Image from 'next/image'
 import Widget from '../widget'
-import amplitude from 'amplitude-js'
-import TagManager from 'react-gtm-module'
 import { Banner } from 'utils/types'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -21,46 +19,6 @@ const Banner: React.FC<TypesBanner> = ({ data }): JSX.Element => {
   const [dataSentIndex, setDataSentIndex] = useState<Array<number>>([0])
   const [isUserOnBannerScreen, setIsUserOnBannerScreen] =
     useState<boolean>(true)
-
-  const pushDataLayerInit = (payload: any): void => {
-    TagManager.dataLayer({
-      dataLayer: {
-        ecommerce: {
-          promoView: {
-            promotions: [
-              {
-                name: payload.name,
-                creative: payload.creativeContext,
-                position: payload.slot,
-              },
-            ],
-          },
-        },
-        eventCategory: 'Ecommerce',
-        eventAction: 'Promotion View - Control',
-        eventLable: 'Homebanner',
-      },
-    })
-  }
-
-  const pushDataLayerWidgetOnClick = (index: number) => {
-    TagManager.dataLayer({
-      dataLayer: {
-        promoClick: {
-          promotions: [
-            {
-              name: data[index].name,
-              creative: data[index].creativeContext,
-              position: data[index].slot,
-            },
-          ],
-        },
-        eventCategory: 'Ecommerce',
-        eventAction: 'PromotionClick - Control',
-        eventLabel: 'HomepagePromoClick',
-      },
-    })
-  }
 
   const getTimeStamp = (): string | null => {
     const timestamp: string | null = localStorage.getItem('timestamp')
@@ -91,14 +49,6 @@ const Banner: React.FC<TypesBanner> = ({ data }): JSX.Element => {
     } else setIsUserOnBannerScreen(true)
   }
 
-  const sendAmplitudeBanner = (payload: any): void => {
-    amplitude.getInstance().logEvent('WEB_TOP_BANNER_VIEW', {
-      Name: payload.name,
-      Page_direction_URL: payload.url,
-      Creative_context: payload.creativeContext,
-    })
-  }
-
   const eventListenerScroll = () => {
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => {
@@ -111,16 +61,12 @@ const Banner: React.FC<TypesBanner> = ({ data }): JSX.Element => {
     if (timestamp === null) {
       setTimestamp()
       setIsActiveSending(true)
-      pushDataLayerInit(data[0])
-      sendAmplitudeBanner(data[0])
     } else {
       if (isInBorderTime(parseInt(timestamp))) {
         setIsActiveSending(false)
       } else {
         setTimestamp()
         setIsActiveSending(true)
-        pushDataLayerInit(data[0])
-        sendAmplitudeBanner(data[0])
       }
     }
   }, [])
@@ -136,8 +82,6 @@ const Banner: React.FC<TypesBanner> = ({ data }): JSX.Element => {
         const dataIndex: Array<number> = dataSentIndex
         dataIndex.push(index)
         setDataSentIndex(dataIndex)
-        pushDataLayerInit(data[index])
-        sendAmplitudeBanner(data[index])
       }
     }
   }, [isActiveSending, index, data])
@@ -244,10 +188,7 @@ const Banner: React.FC<TypesBanner> = ({ data }): JSX.Element => {
         >
           {data.map((item: Banner, key: number) => (
             <SwiperSlide key={key}>
-              <a
-                href={item.url}
-                onClick={() => pushDataLayerWidgetOnClick(key)}
-              >
+              <a href={item.url}>
                 <Image
                   src={item.attribute.web_desktop}
                   width={1040}

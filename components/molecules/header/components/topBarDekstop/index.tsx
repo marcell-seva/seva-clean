@@ -8,7 +8,6 @@ import {
 } from 'components/atoms'
 import styles from 'styles/saas/components/molecules/Header.module.scss'
 import { api } from 'services/api'
-import { setAmplitudeUserId } from 'services/amplitude'
 import { AuthContext, AuthContextType } from 'services/context'
 import { Variant } from 'utils/types'
 
@@ -105,7 +104,6 @@ const TopBarDesktop: React.FC = () => {
     localStorage.removeItem('filter')
     sessionStorage.removeItem('customerId')
 
-    setAmplitudeUserId(null)
     window.location.reload()
   }
 

@@ -7,8 +7,6 @@ import { useContext, useEffect } from 'react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import { initAmplitude } from 'services/amplitude/'
-import TagManager from 'react-gtm-module'
 import { AuthProvider, LocationProvider, CarProvider } from 'services/context'
 import { ConfigProvider } from 'services/context/configContext'
 import { applyPolyfills, defineCustomElements } from 'seva-ui-kit/loader'
@@ -34,15 +32,11 @@ const OpenSansSemiBold = localFont({
   display: 'swap',
 })
 
-initAmplitude()
 applyPolyfills().then(() => {
   defineCustomElements()
 })
 
 export default function App({ Component, pageProps }: AppProps) {
-  useEffect(() => {
-    TagManager.initialize({ gtmId: 'GTM-TV9J5JM' })
-  }, [])
   return (
     <ConfigProvider>
       <AuthProvider>

@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import styles from 'styles/saas/components/molecules/ContactUs.module.scss'
 import FlagIndonesia from 'assets/images/flagIndonesia.png'
 import Image from 'next/image'
-import amplitude from 'amplitude-js'
 import { api } from 'services/api'
 import {
   AuthContext,
@@ -10,7 +9,6 @@ import {
   ConfigContext,
   ConfigContextType,
 } from 'services/context'
-import TagManager from 'react-gtm-module'
 import { Form, PropsContactUs } from 'utils/types'
 
 const ContactUs: React.FC<PropsContactUs> = ({
@@ -48,8 +46,6 @@ const ContactUs: React.FC<PropsContactUs> = ({
   }
 
   const sendForm = (): void => {
-    if (form.whatsapp)
-      amplitude.getInstance().logEvent('SELECT_HOME_SEND_DETAILS')
     sendUnverifiedLeads(form)
   }
 
@@ -76,22 +72,9 @@ const ContactUs: React.FC<PropsContactUs> = ({
     try {
       api.postUnverfiedLeads(data)
       openThankyouModal()
-      amplitude.getInstance().logEvent('WEB_LANDING_PAGE_LEADS_FORM_SUBMIT')
-      pushDataLayer()
     } catch (error) {
       throw error
     }
-  }
-
-  const pushDataLayer = (): void => {
-    TagManager.dataLayer({
-      dataLayer: {
-        event: 'interaction',
-        eventCategory: 'Leads Generator',
-        eventAction: 'Homepage - Leads Form - Control',
-        eventLabel: 'Kirim Rincian',
-      },
-    })
   }
 
   useEffect(() => {

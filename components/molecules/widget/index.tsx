@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react'
 import { api } from 'services/api'
-import { trackGAContact, trackGALead } from 'services/googleAds'
 import styles from 'styles/saas/components/molecules/Widget.module.scss'
 import { rupiah, useComponentVisible } from 'utils'
 import { IconChevronDown, IconChevronUp } from 'components/atoms'
@@ -12,7 +11,6 @@ import {
   AuthContextType,
   ConfigContextType,
 } from 'services/context'
-import TagManager from 'react-gtm-module'
 import {
   FormWidget,
   PropsButtonTenure,
@@ -164,7 +162,6 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
       }))
       execUnverifiedLeads(form)
       setDataFilterLocalStorage(form)
-      pushDataLayerOnClick()
     }
   }
 
@@ -177,7 +174,6 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
     const isValidPhoneNumber = phone.toString().length > 3
 
     if (isValidPhoneNumber) {
-      trackGALead()
       const data = {
         age: payload.age || '',
         income: payload.income || '',
@@ -196,20 +192,8 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
       }
       sendUnverifiedLeads(data)
     } else {
-      trackGAContact()
       window.location.href = carListUrl
     }
-  }
-
-  const pushDataLayerOnClick = (): void => {
-    TagManager.dataLayer({
-      dataLayer: {
-        event: 'interaction',
-        eventCategory: 'Leads Generator',
-        eventAction: 'Homepage - Search Widget',
-        eventLabel: 'Temukan Mobilku',
-      },
-    })
   }
 
   const handleClickDP = (payload: string): void => {
