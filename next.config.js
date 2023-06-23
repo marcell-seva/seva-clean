@@ -1,6 +1,8 @@
 const path = require('path');
 
 const nextConfig = {
+  basePath: '/v3',
+  poweredByHeader: false,
   reactStrictMode: true,
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
@@ -34,7 +36,7 @@ const nextConfig = {
       },
     ],
   },
-  reactStrictMode: false,
+
   async headers() {
     return [
       {

@@ -1,14 +1,14 @@
-name: Deploy to Dev
+name: Deploy to Prod
 
 on:
   push:
     branches:
-      - develop
+      - prod
 
 env:
   REGION: ${{ secrets.REGION }}
-  DEV_GCP_IMAGE: seva-next
-  DEV_GCP_PROJECT: ${{ secrets.DEV_GCP_PROJECT }}
+  PROD_GCP_IMAGE: seva-next
+  PROD_GCP_PROJECT: ${{ secrets.PROD_GCP_PROJECT }}
 
 jobs:
   build:
@@ -19,28 +19,29 @@ jobs:
       - name: Prepare Environment Variable
         run: |
           echo "CI=false" >> .env
-          echo "PUBLIC_URL=${{ secrets.DEV_PUBLIC_URL }}" >> .env
-          echo "NODE_ENV=development" >> .env
+          echo "PUBLIC_URL=${{ secrets.PROD_PUBLIC_URL }}" >> .env
+          echo "NODE_ENV=production" >> .env
 
       - name: Auth Cloud SDK
         uses: 'google-github-actions/auth@v0'
         with:
-          credentials_json: '${{ secrets.DEV_SERVICE_ACCOUNT_KEY }}'
+          credentials_json: '${{ secrets.PROD_SERVICE_ACCOUNT_KEY }}'
 
       - name: Deploy Image to Google Container Registry
         run: |
           gcloud builds submit --timeout=1800s\
-            --tag gcr.io/$DEV_GCP_PROJECT/$DEV_GCP_IMAGE
+            --tag gcr.io/$PROD_GCP_PROJECT/$PROD_GCP_IMAGE \
+            --gcs-log-dir gs://torq-build-logs-prod/container
 
       - name: Update Cloud Run with latest Container Image
         run: |
-          gcloud run deploy $DEV_GCP_IMAGE \
+          gcloud run deploy $PROD_GCP_IMAGE \
             --region $REGION \
-            --image gcr.io/$DEV_GCP_PROJECT/$DEV_GCP_IMAGE \
+            --image gcr.io/$PROD_GCP_PROJECT/$PROD_GCP_IMAGE \
             --platform managed \
             --allow-unauthenticated \
             --min-instances 1 \
-            --max-instances 3 \
+            --max-instances 20 \
             --concurrency 80 \
             --cpu 1 \
             --memory 512Mi
