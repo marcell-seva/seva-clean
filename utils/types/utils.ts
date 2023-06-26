@@ -1,7 +1,30 @@
+export type FormControlValue = string | number | readonly string[] | undefined
+
+export interface Option<T extends FormControlValue> {
+  label: string
+  value: T
+  testid?: string
+}
+
+export interface OptionWithImage<T extends FormControlValue> {
+  image?: string
+  label: string
+  value: T
+  disabled?: boolean
+  brand?: string
+  testid?: string
+}
+
+export interface OptionWithText<T extends FormControlValue> {
+  text?: string
+  label: string
+  value: T
+  testid?: string
+}
 export interface Location {
   cityName: string
   cityCode: string
-  id: number
+  id: number | string
   province: string
 }
 
@@ -120,4 +143,22 @@ export interface UTMCollector {
 export interface BodyType {
   body_type: string
   data_count: number
+}
+
+export interface AnnouncementBoxDataType {
+  id: number
+  title: string
+  data: {
+    folder: string
+    icon: string
+    thumbnail: {
+      icon: string
+    }
+  }
+  url: string | null
+  description: string
+  textDisplay: string | null
+  backgroundColor: string
+  bannerDesign: string
+  userTarget: string
 }

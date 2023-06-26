@@ -1,0 +1,25 @@
+@import '../../../abstract/colors';
+@import '../../../abstract/mixins';
+
+.container {
+  background: #{$primary-dark-blue};
+  box-shadow: 0px 12px 44px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(22px);
+  border-radius: 0px 8px 8px 0px;
+  padding: 8px 16px;
+}
+
+.labelResult {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  bottom: 8px;
+}
+
+.microBold {
+  font-family: 'OpenSansBold';
+  font-size: 11px;
+  font-size: 11px;
+  line-height: 16px;
+  color: #{$primary-white};
+}

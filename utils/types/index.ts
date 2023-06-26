@@ -32,6 +32,10 @@ import {
   Menu,
   UTMCollector,
   BodyType,
+  FormControlValue,
+  Option,
+  OptionWithImage,
+  OptionWithText,
 } from './utils'
 
 import { User, Token, Filter, UTM } from './context'
@@ -70,4 +74,8 @@ export type {
   Filter,
   UTM,
   BodyType,
+  FormControlValue,
+  Option,
+  OptionWithImage,
+  OptionWithText,
 }
