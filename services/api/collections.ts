@@ -5,13 +5,18 @@ const utils = {
   usage: 'https://api.sslpots.com/api/how-to-use-seva-config?populate=*',
   banner: 'https://api.seva.id/banner-image/homepage',
   announcementBox: 'https://api.seva.id/announcement-box',
+  metaTag:
+    'https://api.sslpots.com/api/meta-seos/?filters[master_model][model_code][$contains]=',
 }
 
 const product = {
   recommendation: 'https://api.seva.id/recommendations/new-funnel',
+  modelDetails: 'https://api.seva.id/models/:id',
+  variantDetails: 'https://api.seva.id/variants/:id',
   variant: 'https://api.seva.id/variants',
   type: 'https://api.seva.id/cars/body-type-data',
   carofTheMonth: 'https://api.seva.id/car-of-the-month',
+  carVideoReview: 'https://api.seva.id/car-video-review',
 }
 
 const auth = {
