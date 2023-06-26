@@ -1,3 +1,5 @@
+import { LoanRank } from 'utils/models/models'
+
 export interface Location {
   cityName: string
   cityCode: string
@@ -120,4 +122,35 @@ export interface UTMCollector {
 export interface BodyType {
   body_type: string
   data_count: number
+}
+
+export interface LoanDetail {
+  loanRank: LoanRank
+  tenure: number
+  dpAmount: number
+  monthlyInstallment: number
+}
+
+export interface CarVariantLoan extends LoanDetail {
+  id: string
+  modelId?: string
+  priceValue: number
+}
+
+export type CarRecommendation = {
+  id: string
+  brand: string
+  model: string
+  image: string
+  images: string[]
+  numberOfPopulation: number
+  lowestAssetPrice: number
+  highestAssetPrice: number
+  height: number
+  width: number
+  length: number
+  loanRank: string
+  variants: CarVariantLoan[]
+  brandAndModel?: string
+  modelAndBrand?: string
 }

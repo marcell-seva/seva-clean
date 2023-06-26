@@ -24,6 +24,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-gtm-module": "^2.0.11",
+    "react-responsive": "^9.0.2",
     "seva-ui-kit": "^0.0.1",
     "sharp": "^0.31.3",
     "swiper": "^8.4.5",
