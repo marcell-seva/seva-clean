@@ -10,17 +10,17 @@ import {
   PopupResultMudah,
   PopupResultInfo,
   SortingMobile,
+  NavigationFilterMobile,
+  FilterMobile,
 } from 'components/organism'
 import React, { useEffect, useState } from 'react'
 import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import { getNewFunnelRecommendations, getMinMaxPrice } from 'services/newFunnel'
 import axios, { AxiosResponse } from 'axios'
-import styles from 'styles/pages/mobil-baru.module.scss'
+import styles from '../../styles/saas/pages/mobil-baru.module.scss'
 import 'styles/global.scss'
-import { NavigationFilterMobile } from 'components/organism'
-import FilterMobile from 'components/organism/filterMobile'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
-import CSAButton from 'components/atoms/floatButton/CSAButton'
+import { CSAButton } from 'components/atoms'
 import clsx from 'clsx'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Spin } from 'antd'
@@ -69,8 +69,11 @@ import {
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { getConvertFilterIncome } from 'utils/filterUtils'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
-const NewCarResultPage = () => {
+const NewCarResultPage = ({
+  meta,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
   const params = router.query.id
@@ -533,49 +536,12 @@ const NewCarResultPage = () => {
     }
   }
 
-  const metaTagBaseApi =
-    'https://api.sslpots.com/api/meta-seos/?filters[location_page3][$eq]=CarSearchResult'
-  const getMetaTitle = () => {
-    if (window.location.href.toLowerCase().includes('toyota')) {
-      const { data } = useFetch<MetaTagApiResponse[]>(metaTagBaseApi + 'Toyota')
-      return data && data.length > 0 ? data[0].attributes.meta_title : 'SEVA'
-    } else if (window.location.href.toLowerCase().includes('daihatsu')) {
-      const { data } = useFetch<MetaTagApiResponse[]>(
-        metaTagBaseApi + 'Daihatsu',
-      )
-      return data && data.length > 0 ? data[0].attributes.meta_title : 'SEVA'
-    } else if (window.location.href.toLowerCase().includes('bmw')) {
-      const { data } = useFetch<MetaTagApiResponse[]>(metaTagBaseApi + 'Bmw')
-      return data && data.length > 0 ? data[0].attributes.meta_title : 'SEVA'
-    } else {
-      const { data } = useFetch<MetaTagApiResponse[]>(metaTagBaseApi)
-      return data && data.length > 0 ? data[0].attributes.meta_title : 'SEVA'
-    }
-  }
-  const getMetaDescription = () => {
-    if (window.location.href.toLowerCase().includes('toyota')) {
-      const { data } = useFetch<MetaTagApiResponse[]>(metaTagBaseApi + 'Toyota')
-      return data && data.length > 0 ? data[0].attributes.meta_description : ''
-    } else if (window.location.href.toLowerCase().includes('daihatsu')) {
-      const { data } = useFetch<MetaTagApiResponse[]>(
-        metaTagBaseApi + 'Daihatsu',
-      )
-      return data && data.length > 0 ? data[0].attributes.meta_description : ''
-    } else if (window.location.href.toLowerCase().includes('bmw')) {
-      const { data } = useFetch<MetaTagApiResponse[]>(metaTagBaseApi + 'Bmw')
-      return data && data.length > 0 ? data[0].attributes.meta_description : ''
-    } else {
-      const { data } = useFetch<MetaTagApiResponse[]>(metaTagBaseApi)
-      return data && data.length > 0 ? data[0].attributes.meta_description : ''
-    }
-  }
-
   return (
     <>
       <Head>
-        <title>{getMetaTitle()}</title>
-        <meta name="title" content={getMetaTitle()} />
-        <meta name="description" content={getMetaDescription()} />
+        <title>{meta.title}</title>
+        <meta name="title" content={meta.title} />
+        <meta name="description" content={meta.description} />
       </Head>
       <div
         className={clsx({
@@ -731,3 +697,42 @@ const NewCarResultPage = () => {
 }
 
 export default NewCarResultPage
+
+type PLPProps = {
+  title: string
+  description: string
+}
+
+const getBrand = (brand: string | string[] | undefined) => {
+  if (brand === 'toyota') {
+    return 'Toyota'
+  } else if (brand === 'daihatsu') {
+    return 'Daihatsu'
+  } else if (brand === 'bmw') {
+    return 'Bmw'
+  } else {
+    return ''
+  }
+}
+
+export const getServerSideProps: GetServerSideProps<{
+  meta: PLPProps
+}> = async (ctx) => {
+  const brand = getBrand(ctx.query.brand)
+  const metaTagBaseApi =
+    'https://api.sslpots.com/api/meta-seos/?filters[location_page3][$eq]=CarSearchResult'
+  const meta = { title: 'SEVA', description: '' }
+  try {
+    const fetchMeta = await axios.get(metaTagBaseApi + brand)
+    console.log('log meta', fetchMeta)
+    const metaData = fetchMeta.data.data
+    if (metaData && metaData.length > 0) {
+      meta.title = metaData[0].attributes.meta_title
+      meta.description = metaData[0].attributes.meta_description
+    }
+
+    return { props: { meta } }
+  } catch (e) {
+    return { props: { meta } }
+  }
+}

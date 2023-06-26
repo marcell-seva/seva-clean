@@ -1,0 +1,87 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.stickyWrapper {
+  z-index: 6;
+  width: 100%;
+  transition: top 700ms;
+
+  &.showHeader {
+    top: 0;
+  }
+
+  &.hideHeader {
+    top: -54px;
+  }
+}
+
+.wrapper {
+  display: flex;
+  background: #{$primary-white};
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+  flex: none;
+  order: 1;
+  height: 54px;
+  flex-grow: 0;
+  z-index: 6;
+  width: 100%;
+
+  &.isActive {
+    position: fixed;
+    top: 0;
+  }
+}
+
+.homepage {
+  background-color: transparent;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 16px;
+  gap: 16px;
+  height: 54px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.showAAnnouncementBox {
+  height: 115px;
+}
+.content {
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 16px;
+  position: absolute;
+  width: 64px;
+  height: 24px;
+  right: 16px;
+  justify-content: space-between;
+}
+
+.frame-middle {
+  width: 100%;
+}
+.wrapperAnnouncementBox {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.shadow {
+  box-shadow: 0px 6px 14px 1px rgba(76, 82, 95, 0.08);
+}

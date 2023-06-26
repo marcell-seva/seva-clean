@@ -12,6 +12,13 @@ export enum LoanRank {
   Red = 'Red',
 }
 
+export enum Environment {
+  Localhost = 'localhost',
+  Development = 'development',
+  Staging = 'staging',
+  Production = 'production',
+}
+
 export enum ButtonVersion {
   Secondary = 'Secondary',
   SecondaryDark = 'SecondaryDark',

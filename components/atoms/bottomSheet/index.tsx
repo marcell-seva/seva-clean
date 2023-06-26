@@ -2,11 +2,14 @@ import type React from 'react'
 import type { RefHandles } from 'react-spring-bottom-sheet/dist/types'
 
 import 'react-spring-bottom-sheet/dist/style.css'
-import '../../../styles/atoms/bottomSheet.scss'
-import styles from '_revamp/styles/atoms/bottomSheet.module.scss'
+import 'styles/saas/components/atoms/bottomSheet.scss'
+import styles from '../../../styles/saas/components/atoms/bottomSheet.module.scss'
 
 export type ForwardedRef = React.ForwardedRef<RefHandles>
-import { BottomSheet, BottomSheetProps } from 'react-spring-bottom-sheet'
+import {
+  BottomSheet as SpringSheet,
+  BottomSheetProps,
+} from 'react-spring-bottom-sheet'
 import { IconClose } from '../icon'
 import { colors } from 'styles/colors'
 import { forwardRef } from 'react'
@@ -21,7 +24,7 @@ const forwardBottomSheet = (
   ref: ForwardedRef,
 ) => {
   return (
-    <BottomSheet ref={ref} {...props}>
+    <SpringSheet ref={ref} {...props}>
       <div className={styles.header}>
         <div className={styles.subHeader}>
           <p>{title}</p>
@@ -31,8 +34,8 @@ const forwardBottomSheet = (
         </div>
       </div>
       {children}
-    </BottomSheet>
+    </SpringSheet>
   )
 }
 
-export default forwardRef(forwardBottomSheet)
+export const BottomSheet = forwardRef(forwardBottomSheet)

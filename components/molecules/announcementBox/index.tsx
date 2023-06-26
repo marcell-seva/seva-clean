@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
-import styles from 'styles/saas/components/molecules/AnnouncementBox.module.scss'
+import styles from '../../../styles/saas/components/molecules/AnnouncementBox.module.scss'
 import { IconCross } from 'components/atoms'
 import CustomDesktopLeft from 'assets/images/annoucementBox/custom/custom-desktop-left.webp'
 import CustomDesktopRight from 'assets/images/annoucementBox/custom/custom-desktop-right.webp'

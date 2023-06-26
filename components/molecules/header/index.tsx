@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import styles from 'styles/saas/components/molecules/Header.module.scss'
+import styles from '../../../styles/saas/components/molecules/Header.module.scss'
 import { useIsMobile } from 'utils'
 import { Menu } from 'utils/types'
 import TopBarDesktop from './components/topBarDekstop'

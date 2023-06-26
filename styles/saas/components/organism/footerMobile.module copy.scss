@@ -1,0 +1,80 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.container {
+  background-color: #061945;
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 16px 19px;
+  margin: 0 auto;
+}
+
+.sevaLogo {
+  margin-bottom: 8px;
+}
+
+.footerText {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  color: #{$primary-white};
+  margin-bottom: 16px;
+}
+
+.linkedTextWrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px 8px;
+  align-items: center;
+  margin-bottom: 16px;
+  width: 300px;
+
+  a {
+    font-family: 'OpenSansSemiBold';
+    font-size: 12px;
+    line-height: 18px;
+    color: #{$primary-white};
+  }
+}
+
+.socialWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.isoWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+
+  span {
+    margin-bottom: 0;
+  }
+}
+
+.divider {
+  width: 100%;
+  opacity: 0.1;
+  border: 1px solid #{$primary-white};
+  margin-bottom: 16px;
+}
+
+.copyrightText {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  color: #{$primary-white};
+}

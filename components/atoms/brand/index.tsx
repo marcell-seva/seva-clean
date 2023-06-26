@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
-import styles from 'styles/saas/components/atoms/Brand.module.scss'
+import styles from '../../../styles/saas/components/atoms/Brand.module.scss'
 import { PropsBrand } from 'utils/types'
 
 const Brand: React.FC<PropsBrand> = ({

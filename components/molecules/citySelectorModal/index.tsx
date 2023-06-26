@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import styles from 'styles/molecules/citySelectorModal.module.scss'
+import styles from '../../../styles/saas/components/molecules/citySelectorModal.module.scss'
 import { InputSelect, Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import Fuse from 'fuse.js'
@@ -9,7 +9,7 @@ import {
   // trackCitySelectorCancel,
 } from 'helpers/amplitude/seva20Tracking'
 import { Modal } from 'antd'
-import '_revamp/styles/global.scss'
+import 'styles/global.scss'
 import { saveLocalStorage } from 'utils/localstorageUtils'
 import elementId from 'helpers/elementIds'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'

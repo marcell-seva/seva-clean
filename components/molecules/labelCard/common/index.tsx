@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from 'styles/molecules/labelCard/common/common.module.scss'
+import styles from '../../../../styles/saas/components/molecules/labelCard/common/common.module.scss'
 
 type TCommonLabelProps = {
   title: string

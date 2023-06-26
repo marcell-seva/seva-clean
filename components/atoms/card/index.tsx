@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
-import styles from 'styles/saas/components/atoms/Card.module.scss'
+import styles from '../../../styles/saas/components/atoms/Card.module.scss'
 import { rupiah } from 'utils'
 import { Car } from 'utils/types'
 type TypesCar = {

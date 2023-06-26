@@ -1,0 +1,7 @@
+@import '../abstract/colors';
+
+.skeleton {
+  background-color: #{$shades-grey-10};
+  border-radius: 12px;
+  height: 20px;
+}

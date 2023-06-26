@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes } from 'react'
-import styles from 'styles/atoms/button.module.scss'
+import styles from '../../../styles/saas/components/atoms/button.module.scss'
 
 export enum ButtonVersion {
   Secondary = 'Secondary',

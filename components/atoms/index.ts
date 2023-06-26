@@ -60,6 +60,14 @@ import { ShimmerCardArticle, ShimmerCardProduct } from './shimmer'
 import { Button } from './button'
 import { CardShadow } from './card/CardShadow'
 import { InputSelect } from './inputSelect'
+import { BottomSheet } from './bottomSheet'
+import { Overlay } from './overlay'
+import { Skeleton } from './skeleton'
+import { WhatsappButton } from './floatButton/WhatsappButton'
+import { CSAButton } from './floatButton/CSAButton'
+import { InputWithIcon } from './input/inputWithIcon'
+import { Label } from './label'
+import { Tooltip } from './tooltip'
 
 export {
   Card,
@@ -123,4 +131,13 @@ export {
   IconHamburger,
   IconChevronRight,
   InputSelect,
+  BottomSheet,
+  Overlay,
+  Skeleton,
+  CSAButton,
+  WhatsappButton,
+  InputWithIcon,
+  Label,
+  Tooltip,
+  Modal,
 }

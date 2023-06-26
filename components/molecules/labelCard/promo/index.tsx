@@ -1,7 +1,7 @@
 import React, { HTMLAttributes } from 'react'
 import { colors } from 'styles/colors'
 import { IconPromo } from 'components/atoms/icon'
-import styles from 'styles/molecules/labelCard/promo/promo.module.scss'
+import styles from '../../../../styles/saas/components/molecules/labelCard/promo/promo.module.scss'
 
 export const LabelPromo = ({
   className,

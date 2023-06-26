@@ -1,6 +1,6 @@
 import React, { HTMLAttributes } from 'react'
 import { IconWarningCircle } from 'components/atoms/icon'
-import styles from 'styles/molecules/labelCard/sulit/sulit.module.scss'
+import styles from '../../../../styles/saas/components/molecules/labelCard/sulit/sulit.module.scss'
 import { colors } from 'styles/colors'
 
 export const LabelSulit = ({ ...props }: HTMLAttributes<HTMLDivElement>) => {

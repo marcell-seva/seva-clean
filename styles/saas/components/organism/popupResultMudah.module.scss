@@ -1,0 +1,105 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-right: 17px;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #{$shades-grey-25};
+    border-radius: 20px;
+    right: -20px;
+  }
+}
+
+.contentPromo {
+  display: flex;
+  flex-direction: column;
+}
+
+.titlePromo {
+  font-family: 'OpenSansSemiBold';
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$primary-dark-blue};
+  margin-bottom: 4px;
+}
+
+.bodyWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.bodyContentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bodyTitle {
+  font-family: 'OpenSansSemiBold';
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$primary-black};
+  margin-bottom: 2px;
+}
+
+.bodyPromo {
+  font-family: 'OpenSans';
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$primary-black};
+}
+
+.snk {
+  font-family: 'OpenSans';
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$secondary-blue};
+  margin-top: 25px;
+}
+
+.divider {
+  height: 2px;
+  width: 100%;
+  background-color: #{$shades-sky-blue-10};
+  margin: 24px 0;
+}
+
+.bgModal {
+  height: 100%;
+  background-color: #{$primary-black};
+  opacity: 0.5;
+}
+
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #{$primary-white};
+  border-radius: 8px;
+  width: calc(100% - 16px);
+  max-width: 588px;
+}
+
+@include sm {
+  .content {
+    width: 100%;
+  }
+}
+
+.title {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #13131b;
+}
