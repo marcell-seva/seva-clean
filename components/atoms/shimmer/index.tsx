@@ -1,24 +1,28 @@
 import React from 'react'
-import { ShimmerThumbnail, ShimmerTitle } from 'react-shimmer-effects'
-import styles from '../../../styles/atoms/Shimmer.module.css'
-import { useIsMobile } from '../../../utils'
+import styles from 'styles/saas/components/atoms/Shimmer.module.scss'
+import { useIsMobile } from 'utils'
 
 const ShimmerCardProduct: React.FC = (): JSX.Element => {
   const isMobile = useIsMobile()
   return isMobile ? (
-    <div className={styles.cardShimmer}>
-      <ShimmerThumbnail width={140} height={90} rounded />
-      <ShimmerTitle rounded line={2} className={styles.cardShimmerChild} />
+    <div className={styles.card}>
+      <seva-shimmer width="140px" height="90px" />
+      <div className={styles.cardChild}>
+        <seva-shimmer rounded="8px" width="80%" />
+      </div>
+      <div className={styles.cardChild}>
+        <seva-shimmer rounded="8px" width="60%" />
+      </div>
     </div>
   ) : (
-    <div className={styles.cardShimmer}>
-      <ShimmerThumbnail width={264} height={180} rounded />
-      <ShimmerTitle
-        height={30}
-        rounded
-        line={2}
-        className={styles.cardShimmerChild}
-      />
+    <div className={styles.card}>
+      <seva-shimmer width="264px" height="180px" />
+      <div className={styles.cardChild}>
+        <seva-shimmer height="30px" width="80%" rounded="10px" />
+      </div>
+      <div className={styles.cardChild}>
+        <seva-shimmer height="30px" width="60%" rounded="10px" />
+      </div>
     </div>
   )
 }
@@ -26,33 +30,29 @@ const ShimmerCardProduct: React.FC = (): JSX.Element => {
 const ShimmerCardArticle: React.FC = (): JSX.Element => {
   const isMobile = useIsMobile()
   return isMobile ? (
-    <div className={styles.cardArticleShimmer}>
-      <ShimmerThumbnail width={86} height={86} rounded />
-      <div className={styles.articleChildWrapper}>
-        <ShimmerThumbnail
-          width={200}
-          height={15}
-          rounded
-          className={styles.articleChild}
-        />
-        <ShimmerThumbnail
-          width={120}
-          height={15}
-          rounded
-          className={styles.articleChild}
-        />
-        <ShimmerThumbnail
-          width={80}
-          height={20}
-          rounded
-          className={styles.articleChild}
-        />
+    <div className={styles.article}>
+      <seva-shimmer width="86px" height="86px" rounded="10px" />
+      <div className={styles.articleWrapper}>
+        <div className={styles.articleWrapperChild}>
+          <seva-shimmer width="200px" height="15px" rounded="5px" />
+        </div>
+        <div className={styles.articleWrapperChild}>
+          <seva-shimmer width="120px" height="15px" rounded="5px" />
+        </div>
+        <div className={styles.articleWrapperChild}>
+          <seva-shimmer width="80px" height="20px" rounded="5px" />
+        </div>
       </div>
     </div>
   ) : (
-    <div className={styles.cardArticleShimmer}>
-      <ShimmerThumbnail width={240} height={134} rounded />
-      <ShimmerTitle rounded line={2} className={styles.cardChildArticle} />
+    <div className={styles.article}>
+      <seva-shimmer width="240px" height="134px" rounded="20px" />
+      <div className={styles.articleWrapperChild}>
+        <seva-shimmer rounded="10px" width="80%" height="20px" />
+      </div>
+      <div className={styles.articleWrapperChild}>
+        <seva-shimmer rounded="10px" width="60%" height="20px" />
+      </div>
     </div>
   )
 }

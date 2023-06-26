@@ -1,10 +1,9 @@
 import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react'
-import styles from '../../../../styles/Offering.module.css'
+import styles from '/styles/saas/components/molecules/Offering.module.scss'
 import amplitude from 'amplitude-js'
-import FlagIndonesia from '../../../../assets/images/flagIndonesia.png'
-import {} from '../../../../services/context'
-import { IconCross } from '../../../atoms'
+import FlagIndonesia from '/assets/images/flagIndonesia.png'
+import { IconCross } from 'components/atoms'
 import {
   CarContext,
   CarContextType,
@@ -12,9 +11,9 @@ import {
   ConfigContextType,
   AuthContext,
   AuthContextType,
-} from '../../../../services/context'
-import { api } from '../../../../services/api'
-import { PropsOffering, Form } from '../../../../utils/types'
+} from 'services/context'
+import { api } from 'services/api'
+import { PropsOffering, Form } from 'utils/types'
 
 const Offering: React.FC<PropsOffering> = ({
   openThankyouModal,

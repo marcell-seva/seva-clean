@@ -1,0 +1,46 @@
+@import '../../abstract/variable';
+@import '../../abstract/mixins';
+
+.card {
+  width: 140px;
+  height: 210px;
+  border-radius: 5px;
+  box-shadow: rgb(3 24 56 / 10%) 0px 1px 16px;
+
+  & &Child {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+.article {
+  display: flex;
+  margin-top: 10px;
+  & &Wrapper {
+    margin-top: 10px;
+    margin-left: 15px;
+  }
+  & &WrapperChild {
+    height: 20px;
+  }
+}
+
+@include lg {
+  .card {
+    width: 264px;
+    height: 350px;
+
+    & &Child {
+      margin: 10px 15px;
+    }
+  }
+
+  .article {
+    flex-direction: column;
+    margin-top: 20px;
+    & &WrapperChild {
+      margin-top: 10px;
+    }
+  }
+}

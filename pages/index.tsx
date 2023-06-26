@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import styles from '/styles/saas/pages/index.module.scss'
 import { InferGetServerSidePropsType } from 'next'
 import {
   Footer,
@@ -25,14 +25,14 @@ import {
   Simple,
   AnnouncementBox,
   LoginModal,
-} from '../components/molecules'
-import { api } from '../services/api'
+} from 'components/molecules'
+import { api } from 'services/api'
 import { useContext, useEffect, useState } from 'react'
 import amplitude from 'amplitude-js'
-import { useIsMobile, utmCollector } from '../utils'
-import { ConfigContext, ConfigContextType } from '../services/context'
+import { useIsMobile, utmCollector } from 'utils'
+import { ConfigContext, ConfigContextType } from 'services/context'
 
-export default function Home({
+export default function WithTracker({
   dataBanner,
   dataMenu,
   dataCities,
@@ -43,7 +43,6 @@ export default function Home({
   dataMainArticle,
   dataTypeCar,
   dataCarofTheMonth,
-  dataAnnouncementBox,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const isMobile = useIsMobile()
   const { saveUTM } = useContext(ConfigContext) as ConfigContextType
@@ -120,21 +119,21 @@ export default function Home({
             onSearchClick={() => setModalType('modalSearch')}
           />
           <LocationList onClick={() => setModalType('modalLocationList')} />
-          {!isMobile && isAnnouncementBoxShow && (
+          {/* {!isMobile && isAnnouncementBoxShow && (
             <AnnouncementBox
               data={dataAnnouncementBox}
               onCloseButton={() => setIsAnnouncementBoxShow(false)}
             />
-          )}
+          )} */}
         </div>
-        {isAnnouncementBoxShow && isMobile && (
+        {/* {isAnnouncementBoxShow && isMobile && (
           <div className={styles.sticky}>
             <AnnouncementBox
               data={dataAnnouncementBox}
               onCloseButton={() => setIsAnnouncementBoxShow(false)}
             />
           </div>
-        )}
+        )} */}
         <Floating onClickImage={() => setModalType('modalVideo')} />
         <div
           className={
@@ -184,7 +183,6 @@ export async function getServerSideProps({ res }: any) {
       mainArticleRes,
       typeCarRes,
       carofTheMonthRes,
-      annoucementBoxRes,
     ]: any = await Promise.all([
       api.getBanner(),
       api.getMenu(),
@@ -196,7 +194,6 @@ export async function getServerSideProps({ res }: any) {
       api.getMainArticle('65'),
       api.getTypeCar('?city=jakarta'),
       api.getCarofTheMonth(),
-      api.getAnnouncementBox(),
     ])
     const [
       dataBanner,
@@ -209,7 +206,6 @@ export async function getServerSideProps({ res }: any) {
       dataMainArticle,
       dataTypeCar,
       dataCarofTheMonth,
-      dataAnnouncementBox,
     ] = await Promise.all([
       bannerRes.data,
       menuRes.data,
@@ -221,7 +217,6 @@ export async function getServerSideProps({ res }: any) {
       mainArticleRes,
       typeCarRes,
       carofTheMonthRes.data,
-      annoucementBoxRes.data,
     ])
     return {
       props: {
@@ -235,7 +230,6 @@ export async function getServerSideProps({ res }: any) {
         dataMainArticle,
         dataTypeCar,
         dataCarofTheMonth,
-        dataAnnouncementBox,
       },
     }
   } catch (error) {

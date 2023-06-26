@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import styles from '../../../styles/Testimony.module.css'
+import styles from 'styles/saas/components/molecules/Testimony.module.scss'
 import Image from 'next/image'
-import { IconBackButton, IconNextButton, IconStar } from '../../atoms'
-import { timeSince, useIsMobile } from '../../../utils'
-import { Testimony } from '../../../utils/types'
+import { IconBackButton, IconNextButton, IconStar } from 'components/atoms'
+import { timeSince, useIsMobile } from 'utils'
+import { Testimony } from 'utils/types'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
 

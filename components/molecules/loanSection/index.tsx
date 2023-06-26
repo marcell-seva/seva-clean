@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { api } from '../../../services/api'
-import styles from '../../../styles/LoanSection.module.css'
-import { IconCross, IconSearch } from '../../atoms'
-import { Variant } from '../../../utils/types'
+import { api } from 'services/api'
+import styles from 'styles/saas/components/molecules/LoanSection.module.scss'
+import { IconCross, IconSearch } from 'components/atoms'
+import { Variant } from 'utils/types'
 
 const LoanSection: React.FC = (): JSX.Element => {
   const [input, setInput] = useState<string>('')

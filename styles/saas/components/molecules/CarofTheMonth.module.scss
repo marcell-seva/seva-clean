@@ -1,0 +1,205 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+%button {
+  outline: none;
+  border: none;
+  color: #{$white};
+  font-size: 14px;
+  font-family: var(--kanyon-bold);
+  width: 100%;
+  height: 35px;
+  border-bottom: 4px solid #{$white};
+}
+
+%navigation {
+  position: absolute;
+  align-items: center;
+  z-index: 5;
+}
+
+.wrapper {
+  margin: 20px 0px;
+}
+
+.categoryMobile {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  bottom: 0%;
+  border-bottom: 1px solid #{$white};
+}
+
+.categoryDesktop {
+  display: none;
+}
+
+.buttonCategoryActive {
+  @extend %button;
+  background-color: transparent;
+}
+
+.buttonCategoryInActive {
+  @extend %button;
+  border-bottom: 1px solid #{$white};
+}
+
+.headerText {
+  font-size: 14px;
+  margin: 15px 16px;
+  font-family: var(--kanyon-bold);
+}
+
+.bgContent {
+  position: absolute;
+  bottom: 0%;
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(rgba(64, 64, 64, 0) 0%, rgb(64, 64, 64) 100%);
+}
+
+.content {
+  background-color: #{$secondaryGrey};
+  position: relative;
+}
+
+.image {
+  width: 100%;
+  height: 168px;
+  object-fit: cover;
+  transition: opacity 0.5s linear;
+}
+
+.description {
+  padding: 14px 35px 33px;
+  background-color: #{$secondaryGrey};
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 290px;
+}
+
+.titleText {
+  font-size: 16px;
+  font-family: var(--kanyon-bold);
+  color: #{$white};
+}
+
+.descText {
+  padding-top: 10px;
+  font-size: 12px;
+  color: #{$white};
+  width: 80%;
+}
+
+.wrapperButton {
+  display: flex;
+}
+
+.buttonDetail {
+  border: 0.5px solid #{$white};
+  color: #{$white};
+  font-size: 12px;
+  padding: 10px;
+  font-family: var(--open-sans-semi-bold);
+  background-color: transparent;
+}
+
+.buttonOffering {
+  margin-left: 10px;
+  border: 0.5px solid #{$white};
+  color: #{$white};
+  font-size: 12px;
+  padding: 10px;
+  font-family: var(--open-sans-semi-bold);
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.navigationBackButton {
+  @extend %navigation;
+  bottom: 9px;
+  transform: rotate(180deg);
+}
+
+.navigationNextButton {
+  @extend %navigation;
+  right: 0;
+  bottom: 6px;
+}
+
+@include lg {
+  .wrapper {
+    margin: 30px 0px;
+  }
+
+  .headerText {
+    font-size: 20px;
+    margin: 15px 0px;
+  }
+
+  .bundle {
+    width: 100%;
+    display: flex;
+    height: 325px;
+  }
+
+  .categoryMobile {
+    display: none;
+  }
+
+  .categoryDesktop {
+    position: absolute;
+    left: 7%;
+    right: 7%;
+    bottom: 3%;
+    display: block;
+  }
+
+  .bgContent {
+    position: absolute;
+    right: 0%;
+    width: 60px;
+    height: 100%;
+    background: linear-gradient(
+      270deg,
+      rgb(64, 64, 64) 0%,
+      rgba(64, 64, 64, 0) 100%
+    );
+  }
+
+  .image {
+    width: 685px;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .description {
+    width: 360px;
+    height: 325px;
+    padding: 32px 35px;
+  }
+
+  .titleText {
+    font-size: 24px;
+  }
+
+  .descText {
+    padding-top: 10px;
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .buttonCategoryActive {
+    @extend %button;
+    font-size: 16px;
+    width: 90px;
+  }
+
+  .buttonCategoryInActive {
+    @extend %button;
+    font-size: 16px;
+    width: 90px;
+    padding-bottom: 20px;
+  }
+}

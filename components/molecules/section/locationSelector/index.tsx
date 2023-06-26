@@ -1,11 +1,8 @@
 import React, { useContext, useState } from 'react'
-import {
-  LocationContext,
-  LocationContextType,
-} from '../../../../services/context'
-import styles from '../../../../styles/LocationSelector.module.css'
-import { IconCross, IconSearch } from '../../../atoms'
-import { Location } from '../../../../utils/types'
+import { LocationContext, LocationContextType } from 'services/context'
+import styles from 'styles/saas/components/molecules/LocationSelector.module.scss'
+import { IconCross, IconSearch } from 'components/atoms'
+import { Location } from 'utils/types'
 
 type TypesLocation = {
   data: Array<Location>

@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react'
-import { Location } from '../../utils/types'
+import { Location } from 'utils/types'
 
 export type LocationContextType = {
   location: Location

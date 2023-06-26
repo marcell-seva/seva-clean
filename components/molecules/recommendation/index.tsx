@@ -1,23 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react'
-import styles from '../../../styles/Recommendation.module.css'
+import styles from 'styles/saas/components/molecules/Recommendation.module.scss'
 import {
   Card,
   IconArrowRight,
   IconBackButton,
   IconNextButton,
   TypeCar,
-} from '../../atoms'
-import { api } from '../../../services/api'
+} from 'components/atoms'
+import { api } from 'services/api'
 import {
   AuthContext,
   AuthContextType,
   LocationContext,
   LocationContextType,
-} from '../../../services/context'
+} from 'services/context'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
-import { ShimmerCardProduct } from '../../atoms/shimmer'
-import { Car, BodyType, PropsShadow } from '../../../utils/types'
+import { ShimmerCardProduct } from 'components/atoms/shimmer'
+import { Car, BodyType, PropsShadow } from 'utils/types'
 
 type TypesCar = {
   data: Array<Car>
@@ -201,7 +201,7 @@ const Recommendation: React.FC<TypesCar> = ({
       <div className={styles.wrapperType}>
         {category.map((item: any, key: number) => (
           <TypeCar
-            src={require(`../../../assets/images/typeCar/${item?.body_type}.png`)}
+            src={require(`assets/images/typeCar/${item?.body_type}.png`)}
             key={key}
             isActive={typeCarActive === item.body_type}
             onClick={() => handleClick(item.body_type)}

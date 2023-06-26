@@ -1,0 +1,16 @@
+@import '../../abstract/colors';
+
+.capsule {
+  margin: 3px;
+  padding: 4px 12px;
+  background-color: #{$tertiaryWhite};
+  border-radius: 10px;
+  cursor: pointer;
+  outline: none;
+  border: none;
+
+  & &Label {
+    font-size: 12px;
+    color: #{$tertiaryGrey};
+  }
+}
