@@ -1,24 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react'
-import styles from '../../../styles/CarList.module.css'
+import styles from 'styles/saas/components/molecules/CarList.module.scss'
 import {
   Brand,
   Card,
   IconArrowRight,
   IconBackButton,
   IconNextButton,
-} from '../../atoms'
-import { api } from '../../../services/api'
-import { useIsMobile } from '../../../utils'
+} from 'components/atoms'
+import { api } from 'services/api'
+import { useIsMobile } from 'utils'
 import {
   LocationContext,
   LocationContextType,
   AuthContext,
   AuthContextType,
-} from '../../../services/context'
-import { ShimmerCardProduct } from '../../atoms/shimmer'
+} from 'services/context'
+import { ShimmerCardProduct } from 'components/atoms/shimmer'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
-import { Car } from '../../../utils/types'
+import { Car } from 'utils/types'
 type TypesShadow = {
   brand: string
 }
@@ -195,7 +195,7 @@ const CarList: React.FC<TypesCar> = ({ data }): JSX.Element => {
             <Brand
               key={key}
               onClick={() => handleClick(item)}
-              src={require(`../../../assets/images/brandCar/${item}.png`)}
+              src={require(`assets/images/brandCar/${item}.png`)}
               name={item}
               isActive={typeActive === item}
             />

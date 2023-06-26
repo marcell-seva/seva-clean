@@ -1,11 +1,11 @@
 import Image from 'next/image'
 import React from 'react'
-import styles from '../../../styles/AnnouncementBox.module.css'
-import { IconCross } from '../../atoms'
-import CustomDesktopLeft from '../../../assets/images/annoucementBox/custom/custom-desktop-left.webp'
-import CustomDesktopRight from '../../../assets/images/annoucementBox/custom/custom-desktop-right.webp'
-import CustomMobileRight from '../../../assets/images/annoucementBox/custom/custom-mobile-right.webp'
-import { PropsAnnouncementBox } from '../../../utils/types'
+import styles from 'styles/saas/components/molecules/AnnouncementBox.module.scss'
+import { IconCross } from 'components/atoms'
+import CustomDesktopLeft from 'assets/images/annoucementBox/custom/custom-desktop-left.webp'
+import CustomDesktopRight from 'assets/images/annoucementBox/custom/custom-desktop-right.webp'
+import CustomMobileRight from 'assets/images/annoucementBox/custom/custom-mobile-right.webp'
+import { PropsAnnouncementBox } from 'utils/types'
 
 const AnnouncementBox: React.FC<PropsAnnouncementBox> = ({
   data,

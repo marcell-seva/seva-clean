@@ -1,0 +1,193 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.wrapper {
+  background-color: #{$tertiaryWhite};
+  max-width: 480px;
+  margin: auto;
+}
+
+.content {
+  margin: auto;
+  max-width: 1040px;
+  padding: 60px 17px;
+}
+
+.titleText {
+  font-size: 28px;
+  font-family: var(--kanyon-bold);
+  color: #031838;
+}
+
+.descText {
+  font-size: 16px;
+  color: #{$tertiaryGrey};
+  margin-top: 15px;
+}
+
+.form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapperInput {
+  width: 100%;
+  display: flex;
+  padding: 10px;
+  border-style: solid;
+  border-color: #{$tertiaryGrey};
+  border-width: 0.5px;
+  background-color: #{$white};
+  border-radius: 15px;
+}
+
+.input {
+  display: flex;
+  width: 100%;
+  background-color: #{$white};
+  font-family: var(--kanyon);
+  font-size: 14px;
+  line-height: 24px;
+  padding-left: 5px;
+  outline: none;
+  border: none;
+}
+
+.wrapperInputPhone {
+  margin-top: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-style: solid;
+  border-color: #{$tertiaryGrey};
+  border-width: 0.5px;
+  background-color: #{$white};
+  border-radius: 15px;
+}
+
+.input:focus {
+  outline: none;
+  border: none;
+}
+
+%button {
+  border-radius: 15px;
+  border: 0;
+  margin-top: 15px;
+  height: 50px;
+  color: white;
+  font-size: 16px;
+  font-family: var(--kanyon-bold);
+  cursor: pointer;
+}
+
+.buttonInActive {
+  @extend %button;
+  background-color: #{$primaryGrey};
+}
+
+.buttonActive {
+  @extend %button;
+  background-color: #{$primaryBlue};
+}
+
+.phoneDetail {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.labelRegion {
+  font-size: 16px;
+  font-family: var(--kanyon-bold);
+  padding-left: 5px;
+}
+
+.separator {
+  height: 22px;
+  width: 2px;
+  margin: 0px 8px;
+  background-color: #{$primaryGrey};
+}
+
+.agreementMobile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.agreementDesktop {
+  display: none;
+}
+
+.agreementText {
+  font-size: 16px;
+  color: #{$tertiaryGrey};
+  margin-left: 10px;
+}
+
+@include lg {
+  .wrapper {
+    background-color: #{$tertiaryWhite};
+    max-width: none;
+  }
+
+  .content {
+    padding: 60px 0px;
+  }
+
+  .titleText {
+    font-size: 20px;
+  }
+
+  .descText {
+    font-size: 20px;
+  }
+
+  .form {
+    margin-top: 40px;
+    width: 90%;
+    flex-direction: row;
+  }
+
+  .input {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .wrapperInputPhone {
+    margin-top: 0px;
+    margin-left: 10px;
+    padding: 10px;
+    width: 70%;
+  }
+
+  %button-desktop {
+    margin-top: 0px;
+    margin-left: 20px;
+    width: 500px;
+  }
+
+  .buttonActive {
+    @extend %button-desktop;
+  }
+
+  .buttonInActive {
+    @extend %button-desktop;
+  }
+
+  .agreementMobile {
+    display: none;
+  }
+
+  .agreementDesktop {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 25px;
+  }
+}

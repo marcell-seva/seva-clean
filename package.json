@@ -34,6 +34,7 @@
     "react-spring-bottom-sheet": "^3.4.1",
     "sass": "^1.63.6",
     "scss": "^0.2.4",
+    "seva-ui-kit": "^0.0.1",
     "sharp": "^0.31.3",
     "swiper": "^8.4.5",
     "typescript": "4.9.4",
@@ -41,6 +42,7 @@
   },
   "devDependencies": {
     "@types/amplitude-js": "^8.16.2",
-    "@types/react": "^18.2.14"
+    "@types/react": "^18.2.14",
+    "sass": "^1.58.3"
   }
 }

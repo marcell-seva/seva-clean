@@ -1,17 +1,17 @@
 import React, { useContext } from 'react'
-import styles from '../../../../../styles/Header.module.css'
-import { PropsListNavBarMenu, Menu } from '../../../../../utils/types'
+import styles from 'styles/saas/components/molecules/Header.module.scss'
+import { PropsListNavBarMenu, Menu } from 'utils/types'
 import {
   IconChevrongRight,
   IconLocation,
   IconTriangleDown,
-} from '../../../../atoms'
+} from 'components/atoms'
 import {
   LocationContext,
   LocationContextType,
   AuthContext,
   AuthContextType,
-} from '../../../../../services/context'
+} from 'services/context'
 
 type TypeMenu = {
   item: Menu

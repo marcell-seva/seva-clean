@@ -5,13 +5,13 @@ import {
   IconSearch,
   IconUser,
   Logo,
-} from '../../../../atoms'
-import styles from '../../../../../styles/Header.module.css'
-import { api } from '../../../../../services/api'
-import { destroySessionMoEngage } from '../../../../../services/moengage'
-import { setAmplitudeUserId } from '../../../../../services/amplitude'
-import { AuthContext, AuthContextType } from '../../../../../services/context'
-import { Variant } from '../../../../../utils/types'
+} from 'components/atoms'
+import styles from 'styles/saas/components/molecules/Header.module.scss'
+import { api } from 'services/api'
+import { destroySessionMoEngage } from 'services/moengage'
+import { setAmplitudeUserId } from 'services/amplitude'
+import { AuthContext, AuthContextType } from 'services/context'
+import { Variant } from 'utils/types'
 
 const TopBarDesktop: React.FC = () => {
   const { isLoggedIn, userData, filter, saveFilterData } = useContext(

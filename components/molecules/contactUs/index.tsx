@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react'
-import styles from '../../../styles/ContactUs.module.css'
-import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
+import styles from 'styles/saas/components/molecules/ContactUs.module.scss'
+import FlagIndonesia from 'assets/images/flagIndonesia.png'
 import Image from 'next/image'
 import amplitude from 'amplitude-js'
-import { api } from '../../../services/api'
-import { setTrackEventMoEngageWithoutValue } from '../../../services/moengage'
+import { api } from 'services/api'
+import { setTrackEventMoEngageWithoutValue } from 'services/moengage'
 import {
   AuthContext,
   AuthContextType,
   ConfigContext,
   ConfigContextType,
-} from '../../../services/context'
+} from 'services/context'
 import TagManager from 'react-gtm-module'
-import { Form, PropsContactUs } from '../../../utils/types'
+import { Form, PropsContactUs } from 'utils/types'
 
 const ContactUs: React.FC<PropsContactUs> = ({
   openThankyouModal,

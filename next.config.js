@@ -1,8 +1,12 @@
+const path = require('path');
+
 const nextConfig = {
   basePath: '/v3',
   poweredByHeader: false,
   reactStrictMode: true,
-  // distDir: 'next-seva-dir',
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'styles')],
+  },
   images: {
     remotePatterns: [
       {
@@ -51,7 +55,6 @@ const nextConfig = {
 
 const withPWA = require('next-pwa')({
   dest: 'public',
-  disable: process.env.NODE_ENV === 'development',
   register: true,
   skipWaiting: true,
 });
