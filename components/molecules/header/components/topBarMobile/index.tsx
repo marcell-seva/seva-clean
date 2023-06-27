@@ -4,7 +4,7 @@ import styles from 'styles/saas/components/molecules/Header.module.scss'
 import {
   IconBurgerMenu,
   IconChevronDown,
-  IconChevrongRight,
+  IconChevronRight,
   IconChevronLeft,
   IconChevronUp,
   IconDots,
@@ -113,7 +113,7 @@ const TopBarMobile: React.FC<TypeTopBarMobile> = ({ data, onSearchClick }) => {
             <p className={styles.titleTextNew}>{item.menuName}</p>
             <div className={styles.newTag}>BARU!</div>
           </div>
-          <IconChevrongRight width={13} height={13} />
+          <IconChevronRight width={13} height={13} />
         </a>
       )
     }
@@ -128,14 +128,14 @@ const TopBarMobile: React.FC<TypeTopBarMobile> = ({ data, onSearchClick }) => {
           }}
         >
           <p className={styles.titleText}>{item.menuName}</p>
-          <IconChevrongRight width={13} height={13} />
+          <IconChevronRight width={13} height={13} />
         </div>
       )
     } else {
       return (
         <a className={styles.mainSelector} href={redirectPartnerUrl}>
           <p className={styles.titleText}>{item.menuName}</p>
-          <IconChevrongRight width={13} height={13} />
+          <IconChevronRight width={13} height={13} />
         </a>
       )
     }
@@ -249,7 +249,7 @@ const TopBarMobile: React.FC<TypeTopBarMobile> = ({ data, onSearchClick }) => {
                         href={redirectCouponUrl}
                       >
                         <p className={styles.titleText}>Promo</p>
-                        <IconChevrongRight width={13} height={13} />
+                        <IconChevronRight width={13} height={13} />
                       </a>
                       <ListSideBarMenu item={item} isNew={item.toggleNew} />
                     </div>

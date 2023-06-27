@@ -1,4 +1,4 @@
-import { VideoReviewType } from 'types/types'
+// import { VideoReviewType } from 'types/types'
 
 export const availableListColors = [
   // === daihatsu cars ====
@@ -474,7 +474,7 @@ export const availableList = [
   '/mobil-baru/peugeot/2008',
 ]
 
-export const availableListVideoReview: VideoReviewType[] = [
+export const availableListVideoReview = [
   {
     brand: 'Daihatsu',
     Model: 'Daihatsu New Sirion',

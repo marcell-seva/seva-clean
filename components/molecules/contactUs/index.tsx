@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import styles from 'styles/saas/components/molecules/ContactUs.module.scss'
+import styles from '../../../styles/saas/components/molecules/ContactUs.module.scss'
 import FlagIndonesia from 'assets/images/flagIndonesia.png'
 import Image from 'next/image'
 import amplitude from 'amplitude-js'

@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
-import styles from 'styles/saas/components/molecules/Header.module.scss'
+import styles from '../../../../../styles/saas/components/molecules/Header.module.scss'
 import { PropsListNavBarMenu, Menu } from 'utils/types'
 import {
-  IconChevrongRight,
+  IconChevronRight,
   IconLocation,
   IconTriangleDown,
 } from 'components/atoms'
@@ -71,7 +71,7 @@ const NavBarDesktop = ({ data, onOpenModalOTR }: any): JSX.Element => {
         <div className={styles.wrapperListMenu}>
           <p className={styles.listMainText}>{item.menuName}</p>
           <div className={styles.bundleIconRight}>
-            <IconChevrongRight width={16} height={16} />
+            <IconChevronRight width={16} height={16} />
           </div>
         </div>
         <ul className={styles.subDropDown}>
