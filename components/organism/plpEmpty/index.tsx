@@ -9,7 +9,7 @@ import { FooterMobile } from '../footerMobile'
 import { AlternativeCarCard } from '../alternativeCarCard'
 // import { LoanRank } from 'models/models'
 
-const PLPEmptyImage = '/assets/illustration/plp-empty.webp'
+const PLPEmptyImage = '/v3/assets/illustration/plp-empty.webp'
 
 type PLPEmptyProps = {
   alternativeCars: CarRecommendation[]

@@ -7,9 +7,9 @@ import urls from 'helpers/urls'
 import elementId from 'helpers/elementIds'
 // import { trackFooterClick } from 'helpers/amplitude/seva20Tracking'
 
-const SevaLogo = '/assets/icon/logo-on-dark.webp'
-const ISOIcon = '/assets/icon/iso.webp'
-const FacebookLogo = '/assets/icon/facebook-outline.png'
+const SevaLogo = '/v3/assets/icon/logo-on-dark.webp'
+const ISOIcon = '/v3/assets/icon/iso.webp'
+const FacebookLogo = '/v3/assets/icon/facebook-outline.png'
 
 export interface FooterMenu {
   menuName: string

@@ -142,3 +142,25 @@ export enum SessionStorageKey {
   PAAmbassadorUrlId = 'PAAmbassadorUrlId',
   LoanRankFromPLP = 'LoanRankFromPLP',
 }
+
+export enum HTTPResponseStatusCode {
+  TooManyRequest = 429,
+  Unauthorized = 401,
+  Forbidden = 403,
+  BadRequest = 400,
+  InternalServerError = 500,
+}
+
+export enum ErrorCode {
+  AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED',
+}
+
+export enum UTMTags {
+  UtmSource = 'utm_source',
+  UtmMedium = 'utm_medium',
+  UtmCampaign = 'utm_campaign',
+  UtmContent = 'utm_content',
+  UtmTerm = 'utm_term',
+  UtmId = 'utm_id',
+  Adset = 'adset',
+}

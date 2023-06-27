@@ -1,4 +1,3 @@
-import 'react-spring-bottom-sheet/dist/style.css'
 import React, { useEffect, useRef, useState } from 'react'
 import styles from '../../../styles/saas/components/organism/filtermobile.module.scss'
 import {
@@ -57,7 +56,7 @@ type FilterMobileProps = {
   isErrorIncome?: boolean
   setIsErrorIncome?: (value: boolean) => void
 }
-export const FilterMobile = ({
+const FilterMobile = ({
   onButtonClick,
   isButtonClick,
   minMaxPrice,
@@ -284,7 +283,7 @@ export const FilterMobile = ({
         handleSuccess(response)
         setLoading(false)
       })
-      .catch((e: AxiosResponse<CarRecommendationResponse, any>) => {
+      .catch((e: AxiosResponse<CarRecommendationResponse>) => {
         setLoading(false)
         handleSuccess(e)
       })
@@ -558,3 +557,5 @@ export const FilterMobile = ({
     </div>
   )
 }
+
+export default FilterMobile

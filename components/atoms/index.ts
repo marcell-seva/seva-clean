@@ -68,6 +68,11 @@ import { CSAButton } from './floatButton/CSAButton'
 import { InputWithIcon } from './input/inputWithIcon'
 import { Label } from './label'
 import { Tooltip } from './tooltip'
+import { CustomModal as Modal } from './modal'
+import InputPhone from './input/phone'
+import Input from './input/default'
+import { Gap } from './gap'
+import { Toast } from './toast'
 
 export {
   Card,
@@ -137,7 +142,11 @@ export {
   CSAButton,
   WhatsappButton,
   InputWithIcon,
+  Input,
+  InputPhone,
   Label,
   Tooltip,
   Modal,
+  Gap,
+  Toast,
 }

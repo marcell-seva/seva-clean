@@ -13,7 +13,7 @@ interface SortingMobileProps extends Omit<BottomSheetProps, 'children'> {
   onPickClose: (value: any) => any
 }
 
-export const SortingMobile = ({
+const SortingMobile = ({
   onClose,
   onPickClose,
   ...props
@@ -42,3 +42,5 @@ export const SortingMobile = ({
     </BottomSheet>
   )
 }
+
+export default SortingMobile

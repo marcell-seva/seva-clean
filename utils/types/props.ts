@@ -1,3 +1,4 @@
+import { ModalProps } from 'antd'
 import { Location, Article } from './utils'
 
 export interface PropsBrand {
@@ -21,6 +22,34 @@ export interface PropsIcon {
   className?: string
   isActive?: boolean
   datatestid?: string
+}
+
+export interface PropsInput extends React.ComponentProps<'input'> {
+  isError?: boolean
+  message?: string
+  title?: string
+  dataTestId?: string
+  isWithIcon?: boolean
+  icon?: any
+}
+
+export interface PropsToast extends Omit<ModalProps, 'closable'> {
+  text: string
+  closeOnToastClick?: boolean
+  width?: number
+  typeToast?: 'success' | 'error'
+}
+
+export interface PropsModal extends ModalProps {
+  children: string | JSX.Element | JSX.Element[]
+  isFull?: boolean
+}
+
+export interface PropsToast extends Omit<ModalProps, 'closable'> {
+  text: string
+  closeOnToastClick?: boolean
+  width?: number
+  typeToast?: 'success' | 'error'
 }
 
 export interface PropsTypeCar {

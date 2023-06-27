@@ -6,7 +6,7 @@ import {
   IconLocationLine,
   Overlay,
 } from 'components/atoms'
-import { SidebarMobile } from 'components/organism'
+// import { SidebarMobile } from 'components/organism'
 // import { useSearchModal } from 'components/molecules/searchModal'
 import { rootUrl } from 'routes/routes'
 import clsx from 'clsx'
@@ -22,7 +22,7 @@ import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-const LogoPrimary = '/assets/icon/logo-primary.webp'
+const LogoPrimary = '/v3/assets/icon/logo-primary.webp'
 
 type HeaderMobileProps = {
   startScroll?: boolean
@@ -122,10 +122,10 @@ export const HeaderMobile = ({
                 data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
               />
             </Link>
-            <SidebarMobile
+            {/* <SidebarMobile
               showSidebar={isActive}
               isShowAnnouncementBox={isShowAnnouncementBox}
-            />
+            /> */}
             <div
               className={styles.right}
               data-testid={elementId.Homepage.GlobalHeader.IconSearch}

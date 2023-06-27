@@ -170,7 +170,7 @@ export const CarDetailCard = ({
   return (
     <div className={styles.container}>
       <CardShadow className={styles.cardWrapper}>
-        <Image
+        <img
           src={recommendation.images[0]}
           className={styles.heroImg}
           alt={`${recommendation.brand} ${recommendation.model}`}

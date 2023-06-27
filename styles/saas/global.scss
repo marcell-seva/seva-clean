@@ -1,5 +1,5 @@
-@import './saas/abstract/colors';
-@import './saas/abstract/mixins';
+@import './abstract/colors';
+@import './abstract/mixins';
 
 * {
   margin: 0;
@@ -101,7 +101,7 @@ button {
 }
 
 .city-selector-custom-modal .ant-modal-content {
-  background: url('../assets/illustration/supergraphic-mobile.webp');
+  background: url('/v3/assets/illustration/supergraphic-mobile.webp');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -114,7 +114,7 @@ button {
 
 .jumpa-pay-modal .ant-modal-content {
   background: white;
-  background-image: url('../assets/illustration/jumpa-pay-modal-bg.webp');
+  background-image: url('/v3/assets/illustration/jumpa-pay-modal-bg.webp');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -249,4 +249,42 @@ button {
 
 .ant-picker-content th {
   text-align: center;
+}
+
+:global(.ant-input::placeholder) {
+  color: #{$shades-grey-50};
+}
+
+:global(.ant-input:focus) {
+  box-shadow: none !important;
+  border: 1px solid #{$secondary-blue} !important;
+  outline: none !important;
+}
+
+:global(.ant-input:hover) {
+  box-shadow: none !important;
+  border: 1px solid #{$secondary-blue} !important;
+  outline: none !important;
+}
+
+.errorForm :global(.ant-slider .ant-slider-track) {
+  position: absolute;
+  background-color: #b4231e;
+  border-radius: 2px;
+  transition: background-color 0.2s;
+}
+
+.errorFormCircle :global(.ant-slider .ant-slider-handle::after) {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  width: 10px;
+  height: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px #b4231e;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: inset-inline-start 0.2s, inset-block-start 0.2s, width 0.2s,
+    height 0.2s, box-shadow 0.2s;
 }

@@ -1,14 +1,15 @@
 import axios from 'axios'
 import endpoints from 'helpers/endpoints'
+import { API } from 'utils/api'
 
 export const getMenus = () => {
-  return axios.get(endpoints.menu)
+  return API.get(endpoints.menu)
 }
 
 export const getMobileWebTopMenu = () => {
-  return axios.get(endpoints.mobileWebTopMenu)
+  return API.get(endpoints.mobileWebTopMenu)
 }
 
 export const getMobileFooterMenu = () => {
-  return axios.get(endpoints.mobileBottomMenu)
+  return API.get(endpoints.mobileBottomMenu)
 }

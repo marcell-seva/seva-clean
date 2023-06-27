@@ -4,10 +4,9 @@ import { PropsModal } from 'utils/types'
 import { Modal } from 'antd'
 import { IconClose } from '../icon'
 import { colors } from 'styles/colors'
-import 'styles/global.scss'
 import clsx from 'clsx'
 
-const CustomModal = ({
+export const CustomModal = ({
   children,
   title,
   isFull,
@@ -35,5 +34,3 @@ const CustomModal = ({
 const Title = ({ children }: TextareaHTMLAttributes<HTMLHeadingElement>) => (
   <h3 className={styles.title}>{children}</h3>
 )
-
-export default CustomModal

@@ -16,6 +16,9 @@ import {
   PropsDetailList,
   PropsListNavBarMenu,
   PropsShadow,
+  PropsModal,
+  PropsInput,
+  PropsToast,
 } from './props'
 
 import {
@@ -57,6 +60,9 @@ export type {
   PropsDetailList,
   PropsListNavBarMenu,
   PropsShadow,
+  PropsModal,
+  PropsInput,
+  PropsToast,
   Location,
   Article,
   Banner,

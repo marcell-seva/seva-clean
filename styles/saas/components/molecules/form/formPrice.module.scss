@@ -1,5 +1,5 @@
-@import '../../abstract/colors';
-@import '../../abstract/mixins';
+@import '../../../abstract/colors';
+@import '../../../abstract/mixins';
 
 .container {
   display: flex;
@@ -148,41 +148,4 @@
   color: #{$secondary-blue};
   padding-left: 24px;
   line-height: 18px;
-}
-
-:global(.ant-input::placeholder) {
-  color: #{$shades-grey-50};
-}
-
-:global(.ant-input:focus) {
-  box-shadow: none !important;
-  border: 1px solid #{$secondary-blue} !important;
-  outline: none !important;
-}
-
-:global(.ant-input:hover) {
-  box-shadow: none !important;
-  border: 1px solid #{$secondary-blue} !important;
-  outline: none !important;
-}
-
-.errorForm :global(.ant-slider .ant-slider-track) {
-  position: absolute;
-  background-color: #B4231E;
-  border-radius: 2px;
-  transition: background-color 0.2s;
-}
-
-.errorFormCircle :global(.ant-slider .ant-slider-handle::after) {
-  content: "";
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline-start: 0;
-  width: 10px;
-  height: 10px;
-  background-color: #ffffff;
-  box-shadow: 0 0 0 2px #B4231E;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: inset-inline-start 0.2s,inset-block-start 0.2s,width 0.2s,height 0.2s,box-shadow 0.2s;
 }

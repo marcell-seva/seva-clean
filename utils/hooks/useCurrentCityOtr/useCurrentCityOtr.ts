@@ -1,3 +1,4 @@
+import { client } from 'const/const'
 import { LocalStorageKey } from 'utils/enum'
 import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
 import { Location } from 'utils/types'
@@ -10,7 +11,7 @@ export const defaultCity = {
 }
 
 export const getCity = () => {
-  const cityTemp = localStorage.getItem(LocalStorageKey.CityOtr)
+  const cityTemp = client ? localStorage.getItem(LocalStorageKey.CityOtr) : ''
 
   if (
     cityTemp &&
@@ -24,7 +25,7 @@ export const getCity = () => {
 }
 
 export const getCityWithoutDefault = () => {
-  const cityTemp = localStorage.getItem(LocalStorageKey.CityOtr)
+  const cityTemp = client ? localStorage.getItem(LocalStorageKey.CityOtr) : ''
   if (
     cityTemp &&
     (!cityTemp.includes('cityName') || !cityTemp.includes('id'))

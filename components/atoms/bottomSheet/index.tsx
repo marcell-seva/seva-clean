@@ -1,11 +1,9 @@
 import type React from 'react'
 import type { RefHandles } from 'react-spring-bottom-sheet/dist/types'
+export type ForwardedRef = React.ForwardedRef<RefHandles>
 
-import 'react-spring-bottom-sheet/dist/style.css'
-import 'styles/saas/components/atoms/bottomSheet.scss'
 import styles from '../../../styles/saas/components/atoms/bottomSheet.module.scss'
 
-export type ForwardedRef = React.ForwardedRef<RefHandles>
 import {
   BottomSheet as SpringSheet,
   BottomSheetProps,

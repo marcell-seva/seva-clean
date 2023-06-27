@@ -1,7 +1,6 @@
 import React from 'react'
 import { FloatButton, FloatButtonProps } from 'antd'
 import { IconWhatsapp } from 'components/atoms'
-import 'styles/global.scss'
 
 type Props = Omit<FloatButtonProps, 'icon'>
 

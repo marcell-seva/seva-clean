@@ -25,9 +25,11 @@ export const testPhoneNumber = [
   '+6285288991997', // 85288991997
 ]
 
+export const client = typeof window !== 'undefined'
+
 // use this to set content margin top
 // cause page header now sticky on desktop
-export const pageHeaderHeight = window.innerWidth < 1280 ? 30 : 140
+export const pageHeaderHeight = client && window.innerWidth < 1280 ? 30 : 140
 export const dpRateCollectionNewCalculator = [
   { dpRate: 10, dpCalc: 0.1 },
   { dpRate: 15, dpCalc: 0.15 },

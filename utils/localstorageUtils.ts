@@ -1,3 +1,4 @@
+import { client } from 'const/const'
 import { LocalStorageKey } from './enum'
 
 interface DataWithExpiry<T> {
@@ -33,7 +34,7 @@ export const getWithExpiry = <T>(key: LocalStorageKey): T | null => {
 }
 
 export const getLocalStorage = <T>(key: LocalStorageKey): T | null => {
-  const dataInLocalstorage = localStorage.getItem(key)
+  const dataInLocalstorage = client ? localStorage.getItem(key) : null
   try {
     return dataInLocalstorage ? JSON.parse(dataInLocalstorage) : null
   } catch {
@@ -42,5 +43,5 @@ export const getLocalStorage = <T>(key: LocalStorageKey): T | null => {
 }
 
 export const saveLocalStorage = (key: LocalStorageKey, data: string) => {
-  localStorage.setItem(key, data)
+  client && localStorage.setItem(key, data)
 }

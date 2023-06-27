@@ -1,7 +1,7 @@
 import React, { HTMLAttributes } from 'react'
 import styles from '../../../styles/saas/components/atoms/skeleton.module.scss'
 
-const Shimmer = '/assets/illustration/placeholder.gif'
+const Shimmer = '/v3/assets/illustration/placeholder.gif'
 
 type SkeletonProps = {
   width: number | string

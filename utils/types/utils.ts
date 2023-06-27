@@ -1,3 +1,5 @@
+import { UTMTags } from 'utils/enum'
+
 export type FormControlValue = string | number | readonly string[] | undefined
 
 export interface Option<T extends FormControlValue> {
@@ -161,4 +163,14 @@ export interface AnnouncementBoxDataType {
   backgroundColor: string
   bannerDesign: string
   userTarget: string
+}
+
+export interface UTMTagsData {
+  [UTMTags.UtmSource]: string | null
+  [UTMTags.UtmMedium]: string | null
+  [UTMTags.UtmCampaign]: string | null
+  [UTMTags.UtmContent]: string | null
+  [UTMTags.UtmTerm]: string | null
+  [UTMTags.UtmId]: string | null
+  [UTMTags.Adset]: string | null
 }

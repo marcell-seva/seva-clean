@@ -1,10 +1,11 @@
 import axios from 'axios'
 import endpoints from 'helpers/endpoints'
+import { API } from 'utils/api'
 
 export const getCities = () => {
-  return axios.get(endpoints.cities)
+  return API.get(endpoints.cities)
 }
 
 export const getEventActive = () => {
-  return axios.get(endpoints.eventActive)
+  return API.get(endpoints.eventActive)
 }

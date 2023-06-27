@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import endpoints from 'helpers/endpoints'
+import { API } from 'utils/api'
 import { PaymentType } from 'utils/enum'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import { FunnelQuery } from 'utils/types/context'
@@ -57,14 +58,14 @@ export const getNewFunnelRecommendations = (
   getCity().cityCode && params.append('city', getCity().cityCode as string)
   getCity().id && params.append('cityId', getCity().id as string)
 
-  return axios.get(endpoints.newFunnelRecommendation, { params })
+  return API.get(endpoints.newFunnelRecommendation, { params })
 }
 
 export const getMinMaxPrice = (config?: AxiosRequestConfig) => {
   const params = new URLSearchParams()
   getCity().cityCode && params.append('city', getCity().cityCode as string)
 
-  return axios.get(endpoints.minMaxPrice, {
+  return API.get(endpoints.minMaxPrice, {
     ...config,
     params,
   })

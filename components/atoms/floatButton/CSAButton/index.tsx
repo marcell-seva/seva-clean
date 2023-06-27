@@ -2,7 +2,6 @@ import React from 'react'
 import { FloatButton, FloatButtonProps } from 'antd'
 import { IconCSA } from '../../icon'
 import { colors } from 'styles/colors'
-import 'styles/global.scss'
 
 type CSAButtonProps = Omit<FloatButtonProps, 'icon'>
 

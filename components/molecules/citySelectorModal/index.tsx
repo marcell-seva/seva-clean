@@ -9,7 +9,6 @@ import {
   // trackCitySelectorCancel,
 } from 'helpers/amplitude/seva20Tracking'
 import { Modal } from 'antd'
-import 'styles/global.scss'
 import { saveLocalStorage } from 'utils/localstorageUtils'
 import elementId from 'helpers/elementIds'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
@@ -138,6 +137,22 @@ export const CitySelectorModal = ({
   }
 
   useEffect(() => {
+    const cityStorage = () => {
+      const cityOtrStorage = localStorage.getItem('cityOtr')
+
+      if (cityOtrStorage) {
+        const cityOtr = JSON.parse(cityOtrStorage)
+        setLastChoosenValue(cityOtr.cityName)
+        setInputValue(cityOtr.cityName)
+      }
+    }
+
+    window.addEventListener('storage', cityStorage)
+
+    return () => window.removeEventListener('storage', cityStorage)
+  }, [])
+
+  useEffect(() => {
     const options = getCityListOption(cityListFromApi)
     setCityListOptionsFull(options)
   }, [cityListFromApi])
@@ -197,16 +212,6 @@ export const CitySelectorModal = ({
 
     setSuggestionsLists(sorted)
   }, [inputValue, cityListFromApi, cityListOptionsFull])
-
-  window.addEventListener('storage', () => {
-    const cityOtrStorage = localStorage.getItem('cityOtr')
-
-    if (cityOtrStorage) {
-      const cityOtr = JSON.parse(cityOtrStorage)
-      setLastChoosenValue(cityOtr.cityName)
-      setInputValue(cityOtr.cityName)
-    }
-  })
 
   return (
     <Modal
