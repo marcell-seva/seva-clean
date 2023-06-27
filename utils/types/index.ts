@@ -16,6 +16,9 @@ import {
   PropsDetailList,
   PropsListNavBarMenu,
   PropsShadow,
+  PropsModal,
+  PropsInput,
+  PropsToast,
 } from './props'
 
 import {
@@ -32,6 +35,10 @@ import {
   Menu,
   UTMCollector,
   BodyType,
+  FormControlValue,
+  Option,
+  OptionWithImage,
+  OptionWithText,
 } from './utils'
 
 import { User, Token, Filter, UTM } from './context'
@@ -53,6 +60,9 @@ export type {
   PropsDetailList,
   PropsListNavBarMenu,
   PropsShadow,
+  PropsModal,
+  PropsInput,
+  PropsToast,
   Location,
   Article,
   Banner,
@@ -70,4 +80,8 @@ export type {
   Filter,
   UTM,
   BodyType,
+  FormControlValue,
+  Option,
+  OptionWithImage,
+  OptionWithText,
 }

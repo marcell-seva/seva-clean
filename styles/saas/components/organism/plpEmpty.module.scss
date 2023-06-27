@@ -1,0 +1,95 @@
+@import '../../abstract/colors';
+
+.wrapperEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 59.43px 16px;
+  gap: 27px;
+  width: 100%;
+  height: 348px;
+  left: 0px;
+  top: 198px;
+  background: #{$shades-grey-5};
+}
+
+.stateEmpty {
+  width: 343px;
+  height: 284px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 1;
+}
+
+.imageStyle {
+  width: 250px;
+  height: 131.15px;
+  left: 0%;
+  right: 0%;
+}
+
+.copy {
+  width: 343px;
+  height: 76px;
+  left: 0px;
+  top: 186px;
+}
+
+.titleCopy {
+  width: 100%;
+  height: 28px;
+  left: 0px;
+  top: 0px;
+  font-family: 'Kanyon';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  text-align: center;
+  color: #{$primary-black};
+}
+
+.textCopy {
+  width: 100%;
+  height: 60px;
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  padding: 8px 26px 20px 26px;
+  color: #{$shades-grey-75};
+  p {
+    color: #246ed4;
+  }
+}
+
+.alternativeCarContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 32px 0 0;
+  background-color: #{$primary-white};
+}
+
+.alternativeCarTitle {
+  color: #{$primary-dark-blue};
+  font-family: 'Kanyon';
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  margin-left: 16px;
+}
+
+.alternativeCarWrapper {
+  display: flex;
+  flex-direction: row;
+  max-width: 100vw;
+  overflow-x: auto;
+  gap: 16px;
+  padding: 0 16px 21px;
+}

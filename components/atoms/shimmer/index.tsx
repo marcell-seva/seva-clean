@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from 'styles/saas/components/atoms/Shimmer.module.scss'
+import styles from '../../../styles/saas/components/atoms/Shimmer.module.scss'
 import { useIsMobile } from 'utils'
 
 const ShimmerCardProduct: React.FC = (): JSX.Element => {

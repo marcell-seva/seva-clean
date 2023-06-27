@@ -1,0 +1,58 @@
+@import '../../../abstract/colors';
+@import '../../../abstract/mixins';
+@import '../../../abstract/animations';
+
+.container {
+  margin-top: 24px;
+  margin-bottom: 32px;
+  width: 100%;
+}
+
+.fieldLabel {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  mix-blend-mode: normal;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include rotate-animation;
+}
+
+.textMessagePromoCode {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  mix-blend-mode: normal;
+}
+
+.textMessageReferralCode {
+  display: inline-block;
+  font-size: 12px;
+  color: #{$secondary-brick-red};
+  padding-top: 8px;
+}
+
+.redText {
+  color: #{$secondary-brick-red};
+}
+
+.greenText {
+  color: #{$secondary-green};
+}
+
+.shakeText {
+  @include shake-animation-primary;
+}

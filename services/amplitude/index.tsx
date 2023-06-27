@@ -1,4 +1,5 @@
 import amplitude from 'amplitude-js'
+import { Seva20TrackingEvent } from 'helpers/amplitude/seva20Tracking'
 
 const apiKey = '86bd0da4661aa24a7d2c9f658197b49a'
 
@@ -18,4 +19,8 @@ export const sendAmplitudeData = (
   eventProperties: any,
 ): void => {
   amplitude.getInstance().logEvent(eventType, eventProperties)
+}
+
+export const logAmplitudeEvent = (event: Seva20TrackingEvent): void => {
+  amplitude.getInstance().logEvent(event.name, event.data)
 }

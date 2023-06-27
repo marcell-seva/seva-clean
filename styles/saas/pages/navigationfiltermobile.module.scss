@@ -1,0 +1,281 @@
+@import '../abstract/colors';
+
+.filterWrapper {
+  width: 100%;
+  background-color: #{$primary-white};
+}
+
+.stickycontainer {
+  position: fixed;
+  z-index: 5;
+  width: 100%;
+  transition: top 700ms;
+  padding: 0 16px;
+  box-shadow: 0px 4px 4px 1px rgba(108, 112, 133, 0.2);
+
+  &.showHeader {
+    top: 53px;
+  }
+  &.showHeaderWithAnnouncementBox {
+    top: 112px;
+  }
+
+  &.hideHeader {
+    top: 0;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px;
+  gap: 16px;
+  width: 100%;
+  left: 0px;
+  top: 96px;
+  background: white;
+}
+
+.line {
+  width: 100%;
+  height: 0px;
+  border: 0.5px solid #ebecee;
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.bottomSection {
+  width: 100%;
+  height: 18px;
+  flex: none;
+  order: 2;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.sortSection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 4px;
+  position: absolute;
+  height: 18px;
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: $primary-black;
+  p {
+    font-family: 'OpenSansSemiBold';
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+.carSummaryLabel {
+  position: absolute;
+  width: 81px;
+  height: 18px;
+  right: 16px;
+  font-family: 'OpenSansSemiBold';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: right;
+  color: $primary-black;
+  mix-blend-mode: normal;
+}
+
+.informWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px;
+  gap: 14px;
+  background-color: #{$primary-white};
+}
+
+.informDaihatsuText {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: $primary-black;
+}
+
+.filterResultWrapper {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 12px;
+  gap: 8px;
+  width: 100%;
+  background: #{$shades-sky-blue-5};
+  border: 2px solid #{$secondary-blue};
+  border-radius: 8px;
+}
+
+.filterResultPadding {
+  padding: 0px 16px 16px 16px;
+  background: white;
+}
+
+.filterResultFrame {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 12px;
+  width: 100%;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.filterResultText {
+  width: 90%;
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$primary-black};
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+.filterResultPrice {
+  width: 90%;
+  font-family: 'OpenSansSemiBold';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$primary-dark-blue};
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+.filterActiveWrapper {
+  max-width: 100% !important;
+  overflow-x: scroll;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 8px;
+  height: 27px;
+  background: white;
+  flex: none;
+  order: 0;
+  margin-left: 70px; // space left for width filter and icon
+}
+
+.filterActiveWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.filterActive {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 8px;
+  width: 62px;
+  height: 24px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: right;
+  color: #{$secondary-blue};
+  cursor: pointer;
+  position: absolute;
+  left: 16px;
+}
+
+.verticalLine {
+  width: 1px;
+  height: 27px;
+  background: #{$shades-green-10};
+  flex: none;
+  flex-grow: 0;
+}
+
+.navOuter {
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 16px;
+  flex: none;
+  order: 2;
+  flex-grow: 0;
+}
+
+.navFrame {
+  align-items: flex-start;
+  display: flex;
+  padding: 4px 8px;
+  gap: 8px;
+  background: #{$shades-grey-5};
+  border-radius: 8px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.navFinancialInner {
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 4px;
+  width: 72px;
+  height: 18px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.text {
+  height: 18px;
+  font-family: 'OpenSansSemiBold';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.onClick {
+  cursor: pointer;
+}
+
+.announcementboxpadding {
+  padding-top: 72px !important;
+}
+.wrapperWithAnnouncementBox {
+  @extend .wrapper;
+  padding-top: 10px !important;
+}
+
+.filterButton {
+  max-width: 936.62px;
+  margin: auto;
+}

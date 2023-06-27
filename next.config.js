@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 
 const nextConfig = {
   basePath: '/v3',
@@ -34,6 +34,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'images.prod.torq.id',
       },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com/www.images.dev.torqio.com',
+      },
     ],
   },
 
@@ -57,6 +61,6 @@ const withPWA = require('next-pwa')({
   dest: 'public',
   register: true,
   skipWaiting: true,
-});
+})
 
-module.exports = withPWA(nextConfig);
+module.exports = withPWA(nextConfig)

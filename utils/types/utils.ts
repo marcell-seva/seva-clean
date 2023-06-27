@@ -1,9 +1,32 @@
-import { LoanRank } from 'utils/models/models'
+import { LoanRank, UTMTags } from 'utils/enum'
 
+export type FormControlValue = string | number | readonly string[] | undefined
+
+export interface Option<T extends FormControlValue> {
+  label: string
+  value: T
+  testid?: string
+}
+
+export interface OptionWithImage<T extends FormControlValue> {
+  image?: string
+  label: string
+  value: T
+  disabled?: boolean
+  brand?: string
+  testid?: string
+}
+
+export interface OptionWithText<T extends FormControlValue> {
+  text?: string
+  label: string
+  value: T
+  testid?: string
+}
 export interface Location {
   cityName: string
   cityCode: string
-  id: number
+  id: number | string
   province: string
 }
 
@@ -124,6 +147,33 @@ export interface BodyType {
   data_count: number
 }
 
+export interface AnnouncementBoxDataType {
+  id: number
+  title: string
+  data: {
+    folder: string
+    icon: string
+    thumbnail: {
+      icon: string
+    }
+  }
+  url: string | null
+  description: string
+  textDisplay: string | null
+  backgroundColor: string
+  bannerDesign: string
+  userTarget: string
+}
+
+export interface UTMTagsData {
+  [UTMTags.UtmSource]: string | null
+  [UTMTags.UtmMedium]: string | null
+  [UTMTags.UtmCampaign]: string | null
+  [UTMTags.UtmContent]: string | null
+  [UTMTags.UtmTerm]: string | null
+  [UTMTags.UtmId]: string | null
+  [UTMTags.Adset]: string | null
+}
 export interface LoanDetail {
   loanRank: LoanRank
   tenure: number

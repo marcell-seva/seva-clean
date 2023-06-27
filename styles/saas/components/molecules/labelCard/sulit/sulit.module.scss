@@ -1,0 +1,38 @@
+@import '../../../../abstract/colors';
+@import '../../../../abstract/mixins';
+
+.container {
+  background: #{$secondary-brick-red};
+  box-shadow: 0px 12px 44px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(22px);
+  border-radius: 0px 8px 8px 0px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3.93px;
+  padding: 8px 12px 8px 16px;
+  height: 32px;
+}
+
+.labelResult {
+  position: absolute;
+  z-index: 2;
+  left: 125px;
+  top: 96px;
+}
+
+.microReguler {
+  font-family: 'OpenSans';
+  font-size: 11px;
+  font-size: 11px;
+  line-height: 16px;
+  color: #{$primary-white};
+}
+
+.microBold {
+  font-family: 'OpenSansBold';
+  font-size: 11px;
+  font-size: 11px;
+  line-height: 16px;
+  color: #{$primary-white};
+}

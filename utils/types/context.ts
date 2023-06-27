@@ -1,3 +1,6 @@
+import { NextParsedUrlQuery } from 'next/dist/server/request-meta'
+import { LoanRank } from 'utils/enum'
+
 export interface User {
   id: number
   phoneNumber: string
@@ -19,9 +22,12 @@ export interface User {
 }
 
 export interface Token {
-  expires: string
   idToken: string
   refreshToken: string
+  expiresIn: string
+  localId: string
+  isNewUser: boolean
+  phoneNumber: string
 }
 
 export interface Filter {
@@ -35,6 +41,30 @@ export interface Filter {
   sortBy?: string
   bodyType?: Array<string>
   brand?: Array<string>
+  priceRangeGroup?: string
+}
+
+export interface FilterParam extends NextParsedUrlQuery {
+  bodyType: string
+  brand: string
+  downPaymentAmount: string
+  monthlyIncome: string
+  tenure: string
+  priceRangeGroup: string
+  age: string
+  sortBy: string
+}
+
+export interface FunnelQuery extends Filter {
+  paymentType?: string
+  downPaymentType?: string
+  downPaymentPercentage?: string
+  category?: string[]
+  minPrice?: string
+  maxPrice?: string
+  priceRangeGroup?: string
+  phoneNumber?: string
+  isDefaultTenureChanged?: boolean
 }
 
 export interface UTM {
@@ -52,4 +82,58 @@ export interface Location {
   cityName: string
   id: number
   province: string
+}
+
+export interface LoanDetail {
+  loanRank: LoanRank
+  tenure: number
+  dpAmount: number
+  monthlyInstallment: number
+}
+
+export interface CarVariantLoan extends LoanDetail {
+  id: string
+  modelId?: string
+  priceValue: number
+}
+
+export type CarRecommendation = {
+  id: string
+  brand: string
+  model: string
+  image: string
+  images: string[]
+  numberOfPopulation: number
+  lowestAssetPrice: number
+  highestAssetPrice: number
+  height: number
+  width: number
+  length: number
+  loanRank: string
+  variants: CarVariantLoan[]
+  brandAndModel?: string
+  modelAndBrand?: string
+}
+
+export interface CarRecommendationResponse {
+  carRecommendations: CarRecommendation[]
+  lowestCarPrice: number
+  highestCarPrice: number
+}
+
+export interface CarVariant {
+  id: string
+  name: string
+  priceValue: number
+  fuelType: string
+  transmission: string
+  engineCapacity: number
+  carSeats: number
+  discount: number
+  rasioBahanBakar: string
+}
+
+export interface MinMaxPrice {
+  maxPriceValue: number
+  minPriceValue: number
 }
