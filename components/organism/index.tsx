@@ -13,6 +13,8 @@ import { PopupResultInfo } from './popupResultFilter/resultInfo'
 import { PopupResultMudah } from './popupResultFilter/resultMudah'
 import { PopupResultSulit } from './popupResultFilter/resultSulit'
 import SortingMobile from './sortingMobile'
+import PdpDesktop from './PdpDesktop/index'
+import PdpMobile from './PdpMobile'
 
 // const FilterMobile = dynamic(() => import('./filterMobile'), { ssr: false })
 // const SortingMobile = dynamic(() => import('./sortingMobile'), { ssr: false })
@@ -32,4 +34,6 @@ export {
   NavigationFilterMobile,
   FilterMobile,
   PLP,
+  PdpDesktop,
+  PdpMobile,
 }
