@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
-import styles from 'styles/saas/components/molecules/Refinancing.module.scss'
+import styles from '../../../styles/saas/components/molecules/Refinancing.module.scss'
 import circle from 'assets/images/refinancing/circle.webp'
 import model from 'assets/images/refinancing/model.webp'
 

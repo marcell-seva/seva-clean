@@ -1,5 +1,5 @@
 import React from 'react'
-import { PropsIcon } from '_revamp/utils/types'
+import { PropsIcon } from 'utils/types'
 
 export const RotateLeft: React.FC<PropsIcon> = ({
   width = 65,

@@ -1,18 +1,17 @@
 import { PLP } from 'components/organism'
 import React, { useEffect } from 'react'
 import axios from 'axios'
-
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { LocalStorageKey } from 'utils/enum'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { useRouter } from 'next/router'
 import { saveLocalStorage } from 'utils/localstorageUtils'
+import { LocalStorageKey } from 'utils/enum'
 
 const NewCarResultPage = ({
   meta,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
-  const id = router.query.id
+  const id = router.query.brand
 
   useEffect(() => {
     if (id && typeof id === 'string' && id.includes('SEVA')) {

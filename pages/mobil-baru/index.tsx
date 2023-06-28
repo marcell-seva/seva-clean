@@ -1,16 +1,12 @@
 import { PLP } from 'components/organism'
 import React from 'react'
 import axios from 'axios'
-
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
 const NewCarResultPage = ({
   meta,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const router = useRouter()
-
   return (
     <>
       <Head>
