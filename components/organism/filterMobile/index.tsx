@@ -34,13 +34,13 @@ import { CarRecommendationResponse, FunnelQuery } from 'utils/types/context'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 
 interface ParamsUrl {
-  age: string
-  downPaymentAmount: string
-  monthlyIncome: string
-  bodyType: string
-  brand: string
-  sortBy: string
-  tenure: string | number
+  age?: string
+  downPaymentAmount?: string
+  monthlyIncome?: string
+  bodyType?: string
+  brand?: string
+  sortBy?: string
+  tenure?: string | number
   priceRangeGroup?: string
 }
 
@@ -307,17 +307,17 @@ const FilterMobile = ({
     }
     const paramUrl: ParamsUrl = {
       // sortBy: sortBy,
-      age: String(ageFilter),
-      priceRangeGroup: '',
-      downPaymentAmount:
-        (downPaymentAmount && downPaymentAmount.toString()) || '',
-      monthlyIncome: (incomeAmount && incomeAmount.toString()) || '',
-      bodyType:
-        !resetTmp && isCheckedType.length > 0 ? String(isCheckedType) : '',
-      brand:
-        !resetTmp && isCheckedBrand.length > 0 ? String(isCheckedBrand) : '',
-      tenure: String(tenureFilter),
-      sortBy: String(funnelQuery.sortBy) || 'lowToHigh',
+      ...(ageFilter && { age: String(ageFilter) }),
+      ...(downPaymentAmount && {
+        downPaymentAmount: downPaymentAmount.toString(),
+      }),
+      ...(incomeAmount && { monthlyIncome: incomeAmount.toString() }),
+      ...(!resetTmp &&
+        isCheckedType.length > 0 && { bodyType: String(isCheckedType) }),
+      ...(!resetTmp &&
+        isCheckedBrand.length > 0 && { brand: String(isCheckedBrand) }),
+      ...(tenureFilter && { tenure: String(tenureFilter) }),
+      ...(funnelQuery.sortBy && { sortBy: String(funnelQuery.sortBy) }),
     }
     if (!resetTmp) {
       if (

@@ -5,6 +5,7 @@ import styles from '../../../styles/saas/components/organism/footerMobile.module
 import { getMobileFooterMenu } from 'services/menu'
 import urls from 'helpers/urls'
 import elementId from 'helpers/elementIds'
+import Image from 'next/image'
 // import { trackFooterClick } from 'helpers/amplitude/seva20Tracking'
 
 const SevaLogo = '/v3/assets/icon/logo-on-dark.webp'
@@ -65,7 +66,7 @@ export const FooterMobile = () => {
   return (
     <footer className={styles.container}>
       <div className={styles.contentContainer}>
-        <img
+        <Image
           src={SevaLogo}
           width={61}
           height={31}
@@ -122,7 +123,7 @@ export const FooterMobile = () => {
           </a>
         </div>
         <div className={styles.isoWrapper}>
-          <img
+          <Image
             src={ISOIcon}
             width={29}
             height={29}

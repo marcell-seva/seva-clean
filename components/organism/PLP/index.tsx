@@ -617,11 +617,11 @@ export const PLP = () => {
                     )}
                   </InfiniteScroll>
                 </div>
-                <FooterMobile />
               </>
             )}
           </>
         )}
+        <FooterMobile />
         <CSAButton
           onClick={showLeadsForm}
           data-testid={elementId.PLP.Button.LeadsFormIcon}
