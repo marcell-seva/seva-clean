@@ -2,6 +2,8 @@ import React, { HTMLAttributes } from 'react'
 import { RecommendationsContextProvider } from './recommendationsContext/recommendationsContext'
 import { FunnelQueryContextProvider } from './funnelQueryContext/funnelQueryContext'
 import { FinancialQueryContextProvider } from './financialQueryContext/financialQueryContext'
+import { MobileWebTopMenusContextProvider } from './mobileWebTopMenuContext/mobileWebTopMenuContext'
+import { LastOtpSentTimeContextProviderRevamp } from './lastOtpSentTimeContext'
 
 const providers: Array<
   React.JSXElementConstructor<React.PropsWithChildren<any>>
@@ -9,6 +11,8 @@ const providers: Array<
   RecommendationsContextProvider,
   FunnelQueryContextProvider,
   FinancialQueryContextProvider,
+  MobileWebTopMenusContextProvider,
+  LastOtpSentTimeContextProviderRevamp,
 ]
 
 export const GlobalContextProvider = (props: HTMLAttributes<HTMLElement>) => {
