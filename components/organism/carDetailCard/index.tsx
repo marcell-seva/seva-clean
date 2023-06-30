@@ -170,12 +170,14 @@ export const CarDetailCard = ({
   return (
     <div className={styles.container}>
       <CardShadow className={styles.cardWrapper}>
-        <img
+        <Image
           src={recommendation.images[0]}
           className={styles.heroImg}
           alt={`${recommendation.brand} ${recommendation.model}`}
           onClick={navigateToPDP}
           data-testid={elementId.CarImage}
+          width={279}
+          height={209}
         />
         <LabelPromo
           className={styles.labelCard}
