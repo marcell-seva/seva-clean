@@ -28,6 +28,7 @@ import { LabelSulit } from './labelCard/sulit'
 import { CitySelectorModal } from './citySelectorModal'
 import { BottomSheetList } from './bottomSheetList'
 import { LabelWithTooltip } from './label/LabelWithTooltip'
+import { MenuList } from './menuList'
 
 export {
   Header,
@@ -60,4 +61,5 @@ export {
   CitySelectorModal,
   BottomSheetList,
   LabelWithTooltip,
+  MenuList,
 }

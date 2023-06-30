@@ -164,3 +164,20 @@ export enum UTMTags {
   UtmId = 'utm_id',
   Adset = 'adset',
 }
+
+export enum UnverifiedLeadSubCategory {
+  SEVA_NEW_CAR_LP_LEADS_FORM = 'SEVNCLFH',
+  SEVA_NEW_CAR_HUBUNGI_KAMI = 'SEVNCCUS',
+  SEVA_NEW_CAR_CAR_OF_THE_MONTH = 'SEVNCCOM',
+  SEVA_NEW_CAR_PROMO_LEADS_FORM = 'SEVNCPLF',
+  SEVA_NEW_CAR_PDP_LEADS_FORM = 'SEVNCVLF',
+  SEVA_NEW_CAR_PLP_LEADS_FORM = 'SEVNCSPF',
+  SEVA_NEW_CAR_SEARCH_WIDGET = 'SEVNCSWG',
+  SEVA_NEW_CAR_OFFLINE_EVENT_FORM_COLD = 'SEVNCOEC',
+  SEVA_NEW_CAR_OFFLINE_EVENT_FORM_HOT = 'SEVNCOEH',
+}
+
+export enum ContactType {
+  phone = 'phone',
+  whatsApp = 'whatsApp',
+}
