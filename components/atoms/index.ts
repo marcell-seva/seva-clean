@@ -85,6 +85,8 @@ import InputPhone from './input/phone'
 import Input from './input/default'
 import { Gap } from './gap'
 import { Toast } from './toast'
+import { Avatar } from './avatar'
+import { MenuItem } from './menuItem'
 
 export {
   Card,
@@ -173,4 +175,6 @@ export {
   Modal,
   Gap,
   Toast,
+  Avatar,
+  MenuItem,
 }

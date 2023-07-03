@@ -27,11 +27,11 @@ type PLPProps = {
 }
 
 const getBrand = (brand: string | string[] | undefined) => {
-  if (brand === 'toyota') {
+  if (String(brand).toLowerCase() === 'toyota') {
     return 'Toyota'
-  } else if (brand === 'daihatsu') {
+  } else if (String(brand).toLowerCase() === 'daihatsu') {
     return 'Daihatsu'
-  } else if (brand === 'bmw') {
+  } else if (String(brand).toLowerCase() === 'bmw') {
     return 'Bmw'
   } else {
     return ''
