@@ -3,7 +3,7 @@ import { CarDetailCard } from './carDetailCard'
 import FilterMobile from './filterMobile'
 import { FooterMobile } from './footerMobile'
 import { HeaderMobile } from './headerMobile'
-// import LeadsFormPrimary  from './leadsForm/primary'
+import { LeadsFormPrimary } from './leadsForm/primary'
 import { NavigationFilterMobile } from './navigationFilterMobile'
 import { PLP } from './PLP'
 import { PLPEmpty } from './plpEmpty'
@@ -15,6 +15,7 @@ import { PopupResultSulit } from './popupResultFilter/resultSulit'
 import SortingMobile from './sortingMobile'
 import PdpDesktop from './PdpDesktop/index'
 import PdpMobile from './PdpMobile'
+import SidebarMobile from './sidebarMobile'
 
 // const FilterMobile = dynamic(() => import('./filterMobile'), { ssr: false })
 // const SortingMobile = dynamic(() => import('./sortingMobile'), { ssr: false })
@@ -23,7 +24,7 @@ export {
   CarDetailCard,
   FooterMobile,
   HeaderMobile,
-  // LeadsFormPrimary,
+  LeadsFormPrimary,
   PLPEmpty,
   PLPSkeleton,
   PopupPromo,
@@ -36,4 +37,5 @@ export {
   PLP,
   PdpDesktop,
   PdpMobile,
+  SidebarMobile,
 }

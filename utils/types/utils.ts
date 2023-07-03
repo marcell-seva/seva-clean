@@ -1,4 +1,9 @@
-import { LoanRank, UTMTags } from 'utils/enum'
+import {
+  ContactType,
+  LoanRank,
+  UnverifiedLeadSubCategory,
+  UTMTags,
+} from 'utils/enum'
 
 export type FormControlValue = string | number | readonly string[] | undefined
 
@@ -22,6 +27,12 @@ export interface OptionWithText<T extends FormControlValue> {
   label: string
   value: T
   testid?: string
+}
+
+export interface Time {
+  hours: string
+  minutes: string
+  seconds: string
 }
 export interface Location {
   cityName: string
@@ -203,4 +214,78 @@ export type CarRecommendation = {
   variants: CarVariantLoan[]
   brandAndModel?: string
   modelAndBrand?: string
+}
+
+export interface CreateUnverifiedLeadRequestNew {
+  origination: UnverifiedLeadSubCategory
+  name?: string
+  phoneNumber: string
+  contactType?: ContactType
+  email?: string
+  sevaKnowledge?: string
+  isPurchaseSoon?: boolean
+  sevaCarBrands?: string[]
+  otherCarBrand?: string[]
+  paymentPreference?: string
+  income?: string
+  age?: string
+  tenure?: number
+  dp?: number
+  otrPrice?: number
+  monthlyInstallment?: number
+  promo?: string
+  carBrand?: string
+  carModelText?: string
+  cityId?: number
+  platform?: string
+}
+
+export interface CustomerInfoSeva {
+  id: number
+  phoneNumber: string
+  fullName: string
+  gender: string
+  dob: string
+  nik: string
+  email: string
+  marital: string
+  registType: string
+  isSales: boolean
+  isCrmCustomer: boolean
+  createdAt?: string
+}
+
+export interface MobileWebTopMenuItemType {
+  menuName: string
+  menuDesc: string
+  menuCode: string
+  menuParent: string | null
+  menuUrl: string | null
+  menuLevel: number
+  status: boolean
+  menuOrder: number
+  toggleNew: boolean
+  menuType: string
+  subMenu: MobileWebTopMenuItemType[]
+}
+export interface MobileWebTopMenuType extends MobileWebTopMenuItemType {
+  subMenu: MobileWebTopMenuItemType[]
+}
+
+export interface AnnouncementBoxDataType {
+  id: number
+  title: string
+  data: {
+    folder: string
+    icon: string
+    thumbnail: {
+      icon: string
+    }
+  }
+  url: string | null
+  description: string
+  textDisplay: string | null
+  backgroundColor: string
+  bannerDesign: string
+  userTarget: string
 }

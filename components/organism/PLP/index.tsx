@@ -2,7 +2,7 @@ import {
   CarDetailCard,
   FooterMobile,
   HeaderMobile,
-  // LeadsFormPrimary,
+  LeadsFormPrimary,
   PLPEmpty,
   PLPSkeleton,
   PopupPromo,
@@ -617,21 +617,21 @@ export const PLP = () => {
                     )}
                   </InfiniteScroll>
                 </div>
-                <FooterMobile />
               </>
             )}
           </>
         )}
+        <FooterMobile />
         <CSAButton
           onClick={showLeadsForm}
           data-testid={elementId.PLP.Button.LeadsFormIcon}
         />
-        {/* {isModalOpenend && (
-            <LeadsFormPrimary
-              onCancel={closeLeadsForm}
-              trackerProperties={trackLeads()}
-            />
-          )} */}
+        {isModalOpenend && (
+          <LeadsFormPrimary
+            onCancel={closeLeadsForm}
+            trackerProperties={trackLeads()}
+          />
+        )}
         <FilterMobile
           onButtonClick={(value: boolean | ((prevState: boolean) => boolean)) =>
             setIsButtonClick(value)
