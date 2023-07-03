@@ -46,6 +46,9 @@ import {
   CarModelDetailsResponse,
   CarVariantRecommendation,
   CarRecommendation,
+  VariantDetail,
+  NewFunnelCarVariantDetails,
+  CarVariantDetails,
 } from './utils'
 
 import { User, Token, Filter, UTM } from './context'
@@ -98,4 +101,7 @@ export type {
   CarModelBasicDetailsResponse,
   CarModelDetailsResponse,
   CarVariantRecommendation,
+  VariantDetail,
+  NewFunnelCarVariantDetails,
+  CarVariantDetails,
 }

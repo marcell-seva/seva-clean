@@ -66,6 +66,8 @@ import {
   IconLogout,
   IconUser,
   BackIcon,
+  DownOutlined,
+  CloseOutlined2,
 } from './icon'
 import Brand from './brand'
 import Logo from './logo'
@@ -88,6 +90,7 @@ import { Gap } from './gap'
 import { Toast } from './toast'
 import { Avatar } from './avatar'
 import { MenuItem } from './menuItem'
+import { ToggleSwitch } from './ToggleSwitch/ToggleSwitch'
 
 export {
   Card,
@@ -179,4 +182,7 @@ export {
   Avatar,
   MenuItem,
   BackIcon,
+  DownOutlined,
+  ToggleSwitch,
+  CloseOutlined2,
 }

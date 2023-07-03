@@ -13,6 +13,7 @@ import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUti
 import elementId from 'helpers/elementIds'
 import { ActionButton } from '../HeaderActionButton/HeaderActionButton'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import Link from 'next/link'
 
 export type StickyButtonProps = {
   onClickPenawaran: () => void
@@ -203,7 +204,7 @@ export const MintaPenawaranButton = styled(Button)`
   }
 `
 
-export const LinkHitungCicilan = styled.a`
+export const LinkHitungCicilan = styled(Link)`
   width: 50%;
   max-height: 48px;
 
