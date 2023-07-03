@@ -1,20 +1,18 @@
 import React from 'react'
-import { useMediaQuery } from 'react-responsive'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
-import ImageNotAvailable from './images/image-unavailable.svg'
-import ImageNotAvailableDesktop from './images/image-unavailable-desktop.svg'
+const ImageNotAvailableDesktop =
+  '/assets/illustration/image-unavailable-desktop.webp'
 
 interface Props {
   type: string
 }
 
 export const ImageUnavailable = ({ type }: Props) => {
-  const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
-
   return (
     <Container>
-      <img src={isMobile ? ImageNotAvailable : ImageNotAvailableDesktop} />
+      {/* <img src={isMobile ? ImageNotAvailable : ImageNotAvailableDesktop} /> */}
+      <img src={ImageNotAvailableDesktop} width={217} height={168} />
       <Title>Gambar {type} untuk mobil ini belum tersedia</Title>
     </Container>
   )

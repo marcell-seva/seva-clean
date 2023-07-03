@@ -95,11 +95,16 @@ export const PriceList = () => {
         setCarVariantDetails(result3)
       }
     })
-    ;(window.location.href = variantListUrl
-      .replace(':brand', (brand as string) ?? '')
-      .replace(':model', (model as string) ?? '')
-      .replace(':tab?', 'kredit')),
-      { variant: item.id }
+
+    router.push({
+      pathname: variantListUrl
+        .replace(':brand', (brand as string) ?? '')
+        .replace(':model', (model as string) ?? '')
+        .replace(':tab?', 'kredit'),
+      query: {
+        variant: item.id,
+      },
+    })
   }
 
   if (!carModelDetails) return <></>

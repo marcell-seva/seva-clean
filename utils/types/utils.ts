@@ -370,3 +370,27 @@ export interface NewFunnelCarVariantDetails {
 export interface CarVariantDetails extends NewFunnelCarVariantDetails {
   loanDetail: LoanDetail
 }
+
+export interface SpecialRateList {
+  tenure: number
+  interestRate: number
+  dp: number
+  dpAmount: number
+  installment: number
+  saveAmount: number
+  loanRank: string
+  totalFirstPayment: number
+}
+
+export interface SpecialRateListType {
+  tenure: number
+  interestRate: number
+  dp: number
+  dpAmount: number
+  installment: number
+  saveAmount: number
+  loanRank: string
+  totalFirstPayment: number
+  totalFirstPaymentADDB: number
+  totalFirstPaymentADDM: number
+}

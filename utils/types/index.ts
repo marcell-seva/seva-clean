@@ -49,6 +49,8 @@ import {
   VariantDetail,
   NewFunnelCarVariantDetails,
   CarVariantDetails,
+  SpecialRateList,
+  SpecialRateListType,
 } from './utils'
 
 import { User, Token, Filter, UTM } from './context'
@@ -104,4 +106,6 @@ export type {
   VariantDetail,
   NewFunnelCarVariantDetails,
   CarVariantDetails,
+  SpecialRateList,
+  SpecialRateListType,
 }

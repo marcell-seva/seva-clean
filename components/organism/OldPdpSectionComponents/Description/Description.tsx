@@ -11,7 +11,10 @@ import {
   getMinimumDp,
   getMinimumMonthlyInstallment,
 } from 'utils/carModelUtils/carModelUtils'
-import { availableList, availableListColors } from '../AvailableListColors'
+import {
+  availableList,
+  availableListColors,
+} from '../VariantColor/AvailableListColors'
 import { trimLastChar } from 'utils/urlUtils'
 import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import { hundred, million, ten } from 'const/const'

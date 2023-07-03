@@ -1,21 +1,21 @@
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 import React, { memo, useEffect, useRef, useState } from 'react'
-import { Description } from '../../PdpDesktopOldSectionsComponents/Description/Description'
+import { Description } from '../../OldPdpSectionComponents/Description/Description'
 import GallerySectionV2 from '../Gallery/GallerySection/GallerySectionV2'
 import styled from 'styled-components'
 import { PriceList } from '../Price/PriceList/PriceList'
 import { PromoButton } from '../Price/PromoButton/PromoButton'
-import RecentlyViewed from '../component/RecentlyViewed/RecentlyViewed'
+import RecentlyViewed from 'components/organism/OldPdpSectionComponents/RecentlyViewed/RecentlyViewed'
 import { useModalContext } from 'context/modalContext/modalContext'
-import { FAQ } from '../component/FAQ/FAQ'
+import { FAQ } from 'components/organism/OldPdpSectionComponents/FAQ/FAQ'
 import { colors } from 'styles/colors'
 import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
-import { SEOSectionV2 } from '../component/SEOSection/SEOSectionV2'
+import { SEOSectionV2 } from 'components/organism/OldPdpSectionComponents/SEOSection/SEOSectionV2'
 import { useContextSpecialRateResults } from 'context/specialRateResultsContext/specialRateResultsContext'
 import { useMediaQuery } from 'react-responsive'
-import { SpecificationDesktop } from 'pages/VariantListPageSeva/Spesification/SpecificationDesktop'
-import { useCarVariantPromoModal } from 'components/CarVariantPromoModal/CarVariantPromoModal'
+import { SpecificationDesktop } from 'components/organism/OldPdpSectionComponents/Specification/SpecificationDesktop'
+import { useCarVariantPromoModal } from 'components/molecules/CarVariantPromoModal/CarVariantPromoModal'
 import {
   trackCarVariantBannerPromoPopupClose,
   trackCarVariantLihatDetailSpesifikasiClick,
@@ -78,7 +78,7 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
       Image_URL: carImages[0],
       Brand_Model: `${carModelDetails?.brand} ${carModelDetails?.model}`,
     }
-    setTrackEventMoEngage('view_variant_list', objData)
+    // setTrackEventMoEngage('view_variant_list', objData)
   }
   useEffect(() => {
     if (carModelDetails && cityOtr) {
