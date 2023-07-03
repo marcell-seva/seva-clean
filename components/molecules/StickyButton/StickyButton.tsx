@@ -16,7 +16,7 @@ import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import Link from 'next/link'
 
 export type StickyButtonProps = {
-  onClickPenawaran: () => void
+  onClickPenawaran?: () => void
   toLoan: string
   isSticky?: boolean
 }
