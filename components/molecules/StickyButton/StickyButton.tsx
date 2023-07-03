@@ -15,7 +15,7 @@ import { ActionButton } from '../HeaderActionButton/HeaderActionButton'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 export type StickyButtonProps = {
-  onClickPenawaran: () => void
+  onClickPenawaran?: () => void
   toLoan: string
   isSticky?: boolean
 }
