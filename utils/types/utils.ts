@@ -289,3 +289,84 @@ export interface AnnouncementBoxDataType {
   bannerDesign: string
   userTarget: string
 }
+
+export interface CityOtrOption {
+  cityName: string
+  cityCode: string
+  province: string
+  id?: string
+}
+
+export interface CarModelBasicInfo {
+  id: string
+  brand: string
+  model: string
+  promoFlag: boolean
+}
+
+export interface CarVariant {
+  id: string
+  name: string
+  priceValue: number
+  fuelType: string
+  transmission: string
+  engineCapacity: number
+  carSeats: number
+  discount: number
+  rasioBahanBakar: string
+}
+
+export interface CarModelBasicDetailsResponse extends CarModelBasicInfo {
+  variants: CarVariant[]
+  images: string[]
+}
+
+export interface CarModelDetailsResponse {
+  id: string
+  brand: string
+  model: string
+  modelWordpressTag?: string
+  promoFlag: boolean
+  variants: CarVariantRecommendation[]
+  images: string[]
+  length?: number
+  width?: number
+  height?: number
+}
+
+export interface CarVariantRecommendation extends CarVariant {
+  loanRank: string
+  tenure: number
+  dpAmount: number
+  monthlyInstallment: number
+}
+
+export interface VariantDetail {
+  id: string
+  name: string
+  priceValue: number
+  fuelType: string
+  transmission: string
+  engineCapacity: number
+  bodyType: string
+  carSeats: number
+  length: number
+  pdfUrl: string
+  images: string[]
+  newFunnelMainColorImage: string
+  description: {
+    en: string
+    id: string
+  }
+  discount: number
+  rasioBahanBakar: string
+}
+
+export interface NewFunnelCarVariantDetails {
+  modelDetail: CarModelBasicInfo
+  variantDetail: VariantDetail
+}
+
+export interface CarVariantDetails extends NewFunnelCarVariantDetails {
+  loanDetail: LoanDetail
+}

@@ -65,6 +65,7 @@ import {
   IconDots,
   IconLogout,
   IconUser,
+  BackIcon,
 } from './icon'
 import Brand from './brand'
 import Logo from './logo'
@@ -177,4 +178,5 @@ export {
   Toast,
   Avatar,
   MenuItem,
+  BackIcon,
 }
