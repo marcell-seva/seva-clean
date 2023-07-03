@@ -5,12 +5,14 @@ import { colors } from 'styles/colors'
 import CarImg from './images/CarNotExist.webp'
 import { carResultsUrl } from 'routes/routes'
 import { ModalBodyCarNotAvailable } from 'components/atoms/ModalBodyWrapper/ModalBodyCarNotAvailable'
+import { useRouter } from 'next/router'
 
 export const usePreApprovalCarNotAvailable = () => {
+  const router = useRouter()
   const { showModal, hideModal, RenderModal } = useModal()
   const goToCarResult = () => {
     hideModal()
-    window.location.href = carResultsUrl
+    router.push(carResultsUrl)
   }
   const PreApprovalCarNotAvailableModal = () => (
     <RenderModal>

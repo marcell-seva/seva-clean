@@ -16,32 +16,36 @@ export const BrandIcon = ({ brand }: { brand: string }) => {
             <img
               src={LogoToyota}
               alt="Toyota"
-              style={{ width: 21, height: 18 }}
+              style={{ width: 48, height: 'auto' }}
             />
           ),
           Daihatsu: (
             <img
               src={LogoDaihatsu}
               alt="Daihatsu"
-              style={{ width: 21.6, height: 15 }}
+              style={{ width: 47, height: 'auto' }}
             />
           ),
           BMW: (
             <img
               src={LogoBmw}
               alt="BMW"
-              style={{ width: 19.2, height: 19.2 }}
+              style={{ width: 47, height: 'auto' }}
             />
           ),
           Peugeot: (
             <img
               src={Peugeot}
               alt="Peugeot"
-              style={{ width: 17.49, height: 19.2 }}
+              style={{ width: 47, height: 'auto' }}
             />
           ),
           Isuzu: (
-            <img src={Isuzu} alt="Isuzu" style={{ width: 21.6, height: 7.2 }} />
+            <img
+              src={Isuzu}
+              alt="Isuzu"
+              style={{ width: 47, height: 'auto' }}
+            />
           ),
         }[brand]
       }

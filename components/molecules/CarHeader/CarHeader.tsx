@@ -7,6 +7,7 @@ import { colors } from 'styles/colors'
 import Img from 'react-cool-img'
 import { TitleHeader } from '../TitleHeader/TitleHeader'
 import { HeaderAndContentProps } from 'components/organism/HeaderAndContent/HeaderAndContent'
+import { useRouter } from 'next/router'
 
 export interface CarHeaderProps extends HeaderAndContentProps {
   onClickShare: () => void
@@ -18,10 +19,11 @@ export function CarHeader({
   isSticky,
   ...props
 }: CarHeaderProps) {
+  const router = useRouter()
   const { carModelDetails } = useContextCarModelDetails()
 
   const handleGoBack = () => {
-    window.location.href = carResultsUrl
+    router.push(carResultsUrl)
   }
 
   return (

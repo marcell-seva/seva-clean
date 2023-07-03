@@ -15,7 +15,6 @@ import { ActionButton } from '../HeaderActionButton/HeaderActionButton'
 
 export function TitleHeader(props: StickyButtonProps) {
   const { carModelDetails } = useContextCarModelDetails()
-  console.log('qwe carModelDetails', carModelDetails)
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,

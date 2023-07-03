@@ -17,6 +17,8 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { CityOtrOption } from 'utils/types'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { CarHeader } from 'components/molecules/CarHeader/CarHeader'
+import Link from 'next/link'
+import { ContentPage } from '../ContentPage/ContentPage'
 
 export interface HeaderAndContentProps extends StickyButtonProps {
   onSticky?: (sticky: boolean) => void
@@ -30,6 +32,7 @@ export const HeaderAndContent = ({
 }: HeaderAndContentProps) => {
   const router = useRouter()
   const { model, brand, slug } = router.query
+  const tab = Array.isArray(slug) ? slug[0] : undefined
   // const { showModal: showShareModal, ShareModal } = useShareModal()
   const [scrollXTab, setScrollXTab] = useState(0)
   const isDesktop = useMediaQuery({ query: '(min-width: 1025px)' })
@@ -69,9 +72,9 @@ export const HeaderAndContent = ({
 
   const checkActiveTab = () => {
     let positionValue = 0
-    if (slug === 'spesifikasi' || slug === 'galeri') {
+    if (tab === 'spesifikasi' || tab === 'galeri') {
       positionValue = 200
-    } else if (slug === 'harga') {
+    } else if (tab === 'harga') {
       if (scrollXTab < 106) {
         positionValue = 100
       } else {
@@ -84,7 +87,7 @@ export const HeaderAndContent = ({
 
   useEffect(() => {
     checkActiveTab()
-  }, [slug])
+  }, [tab])
 
   const detectScroll = () => {
     const scrollLeft = tabRef.current.scrollLeft
@@ -173,9 +176,9 @@ export const HeaderAndContent = ({
                 .replace(':brand', (brand as string) ?? '')
                 .replace(':model', (model as string) ?? '')}
               active={
-                slug && slug.includes('SEVA')
+                tab && tab.includes('SEVA')
                   ? item.key === undefined
-                  : item.key === slug
+                  : item.key === tab
               }
             >
               <TabText>{item.name}</TabText>
@@ -185,11 +188,11 @@ export const HeaderAndContent = ({
       </TabContainer>
       <TabContentWrapper sticky={isSticky}>
         <Suspense fallback={''}>
-          {/* <ContentPage
-            tab={slug}
+          <ContentPage
+            tab={tab}
             isSticky={isSticky}
             isShowLoading={isShowLoading}
-          /> */}
+          />
           {/* <FooterSeva /> */}
         </Suspense>
       </TabContentWrapper>
@@ -240,7 +243,7 @@ const TabWrapper = styled.div`
   }
 `
 
-const TabMenu = styled.a<{ active: boolean }>`
+const TabMenu = styled(Link)<{ active: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
