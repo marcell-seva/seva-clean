@@ -76,7 +76,6 @@ const getBanner = () => get(collections.utils.banner)
 const getCarofTheMonth = () => get(collections.product.carofTheMonth)
 const getCarVideoReview = () => get(collections.product.carVideoReview)
 const getAnnouncementBox = () => get(collections.utils.announcementBox)
-
 const getUserInfo = () => get(collections.auth.user, getConfigToken())
 
 // post request

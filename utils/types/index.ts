@@ -39,6 +39,13 @@ import {
   Option,
   OptionWithImage,
   OptionWithText,
+  CityOtrOption,
+  CarModelBasicInfo,
+  CarVariant,
+  CarModelBasicDetailsResponse,
+  CarModelDetailsResponse,
+  CarVariantRecommendation,
+  CarRecommendation,
 } from './utils'
 
 import { User, Token, Filter, UTM } from './context'
@@ -84,4 +91,11 @@ export type {
   Option,
   OptionWithImage,
   OptionWithText,
+  CarRecommendation,
+  CityOtrOption,
+  CarModelBasicInfo,
+  CarVariant,
+  CarModelBasicDetailsResponse,
+  CarModelDetailsResponse,
+  CarVariantRecommendation,
 }

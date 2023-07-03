@@ -85,6 +85,7 @@ import { IconWishlist } from './Wishlist'
 import { IconLoading } from './Loading'
 import { IconCheckedBox } from './CheckedBox'
 import { PropsIcon } from 'utils/types'
+import { BackIcon } from './BackIcon'
 
 // const IconChevronUp: React.FC<PropsIcon> = ({
 //   width,
@@ -685,4 +686,5 @@ export {
   IconWishlist,
   IconLoading,
   IconCheckedBox,
+  BackIcon,
 }

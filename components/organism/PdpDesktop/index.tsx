@@ -19,12 +19,13 @@ import {
   getMinimumMonthlyInstallment,
 } from 'utils/carModelUtils/carModelUtils'
 import { saveLocalStorage } from 'utils/localstorageUtils'
-import { getNewFunnelAllRecommendations } from 'services/newFunnel'
+// import { getNewFunnelAllRecommendations } from 'services/newFunnel'
 import { CarRecommendation } from 'utils/types/utils'
 import { savePreviouslyViewed } from 'utils/carUtils'
 import { api } from 'services/api'
 import { handleRecommendationsAndCarModelDetailsUpdate } from 'utils/recommendationUtils'
 import { VariantListPageShimmer } from './VariantListPageShimmer'
+import { HeaderAndContent } from '../HeaderAndContent/HeaderAndContent'
 
 export default function index() {
   const router = useRouter()
@@ -127,7 +128,7 @@ export default function index() {
     return setStickyCTA(false)
   }
 
-  const cityParam = () => {
+  const getCityParam = () => {
     return `?city=${cityOtr?.cityCode ?? 'jakarta'}&cityId=${
       cityOtr?.cityId ?? '118'
     }`
@@ -142,13 +143,17 @@ export default function index() {
     saveLocalStorage(LocalStorageKey.Model, (model as string) ?? '')
     cityHandler()
     mediaCTAArea()
-    getNewFunnelAllRecommendations(undefined, '', false).then((result) => {
+    api.getRecommendation(getCityParam()).then((result: any) => {
+      console.log('qwe result', result)
       let id = ''
-      const carList = result.data.carRecommendations
+      const carList = result.carRecommendations
       const currentCar = carList.filter(
         (value: CarRecommendation) =>
           value.model.replace(/ +/g, '-').toLowerCase() === model,
       )
+
+      console.log('qwe carList', carList)
+      console.log('qwe currentCar', currentCar)
 
       if (currentCar.length > 0) {
         id = currentCar[0].id
@@ -160,10 +165,11 @@ export default function index() {
       savePreviouslyViewed(currentCar[0])
 
       Promise.all([
-        getNewFunnelAllRecommendations(undefined, '', false),
-        api.getCarModelDetails(id, cityParam()),
+        api.getRecommendation(getCityParam()),
+        api.getCarModelDetails(id, getCityParam()),
       ])
         .then((response: any) => {
+          console.log('qwe response', response)
           const runRecommendation =
             handleRecommendationsAndCarModelDetailsUpdate(
               setRecommendations,
@@ -171,16 +177,22 @@ export default function index() {
             )
 
           runRecommendation(response)
+          console.log('qwe runRecommendation')
           const sortedVariantsOfCurrentModel = response[1].variants
             .map((item: any) => item)
             .sort((a: any, b: any) => a.priceValue - b.priceValue)
+          console.log(
+            'qwe sortedVariantsOfCurrentModel',
+            sortedVariantsOfCurrentModel,
+          )
 
           api
             .getCarVariantDetails(
               sortedVariantsOfCurrentModel[0].id, // get cheapest variant
-              cityParam(),
+              getCityParam(),
             )
             .then((result3: any) => {
+              console.log('qwe result3', result3)
               if (result3.variantDetail.priceValue == null) {
                 showCarNotExistModal()
               }
@@ -209,10 +221,10 @@ export default function index() {
           </div>
         )}
         <HeaderAndContent
-          onClickPenawaran={showContactUsModal}
+          // onClickPenawaran={showContactUsModal}
           toLoan={formatTabUrl('kredit')
-            .replace(':brand', brand)
-            .replace(':model', model)}
+            .replace(':brand', (brand as string) ?? '')
+            .replace(':model', (model as string) ?? '')}
           onSticky={(sticky) => !isMobile && setStickyCTA(sticky)}
           isShowLoading={isShowLoading}
         />

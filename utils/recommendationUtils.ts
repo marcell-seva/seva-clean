@@ -11,8 +11,11 @@ export const mergeModelDetailsWithLoanRecommendations = (
   recommendations: CarRecommendation[],
   modelDetails: CarModelBasicDetailsResponse,
 ): CarModelDetailsResponse => {
+  console.log('qwe utils recommendations', recommendations)
+  console.log('qwe utils carModelDetails', modelDetails)
   const carModelVariantLoans =
     recommendations.find((r) => r.id === modelDetails.id)?.variants || []
+  console.log('qwe utils carModelVariantLoans', carModelVariantLoans)
   return {
     ...modelDetails,
     variants: carModelVariantLoans.map((v) => ({
@@ -46,12 +49,11 @@ export const handleRecommendationsAndCarModelDetailsUpdate =
     >,
   ) =>
   ([recommendationsResponse, carModelDetailsResponse]: [
-    AxiosResponse<CarRecommendationResponse>,
-    AxiosResponse<CarModelDetailsResponse>,
+    CarRecommendationResponse,
+    CarModelDetailsResponse,
   ]) => {
-    const recommendations =
-      recommendationsResponse.data.carRecommendations || []
-    const carModelDetails = carModelDetailsResponse.data
+    const recommendations = recommendationsResponse.carRecommendations || []
+    const carModelDetails = carModelDetailsResponse
     setRecommendations(recommendations)
     updateCarModelDetailsWithLoanInfo(
       recommendations,
