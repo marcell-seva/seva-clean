@@ -24,16 +24,17 @@ import {
 } from 'helpers/amplitude/seva20Tracking'
 // import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
 // import { EventFromType } from 'helpers/amplitude/newHomePageEventTracking'
-import { useTranslation } from 'react-i18next'
+// import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { CityOtrOption } from 'utils/types'
 import { api } from 'services/api'
+import { t } from 'config/localization/locales/id'
 
 export const TanyaSeva = () => {
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
-  const { t } = useTranslation()
+  // const { t } = useTranslation()
   const { carModelDetails } = useContextCarModelDetails()
   const { funnelQuery } = useFunnelQueryData()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
@@ -63,7 +64,7 @@ export const TanyaSeva = () => {
 
     const { brand, model } = carModelDetails
     const carName = `${brand} ${model}`
-    const message = t('carResultsPage.whatsappMessage', {
+    const message = t.CarResultPage.whatsappMessage({
       carName,
       dpRange: minimumDp,
       monthlyRange: minimumMonthlyInstallment,
