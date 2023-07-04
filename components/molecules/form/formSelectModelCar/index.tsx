@@ -49,7 +49,9 @@ export const FormSelectModelCar = ({
   isShowArrow = true,
 }: FormSelectModelCarProps) => {
   const [modelCarList, setModelCarList] = useState<CarModel[]>([])
-  const [carImage, setCarImage] = React.useState(CarSillhouete as string)
+  const [carImage, setCarImage] = React.useState(
+    CarSillhouete as unknown as string,
+  )
   const [isError, setIsError] = React.useState(false)
 
   const [choosenModel, setChoosenModel] = useState(valueId)
