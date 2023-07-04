@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { LocationContext, LocationContextType } from 'services/context'
-import styles from '/styles/saas/components/molecules/OTRSecondary.module.scss'
+import styles from '/styles/components/molecules/OTRSecondary.module.scss'
 import { IconCross, IconLocation, IconSearch } from 'components/atoms'
 import { Location } from 'utils/types'
 

@@ -67,12 +67,12 @@ if (!self.define) {
     });
   };
 }
-define(['./workbox-e34f44db'], (function (workbox) { 'use strict';
+define(['./workbox-327c579b'], (function (workbox) { 'use strict';
 
   importScripts();
   self.skipWaiting();
   workbox.clientsClaim();
-  workbox.registerRoute("/", new workbox.NetworkFirst({
+  workbox.registerRoute("/v3", new workbox.NetworkFirst({
     "cacheName": "start-url",
     plugins: [{
       cacheWillUpdate: async ({

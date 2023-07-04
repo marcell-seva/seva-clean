@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import React from 'react'
-import styles from 'styles/saas/components/molecules/AnnouncementBox.module.scss'
+import styles from 'styles/components/molecules/AnnouncementBox.module.scss'
 import { IconCross } from 'components/atoms'
-import CustomDesktopLeft from 'assets/images/annoucementBox/custom/custom-desktop-left.webp'
-import CustomDesktopRight from 'assets/images/annoucementBox/custom/custom-desktop-right.webp'
-import CustomMobileRight from 'assets/images/annoucementBox/custom/custom-mobile-right.webp'
+import CustomDesktopLeft from 'assets/images/announcementBox/custom/custom-desktop-left.webp'
+import CustomDesktopRight from 'assets/images/announcementBox/custom/custom-desktop-right.webp'
+import CustomMobileRight from 'assets/images/announcementBox/custom/custom-mobile-right.webp'
 import { PropsAnnouncementBox } from 'utils/types'
 
 const AnnouncementBox: React.FC<PropsAnnouncementBox> = ({

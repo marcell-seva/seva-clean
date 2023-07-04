@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
-import styles from 'styles/saas/components/atoms/TypeCar.module.scss'
+import styles from 'styles/components/atoms/TypeCar.module.scss'
 import { PropsTypeCar } from 'utils/types'
 
 const TypeCar: React.FC<PropsTypeCar> = ({

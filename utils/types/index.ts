@@ -16,6 +16,7 @@ import {
   PropsDetailList,
   PropsListNavBarMenu,
   PropsShadow,
+  AlephArticleCategoryType,
 } from './props'
 
 import {
@@ -25,7 +26,6 @@ import {
   Car,
   CarDetail,
   Testimony,
-  HowToUse,
   Variant,
   Form,
   FormWidget,
@@ -59,7 +59,6 @@ export type {
   Car,
   CarDetail,
   Testimony,
-  HowToUse,
   Variant,
   Form,
   FormWidget,
@@ -70,4 +69,5 @@ export type {
   Filter,
   UTM,
   BodyType,
+  AlephArticleCategoryType,
 }

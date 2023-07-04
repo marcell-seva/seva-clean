@@ -52,11 +52,12 @@ const getConfigToken = () => {
   }
   return config
 }
+
 // get request
 const getMenu = () => get(collections.utils.menu)
 const getCities = () => get(collections.utils.cities)
 const getTestimony = () => get(collections.utils.testimonials)
-const getRecommendation = (params: string) =>
+const getRecommendation = (params?: string) =>
   get(collections.product.recommendation + params)
 const getUsage = () => get(collections.utils.usage)
 const getMainArticle = (params: string) =>
@@ -70,13 +71,20 @@ const getTypeCar = (params: string) => get(collections.product.type + params)
 const getBanner = () => get(collections.utils.banner)
 const getCarofTheMonth = () => get(collections.product.carofTheMonth)
 const getAnnouncementBox = () => get(collections.utils.announcementBox)
-
+const getMobileFooterMenu = () => get(collections.utils.mobileFooterMenu)
 const getUserInfo = () => get(collections.auth.user, getConfigToken())
+const getMobileHeaderMenu = () => get(collections.utils.mobileHeaderMenu)
+const getMinMaxPrice = (params: string) =>
+  get(collections.product.pricing + params)
 
 // post request
-const postUnverfiedLeads = (body: any) =>
-  post(collections.leads.unverified, body)
+const createUnverifiedLeadsNew = (body: any) =>
+  post(collections.leads.unverifiedLeadNew, body)
 const postRefreshToken = (body: any) => post(collections.auth.refresh, body)
+const postSendSMSGeneration = (recaptchaToken: string, phoneNumber: string) =>
+  post(collections.auth.otp, { recaptchaToken, phoneNumber })
+const postVerifyOTPGeneration = (otpCode: string, phoneNumber: string) =>
+  post(collections.auth.otpVerification, { otpCode, phoneNumber })
 
 export const api = {
   getMenu,
@@ -92,6 +100,12 @@ export const api = {
   getCarofTheMonth,
   getAnnouncementBox,
   getUserInfo,
-  postUnverfiedLeads,
+  getMobileFooterMenu,
+  getMobileHeaderMenu,
+  getMinMaxPrice,
+
+  createUnverifiedLeadsNew,
   postRefreshToken,
+  postSendSMSGeneration,
+  postVerifyOTPGeneration,
 }

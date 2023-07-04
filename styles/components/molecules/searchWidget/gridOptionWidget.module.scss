@@ -1,0 +1,11 @@
+@import '../../../abstract/colors';
+@import '../../../abstract/mixins';
+
+.actionButtonWrapper {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}

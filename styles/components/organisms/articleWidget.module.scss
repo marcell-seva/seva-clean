@@ -1,0 +1,150 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+.wrapperTop {
+  background-color: #ffffff;
+  padding: 32px 16px 0px 16px;
+}
+.wrapperBottom {
+  background-color: #ffffff;
+  padding: 0px 16px 32px 16px;
+}
+
+.images {
+  border-top-left-radius: '8px';
+  border-top-right-radius: '8px';
+  width: '100%';
+  height: '258px';
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+}
+.textLink {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #246ed4;
+}
+.textHeader {
+  font-family: 'Kanyon';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  color: #05256e;
+}
+
+.containerCarousel {
+  margin-top: 20px;
+  img {
+    object-fit: cover;
+  }
+  @media (max-width: 1024px) {
+    max-height: 520px;
+    height: 100%;
+    margin-bottom: 10px;
+    // padding: 0px 11px 0px 16px;
+
+    .horizontalSlider___281Ls {
+      position: relative;
+      overflow-x: hidden;
+      background: transparent;
+
+      .slideHorizontal___1NzNV {
+        margin-right: 16px;
+      }
+    }
+  }
+}
+.cardArticle {
+  border-radius: 8px;
+  // margin-right: 5px;
+  padding: 0px 16px;
+  padding-bottom: 32px;
+}
+.descriptionWrapper {
+  padding: 16px 16px;
+  box-shadow: 0px 6px 14px 1px rgba(76, 82, 95, 0.08);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.textDate {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  color: #878d98;
+}
+.textTitle {
+  font-family: 'OpenSansSemiBold';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #05256e;
+}
+
+.dotsCarouselWrapper {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dotsCarouselActive {
+  width: 16px;
+  height: 6px;
+  background: #51a8db;
+  border-radius: 20px;
+}
+.dotsCarouselInactive {
+  width: 6px;
+  height: 6px;
+  background: #cdd0d4;
+  border-radius: 20px;
+}
+.bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #{$shades-grey-25};
+  opacity: 1;
+  display: inline-block;
+  margin: 0 4px;
+}
+
+.bulletActive {
+  opacity: 1;
+  background: #{$secondary-sky-blue};
+  width: 16px;
+  height: 6px;
+  border-radius: 20px;
+}
+.categoryTextWrapper {
+  background: #05256e;
+  box-shadow: 0px 12px 44px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(22px);
+  border-radius: 0px 8px 8px 0px;
+  // width: 83px;
+  height: 32px;
+  padding: 8px 16px;
+  position: absolute;
+  top: 218px;
+  p {
+    font-family: 'OpenSansBold';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 16px;
+    color: #ffffff;
+  }
+}
+.wrapperCardList {
+  margin-top: 16px;
+}

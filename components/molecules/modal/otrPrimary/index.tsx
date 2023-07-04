@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import styles from '/styles/saas/components/molecules/OTRPrimary.module.scss'
+import styles from '/styles/components/molecules/OTRPrimary.module.scss'
 import React, { useContext, useState } from 'react'
 import { Capsule, IconCross, IconLocation } from 'components/atoms'
 import { LocationContext, LocationContextType } from 'services/context'

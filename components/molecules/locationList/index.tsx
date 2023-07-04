@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import styles from 'styles/saas/components/molecules/LocationList.module.scss'
+import styles from 'styles/components/molecules/LocationList.module.scss'
 import { LocationContext, LocationContextType } from 'services/context'
 import { IconLocation } from 'components/atoms'
 interface PropsLocation {

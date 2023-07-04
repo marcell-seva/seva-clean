@@ -15,7 +15,7 @@ export const setAmplitudeUserDevice = (installationToken: any): void => {
 
 export const sendAmplitudeData = (
   eventType: any,
-  eventProperties: any,
+  eventProperties?: any,
 ): void => {
   amplitude.getInstance().logEvent(eventType, eventProperties)
 }

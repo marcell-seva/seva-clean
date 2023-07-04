@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import styles from 'styles/saas/components/molecules/Header.module.scss'
+import styles from 'styles/components/molecules/Header.module.scss'
 import { PropsListNavBarMenu, Menu } from 'utils/types'
 import {
   IconChevrongRight,

@@ -1,0 +1,126 @@
+import axios from 'axios'
+import React from 'react'
+import styles from 'styles/components/molecules/menuList.module.scss'
+import { sendAmplitudeData } from 'services/amplitude'
+import { AmplitudeEventName } from 'services/amplitude/types'
+import { saveLocalStorage } from 'utils/handler/localStorage'
+import { LocalStorageKey } from 'utils/types/models'
+import { IconAccount, IconHistory, IconWishlist } from 'components/atoms/icons'
+import urls from 'utils/helpers/url'
+import { MenuItem } from 'components/atoms'
+import { CustomerInfoSeva, MobileWebTopMenuType } from 'utils/types/props'
+import { useRouter } from 'next/router'
+import { getToken } from 'utils/handler/auth'
+type MenuListProps = {
+  menuList?: MobileWebTopMenuType[]
+  customerDetail?: CustomerInfoSeva
+}
+
+export const MenuList: React.FC<MenuListProps> = ({
+  menuList,
+  customerDetail,
+}): JSX.Element => {
+  const [isLogin] = React.useState(!!getToken())
+  const [isTemanSeva, setIsTemanSeva] = React.useState(false)
+  const router = useRouter()
+
+  const renderIcon = (menuName: string) => {
+    if (menuName === 'Akun Saya') {
+      return <IconAccount height={20} width={20} color="#246ED4" />
+    } else if (menuName === 'Wishlist') {
+      return <IconHistory height={20} width={20} color="#246ED4" />
+    } else if (menuName === 'Riwayat Pengajuan') {
+      return <IconWishlist height={20} width={20} color="#246ED4" />
+    }
+
+    return null
+  }
+
+  const checkTemanSeva = async () => {
+    if (customerDetail) {
+      const temanSeva = await axios.post(
+        `https://teman.prod.seva.id/auth/is-teman-seva`,
+        {
+          phoneNumber: customerDetail.phoneNumber,
+        },
+      )
+      setIsTemanSeva(temanSeva.data.isTemanSeva)
+    }
+  }
+
+  React.useEffect(() => {
+    if (customerDetail) {
+      checkTemanSeva()
+    }
+  }, [customerDetail])
+
+  const handleTemanSeva = () => {
+    if (isTemanSeva) {
+      router.push(urls.internalUrls.TemanSevaDashboardUrl)
+    } else {
+      router.push(urls.internalUrls.TemanSevaOnboardingUrl)
+    }
+  }
+
+  const handleClickMenu = (menuUrl: string, menuName: string) => {
+    sendAmplitudeData(AmplitudeEventName.WEB_BURGER_MENU_CLICK, {
+      Page_Origination_URL: window.location.href,
+      Menu: menuName,
+    })
+
+    if (menuName === 'Teman SEVA') {
+      handleTemanSeva()
+    } else {
+      if (menuUrl === '/akun/profil') {
+        saveLocalStorage(
+          LocalStorageKey.PageBeforeProfile,
+          window.location.pathname,
+        )
+      }
+      window.location.href = menuUrl
+    }
+  }
+
+  return (
+    <div className={styles.container}>
+      {menuList?.map((menuItem) => {
+        if (menuItem.menuName === 'Akun' && !isLogin) {
+          return null
+        } else {
+          return (
+            <div className={styles.menuContainer} key={menuItem.menuName}>
+              {menuItem.menuLevel === 1 && (
+                <div className={styles.menuWrapper}>
+                  <h2 className={styles.mainMenu}>{menuItem.menuName}</h2>
+                </div>
+              )}
+
+              {menuItem.subMenu.length > 0 &&
+                menuItem.subMenu.map((sub: any, key: any) => {
+                  if (sub.subMenu.length > 0) {
+                    return <MenuItem key={key} item={sub} />
+                  } else {
+                    const icon = renderIcon(sub.menuName)
+                    return (
+                      <div
+                        key={key}
+                        className={styles.parentMenu}
+                        onClick={() =>
+                          handleClickMenu(sub.menuUrl as string, sub.menuName)
+                        }
+                      >
+                        {icon && (
+                          <div className={styles.iconContainer}>{icon}</div>
+                        )}
+                        <div className={styles.menu}>{sub.menuName}</div>
+                      </div>
+                    )
+                  }
+                })}
+            </div>
+          )
+        }
+      })}
+    </div>
+  )
+}

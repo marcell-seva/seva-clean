@@ -1,0 +1,89 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+@import '../../abstract/variable';
+
+.container {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.supergraphic {
+  height: 507px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.supergraphicBg {
+  position: absolute;
+  z-index: 1;
+  height: 552px;
+  width: auto;
+  left: -42px;
+  top: -60px;
+}
+
+.mainContent {
+  position: relative;
+  background-color: transparent;
+  z-index: 3;
+}
+
+.mainCar {
+  position: absolute;
+  z-index: 2;
+  height: 294px;
+  width: auto;
+  right: -84px;
+  top: 250px;
+}
+
+.mainWrapper {
+  margin: 34px 0px 24px;
+  padding: 0 16px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mainTitle {
+  font-size: 28px !important;
+  line-height: 40px !important;
+  color: #{$primary-dark-blue} !important;
+
+  &.regular {
+    @include h2(regular);
+  }
+
+  &.bold {
+    @include h2(bold);
+  }
+}
+
+.mainSubtitle {
+  font-size: 14px;
+  line-height: 20px;
+
+  &.regularGrey {
+    font-family: $font-openSans;
+    color: #{$shades-grey-75};
+  }
+
+  &.semiboldBlack {
+    font-family: $font-openSans-semiBold;
+    color: #{$primary-black};
+  }
+}
+
+.buttonWrapper {
+  width: 50%;
+  margin-left: 16px;
+}
+.line {
+  width: 92%;
+  height: 0px;
+  border: 1px solid #eef6fb;
+  margin-top: 53px;
+  margin-left: auto;
+  margin-right: auto;
+}

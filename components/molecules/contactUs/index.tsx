@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import styles from 'styles/saas/components/molecules/ContactUs.module.scss'
+import styles from 'styles/components/molecules/ContactUs.module.scss'
 import FlagIndonesia from 'assets/images/flagIndonesia.png'
 import Image from 'next/image'
 import amplitude from 'amplitude-js'
@@ -75,7 +75,7 @@ const ContactUs: React.FC<PropsContactUs> = ({
   const sendUnverifiedLeads = (payload: any): void => {
     const data = generateLeadsData(payload)
     try {
-      api.postUnverfiedLeads(data)
+      api.createUnverifiedLeadsNew(data)
       openThankyouModal()
       setTrackEventMoEngageWithoutValue('leads-created')
       amplitude.getInstance().logEvent('WEB_LANDING_PAGE_LEADS_FORM_SUBMIT')

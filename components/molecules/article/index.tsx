@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import styles from 'styles/saas/components/molecules/Article.module.scss'
+import styles from 'styles/components/molecules/Article.module.scss'
 import { api } from 'services/api'
+import { useIsMobile } from 'utils'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation } from 'swiper'
+import { Article, PropsArticle, PropsCategory } from 'utils/types'
 import {
   IconBackButton,
   IconNextButton,
   ShimmerCardArticle,
 } from 'components/atoms'
-import { useIsMobile } from 'utils'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation } from 'swiper'
-import { Article, PropsArticle, PropsCategory } from 'utils/types'
 
 type TypesArticle = {
   item: Article
 }
-
 const Article: React.FC<PropsArticle> = ({ data }): JSX.Element => {
   const isMobile = useIsMobile()
   const headerText = 'Baca Artikel Terkini'

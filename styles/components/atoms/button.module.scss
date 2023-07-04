@@ -1,0 +1,119 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.secondary {
+  border: 1px solid #{$primary-dark-blue};
+  border-radius: 8px;
+  background-color: transparent;
+  color: #{$primary-dark-blue};
+  font-family: 'OpenSans';
+  cursor: pointer;
+
+  &[disabled] {
+    border: 1px solid #{$shades-grey-25};
+    color: #{$shades-grey-25};
+    background-color: transparent;
+  }
+
+  // use media query hover, so that it wont get stuck in hover state after click
+  @media (hover: hover) {
+    &:hover {
+      &:not([disabled]) {
+        font-family: 'OpenSansSemiBold';
+        background-color: #{$shades-sky-blue-5};
+      }
+    }
+  }
+}
+
+.secondaryDark {
+  border: 1px solid #{$primary-white};
+  border-radius: 8px;
+  background-color: #{$primary-dark-blue};
+  color: #{$primary-white};
+  font-family: 'OpenSans';
+  cursor: pointer;
+}
+
+.outline {
+  border: 1px solid #{$primary-dark-blue}; /* Outline color */
+  border-radius: 8px;
+  background-color: transparent; /* Transparent background */
+  color: #{$primary-dark-blue}; /* Text color */
+  font-family: 'OpenSans';
+  cursor: pointer;
+}
+
+.primaryDarkBlue {
+  border: 1px solid #{$primary-dark-blue};
+  border-radius: 8px;
+  background-color: #{$primary-dark-blue};
+  color: #{$primary-white};
+  cursor: pointer;
+  font-family: 'OpenSans';
+  cursor: pointer;
+
+  &[disabled] {
+    border: 1px solid #{$shades-grey-25};
+    color: #{$primary-white};
+    background-color: #{$shades-grey-25};
+    cursor: no-drop;
+  }
+
+  // use media query hover, so that it wont get stuck in hover state after click
+  @media (hover: hover) {
+    &:hover {
+      &:not([disabled]) {
+        font-family: 'OpenSansSemiBold';
+        background-color: #{$secondary-blue};
+        color: #{$primary-white};
+      }
+    }
+  }
+}
+
+.default {
+  border-radius: 8px;
+  background-color: #{$primary-white};
+  color: #{$primary-dark-blue};
+  cursor: pointer;
+}
+
+.disable {
+  border-radius: 8px;
+  background-color: #{$shades-grey-25};
+  color: #{$primary-white};
+  cursor: no-drop;
+}
+
+.big {
+  width: 100%;
+  font-size: 14px;
+  line-height: 20px;
+  height: 44px;
+  min-height: 44px;
+}
+
+.small {
+  width: 100%;
+  min-height: 34px;
+  height: 34px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+@include lg {
+  .big {
+    min-height: 48px;
+    height: 48px;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .small {
+    font-size: 14px;
+    line-height: 20px;
+    height: 36px;
+    min-height: 36px;
+  }
+}

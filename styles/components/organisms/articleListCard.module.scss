@@ -1,0 +1,66 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+.wrapper {
+  background-color: #ffffff;
+  padding: 32px 16px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+}
+.cardArticle {
+  border-radius: 8px;
+  display: flex;
+  margin-bottom: 20px;
+  box-shadow: 0px 6px 14px 1px rgba(76, 82, 95, 0.08);
+}
+.descriptionWrapper {
+  padding: 24px 16px;
+}
+.textDate {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  color: #878d98;
+  margin-bottom: 4px;
+}
+.textTitle {
+  font-family: 'OpenSansSemiBold';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #05256e;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.categoryTextWrapper {
+  background: #05256e;
+  box-shadow: 0px 12px 44px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(22px);
+  border-radius: 0px 8px 8px 0px;
+  //   width: 83px;
+  height: 32px;
+  padding: 8px 16px;
+  position: absolute;
+  //   top: 218px;
+  margin-top: 70px;
+  p {
+    font-family: 'OpenSansBold';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 16px;
+    color: #ffffff;
+  }
+}

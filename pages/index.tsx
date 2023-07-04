@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import styles from '/styles/saas/pages/index.module.scss'
+import styles from '/styles/pages/index.module.scss'
 import { InferGetServerSidePropsType } from 'next'
 import {
   Footer,

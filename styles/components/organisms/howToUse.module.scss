@@ -1,0 +1,53 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.wrapper {
+  background: #ffffff;
+  padding: 32px 16px 16px 16px;
+}
+.headerText {
+  font-family: 'Kanyon';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  color: #05256e;
+}
+.cardSpacing {
+  margin-top: 16px;
+}
+.cardHowToUse {
+  background: #ffffff;
+  box-shadow: 0px 12px 40px 1px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 16px 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+}
+.cardTextBold {
+  font-family: 'KanyonBold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+  color: #05256e;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.textGrey {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #878d98;
+}

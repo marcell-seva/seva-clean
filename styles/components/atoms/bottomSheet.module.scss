@@ -1,0 +1,28 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.header {
+  padding: 0px 24px 16px;
+}
+
+.subHeader {
+  flex-direction: row;
+  align-items: flex-end;
+  padding: 0px;
+  gap: 24px;
+  height: 28px;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  justify-content: space-between;
+
+  p {
+    font-family: 'Kanyon';
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 28px;
+    color: #{$primary-black};
+  }
+}

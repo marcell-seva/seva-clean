@@ -1,0 +1,33 @@
+@import '../../../abstract/colors';
+@import '../../../abstract/mixins';
+
+.container {
+  margin: 16px 0 67px;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  .box {
+    height: 52px;
+    width: 52px;
+    border-radius: 8px;
+    border: 1px solid #{$shades-grey-10};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.active {
+      background-color: #f3f9fd;
+      border: 2px solid #{$secondary-sky-blue};
+    }
+
+    span {
+      font-family: $font-openSans;
+      font-size: 14px;
+      line-height: 20px;
+      color: #{$primary-black};
+    }
+  }
+}

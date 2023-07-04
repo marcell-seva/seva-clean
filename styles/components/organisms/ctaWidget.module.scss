@@ -1,0 +1,81 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.wrapper {
+  background: #05256e;
+  height: 276px;
+}
+.textCtaHeader {
+  font-family: 'Kanyon';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #ffffff;
+  text-align: center;
+}
+.background {
+  position: absolute;
+  width: 100%;
+  height: 276px;
+  background-color: #{$primary-dark-blue};
+  z-index: 1;
+}
+
+.wrapperSupergraphicLeft {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  bottom: 0%;
+}
+
+.supergraphicLeft {
+  width: 375px;
+  height: 300px;
+  position: absolute;
+  top: 25px;
+  left: -250px;
+  z-index: 1;
+}
+
+.wrapperSupergraphicRight {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+}
+
+.supergraphicRight {
+  width: 570px;
+  height: 473px;
+  position: absolute;
+  left: -20px;
+  top: 6px;
+  z-index: 1;
+}
+
+.foreground {
+  position: relative;
+  z-index: 2;
+  padding: 32px 16px;
+}
+.textSmall {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #ffffff;
+}
+.ctaWrapepr {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+}
