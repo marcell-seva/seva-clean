@@ -1,22 +1,25 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react'
 import { sendSMSGeneration, verifyOTPGeneration } from 'services/auth'
 import { useCountDownTimer } from 'utils/hooks/useCountDownTimer/useCountDownTimer'
-import { useLastOtpSentTime } from 'utils/context'
+import { useLastOtpSentTime } from 'context/lastOtpSentTimeContext'
 import { saveOtpIsSent, saveOtpTimerIsStart } from 'utils/otpUtils'
-import { HTTPResponseStatusCode, LocalStorageKey } from 'utils/models/models'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { encryptValue } from 'utils/encryptionUtils'
 import { IconLoading, Modal } from 'components/atoms'
-import styles from 'styles/saas/components/organism/otp.module.scss'
-import { getRecaptchaToken } from 'firebase/firebaseAuth'
-import { useTranslation } from 'react-i18next'
+import styles from '../../../styles/saas/components/organism/otp.module.scss'
+import { getRecaptchaToken } from 'services/firebase/firebaseAuth'
 import { useMediaQuery } from 'react-responsive'
 import {
   trackOtpClose,
   trackOtpResendClick,
 } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
-import { LanguageCode } from 'utils/enum'
+import {
+  HTTPResponseStatusCode,
+  LanguageCode,
+  LocalStorageKey,
+} from 'utils/enum'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { t } from 'config/localization/locales/id'
 
 export const OTP = ({
   phoneNumber,
@@ -27,13 +30,12 @@ export const OTP = ({
   savedTokenAfterVerify,
 }: any): JSX.Element => {
   const { lastOtpSentTime, setLastOtpSentTime } = useLastOtpSentTime()
-  const { t } = useTranslation()
   const [otp, setOtp] = useState<string>(' ')
   const [isErrorInput, setIsErrorInput] = useState<boolean>(false)
   const [isInit, setIsInit] = useState(true)
   const [isCountDownEnd, setIsCountDownEnd] = useState(false)
   const [isError, setIsError] = useState(false)
-  const [commonErrorMessage, setCommonErrorMessage] = useState()
+  const [commonErrorMessage, setCommonErrorMessage] = useState('')
   const [tooManyRequestError, setTooManyRequestError] = useState('')
 
   const valueLength = 6
