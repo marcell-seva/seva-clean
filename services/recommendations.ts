@@ -58,10 +58,6 @@ const updateCarModelDetailsWithLoanInfo = (
     React.SetStateAction<CarModelDetailsResponse | undefined>
   >,
 ) => {
-  console.log(
-    'bwr merge : ',
-    mergeModelDetailsWithLoanRecommendations(recommendations, carModelDetails),
-  )
   carModelDetails &&
     setCarModelDetails(
       mergeModelDetailsWithLoanRecommendations(
@@ -85,6 +81,7 @@ export const handleRecommendationsAndCarModelDetailsUpdate =
     const recommendations =
       recommendationsResponse.data.carRecommendations || []
     const carModelDetails = carModelDetailsResponse.data
+
     setRecommendations(recommendations)
     updateCarModelDetailsWithLoanInfo(
       recommendations,

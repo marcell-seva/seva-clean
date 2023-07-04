@@ -386,6 +386,7 @@ export default function NewCarVariantList() {
         setStatus('empty')
         return
       }
+
       savePreviouslyViewed(currentCar[0])
 
       Promise.all([

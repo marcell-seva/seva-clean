@@ -81,6 +81,7 @@ import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import { CarModel } from 'utils/types/carModel'
 import { ModelVariant } from 'utils/types/carVariant'
+import { TrackVariantList } from 'utils/types/tracker'
 
 interface FormState {
   city: CityOtrOption
@@ -303,6 +304,12 @@ export const CreditTab = () => {
   }, [carModelDetails, carVariantDetails, recommendations])
 
   useEffect(() => {
+    if (router.query.selectedVariantId) {
+      autofillCarModelAndVariantData()
+    }
+  }, [router.query.selectedVariantId])
+
+  useEffect(() => {
     if (forms.model?.modelId && forms.city) {
       fetchCarVariant()
     }
@@ -391,7 +398,7 @@ export const CreditTab = () => {
         (item) => item.id === router.query?.selectedVariantId,
       ) || []
     )
-  }, [carModelDetails])
+  }, [carModelDetails, router.query?.selectedVariantId])
 
   useEffect(() => {
     if (carModelDetails && flag === TrackerFlag.Init) {
@@ -753,6 +760,7 @@ export const CreditTab = () => {
         trackVariantListPageCodeSuccess(forms.promoCode)
         if (result.data.citySelector) {
           const citygias = {
+            id: result.data.citySelector.id,
             cityName: result.data.citySelector.cityName,
             cityCode: result.data.citySelector.cityCode,
             province: result.data.citySelector.province,

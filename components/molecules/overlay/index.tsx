@@ -92,7 +92,12 @@ export const OverlayGallery: React.FC<PropsGallery> = ({
       <Swiper
         className={`mainPreview ${styles.swiperPreview}`}
         initialSlide={flagIndex}
-        thumbs={{ swiper: thumbsSwiperPreview }}
+        thumbs={{
+          swiper:
+            thumbsSwiperPreview && !thumbsSwiperPreview.destroyed
+              ? thumbsSwiperPreview
+              : null,
+        }}
         modules={[FreeMode, Navigation, Thumbs]}
         onActiveIndexChange={(swiper: SwiperType) => {
           setFlagIndex(swiper.realIndex)

@@ -10,6 +10,7 @@ import {
 } from 'components/organism'
 import { VideoDataType } from 'utils/types/utils'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
+import { useRouter } from 'next/router'
 
 type pdpLowerSectionProps = {
   onButtonClick: (value: boolean) => void
@@ -69,13 +70,12 @@ export const PdpLowerSection = ({
     setTabFromDirectUrl()
   }, [])
 
+  const router = useRouter()
   const setTabFromDirectUrl = () => {
-    const activePath = window.location.pathname
-    const splitedPath = activePath.split('/')[4]
-    if (splitedPath === '' || splitedPath === undefined) {
-      return
-    } else {
-      const path = capitalizeFirstLetter(splitedPath)
+    const slug = router.query.slug
+
+    if (slug) {
+      const path = capitalizeFirstLetter(slug[0])
       setSelectedTabValue(path)
     }
   }
@@ -118,6 +118,7 @@ export const PdpLowerSection = ({
         )
     }
   }
+
   return (
     <div>
       <NavigationTabV1

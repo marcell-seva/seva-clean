@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styles from 'styles/saas/components/organism/summary.module.scss'
 
 import {
@@ -60,11 +60,9 @@ export const SummaryTab = ({
   setVariantIdFuelRatio,
   variantFuelRatio,
 }: RingkasanProps) => {
-  const {
-    carModelDetailsResDefaultCity: carModelDetails,
-    carVariantDetailsResDefaultCity: carVariantDetails,
-    carRecommendationsResDefaultCity: recommendations,
-  } = useContext(PdpDataLocalContext)
+  const { carModelDetails } = useContextCarModelDetails()
+  const { carVariantDetails } = useContextCarVariantDetails()
+  const { recommendations } = useContextRecommendations()
 
   const [flag, setFlag] = useState<TrackerFlag>(TrackerFlag.Init)
   const { funnelQuery } = useFunnelQueryData()

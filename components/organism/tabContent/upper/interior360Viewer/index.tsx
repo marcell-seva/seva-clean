@@ -1,10 +1,13 @@
 import React from 'react'
-// import { Pannellum } from 'pannellum-react'
-// import { ImageUnavailable } from '../../atoms/imageUnavailable'
+import dynamic from 'next/dynamic'
 import styles from 'styles/saas/components/organism/interior360Viewer.module.scss'
 import { Icon360 } from 'components/atoms'
 import { interiorImagesListNew } from 'config/Interior360ImageList.config'
 import elementId from 'helpers/elementIds'
+
+const Pannellum = dynamic(() => import('components/molecules/PanellumItem'), {
+  ssr: false,
+})
 
 interface Props {
   isShowAnnouncementBox: boolean | null
@@ -26,16 +29,7 @@ export const Interior360ViewerTab = ({ isShowAnnouncementBox }: Props) => {
           className={styles.container}
           data-testid={elementId.Tab + '360-interior-image'}
         >
-          {/* TODO find error */}
-          {/* <Pannellum
-            width="100%"
-            height="100%"
-            image={getImage()}
-            pitch={-20}
-            yaw={0}
-            hfov={110}
-            autoLoad
-          ></Pannellum> */}
+          <Pannellum image={getImage()}></Pannellum>
           <div className={styles.iconWrapper}>
             <Icon360 />
           </div>
