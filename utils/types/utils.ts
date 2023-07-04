@@ -1,5 +1,10 @@
-import { LoanRank, UTMTags } from 'utils/enum'
 import { InstallmentTypeOptions } from 'utils/models/models'
+import {
+  ContactType,
+  LoanRank,
+  UnverifiedLeadSubCategory,
+  UTMTags,
+} from 'utils/enum'
 
 export type FormControlValue = string | number | readonly string[] | undefined
 
@@ -23,6 +28,12 @@ export interface OptionWithText<T extends FormControlValue> {
   label: string
   value: T
   testid?: string
+}
+
+export interface Time {
+  hours: string
+  minutes: string
+  seconds: string
 }
 export interface Location {
   cityName: string
@@ -238,6 +249,93 @@ export interface SpecialRateList {
   loanRank: string
   totalFirstPayment: number
 }
+export interface CreateUnverifiedLeadRequestNew {
+  origination: UnverifiedLeadSubCategory
+  name?: string
+  phoneNumber: string
+  contactType?: ContactType
+  email?: string
+  sevaKnowledge?: string
+  isPurchaseSoon?: boolean
+  sevaCarBrands?: string[]
+  otherCarBrand?: string[]
+  paymentPreference?: string
+  income?: string
+  age?: string
+  tenure?: number
+  dp?: number
+  otrPrice?: number
+  monthlyInstallment?: number
+  promo?: string
+  carBrand?: string
+  carModelText?: string
+  cityId?: number
+  platform?: string
+}
+
+export interface CustomerInfoSeva {
+  id: number
+  phoneNumber: string
+  fullName: string
+  gender: string
+  dob: string
+  nik: string
+  email: string
+  marital: string
+  registType: string
+  isSales: boolean
+  isCrmCustomer: boolean
+  createdAt?: string
+}
+
+export interface MobileWebTopMenuItemType {
+  menuName: string
+  menuDesc: string
+  menuCode: string
+  menuParent: string | null
+  menuUrl: string | null
+  menuLevel: number
+  status: boolean
+  menuOrder: number
+  toggleNew: boolean
+  menuType: string
+  subMenu: MobileWebTopMenuItemType[]
+}
+export interface MobileWebTopMenuType extends MobileWebTopMenuItemType {
+  subMenu: MobileWebTopMenuItemType[]
+}
+
+export interface AnnouncementBoxDataType {
+  id: number
+  title: string
+  data: {
+    folder: string
+    icon: string
+    thumbnail: {
+      icon: string
+    }
+  }
+  url: string | null
+  description: string
+  textDisplay: string | null
+  backgroundColor: string
+  bannerDesign: string
+  userTarget: string
+}
+
+export interface CityOtrOption {
+  cityName: string
+  cityCode: string
+  province: string
+  id?: string
+}
+
+export interface CarModelBasicInfo {
+  id: string
+  brand: string
+  model: string
+  promoFlag: boolean
+}
 
 export interface CarVariant {
   id: string
@@ -333,6 +431,11 @@ export interface FormLCState {
   monthlyIncome: string
   downPaymentAmount: string
   paymentOption: InstallmentTypeOptions
+    }
+  
+export interface CarModelBasicDetailsResponse extends CarModelBasicInfo {
+  variants: CarVariant[]
+  images: string[]
 }
 
 export interface CarModelDetailsResponse {
@@ -397,6 +500,13 @@ export interface Time {
   seconds: string
 }
 
+export interface CarVariantRecommendation extends CarVariant {
+  loanRank: string
+  tenure: number
+  dpAmount: number
+  monthlyInstallment: number
+}
+
 export interface VariantDetail {
   id: string
   name: string
@@ -425,4 +535,28 @@ export interface NewFunnelCarVariantDetails {
 
 export interface CarVariantDetails extends NewFunnelCarVariantDetails {
   loanDetail: LoanDetail
+}
+
+export interface SpecialRateList {
+  tenure: number
+  interestRate: number
+  dp: number
+  dpAmount: number
+  installment: number
+  saveAmount: number
+  loanRank: string
+  totalFirstPayment: number
+}
+
+export interface SpecialRateListType {
+  tenure: number
+  interestRate: number
+  dp: number
+  dpAmount: number
+  installment: number
+  saveAmount: number
+  loanRank: string
+  totalFirstPayment: number
+  totalFirstPaymentADDB: number
+  totalFirstPaymentADDM: number
 }

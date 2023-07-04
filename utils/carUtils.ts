@@ -1,7 +1,33 @@
 import { LanguageCode, SessionStorageKey } from 'utils/models/models'
-import { CarRecommendation } from 'utils/types/utils'
+// import { getNewFunnelAllRecommendations } from 'services/newFunnel'
+// import { getCarModelDetailsById } from 'services/recommendations'
+import { CarRecommendation, CarVariantRecommendation } from 'utils/types'
 import { getModelPriceRange } from './carModelUtils/carModelUtils'
 import { getSessionStorage, saveSessionStorage } from './sessionstorageUtils'
+import { api } from 'services/api'
+
+// export const getVariantId = async (model: string, variant: string) => {
+//   const response = await getNewFunnelAllRecommendations()
+//   const allCar = response.data.carRecommendations
+
+//   const currentModel = allCar.filter(
+//     (value: CarRecommendation) =>
+//       value.model.replace(/ +/g, '-').toLowerCase() === model,
+//   )
+
+//   const response2: any = await api.getCarModelDetails(
+//     currentModel[0].id,
+//     '?city=jakarta&cityId=118',
+//   )
+//   const variantList = response2.data.variants
+
+//   const currentVariant = variantList.filter(
+//     (value: CarVariantRecommendation) =>
+//       value.name.replace(/ +/g, '-').toLowerCase().replace('/', '') === variant,
+//   )
+
+//   return currentVariant[0].id
+// }
 
 export const savePreviouslyViewed = (car: CarRecommendation) => {
   const previouslyCarList = getSessionStorage(

@@ -65,6 +65,9 @@ import {
   IconDots,
   IconLogout,
   IconUser,
+  BackIcon,
+  DownOutlined,
+  CloseOutlined2,
 } from './icon'
 import Brand from './brand'
 import Logo from './logo'
@@ -91,6 +94,9 @@ import { Link } from './link'
 import ErrorMessage from './errorMessage'
 import { TextButton } from './textButton'
 import { CarColorItem } from './carColorItem'
+import { Avatar } from './avatar'
+import { MenuItem } from './menuItem'
+import { ToggleSwitch } from './ToggleSwitch/ToggleSwitch'
 
 export {
   Card,
@@ -185,4 +191,10 @@ export {
   ErrorMessage,
   TextButton,
   CarColorItem,
+  Avatar,
+  MenuItem,
+  BackIcon,
+  DownOutlined,
+  ToggleSwitch,
+  CloseOutlined2,
 }

@@ -1,4 +1,4 @@
-import { FormControlValue } from 'utils/types/utils'
+import { FormControlValue } from 'utils/types'
 import { useLocalStorageWithEncryption } from '../useLocalStorage/useLocalStorage'
 import { LocalStorageKey, SurveyFormKey } from '../../models/models'
 import { FormControl } from 'context/surveyFormContext/surveyFormContext'
@@ -19,7 +19,6 @@ export const defaultFormValue: FormItem = {
   [SurveyFormKey.HomeOwnership]: { value: undefined, isDataValid: false },
   [SurveyFormKey.SeatNumber]: { value: undefined, isDataValid: false },
   [SurveyFormKey.TotalIncomeTmp]: { value: undefined, isDataValid: false },
-  [SurveyFormKey.AgeTmp]: { value: undefined, isDataValid: false },
   [SurveyFormKey.DownPaymentTmp]: { value: undefined, isDataValid: false },
   [SurveyFormKey.SpecialRateEnable]: { value: undefined, isDataValid: false },
   [SurveyFormKey.OldCalculatorResult]: { value: undefined, isDataValid: false },

@@ -53,7 +53,6 @@ export default function index({
         : ''
     return { title, description }
   }, [metaTagDataRes])
-
   return (
     <>
       <Head>
@@ -126,6 +125,7 @@ export async function getServerSideProps({ res, query }: any) {
       },
     }
   } catch (error) {
+    console.log('qwe error', error)
     return {
       notFound: true,
     }

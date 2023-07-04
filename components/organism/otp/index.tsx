@@ -6,7 +6,6 @@ import { saveOtpIsSent, saveOtpTimerIsStart } from 'utils/otpUtils'
 import { HTTPResponseStatusCode, LocalStorageKey } from 'utils/models/models'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { encryptValue } from 'utils/encryptionUtils'
-import { useCurrentLanguage } from 'utils/hooks/useCurrentLanguage/useCurrentLanguage'
 import { IconLoading, Modal } from 'components/atoms'
 import styles from 'styles/saas/components/organism/otp.module.scss'
 import { getRecaptchaToken } from 'firebase/firebaseAuth'
@@ -17,6 +16,7 @@ import {
   trackOtpResendClick,
 } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
+import { LanguageCode } from 'utils/enum'
 
 export const OTP = ({
   phoneNumber,
@@ -26,7 +26,6 @@ export const OTP = ({
   onFailed,
   savedTokenAfterVerify,
 }: any): JSX.Element => {
-  const [currentLanguage] = useCurrentLanguage()
   const { lastOtpSentTime, setLastOtpSentTime } = useLastOtpSentTime()
   const { t } = useTranslation()
   const [otp, setOtp] = useState<string>(' ')
@@ -220,12 +219,12 @@ export const OTP = ({
         recaptchaWrapperRef.current.innerHTML = RecaptchaNode
       }
       const recaptchaToken = await getRecaptchaToken(
-        currentLanguage,
+        LanguageCode.id,
         RECAPTCHA_CONTAINER,
       )
       return recaptchaToken
     } catch (error) {
-      setCommonErrorMessage(t('common.errorMessage'))
+      setCommonErrorMessage(t.common.errorMessage)
       throw error
     }
   }
@@ -245,8 +244,8 @@ export const OTP = ({
       ) {
         setIsErrorInput(true)
       } else {
-        setCommonErrorMessage(t('common.errorMessage'))
-        onFailed && onFailed()
+        setCommonErrorMessage(t.common.errorMessage)
+        onFailed()
         setIsErrorInput(true)
       }
     }
@@ -283,7 +282,7 @@ export const OTP = ({
         setIsError(false)
         shouldShowTimer()
       } else {
-        setCommonErrorMessage(t('common.errorMessage'))
+        setCommonErrorMessage(t.common.errorMessage)
       }
     }
   }
@@ -318,7 +317,7 @@ export const OTP = ({
         shouldShowTimer()
         onFailed()
       } else {
-        setCommonErrorMessage(t('common.errorMessage'))
+        setCommonErrorMessage(t.common.errorMessage)
       }
       onFailed()
     }

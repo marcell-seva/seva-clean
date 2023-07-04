@@ -41,6 +41,7 @@ import { Gallery } from './gallery/index'
 import { OverlayGallery } from './overlay'
 import { ShareModal } from './shareModal'
 import { CalculationResultItem } from './calculationResultItem'
+import { MenuList } from './menuList'
 
 export {
   Header,
@@ -86,4 +87,5 @@ export {
   OverlayGallery,
   ShareModal,
   CalculationResultItem,
+  MenuList,
 }
