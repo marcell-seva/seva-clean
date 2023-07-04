@@ -1,3 +1,4 @@
+import { client } from 'const/const'
 import { useState } from 'react'
 import {
   decryptValue,
@@ -9,7 +10,7 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState<T | any>(() => {
     try {
-      const item = localStorage.getItem(key)
+      const item = client ? localStorage.getItem(key) : null
       return item ? JSON.parse(item) : initialValue
     } catch (error) {
       return initialValue

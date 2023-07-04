@@ -1,0 +1,73 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.heroImg {
+  position: absolute;
+  z-index: 1;
+  width: 248px;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  top: -73px;
+}
+
+.cardWrapper {
+  padding: 16px;
+  width: 100%;
+  height: 404px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contentWrapper {
+  padding-top: 128px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.containerPdp {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-top: 23px;
+  margin-bottom: 47px;
+  width: 100%;
+}
+
+.contentWrapperPdp {
+  @extend .contentWrapper;
+  padding-top: 165px !important;
+}
+.heroImgPdp {
+  @extend .heroImg;
+  top: -50px !important;
+}
+.cardWrapperPdp {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.rowWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.rowFlexEnd {
+  display: flex;
+  justify-content: flex-end;
+}
+.buttonWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}

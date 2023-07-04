@@ -18,6 +18,7 @@ import {
   saveCity,
 } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import { Location, Option, FormControlValue } from 'utils/types'
+import { CityOtrOption } from 'utils/types/utils'
 
 const searchOption = {
   keys: ['label'],
@@ -28,7 +29,7 @@ const searchOption = {
 
 interface Props {
   onClickCloseButton: () => void
-  cityListFromApi: Location[]
+  cityListFromApi: Location[] | CityOtrOption[]
   isOpen: boolean
 }
 
@@ -87,7 +88,7 @@ export const CitySelectorModal = ({
   }
 
   const onClickSubmitButton = () => {
-    const filter = cityListFromApi.filter(
+    const filter = (cityListFromApi as Location[]).filter(
       (item: Location) => item.cityName === inputValue,
     )
     const temp: Location = {
@@ -114,7 +115,7 @@ export const CitySelectorModal = ({
   }
 
   const setIsDisabledButtonSubmit = () => {
-    const matchedCity = cityListFromApi.filter(
+    const matchedCity = (cityListFromApi as Location[]).filter(
       (item) => item.cityName === inputValue,
     )
     if (matchedCity.length > 0) {
@@ -171,13 +172,13 @@ export const CitySelectorModal = ({
 
     for (let i = 0; i < topCityName.length; i++) {
       for (let j = 0; j < cityListFromApi.length; j++) {
-        if (topCityName[i] === cityListFromApi[j].cityName) {
-          topCityDataList.push(cityListFromApi[j])
+        if (topCityName[i] === (cityListFromApi as Location[])[j].cityName) {
+          topCityDataList.push((cityListFromApi as Location[])[j])
         }
       }
     }
 
-    const restOfCityData = cityListFromApi.filter(
+    const restOfCityData = (cityListFromApi as Location[]).filter(
       (x) => !topCityDataList.includes(x),
     )
     const sortedRestOfCityData = restOfCityData.sort((a, b) =>

@@ -5,7 +5,6 @@ import { api } from 'services/api'
 import { CarRecommendation } from 'utils/types/utils'
 import { InferGetServerSidePropsType } from 'next'
 import Head from 'next/head'
-
 interface PdpDataLocalContextType {
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.
@@ -25,7 +24,6 @@ interface PdpDataLocalContextType {
   metaTagDataRes: any
   carVideoReviewRes: any
 }
-
 /**
  * used to pass props without drilling through components
  */
@@ -36,7 +34,6 @@ export const PdpDataLocalContext = createContext<PdpDataLocalContextType>({
   metaTagDataRes: null,
   carVideoReviewRes: null,
 })
-
 export default function index({
   carRecommendationsRes,
   carModelDetailsRes,

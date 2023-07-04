@@ -1,0 +1,119 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.detailSection {
+  width: 100%;
+  background: #{$primary-white};
+  border: 1px solid #{$shades-grey-10};
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 14px 12px;
+  gap: 8px;
+}
+
+.detailSectionGreen {
+  background: #{$shades-green-5};
+  border: 2px solid #{$secondary-green};
+  border-bottom: none;
+  border-radius: 8px 8px 0px 0px;
+}
+
+.detailSectionRed {
+  background: #{$shades-brick-red-5};
+  border: 2px solid #{$secondary-brick-red};
+  border-bottom: none;
+  border-radius: 8px 8px 0px 0px;
+}
+
+.rankTenureInterestWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.iconWrapperGreen {
+  background: #{$shades-green-70};
+}
+
+.iconWrapperRed {
+  background: #{$shades-brick-red-50};
+}
+
+.tenureInterestWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.priceTextWrapper {
+  flex: 1;
+  text-align: center;
+}
+
+.priceText {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$primary-black};
+  mix-blend-mode: normal;
+}
+
+.interestText {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  color: #878d98;
+  mix-blend-mode: normal;
+}
+
+.bottomInfo {
+  flex: 1;
+  padding: 4px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0px 0px 8px 8px;
+}
+
+.hideBottomInfo {
+  display: none;
+}
+
+.bottomInfoGreen {
+  background: #{$secondary-green};
+}
+
+.bottomInfoRed {
+  background: #{$secondary-brick-red};
+}
+
+.bottomIndoText {
+  font-family: 'OpenSansBold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 16px;
+  text-align: center;
+  color: #ffffff;
+  mix-blend-mode: normal;
+}

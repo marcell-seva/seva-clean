@@ -1,0 +1,70 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.wrapper {
+  padding: 16px;
+  background-color: #{$primary-white};
+  border-radius: 8px;
+}
+
+.heading {
+  display: flex;
+}
+
+.iconInfo {
+  padding-right: 8px;
+}
+
+.desc {
+  margin-top: 8px;
+}
+
+.textHeading {
+  color: #{$primary-black};
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+}
+
+.textDesc {
+  display: inline;
+  font-size: 12px;
+  line-height: 18px;
+  height: auto;
+  color: #{$primary-black};
+  overflow: auto;
+}
+
+.elipsed {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.button {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$secondary-blue};
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+@include lg {
+  .textHeading {
+    font-size: 20px;
+    line-height: 32px;
+  }
+
+  .textDesc {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .button {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}

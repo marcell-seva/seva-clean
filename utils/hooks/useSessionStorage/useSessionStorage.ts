@@ -1,3 +1,4 @@
+import { client } from 'const/const'
 import { useState } from 'react'
 import {
   decryptValue,
@@ -9,7 +10,7 @@ export const useSessionStorage = <T>(key: string, initialValue: T) => {
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {
     try {
-      const item = window.sessionStorage.getItem(key)
+      const item = client ? window.sessionStorage.getItem(key) : null
       return item ? JSON.parse(item) : initialValue
     } catch (error) {
       return initialValue
@@ -22,14 +23,14 @@ export const useSessionStorage = <T>(key: string, initialValue: T) => {
       const valueToStore =
         value instanceof Function ? value(storedValue) : value
       setStoredValue(valueToStore)
-      window.sessionStorage.setItem(key, JSON.stringify(valueToStore))
+      client && window.sessionStorage.setItem(key, JSON.stringify(valueToStore))
     } catch (error) {
       console.log(error)
     }
   }
   const removeValue = () => {
     setStoredValue(null)
-    window.sessionStorage.removeItem(key)
+    client && window.sessionStorage.removeItem(key)
   }
   return [storedValue, setValue, removeValue]
 }
@@ -41,7 +42,7 @@ export const useSessionStorageWithEncryption = <T>(
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {
     try {
-      let item = window.sessionStorage.getItem(key)
+      let item = client ? window.sessionStorage.getItem(key) : undefined
       if (item?.includes(encryptedPrefix)) {
         item = decryptValue(item)
       }
@@ -63,17 +64,18 @@ export const useSessionStorageWithEncryption = <T>(
       const valueToStore =
         value instanceof Function ? value(storedValue) : value
       setStoredValue(valueToStore)
-      window.sessionStorage.setItem(
-        key,
-        encryptValue(JSON.stringify(valueToStore)),
-      )
+      client &&
+        window.sessionStorage.setItem(
+          key,
+          encryptValue(JSON.stringify(valueToStore)),
+        )
     } catch (error) {
       console.log(error)
     }
   }
   const removeValue = () => {
     setStoredValue(null)
-    window.sessionStorage.removeItem(key)
+    client && window.sessionStorage.removeItem(key)
   }
   return [storedValue, setValue, removeValue]
 }
