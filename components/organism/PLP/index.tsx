@@ -402,38 +402,28 @@ export const PLP = ({ carRecommendation }: PLPProps) => {
             sortBy: sortBy || 'lowToHigh',
           }
 
-          if (carRecommendation.carRecommendations.length > 0) {
-            patchFunnelQuery(queryParam)
-            setRecommendations(carRecommendation.carRecommendations)
-            setResultMinMaxPrice({
-              resultMinPrice: carRecommendation.lowestCarPrice || 0,
-              resultMaxPrice: carRecommendation.highestCarPrice || 0,
-            })
-            setPage(1)
-          } else {
-            getNewFunnelRecommendations(queryParam)
-              .then((response: AxiosResponse<CarRecommendationResponse>) => {
-                if (response.data) {
-                  patchFunnelQuery(queryParam)
-                  setRecommendations(response.data.carRecommendations)
-                  setResultMinMaxPrice({
-                    resultMinPrice: response.data.lowestCarPrice || 0,
-                    resultMaxPrice: response.data.highestCarPrice || 0,
-                  })
-                  setPage(1)
-                  setSampleArray({
-                    items: response.data.carRecommendations.slice(0, 12),
-                  })
-                }
-                setShowLoading(false)
-              })
-              .catch(() => {
-                setShowLoading(false)
-                router.push({
-                  pathname: carResultsUrl,
+          getNewFunnelRecommendations(queryParam)
+            .then((response: AxiosResponse<CarRecommendationResponse>) => {
+              if (response.data) {
+                patchFunnelQuery(queryParam)
+                setRecommendations(response.data.carRecommendations)
+                setResultMinMaxPrice({
+                  resultMinPrice: response.data.lowestCarPrice || 0,
+                  resultMaxPrice: response.data.highestCarPrice || 0,
                 })
+                setPage(1)
+                setSampleArray({
+                  items: response.data.carRecommendations.slice(0, 12),
+                })
+              }
+              setShowLoading(false)
+            })
+            .catch(() => {
+              setShowLoading(false)
+              router.push({
+                pathname: carResultsUrl,
               })
-          }
+            })
 
           getNewFunnelRecommendations({ ...queryParam, brand: [] }).then(
             (response: AxiosResponse<CarRecommendationResponse>) => {
