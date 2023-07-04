@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react'
-import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { LanguageCode, LocalStorageKey } from 'utils/models/models'
 
 interface ActionContextType {
   currentLanguage: LanguageCode

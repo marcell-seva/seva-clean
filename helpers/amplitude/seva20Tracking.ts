@@ -1027,18 +1027,18 @@ export const trackCrmRegistrationOtpPageView = () => {
     data: null,
   })
 }
-// export const trackVariantListPageCodeSuccess = (code: string) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_VARIANT_LIST_PAGE_CODE_SUCCESS_INPUT,
-//     data: { code },
-//   })
-// }
-// export const trackVariantListPageCodeFailed = (code: string) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_VARIANT_LIST_PAGE_CODE_FAILED_INPUT,
-//     data: { code },
-//   })
-// }
+export const trackVariantListPageCodeSuccess = (code: string) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_VARIANT_LIST_PAGE_CODE_SUCCESS_INPUT,
+    data: { code },
+  })
+}
+export const trackVariantListPageCodeFailed = (code: string) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_VARIANT_LIST_PAGE_CODE_FAILED_INPUT,
+    data: { code },
+  })
+}
 export const trackLandingPageLeadsFormSubmit = (
   value: LandingPageLeadsFormSubmitParam,
 ) => {
@@ -1861,71 +1861,72 @@ export const trackLoginButtonClick = (data: UrlOriginationParam) => {
 //   })
 // }
 
-// export const trackLCCarRecommendationClick = (
-//   data: LCCarRecommendationParam,
-// ) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_LC_CAR_RECOMMENDATION_CLICK,
-//     data,
-//   })
-// }
+export const trackLCCarRecommendationClick = (
+  data: LCCarRecommendationParam,
+) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_LC_CAR_RECOMMENDATION_CLICK,
+    data,
+  })
+}
 
-// export const trackLCCarRecommendationCTAClick = (
-//   data: LCCarRecommendationParam,
-// ) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_LC_CAR_RECOMMENDATION_CTA_CLICK,
-//     data,
-//   })
-// }
+export const trackLCCarRecommendationCTAClick = (
+  data: LCCarRecommendationParam,
+) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_LC_CAR_RECOMMENDATION_CTA_CLICK,
+    data,
+  })
+}
 
-// export const trackLCArticleClick = (data: LCArticleParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_LC_ARTICLE_CLICK,
-//     data,
-//   })
-// }
+export const trackLCArticleClick = (data: LCArticleParam) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_LC_ARTICLE_CLICK,
+    data,
+  })
+}
 
-// export const trackLCAllArticleClick = (data: LCAllArticleParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_LC_ALL_ARTICLE_CLICK,
-//     data,
-//   })
-// }
+export const trackLCAllArticleClick = (data: LCAllArticleParam) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_LC_ALL_ARTICLE_CLICK,
+    data,
+  })
+}
 
-// export const trackLCCTAHitungKemampuanClick = (data: LCCTACalculateParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_LC_CTA_HITUNG_KEMAMPUAN_CLICK,
-//     data,
-//   })
-// }
+export const trackLCCTAHitungKemampuanClick = (data: LCCTACalculateParam) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_LC_CTA_HITUNG_KEMAMPUAN_CLICK,
+    data,
+  })
+}
 
-// export const trackLCKualifikasiKreditClick = (
-//   data: LCCTACreditCualificationParam,
-// ) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_LC_CTA_KUALIFIKASI_KREDIT_CLICK,
-//     data,
-//   })
-// }
+export const trackLCKualifikasiKreditClick = (
+  data: LCCTACreditCualificationParam,
+) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_LC_CTA_KUALIFIKASI_KREDIT_CLICK,
+    data,
+  })
+}
 
-// export const trackLCKualifikasiKreditTooltipCTAClick = (
-//   data: LCCTACreditCualificationParam,
-// ) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_LC_KUALIFIKASI_KREDIT_TOOLTIP_CTA_CLICK,
-//     data,
-//   })
-// }
+export const trackLCKualifikasiKreditTooltipCTAClick = (
+  data: LCCTACreditCualificationParam,
+) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_LC_KUALIFIKASI_KREDIT_TOOLTIP_CTA_CLICK,
+    data,
+  })
+}
 
-// export const trackLCKualifikasiKreditTooltipCTACloseClick = (
-//   data: LCCTACreditCualificationParam,
-// ) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_LC_KUALIFIKASI_KREDIT_TOOLTIP_CTA_CLOSE,
-//     data,
-//   })
-// }
+export const trackLCKualifikasiKreditTooltipCTACloseClick = (
+  data: LCCTACreditCualificationParam,
+) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_LC_KUALIFIKASI_KREDIT_TOOLTIP_CTA_CLOSE,
+    data,
+  })
+}
+
 export const trackLCKualifikasiKreditPopUpCtaClick = (
   data: LCCTACreditCualificationParam,
 ) => {

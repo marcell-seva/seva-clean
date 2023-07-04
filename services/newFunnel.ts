@@ -1,9 +1,36 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import endpoints from 'helpers/endpoints'
 import { API } from 'utils/api'
+import {
+  decryptValue,
+  encryptedPrefix,
+  encryptValue,
+} from 'utils/encryptionUtils'
 import { PaymentType } from 'utils/enum'
+import { defaultContactFormValue } from 'utils/hooks/useContactFormData/useContactFormData'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
+import { defaultFormValue } from 'utils/hooks/useSurveyFormData/useSurveyFormData'
+import { LocalStorageKey } from 'utils/models/models'
 import { FunnelQuery } from 'utils/types/context'
+import { SpecialRateRequest } from 'utils/types/utils'
+
+export const getSurveyFormData = () => {
+  let item = localStorage.getItem(LocalStorageKey.SurveyForm)
+  if (item?.includes(encryptedPrefix)) {
+    item = decryptValue(item)
+  }
+
+  // if decryption failed, overwrite existing data with default value
+  if (item === '') {
+    localStorage.setItem(
+      LocalStorageKey.SurveyForm,
+      encryptValue(JSON.stringify(defaultContactFormValue)),
+    )
+    return defaultFormValue
+  }
+
+  return item ? JSON.parse(item) : ''
+}
 
 export const getNewFunnelRecommendations = (
   funnelQuery: FunnelQuery,
@@ -69,4 +96,97 @@ export const getMinMaxPrice = (config?: AxiosRequestConfig) => {
     ...config,
     params,
   })
+}
+
+export const getNewFunnelLoanSpecialRate = (
+  {
+    otr,
+    dp,
+    dpAmount,
+    monthlyIncome,
+    age,
+    city,
+    discount,
+    rateType,
+    angsuranType,
+    isFreeInsurance,
+  }: SpecialRateRequest,
+  config?: AxiosRequestConfig,
+) => {
+  const params = new URLSearchParams()
+  getCity().cityCode && params.append('city', getCity().cityCode as string)
+  return API.post(
+    endpoints.specialRate,
+    {
+      otr,
+      dp,
+      dpAmount,
+      monthlyIncome,
+      age,
+      city,
+      discount,
+      rateType,
+      angsuranType,
+      isFreeInsurance,
+    },
+    {
+      params,
+      ...config,
+    },
+  )
+}
+
+export const getNewFunnelCityRecommendations = (
+  data: {
+    modelName: string
+    city: string
+  },
+  config?: AxiosRequestConfig,
+) => {
+  return API.post(endpoints.newFunnelCityRecommendation, data, config)
+}
+
+export const getNewFunnelAllRecommendations = (
+  config?: AxiosRequestConfig,
+  customCity?: string,
+  surveyForm = true,
+) => {
+  const params = new URLSearchParams()
+  if (surveyForm) {
+    const surveyFormData = getSurveyFormData()
+    const totalIncome = surveyFormData?.totalIncome?.value
+    const age = surveyFormData?.age?.value
+    totalIncome && params.append('monthlyIncome', totalIncome as string)
+    age && params.append('age', age as string)
+  }
+
+  getCity().cityCode && params.append('city', getCity().cityCode as string)
+  getCity().id && params.append('cityId', getCity().id as string)
+  if (customCity) {
+    params.set('city', customCity as string)
+  }
+
+  return API.get(endpoints.newFunnelRecommendation, {
+    ...config,
+    params,
+  })
+}
+
+export const getNewFunnelRecommendationsByCity = (
+  cityId: string,
+  city: string,
+  config?: AxiosRequestConfig,
+) => {
+  const params = new URLSearchParams()
+  params.append('cityId', cityId as string)
+  params.append('city', city as string)
+
+  return API.get(endpoints.newFunnelRecommendation, {
+    ...config,
+    params,
+  })
+}
+
+export const getCarVideoReview = (config?: AxiosRequestConfig) => {
+  return API.get(endpoints.carVideoReview, config)
 }

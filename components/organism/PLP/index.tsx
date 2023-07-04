@@ -51,7 +51,7 @@ import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import { getToken } from 'utils/api'
 import { carResultsUrl } from 'routes/routes'
 import endpoints from 'helpers/endpoints'
-import { hundred, million } from 'const/const'
+import { client, hundred, million } from 'const/const'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
@@ -68,7 +68,11 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { getConvertFilterIncome } from 'utils/filterUtils'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
 
-export const PLP = () => {
+interface PLPProps {
+  carRecommendation: CarRecommendationResponse
+}
+
+export const PLP = ({ carRecommendation }: PLPProps) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
   const { recommendations, setRecommendations } = useContextRecommendations()
@@ -115,7 +119,7 @@ export const PLP = () => {
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
   const [page, setPage] = useState<any>(1)
   const [sampleArray, setSampleArray] = useState({
-    items: recommendations.slice(0, 12),
+    items: carRecommendation.carRecommendations.slice(0, 12) || [],
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const [cityListApi, setCityListApi] = useState<Array<Location>>([])
@@ -385,6 +389,7 @@ export const PLP = () => {
                   priceRangeGroup && priceRangeGroup?.toString().split('-')[1],
                 )
             : ''
+
           const queryParam: any = {
             downPaymentType: 'amount',
             downPaymentAmount: downPaymentAmount || '',
@@ -419,6 +424,7 @@ export const PLP = () => {
                 pathname: carResultsUrl,
               })
             })
+
           getNewFunnelRecommendations({ ...queryParam, brand: [] }).then(
             (response: AxiosResponse<CarRecommendationResponse>) => {
               if (response.data)
@@ -544,81 +550,76 @@ export const PLP = () => {
           setShowAnnouncementBox={setIsShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
         />
-        {showLoading ? (
-          <PLPSkeleton />
+
+        {!showLoading && sampleArray.items.length === 0 ? (
+          <>
+            <NavigationFilterMobile
+              setRecommendations={setRecommendations}
+              onButtonClick={handleShowFilter}
+              onSortClick={handleShowSort(true)}
+              carlist={recommendations || []}
+              isFilter={isFilter}
+              isFilterFinancial={isFilterFinancial}
+              resultMinMaxPrice={resultMinMaxPrice}
+              isShowAnnouncementBox={showAnnouncementBox}
+            />
+            {stickyFilter()}
+            <PLPEmpty
+              alternativeCars={alternativeCars}
+              onClickLabel={() => setOpenLabelPromo(true)}
+            />
+          </>
         ) : (
           <>
-            {!showLoading && sampleArray.items.length === 0 ? (
-              <>
-                <NavigationFilterMobile
-                  setRecommendations={setRecommendations}
-                  onButtonClick={handleShowFilter}
-                  onSortClick={handleShowSort(true)}
-                  carlist={recommendations || []}
-                  isFilter={isFilter}
-                  isFilterFinancial={isFilterFinancial}
-                  resultMinMaxPrice={resultMinMaxPrice}
-                  isShowAnnouncementBox={showAnnouncementBox}
-                />
-                {stickyFilter()}
-                <PLPEmpty
-                  alternativeCars={alternativeCars}
-                  onClickLabel={() => setOpenLabelPromo(true)}
-                />
-              </>
-            ) : (
-              <>
-                <NavigationFilterMobile
-                  setRecommendations={setRecommendations}
-                  onButtonClick={handleShowFilter}
-                  onSortClick={handleShowSort(true)}
-                  carlist={recommendations || []}
-                  isFilter={isFilter}
-                  isFilterFinancial={isFilterFinancial}
-                  resultMinMaxPrice={resultMinMaxPrice}
-                  isShowAnnouncementBox={showAnnouncementBox}
-                />
-                {stickyFilter()}
-                <div
-                  className={clsx({
-                    ['plp-scroll']: true,
-                    [styles.detailCardWrapper]: true,
-                    [styles.stickyMargin]: sticky,
-                  })}
-                >
-                  <InfiniteScroll
-                    dataLength={sampleArray.items.length}
-                    next={fetchMoreData}
-                    hasMore={hasMore}
-                    loader={
-                      <div className={styles.spin}>
-                        <Spin />
-                      </div>
-                    }
-                  >
-                    {sampleArray.items.map(
-                      (i: any, index: React.Key | null | undefined) => (
-                        <CarDetailCard
-                          key={index}
-                          recommendation={i}
-                          isFilter={isFilterCredit}
-                          onClickLabel={() => setOpenLabelPromo(true)}
-                          onClickResultMudah={() => {
-                            setOpenLabelResultMudah(true)
-                            trackPeluangMudahBadgeClick(getDataForAmplitude())
-                          }}
-                          onClickResultSulit={() => {
-                            setOpenLabelResultSulit(true)
-                            trackPeluangSulitBadgeClick(getDataForAmplitude())
-                          }}
-                          isFilterTrayOpened={isButtonClick} // fix background click on ios
-                        />
-                      ),
-                    )}
-                  </InfiniteScroll>
-                </div>
-              </>
-            )}
+            <NavigationFilterMobile
+              setRecommendations={setRecommendations}
+              onButtonClick={handleShowFilter}
+              onSortClick={handleShowSort(true)}
+              carlist={recommendations || []}
+              isFilter={isFilter}
+              isFilterFinancial={isFilterFinancial}
+              resultMinMaxPrice={resultMinMaxPrice}
+              isShowAnnouncementBox={showAnnouncementBox}
+            />
+            {stickyFilter()}
+            <div
+              className={clsx({
+                ['plp-scroll']: true,
+                [styles.detailCardWrapper]: true,
+                [styles.stickyMargin]: sticky,
+              })}
+            >
+              <InfiniteScroll
+                dataLength={sampleArray.items.length}
+                next={fetchMoreData}
+                hasMore={hasMore}
+                loader={
+                  <div className={styles.spin}>
+                    <Spin />
+                  </div>
+                }
+              >
+                {sampleArray.items.map(
+                  (i: any, index: React.Key | null | undefined) => (
+                    <CarDetailCard
+                      key={index}
+                      recommendation={i}
+                      isFilter={isFilterCredit}
+                      onClickLabel={() => setOpenLabelPromo(true)}
+                      onClickResultMudah={() => {
+                        setOpenLabelResultMudah(true)
+                        trackPeluangMudahBadgeClick(getDataForAmplitude())
+                      }}
+                      onClickResultSulit={() => {
+                        setOpenLabelResultSulit(true)
+                        trackPeluangSulitBadgeClick(getDataForAmplitude())
+                      }}
+                      isFilterTrayOpened={isButtonClick} // fix background click on ios
+                    />
+                  ),
+                )}
+              </InfiniteScroll>
+            </div>
           </>
         )}
         <FooterMobile />

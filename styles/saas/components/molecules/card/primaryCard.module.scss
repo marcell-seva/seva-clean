@@ -1,0 +1,44 @@
+@import '../../../abstract/colors';
+
+.container {
+  border-radius: 8px;
+  background-color: #{$primary-white};
+  overflow: hidden;
+  width: 258px;
+  flex: 0 0 auto;
+  display: block;
+}
+
+.imageWrapper {
+  position: relative;
+}
+
+.image {
+  width: 100%;
+  height: 194px;
+}
+
+.content {
+  padding: 16px;
+
+  .date {
+    font-family: 'OpenSans';
+    font-size: 11px;
+    line-height: 16px;
+    color: #{$shades-grey-75};
+    margin-bottom: 4px;
+  }
+
+  .title {
+    font-family: 'OpenSansSemiBold';
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    color: #{$primary-dark-blue};
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

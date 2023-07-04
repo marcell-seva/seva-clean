@@ -1,4 +1,4 @@
-import { LocalStorageKey } from './enum'
+import { LocalStorageKey } from 'utils/models/models'
 
 export const getPageBeforeLogin = () => {
   return localStorage.getItem(LocalStorageKey.PageBeforeLogin)
