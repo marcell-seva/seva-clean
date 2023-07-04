@@ -222,11 +222,6 @@ const GallerySectionV2 = ({ title }: Props) => {
     )
   }
 
-  console.log(
-    'qwe',
-    availableList.includes(trimLastChar(window.location.pathname)),
-  )
-
   if (exteriorImageList.length === 0 && interiorImageList.length === 0)
     return <></>
 

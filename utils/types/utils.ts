@@ -394,3 +394,31 @@ export interface SpecialRateListType {
   totalFirstPaymentADDB: number
   totalFirstPaymentADDM: number
 }
+
+export interface ArticleCategoryType {
+  name: string
+  isSelected: boolean
+  url: string
+}
+
+export interface AlephArticleCategoryType {
+  label: string
+  url: string
+  value: string
+  testid?: string
+}
+
+export type VideoOptionType = {
+  UploadedBy: string
+  PostedDate: string
+  videoUrl: string
+}
+
+export type VideoReviewType = {
+  brand: string
+  Model: string
+  MainVideoUrl: string
+  listVideo: VideoOptionType[]
+  UploadedBy: string
+  PostedDate: string
+}

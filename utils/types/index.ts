@@ -51,6 +51,10 @@ import {
   CarVariantDetails,
   SpecialRateList,
   SpecialRateListType,
+  ArticleCategoryType,
+  AlephArticleCategoryType,
+  VideoOptionType,
+  VideoReviewType,
 } from './utils'
 
 import { User, Token, Filter, UTM } from './context'
@@ -108,4 +112,8 @@ export type {
   CarVariantDetails,
   SpecialRateList,
   SpecialRateListType,
+  ArticleCategoryType,
+  AlephArticleCategoryType,
+  VideoOptionType,
+  VideoReviewType,
 }

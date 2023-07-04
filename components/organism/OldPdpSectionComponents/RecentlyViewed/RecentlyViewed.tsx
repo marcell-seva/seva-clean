@@ -73,17 +73,17 @@ export default function RecentlyViewed() {
       Tenure: String(variant.variants[0].tenure),
     }
     trackRecentlyViewedClick(trackProperties)
-    router.push(
-      variantListUrl
-        .replace(
-          ':brand/:model',
-          (variant.brand + '/' + variant.model.replace(/ +/g, '-'))
-            .replace(/ +/g, '')
-            .toLowerCase(),
-        )
-        .replace(':tab', ''),
-    )
-    window.location.reload()
+    const destinationUrl = variantListUrl
+      .replace(
+        ':brand/:model',
+        (variant.brand + '/' + variant.model.replace(/ +/g, '-'))
+          .replace(/ +/g, '')
+          .toLowerCase(),
+      )
+      .replace(':tab', '')
+    // router.push(destinationUrl)
+    // window.location.reload()
+    window.location.href = destinationUrl
   }
 
   const getVisibleSlides = () => {
