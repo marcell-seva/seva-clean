@@ -2,16 +2,20 @@ import React, { useRef } from 'react'
 import Tridi from 'react-tridi'
 import 'react-tridi/dist/index.css'
 import styled from 'styled-components'
-import { trimLastChar } from 'utils/urlUtils'
-import { exteriorImagesList } from './ExteriorImagesList'
 import { RotateLeft, RotateRight } from 'components/atoms'
 import { ImageUnavailable } from '../ImageUnavailable'
+import { exteriorImagesListNew } from 'config/Exterior360ImageList.config'
 
 export const ExteriorViewer = () => {
   const tridiRef = useRef<any>(null)
 
   const getImage = () => {
-    return exteriorImagesList[trimLastChar(window.location.pathname)]
+    const currentUrlPathname = window.location.pathname
+    const temp = exteriorImagesListNew.filter((item) =>
+      currentUrlPathname.includes(item.url),
+    )
+    if (temp.length === 0) return []
+    return temp[0].source
   }
 
   if (!getImage() || getImage().length === 0)
