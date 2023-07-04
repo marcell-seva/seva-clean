@@ -1,0 +1,77 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+$thumbnail-and-video-border-radius: 8px 8px 0 0;
+$thumbnail-and-video-height: 194px;
+
+.container {
+  width: 100%;
+  background: #{$primary-white};
+  box-shadow: 0px 6px 14px 1px rgba(76, 82, 95, 0.08);
+  border-radius: 8px;
+}
+
+.thumbnailWrapper {
+  position: relative;
+  width: 100%;
+  height: #{$thumbnail-and-video-height};
+  border-radius: #{$thumbnail-and-video-border-radius};
+  cursor: pointer;
+}
+
+.thumbnail {
+  width: 100%;
+  border-radius: #{$thumbnail-and-video-border-radius};
+  object-fit: cover;
+}
+
+.playIconWrapper {
+  width: 40px;
+  height: 40px;
+  background: #{$secondary-blue};
+  border-radius: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.iframeYoutube {
+  width: 100%;
+  height: #{$thumbnail-and-video-height};
+  border-radius: #{$thumbnail-and-video-border-radius};
+}
+
+.infoWrapper {
+  width: 100%;
+  background: #{$primary-white};
+  border-radius: 0 0 8px 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dateText {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  color: #{$shades-grey-75};
+}
+
+.titleText {
+  font-family: 'OpenSansSemiBold';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$primary-dark-blue};
+}
+
+@include lg {
+}

@@ -16,8 +16,14 @@ import { applyPolyfills, defineCustomElements } from 'seva-ui-kit/loader'
 import Script from 'next/script'
 import 'styles/saas/global.scss'
 import 'styles/saas/bottomSheet.scss'
+import 'styles/saas/customAnimation.scss'
 import 'react-spring-bottom-sheet/dist/style.css'
 import 'styles/index.css'
+import '@georgedrpg/pannellum-react-next/es/css/video-js.css'
+import '@georgedrpg/pannellum-react-next/es/css/pannellum.css'
+import '@georgedrpg/pannellum-react-next/es/css/style-textInfo.css'
+import { CarModelDetailsContextProvider } from 'context/carModelDetailsContext/carModelDetailsContext'
+import { CarVariantDetailsContextProvider } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 
 const kanyon = localFont({
   src: '../public/Kanyon-Regular.otf',
@@ -53,22 +59,25 @@ export default function App({ Component, pageProps }: AppProps) {
     <GlobalContextProvider>
       <ConfigProvider>
         <AuthProvider>
-          <LocationProvider>
-            <CarProvider>
-              <style jsx global>{`
-                :root {
-                  --kanyon: ${kanyon.style.fontFamily};
-                  --kanyon-bold: ${kanyonBold.style.fontFamily};
-                  --open-sans: ${OpenSans.style.fontFamily};
-                  --open-sans-semi-bold: ${OpenSansSemiBold.style.fontFamily};
-                }
-              `}</style>
-              <Component {...pageProps} />
-              <Script
-                type="text/javascript"
-                strategy="afterInteractive"
-                dangerouslySetInnerHTML={{
-                  __html: `(function(i, s, o, g, r, a, m, n) {
+          <CarModelDetailsContextProvider>
+            <CarVariantDetailsContextProvider>
+              <LocationProvider>
+                <CarProvider>
+                  <style jsx global>{`
+                    :root {
+                      --kanyon: ${kanyon.style.fontFamily};
+                      --kanyon-bold: ${kanyonBold.style.fontFamily};
+                      --open-sans: ${OpenSans.style.fontFamily};
+                      --open-sans-semi-bold: ${OpenSansSemiBold.style
+                        .fontFamily};
+                    }
+                  `}</style>
+                  <Component {...pageProps} />
+                  <Script
+                    type="text/javascript"
+                    strategy="afterInteractive"
+                    dangerouslySetInnerHTML={{
+                      __html: `(function(i, s, o, g, r, a, m, n) {
         i.moengage_object = r
         t = {}
         q = function (f) {
@@ -139,10 +148,12 @@ export default function App({ Component, pageProps }: AppProps) {
           debug_logs: 0,
         })
         }`,
-                }}
-              ></Script>
-            </CarProvider>
-          </LocationProvider>
+                    }}
+                  ></Script>
+                </CarProvider>
+              </LocationProvider>
+            </CarVariantDetailsContextProvider>
+          </CarModelDetailsContextProvider>
         </AuthProvider>
       </ConfigProvider>
     </GlobalContextProvider>

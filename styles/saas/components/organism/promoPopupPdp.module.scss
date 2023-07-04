@@ -1,0 +1,131 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.popupHeader {
+  height: 550px;
+  padding: 0px 24px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #{$shades-grey-25};
+    border-radius: 20px;
+    right: -20px;
+  }
+}
+
+.popupSubHeader {
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 24px;
+  height: 28px;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  justify-content: space-between;
+}
+.textPromoBanner {
+  @extend .openSans;
+  margin-top: -34px;
+  margin-left: 16px;
+  color: #ffffff !important;
+}
+.kanyonMedium {
+  font-family: 'KanyonMedium';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #13131b;
+}
+
+.openSansSemiBold {
+  font-family: 'OpenSansSemiBold';
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #000000;
+}
+.openSans {
+  font-family: 'OpenSans';
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #000000;
+  a {
+    color: #246ed4;
+  }
+}
+.bannerPromo {
+  min-height: 165px;
+}
+.imagePromoSpacing {
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+.spacingChevronIcon {
+  margin-left: 9px;
+}
+.pdpLowerSection {
+  background: #f5f6f6;
+}
+.promoBannerSmall {
+  border-radius: 8px;
+}
+.promoBanner {
+  object-fit: contain;
+  width: -webkit-fill-available;
+  border-radius: 8px;
+}
+.containerPromoPopup {
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #{$shades-grey-25};
+    border-radius: 20px;
+    right: -20px;
+  }
+}
+
+.container {
+  height: 526px;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  padding: 0px 24px;
+  padding-bottom: 20px;
+  padding-top: 8px;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #{$shades-grey-25};
+    border-radius: 20px;
+    right: -20px;
+  }
+}
+
+.contentPromo {
+  display: flex;
+  flex-direction: column;
+}
+@include lg {
+  .container {
+  }
+
+  .content {
+  }
+}

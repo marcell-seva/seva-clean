@@ -18,6 +18,7 @@ import {
   saveCity,
 } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import { Location, Option, FormControlValue } from 'utils/types'
+import { CityOtrOption } from 'utils/types/utils'
 
 const searchOption = {
   keys: ['label'],
@@ -28,7 +29,7 @@ const searchOption = {
 
 interface Props {
   onClickCloseButton: () => void
-  cityListFromApi: Location[]
+  cityListFromApi: Location[] | CityOtrOption[]
   isOpen: boolean
 }
 
@@ -114,7 +115,7 @@ export const CitySelectorModal = ({
   }
 
   const setIsDisabledButtonSubmit = () => {
-    const matchedCity = cityListFromApi.filter(
+    const matchedCity = (cityListFromApi as CityOtrOption[]).filter(
       (item) => item.cityName === inputValue,
     )
     if (matchedCity.length > 0) {

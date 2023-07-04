@@ -267,6 +267,10 @@ button {
   outline: none !important;
 }
 
+:global(.ant-tooltip) {
+  max-width: 320px;
+}
+
 .errorForm :global(.ant-slider .ant-slider-track) {
   position: absolute;
   background-color: #b4231e;

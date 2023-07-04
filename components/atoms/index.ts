@@ -85,6 +85,12 @@ import InputPhone from './input/phone'
 import Input from './input/default'
 import { Gap } from './gap'
 import { Toast } from './toast'
+import { TabV1 } from './tabV1'
+import { TabV2 } from './tabV2'
+import { Link } from './link'
+import ErrorMessage from './errorMessage'
+import { TextButton } from './textButton'
+import { CarColorItem } from './carColorItem'
 
 export {
   Card,
@@ -173,4 +179,10 @@ export {
   Modal,
   Gap,
   Toast,
+  TabV1,
+  TabV2,
+  Link,
+  ErrorMessage,
+  TextButton,
+  CarColorItem,
 }

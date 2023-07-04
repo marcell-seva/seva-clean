@@ -1,0 +1,11 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.wrapper {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: #{$secondary-blue};
+  font-size: 14px;
+  line-height: 20px;
+}

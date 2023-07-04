@@ -1,0 +1,42 @@
+@import '../../abstract/colors';
+
+.alternativeCarContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 32px 0 0;
+  background-color: #{$primary-white};
+}
+
+.alternativeCarTitle {
+  color: #{$primary-dark-blue};
+  font-family: 'Kanyon';
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  margin: 0 16px;
+}
+
+.alternativeCarWrapper {
+  display: flex;
+  flex-direction: row;
+  max-width: 100vw;
+  overflow-x: auto;
+  gap: 16px;
+  padding: 0 16px 21px;
+  margin-top: 31px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.alternativeCarLink {
+  font-family: 'OpenSans';
+  font-weight: 400;
+  font-size: 14px;
+  text-align: left;
+  color: #{$secondary-blue};
+  align-self: flex-start;
+  margin-top: -12px;
+  margin-bottom: 24px;
+}
