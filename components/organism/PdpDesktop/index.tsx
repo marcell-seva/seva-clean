@@ -40,6 +40,7 @@ export default function index() {
   const { model, brand, slug } = router.query
   const tab = Array.isArray(slug) ? slug[0] : undefined
   const [stickyCTA, setStickyCTA] = useState(false)
+  // TODO @toni : read "loanRankCVL" from query param
   // const location = useLocation<
   //   { [LocationStateKey.loanRankCVL]: LoanRank } | undefined
   // >()

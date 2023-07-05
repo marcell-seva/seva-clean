@@ -34,11 +34,11 @@ export const ProductSpecification = (props: VariantSpecificationsType) => {
           </StyledTextDetailSeats>
         </StyledBodyInfo>
         <StyledBodyInfo>
-          <IconFuel color={'#52627A'} width={21} height={20} />
+          <IconFuel color={'#52627A'} width={25} height={24} />
           <StyledTextDetailSeats>{props.fuelType}</StyledTextDetailSeats>
         </StyledBodyInfo>
         <StyledBodyInfo>
-          <IconTransmission color={'52627A'} width={25} height={24} />
+          <IconTransmission color={'#52627A'} width={25} height={24} />
           <StyledTextDetailSeats>{props.transmission}</StyledTextDetailSeats>
         </StyledBodyInfo>
       </StyledBody>

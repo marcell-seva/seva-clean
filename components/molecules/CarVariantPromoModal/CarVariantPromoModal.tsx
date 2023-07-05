@@ -22,7 +22,7 @@ export const useCarVariantPromoModal = () => {
               hideModal()
             }}
           >
-            <IconClose color={colors.body2} width={14} height={14} />
+            <IconClose color={colors.body2} width={20} height={20} />
           </StyledCloseIconWrapper>
           <Title>Pilihan Promo</Title>
           <PromoList />

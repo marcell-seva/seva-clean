@@ -38,8 +38,8 @@ export function CarHeader({
             <div onClick={onClickShare}>
               <IconShare
                 color={colors.primaryDarkBlue}
-                width={20}
-                height={19}
+                width={21}
+                height={24}
               />
             </div>
           </IconControlWrapper>
