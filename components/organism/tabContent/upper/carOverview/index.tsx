@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import styles from 'styles/saas/components/organism/carOverView.module.scss'
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
@@ -31,6 +31,7 @@ import {
 import { variantListUrl } from 'routes/routes'
 import { CityOtrOption } from 'utils/types/utils'
 import { useRouter } from 'next/router'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 
 interface Props {
   onClickCityOtrCarOverview: () => void
@@ -43,12 +44,19 @@ export const CarOverview = ({
   onClickShareButton,
   currentTabMenu,
 }: Props) => {
+  const { carModelDetailsResDefaultCity, carVariantDetailsResDefaultCity } =
+    useContext(PdpDataLocalContext)
+
   const { carModelDetails } = useContextCarModelDetails()
   const { carVariantDetails } = useContextCarVariantDetails()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
   )
+
+  const modelDetail = carModelDetails || carModelDetailsResDefaultCity
+  const variantDetail = carVariantDetails || carVariantDetailsResDefaultCity
+
   const [isShowTooltip, setIsShowTooltip] = useState(false)
   const tooltipRef = useDetectClickOutside({
     onTriggered: () => {
@@ -65,11 +73,11 @@ export const CarOverview = ({
 
   const sortedCarModelVariant = useMemo(() => {
     return (
-      carModelDetails?.variants.sort(function (a, b) {
+      modelDetail?.variants.sort(function (a, b) {
         return a.priceValue - b.priceValue
       }) || []
     )
-  }, [carModelDetails])
+  }, [modelDetail])
 
   const onClickToolTipIcon = () => {
     setIsShowTooltip(true)
@@ -83,11 +91,11 @@ export const CarOverview = ({
   }
 
   const onClickOtrCity = () => {
-    carModelDetails?.brand !== 'Daihatsu' && onClickCityOtrCarOverview()
+    modelDetail?.brand !== 'Daihatsu' && onClickCityOtrCarOverview()
   }
 
   const getCity = () => {
-    if (carModelDetails?.brand === 'Daihatsu') {
+    if (modelDetail?.brand === 'Daihatsu') {
       return 'Jakarta Pusat'
     } else if (cityOtr && cityOtr.cityName) {
       return cityOtr.cityName
@@ -156,10 +164,10 @@ export const CarOverview = ({
 
   const trackAmplitudeShare = () => {
     trackCarVariantShareClick({
-      Car_Brand: carModelDetails?.brand ?? '',
-      Car_Model: carModelDetails?.model ?? '',
+      Car_Brand: modelDetail?.brand ?? '',
+      Car_Model: modelDetail?.model ?? '',
       // OTR: `Rp${replacePriceSeparatorByLocalization(
-      //   carModelDetails?.variants[0].priceValue as number,
+      //   modelDetail?.variants[0].priceValue as number,
       //   LanguageCode.id,
       // )}`,
       City: cityOtr?.cityName || 'null',
@@ -173,10 +181,10 @@ export const CarOverview = ({
   }
 
   const trackAmplitudeBrochure = () => {
-    if (carModelDetails) {
+    if (modelDetail) {
       trackDownloadBrosurClick({
-        Car_Brand: carModelDetails?.brand as string,
-        Car_Model: carModelDetails?.model as string,
+        Car_Brand: modelDetail?.brand as string,
+        Car_Model: modelDetail?.model as string,
         City: cityOtr?.cityName || 'null',
       })
     }
@@ -189,8 +197,8 @@ export const CarOverview = ({
         ? funnelQuery.downPaymentAmount
         : sortedCarModelVariant[0].dpAmount
     const properties: CarVariantHitungKemampuanParam = {
-      Car_Brand: carModelDetails?.brand as string,
-      Car_Model: carModelDetails?.model as string,
+      Car_Brand: modelDetail?.brand as string,
+      Car_Model: modelDetail?.model as string,
       City: cityOtr?.cityName || 'null',
       DP: `Rp${Currency(String(currentDp))}`,
       Cicilan: `Rp${getMonthlyInstallment()}`,
@@ -209,7 +217,7 @@ export const CarOverview = ({
         .replace(':tab', 'kredit') + `${tab && `tab=${tab}`}`
   }
 
-  if (!carModelDetails || !carVariantDetails) return <></>
+  if (!modelDetail || !variantDetail) return <></>
 
   return (
     <div className={styles.container}>
@@ -217,15 +225,15 @@ export const CarOverview = ({
         className={styles.carBrandModelText}
         data-testid={elementId.Text + 'car-brand-model'}
       >
-        {carModelDetails?.brand + ' ' + carModelDetails?.model}
+        {modelDetail?.brand + ' ' + modelDetail?.model}
       </h2>
       <p
         className={styles.carDescriptionText}
         data-testid={elementId.Text + 'car-description'}
       >
-        {carModelDetails?.brand + ' ' + carModelDetails?.model} 2023 adalah{' '}
-        {carVariantDetails?.variantDetail.carSeats} Seater{' '}
-        {carVariantDetails?.variantDetail.bodyType}{' '}
+        {modelDetail?.brand + ' ' + modelDetail?.model} 2023 adalah{' '}
+        {variantDetail?.variantDetail.carSeats} Seater{' '}
+        {variantDetail?.variantDetail.bodyType}{' '}
         {sortedCarModelVariant.length === 1
           ? 'yang tersedia dalam daftar harga mulai dari ' +
             (sortedCarModelVariant[0].priceValue.toString().length > 9
@@ -255,7 +263,7 @@ export const CarOverview = ({
             <span
               style={{
                 color:
-                  carModelDetails?.brand === 'Daihatsu' ? '#878D98' : '#246ED4',
+                  modelDetail?.brand === 'Daihatsu' ? '#878D98' : '#246ED4',
               }}
               onClick={onClickOtrCity}
               data-testid={elementId.PDP.CarOverview.CityOtr}
@@ -263,7 +271,7 @@ export const CarOverview = ({
               {getCity()}
             </span>
           </span>
-          {carModelDetails?.brand === 'Daihatsu' ? (
+          {modelDetail?.brand === 'Daihatsu' ? (
             <div
               className={styles.tooltipWrapper}
               ref={tooltipRef}
@@ -342,7 +350,7 @@ export const CarOverview = ({
 
       <div className={styles.downloadBrochureWrapper}>
         <a
-          href={carVariantDetails?.variantDetail.pdfUrl}
+          href={variantDetail?.variantDetail.pdfUrl}
           style={{ width: '100%' }}
           target="_blank"
           rel="noreferrer"
