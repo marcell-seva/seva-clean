@@ -5,6 +5,7 @@ import { availableList, availableListColors } from 'config/AvailableListColors'
 import elementId from 'helpers/elementIds'
 import { PDPCarOverviewSkeleton } from 'components/organism'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { useRouter } from 'next/router'
 
 export const WarnaTab = ({ isShowAnnouncementBox }: any) => {
   const { carModelDetailsResDefaultCity: carModelDetails } =
@@ -12,10 +13,14 @@ export const WarnaTab = ({ isShowAnnouncementBox }: any) => {
 
   const [colorsList, setColorList] = useState<(string | string[])[]>([])
 
+  const router = useRouter()
+
   useEffect(() => {
-    const currentUrlPathName = window.location.pathname
+    const model = router.query.model
+    const brand = router.query.brand
+    const currentUrlPathName = router.asPath
     const splitedPath = currentUrlPathName.split('/')
-    const carBrandModelUrl = `/${splitedPath[1]}/${splitedPath[2]}/${splitedPath[3]}`
+    const carBrandModelUrl = `/${splitedPath[1]}/${brand}/${model}`
 
     if (availableList.includes(carBrandModelUrl)) {
       const colorsTmp = availableListColors.filter(

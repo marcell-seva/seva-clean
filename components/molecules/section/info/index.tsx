@@ -12,6 +12,7 @@ import {
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import elementId from 'helpers/elementIds'
 import { CityOtrOption } from 'utils/types/utils'
+import { client } from 'const/const'
 
 export interface PropsInfo {
   isWithIcon?: boolean
@@ -39,7 +40,7 @@ export const Info: React.FC<PropsInfo> = ({
       Car_Brand: carModelDetails?.brand ?? '',
       Car_Model: carModelDetails?.model ?? '',
       City: cityOtr?.cityName || 'null',
-      Page_Origination_URL: window.location.href,
+      Page_Origination_URL: client ? window.location.href : '',
     }
   }
 
