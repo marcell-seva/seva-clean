@@ -41,6 +41,7 @@ export const TanyaSeva = () => {
     LocalStorageKey.CityOtr,
     null,
   )
+  // TODO @toni : read "loanRankCVL" from query param
   // const location = useLocation<
   //   { [LocationStateKey.loanRankCVL]: LoanRank } | undefined
   // >()

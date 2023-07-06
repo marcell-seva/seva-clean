@@ -1,18 +1,21 @@
 import React from 'react'
-// import { Pannellum } from 'pannellum-react'
-import { Pannellum, PannellumVideo } from '@georgedrpg/pannellum-react-next'
+import { Pannellum } from '@georgedrpg/pannellum-react-next'
 import '@georgedrpg/pannellum-react-next/es/css/video-js.css'
 import '@georgedrpg/pannellum-react-next/es/css/pannellum.css'
 import '@georgedrpg/pannellum-react-next/es/css/style-textInfo.css'
 import styled from 'styled-components'
-import { interiorImagesList } from './InteriorImagesList'
-import { trimLastChar } from 'utils/urlUtils'
 import { Icon360 } from 'components/atoms'
 import { ImageUnavailable } from '../ImageUnavailable'
+import { interiorImagesListNew } from 'config/Interior360ImageList.config'
 
 export const InteriorViewer = () => {
   const getImage = () => {
-    return interiorImagesList[trimLastChar(window.location.pathname)]
+    const currentUrlPathname = window.location.pathname
+    const temp = interiorImagesListNew.filter((item) =>
+      currentUrlPathname.includes(item.url),
+    )
+    if (temp.length === 0) return ''
+    return temp[0].source
   }
 
   const renderNonStatic = () => {

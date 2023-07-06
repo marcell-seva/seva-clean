@@ -19,6 +19,8 @@ import {
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { CityOtrOption } from 'utils/types'
 import { LocalStorageKey } from 'utils/enum'
+import { exteriorImagesListNew } from 'config/Exterior360ImageList.config'
+import { interiorImagesListNew } from 'config/Interior360ImageList.config'
 
 interface Props {
   title: string
@@ -138,6 +140,24 @@ const GallerySectionV2 = ({ title }: Props) => {
     }
   }
 
+  const getImageExterior360 = () => {
+    const currentUrlPathname = window.location.pathname
+    const temp = exteriorImagesListNew.filter((item) =>
+      currentUrlPathname.includes(item.url),
+    )
+    if (temp.length === 0) return []
+    return temp[0].source
+  }
+
+  const getImageInterior360 = () => {
+    const currentUrlPathname = window.location.pathname
+    const temp = interiorImagesListNew.filter((item) =>
+      currentUrlPathname.includes(item.url),
+    )
+    if (temp.length === 0) return ''
+    return temp[0].source
+  }
+
   const renderRegularExteriorInteriorButton = () => {
     return (
       <>
@@ -222,11 +242,6 @@ const GallerySectionV2 = ({ title }: Props) => {
     )
   }
 
-  console.log(
-    'qwe',
-    availableList.includes(trimLastChar(window.location.pathname)),
-  )
-
   if (exteriorImageList.length === 0 && interiorImageList.length === 0)
     return <></>
 
@@ -240,10 +255,8 @@ const GallerySectionV2 = ({ title }: Props) => {
               ? render360ExteriorInteriorButton()
               : renderRegularExteriorInteriorButton()}
           </ExteriorInteriorButtonWrapper>
-          {(availableList.includes(trimLastChar(window.location.pathname)) ||
-            availableList.includes(
-              trimLastChar(window.location.pathname.replace('/galeri', '')),
-            )) && (
+          {(getImageExterior360().length > 0 ||
+            getImageInterior360().length > 0) && (
             <Button360Group>
               <Button360Label>360 View</Button360Label>
               <ToggleSwitch onChange={(e) => handleSwitchToggle(e)} />

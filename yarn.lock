@@ -4649,13 +4649,6 @@ p-try@^2.0.0:
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
 
-pannellum-react@^1.2.4:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/pannellum-react/-/pannellum-react-1.2.4.tgz#e91c7019ea73d2049f1da7ce1b13960b9214d659"
-  integrity sha512-Jk4tQFFE6lAy+JmNCu6pmTh9+th2XjqYGT/sOt17m/GYcN/Uu2Y1TVS2p8ndpCEyY8ZskGXvsmV6Apb3YdVi7Q==
-  dependencies:
-    video.js "^7.1.0"
-
 parent-module@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/parent-module/-/parent-module-1.0.1.tgz#691d2709e78c79fae3a156622452d00762caaaa2"
@@ -5370,7 +5363,7 @@ react-spring@^9.4.5:
     "@react-spring/web" "~9.7.3"
     "@react-spring/zdog" "~9.7.3"
 
-react-tridi@^2.1.1:
+react-tridi@^2.1.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/react-tridi/-/react-tridi-2.1.1.tgz#ca7caf432010b84ee653d4c83c1595bbb910a204"
   integrity sha512-vDqfamb+APWuATPVZh9PnaVkK+WitmKDBM6gMBvHbX5cVXSyyL0fYwb1WKGXPkouTKl3Ur1re9WaXijyYiqNKg==
