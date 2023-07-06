@@ -137,3 +137,11 @@ export interface MinMaxPrice {
   maxPriceValue: number
   minPriceValue: number
 }
+
+export interface CarButtonProps {
+  key: string
+  icon: JSX.Element
+  value: string
+  isChecked?: boolean
+  hide?: boolean
+}

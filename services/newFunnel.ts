@@ -3,7 +3,26 @@ import endpoints from 'helpers/endpoints'
 import { API } from 'utils/api'
 import { PaymentType } from 'utils/enum'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
+import { QueryKeys } from 'utils/models/models'
 import { FunnelQuery } from 'utils/types/context'
+
+export const getNewFunnelAllRecommendations = (
+  config?: AxiosRequestConfig,
+  customCity?: string,
+) => {
+  const params = new URLSearchParams()
+
+  getCity().cityCode && params.append('city', getCity().cityCode as string)
+  getCity().id && params.append('cityId', getCity().id as string)
+  if (customCity) {
+    params.set('city', customCity as string)
+  }
+
+  return API.get(endpoints.newFunnelRecommendation, {
+    ...config,
+    params,
+  })
+}
 
 export const getNewFunnelRecommendations = (
   funnelQuery: FunnelQuery,
@@ -66,6 +85,28 @@ export const getMinMaxPrice = (config?: AxiosRequestConfig) => {
   getCity().cityCode && params.append('city', getCity().cityCode as string)
 
   return API.get(endpoints.minMaxPrice, {
+    ...config,
+    params,
+  })
+}
+
+export const getNewFunnelRecommendationsByQueries = (
+  {
+    bodyType,
+    brand,
+  }: {
+    bodyType?: string[]
+    brand?: string[]
+  },
+  config?: AxiosRequestConfig,
+) => {
+  const params = new URLSearchParams()
+  bodyType && params.append(QueryKeys.CarBodyType, bodyType.join('/'))
+  brand && params.append(QueryKeys.CarBrand, brand.join('/'))
+  getCity().cityCode && params.append('city', getCity().cityCode as string)
+  getCity().id && params.append('cityId', getCity().id as string)
+
+  return API.get(endpoints.newFunnelRecommendation, {
     ...config,
     params,
   })

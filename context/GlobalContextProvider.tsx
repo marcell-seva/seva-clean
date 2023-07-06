@@ -9,6 +9,7 @@ import { CarModelDetailsContextProvider } from './carModelDetailsContext/carMode
 import { ModalContextProvider } from './modalContext/modalContext'
 import { SurveyFormProvider } from './surveyFormContext/surveyFormContext'
 import { SpecialRateListResultsContextProvider } from './specialRateResultsContext/specialRateResultsContext'
+import { FunnelFormContextProvider } from './funnelFormContext/funnelFormContext'
 
 const providers: Array<
   React.JSXElementConstructor<React.PropsWithChildren<any>>
@@ -17,6 +18,7 @@ const providers: Array<
   CarModelDetailsContextProvider,
   CarVariantDetailsContextProvider,
   FunnelQueryContextProvider,
+  FunnelFormContextProvider,
   FinancialQueryContextProvider,
   MobileWebTopMenusContextProvider,
   LastOtpSentTimeContextProviderRevamp,
