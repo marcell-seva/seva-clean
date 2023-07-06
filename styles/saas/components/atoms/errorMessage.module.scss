@@ -1,0 +1,9 @@
+@import '../../abstract/colors';
+
+.text {
+  color: #{$secondary-brick-red};
+  font-family: 'OpenSans';
+  font-weight: 400;
+  font-size: 12px;
+  margin-top: 8px;
+}

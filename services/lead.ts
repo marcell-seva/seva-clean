@@ -7,10 +7,58 @@ import {
 import endpoints from 'helpers/endpoints'
 import urls from 'helpers/urls'
 import { API } from 'utils/api'
-import { LocalStorageKey } from 'utils/enum'
 import { getLocalStorage } from 'utils/localstorageUtils'
-import { CreateUnverifiedLeadRequestNew, UTMTagsData } from 'utils/types/utils'
+import { UTMTagsData } from 'utils/types/utils'
 import { getStoredContactFormData } from './auth'
+import { ContactType, LocalStorageKey } from 'utils/models/models'
+
+export enum UnverifiedLeadSubCategory {
+  SEVA_NEW_CAR_LP_LEADS_FORM = 'SEVNCLFH',
+  SEVA_NEW_CAR_HUBUNGI_KAMI = 'SEVNCCUS',
+  SEVA_NEW_CAR_CAR_OF_THE_MONTH = 'SEVNCCOM',
+  SEVA_NEW_CAR_PROMO_LEADS_FORM = 'SEVNCPLF',
+  SEVA_NEW_CAR_PDP_LEADS_FORM = 'SEVNCVLF',
+  SEVA_NEW_CAR_PLP_LEADS_FORM = 'SEVNCSPF',
+  SEVA_NEW_CAR_SEARCH_WIDGET = 'SEVNCSWG',
+  SEVA_NEW_CAR_OFFLINE_EVENT_FORM_COLD = 'SEVNCOEC',
+  SEVA_NEW_CAR_OFFLINE_EVENT_FORM_HOT = 'SEVNCOEH',
+}
+
+interface GetCustomerAssistantResponse {
+  crmId: string
+  name: string
+  phoneNumber: string
+}
+
+export interface CreateUnverifiedLeadRequestNew {
+  origination: UnverifiedLeadSubCategory
+  name?: string
+  phoneNumber: string
+  contactType?: ContactType
+  email?: string
+  sevaKnowledge?: string
+  isPurchaseSoon?: boolean
+  sevaCarBrands?: string[]
+  otherCarBrand?: string[]
+  paymentPreference?: string
+  income?: string
+  age?: string
+  tenure?: number
+  dp?: number
+  otrPrice?: number
+  monthlyInstallment?: number
+  promo?: string
+  carBrand?: string
+  carModelText?: string
+  cityId?: number
+  platform?: string
+}
+
+const getCustomerAssistantDetails = (phoneNumber: string) => {
+  return API.post(endpoints.customerAssistantDetails, {
+    phoneNumber,
+  })
+}
 
 export const createUnverifiedLeadNew = (
   requestBody: CreateUnverifiedLeadRequestNew,
@@ -25,18 +73,6 @@ export const createUnverifiedLeadNew = (
     utmContent: null, // temporary
     utmTerm: UTMTags?.utm_term,
     adSet: UTMTags?.adset,
-  })
-}
-
-interface GetCustomerAssistantResponse {
-  crmId: string
-  name: string
-  phoneNumber: string
-}
-
-const getCustomerAssistantDetails = (phoneNumber: string) => {
-  return API.post(endpoints.customerAssistantDetails, {
-    phoneNumber,
   })
 }
 

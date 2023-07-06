@@ -1,0 +1,40 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  position: sticky;
+  top: 54px; // page header height is 54px
+  background: #{$primary-white};
+  border-bottom: 1px solid #{$shades-grey-10};
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  z-index: 4;
+}
+
+.showAAnnouncementBox {
+  top: 115px !important;
+}
+
+.hideAAnnouncementBox {
+  top: 54px;
+}
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+@include lg {
+  .container {
+    background: #{$primary-white};
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: scroll;
+  }
+
+  .container::-webkit-scrollbar {
+    display: none;
+  }
+}

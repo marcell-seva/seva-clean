@@ -126,3 +126,30 @@ export interface PropsListNavBarMenu {
 export interface PropsShadow {
   type: string
 }
+
+export interface TabItemData {
+  label: string | JSX.Element
+  value: string
+  testid?: string
+}
+
+export interface TabItemProps extends TabItemData {
+  isActive: boolean
+  onClickHandler?: (value: string) => void
+  dataTestId: string
+  onPage?: string
+}
+
+export interface PropsField {
+  title: string
+  data: string
+  isLastIndex?: boolean
+}
+
+export interface PropsFieldDetail {
+  title: string
+  data: Array<{
+    key: string
+    value: string | number
+  }>
+}

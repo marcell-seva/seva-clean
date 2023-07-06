@@ -18,4 +18,7 @@ export const t = {
       aboutUs: 'Tentang kami',
     },
   },
+  shareModal: {
+    title: 'Bagikan',
+  },
 }

@@ -1,0 +1,40 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.outer {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  background: #{$primary-white};
+  border: 1px solid #{$shades-grey-10};
+  border-radius: 37px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inner {
+  width: 16px;
+  height: 16px;
+  border-radius: 47px;
+}
+
+.innerTop {
+  height: 50%;
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
+}
+
+.innerBottom {
+  height: 50%;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+
+@include lg {
+  .outer {
+  }
+
+  .inner {
+  }
+}

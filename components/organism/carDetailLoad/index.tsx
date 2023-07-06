@@ -1,6 +1,6 @@
 import React from 'react'
 import { CardShadow, Skeleton } from 'components/atoms'
-import styles from '../../../styles/saas/components/organism/carDetailLoad.module.scss'
+import styles from 'styles/saas/components/organism/carDetailLoad.module.scss'
 
 const CarSkeleton = '/v3/assets/illustration/car-skeleton.webp'
 

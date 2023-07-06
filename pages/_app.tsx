@@ -16,8 +16,10 @@ import { applyPolyfills, defineCustomElements } from 'seva-ui-kit/loader'
 import Script from 'next/script'
 import 'styles/saas/global.scss'
 import 'styles/saas/bottomSheet.scss'
+import 'styles/saas/customAnimation.scss'
 import 'react-spring-bottom-sheet/dist/style.css'
 import 'styles/index.css'
+import 'styles/saas/modal-gallery.scss'
 
 const kanyon = localFont({
   src: '../public/Kanyon-Regular.otf',

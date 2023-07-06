@@ -10,6 +10,7 @@ import { ModalContextProvider } from './modalContext/modalContext'
 import { SurveyFormProvider } from './surveyFormContext/surveyFormContext'
 import { SpecialRateListResultsContextProvider } from './specialRateResultsContext/specialRateResultsContext'
 import { FunnelFormContextProvider } from './funnelFormContext/funnelFormContext'
+import { CurrentLanguageContextProvider } from './currentLanguageContext/currentLanguageContext'
 
 const providers: Array<
   React.JSXElementConstructor<React.PropsWithChildren<any>>
@@ -25,6 +26,7 @@ const providers: Array<
   ModalContextProvider,
   SurveyFormProvider,
   SpecialRateListResultsContextProvider,
+  CurrentLanguageContextProvider,
 ]
 
 export const GlobalContextProvider = (props: HTMLAttributes<HTMLElement>) => {

@@ -1,0 +1,46 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  width: 100%;
+  max-width: 332px;
+  margin: 8px auto 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.arrowWrapper {
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.arrowHidden {
+  visibility: hidden;
+}
+
+.colorGroup {
+  margin: 0 auto;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.centerColorGroup {
+  justify-content: center;
+}
+
+@include lg {
+  .container {
+  }
+}

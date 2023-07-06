@@ -1,4 +1,5 @@
 import { ReactElement } from 'react'
+import { InstallmentTypeOptions } from 'utils/models/models'
 import {
   ContactType,
   LoanRank,
@@ -249,6 +250,38 @@ export interface SimpleCarVariantDetail {
   flatRate?: number
 }
 
+export interface VideoDataType {
+  thumbnailVideo: string
+  title: string
+  videoSrc: string
+  videoId: string
+  accountName: string
+  date: string
+}
+
+export interface SpecialRateListType {
+  tenure: number
+  interestRate: number
+  dp: number
+  dpAmount: number
+  installment: number
+  saveAmount: number
+  loanRank: string
+  totalFirstPayment: number
+  totalFirstPaymentADDB: number
+  totalFirstPaymentADDM: number
+}
+
+export interface SpecialRateList {
+  tenure: number
+  interestRate: number
+  dp: number
+  dpAmount: number
+  installment: number
+  saveAmount: number
+  loanRank: string
+  totalFirstPayment: number
+}
 export interface CreateUnverifiedLeadRequestNew {
   origination: UnverifiedLeadSubCategory
   name?: string
@@ -349,6 +382,90 @@ export interface CarVariant {
   rasioBahanBakar: string
 }
 
+export interface CarVariantRecommendation extends CarVariant {
+  loanRank: string
+  tenure: number
+  dpAmount: number
+  monthlyInstallment: number
+}
+
+export interface CityOtrOption {
+  cityName: string
+  cityCode: string
+  province: string
+  id?: string
+}
+
+export interface SpecialRateRequest {
+  otr: number
+  dp: number
+  dpAmount: number
+  monthlyIncome?: number
+  age?: string
+  city: string
+  discount: number
+  rateType?: string
+  angsuranType?: InstallmentTypeOptions
+  isFreeInsurance?: boolean
+}
+
+export interface CarVariantListPageUrlParams {
+  brand: string
+  model: string
+  tab: string
+}
+
+export interface AlephArticleCategoryType {
+  label: string
+  url: string
+  value: string
+  testid?: string
+}
+
+export interface dpRateCollectionNewCalculatorTmp {
+  dpRate: number
+  dpCalc: number
+}
+
+export interface SimpleCarVariantDetail {
+  modelId: string
+  variantId: string
+  loanTenure: number
+  loanDownPayment: number
+  loanMonthlyInstallment: number
+  loanRank: string
+  totalFirstPayment?: number
+  angsuranType?: string
+  rateType?: string
+  flatRate?: number
+}
+
+export interface FormLCState {
+  city: CityOtrOption
+  model:
+    | {
+        modelId: string
+        modelName: string
+        modelImage: string
+        brandName: string
+      }
+    | undefined
+  variant:
+    | {
+        variantId: string
+        variantName: string
+        otr: string
+        discount: number
+      }
+    | undefined
+  promoCode: string
+  isValidPromoCode: boolean
+  age: string
+  monthlyIncome: string
+  downPaymentAmount: string
+  paymentOption: InstallmentTypeOptions
+}
+
 export interface CarModelBasicDetailsResponse extends CarModelBasicInfo {
   variants: CarVariant[]
   images: string[]
@@ -365,6 +482,55 @@ export interface CarModelDetailsResponse {
   length?: number
   width?: number
   height?: number
+}
+
+export interface MetaTagApiResponse {
+  id: number
+  attributes: {
+    meta_title: string
+    meta_description: string
+    createdAt: string
+    updatedAt: string
+    publishedAt: string
+    location_page3: string
+  }
+}
+
+export interface CarModelBasicInfo {
+  id: string
+  brand: string
+  model: string
+  promoFlag: boolean
+}
+
+export interface CarModelBasicDetailsResponse extends CarModelBasicInfo {
+  variants: CarVariant[]
+  images: string[]
+}
+
+export type VideoOptionType = {
+  UploadedBy: string
+  PostedDate: string
+  videoUrl: string
+}
+
+export type MainVideoResponseType = {
+  id: number
+  modelId: string
+  link: string
+  thumbnail: string
+  isMain: boolean
+  title: string
+  accountName: string
+  createdAt: string
+  updatedAt: string
+  listVideo: VideoOptionType[]
+}
+
+export interface Time {
+  hours: string
+  minutes: string
+  seconds: string
 }
 
 export interface CarVariantRecommendation extends CarVariant {
@@ -440,4 +606,25 @@ export interface FooterSEOAttributes {
   createdAt: string
   updatedAt: string
   publishedAt: string
+}
+export interface ArticleCategoryType {
+  name: string
+  isSelected: boolean
+  url: string
+}
+
+export interface AlephArticleCategoryType {
+  label: string
+  url: string
+  value: string
+  testid?: string
+}
+
+export type VideoReviewType = {
+  brand: string
+  Model: string
+  MainVideoUrl: string
+  listVideo: VideoOptionType[]
+  UploadedBy: string
+  PostedDate: string
 }

@@ -19,6 +19,8 @@ import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { CarHeader } from 'components/molecules/CarHeader/CarHeader'
 import Link from 'next/link'
 import { ContentPage } from '../ContentPage/ContentPage'
+import { useShareModal } from 'components/molecules/OldShareModal/ShareModal'
+import { client } from 'const/const'
 
 export interface HeaderAndContentProps extends StickyButtonProps {
   onSticky?: (sticky: boolean) => void
@@ -33,7 +35,7 @@ export const HeaderAndContent = ({
   const router = useRouter()
   const { model, brand, slug } = router.query
   const tab = Array.isArray(slug) ? slug[0] : undefined
-  // const { showModal: showShareModal, ShareModal } = useShareModal()
+  const { showModal: showShareModal, ShareModal } = useShareModal()
   const [scrollXTab, setScrollXTab] = useState(0)
   const isDesktop = useMediaQuery({ query: '(min-width: 1025px)' })
   const [scrollPosition, setScrollPosition] = useState(0)
@@ -148,7 +150,7 @@ export const HeaderAndContent = ({
       Car_Model: carModelDetails?.model ?? '',
       OTR: `Rp${carOtrPrice}`,
       City: cityOtr?.cityName || 'null',
-      Page_Origination_URL: window.location.href,
+      Page_Origination_URL: client ? window.location.href : '',
     }
   }
 
@@ -157,7 +159,7 @@ export const HeaderAndContent = ({
       <CarHeader
         onClickShare={() => {
           trackCarVariantShareClick(getDataForAmplitude())
-          // showShareModal()
+          showShareModal()
         }}
         isSticky={isSticky}
         {...props}
@@ -196,7 +198,7 @@ export const HeaderAndContent = ({
           {/* <FooterSeva /> */}
         </Suspense>
       </TabContentWrapper>
-      {/* <ShareModal dataForAmplitude={getDataForAmplitude()} /> */}
+      <ShareModal dataForAmplitude={getDataForAmplitude()} />
     </>
   )
 }

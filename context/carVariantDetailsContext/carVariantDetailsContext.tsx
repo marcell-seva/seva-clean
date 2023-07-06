@@ -6,7 +6,7 @@ const { Context, Provider } = createDataContext<CarVariantDetails | undefined>(
   undefined,
 )
 
-export const CarVariantDetailsContextProvider = Provider
+export const CarVariantDetailsContextProvider: any = Provider
 
 export const useContextCarVariantDetails = () => {
   const { state, setState } = useContext(Context)
