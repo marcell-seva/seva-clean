@@ -5,7 +5,7 @@ declare module 'dompurify'
 declare module 'lodash.debounce'
 
 interface Window {
-  gtag: (type: string, tagType: string, options?: Options) => void
+  gtag: any
   dataLayer: Array
   checkForDrag: any
 }

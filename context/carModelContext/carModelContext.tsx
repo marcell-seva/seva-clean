@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { CarModelResponse } from '../../types/types'
+import { CarModelResponse } from 'utils/types/carVariant'
 import createDataContext from '../createDataContext'
 
 const { Context, Provider } = createDataContext<CarModelResponse | undefined>(

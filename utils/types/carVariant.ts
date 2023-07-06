@@ -19,3 +19,17 @@ export interface ModelVariant {
   priceValue: number
   transmission: string
 }
+
+export interface CarModelResponse {
+  id: string
+  brand: string
+  model: string
+  lowestAssetPrice: number
+  highestAssetPrice: number
+  // brandAndModel: String
+  image: string
+  loanRank: string
+  // modelAndBrand: String
+  numberOfPopulation: number
+  // variants: CarVariantRecommendation[]
+}
