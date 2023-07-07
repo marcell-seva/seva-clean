@@ -89,3 +89,18 @@ export const handleRecommendationsAndCarModelDetailsUpdate =
       setCarModelDetails,
     )
   }
+
+export const handleCarModelDetailsUpdate =
+  (
+    recommendations: CarRecommendation[],
+    setCarModelDetails: React.Dispatch<
+      React.SetStateAction<CarModelDetailsResponse | undefined>
+    >,
+  ) =>
+  (response: AxiosResponse<CarModelBasicDetailsResponse>) => {
+    updateCarModelDetailsWithLoanInfo(
+      recommendations,
+      response.data,
+      setCarModelDetails,
+    )
+  }

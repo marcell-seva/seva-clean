@@ -68,6 +68,7 @@ import {
   BackIcon,
   DownOutlined,
   CloseOutlined2,
+  InfoCircleOutlined,
 } from './icon'
 import Brand from './brand'
 import Logo from './logo'
@@ -197,4 +198,5 @@ export {
   DownOutlined,
   ToggleSwitch,
   CloseOutlined2,
+  InfoCircleOutlined,
 }

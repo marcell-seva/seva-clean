@@ -55,6 +55,8 @@ import {
   AlephArticleCategoryType,
   VideoOptionType,
   VideoReviewType,
+  PreapprovalDataType,
+  CarModelResponse,
 } from './utils'
 
 import { User, Token, Filter, UTM } from './context'
@@ -116,4 +118,6 @@ export type {
   AlephArticleCategoryType,
   VideoOptionType,
   VideoReviewType,
+  PreapprovalDataType,
+  CarModelResponse,
 }

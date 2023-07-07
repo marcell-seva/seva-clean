@@ -5,7 +5,7 @@ const TabSummary = lazy(() => import('./Summary/Summary'))
 const TabPrice = lazy(() => import('./Price/Price'))
 const TabSpecification = lazy(() => import('./Specification/Specification'))
 const TabGallery = lazy(() => import('./Gallery/Gallery'))
-// const TabCredit = lazy(() => import('./Credit/Credit'))
+const TabCredit = lazy(() => import('./Credit/Credit'))
 // const TabCreditV2 = lazy(() => import('./CreditV2/CreditV2'))
 
 type ContentPageProps = {
@@ -23,9 +23,9 @@ export const ContentPage = memo(
       return <TabPrice tab={tab} isSticky={isSticky} />
     } else if (tab === 'kredit') {
       // if (!isMobile) {
-      //   return <TabCredit tab={tab} isShowLoading={isShowLoading} />
+      return <TabCredit tab={tab} isShowLoading={isShowLoading} />
       // } else {
-      //   return <TabCreditV2 tab={tab} isShowLoading={isShowLoading} />
+      // return <TabCreditV2 tab={tab} isShowLoading={isShowLoading} />
       // }
     } else if (tab === 'spesifikasi') {
       return <TabSpecification tab={tab} isSticky={isSticky} />
