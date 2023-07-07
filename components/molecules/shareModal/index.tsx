@@ -20,6 +20,7 @@ import {
   trackCarVariantSharePopupWaClick,
 } from 'helpers/amplitude/seva20Tracking'
 import { CityOtrOption } from 'utils/types/utils'
+import { client } from 'const/const'
 
 type Props = ModalProps
 
@@ -39,7 +40,7 @@ export const ShareModal = (props: Props) => {
       //   LanguageCode.id,
       // )}`,
       City: cityOtr?.cityName || 'null',
-      Page_Origination_URL: window.location.href,
+      Page_Origination_URL: client ? window.location.href : '',
     }
   }
 

@@ -33,6 +33,7 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "firebase": "^8.6.2",
     "fuse.js": "^6.6.2",
+    "mobile-detect": "^1.4.5",
     "next": "13.1.1",
     "next-pwa": "^5.6.0",
     "pure-react-carousel": "^1.27.6",

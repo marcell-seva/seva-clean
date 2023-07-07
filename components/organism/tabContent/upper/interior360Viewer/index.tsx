@@ -4,6 +4,7 @@ import styles from 'styles/saas/components/organism/interior360Viewer.module.scs
 import { Icon360 } from 'components/atoms'
 import { interiorImagesListNew } from 'config/Interior360ImageList.config'
 import elementId from 'helpers/elementIds'
+import { useRouter } from 'next/router'
 
 const Pannellum = dynamic(() => import('components/molecules/PanellumItem'), {
   ssr: false,
@@ -13,8 +14,10 @@ interface Props {
   isShowAnnouncementBox: boolean | null
 }
 export const Interior360ViewerTab = ({ isShowAnnouncementBox }: Props) => {
+  const router = useRouter()
+
   const getImage = () => {
-    const currentUrlPathname = window.location.pathname
+    const currentUrlPathname = router.asPath
     const temp = interiorImagesListNew.filter((item) =>
       currentUrlPathname.includes(item.url),
     )

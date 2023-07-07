@@ -10,14 +10,16 @@ import styles from 'styles/saas/components/organism/exterior360Viewer.module.scs
 import { RotateLeft, RotateRight } from 'components/atoms'
 import { exteriorImagesListNew } from 'config/Exterior360ImageList.config'
 import elementId from 'helpers/elementIds'
+import { useRouter } from 'next/router'
 interface Props {
   isShowAnnouncementBox: boolean | null
 }
 export const Exterior360ViewerTab = ({ isShowAnnouncementBox }: Props) => {
   const tridiRef = useRef<any>(null)
+  const router = useRouter()
 
   const getImage = () => {
-    const currentUrlPathname = window.location.pathname
+    const currentUrlPathname = router.asPath
     const temp = exteriorImagesListNew.filter((item) =>
       currentUrlPathname.includes(item.url),
     )

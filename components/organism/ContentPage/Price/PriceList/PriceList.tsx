@@ -1,5 +1,5 @@
 import { AdditionalInfoCarVariant } from 'components/molecules/TitleHeader/TitleHeader'
-import { million, ten } from 'const/const'
+import { client, million, ten } from 'const/const'
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 import {
@@ -62,7 +62,7 @@ export const PriceList = () => {
       )} jt/bln`,
       Tenure: String(item.tenure),
       Car_Variant: item.name,
-      Page_Origination_URL: window.location.href,
+      Page_Origination_URL: client ? window.location.href : '',
     }
   }
 

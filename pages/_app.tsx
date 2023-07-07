@@ -20,6 +20,7 @@ import 'styles/saas/customAnimation.scss'
 import 'react-spring-bottom-sheet/dist/style.css'
 import 'styles/index.css'
 import 'styles/saas/modal-gallery.scss'
+import { IsSsrMobileContext } from 'context/isSsrMobileContext'
 
 const kanyon = localFont({
   src: '../public/Kanyon-Regular.otf',
@@ -52,25 +53,26 @@ export default function App({ Component, pageProps }: AppProps) {
     TagManager.initialize({ gtmId: 'GTM-TV9J5JM' })
   }, [])
   return (
-    <GlobalContextProvider>
-      <ConfigProvider>
-        <AuthProvider>
-          <LocationProvider>
-            <CarProvider>
-              <style jsx global>{`
-                :root {
-                  --kanyon: ${kanyon.style.fontFamily};
-                  --kanyon-bold: ${kanyonBold.style.fontFamily};
-                  --open-sans: ${OpenSans.style.fontFamily};
-                  --open-sans-semi-bold: ${OpenSansSemiBold.style.fontFamily};
-                }
-              `}</style>
-              <Component {...pageProps} />
-              <Script
-                type="text/javascript"
-                strategy="afterInteractive"
-                dangerouslySetInnerHTML={{
-                  __html: `(function(i, s, o, g, r, a, m, n) {
+    <IsSsrMobileContext.Provider value={pageProps.isSsrMobile}>
+      <GlobalContextProvider>
+        <ConfigProvider>
+          <AuthProvider>
+            <LocationProvider>
+              <CarProvider>
+                <style jsx global>{`
+                  :root {
+                    --kanyon: ${kanyon.style.fontFamily};
+                    --kanyon-bold: ${kanyonBold.style.fontFamily};
+                    --open-sans: ${OpenSans.style.fontFamily};
+                    --open-sans-semi-bold: ${OpenSansSemiBold.style.fontFamily};
+                  }
+                `}</style>
+                <Component {...pageProps} />
+                <Script
+                  type="text/javascript"
+                  strategy="afterInteractive"
+                  dangerouslySetInnerHTML={{
+                    __html: `(function(i, s, o, g, r, a, m, n) {
         i.moengage_object = r
         t = {}
         q = function (f) {
@@ -141,12 +143,13 @@ export default function App({ Component, pageProps }: AppProps) {
           debug_logs: 0,
         })
         }`,
-                }}
-              ></Script>
-            </CarProvider>
-          </LocationProvider>
-        </AuthProvider>
-      </ConfigProvider>
-    </GlobalContextProvider>
+                  }}
+                ></Script>
+              </CarProvider>
+            </LocationProvider>
+          </AuthProvider>
+        </ConfigProvider>
+      </GlobalContextProvider>
+    </IsSsrMobileContext.Provider>
   )
 }

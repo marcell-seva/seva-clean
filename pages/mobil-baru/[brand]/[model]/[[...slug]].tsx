@@ -1,10 +1,12 @@
-import React, { createContext, useMemo } from 'react'
-import { useMediaQuery } from 'react-responsive'
+import React, { createContext, useEffect, useMemo, useState } from 'react'
 import { PdpDesktop, PdpMobile } from 'components/organism'
 import { api } from 'services/api'
 import { CarRecommendation } from 'utils/types/utils'
 import { InferGetServerSidePropsType } from 'next'
 import Head from 'next/head'
+import { getIsSsrMobile } from 'utils/getIsSsrMobile'
+import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
+import { useMediaQuery } from 'react-responsive'
 interface PdpDataLocalContextType {
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.
@@ -41,7 +43,14 @@ export default function index({
   metaTagDataRes,
   carVideoReviewRes,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
+  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
+
+  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
+
+  useEffect(() => {
+    setIsMobile(isClientMobile)
+  }, [isClientMobile])
+
   const meta = useMemo(() => {
     const title =
       metaTagDataRes.data && metaTagDataRes.data.length > 0
@@ -74,13 +83,13 @@ export default function index({
     </>
   )
 }
-export async function getServerSideProps({ res, query }: any) {
-  res.setHeader(
+export async function getServerSideProps(context: any) {
+  context.res.setHeader(
     'Cache-Control',
     'public, s-maxage=10, stale-while-revalidate=59',
   )
   try {
-    if (query.slug?.length > 1) {
+    if (context.query.slug?.length > 1) {
       return {
         notFound: true,
       }
@@ -88,14 +97,14 @@ export async function getServerSideProps({ res, query }: any) {
     const [carRecommendationsRes, metaTagDataRes, carVideoReviewRes]: any =
       await Promise.all([
         api.getRecommendation('?city=jakarta&cityId=118'),
-        api.getMetaTagData(query.model.replaceAll('-', '')),
+        api.getMetaTagData(context.query.model.replaceAll('-', '')),
         api.getCarVideoReview(),
       ])
     let id = ''
     const carList = carRecommendationsRes.carRecommendations
     const currentCar = carList.filter(
       (value: CarRecommendation) =>
-        value.model.replace(/ +/g, '-').toLowerCase() === query.model,
+        value.model.replace(/ +/g, '-').toLowerCase() === context.query.model,
     )
     if (currentCar.length > 0) {
       id = currentCar[0].id
@@ -122,6 +131,7 @@ export async function getServerSideProps({ res, query }: any) {
         carVariantDetailsRes,
         metaTagDataRes,
         carVideoReviewRes,
+        isSsrMobile: getIsSsrMobile(context),
       },
     }
   } catch (error) {

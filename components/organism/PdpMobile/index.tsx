@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import {
   FooterMobile,
   HeaderMobile,
@@ -9,13 +9,11 @@ import {
 } from 'components/organism'
 import styles from 'styles/saas/pages/carVariantList.module.scss'
 import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
-import { useFetch } from 'utils/hooks/useFetch/useFetch'
 import {
   AnnouncementBoxDataType,
   CarRecommendation,
   CityOtrOption,
   MainVideoResponseType,
-  MetaTagApiResponse,
   VideoDataType,
 } from 'utils/types/utils'
 import {
@@ -24,7 +22,6 @@ import {
   LocalStorageKey,
   SessionStorageKey,
 } from 'utils/enum'
-import { LocationStateKey } from 'utils/models/models'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import {
   getCarVideoReview,
@@ -39,7 +36,6 @@ import {
 import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import Head from 'next/head'
 import {
   CitySelectorModal,
   OverlayGallery,
@@ -68,6 +64,7 @@ import endpoints from 'helpers/endpoints'
 import { AxiosResponse } from 'axios'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 
 export interface CarVariantListPageUrlParams {
   brand: string
@@ -75,13 +72,10 @@ export interface CarVariantListPageUrlParams {
   tab: string
 }
 
-const metaTagBaseApi =
-  'https://api.sslpots.com/api/meta-seos/?filters[master_model][model_code][$contains]='
-
 export default function NewCarVariantList() {
   const [isPreviewGalleryOpened, setIsPreviewGalleryOpened] =
     useState<boolean>(false)
-  const [status, setStatus] = useState<'loading' | 'empty' | 'exist'>('loading')
+  const [status, setStatus] = useState<'loading' | 'empty' | 'exist'>('exist')
   const [galleryIndexActive, setGalleryIndexActive] = useState<number>(0)
   const [dataPreviewImages, setDataPreviewImages] = useState<Array<string>>([])
 
@@ -110,6 +104,10 @@ export default function NewCarVariantList() {
   const { setCarVariantDetails } = useContextCarVariantDetails()
   const { setRecommendations } = useContextRecommendations()
   const { carModelDetails, setCarModelDetails } = useContextCarModelDetails()
+  const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
+
+  const modelDetail = carModelDetails || carModelDetailsResDefaultCity
+
   const [videoData, setVideoData] = useState<VideoDataType>({
     thumbnailVideo: '',
     title: '',
@@ -171,16 +169,16 @@ export default function NewCarVariantList() {
 
   const sortedCarModelVariant = useMemo(() => {
     return (
-      carModelDetails?.variants.sort(function (a, b) {
+      modelDetail?.variants.sort(function (a, b) {
         return a.priceValue - b.priceValue
       }) || []
     )
-  }, [carModelDetails])
+  }, [modelDetail])
 
   const getVideoReview = async () => {
     const dataVideoReview = await getCarVideoReview()
     const filterVideoReview = dataVideoReview.data.data.filter(
-      (video: MainVideoResponseType) => video.modelId === carModelDetails?.id,
+      (video: MainVideoResponseType) => video.modelId === modelDetail?.id,
     )[0]
     if (filterVideoReview) {
       const videoId = filterVideoReview.link.split(/[=&]/)[1]
@@ -260,13 +258,13 @@ export default function NewCarVariantList() {
   }
 
   const trackFloatingWhatsapp = () => {
-    if (!carModelDetails) return
+    if (!modelDetail) return
 
     const trackerProperty: CarSearchPageMintaPenawaranParam = {
       Car_Brand: brand,
       Car_Model: model,
       OTR: `Rp${replacePriceSeparatorByLocalization(
-        carModelDetails?.variants[0].priceValue,
+        modelDetail?.variants[0].priceValue,
         LanguageCode?.id,
       )}`,
       DP: `Rp${getDp()} Juta`,

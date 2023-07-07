@@ -282,10 +282,15 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
   }
 
   const onClickCalculateCta = () => {
-    const urlDirection = variantListUrl
+    let urlDirection = variantListUrl
       .replace(':brand', brand)
       .replace(':model', model)
       .replace(':tab', 'kredit')
+
+    if (router.basePath) {
+      urlDirection = router.basePath + urlDirection
+    }
+
     trackCTAWidgetDirection({
       Page_Direction_URL:
         'https://' + window.location.host + urlDirection.replace('?', ''),
