@@ -51,7 +51,6 @@ export default function index({
     setIsMobile(isClientMobile)
   }, [isClientMobile])
 
-  console.log('IS MOBILE : ', isMobile)
   const meta = useMemo(() => {
     const title =
       metaTagDataRes.data && metaTagDataRes.data.length > 0
