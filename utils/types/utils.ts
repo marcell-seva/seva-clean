@@ -431,8 +431,8 @@ export interface FormLCState {
   monthlyIncome: string
   downPaymentAmount: string
   paymentOption: InstallmentTypeOptions
-    }
-  
+}
+
 export interface CarModelBasicDetailsResponse extends CarModelBasicInfo {
   variants: CarVariant[]
   images: string[]
@@ -574,12 +574,6 @@ export interface AlephArticleCategoryType {
   testid?: string
 }
 
-export type VideoOptionType = {
-  UploadedBy: string
-  PostedDate: string
-  videoUrl: string
-}
-
 export type VideoReviewType = {
   brand: string
   Model: string
@@ -587,4 +581,28 @@ export type VideoReviewType = {
   listVideo: VideoOptionType[]
   UploadedBy: string
   PostedDate: string
+}
+
+export interface PreapprovalDataType {
+  phoneNumber?: string
+  occupation: string
+  totalIncome: string
+  province: string
+  city: string
+  zipCode: string
+  email: string
+}
+
+export interface CarModelResponse {
+  id: string
+  brand: string
+  model: string
+  lowestAssetPrice: number
+  highestAssetPrice: number
+  // brandAndModel: String
+  image: string
+  loanRank: string
+  // modelAndBrand: String
+  numberOfPopulation: number
+  // variants: CarVariantRecommendation[]
 }

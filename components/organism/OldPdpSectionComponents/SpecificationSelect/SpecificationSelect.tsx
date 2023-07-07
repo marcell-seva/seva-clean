@@ -13,7 +13,7 @@ interface SpecificationSelectProps {
   initialValue?: CarVariantRecommendation
   options: CarVariantRecommendation[]
   onChooseOption?: (item: CarVariantRecommendation) => void
-  onTabCreditV2?: boolean
+  isTabCreditV2?: boolean
   setScrollToSpecification?: (value: boolean) => void
   setInitital?: (value: boolean) => void
   onVariantChange?: (value: boolean) => void
@@ -23,7 +23,7 @@ export const SpecificationSelect = ({
   initialValue,
   options,
   onChooseOption,
-  onTabCreditV2 = false,
+  isTabCreditV2 = false,
   setScrollToSpecification,
   onVariantChange,
 }: SpecificationSelectProps) => {
@@ -62,13 +62,11 @@ export const SpecificationSelect = ({
   }
 
   const getVarintDetail = async (optionId: string) => {
-    api
-      .getCarVariantDetails(optionId, getCityParam())
-      .then(async (result3: any) => {
-        if (result3.data.variantDetail.priceValue != null) {
-          await setCarVariantDetails(result3.data)
-        }
-      })
+    api.getCarVariantDetails(optionId, getCityParam()).then((result3: any) => {
+      if (result3.variantDetail.priceValue != null) {
+        setCarVariantDetails(result3)
+      }
+    })
   }
   const renderDropdown = () => {
     const dropdownComponent = (
@@ -109,7 +107,7 @@ export const SpecificationSelect = ({
       <Selector ref={inputRef} onClick={() => setShowOption(!showOption)}>
         <SelectorTextWrapper>
           <ModelVariantText>{selected.name || ''}</ModelVariantText>
-          <PriceText onTabCreditV2={onTabCreditV2}>
+          <PriceText isTabCreditV2={isTabCreditV2}>
             Rp{' '}
             {replacePriceSeparatorByLocalization(
               selected.discount > 0
@@ -170,12 +168,12 @@ const ModelVariantText = styled.span`
   }
 `
 
-const PriceText = styled.span<{ onTabCreditV2: boolean }>`
+const PriceText = styled.span<{ isTabCreditV2: boolean }>`
   font-family: 'KanyonMedium';
   font-size: 14px;
   line-height: 28px;
-  color: ${({ onTabCreditV2 }) =>
-    onTabCreditV2 ? '#404040' : colors.primaryDarkBlue};
+  color: ${({ isTabCreditV2 }) =>
+    isTabCreditV2 ? '#404040' : colors.primaryDarkBlue};
 
   @media (min-width: 1025px) {
     font-size: 16px;

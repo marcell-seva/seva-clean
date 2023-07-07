@@ -60,11 +60,12 @@ export const HeaderAndContent = ({
   }, [scrollPosition])
 
   const handleScroll = () => {
-    const position = window.pageYOffset
+    const position = client ? window.pageYOffset : 0
     setScrollPosition(position)
   }
 
   useEffect(() => {
+    if (!client) return
     window.addEventListener('scroll', handleScroll)
 
     return () => {

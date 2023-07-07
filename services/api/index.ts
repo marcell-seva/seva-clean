@@ -77,6 +77,7 @@ const getCarofTheMonth = () => get(collections.product.carofTheMonth)
 const getCarVideoReview = () => get(collections.product.carVideoReview)
 const getAnnouncementBox = () => get(collections.utils.announcementBox)
 const getUserInfo = () => get(collections.auth.user, getConfigToken())
+const getSupportedBrowsers = () => get(collections.utils.supportedBrowser)
 
 // post request
 const postUnverfiedLeads = (body: any) =>
@@ -103,4 +104,5 @@ export const api = {
   getUserInfo,
   postUnverfiedLeads,
   postRefreshToken,
+  getSupportedBrowsers,
 }
