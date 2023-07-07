@@ -1,7 +1,9 @@
+import dynamic from 'next/dynamic'
 import React from 'react'
 import styled from 'styled-components'
-import { ExteriorViewer } from './ExteriorViewer/ExteriorViewer'
-import { InteriorViewer } from './InteriorViewer/InteriorViewer'
+
+const ExteriorViewer = dynamic(() => import('./ExteriorViewer/ExteriorViewer'))
+const InteriorViewer = dynamic(() => import('./InteriorViewer/InteriorViewer'))
 
 interface Props {
   isSelectedExterior: boolean

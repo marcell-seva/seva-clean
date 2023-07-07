@@ -6,7 +6,7 @@ import { RotateLeft, RotateRight } from 'components/atoms'
 import { ImageUnavailable } from '../ImageUnavailable'
 import { exteriorImagesListNew } from 'config/Exterior360ImageList.config'
 
-export const ExteriorViewer = () => {
+const ExteriorViewer = () => {
   const tridiRef = useRef<any>(null)
 
   const getImage = () => {
@@ -35,6 +35,8 @@ export const ExteriorViewer = () => {
     </Wrapper>
   )
 }
+
+export default ExteriorViewer
 
 const Wrapper = styled.div`
   margin: 0 auto;
