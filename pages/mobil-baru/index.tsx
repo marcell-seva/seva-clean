@@ -8,11 +8,13 @@ import { CarRecommendationResponse } from 'utils/types/context'
 import { FooterSEOAttributes } from 'utils/types/utils'
 import { useMediaQuery } from 'react-responsive'
 import PLPDesktop from 'components/organism/PLPDesktop'
+import { useIsMobile } from 'utils/index'
+import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 
 const NewCarResultPage = ({
   meta,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
+  const isMobile = useIsMobile()
   return (
     <>
       <Head>
@@ -126,8 +128,8 @@ export const getServerSideProps: GetServerSideProps<{
 
     if (recommendation) meta.carRecommendations = recommendation
 
-    return { props: { meta } }
+    return { props: { meta, isSsrMobile: getIsSsrMobile(ctx) } }
   } catch (e) {
-    return { props: { meta } }
+    return { props: { meta, isSsrMobile: getIsSsrMobile(ctx) } }
   }
 }

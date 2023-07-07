@@ -132,6 +132,10 @@ export const getNewFunnelRecommendationsByQueries = (
   brand && params.append(QueryKeys.CarBrand, brand.join('/'))
   getCity().cityCode && params.append('city', getCity().cityCode as string)
   getCity().id && params.append('cityId', getCity().id as string)
+  return API.get(endpoints.newFunnelRecommendation, {
+    ...config,
+    params,
+  })
 }
 
 export const getNewFunnelLoanSpecialRate = (
