@@ -4,6 +4,7 @@ import styles from 'styles/saas/components/organism/summary.module.scss'
 import {
   CarVariantRecommendation,
   SpecialRateListType,
+  VariantDetail,
   VideoDataType,
 } from 'utils/types/utils'
 import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
@@ -94,7 +95,7 @@ export const SummaryTab = ({
 
   const sortedCarModelVariant = useMemo(() => {
     return (
-      modelDetail?.variants.sort(function (a, b) {
+      modelDetail?.variants.sort(function (a: VariantDetail, b: VariantDetail) {
         return a.priceValue - b.priceValue
       }) || []
     )

@@ -29,7 +29,7 @@ import {
   trackPDPHitungKemampuan,
 } from 'helpers/amplitude/seva20Tracking'
 import { variantListUrl } from 'routes/routes'
-import { CityOtrOption } from 'utils/types/utils'
+import { CityOtrOption, VariantDetail } from 'utils/types/utils'
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 
@@ -73,7 +73,7 @@ export const CarOverview = ({
 
   const sortedCarModelVariant = useMemo(() => {
     return (
-      modelDetail?.variants.sort(function (a, b) {
+      modelDetail?.variants.sort(function (a: VariantDetail, b: VariantDetail) {
         return a.priceValue - b.priceValue
       }) || []
     )

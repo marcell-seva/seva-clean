@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import dynamic from 'next/dynamic'
 
-const Tridi = dynamic(() => import('react-tridi'), {
+const Tridi: any = dynamic(() => import('react-tridi'), {
   ssr: false,
 })
 
