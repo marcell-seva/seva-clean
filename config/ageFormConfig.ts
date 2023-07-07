@@ -1,4 +1,4 @@
-import { AgeGroup } from 'utils/models/models'
+import { AgeGroup } from 'utils/enum'
 
 type RadioOptionType = {
   value: string

@@ -1,3 +1,4 @@
+import { ReactElement } from 'react'
 import { InstallmentTypeOptions } from 'utils/models/models'
 import {
   ContactType,
@@ -28,6 +29,14 @@ export interface OptionWithText<T extends FormControlValue> {
   label: string
   value: T
   testid?: string
+}
+
+export type CheckboxItemType = {
+  value: string
+  label: string
+  isChecked: boolean
+  image?: () => ReactElement
+  subOptions?: CheckboxItemType[]
 }
 
 export interface Time {
@@ -215,6 +224,30 @@ export type CarRecommendation = {
   variants: CarVariantLoan[]
   brandAndModel?: string
   modelAndBrand?: string
+}
+
+export interface CarRecommendationResponse {
+  carRecommendations: CarRecommendation[]
+  lowestCarPrice: number
+  highestCarPrice: number
+}
+
+export interface CarResultIndexPage {
+  startIndex: number
+  endIndex: number
+}
+
+export interface SimpleCarVariantDetail {
+  modelId: string
+  variantId: string
+  loanTenure: number
+  loanDownPayment: number
+  loanMonthlyInstallment: number
+  loanRank: string
+  totalFirstPayment?: number
+  angsuranType?: string
+  rateType?: string
+  flatRate?: number
 }
 
 export interface VideoDataType {
@@ -561,6 +594,19 @@ export interface SpecialRateListType {
   totalFirstPaymentADDM: number
 }
 
+export interface FooterSEOAttributes {
+  location_tag: string
+  location_page2: string
+  title_1: string
+  Title_2: string
+  Title_3: string
+  content_1: string
+  Content_2: string
+  Content_3: string
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+}
 export interface ArticleCategoryType {
   name: string
   isSelected: boolean

@@ -1,14 +1,20 @@
-import { PLP } from 'components/organism'
+import { PdpDesktop, PLP } from 'components/organism'
 import React from 'react'
 import axios from 'axios'
 import Head from 'next/head'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import { CarRecommendationResponse } from 'utils/types/context'
+import { FooterSEOAttributes } from 'utils/types/utils'
+import { useMediaQuery } from 'react-responsive'
+import PLPDesktop from 'components/organism/PLPDesktop'
+import { useIsMobile } from 'utils/index'
+import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 
 const NewCarResultPage = ({
   meta,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const isMobile = useIsMobile()
   return (
     <>
       <Head>
@@ -17,7 +23,11 @@ const NewCarResultPage = ({
         <meta name="description" content={meta.description} />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <PLP carRecommendation={meta.carRecommendations} />
+      {isMobile ? (
+        <PLP carRecommendation={meta.carRecommendations} />
+      ) : (
+        <PLPDesktop footer={meta.footer} />
+      )}
     </>
   )
 }
@@ -27,6 +37,7 @@ export default NewCarResultPage
 type PLPProps = {
   title: string
   description: string
+  footer: FooterSEOAttributes
   carRecommendations: CarRecommendationResponse
 }
 
@@ -48,9 +59,24 @@ export const getServerSideProps: GetServerSideProps<{
   const metabrand = getBrand(ctx.query.brand)
   const metaTagBaseApi =
     'https://api.sslpots.com/api/meta-seos/?filters[location_page3][$eq]=CarSearchResult'
+  const footerTagBaseApi =
+    'https://api.sslpots.com/api/footer-seos/?filters[location_page2][$eq]=CarSearchResult'
   const meta = {
     title: 'SEVA',
     description: '',
+    footer: {
+      location_tag: '',
+      location_page2: '',
+      title_1: '',
+      Title_2: '',
+      Title_3: '',
+      content_1: '',
+      Content_2: '',
+      Content_3: '',
+      createdAt: '',
+      updatedAt: '',
+      publishedAt: '',
+    },
     carRecommendations: {
       carRecommendations: [],
       lowestCarPrice: 0,
@@ -82,22 +108,28 @@ export const getServerSideProps: GetServerSideProps<{
   }
 
   try {
-    const [fetchMeta, funnel] = await Promise.all([
+    const [fetchMeta, fetchFooter, funnel] = await Promise.all([
       axios.get(metaTagBaseApi + metabrand),
+      axios.get(footerTagBaseApi + metabrand),
       getNewFunnelRecommendations(queryParam),
     ])
 
     const metaData = fetchMeta.data.data
+    const footerData = fetchFooter.data.data
     const recommendation = funnel.data
     if (metaData && metaData.length > 0) {
       meta.title = metaData[0].attributes.meta_title
       meta.description = metaData[0].attributes.meta_description
     }
 
+    if (footerData && footerData.length > 0) {
+      meta.footer = footerData[0].attributes
+    }
+
     if (recommendation) meta.carRecommendations = recommendation
 
-    return { props: { meta } }
+    return { props: { meta, isSsrMobile: getIsSsrMobile(ctx) } }
   } catch (e) {
-    return { props: { meta } }
+    return { props: { meta, isSsrMobile: getIsSsrMobile(ctx) } }
   }
 }
