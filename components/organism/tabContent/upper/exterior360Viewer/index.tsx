@@ -1,6 +1,10 @@
 import React, { useRef } from 'react'
 import dynamic from 'next/dynamic'
-import Tridi from 'react-tridi'
+
+const Tridi: any = dynamic(() => import('react-tridi'), {
+  ssr: false,
+})
+
 import 'react-tridi/dist/index.css'
 import styles from 'styles/saas/components/organism/exterior360Viewer.module.scss'
 import { RotateLeft, RotateRight } from 'components/atoms'

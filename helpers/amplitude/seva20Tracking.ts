@@ -281,6 +281,46 @@ export type CreditQualificationReviewParam = UrlOriginationParam &
 
 export type Seva20TrackingEvent =
   | {
+      name: TrackingEventName.WEB_LC_CAR_RECOMMENDATION_CLICK
+      data: LCCarRecommendationParam
+    }
+  | {
+      name: TrackingEventName.WEB_LC_CAR_RECOMMENDATION_CTA_CLICK
+      data: LCCarRecommendationParam
+    }
+  | {
+      name: TrackingEventName.WEB_LC_ARTICLE_CLICK
+      data: LCArticleParam
+    }
+  | {
+      name: TrackingEventName.WEB_LC_ALL_ARTICLE_CLICK
+      data: LCAllArticleParam
+    }
+  | {
+      name: TrackingEventName.WEB_LC_CTA_HITUNG_KEMAMPUAN_CLICK
+      data: LCCTACalculateParam
+    }
+  | {
+      name: TrackingEventName.WEB_LC_CTA_KUALIFIKASI_KREDIT_CLICK
+      data: LCCTACreditCualificationParam
+    }
+  | {
+      name: TrackingEventName.WEB_LC_KUALIFIKASI_KREDIT_TOOLTIP_CTA_CLICK
+      data: LCCTACreditCualificationParam
+    }
+  | {
+      name: TrackingEventName.WEB_LC_KUALIFIKASI_KREDIT_TOOLTIP_CTA_CLOSE
+      data: LCCTACreditCualificationParam
+    }
+  | {
+      name: TrackingEventName.WEB_VARIANT_LIST_PAGE_CODE_SUCCESS_INPUT
+      data: { code: string }
+    }
+  | {
+      name: TrackingEventName.WEB_VARIANT_LIST_PAGE_CODE_FAILED_INPUT
+      data: { code: string }
+    }
+  | {
       name: TrackingEventName.WEB_LANDING_PAGE_VIEW
       data: null
     }
