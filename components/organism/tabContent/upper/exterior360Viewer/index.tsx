@@ -14,7 +14,7 @@ import { useRouter } from 'next/router'
 interface Props {
   isShowAnnouncementBox: boolean | null
 }
-export const Exterior360ViewerTab = ({ isShowAnnouncementBox }: Props) => {
+const Exterior360ViewerTab = ({ isShowAnnouncementBox }: Props) => {
   const tridiRef = useRef<any>(null)
   const router = useRouter()
 
@@ -57,3 +57,5 @@ export const Exterior360ViewerTab = ({ isShowAnnouncementBox }: Props) => {
     </div>
   )
 }
+
+export default Exterior360ViewerTab

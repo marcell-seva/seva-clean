@@ -14,8 +14,8 @@ export interface PropsCapsule {
 }
 
 export interface PropsIcon {
-  width: number
-  height: number
+  width?: number
+  height?: number
   color?: string
   fillColor?: string
   onClick?: () => void

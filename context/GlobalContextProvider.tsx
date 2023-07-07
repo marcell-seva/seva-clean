@@ -9,6 +9,7 @@ import { CarModelDetailsContextProvider } from './carModelDetailsContext/carMode
 import { ModalContextProvider } from './modalContext/modalContext'
 import { SurveyFormProvider } from './surveyFormContext/surveyFormContext'
 import { SpecialRateListResultsContextProvider } from './specialRateResultsContext/specialRateResultsContext'
+import { FunnelFormContextProvider } from './funnelFormContext/funnelFormContext'
 import { CurrentLanguageContextProvider } from './currentLanguageContext/currentLanguageContext'
 import { CarModelContextProvider } from './carModelContext/carModelContext'
 
@@ -19,6 +20,7 @@ const providers: Array<
   CarModelDetailsContextProvider,
   CarVariantDetailsContextProvider,
   FunnelQueryContextProvider,
+  FunnelFormContextProvider,
   FinancialQueryContextProvider,
   MobileWebTopMenusContextProvider,
   LastOtpSentTimeContextProviderRevamp,

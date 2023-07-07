@@ -1,9 +1,3 @@
-declare global {
-  interface Window {
-    gtag: any
-  }
-}
-
 const conversionLabelMap = {
   contact: '5_dGCIqC6uICEPHfrp4B',
   lead: 'ndhDCJXLweICEPHfrp4B',

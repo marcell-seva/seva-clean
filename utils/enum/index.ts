@@ -181,3 +181,10 @@ export enum ContactType {
   phone = 'phone',
   whatsApp = 'whatsApp',
 }
+
+export enum AgeGroup {
+  'From18to27' = '18-27',
+  'From28to34' = '28-34',
+  'From35to50' = '35-50',
+  'OlderThan50' = '>51',
+}

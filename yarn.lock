@@ -4382,6 +4382,11 @@ mkdirp-classic@^0.5.2, mkdirp-classic@^0.5.3:
   resolved "https://registry.yarnpkg.com/mkdirp-classic/-/mkdirp-classic-0.5.3.tgz#fa10c9115cc6d8865be221ba47ee9bed78601113"
   integrity sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==
 
+mobile-detect@^1.4.5:
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/mobile-detect/-/mobile-detect-1.4.5.tgz#da393c3c413ca1a9bcdd9ced653c38281c0fb6ad"
+  integrity sha512-yc0LhH6tItlvfLBugVUEtgawwFU2sIe+cSdmRJJCTMZ5GEJyLxNyC/NIOAOGk67Fa8GNpOttO3Xz/1bHpXFD/g==
+
 mpd-parser@0.22.1, mpd-parser@^0.22.1:
   version "0.22.1"
   resolved "https://registry.yarnpkg.com/mpd-parser/-/mpd-parser-0.22.1.tgz#bc2bf7d3e56368e4b0121035b055675401871521"
@@ -5341,13 +5346,6 @@ react-responsive@^9.0.2:
     matchmediaquery "^0.3.0"
     prop-types "^15.6.1"
     shallow-equal "^1.2.1"
-
-react-shimmer-effects@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/react-shimmer-effects/-/react-shimmer-effects-1.0.2.tgz#77a9f339f3f9ac37d288671ac9b10e1fe336f382"
-  integrity sha512-l08voMV0wffxve/fyDAnjqNzhZvmIWNVfWZkcgDA5n+aFQrMvpx3x7Jy0LMKJw+3mhPhdl+LN3ThazdQFxrPmQ==
-  dependencies:
-    classnames "^2.3.1"
 
 react-slider@^2.0.1:
   version "2.0.6"

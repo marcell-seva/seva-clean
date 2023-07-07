@@ -9,6 +9,7 @@ import {
 import { PaymentType } from 'utils/enum'
 import { defaultContactFormValue } from 'utils/hooks/useContactFormData/useContactFormData'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
+import { QueryKeys } from 'utils/models/models'
 import { defaultFormValue } from 'utils/hooks/useSurveyFormData/useSurveyFormData'
 import { LocalStorageKey } from 'utils/models/models'
 import { FunnelQuery } from 'utils/types/context'
@@ -30,6 +31,24 @@ export const getSurveyFormData = () => {
   }
 
   return item ? JSON.parse(item) : ''
+}
+
+export const getNewFunnelAllRecommendations = (
+  config?: AxiosRequestConfig,
+  customCity?: string,
+) => {
+  const params = new URLSearchParams()
+
+  getCity().cityCode && params.append('city', getCity().cityCode as string)
+  getCity().id && params.append('cityId', getCity().id as string)
+  if (customCity) {
+    params.set('city', customCity as string)
+  }
+
+  return API.get(endpoints.newFunnelRecommendation, {
+    ...config,
+    params,
+  })
 }
 
 export const getNewFunnelRecommendations = (
@@ -98,6 +117,27 @@ export const getMinMaxPrice = (config?: AxiosRequestConfig) => {
   })
 }
 
+export const getNewFunnelRecommendationsByQueries = (
+  {
+    bodyType,
+    brand,
+  }: {
+    bodyType?: string[]
+    brand?: string[]
+  },
+  config?: AxiosRequestConfig,
+) => {
+  const params = new URLSearchParams()
+  bodyType && params.append(QueryKeys.CarBodyType, bodyType.join('/'))
+  brand && params.append(QueryKeys.CarBrand, brand.join('/'))
+  getCity().cityCode && params.append('city', getCity().cityCode as string)
+  getCity().id && params.append('cityId', getCity().id as string)
+  return API.get(endpoints.newFunnelRecommendation, {
+    ...config,
+    params,
+  })
+}
+
 export const getNewFunnelLoanSpecialRate = (
   {
     otr,
@@ -144,32 +184,6 @@ export const getNewFunnelCityRecommendations = (
   config?: AxiosRequestConfig,
 ) => {
   return API.post(endpoints.newFunnelCityRecommendation, data, config)
-}
-
-export const getNewFunnelAllRecommendations = (
-  config?: AxiosRequestConfig,
-  customCity?: string,
-  surveyForm = true,
-) => {
-  const params = new URLSearchParams()
-  if (surveyForm) {
-    const surveyFormData = getSurveyFormData()
-    const totalIncome = surveyFormData?.totalIncome?.value
-    const age = surveyFormData?.age?.value
-    totalIncome && params.append('monthlyIncome', totalIncome as string)
-    age && params.append('age', age as string)
-  }
-
-  getCity().cityCode && params.append('city', getCity().cityCode as string)
-  getCity().id && params.append('cityId', getCity().id as string)
-  if (customCity) {
-    params.set('city', customCity as string)
-  }
-
-  return API.get(endpoints.newFunnelRecommendation, {
-    ...config,
-    params,
-  })
 }
 
 export const getNewFunnelRecommendationsByCity = (
