@@ -14,6 +14,7 @@ import {
   CarRecommendation,
   CityOtrOption,
   MainVideoResponseType,
+  VariantDetail,
   VideoDataType,
 } from 'utils/types/utils'
 import {
@@ -169,7 +170,7 @@ export default function NewCarVariantList() {
 
   const sortedCarModelVariant = useMemo(() => {
     return (
-      modelDetail?.variants.sort(function (a: any, b: any) {
+      modelDetail?.variants.sort(function (a: VariantDetail, b: VariantDetail) {
         return a.priceValue - b.priceValue
       }) || []
     )
