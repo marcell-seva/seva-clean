@@ -10,11 +10,13 @@ import { useMediaQuery } from 'react-responsive'
 import PLPDesktop from 'components/organism/PLPDesktop'
 import { useIsMobile } from 'utils/index'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
+import { client } from 'const/const'
 
 const NewCarResultPage = ({
   meta,
+  isSsrMobile,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const isMobile = useIsMobile()
+  const isMobile = client ? useIsMobile() : isSsrMobile
   return (
     <>
       <Head>
@@ -55,6 +57,7 @@ const getBrand = (brand: string | string[] | undefined) => {
 
 export const getServerSideProps: GetServerSideProps<{
   meta: PLPProps
+  isSsrMobile: boolean
 }> = async (ctx) => {
   const metabrand = getBrand(ctx.query.brand)
   const metaTagBaseApi =

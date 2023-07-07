@@ -8,7 +8,7 @@ import { Icon360 } from 'components/atoms'
 import { ImageUnavailable } from '../ImageUnavailable'
 import { interiorImagesListNew } from 'config/Interior360ImageList.config'
 
-export const InteriorViewer = () => {
+const InteriorViewer = () => {
   const getImage = () => {
     const currentUrlPathname = window.location.pathname
     const temp = interiorImagesListNew.filter((item) =>
@@ -53,6 +53,8 @@ export const InteriorViewer = () => {
     </>
   )
 }
+
+export default InteriorViewer
 
 const StyledImg = styled.img`
   width: 100%;
