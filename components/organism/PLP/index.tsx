@@ -119,7 +119,7 @@ export const PLP = ({ carRecommendation }: PLPProps) => {
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
   const [page, setPage] = useState<any>(1)
   const [sampleArray, setSampleArray] = useState({
-    items: carRecommendation.carRecommendations.slice(0, 12) || [],
+    items: carRecommendation.carRecommendations.slice(0, 12),
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const [cityListApi, setCityListApi] = useState<Array<Location>>([])
