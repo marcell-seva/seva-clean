@@ -94,7 +94,7 @@ export const Video = ({ modelDetail }: VideoProps) => {
   const getVideoReview = async () => {
     // TODO @toni : use data from server side
     const dataVideoReview: any = await api.getCarVideoReview()
-    const filterVideoReview = dataVideoReview.data.data.filter(
+    const filterVideoReview = dataVideoReview.data.filter(
       (video: MainVideoResponseType) => video.modelId === modelDetail.id,
     )[0]
 

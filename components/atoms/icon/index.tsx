@@ -88,6 +88,7 @@ import { PropsIcon } from 'utils/types'
 import { BackIcon } from './BackIcon'
 import { DownOutlined } from './DownOutlined'
 import { CloseOutlined2 } from './CloseOutlined2'
+import { InfoCircleOutlined } from './InfoCircleOutlined'
 
 // const IconChevronUp: React.FC<PropsIcon> = ({
 //   width,
@@ -691,4 +692,5 @@ export {
   BackIcon,
   DownOutlined,
   CloseOutlined2,
+  InfoCircleOutlined,
 }

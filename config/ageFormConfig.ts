@@ -13,8 +13,8 @@ interface AgeFormConfig {
 
 export const ageFormConfig: AgeFormConfig = {
   id: 'ageGroup',
-  label: 'surveyForm.fields.ageGroup.label',
-  placeholderLabel: 'surveyForm.fields.ageGroup.placeholderLabel',
+  label: 'Halo, berapa umur kamu?',
+  placeholderLabel: 'Pilih',
   options: [
     {
       value: AgeGroup.From18to27,

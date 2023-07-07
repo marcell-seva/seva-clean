@@ -11,6 +11,7 @@ import { SurveyFormProvider } from './surveyFormContext/surveyFormContext'
 import { SpecialRateListResultsContextProvider } from './specialRateResultsContext/specialRateResultsContext'
 import { FunnelFormContextProvider } from './funnelFormContext/funnelFormContext'
 import { CurrentLanguageContextProvider } from './currentLanguageContext/currentLanguageContext'
+import { CarModelContextProvider } from './carModelContext/carModelContext'
 
 const providers: Array<
   React.JSXElementConstructor<React.PropsWithChildren<any>>
@@ -27,6 +28,7 @@ const providers: Array<
   SurveyFormProvider,
   SpecialRateListResultsContextProvider,
   CurrentLanguageContextProvider,
+  CarModelContextProvider,
 ]
 
 export const GlobalContextProvider = (props: HTMLAttributes<HTMLElement>) => {

@@ -628,3 +628,27 @@ export type VideoReviewType = {
   UploadedBy: string
   PostedDate: string
 }
+
+export interface PreapprovalDataType {
+  phoneNumber?: string
+  occupation: string
+  totalIncome: string
+  province: string
+  city: string
+  zipCode: string
+  email: string
+}
+
+export interface CarModelResponse {
+  id: string
+  brand: string
+  model: string
+  lowestAssetPrice: number
+  highestAssetPrice: number
+  // brandAndModel: String
+  image: string
+  loanRank: string
+  // modelAndBrand: String
+  numberOfPopulation: number
+  // variants: CarVariantRecommendation[]
+}

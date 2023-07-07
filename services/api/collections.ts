@@ -7,6 +7,7 @@ const utils = {
   announcementBox: 'https://api.seva.id/announcement-box',
   metaTag:
     'https://api.sslpots.com/api/meta-seos/?filters[master_model][model_code][$contains]=',
+  supportedBrowser: 'https://api.seva.id/web-browser/check',
 }
 
 const product = {

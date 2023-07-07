@@ -1,0 +1,822 @@
+import { InfoCircleOutlined } from 'components/atoms'
+import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
+import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
+import { useContextSpecialRateResults } from 'context/specialRateResultsContext/specialRateResultsContext'
+import { useContextSurveyFormData } from 'context/surveyFormContext/surveyFormContext'
+import { SpecialRateResults } from './SpecialRateResults/SpesialRateResults'
+import React, { useState, useEffect, useRef, memo } from 'react'
+import { useMediaQuery } from 'react-responsive'
+import styled from 'styled-components'
+import { colors } from 'styles/colors'
+import { CashAmountInputCarVariantPage } from './CashAmountInputCarVariantPage'
+import { FullEditAgeCarVariant } from './FullEditAgeCarVariant'
+import { CarBrandRecommendationCreditTab } from './Section/CarBrandRecommendationCreditTab'
+import { SliderDpAmountCreditTab } from './SliderDpAmountCreditTab'
+import { useTranslation } from 'react-i18next'
+import {
+  trackWebPDPCreditTab,
+  WebVariantListPageParam,
+} from 'helpers/amplitude/seva20Tracking'
+import {
+  formatSortPrice,
+  replacePriceSeparatorByLocalization,
+} from 'utils/numberUtils/numberUtils'
+import { setTrackEventMoEngage } from 'helpers/moengage'
+import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
+import elementId from 'helpers/elementIds'
+import {
+  CarRecommendation,
+  CarVariantRecommendation,
+  CityOtrOption,
+} from 'utils/types'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
+import { Description } from 'components/organism/OldPdpSectionComponents/Description/Description'
+import { SpecificationSelect } from 'components/organism/OldPdpSectionComponents/SpecificationSelect/SpecificationSelect'
+import { SurveyFormKey } from 'utils/models/models'
+import { Input } from 'components/atoms/OldInput/Input'
+import { IconWarning } from 'components/atoms'
+import { useLoginAlertModal } from 'components/molecules/LoginAlertModal/LoginAlertModal'
+
+const EmptyCalculationImage = '/assets/illustration/EmptyCalculationImage.webp'
+const AccLogo = '/assets/icon/logo-acc.webp'
+const TafLogo = '/assets/icon/OldTafLogo.webp'
+
+type tabProps = {
+  tab: string | undefined
+  isShowLoading?: boolean
+}
+
+const Credit = memo(({ tab, isShowLoading }: tabProps) => {
+  const [initialValue, setInitialValue] = useState<
+    CarVariantRecommendation | undefined
+  >()
+  const { carModelDetails } = useContextCarModelDetails()
+  const { carVariantDetails } = useContextCarVariantDetails()
+  const [selected, setSelected] = useState<CarVariantRecommendation | null>(
+    null,
+  )
+  const surveyFormData = useContextSurveyFormData()
+  const originInput = surveyFormData?.totalIncome?.value?.toString() || ''
+  const originAge = surveyFormData?.age?.value?.toString() || ''
+  const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
+  const [errorPromo, setErrorPromo] = useState(false)
+  const [promoCode, setPromoCode] = useState('')
+  const [invalidCodeMessage, setInvalidCodeMessage] = useState('')
+
+  const { specialRateResults } = useContextSpecialRateResults()
+  const { recommendations } = useContextRecommendations()
+
+  const { showModal: showLoginModal, LoginAlertModal } = useLoginAlertModal()
+
+  const [isCalculated, setIsCalculated] = useState(false)
+
+  const [cityOtr] = useLocalStorage<CityOtrOption | null>(
+    LocalStorageKey.CityOtr,
+    null,
+  )
+  const [isSubmit, setIsSubmit] = useState(false)
+  const [dpAmount, setDpAmount] = useState(0)
+  console.log('selected', selected)
+  const [, setPromoCodeSessionStorage] =
+    useSessionStorageWithEncryption<string>(
+      SessionStorageKey.PromoCodeGiiass,
+      '',
+    )
+  const { t } = useTranslation()
+  const onRecommendationsResults = (data: CarRecommendation[]) => {
+    if (!data) {
+      return
+    }
+    // setNewFunnelRecommendations(
+    //   data
+    //     .filter((item) => item.loanRank === NewFunnelLoanRank.Green)
+    //     .sort((a, b) => a.lowestAssetPrice - b.lowestAssetPrice),
+    // )
+
+    // setRecommendations(data)
+  }
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      // scroll after shimmer disappear
+      if (!isShowLoading) scrollToSectionContent()
+    }, 10)
+
+    return () => clearTimeout(timeout)
+  }, [tab, isShowLoading])
+
+  // TODO @toni : read location state from query param
+  // useEffect(() => {
+  //   if (location.state?.variant) {
+  //     const filterOption = carModelDetails?.variants.filter(
+  //       (item) => item.id === location.state?.variant,
+  //     )
+  //     if (filterOption) setInitialValue(filterOption[0])
+  //   }
+  // }, [location.state?.variant])
+
+  useEffect(() => {
+    if (isSubmit && originInput.length === 0) {
+      scrollToSectionIncome()
+    } else if (isSubmit && originInput.length !== 0 && originAge.length === 0) {
+      scrollToSectionAge()
+    } else if (
+      isSubmit &&
+      originInput.length !== 0 &&
+      originAge.length !== 0 &&
+      dpAmount === 0
+    ) {
+      scrollToSectionSlider()
+    }
+    if (isCalculated) {
+      scrollOnCalculate()
+    }
+  }, [originInput, originAge, isSubmit, dpAmount])
+
+  const renderErrorPromo = () => {
+    if (errorPromo) return () => <InfoCircleOutlined width={24} height={24} />
+    return () => <></>
+  }
+  const renderErrorPromoMessage = () => {
+    if (errorPromo)
+      return () => (
+        <ErrorWrapper className={'shake-animation-X'}>
+          <WarningWrapper>
+            <IconWarning color={'#FFFFFF'} width={16} height={16} />
+          </WarningWrapper>
+          <StyledErrorText>{invalidCodeMessage}</StyledErrorText>
+        </ErrorWrapper>
+      )
+    return () => <></>
+  }
+
+  const scrollToContent = useRef<null | HTMLDivElement>(null)
+  const scrollToSectionContent = () => {
+    scrollToContent.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest',
+    })
+  }
+  const scrollToIncome = useRef<null | HTMLDivElement>(null)
+  const scrollToSectionIncome = () => {
+    scrollToIncome.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+  const scrollToAge = useRef<null | HTMLDivElement>(null)
+  const scrollToSectionAge = () => {
+    scrollToAge.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const scrollToSlider = useRef<null | HTMLDivElement>(null)
+  const scrollToSectionSlider = () => {
+    scrollToSlider.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+  const scrollToTop = useRef<null | HTMLDivElement>(null)
+  const scrollOnCalculate = () => {
+    scrollToTop.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const redAsterisk = () => {
+    return <span style={{ color: 'red' }}>*</span>
+  }
+  const renderDisclaimerInfo = () => {
+    return (
+      <>
+        <DisclaimerTextInfo>
+          {redAsterisk()}{' '}
+          {t('newFunnelLoanCalculatorPage.editHeader.installmentInfo')}
+        </DisclaimerTextInfo>
+        <DisclaimerTextInfo>
+          {redAsterisk()}{' '}
+          {t('newFunnelLoanCalculatorPage.editHeader.installmentInfo2')}
+        </DisclaimerTextInfo>
+        <DisclaimerTextInfo>
+          {redAsterisk()} Hasil perhitungan masih bersifat estimasi. Perhitungan
+          final akan diberikan oleh partner SEVA
+        </DisclaimerTextInfo>
+      </>
+    )
+  }
+  const trackEventMoengage = (carImages: string[]) => {
+    const objData = {
+      brand: carModelDetails?.brand,
+      model: carModelDetails?.model,
+      price:
+        carModelDetails?.variants && carModelDetails?.variants.length > 0
+          ? carModelDetails.variants[0].priceValue
+          : '-',
+      variants: carVariantDetails?.variantDetail.name,
+      monthly_installment:
+        carModelDetails?.variants && carModelDetails?.variants.length > 0
+          ? carModelDetails.variants[0].monthlyInstallment
+          : '-',
+      down_payment:
+        carModelDetails?.variants && carModelDetails?.variants.length > 0
+          ? carModelDetails.variants[0].dpAmount
+          : '-',
+      loan_tenure:
+        carModelDetails?.variants && carModelDetails.variants.length > 0
+          ? carModelDetails.variants[0].tenure
+          : '-',
+      est_monthly_income: originInput.length !== 0 ? originInput : '',
+      age: originAge.length !== 0 ? originAge : '',
+      car_seat: carVariantDetails?.variantDetail.carSeats,
+      fuel: carVariantDetails?.variantDetail.fuelType,
+      transmition: carVariantDetails?.variantDetail.transmission,
+      dimension:
+        recommendations?.filter(
+          (car) => car.id === carVariantDetails?.modelDetail.id,
+        ).length > 0
+          ? recommendations?.filter(
+              (car) => car.id === carVariantDetails?.modelDetail.id,
+            )[0].height
+          : '',
+      body_type: carVariantDetails?.variantDetail.bodyType
+        ? carVariantDetails?.variantDetail.bodyType
+        : '-',
+      Image_URL: carImages[0],
+      Brand_Model: `${carModelDetails?.brand} ${carModelDetails?.model}`,
+    }
+    // TODO @toni : moengage
+    // setTrackEventMoEngage('view_variant_list_credit_tab', objData)
+  }
+
+  useEffect(() => {
+    if (carModelDetails && cityOtr) {
+      const trackNewCarVariantList: WebVariantListPageParam = {
+        Car_Brand: carModelDetails.brand as string,
+        Car_Model: carModelDetails.model as string,
+        OTR: `Rp${replacePriceSeparatorByLocalization(
+          carModelDetails.variants[0].priceValue as number,
+          LanguageCode.id,
+        )}`,
+        DP: `Rp${formatSortPrice(
+          carModelDetails.variants[0].dpAmount as number,
+        )} Juta`,
+        Tenure: '5 Tahun',
+        City: cityOtr.cityName || 'Jakarta Pusat',
+      }
+
+      trackWebPDPCreditTab(trackNewCarVariantList)
+      trackEventMoengage(carModelDetails?.images)
+    }
+  }, [carModelDetails, cityOtr])
+
+  if (!carModelDetails || !carVariantDetails) return <></>
+  return isMobile ? (
+    <div>
+      <div ref={scrollToTop}></div>
+      {isMobile && !isCalculated && (
+        <ContentDescription>
+          <Description
+            title={`Kredit ${carModelDetails.brand} ${
+              carModelDetails.model
+            } di ${
+              cityOtr && cityOtr.cityName ? cityOtr.cityName : 'Jakarta Pusat'
+            }`}
+            description={carVariantDetails.variantDetail.description.id}
+            carModel={carModelDetails}
+            carVariant={carVariantDetails}
+            tab="credit"
+          />
+        </ContentDescription>
+      )}
+      <div ref={scrollToContent} style={{ scrollMargin: '95px' }} />
+      <Content isCalculated={isCalculated}>
+        {isMobile && !isCalculated ? (
+          <>
+            <div ref={scrollToIncome}></div>
+            <ContainerField>
+              <TextInfoField>Pilih varian</TextInfoField>
+              <Space />
+              <SpecificationSelect
+                initialValue={initialValue}
+                options={carModelDetails.variants}
+                onChooseOption={(item) => setSelected(item)}
+                // setInitialValue={setInitialValue}
+              />
+            </ContainerField>
+            <ContainerField>
+              <div ref={scrollToAge}></div>
+              <TextInfoField>Berapa pendapatan per bulan kamu?</TextInfoField>
+              <SpaceFieldIncome />
+              <CashAmountInputCarVariantPage
+                name={elementId.InstantApproval.MonthlyIncome}
+                value={originInput}
+                page={SurveyFormKey.TotalIncome}
+                page2={SurveyFormKey.TotalIncomeTmp}
+                className={'full-edit-monthly-income-element'}
+                isNewRegularPage={true}
+                isSubmitted={isSubmit}
+              />
+              <FullEditAgeCarVariant
+                isSubmitted={isSubmit}
+                isNewRegularPage={true}
+              />
+            </ContainerField>
+          </>
+        ) : (
+          <></>
+        )}
+
+        <div ref={scrollToSlider}></div>
+        <ContainerField>
+          {carVariantDetails && (
+            <SliderDpAmountCreditTab
+              carVariantDetails={carVariantDetails}
+              onRecommendationsResults={onRecommendationsResults}
+              onCalculate={setIsCalculated}
+              onSubmitted={setIsSubmit}
+              promoCode={promoCode}
+              errorPromo={errorPromo}
+              setErrorPromo={setErrorPromo}
+              setInvalidCodeMessage={setInvalidCodeMessage}
+              setDpAmout={setDpAmount}
+              isSubmit={isSubmit}
+            />
+          )}
+          {isMobile && !isCalculated && (
+            <>
+              <Divider />
+              <StyledPromoCode>
+                <PromoInput>
+                  <StyledInputPromo
+                    type="text"
+                    isError={errorPromo}
+                    value={promoCode}
+                    suffixIcon={renderErrorPromo()}
+                    onChange={(e) => {
+                      if (!e.target.value) {
+                        setErrorPromo(false)
+                      }
+                      const promo = e.target.value.toUpperCase()
+                      setPromoCode(
+                        promo.replace(' ', '').replace(/[^\w\s]/gi, ''),
+                      )
+                      setPromoCodeSessionStorage(
+                        promo.replace(' ', '').replace(/[^\w\s]/gi, ''),
+                      )
+                    }}
+                    placeholder="Punya kode promo? Masukkan di sini"
+                    bottomComponent={renderErrorPromoMessage()}
+                    style={{ borderRadius: '8px' }}
+                  />
+                </PromoInput>
+              </StyledPromoCode>
+            </>
+          )}
+          {/* {specialRateResults && specialRateResults.length !== 0 && (
+            <>
+              <SpecialRateWrapper>
+                <SpecialRateResults
+                  data={specialRateResults}
+                  carVariantDetails={carVariantDetails}
+                  isNewRegularPage={true}
+                  onCheckLogin={showLoginModal}
+                  carVariantPage={true}
+                />
+              </SpecialRateWrapper>
+            </>
+          )} */}
+          <ContainerDisclaimer>
+            <TextDisclaimer>
+              Perhitungan kredit ini disediakan oleh ACC dan TAF.
+            </TextDisclaimer>
+            <ContainerDisclaimerLogo>
+              <img src={AccLogo} width={24} height={31} />
+              <SpaceLogo />
+              <img src={TafLogo} width={44} height={25} />
+            </ContainerDisclaimerLogo>
+          </ContainerDisclaimer>
+        </ContainerField>
+      </Content>
+      <ContentCarBranchRecomendation>
+        <CarBrandRecommendationCreditTab
+          onClickNewModel={setIsCalculated}
+          onReset={setIsSubmit}
+          onHomepage={false}
+        />
+      </ContentCarBranchRecomendation>
+      <LoginAlertModal />
+    </div>
+  ) : (
+    <ContainerDesktop
+      emptyResult={
+        specialRateResults === undefined || specialRateResults.length === 0
+      }
+    >
+      <div ref={scrollToTop}></div>
+      <ContentDescription>
+        <Description
+          title={`Kredit ${carModelDetails.brand} ${carModelDetails.model} di ${
+            cityOtr && cityOtr.cityName ? cityOtr.cityName : 'Jakarta Pusat'
+          }`}
+          description={carVariantDetails.variantDetail.description.id}
+          carModel={carModelDetails}
+          carVariant={carVariantDetails}
+          tab="credit"
+        />
+      </ContentDescription>
+      <div ref={scrollToContent} style={{ scrollMargin: '30px' }} />
+      <Content isCalculated={isCalculated}>
+        <DesktopWrapper>
+          <CalculationSection>
+            {specialRateResults && specialRateResults.length !== 0 ? (
+              <StyledTitleSection>Informasi Kamu</StyledTitleSection>
+            ) : (
+              <StyledTitleSection>Hitung Cicilan</StyledTitleSection>
+            )}
+
+            <div ref={scrollToIncome} />
+            <ContainerFieldVariantOption>
+              <Space />
+              <SpecificationSelect
+                initialValue={initialValue}
+                options={carModelDetails.variants}
+                onChooseOption={(item) => setSelected(item)}
+              />
+            </ContainerFieldVariantOption>
+            <ContainerFieldIncomeAge>
+              <div ref={scrollToAge} />
+              <TextInfoField>Berapa pendapatan per bulan kamu?</TextInfoField>
+              <SpaceFieldIncome />
+              <CashAmountInputCarVariantPage
+                name={elementId.InstantApproval.MonthlyIncome}
+                value={originInput}
+                page={SurveyFormKey.TotalIncome}
+                page2={SurveyFormKey.TotalIncomeTmp}
+                className={'full-edit-monthly-income-element'}
+                isNewRegularPage={false}
+                isTabCreditDesktop={true}
+                isSubmitted={isSubmit}
+              />
+              <FullEditAgeCarVariant
+                isSubmitted={isSubmit}
+                isNewRegularPage={false}
+                isTabCreditDesktop={true}
+              />
+            </ContainerFieldIncomeAge>
+
+            <div ref={scrollToSlider}></div>
+            <ContainerField>
+              {carVariantDetails && (
+                <SliderDpAmountCreditTab
+                  carVariantDetails={carVariantDetails}
+                  onRecommendationsResults={onRecommendationsResults}
+                  onCalculate={setIsCalculated}
+                  onSubmitted={setIsSubmit}
+                  promoCode={promoCode}
+                  setErrorPromo={setErrorPromo}
+                  errorPromo={errorPromo}
+                  setPromoCode={setPromoCode}
+                  setInvalidCodeMessage={setInvalidCodeMessage}
+                  setDpAmout={setDpAmount}
+                  isSubmit={isSubmit}
+                />
+              )}
+              <>
+                <StyledPromoCode>
+                  <PromoInput>
+                    <StyledInputPromo
+                      type="text"
+                      isError={errorPromo}
+                      value={promoCode}
+                      suffixIcon={renderErrorPromo()}
+                      onChange={(e) => {
+                        if (!e.target.value) {
+                          setErrorPromo(false)
+                        }
+                        const promo = e.target.value.toUpperCase()
+                        setPromoCode(
+                          promo.replace(' ', '').replace(/[^\w\s]/gi, ''),
+                        )
+                        setPromoCodeSessionStorage(
+                          promo.replace(' ', '').replace(/[^\w\s]/gi, ''),
+                        )
+                      }}
+                      placeholder="Punya kode promo? Masukkan di sini"
+                      bottomComponent={renderErrorPromoMessage()}
+                      style={{ borderRadius: '8px' }}
+                    />
+                  </PromoInput>
+                </StyledPromoCode>
+              </>
+            </ContainerField>
+          </CalculationSection>
+          <ResulstCalculationSection>
+            {specialRateResults && specialRateResults.length !== 0 ? (
+              <>
+                <StyledTitleSection>Pilih Paket Cicilanmu</StyledTitleSection>
+                <ContainerField>
+                  {/* <DividerSpecialRateSection /> */}
+                  <SpecialRateWrapper>
+                    <SpecialRateResults
+                      data={specialRateResults}
+                      carVariantDetails={carVariantDetails}
+                      isNewRegularPage={true}
+                      onCheckLogin={showLoginModal}
+                      carVariantPage={true}
+                    />
+                  </SpecialRateWrapper>
+                  {renderDisclaimerInfo()}
+                  <ContainerDisclaimer>
+                    <TextDisclaimer>
+                      Perhitungan kredit ini disediakan oleh ACC dan TAF.
+                    </TextDisclaimer>
+                    <ContainerDisclaimerLogo>
+                      <img src={AccLogo} width={24} height={31} />
+                      <SpaceLogo />
+                      <img src={TafLogo} width={44} height={25} />
+                    </ContainerDisclaimerLogo>
+                  </ContainerDisclaimer>
+                </ContainerField>
+              </>
+            ) : (
+              <ImageWrapper>
+                <img src={EmptyCalculationImage} />
+                <StyledTextEmptyCalculation>
+                  Lengkapi informasi di sebelah untuk mendapatkan hitungan
+                  kredit yang sesuai dan rekomendasi finansial dari SEVA.
+                </StyledTextEmptyCalculation>
+              </ImageWrapper>
+            )}
+          </ResulstCalculationSection>
+        </DesktopWrapper>
+      </Content>
+      {specialRateResults && specialRateResults.length !== 0 && (
+        <ContentCarBranchRecomendation>
+          <CarBrandRecommendationCreditTab
+            onClickNewModel={setIsCalculated}
+            onReset={setIsSubmit}
+            onHomepage={false}
+          />
+        </ContentCarBranchRecomendation>
+      )}
+      <LoginAlertModal />
+    </ContainerDesktop>
+  )
+})
+
+export default Credit
+
+const ContentDescription = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 22px 15px;
+
+  @media (min-width: 1025px) {
+    padding: 48px 0px 0px 8px;
+  }
+`
+
+const Content = styled.div<{ isCalculated: boolean }>`
+  display: flex;
+  flex-direction: column;
+  padding: 22px 15px;
+  background: ${({ isCalculated }) =>
+    isCalculated ? colors.white : '#eef6fb'};
+
+  @media (min-width: 1025px) {
+    max-width: 1040px;
+    background: ${colors.white};
+    width: 100%;
+    padding: 0px 0px 0px 4px;
+    margin: 50px auto 0;
+  }
+`
+
+const DesktopWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+
+const CalculationSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 49.3%;
+  border-right: 1px solid #e4e9f1;
+  padding-right: 37px;
+  margin-right: 51px;
+`
+
+const ResulstCalculationSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+`
+
+const TextInfoField = styled.h2`
+  letter-spacing: 0px;
+  font-family: 'KanyonMedium';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #52627a;
+  @media (min-width: 1025px) {
+    font-size: 16px;
+  }
+`
+const Space = styled.div`
+  margin-bottom: 8px;
+`
+
+const SpaceFieldIncome = styled.div`
+  margin-bottom: 12px;
+`
+const ContainerField = styled.div`
+  margin-bottom: 21px;
+`
+
+const ContainerFieldIncomeAge = styled.div`
+  margin-bottom: 20px;
+`
+
+const ContainerFieldVariantOption = styled.div`
+  margin-bottom: 24px;
+`
+
+const SpecialRateWrapper = styled.div`
+  padding: 6px 0px 20px;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  background: ${colors.white};
+  @media (max-width: 1024px) {
+    max-width: 768px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px 12px 20px;
+  }
+  @media (max-width: 480px) {
+    padding: 0px 0px 0px;
+  }
+`
+
+const ContentCarBranchRecomendation = styled.div`
+  margin-top: 21px;
+  margin-bottom: 64px;
+`
+const Divider = styled.div`
+  border: 1px solid ${colors.line};
+  margin-top: 18px;
+  margin-bottom: 15px;
+`
+
+const StyledPromoCode = styled.div`
+  @media (min-width: 480px) {
+    display: none;
+  }
+`
+
+const PromoInput = styled.div`
+  width: 100%;
+`
+export const StyledErrorText = styled.span`
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0px;
+  color: ${colors.error};
+  margin-top: 4px;
+`
+
+export const StyledInputPromo = styled(Input)<{
+  value: string
+  isError: boolean
+}>`
+  color: ${colors.primaryDarkBlue};
+  border-color: ${({ isError }) => (isError ? colors.error : colors.line)};
+  border-radius: 8px;
+  input {
+    font-family: 'OpenSans';
+    color: ${colors.primaryDarkBlue};
+    font-size: 16px;
+  }
+  :focus-within {
+    border-color: ${({ isError }) =>
+      isError ? colors.error : colors.primary1};
+    color: #05256e;
+  }
+  ::-webkit-input-placeholder {
+    font-size: 16px;
+  }
+  width: 100%;
+  font-size: 16px;
+  font-family: 'Kanyon';
+  font-weight: 400;
+  height: 48px;
+  @media (max-width: 1920px) {
+    width: 100%;
+  }
+  @media (max-width: 1440px) {
+    width: 100%;
+  }
+  @media (max-width: 1366px) {
+    width: 100%;
+  }
+  @media (max-width: 1024px) {
+    font-size: 16px;
+    height: 56px;
+    &::placeholder {
+      font-size: 16px;
+    }
+  }
+`
+
+const ErrorWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-top: 8px;
+`
+const ContainerDisclaimer = styled.div`
+  display: flex;
+  margin-top: 33px;
+  @media (min-width: 1025px) {
+    margin-top: 18px;
+  }
+`
+
+const ContainerDisclaimerLogo = styled.div`
+  display: flex;
+  margin-left: 16px;
+`
+const TextDisclaimer = styled.p`
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 140%;
+  color: #52627a;
+  width: 50%;
+  @media (min-width: 1025px) {
+    font-size: 12px;
+    line-height: 24px;
+    color: #9ea3ac;
+    width: 100%;
+  }
+`
+const SpaceLogo = styled.div`
+  width: 16px;
+`
+const ImageWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 45%;
+`
+const StyledTextEmptyCalculation = styled.p`
+  font-family: 'OpenSans';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  text-align: center;
+  color: #52627a;
+  width: 70%;
+  margin-top: 56px;
+`
+const StyledTitleSection = styled.p`
+  font-family: 'KanyonBold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+  color: #252525;
+  margin-bottom: 20px;
+`
+
+const DisclaimerTextInfo = styled.p`
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 140%;
+  letter-spacing: 0px;
+  color: ${colors.placeholder};
+
+  @media (max-width: 1024px) {
+    font-size: 10px;
+    line-height: 14px;
+  }
+`
+const ContainerDesktop = styled.div<{ emptyResult: boolean }>`
+  background: #ffffff;
+  margin-bottom: ${({ emptyResult }) => (emptyResult ? '0px' : '50px')};
+`
+
+const WarningWrapper = styled.div`
+  margintop: 6px;
+  width: 16px;
+  height: 16px;
+  borderradius: 50%;
+  background: #ec0a23;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
