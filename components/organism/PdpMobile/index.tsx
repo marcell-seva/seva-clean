@@ -169,7 +169,7 @@ export default function NewCarVariantList() {
 
   const sortedCarModelVariant = useMemo(() => {
     return (
-      modelDetail?.variants.sort(function (a, b) {
+      modelDetail?.variants.sort(function (a: any, b: any) {
         return a.priceValue - b.priceValue
       }) || []
     )

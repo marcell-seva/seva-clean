@@ -78,7 +78,6 @@ export const FormSelectModelCar = ({
     const response = await getNewFunnelAllRecommendations(
       undefined,
       selectedCity,
-      false,
     )
     setModelCarList(response.data.carRecommendations)
   }

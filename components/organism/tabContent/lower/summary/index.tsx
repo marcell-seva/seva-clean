@@ -94,7 +94,10 @@ export const SummaryTab = ({
 
   const sortedCarModelVariant = useMemo(() => {
     return (
-      modelDetail?.variants.sort(function (a, b) {
+      modelDetail?.variants.sort(function (
+        a: { priceValue: number },
+        b: { priceValue: number },
+      ) {
         return a.priceValue - b.priceValue
       }) || []
     )

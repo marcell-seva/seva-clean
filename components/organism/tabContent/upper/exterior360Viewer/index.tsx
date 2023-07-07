@@ -1,10 +1,6 @@
 import React, { useRef } from 'react'
 import dynamic from 'next/dynamic'
-
-const Tridi = dynamic(() => import('react-tridi'), {
-  ssr: false,
-})
-
+import Tridi from 'react-tridi'
 import 'react-tridi/dist/index.css'
 import styles from 'styles/saas/components/organism/exterior360Viewer.module.scss'
 import { RotateLeft, RotateRight } from 'components/atoms'
@@ -14,7 +10,7 @@ import { useRouter } from 'next/router'
 interface Props {
   isShowAnnouncementBox: boolean | null
 }
-export const Exterior360ViewerTab = ({ isShowAnnouncementBox }: Props) => {
+const Exterior360ViewerTab = ({ isShowAnnouncementBox }: Props) => {
   const tridiRef = useRef<any>(null)
   const router = useRouter()
 
@@ -57,3 +53,5 @@ export const Exterior360ViewerTab = ({ isShowAnnouncementBox }: Props) => {
     </div>
   )
 }
+
+export default Exterior360ViewerTab

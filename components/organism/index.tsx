@@ -21,7 +21,7 @@ import { ProductDetailEmptyState } from './emptyState/pdp/index'
 import { WarnaTab } from './tabContent/upper/warna'
 import { ExteriorTab } from './tabContent/upper/exterior'
 import { InteriorTab } from './tabContent/upper/interior'
-import { Exterior360ViewerTab } from './tabContent/upper/exterior360Viewer'
+
 import { Interior360ViewerTab } from './tabContent/upper/interior360Viewer'
 import { SummaryTab } from './tabContent/lower/summary'
 import { SpecificationTab } from './tabContent/lower/spesification'
@@ -35,6 +35,11 @@ import Articles from './articles/index'
 import { CalculationResult } from './calculationResult/index'
 import PDPCarOverviewSkeleton from './pdpCarOverviewSkeleton'
 import SidebarMobile from './sidebarMobile'
+import dynamic from 'next/dynamic'
+
+const Exterior360ViewerTab = dynamic(
+  () => import('./tabContent/upper/exterior360Viewer'),
+)
 
 // const FilterMobile = dynamic(() => import('./filterMobile'), { ssr: false })
 // const SortingMobile = dynamic(() => import('./sortingMobile'), { ssr: false })
