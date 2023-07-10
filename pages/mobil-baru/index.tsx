@@ -112,7 +112,6 @@ export const getServerSideProps: GetServerSideProps<{
     const [fetchMeta, fetchFooter] = await Promise.all([
       axios.get(metaTagBaseApi + metabrand),
       axios.get(footerTagBaseApi + metabrand),
-      getMinMaxPrice({}),
     ])
 
     const metaData = fetchMeta.data.data
