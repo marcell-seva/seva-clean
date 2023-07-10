@@ -67,16 +67,25 @@ import {
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { getConvertFilterIncome } from 'utils/filterUtils'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
+import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 
 interface PLPProps {
   carRecommendation: CarRecommendationResponse
+  minmaxPrice: MinMaxPrice
+  alternativeRecommendation: CarRecommendation[]
 }
 
-export const PLP = ({ carRecommendation }: PLPProps) => {
+export const PLP = ({
+  carRecommendation,
+  minmaxPrice,
+  alternativeRecommendation,
+}: PLPProps) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
   const { recommendations, setRecommendations } = useContextRecommendations()
-  const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>([])
+  const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>(
+    alternativeRecommendation,
+  )
   const {
     bodyType,
     brand,
@@ -87,10 +96,7 @@ export const PLP = ({ carRecommendation }: PLPProps) => {
     age,
     sortBy,
   } = router.query as FilterParam
-  const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>({
-    minPriceValue: 0,
-    maxPriceValue: 0,
-  })
+  const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
 
   const [cityOtr] = useLocalStorage<Location | null>(
     LocalStorageKey.CityOtr,
@@ -166,7 +172,6 @@ export const PLP = ({ carRecommendation }: PLPProps) => {
   const cleanEffect = () => {
     setRecommendations([])
     setPage(1)
-    setSampleArray({ items: [] })
     setShowLoading(true)
   }
 
@@ -357,83 +362,89 @@ export const PLP = ({ carRecommendation }: PLPProps) => {
     setPage(1)
     if (recommendations.length > sampleArray.items.length) {
       setHasMore(true)
+      setSampleArray({ items: recommendations.slice(0, 12) })
     }
-    setSampleArray({ items: recommendations.slice(0, 12) })
   }, [recommendations])
 
   useEffect(() => {
-    getMinMaxPrice({})
-      .then((response: AxiosResponse<MinMaxPrice>) => {
-        if (response.data) {
-          setMinMaxPrice({
-            minPriceValue: response.data.minPriceValue,
-            maxPriceValue: response.data.maxPriceValue,
-          })
-          const minTemp = priceRangeGroup
-            ? response.data.minPriceValue >
-              Number(
-                priceRangeGroup && priceRangeGroup?.toString().split('-')[0],
-              )
-              ? Number(
+    if (getCity().cityName !== 'Jakarta Pusat') {
+      getMinMaxPrice({})
+        .then((response: AxiosResponse<MinMaxPrice>) => {
+          if (response.data) {
+            setMinMaxPrice({
+              minPriceValue: response.data.minPriceValue,
+              maxPriceValue: response.data.maxPriceValue,
+            })
+            const minTemp = priceRangeGroup
+              ? response.data.minPriceValue >
+                Number(
                   priceRangeGroup && priceRangeGroup?.toString().split('-')[0],
                 )
-              : response.data.minPriceValue
-            : ''
-          const maxTemp = priceRangeGroup
-            ? response.data.maxPriceValue <
-              Number(
-                priceRangeGroup && priceRangeGroup?.toString().split('-')[1],
-              )
-              ? response.data.maxPriceValue
-              : Number(
+                ? Number(
+                    priceRangeGroup &&
+                      priceRangeGroup?.toString().split('-')[0],
+                  )
+                : response.data.minPriceValue
+              : ''
+            const maxTemp = priceRangeGroup
+              ? response.data.maxPriceValue <
+                Number(
                   priceRangeGroup && priceRangeGroup?.toString().split('-')[1],
                 )
-            : ''
+                ? response.data.maxPriceValue
+                : Number(
+                    priceRangeGroup &&
+                      priceRangeGroup?.toString().split('-')[1],
+                  )
+              : ''
 
-          const queryParam: any = {
-            downPaymentType: 'amount',
-            downPaymentAmount: downPaymentAmount || '',
-            brand: brand?.split(',') || '',
-            bodyType: bodyType?.split(',') || '',
-            priceRangeGroup: priceRangeGroup ? minTemp + '-' + maxTemp : '',
-            age: age || '',
-            tenure: Number(tenure) || 5,
-            monthlyIncome: monthlyIncome || '',
-            sortBy: sortBy || 'lowToHigh',
-          }
+            const queryParam: any = {
+              downPaymentType: 'amount',
+              downPaymentAmount: downPaymentAmount || '',
+              brand: brand?.split(',') || '',
+              bodyType: bodyType?.split(',') || '',
+              priceRangeGroup: priceRangeGroup ? minTemp + '-' + maxTemp : '',
+              age: age || '',
+              tenure: Number(tenure) || 5,
+              monthlyIncome: monthlyIncome || '',
+              sortBy: sortBy || 'lowToHigh',
+            }
 
-          getNewFunnelRecommendations(queryParam)
-            .then((response: AxiosResponse<CarRecommendationResponse>) => {
-              if (response.data) {
-                patchFunnelQuery(queryParam)
-                setRecommendations(response.data.carRecommendations)
-                setResultMinMaxPrice({
-                  resultMinPrice: response.data.lowestCarPrice || 0,
-                  resultMaxPrice: response.data.highestCarPrice || 0,
-                })
-                setPage(1)
-                setSampleArray({
-                  items: response.data.carRecommendations.slice(0, 12),
-                })
-              }
-              setShowLoading(false)
-            })
-            .catch(() => {
-              setShowLoading(false)
-              router.push({
-                pathname: carResultsUrl,
+            getNewFunnelRecommendations(queryParam)
+              .then((response: AxiosResponse<CarRecommendationResponse>) => {
+                if (response.data) {
+                  patchFunnelQuery(queryParam)
+                  setRecommendations(response.data.carRecommendations)
+                  setResultMinMaxPrice({
+                    resultMinPrice: response.data.lowestCarPrice || 0,
+                    resultMaxPrice: response.data.highestCarPrice || 0,
+                  })
+                  setPage(1)
+                  setSampleArray({
+                    items: response.data.carRecommendations.slice(0, 12),
+                  })
+                }
+                setShowLoading(false)
               })
-            })
+              .catch(() => {
+                setShowLoading(false)
+                router.push({
+                  pathname: carResultsUrl,
+                })
+              })
 
-          getNewFunnelRecommendations({ ...queryParam, brand: [] }).then(
-            (response: AxiosResponse<CarRecommendationResponse>) => {
-              if (response.data)
-                setAlternativeCar(response.data.carRecommendations)
-            },
-          )
-        }
-      })
-      .catch()
+            getNewFunnelRecommendations({ ...queryParam, brand: [] }).then(
+              (response: AxiosResponse<CarRecommendationResponse>) => {
+                if (response.data)
+                  setAlternativeCar(response.data.carRecommendations)
+              },
+            )
+          }
+        })
+        .catch()
+    } else {
+      setRecommendations(carRecommendation.carRecommendations)
+    }
     return () => cleanEffect()
   }, [])
 
