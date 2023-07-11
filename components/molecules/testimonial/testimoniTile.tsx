@@ -12,6 +12,7 @@ interface TestimoniTileProps {
 }
 
 export const TestimoniTile = ({ item, onCurrentSlide }: TestimoniTileProps) => {
+  console.log('DATA ITEM TESTIMONY : ', item)
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const carouselContext = useContext(CarouselContext)
 

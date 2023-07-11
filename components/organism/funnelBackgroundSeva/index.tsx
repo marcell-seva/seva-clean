@@ -174,9 +174,7 @@ export const FunnelBackgroundSeva = ({
         }}
       />
       <Testimonial />
-      <LazyLoadComponent>
-        <ArticlesV2Desktop />
-      </LazyLoadComponent>
+      <ArticlesV2Desktop />
       <AdvisorSection
         onSubmitSuccess={onSubmitLeadSuccess}
         onCheckLogin={() => {

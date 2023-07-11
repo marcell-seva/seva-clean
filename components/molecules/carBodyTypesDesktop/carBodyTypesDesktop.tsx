@@ -7,7 +7,7 @@ import {
   Slide,
   Slider,
 } from 'pure-react-carousel'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { carResultsUrl } from 'routes/routes'
 
 import styled, { css } from 'styled-components'
@@ -33,6 +33,7 @@ import { ArrowRightNew } from 'components/atoms/icon/ArrowRightNew'
 import { CarTypeItem } from './carTypeItem'
 import { CarButtonProps } from 'utils/types/context'
 import { newBodyTypes } from './carBodyTypes'
+import { HomePageDataLocalContext } from 'pages'
 
 const leftArrow = '/v3/assets/icon/arrowLeftSmall.svg'
 const rightArrow = '/v3/assets/icon/arrowRightSmall.svg'
@@ -43,12 +44,13 @@ interface BodyTypes {
 }
 
 export const CarBodyTypesDesktop = () => {
-  const [bodyTypesList, setBodyTypes] = useState<BodyTypes[]>([])
+  const { dataTypeCar, dataRecToyota } = useContext(HomePageDataLocalContext)
+  console.log('DATA TYPE CAR', dataTypeCar)
+  const [bodyTypesList, setBodyTypes] = useState<BodyTypes[]>(dataTypeCar)
   const router = useRouter()
   const [bodyTypeSelected, setBodyTypeSelected] = useState('MPV')
-  const [recommendationLists, setRecommendationLists] = useState<
-    CarRecommendation[]
-  >([])
+  const [recommendationLists, setRecommendationLists] =
+    useState<CarRecommendation[]>(dataRecToyota)
   const { patchFunnelQuery, clearFunnelQuery } = useFunnelQueryData()
   const [loading, setLoading] = useState(false)
   useEffect(() => {

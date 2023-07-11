@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import {
   CarouselProvider,
   Slider,
@@ -19,15 +19,18 @@ import { getTestimonials } from 'services/testimonials'
 import { LocalStorageKey } from 'utils/models/models'
 import { LinkLabelLargeSemiBold } from 'components/atoms/typography/LinkLabelLargeSemiBold'
 import { TestimoniTile } from './testimoniTile'
+import { HomePageDataLocalContext } from 'pages'
 
 const leftArrow = '/v3/assets/icon/arrowLeftSmall.webp'
 const rightArrow = '/v3/assets/icon/arrowRightSmall.webp'
 
 const Testimonial = () => {
+  const { dataTestimony } = useContext(HomePageDataLocalContext)
+  console.log('DATA TESTIMONY : ', dataTestimony)
   const isMobileSmall = useMediaQuery({ query: '(max-width: 390px)' })
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
-  const [toggle, setToggle] = useState(false)
-  const [data, setData] = useState<Array<TestimonialData>>()
+  const [toggle, setToggle] = useState(true)
+  const [data, setData] = useState<Array<TestimonialData>>(dataTestimony)
   const [trackTotalViewed, setTrackTotalViewed] = useState(1)
   const [currentSlide, setCurrentSlide] = useState(0)
   const constantDesktopSlideTrack = 3
@@ -132,12 +135,10 @@ const Testimonial = () => {
                 {Array.isArray(data) &&
                   data.map((item, index) => (
                     <Slide index={index} key={index}>
-                      <LazyLoadComponent>
-                        <TestimoniTile
-                          item={item}
-                          onCurrentSlide={(slide) => setCurrentSlide(slide)}
-                        />
-                      </LazyLoadComponent>
+                      <TestimoniTile
+                        item={item}
+                        onCurrentSlide={(slide) => setCurrentSlide(slide)}
+                      />
                     </Slide>
                   ))}
               </Slider>

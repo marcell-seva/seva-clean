@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import urls from 'helpers/urls'
@@ -16,11 +16,16 @@ import { LocalStorageKey } from 'utils/models/models'
 import { ArticleItemType, ArticlesItemV2Desktop } from './ArticlesItemV2Desktop'
 import { ArticlesItemV2Placeholder } from './ArticlesItemV2Placeholder'
 import { Previous } from 'components/atoms/icon/Previous'
+import { HomePageDataLocalContext } from 'pages'
 
 export const ArticlesV2Desktop = () => {
+  const { dataMainArticle } = useContext(HomePageDataLocalContext)
   const [showArticle, setShowArticles] = useState<boolean>(true)
-  const [mainArticle, setMainArticle] = useState<ArticleData>()
-  const [articlesList, setArticlesList] = useState<Array<ArticleData>>([])
+  const [mainArticle, setMainArticle] = useState<ArticleData>(
+    dataMainArticle[0],
+  )
+  const [articlesList, setArticlesList] =
+    useState<Array<ArticleData>>(dataMainArticle)
   const [allArticles, setAllArticles] = useState<any>()
   const categoryScrollWrapperRef = useRef<any>(null)
   const [isShowPrev, setIsShowPrev] = useState(false)

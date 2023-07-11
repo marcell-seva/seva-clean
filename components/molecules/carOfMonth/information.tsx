@@ -4,6 +4,7 @@ import DOMPurify from 'dompurify'
 import { trackCarOfTheMonthItemClick } from 'helpers/amplitude/seva20Tracking'
 import { carBrand } from './COMImage'
 import { LocalStorageKey } from 'utils/models/models'
+import { client } from 'const/const'
 // import { getToken } from 'utils/api'
 // import { useModalContext } from 'context/modalContext/modalContext'
 
@@ -27,7 +28,6 @@ export function Information({
   onSendOffer,
 }: // onCheckLogin,
 InformationProps) {
-  console.log('CAR MODEL : ', carModel)
   // const { patchModal } = useModalContext()
   return (
     <>
@@ -37,7 +37,9 @@ InformationProps) {
           <div
             className="car-desc-com"
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(carModel[tabIndex]?.desc),
+              __html: client
+                ? DOMPurify.sanitize(carModel[tabIndex]?.desc)
+                : carModel[tabIndex]?.desc,
             }}
           />
           <div className="button-wrapper-com">

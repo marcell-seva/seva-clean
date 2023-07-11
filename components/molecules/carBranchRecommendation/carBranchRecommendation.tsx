@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { carResultsUrl } from 'routes/routes'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import styled, { css } from 'styled-components'
@@ -31,6 +31,7 @@ import { DesktopShimmerCarBrand } from 'components/organism/ContentPage/Credit/S
 import { ArrowRightNew } from 'components/atoms/icon/ArrowRightNew'
 import { CarBrandItem } from './CarBrandItem'
 import { client } from 'const/const'
+import { HomePageDataLocalContext } from 'pages'
 
 const LogoToyota = '/v3/assets/icon/logo-toyota-min.png'
 const LogoDaihatsu = '/v3/assets/icon/logo-daihatsu-min.png'
@@ -53,15 +54,15 @@ export const CarBranchRecommendation = ({
   onHomepage = true,
 }: CarBranchRecommendationProps) => {
   const router = useRouter()
+  const { dataRecToyota } = useContext(HomePageDataLocalContext)
   const { patchFunnelQuery, clearFunnelQuery } = useFunnelQueryData()
   const [isCheckedGroups, setIsCheckedBrand] = useState('Toyota')
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const isSmallMobile = useMediaQuery({ query: '(max-width: 380px)' })
   const [load, setLoad] = useState(false)
 
-  const [recommendationLists, setRecommendationLists] = useState<
-    CarRecommendation[]
-  >([])
+  const [recommendationLists, setRecommendationLists] =
+    useState<CarRecommendation[]>(dataRecToyota)
 
   const carList: CarButtonProps[] = [
     {
@@ -324,7 +325,8 @@ export const CarBranchRecommendation = ({
                     Silakan pilih merk lain.
                   </span>
                 </div>
-              ) : window.innerWidth > 1024 &&
+              ) : client &&
+                window.innerWidth > 1024 &&
                 recommendationLists.length !== 0 ? (
                 <CarouselProvider
                   naturalSlideWidth={12}

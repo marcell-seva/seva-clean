@@ -105,7 +105,7 @@ export const NewSelect = <T extends FormControlValue>({
   )
   const [isNoOptionMode, setIsNoOptionMode] = useState(false)
   const [rect, setRect] = useState<any>()
-  const domEl = document.querySelector('body')
+  const domEl = client && document.querySelector('body')
 
   const onSelect = ({ value: valueParam, label: labelParam }: Option<T>) => {
     setTimeout(() => {

@@ -10,7 +10,8 @@ import {
   setTrackEventMoEngageWithoutValue,
 } from 'helpers/moengage'
 import Head from 'next/head'
-import React, { useEffect, useState } from 'react'
+import { HomePageDataLocalContext } from 'pages'
+import React, { useContext, useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { getCustomerInfoWrapperSeva } from 'services/customer'
 import styled from 'styled-components'
@@ -33,8 +34,11 @@ const apiBanner = 'https://api.sslpots.com'
 interface HomepageDesktopProps {}
 
 const HomepageDesktop: React.FC<HomepageDesktopProps> = ({}) => {
-  const [topBannerData, setTopBannerData] = useState<BannerHomepageType[]>([])
-  const [uspData, setUspData] = useState<USPAttributes>(initUSPAttributes)
+  const { dataBanner, dataUsage } = useContext(HomePageDataLocalContext)
+  console.log('DATA dataUsage : ', dataUsage)
+  const [topBannerData, setTopBannerData] =
+    useState<BannerHomepageType[]>(dataBanner)
+  const [uspData, setUspData] = useState<USPAttributes>(dataUsage)
   const patchContactFormValue = useContextContactFormPatch()
   const [enableSalesDashboardButton, setEnableSalesDashboardButton] =
     useState(false)

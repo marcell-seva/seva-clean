@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { API } from 'utils/api'
 import endpoints from 'helpers/endpoints'
 import { AxiosResponse } from 'axios'
@@ -7,6 +7,7 @@ import { LocalStorageKey } from 'utils/models/models'
 import { COMImage } from './COMImage'
 import { Information } from './information'
 import { COMData } from 'utils/types/utils'
+import { HomePageDataLocalContext } from 'pages'
 
 interface CarOfMonthProps {
   onSendOffer: () => void
@@ -14,8 +15,9 @@ interface CarOfMonthProps {
 }
 
 export const CarOfMonth = ({ onSendOffer }: CarOfMonthProps) => {
+  const { dataCarofTheMonth } = useContext(HomePageDataLocalContext)
   const [tabIndex, setTabIndex] = useState(0)
-  const [comDataNew, setComDataNew] = useState<COMData[]>([])
+  const [comDataNew, setComDataNew] = useState<COMData[]>(dataCarofTheMonth)
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
 
