@@ -96,6 +96,7 @@ const ContactUs: React.FC<PropsContactUs> = ({
     })
   }
 
+  console.log('FORM : ', form)
   useEffect(() => {
     if (isLoggedIn) setActive(true)
     else setActive(form.name !== '' && form.phone.length > 3)

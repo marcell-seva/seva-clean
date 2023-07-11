@@ -51,3 +51,11 @@ body {
   font-weight: 700;
   font-display: swap;
 }
+
+input {
+  outline: none;
+}
+
+button {
+  background: none;
+}

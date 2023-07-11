@@ -12,6 +12,7 @@ import {
   TrackingExpandFAQ,
   TrackingExpandSEOFooter,
 } from './eventTypes'
+import { NewHomePageTrackingEvent } from './newHomePageEventTracking'
 
 type SearchWidgetParams = CarBrandOnlyParam &
   CarBodyTypeOnlyParam & {
@@ -928,6 +929,7 @@ export type Seva20TrackingEvent =
       name: TrackingEventName.WEB_KUALIFIKASI_KREDIT_WA_DIRECT_CLICK
       data: CreditQualificationReviewParam
     }
+  | NewHomePageTrackingEvent
 
 export const trackLandingPageView = () => {
   logAmplitudeEvent({

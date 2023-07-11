@@ -378,6 +378,7 @@ const StyledSelect = styled.input<InputProps>`
   border-radius: 16px;
   padding: 9px;
   background: ${colors.white};
+  outline: none;
   &::placeholder {
     color: ${colors.label};
     opacity: 0.5;

@@ -1,0 +1,78 @@
+import React from 'react'
+import { saveLocalStorage } from 'utils/localstorageUtils'
+import DOMPurify from 'dompurify'
+import { trackCarOfTheMonthItemClick } from 'helpers/amplitude/seva20Tracking'
+import { carBrand } from './COMImage'
+import { LocalStorageKey } from 'utils/models/models'
+// import { getToken } from 'utils/api'
+// import { useModalContext } from 'context/modalContext/modalContext'
+
+type carModel = {
+  name: string
+  desc: string
+  link: string
+}
+interface InformationProps {
+  carBrand: carBrand[]
+  carModel: carModel[]
+  tabIndex: number
+  onSendOffer: () => void
+  // onCheckLogin: () => void
+}
+
+export function Information({
+  carBrand,
+  tabIndex,
+  carModel,
+  onSendOffer,
+}: // onCheckLogin,
+InformationProps) {
+  console.log('CAR MODEL : ', carModel)
+  // const { patchModal } = useModalContext()
+  return (
+    <>
+      <div className="information-wrapper-com">
+        <div className="wrapper-com">
+          <span className="car-title-com">{carModel[tabIndex]?.name}</span>
+          <div
+            className="car-desc-com"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(carModel[tabIndex]?.desc),
+            }}
+          />
+          <div className="button-wrapper-com">
+            <a
+              className="button-hyperlink-com"
+              href={carModel[tabIndex]?.link}
+              onClick={() => {
+                trackCarOfTheMonthItemClick({
+                  Car_Brand: carBrand[tabIndex].name,
+                  Car_Model: carModel[tabIndex].name,
+                })
+              }}
+            >
+              LIHAT RINCIAN
+            </a>
+            <button
+              className="button-com"
+              onClick={() => {
+                // if (!getToken()) {
+                //   patchModal({ isOpenContactUsModal: true })
+                //   onCheckLogin()
+                // } else {
+                // }
+                saveLocalStorage(
+                  LocalStorageKey.Model,
+                  `${carModel[tabIndex].name}`,
+                )
+                onSendOffer()
+              }}
+            >
+              MINTA PENAWARAN
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}

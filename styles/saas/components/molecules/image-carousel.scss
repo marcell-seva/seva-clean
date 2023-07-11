@@ -1,0 +1,46 @@
+.carousel-container {
+  .slide {
+    background: none !important;
+    max-height: 735px;
+    padding: 16px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    @media (max-width: 1024px) {
+      max-height: none !important;
+      display: block;
+      padding: 0;
+    }
+  }
+
+  .control-dots {
+    bottom: 28px !important;
+    padding: 0 16px 0 16px !important;
+    margin: 0 !important;
+
+    @media (max-width: 1024px) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 31.5%;
+    }
+  }
+
+  .carousel {
+    box-sizing: border-box;
+    .carousel-slider .control-arrow {
+      padding: 50px;
+    }
+  }
+
+  .carousel-indicator > * {
+    text-align: right;
+    float: right;
+    right: 2% !important;
+    left: inherit;
+  }
+
+  .carousel-arrow > * {
+    padding: 50;
+  }
+}
