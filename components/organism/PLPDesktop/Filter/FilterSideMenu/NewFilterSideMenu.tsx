@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
+import Image from 'next/image'
 import { colors } from 'styles/colors'
 import { Line } from 'components/atoms/Line'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
@@ -29,14 +30,7 @@ import {
   TextLegalMedium,
   TextLegalMediumStyle,
 } from 'utils/typography/TextLegalMedium'
-import {
-  DownOutlined,
-  IconHatchback,
-  IconMPV,
-  IconSedan,
-  IconSport,
-  IconSUV,
-} from 'components/atoms'
+import { DownOutlined } from 'components/atoms'
 import { useRouter } from 'next/router'
 import { useCarResultParameter } from 'utils/hooks/useAmplitudePageView/useAmplitudePageView'
 import {
@@ -44,16 +38,25 @@ import {
   newDownPaymentConfig,
 } from 'config/downPaymentAmount.config'
 import { ageFormConfig } from 'config/ageFormConfig'
-import { ButtonType, Button } from 'components/atoms/ButtonOld/Button'
+import { ButtonType, Button, rotate } from 'components/atoms/ButtonOld/Button'
 import { LinkLabelSmallSemiBold } from 'utils/typography/LinkLabelSmallSemiBold'
 import { CarButtonProps } from 'utils/types/context'
 import { IconInfoSmall } from 'components/atoms/icon/InfoSmall'
 
-const LogoToyota = '/v3/assets/icon/logo-toyota.webp'
-const LogoDaihatsu = '/v3/assets/icon/logo-daihatsu.webp'
-const Isuzu = '/v3/assets/icon/logo-isuzu.webp'
+const LogoToyota = '/v3/assets/icon/toyota-1989.png'
+const LogoDaihatsu = '/v3/assets/icon/daihatsu-update.png'
+const Isuzu = '/v3/assets/icon/isuzu-new.png'
 const LogoBmw = '/v3/assets/icon/logo-bmw.webp'
-const Peugeot = '/v3/assets/icon/logo-peugeot.webp'
+const Peugeot = '/v3/assets/icon/peugeot.png'
+
+const IconTypeSuv = '/v3/assets/icon/OldBodyTypesIcon/Car_Type_Icons_SUV.png'
+const IconTypeSport =
+  '/v3/assets/icon/OldBodyTypesIcon/Car_Type_Icons_Sport.png'
+const IconTypeSedan =
+  '/v3/assets/icon/OldBodyTypesIcon/Car_Type_Icons_Sedan.png'
+const IconTypeMpv = '/v3/assets/icon/OldBodyTypesIcon/Car_Type_Icons_MPV.png'
+const IconTypeHatchback =
+  '/v3/assets/icon/OldBodyTypesIcon/Car_Type_Icons_Hatchback.png'
 
 export const sortOptions = [
   {
@@ -174,49 +177,33 @@ export const NewFilterSideMenu = () => {
   const carList: CarButtonProps[] = [
     {
       key: 'Toyota',
-      icon: (
-        <img src={LogoToyota} alt="Toyota" style={{ width: 21, height: 18 }} />
-      ),
+      icon: <Image src={LogoToyota} alt="Toyota" width={48} height={41} />,
       value: 'Toyota',
       isChecked: isCheckedBrand.includes('Toyota'),
     },
     {
       key: 'Daihatsu',
       icon: (
-        <img
-          src={LogoDaihatsu}
-          alt="Daihatsu"
-          style={{ width: 21.6, height: 15 }}
-        />
+        <Image src={LogoDaihatsu} alt="Daihatsu" width={48} height={32.45} />
       ),
       value: 'Daihatsu',
       isChecked: isCheckedBrand.includes('Daihatsu'),
     },
     {
       key: 'Isuzu',
-      icon: (
-        <img src={Isuzu} alt="Isuzu" style={{ width: 21.6, height: 7.2 }} />
-      ),
+      icon: <Image src={Isuzu} alt="Isuzu" width={52} height={23} />,
       value: 'Isuzu',
       isChecked: isCheckedBrand.includes('Isuzu'),
     },
     {
       key: 'BMW',
-      icon: (
-        <img src={LogoBmw} alt="BMW" style={{ width: 19.2, height: 19.2 }} />
-      ),
+      icon: <Image src={LogoBmw} alt="BMW" width={40} height={40} />,
       value: 'BMW',
       isChecked: isCheckedBrand.includes('BMW'),
     },
     {
       key: 'Peugeot',
-      icon: (
-        <img
-          src={Peugeot}
-          alt="Peugeot"
-          style={{ width: 17.49, height: 19.2 }}
-        />
-      ),
+      icon: <Image src={Peugeot} alt="Peugeot" width={40} height={44} />,
       value: 'Peugeot',
       isChecked: isCheckedBrand.includes('Peugeot'),
     },
@@ -224,31 +211,33 @@ export const NewFilterSideMenu = () => {
   const bodyTypes: CarButtonProps[] = [
     {
       key: 'MPV',
-      icon: <IconMPV width={24} height={24} />,
+      icon: <Image src={IconTypeMpv} alt="MPV" width="50" height="30" />,
       value: 'MPV',
       isChecked: isCheckedType.includes('MPV'),
     },
     {
-      key: 'SUV',
-      icon: <IconSUV width={24} height={24} />,
-      value: 'SUV',
-      isChecked: isCheckedType.includes('SUV'),
-    },
-    {
       key: 'Sedan',
-      icon: <IconSedan width={24} height={24} />,
+      icon: <Image src={IconTypeSedan} alt="SEDAN" width="50" height="30" />,
       value: 'SEDAN',
       isChecked: isCheckedType.includes('SEDAN'),
     },
     {
+      key: 'SUV',
+      icon: <Image src={IconTypeSuv} alt="SUV" width="50" height="30" />,
+      value: 'SUV',
+      isChecked: isCheckedType.includes('SUV'),
+    },
+    {
       key: 'Hatchback',
-      icon: <IconHatchback width={24} height={24} />,
+      icon: (
+        <Image src={IconTypeHatchback} alt="Hatchback" width="50" height="30" />
+      ),
       value: 'HATCHBACK',
       isChecked: isCheckedType.includes('HATCHBACK'),
     },
     {
       key: 'Sport',
-      icon: <IconSport width={24} height={24} />,
+      icon: <Image src={IconTypeSport} alt="Sport" width="50" height="30" />,
       value: 'SPORT',
       isChecked: isCheckedType.includes('SPORT'),
     },
@@ -783,10 +772,6 @@ export const NewFilterSideMenu = () => {
     </Wrapper>
   )
 }
-
-const rotate = css`
-  transform: rotate(180deg);
-`
 
 const Wrapper = styled.div`
   width: 270px;
