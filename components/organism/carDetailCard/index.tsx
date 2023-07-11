@@ -103,6 +103,7 @@ export const CarDetailCard = ({
         .toLowerCase(),
     )
     .replace(':tab', '')
+    .replace('?', `?loanRankCVL=${recommendation.loanRank}`)
 
   const cityName =
     recommendation.brand === 'Daihatsu'
