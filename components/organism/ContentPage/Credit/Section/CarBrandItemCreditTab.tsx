@@ -11,7 +11,6 @@ import {
   trackCreditPeluangLainnyaClick,
 } from 'helpers/amplitude/seva20Tracking'
 import { useRouter } from 'next/router'
-// import { useCarResultParameter } from 'hooks/useAmplitudePageView/useAmplitudePageView'
 // import { LoanRankStatus } from 'pages/CarVariantListPage/CreditV2/LoanRankStatus/BadgeLoanStatus'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -31,6 +30,7 @@ import {
   getModelPriceRange,
   getMonthlyInstallmentRange,
 } from 'utils/carModelUtils/carModelUtils'
+import { useCarResultParameter } from 'utils/hooks/useAmplitudePageView/useAmplitudePageView'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { LanguageCode, LoanRank, LocalStorageKey } from 'utils/models/models'
 import {
@@ -44,6 +44,7 @@ import {
   SimpleCarVariantDetail,
 } from 'utils/types/utils'
 import { isIphone } from 'utils/window'
+import { LoanRankStatus } from '../LoanRankStatus/BadgeLoanStatus'
 
 const ShimmerLoader = '/v3/assets/illustration/placeholder.gif'
 
@@ -64,8 +65,7 @@ export const CarBrandItemCreditTab = ({
   const { setCarVariantDetails } = useContextCarVariantDetails()
   const { setSpecialRateResults } = useContextSpecialRateResults()
   const { currentLanguage } = useCurrentLanguageFromContext()
-  // TODO @toni : old amplitude tracker
-  // const carResultParameters = useCarResultParameter()
+  const carResultParameters = useCarResultParameter()
   const contextSurveyFormData = useContextSurveyFormData()
   const { setCarModel } = useContextCarModel()
   const { showToast, RenderToast } = useToast()
@@ -176,8 +176,7 @@ export const CarBrandItemCreditTab = ({
         currentLanguage,
       )} jt`,
       downPayment: `${getDpRange(carModel.variants, currentLanguage)} jt`,
-      // TODO @toni : old amplitude tracker
-      // ...carResultParameters,
+      ...carResultParameters,
     }
     localStorage.setItem('carDetail', selectCarResult.price)
     setCarModel(carModel || undefined)
@@ -219,8 +218,7 @@ export const CarBrandItemCreditTab = ({
             width={'100%'}
           />
 
-          {/* TODO @toni : loan rank status badge */}
-          {/* <BadgeLoanStatusWrapper
+          <BadgeLoanStatusWrapper
             onClick={(e) => {
               // prevent navigate to variant list page
               e.stopPropagation()
@@ -228,10 +226,10 @@ export const CarBrandItemCreditTab = ({
           >
             <LoanRankStatus
               loanRank={carModel.loanRank}
-              carModel={carModel}
+              carName={carModel.brand + ' ' + carModel.model}
               onModelClick={() => handleCarTileClick(carModel)}
             />
-          </BadgeLoanStatusWrapper> */}
+          </BadgeLoanStatusWrapper>
         </ImageSection>
         {isIphone && window.innerWidth <= 480 ? (
           <StyledContentIos>

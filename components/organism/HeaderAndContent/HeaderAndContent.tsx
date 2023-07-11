@@ -138,7 +138,7 @@ export const HeaderAndContent = ({
   }, [carModelDetails])
 
   const carOtrPrice = useMemo(() => {
-    return carModelDetails
+    return sortCarModelVariant.length > 0
       ? replacePriceSeparatorByLocalization(
           sortCarModelVariant[0].priceValue || 0,
           LanguageCode.id,
@@ -155,6 +155,8 @@ export const HeaderAndContent = ({
       Page_Origination_URL: client ? window.location.href : '',
     }
   }
+
+  if (!carModelDetails) return <></>
 
   return (
     <>

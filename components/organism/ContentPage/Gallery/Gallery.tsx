@@ -120,7 +120,7 @@ const GalleryTab = memo(({ tab, isSticky }: tabProps) => {
       Image_URL: carImages[0],
       Brand_Model: `${carModelDetails?.brand} ${carModelDetails?.model}`,
     }
-    // setTrackEventMoEngage('view_variant_list_gallery_tab', objData)
+    setTrackEventMoEngage('view_variant_list_gallery_tab', objData)
   }
   useEffect(() => {
     if (carModelDetails && cityOtr) {

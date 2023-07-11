@@ -38,6 +38,7 @@ import { SurveyFormKey } from 'utils/models/models'
 import { Input } from 'components/atoms/OldInput/Input'
 import { IconWarning } from 'components/atoms'
 import { useLoginAlertModal } from 'components/molecules/LoginAlertModal/LoginAlertModal'
+import { useRouter } from 'next/router'
 
 const EmptyCalculationImage = '/assets/illustration/EmptyCalculationImage.webp'
 const AccLogo = '/assets/icon/logo-acc.webp'
@@ -49,6 +50,7 @@ type tabProps = {
 }
 
 const Credit = memo(({ tab, isShowLoading }: tabProps) => {
+  const router = useRouter()
   const [initialValue, setInitialValue] = useState<
     CarVariantRecommendation | undefined
   >()
@@ -107,15 +109,16 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
     return () => clearTimeout(timeout)
   }, [tab, isShowLoading])
 
-  // TODO @toni : read location state from query param
-  // useEffect(() => {
-  //   if (location.state?.variant) {
-  //     const filterOption = carModelDetails?.variants.filter(
-  //       (item) => item.id === location.state?.variant,
-  //     )
-  //     if (filterOption) setInitialValue(filterOption[0])
-  //   }
-  // }, [location.state?.variant])
+  useEffect(() => {
+    if (router.query?.variant) {
+      const filterOption = carModelDetails?.variants.filter(
+        (item) => item.id === router.query?.variant,
+      )
+      if (filterOption) {
+        setInitialValue(filterOption[0])
+      }
+    }
+  }, [router.query?.variant])
 
   useEffect(() => {
     if (isSubmit && originInput.length === 0) {
@@ -239,8 +242,7 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
       Image_URL: carImages[0],
       Brand_Model: `${carModelDetails?.brand} ${carModelDetails?.model}`,
     }
-    // TODO @toni : moengage
-    // setTrackEventMoEngage('view_variant_list_credit_tab', objData)
+    setTrackEventMoEngage('view_variant_list_credit_tab', objData)
   }
 
   useEffect(() => {

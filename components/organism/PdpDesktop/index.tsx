@@ -9,7 +9,7 @@ import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/ca
 import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { LanguageCode, LocalStorageKey } from 'utils/models/models'
+import { LanguageCode, LoanRank, LocalStorageKey } from 'utils/models/models'
 import { CityOtrOption } from 'utils/types'
 import { useModalContext } from 'context/modalContext/modalContext'
 import { variantListUrl } from 'routes/routes'
@@ -34,10 +34,15 @@ import {
 } from 'components/molecules/ContactUsModal/ContactUsModal'
 import { useLoginAlertModal } from 'components/molecules/LoginAlertModal/LoginAlertModal'
 import { useDialogModal } from 'components/molecules/DialogModal/DialogModal'
+import { setTrackEventMoEngageWithoutValue } from 'helpers/moengage'
+import {
+  CarSearchPageMintaPenawaranParam,
+  trackCarVariantListPageLeadsFormSumit,
+} from 'helpers/amplitude/seva20Tracking'
+import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
 
 export default function index() {
   const router = useRouter()
-  console.log('qwe query', router.query)
   const {
     carRecommendationsResDefaultCity,
     carModelDetailsResDefaultCity,
@@ -49,10 +54,6 @@ export default function index() {
   const { model, brand, slug } = router.query
   const tab = Array.isArray(slug) ? slug[0] : undefined
   const [stickyCTA, setStickyCTA] = useState(false)
-  // TODO @toni : read "loanRankCVL" from query param
-  // const location = useLocation<
-  //   { [LocationStateKey.loanRankCVL]: LoanRank } | undefined
-  // >()
 
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   // const { t } = useTranslation()
@@ -102,36 +103,36 @@ export default function index() {
   const onSubmitLeadSuccess = () => {
     showDialogModal()
 
-    // const loanRankcr = location.state?.loanRankCVL
-    // const trackerProperty: CarSearchPageMintaPenawaranParam = {
-    //   Car_Brand: carModelDetails?.brand as string,
-    //   Car_Model: carModelDetails?.model as string,
-    //   OTR: `Rp${replacePriceSeparatorByLocalization(
-    //     carModelDetails?.variants[0].priceValue as number,
-    //     LanguageCode.id,
-    //   )}`,
-    //   DP: `Rp${minimumDp} Juta`,
-    //   Cicilan: `Rp${minimumMonthlyInstallment} jt/bln`,
-    //   Tenure: `${funnelQuery.tenure || 5} Tahun`, // convert string
-    //   City: cityOtr?.cityName || '',
-    //   Peluang_Kredit:
-    //     funnelQuery.monthlyIncome && funnelQuery.age && loanRankcr
-    //       ? loanRankcr === LoanRank.Green
-    //         ? 'Mudah'
-    //         : loanRankcr === LoanRank.Red
-    //         ? 'Sulit'
-    //         : 'Null'
-    //       : 'Null',
-    // }
-    // trackCarVariantListPageLeadsFormSumit(trackerProperty)
+    const loanRankcr = router.query.loanRankCVL ?? ''
+    const trackerProperty: CarSearchPageMintaPenawaranParam = {
+      Car_Brand: carModelDetails?.brand as string,
+      Car_Model: carModelDetails?.model as string,
+      OTR: `Rp${replacePriceSeparatorByLocalization(
+        carModelDetails?.variants[0].priceValue as number,
+        LanguageCode.id,
+      )}`,
+      DP: `Rp${minimumDp} Juta`,
+      Cicilan: `Rp${minimumMonthlyInstallment} jt/bln`,
+      Tenure: `${funnelQuery.tenure || 5} Tahun`, // convert string
+      City: cityOtr?.cityName || '',
+      Peluang_Kredit:
+        funnelQuery.monthlyIncome && funnelQuery.age && loanRankcr
+          ? loanRankcr === LoanRank.Green
+            ? 'Mudah'
+            : loanRankcr === LoanRank.Red
+            ? 'Sulit'
+            : 'Null'
+          : 'Null',
+    }
+    trackCarVariantListPageLeadsFormSumit(trackerProperty)
     // // prettier-ignore
-    // window.dataLayer.push({
-    //   'event':'interaction',
-    //   'eventCategory': 'Leads Generator',
-    //   'eventAction': 'Variant List Page - Hubungi Kami Leads Form',
-    //   'eventLabel': t('contactUs.confirmBtn'),
-    // });
-    // setTrackEventMoEngageWithoutValue('leads_created')
+    window.dataLayer.push({
+      event: 'interaction',
+      eventCategory: 'Leads Generator',
+      eventAction: 'Variant List Page - Hubungi Kami Leads Form',
+      eventLabel: 'Kirim Rincian',
+    })
+    setTrackEventMoEngageWithoutValue('leads_created')
   }
 
   const mediaCTAArea = () => {
