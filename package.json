@@ -42,6 +42,7 @@
     "react-cool-img": "^1.2.12",
     "react-detect-click-outside": "^1.1.7",
     "react-dom": "18.2.0",
+    "react-facebook-pixel": "^1.0.4",
     "react-gtm-module": "^2.0.11",
     "react-i18next": "^13.0.1",
     "react-infinite-scroll-component": "^6.1.0",

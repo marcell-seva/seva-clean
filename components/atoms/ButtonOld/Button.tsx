@@ -60,7 +60,11 @@ export const Button = ({
 
   const getLoadingComponent = (buttonTypeParam: ButtonType) => {
     return buttonTypeParam !== ButtonType.subtle ? (
-      <StyledLoading color={getLoadingColor()} />
+      <StyledLoading
+        color={getLoadingColor()}
+        height={20}
+        width={20}
+      ></StyledLoading>
     ) : (
       <LinkLabelMediumBold>{t('common.loadingMsg')}</LinkLabelMediumBold>
     )
@@ -376,5 +380,15 @@ export const rotate = keyframes`
 `
 
 export const StyledLoading = styled(IconLoading)`
-  animation: ${rotate} 1s linear infinite;
+  @keyframes circleRotate {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  animation: circleRotate 1s linear infinite;
 `

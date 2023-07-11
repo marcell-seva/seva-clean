@@ -21,6 +21,7 @@ import Link from 'next/link'
 import { ContentPage } from '../ContentPage/ContentPage'
 import { useShareModal } from 'components/molecules/OldShareModal/ShareModal'
 import { client } from 'const/const'
+import { FooterSeva } from '../FooterSeva'
 
 export interface HeaderAndContentProps extends StickyButtonProps {
   onSticky?: (sticky: boolean) => void
@@ -196,7 +197,7 @@ export const HeaderAndContent = ({
             isSticky={isSticky}
             isShowLoading={isShowLoading}
           />
-          {/* <FooterSeva /> */}
+          <FooterSeva />
         </Suspense>
       </TabContentWrapper>
       <ShareModal dataForAmplitude={getDataForAmplitude()} />

@@ -81,12 +81,17 @@ import FloatingIcon from 'components/molecules/FloatingIcon/FloatingIcon'
 import { SeoParagraphSection } from '../SeoParagraphSection/SeoParagraphSection'
 import { NewFilterSideMenu } from './Filter/FilterSideMenu/NewFilterSideMenu'
 import { t } from 'config/localization/locales/id'
+import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 
 interface CarResultPageProps {
+  carRecommendation: CarRecommendationResponse
   footer: FooterSEOAttributes
 }
 
-export default function PLPDesktop({ footer }: CarResultPageProps) {
+export default function PLPDesktop({
+  carRecommendation,
+  footer,
+}: CarResultPageProps) {
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const router = useRouter()
   const {
@@ -114,8 +119,9 @@ export default function PLPDesktop({ footer }: CarResultPageProps) {
   //   }
   const [isShowLoading, setShowLoading] = useState(true)
   const { recommendations, setRecommendations } = useContextRecommendations()
-  const [recommendationLists, setRecommendationLists] =
-    useState<CarRecommendation[]>(recommendations)
+  const [recommendationLists, setRecommendationLists] = useState<
+    CarRecommendation[]
+  >(carRecommendation.carRecommendations)
   const [searchInputValue, setSearchInputValue] = useState('')
   const { showToast, RenderToast } = useToast()
   const [, setLoanDetails] = useLocalStorage<CarVariantLoan | null>(
@@ -322,61 +328,52 @@ export default function PLPDesktop({ footer }: CarResultPageProps) {
   }
 
   useEffect(() => {
-    if (!isMobile) {
-      //   if (location.state?.isCarRecommendationsEmpty) {
-      //     router.replace({
-      //       ...location,
-      //       state: { [LocationStateKey.IsCarRecommendationsEmpty]: undefined },
-      //     })
-      //   }
-
-      if (bodyType || brand) {
-        setShowLoading(true)
-        getNewFunnelRecommendationsByQueries({
-          [QueryKeys.CarBodyType]: bodyType?.split(','),
-          [QueryKeys.CarBrand]: brand?.split(','),
+    if (bodyType || brand) {
+      setShowLoading(true)
+      getNewFunnelRecommendationsByQueries({
+        [QueryKeys.CarBodyType]: bodyType?.split(','),
+        [QueryKeys.CarBrand]: brand?.split(','),
+      })
+        .then((response: AxiosResponse<CarRecommendationResponse>) => {
+          setRecommendations(response.data.carRecommendations || [])
+          timeoutShimmer()
+          resetLoadingState()
         })
-          .then((response: AxiosResponse<CarRecommendationResponse>) => {
+        .catch(() => {
+          resetLoadingState()
+          showToast()
+        })
+    }
+
+    if (
+      funnelQuery.downPaymentAmount ||
+      funnelQuery.monthlyInstallment ||
+      Array(funnelQuery.brand).length > 0
+    ) {
+      if (downPaymentAmount || monthlyInstallment) {
+        patchFunnelQuery({
+          downPaymentAmount: downPaymentAmount,
+          downPaymentType: DownPaymentType.DownPaymentAmount,
+          monthlyInstallment: monthlyInstallment,
+        })
+        getNewFunnelRecommendations(queryTemp).then(
+          (response: AxiosResponse<CarRecommendationResponse>) => {
             setRecommendations(response.data.carRecommendations || [])
             timeoutShimmer()
-            resetLoadingState()
-          })
-          .catch(() => {
-            resetLoadingState()
-            showToast()
-          })
+          },
+        )
       }
+    } else if (recommendations.length === 0) {
+      setShowLoading(true)
+      getAllRecommendations()
+    }
 
-      if (
-        funnelQuery.downPaymentAmount ||
-        funnelQuery.monthlyInstallment ||
-        Array(funnelQuery.brand).length > 0
-      ) {
-        if (downPaymentAmount || monthlyInstallment) {
-          patchFunnelQuery({
-            downPaymentAmount: downPaymentAmount,
-            downPaymentType: DownPaymentType.DownPaymentAmount,
-            monthlyInstallment: monthlyInstallment,
-          })
-          getNewFunnelRecommendations(queryTemp).then(
-            (response: AxiosResponse<CarRecommendationResponse>) => {
-              setRecommendations(response.data.carRecommendations || [])
-              timeoutShimmer()
-            },
-          )
-        }
-      } else if (recommendations.length === 0) {
-        setShowLoading(true)
-        getAllRecommendations()
-      }
+    if (funnelQuery.carModel) {
+      setSearchInputValue(String(funnelQuery.carModel))
+    }
 
-      if (funnelQuery.carModel) {
-        setSearchInputValue(String(funnelQuery.carModel))
-      }
-
-      return () => {
-        setRecommendations([])
-      }
+    return () => {
+      setRecommendations([])
     }
   }, [])
 
@@ -390,11 +387,9 @@ export default function PLPDesktop({ footer }: CarResultPageProps) {
   }
 
   useEffect(() => {
-    if (!isMobile) {
+    if (getCity().cityName !== 'Jakarta Pusat') {
       if (brand) {
-        if (brand.includes('SEVA')) {
-          saveLocalStorage(LocalStorageKey.referralTemanSeva, brand)
-        } else {
+        if (!brand.includes('SEVA')) {
           setBrandName(
             brand === 'bmw'
               ? brand.toUpperCase()

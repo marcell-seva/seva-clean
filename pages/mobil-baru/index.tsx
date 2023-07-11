@@ -1,22 +1,21 @@
-import { PdpDesktop, PLP } from 'components/organism'
+import { PLP } from 'components/organism'
 import React from 'react'
 import axios from 'axios'
 import Head from 'next/head'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { getNewFunnelRecommendations } from 'services/newFunnel'
-import { CarRecommendationResponse } from 'utils/types/context'
-import { FooterSEOAttributes } from 'utils/types/utils'
-import { useMediaQuery } from 'react-responsive'
+import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
+import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
+import { CarRecommendation, FooterSEOAttributes } from 'utils/types/utils'
 import PLPDesktop from 'components/organism/PLPDesktop'
-import { useIsMobile } from 'utils/index'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
-import { client } from 'const/const'
+import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 
 const NewCarResultPage = ({
   meta,
   isSsrMobile,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const isMobile = client ? useIsMobile() : isSsrMobile
+  const isMobile = isSsrMobile
+
   return (
     <>
       <Head>
@@ -26,9 +25,16 @@ const NewCarResultPage = ({
         <link rel="icon" href="/favicon.png" />
       </Head>
       {isMobile ? (
-        <PLP carRecommendation={meta.carRecommendations} />
+        <PLP
+          carRecommendation={meta.carRecommendations}
+          minmaxPrice={meta.MinMaxPrice}
+          alternativeRecommendation={meta.alternativeCarRecommendation}
+        />
       ) : (
-        <PLPDesktop footer={meta.footer} />
+        <PLPDesktop
+          carRecommendation={meta.carRecommendations}
+          footer={meta.footer}
+        />
       )}
     </>
   )
@@ -40,7 +46,9 @@ type PLPProps = {
   title: string
   description: string
   footer: FooterSEOAttributes
+  MinMaxPrice: MinMaxPrice
   carRecommendations: CarRecommendationResponse
+  alternativeCarRecommendation: CarRecommendation[]
 }
 
 const getBrand = (brand: string | string[] | undefined) => {
@@ -80,11 +88,13 @@ export const getServerSideProps: GetServerSideProps<{
       updatedAt: '',
       publishedAt: '',
     },
+    MinMaxPrice: { maxPriceValue: 0, minPriceValue: 0 },
     carRecommendations: {
       carRecommendations: [],
       lowestCarPrice: 0,
       highestCarPrice: 0,
     },
+    alternativeCarRecommendation: [],
   }
 
   const {
@@ -98,28 +108,48 @@ export const getServerSideProps: GetServerSideProps<{
     sortBy,
   } = ctx.query
 
-  const queryParam: any = {
-    ...(downPaymentAmount && { downPaymentType: 'amount' }),
-    ...(downPaymentAmount && { downPaymentAmount }),
-    ...(brand && { brand: String(brand)?.split(',') }),
-    ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
-    ...(priceRangeGroup && { priceRangeGroup }),
-    ...(age && { age }),
-    ...(tenure && { tenure }),
-    ...(monthlyIncome && { monthlyIncome }),
-    ...(sortBy && { sortBy }),
-  }
-
   try {
-    const [fetchMeta, fetchFooter, funnel] = await Promise.all([
+    const [fetchMeta, fetchFooter] = await Promise.all([
       axios.get(metaTagBaseApi + metabrand),
       axios.get(footerTagBaseApi + metabrand),
-      getNewFunnelRecommendations(queryParam),
     ])
 
     const metaData = fetchMeta.data.data
     const footerData = fetchFooter.data.data
+
+    if (!priceRangeGroup) {
+      const minmax = await getMinMaxPrice({})
+      const minmaxPriceData = minmax.data
+      meta.MinMaxPrice = {
+        minPriceValue: minmaxPriceData.minPriceValue,
+        maxPriceValue: minmaxPriceData.maxPriceValue,
+      }
+    }
+
+    const queryParam: any = {
+      ...(downPaymentAmount && { downPaymentType: 'amount' }),
+      ...(downPaymentAmount && { downPaymentAmount }),
+      ...(brand && { brand: String(brand)?.split(',') }),
+      ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
+      ...(priceRangeGroup
+        ? { priceRangeGroup }
+        : {
+            priceRangeGroup: `${meta.MinMaxPrice.minPriceValue}-${meta.MinMaxPrice.maxPriceValue}`,
+          }),
+      ...(age && { age }),
+      ...(tenure && { tenure }),
+      ...(monthlyIncome && { monthlyIncome }),
+      ...(sortBy && { sortBy }),
+    }
+
+    const [funnel, alternative] = await Promise.all([
+      getNewFunnelRecommendations({ ...queryParam }),
+      getNewFunnelRecommendations({ ...queryParam, brand: [] }),
+    ])
+
     const recommendation = funnel.data
+    const alternativeData = alternative.data
+
     if (metaData && metaData.length > 0) {
       meta.title = metaData[0].attributes.meta_title
       meta.description = metaData[0].attributes.meta_description
@@ -130,6 +160,7 @@ export const getServerSideProps: GetServerSideProps<{
     }
 
     if (recommendation) meta.carRecommendations = recommendation
+    meta.alternativeCarRecommendation = alternativeData.carRecommendations
 
     return { props: { meta, isSsrMobile: getIsSsrMobile(ctx) } }
   } catch (e) {

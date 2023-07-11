@@ -6,12 +6,21 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
 import { saveLocalStorage } from 'utils/localstorageUtils'
 import { LocalStorageKey } from 'utils/enum'
-import { getNewFunnelRecommendations } from 'services/newFunnel'
-import { CarRecommendationResponse } from 'utils/types/context'
+import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
+import {
+  CarRecommendation,
+  CarRecommendationResponse,
+  MinMaxPrice,
+} from 'utils/types/context'
+import { getIsSsrMobile } from 'utils/getIsSsrMobile'
+import { FooterSEOAttributes } from 'utils/types/utils'
+import PLPDesktop from 'components/organism/PLPDesktop'
 
 const NewCarResultPage = ({
   meta,
+  isSsrMobile,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const isMobile = isSsrMobile
   const router = useRouter()
   const id = router.query.brand
 
@@ -29,7 +38,18 @@ const NewCarResultPage = ({
         <meta name="description" content={meta.description} />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <PLP carRecommendation={meta.carRecommendations} />
+      {isMobile ? (
+        <PLP
+          carRecommendation={meta.carRecommendations}
+          minmaxPrice={meta.MinMaxPrice}
+          alternativeRecommendation={meta.alternativeCarRecommendation}
+        />
+      ) : (
+        <PLPDesktop
+          carRecommendation={meta.carRecommendations}
+          footer={meta.footer}
+        />
+      )}
     </>
   )
 }
@@ -39,7 +59,10 @@ export default NewCarResultPage
 type PLPProps = {
   title: string
   description: string
+  footer: FooterSEOAttributes
+  MinMaxPrice: MinMaxPrice
   carRecommendations: CarRecommendationResponse
+  alternativeCarRecommendation: CarRecommendation[]
 }
 
 const getBrand = (brand: string | string[] | undefined) => {
@@ -56,18 +79,36 @@ const getBrand = (brand: string | string[] | undefined) => {
 
 export const getServerSideProps: GetServerSideProps<{
   meta: PLPProps
+  isSsrMobile: boolean
 }> = async (ctx) => {
   const metabrand = getBrand(ctx.query.brand)
   const metaTagBaseApi =
     'https://api.sslpots.com/api/meta-seos/?filters[location_page3][$eq]=CarSearchResult'
+  const footerTagBaseApi =
+    'https://api.sslpots.com/api/footer-seos/?filters[location_page2][$eq]=CarSearchResult'
   const meta = {
     title: 'SEVA',
     description: '',
+    footer: {
+      location_tag: '',
+      location_page2: '',
+      title_1: '',
+      Title_2: '',
+      Title_3: '',
+      content_1: '',
+      Content_2: '',
+      Content_3: '',
+      createdAt: '',
+      updatedAt: '',
+      publishedAt: '',
+    },
+    MinMaxPrice: { maxPriceValue: 0, minPriceValue: 0 },
     carRecommendations: {
       carRecommendations: [],
       lowestCarPrice: 0,
       highestCarPrice: 0,
     },
+    alternativeCarRecommendation: [],
   }
 
   const {
@@ -81,35 +122,62 @@ export const getServerSideProps: GetServerSideProps<{
     sortBy,
   } = ctx.query
 
-  const queryParam: any = {
-    ...(downPaymentAmount && { downPaymentType: 'amount' }),
-    ...(downPaymentAmount && { downPaymentAmount }),
-    ...(brand && { brand: String(brand)?.split(',') }),
-    ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
-    ...(priceRangeGroup && { priceRangeGroup }),
-    ...(age && { age }),
-    ...(tenure && { tenure }),
-    ...(monthlyIncome && { monthlyIncome }),
-    ...(sortBy && { sortBy }),
-  }
-
   try {
-    const [fetchMeta, funnel] = await Promise.all([
+    const [fetchMeta, fetchFooter] = await Promise.all([
       axios.get(metaTagBaseApi + metabrand),
-      getNewFunnelRecommendations(queryParam),
+      axios.get(footerTagBaseApi + metabrand),
     ])
 
     const metaData = fetchMeta.data.data
+    const footerData = fetchFooter.data.data
+
+    if (!priceRangeGroup) {
+      const minmax = await getMinMaxPrice({})
+      const minmaxPriceData = minmax.data
+      meta.MinMaxPrice = {
+        minPriceValue: minmaxPriceData.minPriceValue,
+        maxPriceValue: minmaxPriceData.maxPriceValue,
+      }
+    }
+
+    const queryParam: any = {
+      ...(downPaymentAmount && { downPaymentType: 'amount' }),
+      ...(downPaymentAmount && { downPaymentAmount }),
+      ...(brand && { brand: String(brand)?.split(',') }),
+      ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
+      ...(priceRangeGroup
+        ? { priceRangeGroup }
+        : {
+            priceRangeGroup: `${meta.MinMaxPrice.minPriceValue}-${meta.MinMaxPrice.maxPriceValue}`,
+          }),
+      ...(age && { age }),
+      ...(tenure && { tenure }),
+      ...(monthlyIncome && { monthlyIncome }),
+      ...(sortBy && { sortBy }),
+    }
+
+    const [funnel, alternative] = await Promise.all([
+      getNewFunnelRecommendations({ ...queryParam }),
+      getNewFunnelRecommendations({ ...queryParam, brand: [] }),
+    ])
+
     const recommendation = funnel.data
+    const alternativeData = alternative.data
+
     if (metaData && metaData.length > 0) {
       meta.title = metaData[0].attributes.meta_title
       meta.description = metaData[0].attributes.meta_description
     }
 
-    if (recommendation) meta.carRecommendations = recommendation
+    if (footerData && footerData.length > 0) {
+      meta.footer = footerData[0].attributes
+    }
 
-    return { props: { meta } }
+    if (recommendation) meta.carRecommendations = recommendation
+    meta.alternativeCarRecommendation = alternativeData.carRecommendations
+
+    return { props: { meta, isSsrMobile: getIsSsrMobile(ctx) } }
   } catch (e) {
-    return { props: { meta } }
+    return { props: { meta, isSsrMobile: getIsSsrMobile(ctx) } }
   }
 }

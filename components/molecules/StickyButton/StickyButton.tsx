@@ -1,7 +1,5 @@
-import { Button } from 'components/atoms'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-// import { Link } from 'react-router-dom'
 import { colors } from 'styles/colors'
 import { useMediaQuery } from 'react-responsive'
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
@@ -9,11 +7,10 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { CityOtrOption } from 'utils/types'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
-// import { ActionButton } from '../CarHeader/component/HeaderActionButton'
 import elementId from 'helpers/elementIds'
 import { ActionButton } from '../HeaderActionButton/HeaderActionButton'
-import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import Link from 'next/link'
+import { Button, ButtonType } from 'components/atoms/ButtonOld/Button'
 
 export type StickyButtonProps = {
   onClickPenawaran?: () => void
@@ -88,8 +85,7 @@ const ActionButtonMobile = ({
 }: StickyButtonProps) => (
   <>
     <MintaPenawaranButton
-      version={ButtonVersion.PrimaryDarkBlue}
-      size={ButtonSize.Big}
+      buttonType={ButtonType.secondary5}
       onClick={onClickPenawaran}
     >
       Minta Penawaran
@@ -97,8 +93,8 @@ const ActionButtonMobile = ({
     <LinkHitungCicilan href={toLoan}>
       <HitungCicilanButton
         data-testid={elementId.InstantApproval.ButtonCalculateInstallment}
-        version={ButtonVersion.PrimaryDarkBlue}
-        size={ButtonSize.Big}
+        buttonType={ButtonType.primary5}
+        height={'48px'}
       >
         Hitung Cicilan
       </HitungCicilanButton>

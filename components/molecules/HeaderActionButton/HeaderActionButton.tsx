@@ -8,7 +8,7 @@ import {
   StickyButtonProps,
 } from '../StickyButton/StickyButton'
 import { TanyaSeva } from '../TanyaSeva/TanyaSeva'
-import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { ButtonType } from 'components/atoms/ButtonOld/Button'
 
 export const ActionButton = ({
   onClickPenawaran,
@@ -18,17 +18,13 @@ export const ActionButton = ({
     <ActionButtonWrapper>
       <MintaPenawaranButton
         data-testid={elementId.InstantApproval.ButtonOffer}
-        version={ButtonVersion.Secondary}
+        buttonType={ButtonType.secondary5}
         onClick={onClickPenawaran}
-        size={ButtonSize.Big}
       >
         Minta Penawaran
       </MintaPenawaranButton>
       <LinkHitungCicilan href={toLoan}>
-        <HitungCicilanButton
-          version={ButtonVersion.PrimaryDarkBlue}
-          size={ButtonSize.Big}
-        >
+        <HitungCicilanButton buttonType={ButtonType.primary5} height={'48px'}>
           Hitung Cicilan
         </HitungCicilanButton>
       </LinkHitungCicilan>
