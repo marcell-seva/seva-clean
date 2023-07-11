@@ -30,8 +30,9 @@ import { LanguageCode, LocalStorageKey, LoanRank } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { CarRecommendation, CityOtrOption } from 'utils/types'
 import { CarInfo } from './CarInfo'
-import { IconWhatsapp } from 'components/atoms'
 import Image from 'next/image'
+import { WhatsAppIcon } from 'components/atoms/icon/WhatsAppIcon'
+import { BadgeLoanStatus } from './BadgeLoanStatus'
 
 interface CarTileProps extends HTMLAttributes<HTMLDivElement> {
   carModel: CarRecommendation
@@ -187,11 +188,11 @@ export const CarModelTileV2 = ({
               e.stopPropagation()
             }}
           >
-            {/* <BadgeLoanStatus
+            <BadgeLoanStatus
               loanRank={getBadgeStatus()}
               onModelClick={onModelClick}
               carModel={carModel}
-            /> */}
+            />
           </BadgeLoanStatusWrapper>
         </ImageSection>
         <CarInfo carModel={carModel} />
@@ -201,7 +202,7 @@ export const CarModelTileV2 = ({
           data-testid={elementId.CarResultPage.ButtonOffer}
           onClick={goToWhatsApp}
         >
-          <IconWhatsapp color={colors.white} width={17} height={17} />
+          <WhatsAppIcon color={colors.white} width={17} height={17} />
           <StyledButtonTextContactUs>Minta Penawaran</StyledButtonTextContactUs>
         </StyledButtonContactUs>
       </StyledButtonContainer>
