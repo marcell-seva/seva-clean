@@ -56,7 +56,7 @@ $slide-content-height: 20px;
   & .submenu {
     direction: ltr;
     margin-top: 20px;
-    font-family: 'OpenSans';
+    font-family: var(--open-sans);
     font-size: 14px;
     color: #{$secondary-blue};
     display: block;
@@ -65,12 +65,12 @@ $slide-content-height: 20px;
 
 .menu {
   font-size: 14px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   color: #{$primary-black};
   direction: ltr;
 
   &.isActive {
-    font-family: 'OpenSansSemiBold';
+    font-family: var(--open-sans-semi-bold);
     font-weight: 600;
   }
 }

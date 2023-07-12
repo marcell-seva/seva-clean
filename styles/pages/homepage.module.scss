@@ -65,12 +65,12 @@
   line-height: 20px;
 
   &.regularGrey {
-    font-family: $font-openSans;
+    font-family: var(--open-sans);
     color: #{$shades-grey-75};
   }
 
   &.semiboldBlack {
-    font-family: $font-openSans-semiBold;
+    font-family: var(--open-sans)-semiBold;
     color: #{$primary-black};
   }
 }

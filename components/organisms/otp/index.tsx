@@ -1,6 +1,5 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react'
+import React, { useState, useMemo, useRef, useEffect, useContext } from 'react'
 import styles from 'styles/components/organisms/otp.module.scss'
-import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { HTTPResponseStatusCode, LocalStorageKey } from 'utils/types/models'
@@ -12,10 +11,10 @@ import { AmplitudeEventName } from 'services/amplitude/types'
 import { useCountDownTimer } from 'utils/hooks/useCountDownTimer'
 import { useCurrentLanguage } from 'utils/hooks/useCurrentLanguage/useCurrentLanguage'
 import { IconLoading } from 'components/atoms/icons'
-import { useLastOtpSentTime } from 'services/context/lastOtpSentTimeContext'
 import { saveOtpIsSent, saveOtpTimerIsStart } from 'utils/handler/otp'
 import { api } from 'services/api'
 import { getRecaptchaToken } from 'services/firebase'
+import { UtilsContext, UtilsContextType } from 'services/context'
 
 const OTP = ({
   phoneNumber,
@@ -26,14 +25,15 @@ const OTP = ({
   savedTokenAfterVerify,
 }: any): JSX.Element => {
   const [currentLanguage] = useCurrentLanguage()
-  const { lastOtpSentTime, setLastOtpSentTime } = useLastOtpSentTime()
-  const { t } = useTranslation()
+  const { lastOtpSentTime, setLastOtpSentTime } = useContext(
+    UtilsContext,
+  ) as UtilsContextType
   const [otp, setOtp] = useState<string>(' ')
   const [isErrorInput, setIsErrorInput] = useState<boolean>(false)
   const [isInit, setIsInit] = useState(true)
   const [isCountDownEnd, setIsCountDownEnd] = useState(false)
   const [isError, setIsError] = useState(false)
-  const [commonErrorMessage, setCommonErrorMessage] = useState()
+  const [commonErrorMessage, setCommonErrorMessage] = useState('')
   const [tooManyRequestError, setTooManyRequestError] = useState('')
 
   const valueLength = 6
@@ -224,8 +224,9 @@ const OTP = ({
       )
       return recaptchaToken
     } catch (error) {
-      setCommonErrorMessage(t('common.errorMessage'))
-      throw error
+      setCommonErrorMessage(
+        'Oops.. Sepertinya terjadi kesalahan. Coba lagi nanti.',
+      )
     }
   }
 
@@ -247,8 +248,10 @@ const OTP = ({
       ) {
         setIsErrorInput(true)
       } else {
-        setCommonErrorMessage(t('common.errorMessage'))
-        onFailed()
+        setCommonErrorMessage(
+          'Oops.. Sepertinya terjadi kesalahan. Coba lagi nanti.',
+        )
+        onFailed() && onFailed()
         setIsErrorInput(true)
       }
     }
@@ -285,7 +288,9 @@ const OTP = ({
         setIsError(false)
         shouldShowTimer()
       } else {
-        setCommonErrorMessage(t('common.errorMessage'))
+        setCommonErrorMessage(
+          'Oops.. Sepertinya terjadi kesalahan. Coba lagi nanti.',
+        )
       }
     }
   }
@@ -320,11 +325,13 @@ const OTP = ({
         setIsCountDownEnd(false)
         setIsError(false)
         shouldShowTimer()
-        onFailed()
+        onFailed() && onFailed()
       } else {
-        setCommonErrorMessage(t('common.errorMessage'))
+        setCommonErrorMessage(
+          'Oops.. Sepertinya terjadi kesalahan. Coba lagi nanti.',
+        )
       }
-      onFailed()
+      onFailed() && onFailed()
     }
   }
 

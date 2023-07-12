@@ -69,7 +69,7 @@
       }
 
       .timeCity {
-        font-family: $font-openSans;
+        font-family: var(--open-sans);
         font-size: 14px;
         line-height: 20px;
         color: #{$primary-dark-blue};
@@ -78,7 +78,7 @@
 
       .description {
         display: -webkit-box;
-        font-family: $font-openSans;
+        font-family: var(--open-sans);
         color: #{$shades-grey-75};
         font-size: 14px;
         line-height: 20px;

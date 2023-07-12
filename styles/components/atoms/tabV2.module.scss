@@ -31,7 +31,7 @@
 }
 
 .text {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -40,7 +40,7 @@
 }
 
 .textActive {
-  font-family: $font-openSans-semiBold;
+  font-family: var(--open-sans)-semiBold;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -69,7 +69,7 @@
   }
 
   .text {
-    font-family: 'OpenSans';
+    font-family: var(--open-sans);
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -78,7 +78,7 @@
   }
 
   .textActive {
-    font-family: 'OpenSansSemiBold';
+    font-family: var(--open-sans-semi-bold);
     font-style: normal;
     font-weight: 600;
     font-size: 16px;

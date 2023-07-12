@@ -32,11 +32,7 @@ import {
   IconPlus,
   IconTenure,
 } from 'components/atoms/icons'
-import {
-  FinancialFunnelWidgetError,
-  FunnelWidget,
-  MinMaxPrice,
-} from 'utils/types/props'
+import { FinancialFunnelWidgetError, FunnelWidget } from 'utils/types/props'
 import {
   ageOptions,
   MinAmountMessage,
@@ -58,6 +54,8 @@ import {
   FinancialQueryContextType,
   FunnelQueryContext,
   FunnelQueryContextType,
+  SearchWidgetContext,
+  SearchWidgetContextType,
 } from 'services/context'
 import { api } from 'services/api'
 import { getCity } from 'utils/hooks/useGetCity'
@@ -89,9 +87,6 @@ const initEmptyDataWidget = {
   monthlyIncome: '',
 }
 
-const { Context } = createDataContext<FunnelWidget>(initEmptyDataWidget)
-export const SearchWidgetContext = Context
-
 const SearchWidget = () => {
   const { patchFunnelQuery } = useContext(
     FunnelQueryContext,
@@ -100,8 +95,10 @@ const SearchWidget = () => {
   const { financialQuery, patchFinancialQuery } = useContext(
     FinancialQueryContext,
   ) as FinancialQueryContextType
-  const [state, setState] = useState<FunnelWidget>(initEmptyDataWidget) // assume this state as Context widget, mind about re-render
-  const contextValue = useMemo(() => ({ state, setState }), [state])
+  const { funnelWidget, saveFunnelWidget } = useContext(
+    SearchWidgetContext,
+  ) as SearchWidgetContextType
+
   const priceRangeRef = useRef() as MutableRefObject<HTMLDivElement>
   const [storedFilter] = useLocalStorage<FunnelWidget>(
     LocalStorageKey.CarFilter,
@@ -114,7 +111,6 @@ const SearchWidget = () => {
 
   const fetchMinMaxPrice = () => {
     const params = getCity().cityCode
-
     api.getMinMaxPrice(`?city=${params}`).then((response: any) => {
       setLimitPrice({
         min: response.minPriceValue,
@@ -124,26 +120,26 @@ const SearchWidget = () => {
   }
 
   const formatPriceRangePlaceholder = useMemo(() => {
-    if (!state.priceRangeGroup)
+    if (!funnelWidget.priceRangeGroup)
       return `Rp${Currency(limitPrice.min)} - ${Currency(limitPrice.max)}`
 
-    const splitPriceRange = state.priceRangeGroup.split('-')
+    const splitPriceRange = funnelWidget.priceRangeGroup.split('-')
     return `Rp${Currency(splitPriceRange[0])} - ${Currency(splitPriceRange[1])}`
-  }, [state.priceRangeGroup, limitPrice])
+  }, [funnelWidget.priceRangeGroup, limitPrice])
 
   const limitMinimumDp = useMemo(() => {
-    if (!state.priceRangeGroup) return limitPrice.min * 0.2
+    if (!funnelWidget.priceRangeGroup) return limitPrice.min * 0.2
 
-    const currentMinimumPrice = state.priceRangeGroup.split('-')[0]
+    const currentMinimumPrice = funnelWidget.priceRangeGroup.split('-')[0]
     return Number(currentMinimumPrice) * (20 / 100)
-  }, [state.priceRangeGroup, limitPrice.min])
+  }, [funnelWidget.priceRangeGroup, limitPrice.min])
 
   const limitMaximumDp = useMemo(() => {
-    if (!state.priceRangeGroup) return limitPrice.max * (90 / 100)
+    if (!funnelWidget.priceRangeGroup) return limitPrice.max * (90 / 100)
 
-    const currentMaximumPrice = state.priceRangeGroup.split('-')[1]
+    const currentMaximumPrice = funnelWidget.priceRangeGroup.split('-')[1]
     return Number(currentMaximumPrice) * 0.9
-  }, [state.priceRangeGroup, limitPrice.max])
+  }, [funnelWidget.priceRangeGroup, limitPrice.max])
 
   const errorLimitDP = ({
     text,
@@ -171,20 +167,20 @@ const SearchWidget = () => {
   }
 
   const errorDownPayment = (): JSX.Element | string => {
-    if (!state.downPaymentAmount)
+    if (!funnelWidget.downPaymentAmount)
       return RequiredFunnelErrorMessage.downPaymentAmount
 
-    if (Number(state.downPaymentAmount) < MinAmount.downPaymentAmount)
+    if (Number(funnelWidget.downPaymentAmount) < MinAmount.downPaymentAmount)
       return MinAmountMessage.downPayemntAmount
 
-    if (Number(state.downPaymentAmount) < limitMinimumDp)
+    if (Number(funnelWidget.downPaymentAmount) < limitMinimumDp)
       return errorLimitDP({
         text: `Berdasarkan harga yang Anda pilih, min. DP 
       Rp${Currency(limitMinimumDp)}. `,
         gotoPriceRange,
       })
 
-    if (Number(state.downPaymentAmount) > limitMaximumDp)
+    if (Number(funnelWidget.downPaymentAmount) > limitMaximumDp)
       return errorLimitDP({
         text: `Berdasarkan harga yang Anda pilih, maks. DP 
       Rp${Currency(limitMaximumDp)}. `,
@@ -195,17 +191,18 @@ const SearchWidget = () => {
   }
 
   const errorIncome = () => {
-    if (!state.monthlyIncome) return RequiredFunnelErrorMessage.monthlyIncome
+    if (!funnelWidget.monthlyIncome)
+      return RequiredFunnelErrorMessage.monthlyIncome
 
-    if (Number(state.monthlyIncome) < MinAmount.monthlyIncome)
+    if (Number(funnelWidget.monthlyIncome) < MinAmount.monthlyIncome)
       return MinAmountMessage.monthlyIncome
 
     return ''
   }
 
   const brandTypePlaceholder = (type: 'brand' | 'bodyType') => {
-    if (state[type].length > 0) {
-      return state[type].join(', ')
+    if (funnelWidget[type].length > 0) {
+      return funnelWidget[type].join(', ')
     }
 
     return initDataWidget[type].join(', ')
@@ -215,7 +212,7 @@ const SearchWidget = () => {
     //check if user not open/expand financial form
     if (!expandFinancial) return true
 
-    const { age, downPaymentAmount, monthlyIncome, tenure } = state
+    const { age, downPaymentAmount, monthlyIncome, tenure } = funnelWidget
 
     // check if user not fill all financial form
     if (!age && !downPaymentAmount && !monthlyIncome && !tenure) return true
@@ -244,7 +241,7 @@ const SearchWidget = () => {
       bodyType,
       brand,
       tenure,
-    } = state
+    } = funnelWidget
     const splitPriceRange = priceRangeGroup.split('-')
     const maxPrice = priceRangeGroup ? splitPriceRange[1] : 0
     const sortHighToLow = maxPrice && Number(maxPrice) < limitPrice.max
@@ -272,7 +269,7 @@ const SearchWidget = () => {
 
     if (expandFinancial) {
       patchFinancialQuery(dataFinancial)
-      patchFunnelQuery({ ...state })
+      patchFunnelQuery({ ...funnelWidget })
     } else {
       patchFunnelQuery({ brand, bodyType, priceRangeGroup })
     }
@@ -314,23 +311,25 @@ const SearchWidget = () => {
     if (storedFilter.downPaymentAmount)
       currentFinancial.downPaymentAmount = storedFilter.downPaymentAmount
 
-    setState((prev: any) => ({ ...prev, ...currentFinancial }))
+    saveFunnelWidget({ ...funnelWidget, ...currentFinancial })
 
     fetchMinMaxPrice()
   }, [])
 
   useEffect(() => {
     const changeFinanceState: { [key: string]: string } = {}
-    if (state.age) changeFinanceState.age = ''
-    if (state.tenure) changeFinanceState.tenure = ''
+    if (funnelWidget.age) changeFinanceState.age = ''
+    if (funnelWidget.tenure) changeFinanceState.tenure = ''
 
     setErrorFinance((prev: any) => ({ ...prev, ...changeFinanceState }))
-  }, [state.age, state.tenure])
+  }, [funnelWidget.age, funnelWidget.tenure])
 
   useEffect(() => {
     let downPaymentAmount = ''
-    if (state.downPaymentAmount) {
-      if (Number(state.downPaymentAmount) < MinAmount.downPaymentAmount) {
+    if (funnelWidget.downPaymentAmount) {
+      if (
+        Number(funnelWidget.downPaymentAmount) < MinAmount.downPaymentAmount
+      ) {
         downPaymentAmount = MinAmountMessage.downPayemntAmount
       } else {
         if (!isValidElement(errorFinance.downPaymentAmount))
@@ -339,16 +338,16 @@ const SearchWidget = () => {
     }
 
     setErrorFinance((prev: any) => ({ ...prev, downPaymentAmount }))
-  }, [state.downPaymentAmount])
+  }, [funnelWidget.downPaymentAmount])
 
   useEffect(() => {
     let monthlyIncome = ''
-    if (state.monthlyIncome) {
+    if (funnelWidget.monthlyIncome) {
       monthlyIncome = errorIncome()
     }
 
     setErrorFinance((prev: any) => ({ ...prev, monthlyIncome }))
-  }, [state.monthlyIncome])
+  }, [funnelWidget.monthlyIncome])
 
   const FinancialEntry = () => {
     if (expandFinancial)
@@ -408,145 +407,141 @@ const SearchWidget = () => {
   }
 
   return (
-    <SearchWidgetContext.Provider value={contextValue}>
-      <div className={styles.container}>
-        <CardShadow
-          className={clsx({
-            [styles.cardContainer]: true,
-            [styles.expandCard]: expandFinancial,
-          })}
+    <div className={styles.container}>
+      <CardShadow
+        className={clsx({
+          [styles.cardContainer]: true,
+          [styles.expandCard]: expandFinancial,
+        })}
+      >
+        <SelectWidget
+          title="Merek"
+          placeholder={brandTypePlaceholder('brand')}
+          icon={
+            <IconBrand
+              width={32}
+              height={32}
+              color={colors.secondaryBrickRed}
+            />
+          }
+          sheetOption={({ onClose }: any) => (
+            <GridOptionWidget
+              onClose={onClose}
+              type="brand"
+              errorToastMessage="Silahkan pilih salah satu merk mobil"
+            />
+          )}
+          datatestid={elementId.FilterMerek}
+        />
+        <SelectWidget
+          title="Tipe"
+          placeholder={brandTypePlaceholder('bodyType')}
+          icon={
+            <IconCar width={32} height={32} color={colors.secondaryBrickRed} />
+          }
+          sheetOption={({ onClose }: any) => (
+            <GridOptionWidget
+              onClose={onClose}
+              type="bodyType"
+              errorToastMessage="Silahkan pilih salah satu tipe mobil"
+            />
+          )}
+          datatestid={elementId.FilterType}
+        />
+        <SelectWidget
+          ref={priceRangeRef}
+          title="Estimasi Harga"
+          placeholder={formatPriceRangePlaceholder}
+          icon={
+            <IconMoney
+              width={32}
+              height={32}
+              color={colors.secondaryBrickRed}
+            />
+          }
+          sheetOption={({ onClose }: any) => (
+            <PriceRangeWidget onClose={onClose} limitPrice={limitPrice} />
+          )}
+          datatestid={elementId.FilterHarga}
+        />
+        {FinancialEntry()}
+        <InputWidget
+          name="downPaymentAmount"
+          title="Maksimum DP"
+          value={funnelWidget.downPaymentAmount}
+          icon={
+            <IconDownPayment
+              width={32}
+              height={32}
+              color={colors.secondaryBrickRed}
+            />
+          }
+          placeholder="Masukkan DP"
+          errorText={errorFinance.downPaymentAmount}
+          datatestid={elementId.Field.DP}
+        />
+        <SelectWidget
+          title="Tenor (tahun)"
+          placeholder={
+            funnelWidget.tenure ? funnelWidget.tenure + ' Tahun' : 'Pilih Tenor'
+          }
+          icon={
+            <IconTenure
+              width={32}
+              height={32}
+              color={colors.secondaryBrickRed}
+            />
+          }
+          sheetOption={({ onClose }: any) => (
+            <TenureOptionWidget onClose={onClose} />
+          )}
+          errorText={errorFinance.tenure}
+          datatestid={elementId.Field.Tenure}
+        />
+        <InputWidget
+          name="monthlyIncome"
+          title="Pendapatan Bulanan"
+          value={funnelWidget.monthlyIncome}
+          icon={
+            <IconIncome
+              width={32}
+              height={32}
+              color={colors.secondaryBrickRed}
+            />
+          }
+          placeholder="Masukkan Pendapatan"
+          errorText={errorFinance.monthlyIncome}
+          datatestid={elementId.Field.Income}
+        />
+        <SelectWidget
+          title="Kategori Umur"
+          placeholder={funnelWidget.age || 'Pilih Kategori Umur'}
+          value={funnelWidget.age}
+          name="age"
+          icon={
+            <IconAgeRange
+              width={32}
+              height={32}
+              color={colors.secondaryBrickRed}
+            />
+          }
+          sheetList={ageOptions}
+          errorText={errorFinance.age}
+          datatestid={elementId.Homepage.Dropdown.KategoriUmur}
+          optionDatatestId={elementId.Field.Age}
+        />
+      </CardShadow>
+      <div className={styles.buttonWrapper}>
+        <Button
+          version={ButtonVersion.PrimaryDarkBlue}
+          size={ButtonSize.Big}
+          onClick={submit}
+          data-testid={elementId.Homepage.Button.CariMobil}
         >
-          <SelectWidget
-            title="Merek"
-            placeholder={brandTypePlaceholder('brand')}
-            icon={
-              <IconBrand
-                width={32}
-                height={32}
-                color={colors.secondaryBrickRed}
-              />
-            }
-            sheetOption={({ onClose }: any) => (
-              <GridOptionWidget
-                onClose={onClose}
-                type="brand"
-                errorToastMessage="Silahkan pilih salah satu merk mobil"
-              />
-            )}
-            datatestid={elementId.FilterMerek}
-          />
-          <SelectWidget
-            title="Tipe"
-            placeholder={brandTypePlaceholder('bodyType')}
-            icon={
-              <IconCar
-                width={32}
-                height={32}
-                color={colors.secondaryBrickRed}
-              />
-            }
-            sheetOption={({ onClose }: any) => (
-              <GridOptionWidget
-                onClose={onClose}
-                type="bodyType"
-                errorToastMessage="Silahkan pilih salah satu tipe mobil"
-              />
-            )}
-            datatestid={elementId.FilterType}
-          />
-          <SelectWidget
-            ref={priceRangeRef}
-            title="Estimasi Harga"
-            placeholder={formatPriceRangePlaceholder}
-            icon={
-              <IconMoney
-                width={32}
-                height={32}
-                color={colors.secondaryBrickRed}
-              />
-            }
-            sheetOption={({ onClose }: any) => (
-              <PriceRangeWidget onClose={onClose} limitPrice={limitPrice} />
-            )}
-            datatestid={elementId.FilterHarga}
-          />
-          {FinancialEntry()}
-          <InputWidget
-            name="downPaymentAmount"
-            title="Maksimum DP"
-            value={state.downPaymentAmount}
-            icon={
-              <IconDownPayment
-                width={32}
-                height={32}
-                color={colors.secondaryBrickRed}
-              />
-            }
-            placeholder="Masukkan DP"
-            errorText={errorFinance.downPaymentAmount}
-            datatestid={elementId.Field.DP}
-          />
-          <SelectWidget
-            title="Tenor (tahun)"
-            placeholder={state.tenure ? state.tenure + ' Tahun' : 'Pilih Tenor'}
-            icon={
-              <IconTenure
-                width={32}
-                height={32}
-                color={colors.secondaryBrickRed}
-              />
-            }
-            sheetOption={({ onClose }: any) => (
-              <TenureOptionWidget onClose={onClose} />
-            )}
-            errorText={errorFinance.tenure}
-            datatestid={elementId.Field.Tenure}
-          />
-          <InputWidget
-            name="monthlyIncome"
-            title="Pendapatan Bulanan"
-            value={state.monthlyIncome}
-            icon={
-              <IconIncome
-                width={32}
-                height={32}
-                color={colors.secondaryBrickRed}
-              />
-            }
-            placeholder="Masukkan Pendapatan"
-            errorText={errorFinance.monthlyIncome}
-            datatestid={elementId.Field.Income}
-          />
-          <SelectWidget
-            title="Kategori Umur"
-            placeholder={state.age || 'Pilih Kategori Umur'}
-            value={state.age}
-            name="age"
-            icon={
-              <IconAgeRange
-                width={32}
-                height={32}
-                color={colors.secondaryBrickRed}
-              />
-            }
-            sheetList={ageOptions}
-            errorText={errorFinance.age}
-            datatestid={elementId.Homepage.Dropdown.KategoriUmur}
-            optionDatatestId={elementId.Field.Age}
-          />
-        </CardShadow>
-        <div className={styles.buttonWrapper}>
-          <Button
-            version={ButtonVersion.PrimaryDarkBlue}
-            size={ButtonSize.Big}
-            onClick={submit}
-            data-testid={elementId.Homepage.Button.CariMobil}
-          >
-            Cari Mobil
-          </Button>
-        </div>
+          Cari Mobil
+        </Button>
       </div>
-    </SearchWidgetContext.Provider>
+    </div>
   )
 }
 

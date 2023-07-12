@@ -6,7 +6,7 @@
   border-radius: 8px;
   background-color: transparent;
   color: #{$primary-dark-blue};
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   cursor: pointer;
 
   &[disabled] {
@@ -19,7 +19,7 @@
   @media (hover: hover) {
     &:hover {
       &:not([disabled]) {
-        font-family: 'OpenSansSemiBold';
+        font-family: var(--open-sans-semi-bold);
         background-color: #{$shades-sky-blue-5};
       }
     }
@@ -31,7 +31,7 @@
   border-radius: 8px;
   background-color: #{$primary-dark-blue};
   color: #{$primary-white};
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   cursor: pointer;
 }
 
@@ -40,7 +40,7 @@
   border-radius: 8px;
   background-color: transparent; /* Transparent background */
   color: #{$primary-dark-blue}; /* Text color */
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   cursor: pointer;
 }
 
@@ -50,7 +50,7 @@
   background-color: #{$primary-dark-blue};
   color: #{$primary-white};
   cursor: pointer;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   cursor: pointer;
 
   &[disabled] {
@@ -64,7 +64,7 @@
   @media (hover: hover) {
     &:hover {
       &:not([disabled]) {
-        font-family: 'OpenSansSemiBold';
+        font-family: var(--open-sans-semi-bold);
         background-color: #{$secondary-blue};
         color: #{$primary-white};
       }

@@ -23,14 +23,14 @@
   padding-right: 17px;
 
   .nameAge {
-    font-family: $font-openSans-semiBold;
+    font-family: var(--open-sans)-semiBold;
     font-size: 14px;
     line-height: 20px;
     color: #{$primary-dark-blue};
   }
 
   .timeCityCar {
-    font-family: $font-openSans;
+    font-family: var(--open-sans);
     font-size: 12px;
     line-height: 18px;
     color: #{$primary-dark-blue};
@@ -39,7 +39,7 @@
 
   .description {
     display: -webkit-box;
-    font-family: $font-openSans;
+    font-family: var(--open-sans);
     color: #{$shades-grey-75};
     font-size: 12px;
     line-height: 18px;

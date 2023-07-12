@@ -96,6 +96,8 @@ const AlternativeCarCard = ({
           className={styles.heroImg}
           alt={`${recommendation.brand} ${recommendation.model}`}
           onClick={navigateToPDP}
+          width={180}
+          height={135}
           data-testid={elementId.CarRecommendation.Image}
         />
         {label ?? (

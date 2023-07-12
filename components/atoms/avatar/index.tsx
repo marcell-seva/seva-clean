@@ -6,10 +6,6 @@ interface AvatarProps {
 }
 
 const Avatar = ({ title }: AvatarProps) => {
-  return (
-    <div className={styles.avatar}>
-      <span>{title}</span>
-    </div>
-  )
+  return <div className={styles.avatar}>{title}</div>
 }
 export default Avatar

@@ -1,11 +1,6 @@
 import { AuthContext, AuthProvider, AuthContextType } from './authContext'
 import { CarContext, CarProvider, CarContextType } from './carContext'
 import {
-  LocationContext,
-  LocationProvider,
-  LocationContextType,
-} from './locationContext'
-import {
   ConfigContext,
   ConfigProvider,
   ConfigContextType,
@@ -15,16 +10,6 @@ import {
   SearchWidgetContextType,
   SearchWidgetProvider,
 } from './searchWidgetContext'
-import {
-  LastOtpSentTimeContext,
-  LastOtpSentTimeContextProvider,
-  LastOtpSentTimeContextType,
-} from './lastOtpSentTimeContext'
-import {
-  RecommendationContext,
-  RecommendationContextProvider,
-  RecommendationContextType,
-} from './recommendationContext'
 import {
   UtilsContext,
   UtilsContextProvider,
@@ -40,38 +25,31 @@ import {
   FinancialQueryContextProvider,
   FinancialQueryContextType,
 } from './finnancialQueryContext'
+import { GlobalContextProvider } from './globalContextProvider'
 
 export {
   AuthContext,
   AuthProvider,
   CarContext,
   CarProvider,
-  LocationContext,
-  LocationProvider,
   ConfigContext,
   ConfigProvider,
   SearchWidgetContext,
   SearchWidgetProvider,
-  LastOtpSentTimeContext,
-  LastOtpSentTimeContextProvider,
-  RecommendationContext,
-  RecommendationContextProvider,
   UtilsContext,
   UtilsContextProvider,
   FunnelQueryContext,
   FunnelQueryContextProvider,
   FinancialQueryContext,
   FinancialQueryContextProvider,
+  GlobalContextProvider,
 }
 
 export type {
   AuthContextType,
   CarContextType,
-  LocationContextType,
   ConfigContextType,
   SearchWidgetContextType,
-  LastOtpSentTimeContextType,
-  RecommendationContextType,
   UtilsContextType,
   FunnelQueryContextType,
   FinancialQueryContextType,

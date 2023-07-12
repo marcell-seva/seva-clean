@@ -15,7 +15,6 @@ import LocationList from './locationList'
 import Search from './section/search'
 import LocationSelector from './section/locationSelector'
 import Refinancing from './refinancing'
-import CarofTheMonth from './carOfTheMonth'
 import Offering from './modal/offering'
 import Video from './modal/video'
 import Simple from './modal/simple'
@@ -27,7 +26,7 @@ import HowToUse from './howToUse'
 import CtaWidget from './ctaWidget'
 import CitySelectorModal from './citySelectorModal'
 import FooterMobile from '../organisms/footerMobile'
-import CarOfTheMonthCard from './carOfTheMonthCard'
+import CarOfTheMonthCard from './cardCarOfTheMonth'
 import SidebarMobile from '../organisms/sidebarMobile'
 import useSearchModal from './searchModal'
 import CommonLabel from './labelCard/common'
@@ -70,7 +69,6 @@ export {
   CtaWidget,
   CitySelectorModal,
   FooterMobile,
-  CarofTheMonth,
   CarOfTheMonthCard,
   SidebarMobile,
   useSearchModal,

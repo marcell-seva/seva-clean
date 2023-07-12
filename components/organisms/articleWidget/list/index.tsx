@@ -30,6 +30,8 @@ const ArticleWidgetListCard = ({
         <Image
           alt="list-article-seva"
           src={article.featured_image}
+          width={143}
+          height={108}
           style={{
             borderTopLeftRadius: '8px',
             borderBottomLeftRadius: '8px',

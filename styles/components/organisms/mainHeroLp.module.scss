@@ -17,10 +17,10 @@
 .supergraphicBg {
   position: absolute;
   z-index: 1;
-  height: 552px;
+  height: 507px;
   width: auto;
-  left: -42px;
-  top: -60px;
+  right: -282px;
+  top: -110px;
 }
 
 .mainContent {
@@ -39,8 +39,8 @@
 }
 
 .mainWrapper {
-  margin: 34px 0px 24px;
-  padding: 0 16px;
+  margin: 34px 16px 24px;
+  max-width: 343px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -76,7 +76,7 @@
 }
 
 .buttonWrapper {
-  width: 50%;
+  width: 190px;
   margin-left: 16px;
 }
 .line {

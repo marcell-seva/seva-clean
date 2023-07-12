@@ -28,7 +28,7 @@ const FooterMobile = () => {
 
   useEffect(() => {
     api.getMobileFooterMenu().then((result: any) => {
-      setMenu(result.data.data)
+      setMenu(result.data)
     })
   }, [])
 
@@ -85,6 +85,7 @@ const FooterMobile = () => {
                 target="_blank"
                 onClick={() => handleClickMenu(item.menuName)}
                 data-testid={dataTestId(item.menuCode)}
+                className={styles.link}
               >
                 {item.menuName}
               </a>

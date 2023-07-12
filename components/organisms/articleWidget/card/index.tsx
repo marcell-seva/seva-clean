@@ -12,7 +12,6 @@ type ArticlesWidgetProps = {
   currentTab: string
 }
 const ArticleWidgetCard = ({ article, currentTab }: ArticlesWidgetProps) => {
-  console.log('datas', article.featured_image)
   return (
     <div>
       <div

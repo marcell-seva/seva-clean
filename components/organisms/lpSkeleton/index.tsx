@@ -42,7 +42,7 @@ const LpSkeleton = () => {
         <div className={styles.cardWrapper}>
           <CardShadow className={styles.cardShadow}>
             {Array.from(Array(8)).map((_, index) => (
-              <>
+              <div key={index}>
                 <Skeleton width={84} height={15} style={{ marginBottom: 16 }} />
                 <Skeleton
                   width={266}
@@ -50,7 +50,7 @@ const LpSkeleton = () => {
                   style={{ marginBottom: 16 }}
                 />
                 {index !== 7 && <div className={styles.line} />}
-              </>
+              </div>
             ))}
           </CardShadow>
           <Skeleton className={styles.buttonShadow} height={44} width={200} />

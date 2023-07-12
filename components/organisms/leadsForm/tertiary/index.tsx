@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import SupergraphicRight from 'assets/illustration/supergraphic-secondary-small.webp'
 import styles from 'styles/components/organisms/leadsFormTertiary.module.scss'
-import { useTranslation } from 'react-i18next'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import {
   ButtonSize,
@@ -27,6 +26,7 @@ import { PageOriginationName } from 'utils/types/tracker'
 import { api } from 'services/api'
 import { setTrackEventMoEngageWithoutValue } from 'services/moengage'
 import { FunnelQueryContext, FunnelQueryContextType } from 'services/context'
+import { useRouter } from 'next/router'
 
 interface PropsLeadsForm {
   otpStatus?: any
@@ -42,13 +42,13 @@ export interface CityOtrOption {
 }
 
 const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
+  const router = useRouter()
   const { funnelQuery } = useContext(
     FunnelQueryContext,
   ) as FunnelQueryContextType
   const platform = 'web'
   const toastSuccessInfo =
     'Nomor berhasil diverifikasi. Agen SEVA akan segera menghubungi kamu.'
-  const { t } = useTranslation()
   const [name, setName] = useState<string>('')
   const [phone, setPhone] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -178,13 +178,14 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
     })
     setTrackEventMoEngageWithoutValue('leads_created')
 
-    // prettier-ignore
-    window.dataLayer.push({
-        'event':'interaction',
-        'eventCategory': 'Leads Generator',
-        'eventAction': 'Homepage - Leads Form - Control',
-        'eventLabel': t(`advisorSection.button`),
-      });
+    if (typeof window !== undefined) {
+      window.dataLayer.push({
+        event: 'interaction',
+        eventCategory: 'Leads Generator',
+        eventAction: 'Homepage - Leads Form - Control',
+        eventLabel: 'Kirim Rincian',
+      })
+    }
   }
 
   const getDataCustomer = async (): Promise<void> => {
@@ -244,7 +245,7 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
             <Input
               className={styles.inputName}
               dataTestId={
-                window.location.pathname === ''
+                router.pathname === ''
                   ? elementId.Field.FullName
                   : elementId.PDP.LeadsForm.name
               }
@@ -257,7 +258,7 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
             <InputPhone
               className={styles.inputPhone}
               dataTestId={
-                location.pathname === ''
+                router.pathname === ''
                   ? elementId.Field.PhoneNumber
                   : elementId.PDP.LeadsForm.phone
               }
@@ -271,7 +272,7 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
             <Button
               secondaryClassName={styles.button}
               data-test-id={
-                location.pathname === ''
+                router.pathname === ''
                   ? elementId.Homepage.Button.CariMobil
                   : elementId.PDP.LeadsForm.btnSend
               }

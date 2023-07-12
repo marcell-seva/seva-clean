@@ -10,7 +10,7 @@ import { useIsMobile } from 'utils'
 import { CloseSnackBar, OpenSnackBar } from './slide'
 
 const TextLegalMediumStyle = css`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -35,10 +35,13 @@ const paFlowUrlPrefixList = [
 ]
 const isPreApprovalFlowPage = (url: string): boolean =>
   paFlowUrlPrefixList.some((prefix: any) => url.startsWith(prefix))
+declare global {
+  interface Window {
+    dataLayer: any
+  }
+}
 
-export const maxPageWidth = isPreApprovalFlowPage(window.location.pathname)
-  ? '700px'
-  : '100%'
+export const maxPageWidth = '100%'
 
 export const TextLegalMedium = styled.span`
   ${TextLegalMediumStyle}

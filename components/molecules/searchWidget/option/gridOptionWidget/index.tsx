@@ -147,7 +147,7 @@ const GridOptionWidget = ({
   }
 
   const submit = () => {
-    saveFunnelWidget((prev) => ({ ...prev, [type]: checkedOption }))
+    saveFunnelWidget({ ...funnelWidget, [type]: checkedOption })
     onClose()
   }
 

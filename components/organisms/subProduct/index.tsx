@@ -42,12 +42,12 @@ const SubProduct = () => {
                 Solusi untuk kebutuhan dana langsung cair dengan jaminan BPKB
                 mobil
               </p>
-              <p className={styles.textPromoBanner}>
+              <div className={styles.textPromoBanner}>
                 Pelajari Lebih Lanjut{' '}
                 <div className={styles.spacingChevronIcon}>
                   <IconChevronRight width={16} height={16} color="#FFFFFF" />
                 </div>
-              </p>
+              </div>
             </div>
           </div>
           <div
@@ -69,21 +69,17 @@ const SubProduct = () => {
               className={styles.promoBannerSmall}
               height="196"
             />
-            <div
-              style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(255,0,0,0), black);`,
-              }}
-            >
+            <div className={styles.wrapperDetail}>
               <p className={styles.textTitlePromoBanner}>{title[1]}</p>
               <p className={styles.textDescriptionBanner}>
                 Urus surat kendaraanmu lewat SEVA
               </p>
-              <p className={styles.textPromoBanner}>
+              <div className={styles.textPromoBanner}>
                 Pelajari Lebih Lanjut
                 <div className={styles.spacingChevronIcon}>
                   <IconChevronRight width={16} height={16} color="#FFFFFF" />
                 </div>
-              </p>
+              </div>
             </div>
           </div>
         </div>

@@ -1,21 +1,15 @@
 import React, { useMemo, useState } from 'react'
 import { CarouselProvider, Slider, Slide } from 'pure-react-carousel'
 import { useMediaQuery } from 'react-responsive'
-import CardCarOfTheMonth from '../cardCarOfTheMonth'
-import styles from 'styles/components/molecules/carOfTheMonth.module.scss'
+import 'pure-react-carousel/dist/react-carousel.es.css'
+import styles from 'styles/components/organisms/carOfTheMonth.module.scss'
 import clsx from 'clsx'
-import { PageOriginationName } from 'utils/types/tracker'
-import elementId from 'utils/helpers/trackerId'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { COMData, COMDataTracking } from 'utils/types/models'
-
-interface CityOtrOption {
-  cityName: string
-  cityCode: string
-  province: string
-  id?: string
-}
+import { CityOtrOption, PageOriginationName } from 'utils/types/props'
+import CardCarOfTheMonth from 'components/molecules/cardCarOfTheMonth'
+import elementId from 'utils/helpers/trackerId'
 
 type CarOfTheMonthProps = {
   carOfTheMonthData: COMData[]
@@ -60,13 +54,14 @@ const CarOfTheMonth = ({
     if (isMobileSmall) return 1
     return 1.23
   }
+
   return (
     <div
       className={styles.container}
       data-testid={elementId.Homepage.CarOfMonth}
     >
       <div className={styles.wrapper}>
-        <h2 className={styles.textHeaderSection}>SEVAssss Car of The Month</h2>
+        <h2 className={styles.textHeaderSection}>SEVA Car of The Month</h2>
       </div>
       <div
         className={styles.containerCarousel}
@@ -80,6 +75,7 @@ const CarOfTheMonth = ({
           totalSlides={Array.isArray(carModel) ? carModel.length : 0}
           visibleSlides={getVisibleSlides()}
           currentSlide={currentSlide}
+          orientation="horizontal"
         >
           <Slider>
             {carModel.map((item: carOfTheMonthData, index: number) => {
@@ -87,6 +83,7 @@ const CarOfTheMonth = ({
                 <Slide
                   index={index}
                   key={index}
+                  // "className" attribute wont work in this component
                   style={{
                     width: '288px',
                     height: '454px',

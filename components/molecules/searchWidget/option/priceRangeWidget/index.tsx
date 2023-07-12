@@ -2,13 +2,12 @@ import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
 import styles from '/styles/components/molecules/form/formPrice.module.scss'
 import stylec from '/styles/components/molecules/searchWidget/priceRangeWidget.module.scss'
 import { Input, Slider } from 'antd'
-// import 'styles/main.scss'
 import { Currency } from 'utils/handler/calculation'
 import { filterNonDigitCharacters } from 'utils/handler/stringManipulation'
 import { Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'utils/types/models'
 import elementId from 'utils/helpers/trackerId'
-import { SearchWidgetContext } from 'services/context'
+import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
 
 interface PriceRangeWidgetProps {
   onClose: () => void
@@ -20,8 +19,9 @@ const PriceRangeWidget = ({ limitPrice, onClose }: PriceRangeWidgetProps) => {
   const underMinWarning = 'Harga yang kamu masukkan terlalu rendah'
   const overMaxTwoWarning = 'Harga harus lebih kecil dari harga maksimum'
   const underMinTwoWarning = 'Harga harus lebih besar dari harga minimum'
-  const { state: funnelWidget, setState: setFunnelWidget } =
-    useContext(SearchWidgetContext)
+  const { funnelWidget, saveFunnelWidget } = useContext(
+    SearchWidgetContext,
+  ) as SearchWidgetContextType
   const initErrorField = { min: false, max: false }
   const [errorMinField, setErrorMinField] = useState(initErrorField)
   const [errorMaxField, setErrorMaxField] = useState(initErrorField)
@@ -121,10 +121,10 @@ const PriceRangeWidget = ({ limitPrice, onClose }: PriceRangeWidgetProps) => {
   }
 
   const submit = () => {
-    setFunnelWidget((prev: any) => ({
-      ...prev,
+    saveFunnelWidget({
+      ...funnelWidget,
       priceRangeGroup: `${rawPrice.min}-${rawPrice.max}`,
-    }))
+    })
     onClose()
   }
 

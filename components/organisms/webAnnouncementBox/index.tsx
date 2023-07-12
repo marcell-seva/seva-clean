@@ -70,7 +70,7 @@ export const WebAnnouncementBox = ({
     api
       .getAnnouncementBox()
       .then((res: any) => {
-        setAnnouncement(res.data.data)
+        setAnnouncement(res.data)
         setIsLoading(false)
       })
       .catch(() => {
@@ -237,10 +237,12 @@ export const WebAnnouncementBox = ({
 }
 
 const bgChristmas = css`
+  background-image: url(${ChristmasLeft}), url(${ChristmasRight}),
     linear-gradient(74.94deg, #c82120 0.54%, #f23a5c 83.1%);
   background-repeat: no-repeat, no-repeat, no-repeat;
   background-position: 8.3% 50%, 92.63% 0%, center;
   @media (max-width: 1024px) {
+    background-image: url(${ChristmasMobileLeft}), url(${ChristmasMobileRight}),
       linear-gradient(74.94deg, #c82120 0.54%, #f23a5c 83.1%);
     background-repeat: no-repeat, no-repeat, no-repeat;
     background-position: 0% 100%, 95% 8px, center;
@@ -252,10 +254,12 @@ const bgChristmas = css`
 `
 
 const bgCustom = (bgColor: string) => css`
-  background-color: ${bgColor};
+  background-color: red;
+  background-image: url(${CustomRight}), url(${CustomLeft});
   background-repeat: no-repeat, no-repeat;
   background-position: right, left;
   @media (max-width: 1024px) {
+    background-image: url(${CustomMobile});
     background-repeat: no-repeat;
     background-position: right;
     justify-content: start;
@@ -267,10 +271,12 @@ const bgCustom = (bgColor: string) => css`
 `
 
 const bgNewYear = css`
+  background-image: url(${NewYearLeft}), url(${NewYearRight}),
     linear-gradient(74.94deg, #002d95 0.54%, #2797ff 83.1%);
   background-repeat: no-repeat, no-repeat, no-repeat;
   background-position: 0% 100%, 96.25% 100%, center;
   @media (max-width: 1024px) {
+    background-image: url(${NewYearMobileLeft}), url(${NewYearMobileRight}),
       linear-gradient(74.94deg, #002d95 0.54%, #2797ff 83.1%);
     background-repeat: no-repeat, no-repeat, no-repeat;
     background-position: 0% 50%, 100% 100%, center;

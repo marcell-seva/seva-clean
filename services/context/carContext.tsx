@@ -1,6 +1,10 @@
 import { createContext, useEffect, useState } from 'react'
 import { CarDetail } from 'utils/types'
-import { CarModelDetailsResponse, CarVariantDetails } from 'utils/types/props'
+import {
+  CarModelDetailsResponse,
+  CarRecommendation,
+  CarVariantDetails,
+} from 'utils/types/props'
 
 export type CarContextType = {
   car: CarDetail | null
@@ -9,6 +13,8 @@ export type CarContextType = {
   saveCarModelDetails: (data: CarModelDetailsResponse) => void
   carVariantDetails: CarVariantDetails | null
   saveCarVariantDetails: (data: CarVariantDetails) => void
+  recommendation: CarRecommendation[] | []
+  saveRecommendation: (data: CarRecommendation[] | []) => void
 }
 
 export const CarContext = createContext<CarContextType | null>(null)
@@ -19,6 +25,9 @@ export const CarProvider = ({ children }: any) => {
     useState<CarModelDetailsResponse | null>(null)
   const [carVariantDetails, setCarVariantDetails] =
     useState<CarVariantDetails | null>(null)
+  const [recommendation, setRecommendation] = useState<
+    CarRecommendation[] | []
+  >([])
 
   const saveCar = (car: CarDetail) => {
     setCar(car)
@@ -30,6 +39,10 @@ export const CarProvider = ({ children }: any) => {
   const saveCarVariantDetails = (carVariantDetailsData: CarVariantDetails) =>
     setCarVariantDetails(carVariantDetailsData)
 
+  const saveRecommendation = (recommendationData: CarRecommendation[] | []) => {
+    setRecommendation(recommendationData)
+  }
+
   return (
     <CarContext.Provider
       value={{
@@ -39,6 +52,8 @@ export const CarProvider = ({ children }: any) => {
         saveCarModelDetails,
         carVariantDetails,
         saveCarVariantDetails,
+        recommendation,
+        saveRecommendation,
       }}
     >
       {children}

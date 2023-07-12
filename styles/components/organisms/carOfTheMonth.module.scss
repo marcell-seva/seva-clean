@@ -10,7 +10,7 @@
   padding: 0px 16px;
 }
 .textHeaderSection {
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -65,7 +65,7 @@
   position: relative;
   top: -34px;
   p {
-    font-family: 'OpenSans';
+    font-family: var(--open-sans);
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -109,7 +109,7 @@
   height: 140px;
 }
 .textModel {
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -117,13 +117,13 @@
   color: #404040;
 }
 .textOtr {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
   span {
-    font-family: 'Kanyon';
+    font-family: var(--kanyon);
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -138,7 +138,7 @@
   border-radius: 8px;
 }
 .textButton {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;

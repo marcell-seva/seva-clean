@@ -16,7 +16,7 @@
 .titleText {
   font-size: 20px;
   text-align: center;
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
 }
 
 .subTitleText {
@@ -47,7 +47,7 @@
   border-radius: 8px;
   text-align: center;
   font-size: 16px;
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
 }
 
 .otpInput:focus {

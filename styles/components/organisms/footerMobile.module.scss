@@ -16,8 +16,11 @@
   margin-bottom: 8px;
 }
 
+.link {
+  text-decoration: none;
+}
 .footerText {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 11px;
@@ -36,7 +39,7 @@
   width: 300px;
 
   a {
-    font-family: 'OpenSansSemiBold';
+    font-family: var(--open-sans-semi-bold);
     font-size: 12px;
     line-height: 18px;
     color: #{$primary-white};
@@ -71,7 +74,7 @@
 }
 
 .copyrightText {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 11px;

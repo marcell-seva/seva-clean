@@ -18,7 +18,7 @@
 }
 
 .mainMenu {
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-weight: 600;
   font-size: 14px;
   color: #{$primary-dark-blue};
@@ -36,7 +36,7 @@
 
 .menu {
   font-size: 14px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   color: #{$primary-black};
 
   &.isActive {

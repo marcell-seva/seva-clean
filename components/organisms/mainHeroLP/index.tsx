@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import styles from 'styles/components/organisms/mainHeroLp.module.scss'
 import SupergraphicImage from 'assets/illustration/supergraphic-secondary-large.webp'
 import MainHeroImage from 'assets/illustration/main-hero-raize-cencored.webp'
-import { CityOtrOption } from 'pages/component/CityOtrDropDown/CityOtrDropDown'
 import HeaderMobile from '../headerMobile'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
@@ -12,6 +11,7 @@ import { Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'utils/types/models'
 import { useRouter } from 'next/router'
 import { api } from 'services/api'
+import { CityOtrOption } from 'utils/types/props'
 
 type MainHeroLPProps = {
   onCityIconClick: () => void

@@ -5,7 +5,6 @@ import { forwardRef } from 'react'
 import { IconClose } from '../icons'
 import { colors } from 'utils/helpers/style/colors'
 import 'react-spring-bottom-sheet/dist/style.css'
-// import 'styles/components/atoms/bottomSheet.scss'
 import styles from 'styles/components/atoms/bottomSheet.module.scss'
 
 type ForwardedRef = React.ForwardedRef<RefHandles>

@@ -24,7 +24,7 @@
     }
 
     span {
-      font-family: $font-openSans;
+      font-family: var(--open-sans);
       font-size: 14px;
       line-height: 20px;
       color: #{$primary-black};

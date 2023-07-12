@@ -1,36 +1,41 @@
+const BASE_URL = process.env.NEXT_PUBLIC_API_ROOT || ''
+const SEVA_PROD = process.env.NEXT_PUBLIC_SEVA_PROD || ''
+const API_SSL = process.env.NEXT_PUBLIC_API_SSL || ''
+
 const utils = {
-  menu: 'https://api.seva.id/menu',
-  cities: 'https://api.seva.id/city/fe-selector',
-  testimonials: 'https://api.seva.id/testimonials',
-  usage: 'https://api.sslpots.com/api/how-to-use-seva-config?populate=*',
-  banner: 'https://api.seva.id/banner-image/homepage',
-  announcementBox: 'https://api.seva.id/announcement-box',
-  mobileHeaderMenu: 'https://api.seva.id/menu/mobile-web-top-menu',
-  mobileFooterMenu: 'https://api.seva.id/menu/mobile-web-bottom-menu',
+  menu: `${BASE_URL}/menu`,
+  cities: `${BASE_URL}/city/fe-selector`,
+  testimonials: `${BASE_URL}/testimonials`,
+  usage: `${API_SSL}/api/how-to-use-seva-config?populate=*`,
+  banner: `${BASE_URL}/banner-image/homepage`,
+  announcementBox: `${BASE_URL}/announcement-box`,
+  mobileHeaderMenu: `${BASE_URL}/menu/mobile-web-top-menu`,
+  mobileFooterMenu: `${BASE_URL}/menu/mobile-web-bottom-menu`,
+  search: `${BASE_URL}/cars/search-bar`,
 }
 
 const product = {
-  recommendation: 'https://api.seva.id/recommendations/new-funnel',
-  variant: 'https://api.seva.id/variants',
-  type: 'https://api.seva.id/cars/body-type-data',
-  carofTheMonth: 'https://api.seva.id/car-of-the-month',
-  pricing: 'https://api.seva.id/recommendations/get-price-min-max-by-city',
+  recommendation: `${BASE_URL}/recommendations/new-funnel`,
+  variant: `${BASE_URL}/variants`,
+  type: `${BASE_URL}/cars/body-type-data`,
+  carofTheMonth: `${BASE_URL}/car-of-the-month`,
+  pricing: `${BASE_URL}/recommendations/get-price-min-max-by-city`,
 }
 
 const leads = {
-  unverifiedLeadNew: 'https://api.seva.id/unverifiedLeads/new',
+  unverifiedLeadNew: `${BASE_URL}/unverifiedLeads/new`,
 }
 
 const auth = {
-  user: 'https://api.seva.id/customers/info',
-  refresh: 'https://api.seva.id/auth/token',
-  otp: 'https://api.seva.id/auth/otp',
-  otpVerification: 'https://api.seva.id/auth/verification',
+  user: `${BASE_URL}/customers/info`,
+  refresh: `${BASE_URL}/auth/token`,
+  otp: `${BASE_URL}/auth/otp`,
+  otpVerification: `${BASE_URL}/auth/verification`,
 }
 
 const article = {
-  mainArticle: 'https://www.seva.id/wp-json/foodicious/latest-posts/',
-  subArticle: 'https://www.seva.id/wp-json/seva/latest-posts/',
+  mainArticle: `${SEVA_PROD}/wp-json/foodicious/latest-posts/`,
+  subArticle: `${SEVA_PROD}/wp-json/seva/latest-posts/`,
 }
 
 export const collections = {

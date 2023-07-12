@@ -24,23 +24,20 @@ import { LabelPromo } from 'components/molecules'
 import AlternativeCarCard from '../alternativeCarCard'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import {
-  RecommendationContext,
-  RecommendationContextType,
-} from 'services/context'
+import { CarContext, CarContextType } from 'services/context'
 
 type LPCarRecommendationsProps = {
+  dataReccomendation: any
   onClickOpenCityModal: () => void
 }
 
 const LpCarRecommendations = ({
+  dataReccomendation,
   onClickOpenCityModal,
 }: LPCarRecommendationsProps) => {
   const router = useRouter()
   const swiperRef = useRef<SwiperType>()
-  const recommendation = useContext(
-    RecommendationContext,
-  ) as RecommendationContextType
+  const { recommendation } = useContext(CarContext) as CarContextType
 
   const [recommendationList, setRecommendationList] = useState<
     CarRecommendation[]
@@ -86,13 +83,13 @@ const LpCarRecommendations = ({
 
   const handleShowRecommendation = () => {
     if (!selectedBrand) {
-      const mainRecommendation: any = recommendation.sort(
+      const mainRecommendation: any = dataReccomendation?.sort(
         (a: any, b: any) => a.lowestAssetPrice - b.lowestAssetPrice,
       )
 
       setRecommendationList(mainRecommendation)
     } else {
-      const filterCar: any = recommendation.filter(
+      const filterCar: any = dataReccomendation?.filter(
         (x: any) => x.brand === selectedBrand,
       )
       if (filterCar.length > 0) {

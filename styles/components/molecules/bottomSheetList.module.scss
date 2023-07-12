@@ -19,13 +19,13 @@
 
   &:active {
     background-color: #{$shades-sky-blue-10};
-    font-family: 'OpenSansSemiBold';
+    font-family: var(--open-sans-semi-bold);
   }
 }
 
 .activeOption {
   background-color: #{$shades-sky-blue-10};
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
 }
 
 .line {

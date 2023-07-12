@@ -1,9 +1,4 @@
 @import '../../abstract/colors';
-// html,
-// body {
-//   margin: 0 auto;
-//   max-width: none;
-// }
 
 .styledWrapper {
   background: #{white};
@@ -11,7 +6,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  @media (max-width: 1024px) {
+  @media only screen and (max-width: 1024px) {
     width: 100%;
   }
 }
@@ -21,7 +16,7 @@
   padding-left: 4vw;
   padding-right: 4vw;
   justify-content: center;
-  @media (max-width: 1024px) {
+  @media only screen and (max-width: 1024px) {
     max-width: 100%;
     width: 100%;
     padding-left: 0;
@@ -45,7 +40,7 @@
   &::-webkit-scrollbar {
     display: none;
   }
-  @media (max-width: 1024px) {
+  @media only screen and (max-width: 1024px) {
     position: absolute;
     z-index: 99;
     border-radius: 16px;
@@ -74,7 +69,7 @@
   &::-webkit-scrollbar {
     display: none;
   }
-  @media (max-width: 1024px) {
+  @media only screen and (max-width: 1024px) {
     position: absolute;
     z-index: 99;
     width: 100%;
@@ -100,11 +95,11 @@
     border-radius: 8px;
     background-color: #{$shades-sky-blue-30};
   }
-  @media (max-width: 1024px) {
+  @media only screen and (max-width: 1024px) {
     display: flex;
     height: auto;
     width: auto;
-    align-items: start;
+    align-items: flex-start;
     line-height: 22px;
     justify-content: center;
     flex-direction: column;
@@ -125,11 +120,11 @@
   &:hover {
     border-radius: 8px;
   }
-  @media (max-width: 1024px) {
+  @media only screen and (max-width: 1024px) {
     display: flex;
     height: auto;
     width: auto;
-    align-items: start;
+    align-items: flex-start;
     line-height: 22px;
     justify-content: center;
     flex-direction: column;
@@ -154,7 +149,7 @@
   padding-top: 7px;
   padding-bottom: 14px;
   color: black;
-  @media (max-width: 1024px) {
+  @media only screen and (max-width: 1024px) {
     margin-left: 0;
     margin-right: 20px;
   }
@@ -163,14 +158,14 @@
 .styledSearchWrapper {
   margin: 0;
   width: 632px;
-  @media (max-width: 1024px) {
+  @media only screen and (max-width: 1024px) {
     width: 100%;
   }
 }
 
 .inputWrapper {
   width: 100%;
-  @media (max-width: 1024px) {
+  @media only screen and (max-width: 1024px) {
     width: 100%;
   }
 }
@@ -178,8 +173,20 @@
 .styledSearchInput {
   /* text-transform: capitalize; */
   padding: 0px 10px;
-  padding-left: 20px;
   width: 100%;
+  border: none;
+  font-family: var(--kanyon);
+  font-style: normal;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  &::placeholder {
+    color: #{$shades-grey-50};
+  }
+}
+
+.styledSearchInput:focus {
+  outline: none;
 }
 
 .disableClick {

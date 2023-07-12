@@ -9,7 +9,7 @@
 
 .alternativeCarTitle {
   color: #{$primary-dark-blue};
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-weight: 400;
   font-size: 20px;
   line-height: 28px;
@@ -31,7 +31,7 @@
 }
 
 .alternativeCarLink {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-weight: 400;
   font-size: 14px;
   text-align: left;

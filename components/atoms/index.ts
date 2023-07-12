@@ -38,6 +38,7 @@ import { Separator } from './separator'
 import CustomModal from './modal/custom'
 import { Toast } from './toast'
 import BottomSheet from './bottomSheet'
+import { SearchInput } from './searchInput'
 export {
   Button,
   TypeCar,
@@ -78,4 +79,5 @@ export {
   CustomModal,
   Toast,
   BottomSheet,
+  SearchInput,
 }

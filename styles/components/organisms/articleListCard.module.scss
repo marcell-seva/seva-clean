@@ -22,7 +22,7 @@
   padding: 24px 16px;
 }
 .textDate {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 11px;
@@ -31,7 +31,7 @@
   margin-bottom: 4px;
 }
 .textTitle {
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 14px;

@@ -4,29 +4,28 @@ import React, {
   useCallback,
   useMemo,
   useEffect,
+  useContext,
 } from 'react'
-import { Loading } from '../../../../pages/component/loading/Loading'
-import { SearchInput } from '../../molecules/searchInput'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import debounce from 'lodash.debounce'
-import { trackSearchBarSuggestionClick } from 'helpers/amplitude/seva20Tracking'
 import { findAll } from 'highlight-words-core'
-import { getCarsSearchBar } from 'services/searchbar'
-import { Line } from 'components/Line/Line'
-import { COMData } from 'pages/HomePageSeva/CarOfMonth/models'
-import { API } from 'utils/api'
-import endpoints from 'helpers/endpoints'
+import { Line } from './Line'
 import styles from 'styles/components/molecules/headerSearch.module.scss'
 import { useMediaQuery } from 'react-responsive'
 import Image from 'next/image'
 import urls from 'utils/helpers/url'
 import elementId from 'utils/helpers/trackerId'
-import { FunnelQueryKey, LocalStorageKey } from 'utils/types/models'
+import { COMData, FunnelQueryKey, LocalStorageKey } from 'utils/types/models'
 import { useRouter } from 'next/router'
 import { Option } from 'utils/types/props'
 import { convertObjectQuery } from 'utils/handler/convertObjectQuery'
 import { useToast } from './Toast'
-
+import { FunnelQueryContext, FunnelQueryContextType } from 'services/context'
+import { api } from 'services/api'
+import { sendAmplitudeData } from 'services/amplitude'
+import { AmplitudeEventName } from 'services/amplitude/types'
+import { getCity } from 'utils/hooks/useGetCity'
+import { SearchInput } from 'components/atoms'
+import { Loading } from './Loading'
 interface HeaderVariantProps {
   overrideDisplay?: string
   isOnModal?: boolean
@@ -44,7 +43,9 @@ const HeaderVariant = ({
   hideModal,
   suggestionListMobileWidth = '90%',
 }: HeaderVariantProps) => {
-  const { patchFunnelQuery } = useFunnelQueryData()
+  const { patchFunnelQuery } = useContext(
+    FunnelQueryContext,
+  ) as FunnelQueryContextType
   const [searchInputValue, setSearchInputValue] = useState('')
   const [suggestionsLists, setSuggestionsLists] = useState<Option<string>[]>([])
   const { showToast } = useToast()
@@ -59,9 +60,13 @@ const HeaderVariant = ({
   const [isNotFoundClicked, setIsNotFoundClicked] = useState(false)
 
   const handleDebounceFn = (inputValue: string) => {
-    getCarsSearchBar(inputValue)
+    const params = `?city=${getCity().cityCode}&cityId=${
+      getCity().id
+    }&query=${inputValue}`
+    api
+      .getSearchDataQuery(params)
       .then((response: any) => {
-        const listedResult = response.data.map(
+        const listedResult = response.map(
           (item: { value: string; label: string }) => {
             const splitValue = item.label.split(' ')
             const carBrand = splitValue[0]
@@ -149,7 +154,7 @@ const HeaderVariant = ({
 
     hideModal()
 
-    trackSearchBarSuggestionClick({
+    sendAmplitudeData(AmplitudeEventName.WEB_SEARCHBAR_SUGGESTION_CLICK, {
       Page_Origination_URL: window.location.href,
       Page_Direction_URL: window.location.origin + urlDestination,
     })
@@ -192,7 +197,7 @@ const HeaderVariant = ({
         closeModal(e)
       }
       if (window.location.pathname !== urls.internalUrls.carResultsUrl) {
-        trackSearchBarSuggestionClick({
+        sendAmplitudeData(AmplitudeEventName.WEB_SEARCHBAR_SUGGESTION_CLICK, {
           Page_Origination_URL: currentURL.replace('https://www.', ''),
           Page_Direction_URL:
             window.location.hostname.replace('www.', '') +
@@ -229,7 +234,7 @@ const HeaderVariant = ({
   }
 
   const carData = useMemo(() => {
-    const data = comDataNew?.slice(0, 5).map((item) => ({
+    const data = comDataNew?.slice(0, 5).map((item: any) => ({
       name: `${item.brand} ${item.model?.carModel.model ?? ''}`,
       image: (item.model && item.model.carModel.imageUrls.main_color[0]) || '',
       link: `/${item.brand}/${item.model?.carModel.model
@@ -241,9 +246,10 @@ const HeaderVariant = ({
   }, [comDataNew])
 
   useEffect(() => {
-    API.get(endpoints.carOfMonth)
+    api
+      .getCarofTheMonth()
       .then((res: any) => {
-        setComDataNew(res.data.data)
+        setComDataNew(res.data)
       })
       .catch(() => {
         setIsError(true)
@@ -254,7 +260,7 @@ const HeaderVariant = ({
   const renderRecommendation = () => {
     return (
       <ul>
-        {carData.map((car) => (
+        {carData.map((car: any) => (
           <div className={styles.styledCarContentName} key={car.name}>
             <a
               className={styles.styledCarName}
@@ -270,6 +276,8 @@ const HeaderVariant = ({
                 <Image
                   src={car.image}
                   alt={car.name}
+                  width={70}
+                  height={50}
                   style={{
                     width: '70px',
                     height: '50px',
@@ -365,16 +373,16 @@ const HeaderVariant = ({
             </div>
             {suggestionsLists.length !== 0 && searchInputValue.length > 0 ? (
               <div className={styles.styledDataResult}>
-                {suggestionsLists.map((car) => {
+                {suggestionsLists.map((car, key) => {
                   return (
                     <div
+                      key={key}
                       data-testid={
                         elementId.Homepage.SearchBar.CarModelOption +
                         car.label +
                         searchInputValue
                       }
                       onClick={() => clickList(car)}
-                      key={car.value}
                       className={`${styles.styledLink} ${
                         suggestionsLists[0].label === SEARCH_NOT_FOUND_TEXT
                           ? styles.disableClick
@@ -422,7 +430,7 @@ const HeaderVariant = ({
                 </div>
               </div>
             )}
-            <Loading isShowLoading={isShowLoading} progress={progress} />
+            {/* <Loading isShowLoading={isShowLoading} progress={progress} /> */}
           </div>
         </div>
       </div>

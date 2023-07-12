@@ -151,7 +151,6 @@ const forwardedInputSelect = <T extends FormControlValue>(
         })}
       >
         <input
-          ref={ref}
           value={inputValue()}
           type={inputType}
           onChange={onChangeHandler}

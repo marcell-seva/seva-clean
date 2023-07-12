@@ -22,7 +22,7 @@
   @include borderColor(default);
   padding: 12px 16px;
   width: 100%;
-  font-family: $font-openSans;
+  font-family: var(--open-sans);
   height: 48px;
   font-size: 14px;
   color: #{$primary-black};

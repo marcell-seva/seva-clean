@@ -19,7 +19,7 @@
 }
 
 // typography
-@mixin fontFamily($font: $font-openSans, $weight: 400) {
+@mixin fontFamily($font: var(--open-sans), $weight: 400) {
   font-family: $font;
   font-weight: $weight;
 }
@@ -62,9 +62,9 @@
   line-height: 20px;
 
   @if $font == semiBold {
-    @include fontFamily($font-openSans-semiBold, 600);
+    @include fontFamily(var(--open-sans-semi-bold), 600);
   } @else {
-    @include fontFamily($font-openSans, 400);
+    @include fontFamily(var(--open-sans), 400);
   }
 }
 
@@ -73,9 +73,9 @@
   line-height: 18px;
 
   @if $font == semiBold {
-    @include fontFamily($font-openSans-semiBold, 600);
+    @include fontFamily(var(--open-sans-semi-bold), 600);
   } @else {
-    @include fontFamily($font-openSans, 400);
+    @include fontFamily(var(--open-sans), 400);
   }
 }
 
@@ -84,9 +84,9 @@
   line-height: 16px;
 
   @if $font == bold {
-    @include fontFamily($font-openSans-bold, 700);
+    @include fontFamily(var(--open-sans)-bold, 700);
   } @else {
-    @include fontFamily($font-openSans, 400);
+    @include fontFamily(var(--open-sans), 400);
   }
 }
 

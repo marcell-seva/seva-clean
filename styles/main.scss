@@ -1,79 +1,18 @@
 @import 'abstract/colors';
 @import 'abstract/mixins';
 
-body {
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
   font-family: var(--open-sans);
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box; /* Firefox, other Gecko */
-  box-sizing: border-box; /* Opera/IE 8+ */
-}
-
-a {
-  text-decoration: none;
-}
-
-.swiper-button-disabled {
-  display: none;
-}
-
-.swiper-pagination-bullet-active {
-  background-color: #{$white} !important;
-  width: 5px !important;
-  height: 5px !important;
-}
-
-.swiper-pagination-bullet {
-  background-color: #{$white} !important;
-  width: 5px !important;
-  height: 5px !important;
-  opacity: 0.5;
-}
-
-@include lg {
-  .swiper-pagination-bullet-active {
-    width: 8px !important;
-    height: 8px !important;
-  }
-
-  .swiper-pagination-bullet {
-    width: 8px !important;
-    height: 8px !important;
-  }
-}
-
-/* For Firefox */
-
-input[type='number'] {
-  -moz-appearance: textfield;
-}
-
-/* Webkit browsers like Safari and Chrome */
-
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-@import './abstract/colors';
-@import './abstract/mixins';
-
-* {
-  margin: 0;
-  padding: 0;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box; /* Firefox, other Gecko */
-  box-sizing: border-box; /* Opera/IE 8+ */
 }
 
 body {
   color: #{$primary-black};
-  font-family: var(--openSans-regular);
+  font-family: var(--open-sans);
   font-size: 16px;
 }
 
@@ -252,6 +191,13 @@ button {
   }
 }
 
+.csa-button-plp {
+  &.ant-float-btn {
+    left: calc(50% + 142px);
+    transform: translateX(-50%);
+  }
+}
+
 .whatsapp-floating-button {
   z-index: 5;
   &.ant-float-btn {
@@ -309,4 +255,29 @@ button {
 
 .ant-picker-content th {
   text-align: center;
+}
+
+:root {
+}
+
+[data-rsbs-overlay] {
+  z-index: 99;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+}
+
+[data-rsbs-header] {
+  padding: 0;
+}
+
+[data-rsbs-has-header='false'] [data-rsbs-header] {
+  padding-top: 24px;
+}
+
+[data-rsbs-header]:before {
+  height: 0;
+}
+
+[data-rsbs-backdrop] {
+  z-index: 98;
 }

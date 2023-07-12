@@ -12,7 +12,7 @@ type TypesCarOfTheMonth = {
   data: Array<CarDetail>
   openModalOffering: any
 }
-const CarofTheMonth: React.FC<TypesCarOfTheMonth> = ({
+const CarofTheMonths: React.FC<TypesCarOfTheMonth> = ({
   data,
   openModalOffering,
 }): JSX.Element => {
@@ -159,4 +159,4 @@ const CarofTheMonth: React.FC<TypesCarOfTheMonth> = ({
   )
 }
 
-export default CarofTheMonth
+export default CarofTheMonths

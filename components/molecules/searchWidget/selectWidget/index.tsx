@@ -1,12 +1,19 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import clsx from 'clsx'
-import React, { ForwardedRef, forwardRef, useContext, useState } from 'react'
+import React, {
+  ForwardedRef,
+  forwardRef,
+  use,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import styles from 'styles/components/molecules/searchWidget/selectWidget.module.scss'
 import { FormControlValue, Option } from 'utils/types/props'
 import { colors } from 'utils/helpers/style/colors'
 import { BottomSheet, IconChevronDown } from 'components/atoms'
 import { BottomSheetList } from 'components/molecules'
-import { SearchWidgetContext } from 'services/context'
+import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
 
 type ContentSheetProps = {
   onClose: () => void
@@ -41,7 +48,7 @@ const forwardSelectWidget = (
   ref?: ForwardedRef<HTMLDivElement>,
 ) => {
   const [openOption, setOpenOption] = useState(false)
-  const { saveFunnelWidget } = useContext(
+  const { funnelWidget, saveFunnelWidget } = useContext(
     SearchWidgetContext,
   ) as SearchWidgetContextType
   const onClose = () => {
@@ -54,7 +61,7 @@ const forwardSelectWidget = (
   }
 
   const onChooseOption = (value: FormControlValue, label: FormControlValue) => {
-    name && saveFunnelWidget((prev: any) => ({ ...prev, [name]: value }))
+    name && saveFunnelWidget({ ...funnelWidget, [name]: value })
     setCurrentValue(label as string)
     onClose()
   }

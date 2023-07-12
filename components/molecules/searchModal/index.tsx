@@ -2,7 +2,7 @@ import React from 'react'
 import styles from 'styles/components/molecules/searchModal.module.scss'
 import { IconForward } from 'components/atoms/icons'
 import { useModal } from 'components/atoms'
-// import HeaderVariant from '../headerVariant'
+import HeaderVariant from '../headerVariant'
 
 const useSearchModal = () => {
   const { showModal, hideModal, RenderModal } = useModal()
@@ -22,13 +22,13 @@ const useSearchModal = () => {
                 <div onClick={closeModal} className={styles.forwardWrapper}>
                   <IconForward width={9} height={16} />
                 </div>
-                {/* <HeaderVariant
+                <HeaderVariant
                   overrideDisplay={'static'}
                   isOnModal={true}
                   suggestionListMobileWidth={'100%'}
                   closeModal={closeModal}
                   hideModal={hideModal}
-                /> */}
+                />
               </div>
             </div>
           </div>

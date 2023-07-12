@@ -1,48 +1,51 @@
 import get from './get'
 import post from './post'
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { collections } from './collections'
+// import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+// import { getLocalStorage } from 'utils/handler/localStorage'
+// import { UTMTagsData } from 'utils/types/props'
+// import { LocalStorageKey } from 'utils/types/models'
 
-const getDataToken = () => {
-  const dataToken = localStorage.getItem('token')
-  const token = dataToken !== null ? JSON.parse(dataToken) : null
-  return token
-}
+// const getDataToken = () => {
+//   const dataToken = localStorage.getItem('token')
+//   const token = dataToken !== null ? JSON.parse(dataToken) : null
+//   return token
+// }
 
-const setDataToken = (payload: any) => {
-  localStorage.setItem('token', JSON.stringify(payload))
-}
+// const setDataToken = (payload: any) => {
+//   localStorage.setItem('token', JSON.stringify(payload))
+// }
 
-const requestNewToken = async (payload: any) => {
-  try {
-    const res = await api.postRefreshToken({ refreshToken: payload })
-    return res
-  } catch (error) {
-    throw error
-  }
-}
+// const requestNewToken = async (payload: any) => {
+//   try {
+//     const res = await api.postRefreshToken({ refreshToken: payload })
+//     return res
+//   } catch (error) {
+//     throw error
+//   }
+// }
 
-axios.interceptors.response.use(
-  (res) => {
-    return res
-  },
-  async (err) => {
-    const originalConfig = err.config
-    const statusCode = err.response.status
-    const dataToken = getDataToken()
+// axios.interceptors.response.use(
+//   (res) => {
+//     return res
+//   },
+//   async (err) => {
+//     const originalConfig = err.config
+//     const statusCode = err.response.status
+//     const dataToken = getDataToken()
 
-    if (statusCode === 4000)
-      window.location.href = 'https://www.seva.id/masuk-akun'
-    else if (statusCode === 401) {
-      const userToken: any = await requestNewToken(dataToken.refreshToken)
-      setDataToken(userToken)
-      originalConfig._retry = true
-      originalConfig.headers.Authorization = userToken.idToken
-      return axios(originalConfig)
-    }
-    return Promise.reject(err)
-  },
-)
+//     if (statusCode === 400)
+//       window.location.href = 'https://www.seva.id/masuk-akun'
+//     else if (statusCode === 401) {
+//       const userToken: any = await requestNewToken(dataToken.refreshToken)
+//       setDataToken(userToken)
+//       originalConfig._retry = true
+//       originalConfig.headers.Authorization = userToken.idToken
+//       return axios(originalConfig)
+//     }
+//     return Promise.reject(err)
+//   },
+// )
 
 const getConfigToken = () => {
   const dataToken = localStorage.getItem('token')
@@ -76,6 +79,8 @@ const getUserInfo = () => get(collections.auth.user, getConfigToken())
 const getMobileHeaderMenu = () => get(collections.utils.mobileHeaderMenu)
 const getMinMaxPrice = (params: string) =>
   get(collections.product.pricing + params)
+const getSearchDataQuery = (params: string) =>
+  get(collections.utils.search + params)
 
 // post request
 const createUnverifiedLeadsNew = (body: any) =>
@@ -103,6 +108,7 @@ export const api = {
   getMobileFooterMenu,
   getMobileHeaderMenu,
   getMinMaxPrice,
+  getSearchDataQuery,
 
   createUnverifiedLeadsNew,
   postRefreshToken,

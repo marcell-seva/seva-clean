@@ -5,6 +5,9 @@
   padding: 0px 16px;
   margin-top: 32px;
 }
+.wrapperDetail {
+  background-image: 'linear-gradient(to bottom, rgba(255,0,0,0), black);';
+}
 .cardInfoDetail {
   display: flex;
   flex-direction: column;
@@ -59,7 +62,7 @@
   align-items: center;
 }
 .textHeaderSection {
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -67,14 +70,14 @@
   color: #05256e;
 }
 .openSans {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   color: #000000;
 }
 .textTitlePromoBanner {
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;

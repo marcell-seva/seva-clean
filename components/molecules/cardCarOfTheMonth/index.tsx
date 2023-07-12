@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import styles from '/styles/components/molecules/carOfTheMonth.module.scss'
+import styles from '/styles/components/organisms/carOfTheMonth.module.scss'
 import DOMPurify from 'dompurify'
 import LogoToyota from '/assets/icon/Logo-Potrait-Toyota.webp'
 import LogoDaihatsu from '/assets/icon/Logo-Potrait-Daihatsu.webp'
@@ -37,7 +37,7 @@ interface CarOfTheMonthProps {
   onCurrentSlide: (slide: number, maxSlide: number) => void
   onSendOffer: () => void
 }
-const CarOfTheMonthCard = ({
+const CardCarOfTheMonth = ({
   item,
   onCurrentSlide,
   onSendOffer,
@@ -106,7 +106,7 @@ const CarOfTheMonthCard = ({
   }
   return (
     <div className={styles.cardContainer}>
-      <Image
+      <img
         alt="seva-image"
         src={item.imageUrl}
         className={styles.imageCar}
@@ -208,4 +208,4 @@ const CarOfTheMonthCard = ({
   )
 }
 
-export default CarOfTheMonthCard
+export default CardCarOfTheMonth

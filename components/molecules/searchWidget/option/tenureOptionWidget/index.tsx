@@ -13,7 +13,7 @@ const TenureOptionWidget = ({ onClose }: TenureOptionWidgetProps) => {
     SearchWidgetContext,
   ) as SearchWidgetContextType
   const onChoose = (value: number) => {
-    saveFunnelWidget((prev: any) => ({ ...prev, tenure: String(value) }))
+    saveFunnelWidget({ ...funnelWidget, tenure: String(value) })
     onClose()
   }
 

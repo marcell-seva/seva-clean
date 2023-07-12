@@ -23,7 +23,7 @@ const TestimonyWidget = () => {
   const descRef = useRef() as MutableRefObject<HTMLSpanElement>
 
   useEffect(() => {
-    api.getTestimony().then((result: any) => setTestimony(result.data.data))
+    api.getTestimony().then((result: any) => setTestimony(result.data))
   }, [])
 
   if (testimony.length === 0) return <></>

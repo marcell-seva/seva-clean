@@ -134,7 +134,7 @@ export const featureToggles: FeatureToggles = {
     enablePromoCodeField: true,
     enableExternalIA: true,
     enableVidaV2: false,
-    enableAnnouncementBoxAleph: false,
+    enableAnnouncementBoxAleph: true,
     enableDeleteAccount: false,
     enableUploadKtp: false,
   },

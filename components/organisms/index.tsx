@@ -1,5 +1,5 @@
 import ArticleWidget from './articleWidget'
-import Homepage from './homepage'
+import CarOfTheMonth from './carOfTheMonth'
 import LeadsFormPrimary from './leadsForm/primary'
 import LeadsFormSecondary from './leadsForm/secondary'
 import LeadsFormTertiary from './leadsForm/tertiary'
@@ -17,7 +17,6 @@ import TestimonyWidget from './testimonyWidget'
 import { WebAnnouncementBox } from './webAnnouncementBox'
 
 export {
-  Homepage,
   SidebarMobile,
   PromoSection,
   MainHeroLP,
@@ -34,4 +33,5 @@ export {
   LeadsFormTertiary,
   SearchWidget,
   WebAnnouncementBox,
+  CarOfTheMonth,
 }

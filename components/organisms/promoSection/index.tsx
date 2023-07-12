@@ -57,7 +57,7 @@ const PromoSection = ({
           <div className={styles.row}>
             <div className={styles.rowWithGap}>
               <IconCar width={24} height={24} color={'#B4231E'} />
-              <p className={styles.kanyonMedium}>Detail</p>
+              <span className={styles.kanyonMedium}>Detail</span>
             </div>
             <div
               className={styles.rowWithGap}
@@ -65,37 +65,37 @@ const PromoSection = ({
               style={{ justifyContent: 'end' }}
               data-testid={elementId.PDP.CTA.LihatDetail}
             >
-              <p className={styles.openSans} style={{ color: '#246ED4' }}>
+              <span className={styles.openSans} style={{ color: '#246ED4' }}>
                 {'Lihat Detil'}
-              </p>
+              </span>
             </div>
           </div>
           <div className={styles.row}>
             <div className={styles.rowWithGap}>
               <IconSeat width={24} height={24} color={'#246ED4'} />
-              <p className={styles.openSans} style={{ color: '#13131B' }}>
+              <span className={styles.openSans} style={{ color: '#13131B' }}>
                 {info.seats + ' Kursi'}
-              </p>
+              </span>
             </div>
             <div className={styles.rowWithGap}>
               <IconTransmission width={24} height={24} color={'#246ED4'} />
-              <p className={styles.openSans} style={{ color: '#13131B' }}>
+              <span className={styles.openSans} style={{ color: '#13131B' }}>
                 {cheapestVariantData?.transmission}
-              </p>
+              </span>
             </div>
           </div>
           <div className={styles.row}>
             <div className={styles.rowWithGap}>
               <IconEngine width={24} height={24} color={'#246ED4'} />
-              <p className={styles.openSans} style={{ color: '#13131B' }}>
+              <span className={styles.openSans} style={{ color: '#13131B' }}>
                 {'Mesin ' + cheapestVariantData?.engineCapacity + ' cc'}
-              </p>
+              </span>
             </div>
             <div className={styles.rowWithGap}>
               <IconFuel width={24} height={24} color={'#246ED4'} />
-              <p className={styles.openSans} style={{ color: '#13131B' }}>
+              <span className={styles.openSans} style={{ color: '#13131B' }}>
                 {cheapestVariantData?.fuelType}
-              </p>
+              </span>
             </div>
           </div>
         </div>
@@ -115,12 +115,12 @@ const PromoSection = ({
                 <h2 className={styles.kanyonMedium}>Promo</h2>
               </div>
             ) : (
-              <p
+              <span
                 className={styles.kanyonMediumBlue}
                 data-testid={elementId.Homepage.Button.PromoEkslusif}
               >
                 Promo Eksklusif
-              </p>
+              </span>
             )}
           </div>
           {onPage === 'VariantListPage' ? (
@@ -192,12 +192,12 @@ const PromoSection = ({
               height="156"
             />
             <div>
-              <p className={styles.textPromoBanner}>
+              <span className={styles.textPromoBanner}>
                 Lihat detail{' '}
                 <div className={styles.spacingChevronIcon}>
                   <IconChevronRight width={16} height={16} color="#FFFFFF" />
                 </div>
-              </p>
+              </span>
             </div>
           </div>
           <div
@@ -228,17 +228,13 @@ const PromoSection = ({
               height="156"
             />
 
-            <div
-              style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(255,0,0,0), black);`,
-              }}
-            >
-              <p className={styles.textPromoBanner}>
+            <div className={styles.wrapperDetail}>
+              <span className={styles.textPromoBanner}>
                 Lihat detail
                 <div className={styles.spacingChevronIcon}>
                   <IconChevronRight width={16} height={16} color="#FFFFFF" />
                 </div>
-              </p>
+              </span>
             </div>
           </div>
           <div
@@ -269,17 +265,13 @@ const PromoSection = ({
               height="156"
             />
 
-            <div
-              style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(255,0,0,0), black);`,
-              }}
-            >
-              <p className={styles.textPromoBanner}>
+            <div className={styles.wrapperDetail}>
+              <span className={styles.textPromoBanner}>
                 Lihat detail
                 <div className={styles.spacingChevronIcon}>
                   <IconChevronRight width={16} height={16} color="#FFFFFF" />
                 </div>
-              </p>
+              </span>
             </div>
           </div>
         </div>
