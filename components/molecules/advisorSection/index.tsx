@@ -290,7 +290,7 @@ const StyledButtonText = styled(TextMediumRegular)`
     line-height: 20px;
   }
 `
-const StyledInput = styled.input`
+const StyledInput = styled(Input)`
   width: 103%;
 
   @media (min-width: 1025px) {
