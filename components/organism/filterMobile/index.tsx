@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import styles from '../../../styles/saas/components/organism/filtermobile.module.scss'
+import styles from '../../../styles/components/organism/filtermobile.module.scss'
 import {
   IconChevronDown,
   IconChevronUp,
   BottomSheet,
+  Button,
   // Overlay,
 } from 'components/atoms'
-import { Button, ButtonSize, ButtonVersion } from '../../atoms/button'
 import { FormSelectBrandCar } from '../../molecules/form/formSelectBrandCar'
 import { FormSelectTypeCar } from '../../molecules/form/formSelectTypeCar'
 import { FormPrice } from '../../molecules/form/formPrice'
@@ -33,6 +33,7 @@ import { useContextRecommendations } from 'context/recommendationsContext/recomm
 import { CarRecommendationResponse, FunnelQuery } from 'utils/types/context'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import { trackFilterCarResults } from 'helpers/amplitude/newFunnelEventTracking'
+import { ButtonSize, ButtonVersion } from 'utils/enum'
 
 interface ParamsUrl {
   age?: string

@@ -3,7 +3,7 @@ import React from 'react'
 import type { ModalProps } from 'antd'
 import { colors } from 'styles/colors'
 import { IconClose } from 'components/atoms'
-import styles from '../../../../styles/saas/components/organism/popupResultSulit.module.scss'
+import styles from '../../../../styles/components/organism/popupResultSulit.module.scss'
 type PopupResultSulit = Omit<ModalProps, 'children'>
 
 export const PopupResultSulit = (props: PopupResultSulit) => {

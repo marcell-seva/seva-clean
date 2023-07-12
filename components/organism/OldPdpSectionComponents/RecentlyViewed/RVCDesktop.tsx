@@ -97,7 +97,7 @@ const CarImage = styled(LazyLoadImage)`
 `
 
 const Shimmer = styled.div<{ radius?: number }>`
-  background-image: url(${ShimmerLoader});
+  background-image: url(${ShimmerLoader as any});
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;

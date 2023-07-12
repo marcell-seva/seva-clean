@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styles from '../../../../styles/saas/components/molecules/form/formAge.module.scss'
+import styles from '../../../../styles/components/molecules/form/formAge.module.scss'
 import { Space } from 'antd'
 import elementId from 'helpers/elementIds'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'

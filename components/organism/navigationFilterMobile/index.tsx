@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react'
-import styles from '../../../styles/saas/pages/navigationfiltermobile.module.scss'
-import { Button, ButtonSize, ButtonVersion } from '../../atoms/button'
+import styles from '../../../styles/pages/navigationfiltermobile.module.scss'
 import {
   IconFilter,
   IconStrawberry,
   IconChevronDown,
   // IconBrand,
   IconRemove,
+  Button,
 } from 'components/atoms'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import { sortOptions } from 'config/funnel.config'
@@ -19,7 +19,7 @@ import { AxiosResponse } from 'axios'
 import { carResultsUrl } from 'routes/routes'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
-import { LanguageCode } from 'utils/enum'
+import { ButtonSize, ButtonVersion, LanguageCode } from 'utils/enum'
 import { CarRecommendationResponse } from 'utils/types/context'
 // import { useQuery } from 'hooks/useQuery'
 

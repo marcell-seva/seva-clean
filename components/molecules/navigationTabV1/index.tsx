@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { TabV1 } from 'components/atoms/index'
-import styles from 'styles/saas/components/molecules/navigationTabV1.module.scss'
+import styles from 'styles/components/molecules/navigationTabV1.module.scss'
 import { TabItemData } from 'utils/types/props'
 import { lowerSectionNavigationTab } from 'config/carVariantList.config'
 import { capitalizeFirstLetter } from 'utils/stringUtils'

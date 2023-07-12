@@ -24,13 +24,17 @@ export const setTrackEventMoEngage = (param1: any, param2: any): void => {
 }
 
 export const destroySessionMoEngage = (): void => {
-  const moengage = window.Moengage
-  moengage.destroy_session()
+  const moengage = client && window.Moengage
+  if (moengage && moengage.destroy_session) {
+    moengage.destroy_session()
+  }
 }
 
 export const addUserIdMoEngage = (value: any): void => {
-  const moengage = window.Moengage
-  moengage.add_unique_user_id(value)
+  const moengage: any = window.Moengage
+  if (moengage && moengage.add_unique_user_id) {
+    moengage.add_unique_user_id(value)
+  }
 }
 
 export const setTrackEventMoEngageWithoutValue = (value: any): void => {
@@ -48,7 +52,7 @@ export const addAttributeMoEngage = (
   valuePhoneNumber: any,
   valueDob: any,
 ): void => {
-  const moengage = window.Moengage
+  const moengage: any = window.Moengage
   moengage.add_first_name(valueFirstName)
   moengage.add_last_name(valueLastName)
   moengage.add_email(valueEmail)
@@ -63,7 +67,7 @@ export const addAttributeMoEngageAfterLogin = (
   valueEmail: any,
   valuePhoneNumber: any,
 ): void => {
-  const moengage = window.Moengage
+  const moengage: any = window.Moengage
   moengage.add_first_name(valueFirstName)
   moengage.add_last_name(valueLastName)
   moengage.add_email(valueEmail)

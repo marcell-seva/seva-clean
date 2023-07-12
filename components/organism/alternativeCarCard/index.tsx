@@ -6,7 +6,7 @@ import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUti
 import { Button, CardShadow } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { LabelPromo } from 'components/molecules'
-import styles from '../../../styles/saas/components/organism/alternativeCarCard.module.scss'
+import styles from '../../../styles/components/organism/alternativeCarCard.module.scss'
 import {
   trackCarBrandRecomItemClick,
   trackLCCarRecommendationClick,

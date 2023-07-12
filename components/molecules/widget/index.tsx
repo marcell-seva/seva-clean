@@ -2,7 +2,7 @@ import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react'
 import { api } from 'services/api'
 import { trackGAContact, trackGALead } from 'services/googleAds'
-import styles from '../../../styles/saas/components/molecules/Widget.module.scss'
+import styles from 'styles/components/molecules/Widget.module.scss'
 import { rupiah, useComponentVisible } from 'utils'
 import { IconChevronDown, IconChevronUp } from 'components/atoms'
 import FlagIndonesia from 'assets/images/flagIndonesia.png'
@@ -219,7 +219,7 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
 
   const sendUnverifiedLeads = (payload: any): void => {
     try {
-      api.postUnverfiedLeads(payload)
+      api.postUnverifiedLeadsNew(payload)
       window.location.href = carListUrl
     } catch (error) {
       throw error

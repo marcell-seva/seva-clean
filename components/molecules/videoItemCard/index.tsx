@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styles from 'styles/saas/components/molecules/videoItemCard.module.scss'
+import styles from 'styles/components/molecules/videoItemCard.module.scss'
 import { CityOtrOption, VideoDataType } from 'utils/types/utils'
 import { IconPlay } from 'components/atoms'
 import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'

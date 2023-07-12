@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styles from '../../../styles/saas/components/organism/headerMobile.module.scss'
+import styles from '../../../styles/components/organism/headerMobile.module.scss'
 import {
   IconHamburger,
   IconSearch,

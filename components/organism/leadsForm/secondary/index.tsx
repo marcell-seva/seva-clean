@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import styles from 'styles/saas/components/organism/leadsFormSecondary.module.scss'
+import styles from 'styles/components/organism/leadsFormSecondary.module.scss'
 import {
   Button,
   Gap,

@@ -1,5 +1,5 @@
-import { useLocalStorage } from '../useLocalStorage/useLocalStorage'
-import { LanguageCode, LocalStorageKey } from '../../models/models'
+import { LanguageCode, LocalStorageKey } from 'utils/types/models'
+import { useLocalStorage } from '../useLocalStorage'
 
 export const useCurrentLanguage = () => {
   const [language, setLanguage] = useLocalStorage(LocalStorageKey.Language, '')

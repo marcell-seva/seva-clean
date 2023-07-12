@@ -22,7 +22,7 @@ import {
 } from 'utils/types/utils'
 import { Modal } from 'antd'
 import PopupVariantDetail from 'components/organism/popupVariantDetail/index'
-import styles from 'styles/saas/components/organism/price.module.scss'
+import styles from 'styles/components/organism/price.module.scss'
 import { Info } from 'components/molecules'
 import { getMinimumMonthlyInstallment } from 'utils/carModelUtils/carModelUtils'
 import { hundred, million } from 'const/const'

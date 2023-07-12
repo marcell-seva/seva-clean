@@ -1,36 +1,32 @@
 /* eslint-disable @next/next/inline-script-id */
-import '/styles/saas/main.scss'
-
 import type { AppProps } from 'next/app'
 import localFont from '@next/font/local'
-import { useContext, useEffect } from 'react'
+import { useEffect } from 'react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { initAmplitude } from 'services/amplitude/'
 import TagManager from 'react-gtm-module'
-import { AuthProvider, LocationProvider, CarProvider } from 'services/context'
-import { GlobalContextProvider } from 'context/GlobalContextProvider'
-import { ConfigProvider } from 'services/context/configContext'
+import { GlobalContextProvider } from 'services/context'
 import { applyPolyfills, defineCustomElements } from 'seva-ui-kit/loader'
 import Script from 'next/script'
-import 'styles/saas/global.scss'
-import 'styles/saas/bottomSheet.scss'
-import 'styles/saas/customAnimation.scss'
+import 'styles/global.scss'
+import 'styles/bottomSheet.scss'
+import 'styles/customAnimation.scss'
 import 'react-spring-bottom-sheet/dist/style.css'
 import 'styles/index.css'
-import 'styles/saas/modal-gallery.scss'
-import 'styles/saas/components/molecules/car-body-types-desktop.scss'
-import 'styles/saas/components/molecules/car-brand-recommendation.scss'
-import 'styles/saas/components/molecules/car-of-month.scss'
-import 'styles/saas/components/molecules/how-to-use.scss'
-import 'styles/saas/components/molecules/image-carousel.scss'
-import 'styles/saas/components/molecules/loan-calculator-widget.scss'
-import 'styles/saas/components/molecules/testimoni-tile.scss'
-import 'styles/saas/components/molecules/advisor-section.scss'
-import 'styles/saas/components/molecules/car-brand-item.scss'
-import 'styles/saas/components/molecules/testimonial.scss'
-import 'styles/saas/components/organism/funnel-background.scss'
+import 'styles/modal-gallery.scss'
+import 'styles/components/molecules/car-body-types-desktop.scss'
+import 'styles/components/molecules/car-brand-recommendation.scss'
+import 'styles/components/molecules/car-of-month.scss'
+import 'styles/components/molecules/how-to-use.scss'
+import 'styles/components/molecules/image-carousel.scss'
+import 'styles/components/molecules/loan-calculator-widget.scss'
+import 'styles/components/molecules/testimoni-tile.scss'
+import 'styles/components/molecules/advisor-section.scss'
+import 'styles/components/molecules/car-brand-item.scss'
+import 'styles/components/molecules/testimonial.scss'
+import 'styles/components/organism/funnel-background.scss'
 import 'styles/CustomAnimationStyle.css'
 
 import { IsSsrMobileContext } from 'context/isSsrMobileContext'
@@ -40,6 +36,11 @@ import Head from 'next/head'
 
 const kanyon = localFont({
   src: '../public/Kanyon-Regular.otf',
+  style: 'normal',
+  display: 'swap',
+})
+const kanyonMedium = localFont({
+  src: '../public/Kanyon-Medium.otf',
   style: 'normal',
   display: 'swap',
 })
@@ -73,90 +74,10 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [])
   return (
     <>
-      <Head>
-        <script
-          type="text/javascript"
-          dangerouslySetInnerHTML={{
-            __html: `(function(i, s, o, g, r, a, m, n) {
-        i.moengage_object = r
-        t = {}
-        q = function (f) {
-          return function () {
-            (i.moengage_q = i.moengage_q || []).push({ f: f, a: arguments })
-          }
-        }
-        (f = [
-          'track_event',
-          'add_user_attribute',
-          'add_first_name',
-          'add_last_name',
-          'add_email',
-          'add_mobile',
-          'add_user_name',
-          'add_gender',
-          'add_birthday',
-          'destroy_session',
-          'add_unique_user_id',
-          'moe_events',
-          'call_web_push',
-          'track',
-          'location_type_attribute',
-        ]),
-          (h = { onsite: ['getData', 'registerCallback'] })
-        for (k in f) {
-          t[f[k]] = q(f[k])
-        }
-        for (k in h)
-          for (l in h[k]) {
-            null == t[k] && (t[k] = {}), (t[k][h[k][l]] = q(k + '.' + h[k][l]))
-          }
-        a = s.createElement(o)
-        m = s.getElementsByTagName(o)[0]
-        a.async = 1
-        a.src = g
-        m.parentNode.insertBefore(a, m)
-        i.moe =
-          i.moe ||
-          function () {
-            n = arguments[0]
-            return t
-          }
-        a.onload = function () {
-          if (n) {
-            i[r] = moe(n)
-          }
-        }
-      })(
-        window,
-        document,
-        'script',
-        'https://cdn.moengage.com/webpush/moe_webSdk.min.latest.js',
-        'Moengage',
-      )
-      if (
-        window.location.href.includes('staging') ||
-        window.location.href.includes('dev') ||
-        window.location.href.includes('localhost')
-      ) {
-        Moengage = moe({
-          app_id: 'KW8JVVD7VJKF2EQHOHX2YYOA',
-          debug_logs: 1,
-        })
-      } else {
-        Moengage = moe({
-          app_id: 'KW8JVVD7VJKF2EQHOHX2YYOA',
-          debug_logs: 0,
-        })
-        }`,
-          }}
-        ></script>
-      </Head>
-      {process.env.REACT_APP_ENVIRONMENT === 'production' && (
-        <Script
-          id="fb-pixel"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
+      <script
+        type="text/javascript"
+        dangerouslySetInnerHTML={{
+          __html: `
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
             n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -170,29 +91,32 @@ export default function App({ Component, pageProps }: AppProps) {
             fbq('init', ${FB_PIXEL_ID});
             
           `,
-          }}
-        />
-      )}
+        }}
+      />
       <IsSsrMobileContext.Provider value={pageProps.isSsrMobile}>
         <GlobalContextProvider>
-          <ConfigProvider>
-            <AuthProvider>
-              <LocationProvider>
-                <CarProvider>
-                  <style jsx global>{`
-                    :root {
-                      --kanyon: ${kanyon.style.fontFamily};
-                      --kanyon-bold: ${kanyonBold.style.fontFamily};
-                      --open-sans: ${OpenSans.style.fontFamily};
-                      --open-sans-semi-bold: ${OpenSansSemiBold.style
-                        .fontFamily};
-                    }
-                  `}</style>
-                  <Component {...pageProps} />
-                </CarProvider>
-              </LocationProvider>
-            </AuthProvider>
-          </ConfigProvider>
+          <Script
+            type="text/javascript"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                            !function(e,n,i,t,a,r,o,d){var s=e[a]=e[a]||[];if(s.invoked=0,s.initialised>0||s.invoked>0)return console.error("MoEngage Web SDK initialised multiple times. Please integrate the Web SDK only once!"),!1;e.moengage_object=a;var l={},g=function n(i){return function(){for(var n=arguments.length,t=Array(n),a=0;a<n;a++)t[a]=arguments[a];(e.moengage_q=e.moengage_q||[]).push({f:i,a:t})}},u=["track_event","add_user_attribute","add_first_name","add_last_name","add_email","add_mobile","add_user_name","add_gender","add_birthday","destroy_session","add_unique_user_id","moe_events","call_web_push","track","location_type_attribute"],m={onsite:["getData","registerCallback"]};for(var c in u)l[u[c]]=g(u[c]);for(var v in m)for(var f in m[v])null==l[v]&&(l[v]={}),l[v][m[v][f]]=g(v+"."+m[v][f]);r=n.createElement(i),o=n.getElementsByTagName("head")[0],r.async=1,r.src=t,o.appendChild(r),e.moe=e.moe||function(){return(s.invoked=s.invoked+1,s.invoked>1)?(console.error("MoEngage Web SDK initialised multiple times. Please integrate the Web SDK only once!"),!1):(d=arguments.length<=0?void 0:arguments[0],l)},r.addEventListener("load",function(){if(d)return e[a]=e.moe(d),e[a].initialised=e[a].initialised+1||1,!0}),r.addEventListener("error",function(){return console.error("Moengage Web SDK loading failed."),!1})}(window,document,"script","https://cdn.moengage.com/webpush/moe_webSdk.min.latest.js","Moengage");
+                            Moengage = moe({
+                            app_id:"KW8JVVD7VJKF2EQHOHX2YYOA",
+                            debug_logs: 0
+                            });`,
+            }}
+          ></Script>
+          <style jsx global>{`
+            :root {
+              --kanyon: ${kanyon.style.fontFamily};
+              --kanyon-medium: ${kanyonMedium.style.fontFamily};
+              --kanyon-bold: ${kanyonBold.style.fontFamily};
+              --open-sans: ${OpenSans.style.fontFamily};
+              --open-sans-semi-bold: ${OpenSansSemiBold.style.fontFamily};
+            }
+          `}</style>
+          <Component {...pageProps} />
         </GlobalContextProvider>
       </IsSsrMobileContext.Provider>
     </>

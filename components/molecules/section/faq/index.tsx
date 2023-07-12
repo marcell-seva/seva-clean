@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styles from 'styles/saas/components/molecules/faq.module.scss'
+import styles from 'styles/components/molecules/faq.module.scss'
 import { IconQuestion } from 'components/atoms/icon'
 import { IconChevronDown, IconChevronUp } from 'components/atoms'
 import {

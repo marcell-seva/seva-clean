@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { TabV2 } from 'components/atoms/index'
-import styles from 'styles/saas/components/molecules/navigationTabV2.module.scss'
-import { TabItemData } from 'utils/types/props'
-import { upperSectionNavigationTab } from 'config/carVariantList.config'
-import elementId from 'helpers/elementIds'
+import styles from 'styles/components/molecules/navigationTabV2.module.scss'
 import clsx from 'clsx'
-import { alephArticleCategoryList } from 'config/articles.config'
+import elementId from 'utils/helpers/trackerId'
+import { TabItemData } from 'utils/types/props'
+import { upperSectionNavigationTab } from 'utils/config/carVariantList.config'
+import { alephArticleCategoryList } from 'utils/config/articles.config'
+import { TabV2 } from 'components/atoms'
 import { useRouter } from 'next/router'
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
   autoScroll?: boolean
 }
 
-export const NavigationTabV2 = ({
+const NavigationTabV2 = ({
   itemList,
   onSelectTab,
   isShowAnnouncementBox,
@@ -25,10 +25,10 @@ export const NavigationTabV2 = ({
   className,
   autoScroll = true,
 }: Props) => {
-  const { query } = useRouter()
+  const router = useRouter()
 
   const [selectedTabValue, setSelectedTabValue] = useState(
-    query.tab || itemList[0].value,
+    router.query.tab || itemList[0].value,
   )
   const [selectedTabIndex, setSelectedTabIndex] = useState(0)
   const containerRef = useRef() as React.MutableRefObject<HTMLDivElement>
@@ -37,14 +37,14 @@ export const NavigationTabV2 = ({
     if (onPage === 'PDP') {
       setSelectedTabValue(value)
       const index = upperSectionNavigationTab.findIndex(
-        (item) => item.value === value,
+        (item: any) => item.value === value,
       )
       setSelectedTabIndex(index)
       onSelectTab && onSelectTab(value)
     } else {
       setSelectedTabValue(value)
       const index = alephArticleCategoryList.findIndex(
-        (item) => item.value === value,
+        (item: any) => item.value === value,
       )
       setSelectedTabIndex(index)
       onSelectTab && onSelectTab(value)
@@ -124,7 +124,7 @@ export const NavigationTabV2 = ({
           label={item.label}
           value={item.value}
           isActive={item.value === selectedTabValue}
-          onClickHandler={(value) => onClickTabItem(value)}
+          onClickHandler={(value: any) => onClickTabItem(value)}
           key={index}
           dataTestId={
             item.testid ??
@@ -136,3 +136,5 @@ export const NavigationTabV2 = ({
     </div>
   )
 }
+
+export default NavigationTabV2

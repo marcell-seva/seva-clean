@@ -1,80 +1,125 @@
 import React from 'react'
-import styles from 'styles/saas/components/molecules/HowToUse.module.scss'
-import Image from 'next/image'
-import blueRoundedImage from '/assets/vector/howToUse/blueRounded.png'
-import redRoundedImage from '/assets/vector/howToUse/redRounded.png'
-import { HowToUse, PropsHowToUse } from 'utils/types'
+import styles from 'styles/components/organisms/howToUse.module.scss'
+import {
+  IconCalculator,
+  IconCar2,
+  IconChevronRight,
+  IconFast,
+} from 'components/atoms/icons'
+import urls from 'utils/helpers/url'
+import elementId from 'utils/helpers/trackerId'
+import { sendAmplitudeData } from 'services/amplitude'
+import { AmplitudeEventName } from 'services/amplitude/types'
+import { useRouter } from 'next/router'
 
-type TypesHowToUse = {
-  data: HowToUse
-}
-
-const HowToUse: React.FC<TypesHowToUse> = ({ data }): JSX.Element => {
-  const imageRootPath = 'https://api.sslpots.com'
-
-  const Info: React.FC<PropsHowToUse> = ({
-    title,
-    desc,
-    icon,
-  }): JSX.Element => (
-    <div className={styles.detailWrapper}>
-      <div className={styles.bundleIcon}>
-        <Image
-          src={icon}
-          alt="seva-icon-how-to-use"
-          width={40}
-          height={40}
-          className={styles.icon}
-        />
-      </div>
-      <div className={styles.info}>
-        <h3 className={styles.titleText}>{title}</h3>
-        <p className={styles.descText}>{desc}</p>
-      </div>
-    </div>
-  )
-
+const HowToUse = () => {
+  const router = useRouter()
   return (
     <div className={styles.wrapper}>
-      <div className={styles.backgroundLayer}>
-        <div className={styles.wrapperVectorBlue}>
-          <Image
-            src={blueRoundedImage}
-            alt="seva-vector-blue-rounded"
-            width={200}
-            height={140}
-            className={styles.vectorBlueRounded}
-          />
+      <h2 className={styles.headerText} style={{ width: '75%' }}>
+        Cara Dapatkan Mobil Impian di SEVA
+      </h2>
+      <div className={styles.cardSpacing}>
+        <div
+          className={styles.cardHowToUse}
+          onClick={() => {
+            sendAmplitudeData(AmplitudeEventName.WEB_LP_HOW_TO_USE_SEVA_CLICK, {
+              Page_Direction_URL:
+                'https://' +
+                window.location.host +
+                urls.internalUrls.carResultsUrl,
+            })
+            router.push(urls.internalUrls.carResultsUrl)
+          }}
+          data-testid={elementId.Homepage.PilihMobilImpian}
+        >
+          <div>
+            <p className={styles.cardTextBold}>Pilih Mobil</p>
+            <div className={styles.row}>
+              <p className={styles.headerText}>Impian</p>
+              <IconCar2 width={24} height={24} color={'#B4231E'} />
+            </div>
+            <div className={styles.row}>
+              <p className={styles.textGrey}>
+                Pilih mobil impian kamu dari berbagai merek dengan jaminan
+                kualitas Astra.
+              </p>
+            </div>
+          </div>
+          <div>
+            <IconChevronRight width={24} height={24} color={'#05256E'} />
+          </div>
         </div>
-        <div className={styles.wrapperVectorRed}>
-          <Image
-            src={redRoundedImage}
-            alt="seva-vector-red-rounded"
-            width={200}
-            height={140}
-            className={styles.vectorRedRounded}
-          />
+        <div
+          className={styles.cardHowToUse}
+          onClick={() => {
+            sendAmplitudeData(AmplitudeEventName.WEB_LP_HOW_TO_USE_SEVA_CLICK, {
+              Page_Direction_URL:
+                'https://' +
+                window.location.host +
+                urls.internalUrls.loanCalculatorDefaultUrl,
+            })
+            router.push({
+              pathname: urls.internalUrls.loanCalculatorDefaultUrl,
+              query: {
+                from: 'homepageHitung',
+              },
+            })
+          }}
+          data-testid={elementId.Homepage.HitungKemampuan}
+        >
+          <div>
+            <p className={styles.cardTextBold}>Hitung</p>
+            <div className={styles.row}>
+              <p className={styles.headerText}>Kemampuan</p>
+              <IconCalculator width={24} height={24} color={'#B4231E'} />
+            </div>
+            <div className={styles.row}>
+              <p className={styles.textGrey}>
+                Dapatkan hasil perhitungan cicilan mobil yang sesuai dengan
+                kemampuan finansialmu!
+              </p>
+            </div>
+          </div>
+          <div>
+            <IconChevronRight width={24} height={24} color={'#05256E'} />
+          </div>
         </div>
-      </div>
-      <div className={styles.foreGroundLayer}>
-        <h2 className={styles.headerText}>{data.head_title}</h2>
-        <div className={styles.stepDetail}>
-          <Info
-            title={data.title_1}
-            desc={data.subtitle_1}
-            icon={`${imageRootPath}${data.icon_1.data.attributes.url}`}
-          />
-          <Info
-            title={data.title_2}
-            desc={data.subtitle_2}
-            icon={`${imageRootPath}${data.icon_2.data.attributes.url}`}
-          />
-          <div className={styles.separator} />
-          <Info
-            title={data.title_3}
-            desc={data.subtitle_3}
-            icon={`${imageRootPath}${data.icon_3.data.attributes.url}`}
-          />
+        <div
+          className={styles.cardHowToUse}
+          onClick={() => {
+            sendAmplitudeData(AmplitudeEventName.WEB_LP_HOW_TO_USE_SEVA_CLICK, {
+              Page_Direction_URL:
+                'https://' +
+                window.location.host +
+                urls.internalUrls.loanCalculatorDefaultUrl,
+            })
+            router.push({
+              pathname: urls.internalUrls.loanCalculatorDefaultUrl,
+              query: {
+                from: 'homepageKualifikasi',
+              },
+            })
+          }}
+          data-testid={elementId.Homepage.KualifikasiKredit}
+        >
+          <div>
+            <div className={styles.row} style={{ marginBottom: '0px' }}>
+              <p className={styles.cardTextBold}>Kualifikasi</p>
+              <IconFast width={24} height={24} color={'#B4231E'} />
+            </div>
+            <div className={styles.row}>
+              <p className={styles.headerText}>Kredit</p>
+            </div>
+            <div className={styles.row}>
+              <p className={styles.textGrey}>
+                Cek kualifikasi kredit kamu sebelum mengajukan pinjaman mobil.
+              </p>
+            </div>
+          </div>
+          <div>
+            <IconChevronRight width={24} height={24} color={'#05256E'} />
+          </div>
         </div>
       </div>
     </div>

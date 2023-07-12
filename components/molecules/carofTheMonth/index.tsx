@@ -1,162 +1,148 @@
-import Image from 'next/image'
-import React, { useContext, useState } from 'react'
-import { CarContext, CarContextType } from 'services/context'
-import styles from '../../../styles/saas/components/molecules/CarofTheMonth.module.scss'
-import { IconForwardRight } from 'components/atoms'
-import amplitude from 'amplitude-js'
-import { CarDetail } from 'utils/types'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation } from 'swiper'
+import React, { useMemo, useState } from 'react'
+import { CarouselProvider, Slider, Slide } from 'pure-react-carousel'
+import { useMediaQuery } from 'react-responsive'
+import CardCarOfTheMonth from '../cardCarOfTheMonth'
+import styles from 'styles/components/molecules/carOfTheMonth.module.scss'
+import clsx from 'clsx'
+import { PageOriginationName } from 'utils/types/tracker'
+import elementId from 'utils/helpers/trackerId'
+import { sendAmplitudeData } from 'services/amplitude'
+import { AmplitudeEventName } from 'services/amplitude/types'
+import { COMData, COMDataTracking } from 'utils/types/models'
 
-type TypesCarOfTheMonth = {
-  data: Array<CarDetail>
-  openModalOffering: any
+interface CityOtrOption {
+  cityName: string
+  cityCode: string
+  province: string
+  id?: string
 }
-const CarofTheMonth: React.FC<TypesCarOfTheMonth> = ({
-  data,
-  openModalOffering,
-}): JSX.Element => {
-  const { saveCar } = useContext(CarContext) as CarContextType
-  const [activeType, setActiveType] = useState<string>('Toyota')
-  const [info, setInfo] = useState<CarDetail>(data[0])
-  const headerText: string = 'SEVA Car of The Month'
-  const redirectDetailText: string = 'LIHAT RINCIAN'
-  const buttonOfferingText: string = 'MINTA PENAWARAN'
 
-  const handleClick = (payload: string): void => {
-    setActiveType(payload)
-    filterData(payload)
-  }
+type CarOfTheMonthProps = {
+  carOfTheMonthData: COMData[]
+  onSendOffer: () => void
+  cityOtr: CityOtrOption | null
+  setSelectedCarOfTheMonth: (value: COMDataTracking) => void
+}
 
-  const filterData = (type: string): void => {
-    const tempData = data
-    const newData = tempData.filter((item: any) => {
-      const itemData = `${item.brand.toUpperCase()}`
-      const paramsData = type.toUpperCase()
-      return itemData.indexOf(paramsData) > -1
-    })
+export type carOfTheMonthData = {
+  name: string
+  desc: string
+  link: string
+  brand: string
+  price: number
+  imageUrl: string
+  priceValueJkt: number
+}
+const CarOfTheMonth = ({
+  carOfTheMonthData,
+  onSendOffer,
+  cityOtr,
+  setSelectedCarOfTheMonth,
+}: CarOfTheMonthProps) => {
+  const isMobileSmall = useMediaQuery({ query: '(max-width: 365px)' })
+  const [currentSlide, setCurrentSlide] = useState(0)
 
-    if (newData.length > 0) setInfo(newData[0])
-    else setInfo(data[0])
-  }
+  const carModel = useMemo(() => {
+    const model = carOfTheMonthData?.map((item) => ({
+      name: item.model?.carModel.model ?? '',
+      desc: item.model?.description ?? '',
+      link: item.model?.url ?? '',
+      brand: item.brand ?? '',
+      price: item.model?.price ?? 0,
+      imageUrl: item.model?.data.image ?? '',
+      priceValueJkt: item.model?.priceValueJkt ?? 0,
+    }))
 
-  const handleClickDetails = (payload: CarDetail): void => {
-    amplitude.getInstance().logEvent('WEB_LP_CAROFTHEMONTH_CAR_CLICK', {
-      Car_Brand: payload.model.carModel.brand,
-      Car_Model: payload.model.carModel.model,
-    })
-  }
+    return model ?? []
+  }, [carOfTheMonthData])
 
-  const handleModalOffering = (payload: CarDetail): void => {
-    saveCar(payload)
-    openModalOffering()
+  const getVisibleSlides = () => {
+    if (isMobileSmall) return 1
+    return 1.23
   }
   return (
-    <div className={styles.wrapper}>
-      <h1 className={styles.headerText}>{headerText}</h1>
-      <div className={styles.bundle}>
-        <div className={styles.content}>
-          <div className={styles.bgContent}></div>
-          <Image
-            src={info.model.data.image}
-            width={480}
-            height={168}
-            unoptimized
-            alt="seva-car-of-the-month"
-            className={styles.image}
-          />
-          <div className={styles.categoryMobile}>
-            <div
-              className={`image-swiper-button-prev-car-month ${styles.navigationBackButton}`}
-            >
-              <IconForwardRight width={15} height={15} />
-            </div>
-            <div
-              className={`image-swiper-button-next-car-month ${styles.navigationNextButton}`}
-            >
-              <IconForwardRight width={15} height={15} />
-            </div>
-            <Swiper
-              navigation={{
-                nextEl: '.image-swiper-button-next-car-month',
-                prevEl: '.image-swiper-button-prev-car-month',
-              }}
-              cssMode
-              slidesPerGroup={2}
-              slidesPerView={3}
-              spaceBetween={10}
-              breakpoints={{
-                1024: {
-                  slidesPerGroup: 3,
-                  slidesPerView: 4,
-                  spaceBetween: 10,
-                  cssMode: false,
-                },
-              }}
-              modules={[Navigation]}
-            >
-              {data.map((item: any) => {
-                return (
-                  <SwiperSlide key={item.id}>
-                    <button
-                      onClick={() => handleClick(item.brand)}
-                      className={
-                        activeType === item.brand
-                          ? styles.buttonCategoryActive
-                          : styles.buttonCategoryInActive
-                      }
-                    >
-                      {item.brand}
-                    </button>
-                  </SwiperSlide>
-                )
-              })}
-            </Swiper>
-          </div>
-          <div className={styles.categoryDesktop}>
-            {data.map((item: any) => {
+    <div
+      className={styles.container}
+      data-testid={elementId.Homepage.CarOfMonth}
+    >
+      <div className={styles.wrapper}>
+        <h2 className={styles.textHeaderSection}>SEVAssss Car of The Month</h2>
+      </div>
+      <div
+        className={styles.containerCarousel}
+        // style={{
+        //   paddingRight: Math.round(currentSlide) === 0 ? '16px' : '0px',
+        // }}
+      >
+        <CarouselProvider
+          naturalSlideWidth={288}
+          naturalSlideHeight={454}
+          totalSlides={Array.isArray(carModel) ? carModel.length : 0}
+          visibleSlides={getVisibleSlides()}
+          currentSlide={currentSlide}
+        >
+          <Slider>
+            {carModel.map((item: carOfTheMonthData, index: number) => {
               return (
-                <button
-                  key={item.id}
-                  onClick={() => handleClick(item.brand)}
-                  className={
-                    activeType === item.brand
-                      ? styles.buttonCategoryActive
-                      : styles.buttonCategoryInActive
-                  }
+                <Slide
+                  index={index}
+                  key={index}
+                  style={{
+                    width: '288px',
+                    height: '454px',
+                    marginLeft: '16px',
+                    marginBottom: '16px',
+                  }}
                 >
-                  {item.brand}
-                </button>
+                  <CardCarOfTheMonth
+                    item={item}
+                    onCurrentSlide={(slide: any) => setCurrentSlide(slide)}
+                    onSendOffer={() => {
+                      sendAmplitudeData(
+                        AmplitudeEventName.WEB_LEADS_FORM_OPEN,
+                        {
+                          Page_Origination: PageOriginationName.COTMLeadsForm,
+                          ...(cityOtr && { City: cityOtr.cityName }),
+                          Car_Brand: item.brand,
+                          Car_Model: item.name,
+                        },
+                      )
+                      setSelectedCarOfTheMonth({
+                        Car_Brand: item.brand,
+                        Car_Model: item.name,
+                      })
+                      onSendOffer()
+                    }}
+                  />
+                </Slide>
               )
             })}
-          </div>
-        </div>
-        <div className={styles.description}>
-          <div>
-            <h2 className={styles.titleText}>{info.model.carModel.model}</h2>
-            <p className={styles.descText}>
-              {info.model.description.replace('<p>', '').replace('</p>', '')}
-            </p>
-          </div>
-          <div className={styles.wrapperButton}>
-            <a
-              href={info.model.url}
-              className={styles.buttonDetail}
-              onClick={() => handleClickDetails(info)}
-            >
-              {redirectDetailText}
-            </a>
+          </Slider>
+
+          {/* <div className="controls">
+            <DotGroup className="dot-group" />
+          </div> */}
+        </CarouselProvider>
+      </div>
+      <div className={styles.dotsCarouselWrapper}>
+        {carModel.map((item: carOfTheMonthData, index: number) => {
+          return (
             <button
-              onClick={() => handleModalOffering(info)}
-              className={styles.buttonOffering}
-            >
-              {buttonOfferingText}
-            </button>
-          </div>
-        </div>
+              key={index}
+              onClick={() => {
+                setCurrentSlide(index)
+              }}
+              className={clsx({
+                [styles.dotsCarouselActive]: index === Math.round(currentSlide),
+                [styles.dotsCarouselInactive]:
+                  index !== Math.round(currentSlide),
+              })}
+            ></button>
+          )
+        })}
       </div>
     </div>
   )
 }
 
-export default CarofTheMonth
+export default CarOfTheMonth

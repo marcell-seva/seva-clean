@@ -1,7 +1,7 @@
+import { Separator } from 'components/atoms/separator'
 import React, { useState } from 'react'
-import styles from '../../../../styles/saas/components/atoms/inputPhone.module.scss'
-import { PropsInput } from 'utils/types'
-import { Separator } from '../../separator'
+import styles from 'styles/components/atoms/inputPhone.module.scss'
+import { PropsInput } from 'utils/types/props'
 
 const InputPhone = ({
   value,

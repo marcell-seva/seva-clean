@@ -1,18 +1,19 @@
 import React from 'react'
-import styles from '../../../styles/saas/components/atoms/menuItem.module.scss'
-import { IconChevronDown } from 'components/atoms'
-import { MobileWebTopMenuType } from 'utils/types/utils'
-import { trackBurgerMenuClick } from 'helpers/amplitude/seva20Tracking'
+import styles from 'styles/components/atoms/menuItem.module.scss'
+import { sendAmplitudeData } from 'services/amplitude'
+import { AmplitudeEventName } from 'services/amplitude/types'
+import { MobileWebTopMenuType } from 'utils/types/props'
+import { IconChevronDown } from '../icons'
 
 type MenuItemProps = {
   item?: MobileWebTopMenuType
 }
 
-export const MenuItem: React.FC<MenuItemProps> = ({ item }): JSX.Element => {
+const MenuItem: React.FC<MenuItemProps> = ({ item }): JSX.Element => {
   const [state, setState] = React.useState(false)
 
   const handleClickMenu = (menuUrl: string, menuName: string) => {
-    trackBurgerMenuClick({
+    sendAmplitudeData(AmplitudeEventName.WEB_BURGER_MENU_CLICK, {
       Page_Origination_URL: window.location.href,
       Menu: menuName,
     })
@@ -53,3 +54,4 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item }): JSX.Element => {
     </>
   )
 }
+export default MenuItem

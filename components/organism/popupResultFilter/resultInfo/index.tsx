@@ -3,9 +3,10 @@ import React from 'react'
 import type { ModalProps } from 'antd'
 import { colors } from 'styles/colors'
 import { IconClose } from 'components/atoms'
-import styles from '../../../../styles/saas/components/organism/popupResultInfo.module.scss'
+import styles from '../../../../styles/components/organism/popupResultInfo.module.scss'
 
-import { Button, ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { Button } from 'components/atoms'
+import { ButtonSize, ButtonVersion } from 'utils/enum'
 
 const PLPEmpty = '/v3/assets/illustration/plp-empty.webp'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from 'styles/saas/components/atoms/tabV2.module.scss'
+import styles from 'styles/components/atoms/tabV2.module.scss'
 import { TabItemProps } from 'utils/types/props'
 
 export const TabV2 = ({

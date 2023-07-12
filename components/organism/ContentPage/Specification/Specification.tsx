@@ -22,8 +22,12 @@ import { useContextRecommendations } from 'context/recommendationsContext/recomm
 import { Description } from 'components/organism/OldPdpSectionComponents/Description/Description'
 import { SpecificationSelect } from 'components/organism/OldPdpSectionComponents/SpecificationSelect/SpecificationSelect'
 import { SpecificationDetail } from 'components/organism/OldPdpSectionComponents/SpecificationDetail/SpecificationDetail'
-import { ButtonVersion, LanguageCode, LocalStorageKey } from 'utils/enum'
-import { ButtonSize } from 'components/atoms/button'
+import {
+  ButtonVersion,
+  ButtonSize,
+  LanguageCode,
+  LocalStorageKey,
+} from 'utils/enum'
 import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 import { CarVariantRecommendation, CityOtrOption } from 'utils/types'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'

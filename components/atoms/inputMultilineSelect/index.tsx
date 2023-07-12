@@ -1,5 +1,5 @@
 import React, { ChangeEvent, ForwardedRef, useState } from 'react'
-import styles from '../../../styles/saas/components/atoms/inputMultilineSelect.module.scss'
+import styles from '../../../styles/components/atoms/inputMultilineSelect.module.scss'
 import { IconRemove, IconSearch } from 'components/atoms'
 
 import clsx from 'clsx'

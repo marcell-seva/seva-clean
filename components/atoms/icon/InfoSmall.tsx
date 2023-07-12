@@ -18,14 +18,14 @@ export const IconInfoSmall: React.FC<PropsIcon> = ({
       <path
         d="M6.05078 7.87436L5.99745 5.79171"
         stroke={color}
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M5.95459 4.12558L5.94926 3.91731"
         stroke={color}
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )

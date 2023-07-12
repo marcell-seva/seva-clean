@@ -6,7 +6,7 @@ const Tridi: any = dynamic(() => import('react-tridi'), {
 })
 
 import 'react-tridi/dist/index.css'
-import styles from 'styles/saas/components/organism/exterior360Viewer.module.scss'
+import styles from 'styles/components/organism/exterior360Viewer.module.scss'
 import { RotateLeft, RotateRight } from 'components/atoms'
 import { exteriorImagesListNew } from 'config/Exterior360ImageList.config'
 import elementId from 'helpers/elementIds'

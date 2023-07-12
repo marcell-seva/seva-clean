@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from 'styles/saas/components/molecules/dp/cicilform.module.scss'
+import styles from 'styles/components/molecules/dp/cicilform.module.scss'
 import { Row, Button } from 'antd'
 import { InstallmentTypeOptions } from 'utils/models/models'
 import elementId from 'helpers/elementIds'

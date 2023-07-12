@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { CitySelectorModal } from 'components/molecules'
 import { getCities } from 'services/cities'
-import styles from '../../../styles/saas/components/organism/plpEmpty.module.scss'
+import styles from '../../../styles/components/organism/plpEmpty.module.scss'
 import elementId from 'helpers/elementIds'
 import { CarRecommendation } from 'utils/types/context'
 import { Location } from 'utils/types'

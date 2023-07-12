@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import styles from 'styles/saas/components/molecules/warnaTabContent.module.scss'
+import styles from 'styles/components/molecules/warnaTabContent.module.scss'
 import { ColorSelector } from 'components/atoms/colorSelector'
 import { availableList, availableListColors } from 'config/AvailableListColors'
 import elementId from 'helpers/elementIds'

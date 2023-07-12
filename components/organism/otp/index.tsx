@@ -5,7 +5,7 @@ import { useLastOtpSentTime } from 'context/lastOtpSentTimeContext'
 import { saveOtpIsSent, saveOtpTimerIsStart } from 'utils/otpUtils'
 import { encryptValue } from 'utils/encryptionUtils'
 import { IconLoading, Modal } from 'components/atoms'
-import styles from '../../../styles/saas/components/organism/otp.module.scss'
+import styles from '../../../styles/components/organism/otp.module.scss'
 import { getRecaptchaToken } from 'services/firebase/firebaseAuth'
 import { useMediaQuery } from 'react-responsive'
 import {

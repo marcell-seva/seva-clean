@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import styles from 'styles/saas/components/organism/calculationResult.module.scss'
+import styles from 'styles/components/organism/calculationResult.module.scss'
 import { FormLCState, SpecialRateListType } from 'utils/types/utils'
 import { CalculationResultItem } from 'components/molecules'
 import { Button, IconWhatsapp, Overlay } from 'components/atoms'

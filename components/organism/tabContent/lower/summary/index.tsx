@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
-import styles from 'styles/saas/components/organism/summary.module.scss'
+import styles from 'styles/components/organism/summary.module.scss'
 
 import {
   CarVariantRecommendation,

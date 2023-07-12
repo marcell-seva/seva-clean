@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useState } from 'react'
-import styles from 'styles/saas/components/organism/carOverView.module.scss'
+import styles from 'styles/components/organism/carOverView.module.scss'
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 import {
@@ -19,7 +19,6 @@ import {
   IconShare,
 } from 'components/atoms'
 import { useDetectClickOutside } from 'react-detect-click-outside'
-import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import elementId from 'helpers/elementIds'
 import {
@@ -32,6 +31,7 @@ import { variantListUrl } from 'routes/routes'
 import { CityOtrOption, VariantDetail } from 'utils/types/utils'
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { ButtonSize, ButtonVersion } from 'utils/enum'
 
 interface Props {
   onClickCityOtrCarOverview: () => void

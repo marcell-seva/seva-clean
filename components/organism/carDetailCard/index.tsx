@@ -22,7 +22,7 @@ import {
   formatNumberByLocalization,
   formatBillionPoint,
 } from 'utils/numberUtils/numberUtils'
-import styles from '../../../styles/saas/components/organism/cardetailcard.module.scss'
+import styles from '../../../styles/components/organism/cardetailcard.module.scss'
 import { trackPLPCarClick } from 'helpers/amplitude/seva20Tracking'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import elementId from 'helpers/elementIds'
