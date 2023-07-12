@@ -1,16 +1,18 @@
 import React from 'react'
 import { FloatButton, FloatButtonProps } from 'antd'
-import { IconCSA } from '../../icon'
-import { colors } from 'styles/colors'
+// import 'styles/main.scss'
+import { IconCSA } from 'components/atoms/icons'
 
 type CSAButtonProps = Omit<FloatButtonProps, 'icon'>
 
-export const CSAButton = (props: CSAButtonProps) => {
+const CSAButton = (props: CSAButtonProps) => {
   return (
     <FloatButton
       className="csa-button"
-      icon={<IconCSA width={32} height={32} color={colors.primaryBlue} />}
+      icon={<IconCSA width={32} height={32} color={'#246ed4'} />}
       {...props}
     />
   )
 }
+
+export default CSAButton

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styles from 'styles/saas/components/organism/productDetailEmptyState.module.scss'
+import styles from 'styles/components/organism/productDetailEmptyState.module.scss'
 import { Link } from 'components/atoms'
 import { CitySelectorModal } from 'components/molecules'
 import { saveLocalStorage } from 'utils/localstorageUtils'

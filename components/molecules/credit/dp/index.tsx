@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Col, Input, Row, Slider } from 'antd'
-import styles from 'styles/saas/components/molecules/dp/dpform.module.scss'
+import styles from 'styles/components/molecules/dp/dpform.module.scss'
 import { dpRateCollectionNewCalculator } from 'const/const'
 import { dpRateCollectionNewCalculatorTmp } from 'utils/types/utils'
 import clsx from 'clsx'

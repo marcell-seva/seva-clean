@@ -1,7 +1,7 @@
 import React from 'react'
-import styles from '../../../../styles/saas/components/atoms/input.module.scss'
-import { PropsInput } from 'utils/types'
+import styles from 'styles/components/atoms/input.module.scss'
 import clsx from 'clsx'
+import { PropsInput } from 'utils/types/props'
 
 const Input = ({
   value,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { colors } from 'styles/colors'
 import { IconInstagram, IconTwitterOutlined } from 'components/atoms/icon'
-import styles from '../../../styles/saas/components/organism/footerMobile.module.scss'
+import styles from '../../../styles/components/organism/footerMobile.module.scss'
 import { getMobileFooterMenu } from 'services/menu'
 import urls from 'helpers/urls'
 import elementId from 'helpers/elementIds'

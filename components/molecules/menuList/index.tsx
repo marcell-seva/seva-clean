@@ -1,17 +1,16 @@
 import axios from 'axios'
 import React from 'react'
-import { TemanSevaDashboardUrl, TemanSevaOnboardingUrl } from 'routes/routes'
-import { temanSevaUrlPath } from 'services/temanseva'
-// import { trackBurgerMenuClick } from 'helpers/amplitude/seva20Tracking'
-import { getToken } from 'utils/api'
+import styles from 'styles/components/molecules/menuList.module.scss'
+import { sendAmplitudeData } from 'services/amplitude'
+import { AmplitudeEventName } from 'services/amplitude/types'
+import { saveLocalStorage } from 'utils/handler/localStorage'
+import { LocalStorageKey } from 'utils/types/models'
+import { IconAccount, IconHistory, IconWishlist } from 'components/atoms/icons'
+import urls from 'utils/helpers/url'
 import { MenuItem } from 'components/atoms'
-import styles from '../../../styles/saas/components/molecules/menuList.module.scss'
-import { saveLocalStorage } from 'utils/localstorageUtils'
+import { CustomerInfoSeva, MobileWebTopMenuType } from 'utils/types/props'
 import { useRouter } from 'next/router'
-import { IconAccount, IconHistory, IconWishlist } from 'components/atoms/icon'
-import { LocalStorageKey } from 'utils/enum'
-import { MobileWebTopMenuType, CustomerInfoSeva } from 'utils/types/utils'
-
+import { getToken } from 'utils/handler/auth'
 type MenuListProps = {
   menuList?: MobileWebTopMenuType[]
   customerDetail?: CustomerInfoSeva
@@ -39,9 +38,12 @@ export const MenuList: React.FC<MenuListProps> = ({
 
   const checkTemanSeva = async () => {
     if (customerDetail) {
-      const temanSeva = await axios.post(temanSevaUrlPath.isTemanSeva, {
-        phoneNumber: customerDetail.phoneNumber,
-      })
+      const temanSeva = await axios.post(
+        `https://teman.prod.seva.id/auth/is-teman-seva`,
+        {
+          phoneNumber: customerDetail.phoneNumber,
+        },
+      )
       setIsTemanSeva(temanSeva.data.isTemanSeva)
     }
   }
@@ -54,17 +56,17 @@ export const MenuList: React.FC<MenuListProps> = ({
 
   const handleTemanSeva = () => {
     if (isTemanSeva) {
-      router.push(TemanSevaDashboardUrl)
+      router.push(urls.internalUrls.TemanSevaDashboardUrl)
     } else {
-      router.push(TemanSevaOnboardingUrl)
+      router.push(urls.internalUrls.TemanSevaOnboardingUrl)
     }
   }
 
   const handleClickMenu = (menuUrl: string, menuName: string) => {
-    // trackBurgerMenuClick({
-    //   Page_Origination_URL: window.location.href,
-    //   Menu: menuName,
-    // })
+    sendAmplitudeData(AmplitudeEventName.WEB_BURGER_MENU_CLICK, {
+      Page_Origination_URL: window.location.href,
+      Menu: menuName,
+    })
 
     if (menuName === 'Teman SEVA') {
       handleTemanSeva()
@@ -94,14 +96,14 @@ export const MenuList: React.FC<MenuListProps> = ({
               )}
 
               {menuItem.subMenu.length > 0 &&
-                menuItem.subMenu.map((sub: any, idx: number) => {
+                menuItem.subMenu.map((sub: any, key: any) => {
                   if (sub.subMenu.length > 0) {
-                    return <MenuItem key={idx} item={sub} />
+                    return <MenuItem key={key} item={sub} />
                   } else {
                     const icon = renderIcon(sub.menuName)
                     return (
                       <div
-                        key={idx}
+                        key={key}
                         className={styles.parentMenu}
                         onClick={() =>
                           handleClickMenu(sub.menuUrl as string, sub.menuName)

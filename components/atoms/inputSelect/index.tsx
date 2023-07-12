@@ -7,7 +7,7 @@ import {
   Option,
 } from 'utils/types'
 import React, { ChangeEvent, ForwardedRef, forwardRef, useState } from 'react'
-import styles from '../../../styles/saas/components/atoms/inputSelect.module.scss'
+import styles from '../../../styles/components/atoms/inputSelect.module.scss'
 
 interface Props<T extends FormControlValue> {
   value: string

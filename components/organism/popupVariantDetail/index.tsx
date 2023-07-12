@@ -13,7 +13,7 @@ import {
   IconTransmission,
 } from 'components/atoms'
 import { IconDimension, IconFuelTank } from 'components/atoms/icon'
-import styles from 'styles/saas/components/organism/summary.module.scss'
+import styles from 'styles/components/organism/summary.module.scss'
 
 type VariantsProps = {
   carVariant: CarVariantRecommendation

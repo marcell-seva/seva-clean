@@ -1,9 +1,9 @@
 import React, { HTMLAttributes } from 'react'
-import { IconChecked } from 'components/atoms/icon'
-import styles from '../../../../styles/saas/components/molecules/labelCard/mudah/mudah.module.scss'
-import { colors } from 'styles/colors'
+import styles from 'styles/components/molecules/labelCard/mudah/mudah.module.scss'
+import { IconChecked } from 'components/atoms/icons'
+import { colors } from 'utils/helpers/style/colors'
 
-export const LabelMudah = ({ ...props }: HTMLAttributes<HTMLDivElement>) => {
+const LabelMudah = ({ ...props }: HTMLAttributes<HTMLDivElement>) => {
   return (
     <div className={`${styles.container} ${styles.labelResult}`} {...props}>
       <IconChecked
@@ -16,3 +16,5 @@ export const LabelMudah = ({ ...props }: HTMLAttributes<HTMLDivElement>) => {
     </div>
   )
 }
+
+export default LabelMudah

@@ -1,20 +1,19 @@
 import React, { HTMLAttributes } from 'react'
-import { colors } from 'styles/colors'
-import { IconPromo } from 'components/atoms/icon'
-import styles from '../../../../styles/saas/components/molecules/labelCard/promo/promo.module.scss'
+import styles from 'styles/components/molecules/labelCard/promo/promo.module.scss'
+import { IconPromo } from 'components/atoms/icons'
+import { colors } from 'utils/helpers/style/colors'
 
-export const LabelPromo = ({
+const LabelPromo = ({
   className,
   ...props
 }: HTMLAttributes<HTMLDivElement>) => {
   return (
-    <>
-      <div className={`${styles.container} ${className}`} {...props}>
-        <IconPromo height={16} width={16} color={colors.white} />
-        <span className={styles.microReguler}>
-          Tersedia <span className={styles.microBold}>promo</span>
-        </span>
-      </div>
-    </>
+    <div className={`${styles.container} ${className}`} {...props}>
+      <IconPromo height={16} width={16} color={colors.white} />
+      <span className={styles.microReguler}>
+        Tersedia <span className={styles.microBold}>promo</span>
+      </span>
+    </div>
   )
 }
+export default LabelPromo

@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../../../../styles/saas/components/molecules/Video.module.scss'
+import styles from '/styles/components/molecules/Video.module.scss'
 import { IconCross } from 'components/atoms'
 
 interface PropsVideo {

@@ -1,6 +1,6 @@
 import React from 'react'
-import { FormControlValue, Option } from 'utils/types'
-import styles from '../../../styles/saas/components/molecules/bottomSheetList.module.scss'
+import styles from 'styles/components/molecules/bottomSheetList.module.scss'
+import { FormControlValue, Option } from 'utils/types/props'
 
 interface BottomSheetListProps<T extends FormControlValue> {
   options: Option<T>[]
@@ -9,7 +9,7 @@ interface BottomSheetListProps<T extends FormControlValue> {
   datatestid?: string
 }
 
-export const BottomSheetList = <T extends FormControlValue>({
+const BottomSheetList =<T extends FormControlValue> ({
   options,
   onChooseOption,
   activeState,
@@ -37,3 +37,5 @@ export const BottomSheetList = <T extends FormControlValue>({
     </div>
   )
 }
+
+export default BottomSheetList

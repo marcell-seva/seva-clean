@@ -1,6 +1,6 @@
 import React from 'react'
 import dynamic from 'next/dynamic'
-import styles from 'styles/saas/components/organism/interior360Viewer.module.scss'
+import styles from 'styles/components/organism/interior360Viewer.module.scss'
 import { Icon360 } from 'components/atoms'
 import { interiorImagesListNew } from 'config/Interior360ImageList.config'
 import elementId from 'helpers/elementIds'

@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from 'styles/saas/components/molecules/shareModal.module.scss'
+import styles from 'styles/components/molecules/shareModal.module.scss'
 import { Modal, ModalProps } from 'antd'
 import {
   IconClose,

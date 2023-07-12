@@ -1,0 +1,113 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.wrapper {
+  position: fixed;
+  z-index: 5;
+  width: 285px;
+  background-color: #{$primary-white};
+  transition: left 700ms;
+  top: 54px;
+  bottom: 0;
+  padding: 24px 16px;
+
+  &.showSidebar {
+    left: 0;
+  }
+
+  &.hideSidebar {
+    left: -100%;
+  }
+}
+.wrapperWithSpace {
+  margin-top: 60px;
+}
+.profileWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.profileContent {
+  margin-left: 12px;
+}
+
+.profileName {
+  font-family: var(--kanyon-medium);
+  font-weight: 500;
+  font-size: 16px;
+  color: #{$primary-black};
+  line-height: 24px;
+}
+
+.profileNumber {
+  font-family: var(--open-sans);
+  font-weight: 400;
+  font-size: 14px;
+  color: #{$shades-grey-75};
+  line-height: 20px;
+}
+
+.creditInfoWrapper {
+  background: #{$primary-dark-blue};
+  border-radius: 8px;
+  width: 100%;
+  padding: 16px;
+  margin-top: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.creditInfoHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.creditInfoHeading {
+  font-family: var(--open-sans);
+  font-size: 12px;
+  color: #{$primary-white};
+}
+
+.creditInfoDetailWrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.creditInfoPicture {
+  height: 46.31px;
+  background: #{$primary-white};
+  border-radius: 8px;
+  margin-right: 12px;
+}
+
+.creditInfoTitle {
+  font-family: var(--open-sans-semi-bold);
+  font-weight: 600;
+  font-size: 12px;
+  color: #{$primary-white};
+}
+
+.creditInfoPrice {
+  font-family: var(--kanyon);
+  font-weight: 400;
+  font-size: 16px;
+  color: #{$primary-white};
+  margin-top: 4px;
+}
+
+.creditCircle {
+  background: linear-gradient(
+    90deg,
+    #8ebce0 0.88%,
+    rgba(142, 188, 224, 0) 98.4%
+  );
+  border-radius: 300px;
+  transform: matrix(-0.79, 0.61, 0.61, 0.79, 0, 0);
+  position: absolute;
+  top: -90px;
+  left: 130px;
+  width: 401.42px;
+  height: 125.56px;
+}

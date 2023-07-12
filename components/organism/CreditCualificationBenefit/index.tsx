@@ -1,7 +1,7 @@
 import React from 'react'
 import { IconApplication, IconSecure, IconVoucher } from 'components/atoms/icon'
 import { InfoCard } from 'components/molecules'
-import styles from 'styles/saas/components/organism/creditCualificationBenefit.module.scss'
+import styles from 'styles/components/organism/creditCualificationBenefit.module.scss'
 
 interface Props {
   additionalContainerStyle?: string

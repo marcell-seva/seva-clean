@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from 'styles/saas/components/atoms/link.module.scss'
+import styles from 'styles/components/atoms/link.module.scss'
 
 interface LinkProps {
   message: string

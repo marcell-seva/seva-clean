@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import { useModal } from 'components/atoms/ModalOld/Modal'
 import { useRouter } from 'next/router'
-import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { ButtonSize, ButtonVersion } from 'utils/enum'
 
 const background =
   '/v3/assets/illustration/OldCitySelectorBackgroundMobile.webp'

@@ -1,7 +1,7 @@
 import { LanguageCode } from 'utils/models/models'
 import React from 'react'
 import { articleDateFormat } from 'utils/dateUtils'
-import styles from 'styles/saas/components/molecules/card/primaryCard.module.scss'
+import styles from 'styles/components/molecules/card/primaryCard.module.scss'
 import CommonLabel from '../../labelCard/common'
 
 type TPrimaryCardProps = {

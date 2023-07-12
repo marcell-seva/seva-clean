@@ -3,7 +3,7 @@ import React, { TextareaHTMLAttributes } from 'react'
 import type { ModalProps } from 'antd'
 import { colors } from 'styles/colors'
 import { IconClose } from 'components/atoms'
-import styles from '../../../styles/saas/components/organism/popupPromo.module.scss'
+import styles from '../../../styles/components/organism/popupPromo.module.scss'
 import elementId from 'helpers/elementIds'
 
 const promoList = [

@@ -1,22 +1,17 @@
 import React, { HTMLAttributes } from 'react'
-import styles from '../../../styles/saas/components/atoms/skeleton.module.scss'
-
-const Shimmer = '/v3/assets/illustration/placeholder.gif'
+import styles from 'styles/components/atoms/skeleton.module.scss'
+import Shimmer from 'assets/illustration/placeholder.gif'
+import Image from 'next/image'
 
 type SkeletonProps = {
-  width: number | string
-  height?: number | string
+  width?: any
+  height?: number
   className?: string
 } & Pick<HTMLAttributes<HTMLImageElement>, 'style'>
 
-export const Skeleton = ({
-  width,
-  height,
-  className = '',
-  style,
-}: SkeletonProps) => {
+const Skeleton = ({ width, height, className = '', style }: SkeletonProps) => {
   return (
-    <img
+    <Image
       src={Shimmer}
       className={`${className} ${styles.skeleton}`}
       width={width}
@@ -26,3 +21,5 @@ export const Skeleton = ({
     />
   )
 }
+
+export default Skeleton

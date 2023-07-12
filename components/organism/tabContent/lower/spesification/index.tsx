@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import styles from 'styles/saas/components/organism/spesification.module.scss'
+import styles from 'styles/components/organism/spesification.module.scss'
 import { Gap, IconCar } from 'components/atoms'
 import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'

@@ -1,7 +1,7 @@
 import { BottomSheet } from 'react-spring-bottom-sheet'
 import 'react-spring-bottom-sheet/dist/style.css'
 import React from 'react'
-import styles from 'styles/saas/components/organism/promoPopupPdp.module.scss'
+import styles from 'styles/components/organism/promoPopupPdp.module.scss'
 import { IconClose } from 'components/atoms'
 import { trackCarVariantBannerPromoPopupClose } from 'helpers/amplitude/seva20Tracking'
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'

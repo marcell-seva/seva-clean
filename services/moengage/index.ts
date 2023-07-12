@@ -1,6 +1,9 @@
 declare global {
   interface Window {
-    Moengage: any
+    Moengage: {
+      track_event: any
+      destroy_session: any
+    }
   }
 }
 

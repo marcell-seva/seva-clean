@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperType } from 'swiper'
 import { FreeMode, Thumbs, Navigation } from 'swiper'
-import styles from 'styles/saas/components/molecules/gallery.module.scss'
+import styles from 'styles/components/molecules/gallery.module.scss'
 
 import 'swiper/css'
 import 'swiper/css/free-mode'

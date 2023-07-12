@@ -1,25 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react'
-import styles from '../../../styles/saas/components/molecules/citySelectorModal.module.scss'
-import { InputSelect, Button } from 'components/atoms'
-import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import styles from '/styles/components/molecules/citySelectorModal.module.scss'
 import Fuse from 'fuse.js'
-import {
-  trackCityListClick,
-  // trackCitySelectorApply,
-  // trackCitySelectorCancel,
-} from 'helpers/amplitude/seva20Tracking'
 import { Modal } from 'antd'
-import { saveLocalStorage } from 'utils/localstorageUtils'
-import elementId from 'helpers/elementIds'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { LocalStorageKey } from 'utils/enum'
-import {
-  getCity,
-  saveCity,
-} from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
-import { Location, Option, FormControlValue } from 'utils/types'
-import { CityOtrOption } from 'utils/types/utils'
-
+// import 'styles/main.scss'
+import { Button, InputSelect } from 'components/atoms'
+import { ButtonSize, ButtonVersion, LocalStorageKey } from 'utils/types/models'
+import { sendAmplitudeData } from 'services/amplitude'
+import { AmplitudeEventName } from 'services/amplitude/types'
+import elementId from 'utils/helpers/trackerId'
+import { saveLocalStorage } from 'utils/handler/localStorage'
+import { Option, FormControlValue, CityOtrOption } from 'utils/types/props'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { getCity, saveCity } from 'utils/hooks/useGetCity'
 const searchOption = {
   keys: ['label'],
   isCaseSensitive: true,
@@ -29,16 +21,16 @@ const searchOption = {
 
 interface Props {
   onClickCloseButton: () => void
-  cityListFromApi: Location[] | CityOtrOption[]
+  cityListFromApi: CityOtrOption[]
   isOpen: boolean
 }
 
-export const CitySelectorModal = ({
+const CitySelectorModal = ({
   onClickCloseButton,
   cityListFromApi,
   isOpen,
 }: Props) => {
-  const [cityOtr] = useLocalStorage<Location | null>(
+  const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
   )
@@ -81,17 +73,17 @@ export const CitySelectorModal = ({
       setInputValue(cityOtr.cityName)
       setLastChoosenValue(cityOtr.cityName)
     }
-    // trackCitySelectorCancel({
-    //   Page_Origination_URL: window.location.href,
-    // })
+    sendAmplitudeData(AmplitudeEventName.WEB_CITYSELECTOR_CANCEL, {
+      Page_Origination_URL: window.location.href,
+    })
     onClickCloseButton()
   }
 
   const onClickSubmitButton = () => {
-    const filter = (cityListFromApi as Location[]).filter(
-      (item: Location) => item.cityName === inputValue,
+    const filter = cityListFromApi?.filter(
+      (item: CityOtrOption) => item.cityName === inputValue,
     )
-    const temp: Location = {
+    const temp: CityOtrOption = {
       cityName: filter[0].cityName,
       cityCode: filter[0].cityCode,
       province: filter[0].province,
@@ -102,20 +94,23 @@ export const CitySelectorModal = ({
       LocalStorageKey.LastTimeSelectCity,
       new Date().toISOString(),
     )
-    trackCityListClick({
-      Page_Origination_URL: window.location.href.replace('https://www.', ''),
+    sendAmplitudeData(
+      AmplitudeEventName.WEB_CITY_SELECTOR_POPUP_SUGGESTION_CLICK,
+      {
+        Page_Origination_URL: window.location.href.replace('https://www.', ''),
+        City: inputValue,
+      },
+    )
+    sendAmplitudeData(AmplitudeEventName.WEB_CITYSELECTOR_APPLY, {
+      Page_Origination_URL: window.location.href,
       City: inputValue,
     })
-    // trackCitySelectorApply({
-    //   Page_Origination_URL: window.location.href,
-    //   City: inputValue,
-    // })
 
     location.reload()
   }
 
   const setIsDisabledButtonSubmit = () => {
-    const matchedCity = (cityListFromApi as Location[]).filter(
+    const matchedCity = cityListFromApi.filter(
       (item) => item.cityName === inputValue,
     )
     if (matchedCity.length > 0) {
@@ -138,22 +133,6 @@ export const CitySelectorModal = ({
   }
 
   useEffect(() => {
-    const cityStorage = () => {
-      const cityOtrStorage = localStorage.getItem('cityOtr')
-
-      if (cityOtrStorage) {
-        const cityOtr = JSON.parse(cityOtrStorage)
-        setLastChoosenValue(cityOtr.cityName)
-        setInputValue(cityOtr.cityName)
-      }
-    }
-
-    window.addEventListener('storage', cityStorage)
-
-    return () => window.removeEventListener('storage', cityStorage)
-  }, [])
-
-  useEffect(() => {
     const options = getCityListOption(cityListFromApi)
     setCityListOptionsFull(options)
   }, [cityListFromApi])
@@ -168,17 +147,17 @@ export const CitySelectorModal = ({
       'Makassar',
     ]
 
-    const topCityDataList: Location[] = []
+    const topCityDataList: CityOtrOption[] = []
 
     for (let i = 0; i < topCityName.length; i++) {
       for (let j = 0; j < cityListFromApi.length; j++) {
-        if (topCityName[i] === (cityListFromApi as Location[])[j].cityName) {
-          topCityDataList.push((cityListFromApi as Location[])[j])
+        if (topCityName[i] === cityListFromApi[j].cityName) {
+          topCityDataList.push(cityListFromApi[j])
         }
       }
     }
 
-    const restOfCityData = (cityListFromApi as Location[]).filter(
+    const restOfCityData = cityListFromApi.filter(
       (x) => !topCityDataList.includes(x),
     )
     const sortedRestOfCityData = restOfCityData.sort((a, b) =>
@@ -196,7 +175,7 @@ export const CitySelectorModal = ({
 
     const fuse = new Fuse(cityListOptionsFull, searchOption)
     const suggestion = fuse.search(inputValue)
-    const result = suggestion.map((obj) => obj.item)
+    const result = suggestion.map((obj: any) => obj.item)
 
     // sort alphabetically
     // result.sort((a: any, b: any) => a.label.localeCompare(b.label))
@@ -213,6 +192,18 @@ export const CitySelectorModal = ({
 
     setSuggestionsLists(sorted)
   }, [inputValue, cityListFromApi, cityListOptionsFull])
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('storage', () => {
+      const cityOtrStorage = localStorage.getItem('cityOtr')
+
+      if (cityOtrStorage) {
+        const cityOtr = JSON.parse(cityOtrStorage)
+        setLastChoosenValue(cityOtr.cityName)
+        setInputValue(cityOtr.cityName)
+      }
+    })
+  }
 
   return (
     <Modal
@@ -270,3 +261,5 @@ export const CitySelectorModal = ({
     </Modal>
   )
 }
+
+export default CitySelectorModal

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
-import styles from '../../../styles/saas/components/atoms/Logo.module.scss'
+import styles from 'styles/components/atoms/Logo.module.scss'
 import logoSeva from 'assets/images/logo/seva-header.svg'
 
 const Logo: React.FC = (): JSX.Element => {

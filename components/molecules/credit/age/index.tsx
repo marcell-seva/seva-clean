@@ -2,7 +2,7 @@ import elementId from 'helpers/elementIds'
 import React, { useRef, useState } from 'react'
 import { Option } from 'utils/types/utils'
 import { IconChevronDown, IconRemove, InputSelect } from 'components/atoms'
-import styles from 'styles/saas/components/atoms/input.module.scss'
+import styles from 'styles/components/atoms/input.module.scss'
 
 interface Props {
   ageList: Option<string>[]

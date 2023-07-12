@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import styles from 'styles/saas/components/atoms/colorSelector.module.scss'
+import styles from 'styles/components/atoms/colorSelector.module.scss'
 import {
   CarColorItem,
   IconChevronLeft,

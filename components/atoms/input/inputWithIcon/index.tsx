@@ -1,5 +1,5 @@
 import React, { ChangeEvent, ForwardedRef } from 'react'
-import styles from '../../../../styles/saas/components/atoms/inputWithIcon.module.scss'
+import styles from 'styles/components/atoms/inputWithIcon.module.scss'
 
 interface Props {
   value: string

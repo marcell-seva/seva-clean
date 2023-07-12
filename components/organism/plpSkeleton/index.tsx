@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../../../styles/saas/components/organism/plpSkeleton.module.scss'
+import styles from '../../../styles/components/organism/plpSkeleton.module.scss'
 import { Skeleton } from 'components/atoms'
 import { CarDetailLoad } from '../carDetailLoad'
 
