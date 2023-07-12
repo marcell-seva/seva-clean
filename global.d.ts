@@ -4,11 +4,10 @@ declare module 'dompurify'
 
 declare module 'lodash.debounce'
 
-declare module 'react-moengage
+declare module 'react-moengage'
 interface Window {
   gtag: any
   dataLayer: Array
   checkForDrag: any
   fbq: any
 }
-

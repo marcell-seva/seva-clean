@@ -1,7 +1,7 @@
 import React from 'react'
-import { IconProps } from '../iconType'
+import { PropsIcon } from 'utils/types'
 
-export const NavbarArrow = ({ width = 8, height = 4 }: IconProps) => {
+export const NavbarArrow = ({ width = 8, height = 4 }: PropsIcon) => {
   return (
     <svg
       width="8"

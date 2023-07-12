@@ -23,6 +23,7 @@ import {
   handleEventTrackingLainnya,
 } from 'helpers/amplitude/trackNavigationMenu'
 import { NavbarArrow } from 'components/atoms/icon/NavbarArrow'
+import { Forward } from 'components/atoms/icon/Forward'
 
 interface Props {
   data: NavbarItemResponse
