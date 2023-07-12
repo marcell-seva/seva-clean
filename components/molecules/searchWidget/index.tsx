@@ -210,7 +210,6 @@ export const SearchWidget = () => {
       ).replaceAll('.', ''),
       tenure: funnelQuery.tenure,
     })
-    // TODO make sure works
     router.push({
       pathname: carResultsUrl,
       search: convertObjectQuery(tempQuery),

@@ -45,7 +45,6 @@ interface BodyTypes {
 
 export const CarBodyTypesDesktop = () => {
   const { dataTypeCar, dataRecToyota } = useContext(HomePageDataLocalContext)
-  console.log('DATA TYPE CAR', dataTypeCar)
   const [bodyTypesList, setBodyTypes] = useState<BodyTypes[]>(dataTypeCar)
   const router = useRouter()
   const [bodyTypeSelected, setBodyTypeSelected] = useState('MPV')

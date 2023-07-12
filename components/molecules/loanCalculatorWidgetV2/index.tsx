@@ -107,14 +107,13 @@ export const LoanCalculatorWidgetV2 = () => {
           .replace(':variant', variantSlug),
       )
     } else {
-      router.push(
-        variantListUrl
+      router.push({
+        pathname: variantListUrl
           .replace(':brand', brand.toLowerCase())
           .replace(':model', model.replace(/ +/g, '-').toLowerCase())
           .replace(':tab?', 'kredit'),
-        //   TODO
-        // { variant: id },
-      )
+        query: { variant: id },
+      })
     }
   }
 

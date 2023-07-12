@@ -41,6 +41,7 @@ import { TextMediumRegular } from 'components/atoms/typography/TextMediumRegular
 import { useRouter } from 'next/router'
 import { FormPhoneNumber } from '../formPhoneNumber/FormPhoneNumber'
 import { isValidPhoneNumber } from 'utils/numberUtils/numberUtils'
+import { client } from 'const/const'
 
 interface AdvisorSectionProps {
   onSubmitSuccess: (whatsappChecked?: boolean) => void
@@ -134,8 +135,6 @@ export const AdvisorSection = ({
   const onCheckboxToggle = () => setIsWhatsAppChecked(!isWhatsAppChecked)
 
   useEffect(() => {
-    console.log('qwe', fullName)
-    console.log('qwe', contactFormData)
     setConfirmEnabled(
       fullName.trim().length > 0 &&
         isValidPhoneNumber(contactFormData.phoneNumberValid?.toString() ?? ''),
@@ -197,8 +196,7 @@ export const AdvisorSection = ({
 
     trackSelectHomeSendDetails()
     trackGASubmitContactInfo()
-    // TODO
-    // ReactPixel.track(FBPixelStandardEvent.SendContactDetail)
+    client && window.fbq('track', FBPixelStandardEvent.SendContactDetail)
   }
 
   return (

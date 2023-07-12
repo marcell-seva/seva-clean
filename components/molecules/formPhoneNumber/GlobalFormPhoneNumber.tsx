@@ -75,7 +75,6 @@ export const GlobalFormPhoneNumber = ({
       '',
     ) || ''
   const [phoneNumber, setPhoneNumber] = useState('')
-  console.log('qwe phoneNumber global', phoneNumber)
 
   const [nameForm, setNameForm] = useState('')
   const patchContactFormValue = useContextContactFormPatch()

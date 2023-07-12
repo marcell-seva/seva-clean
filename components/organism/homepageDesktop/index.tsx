@@ -35,7 +35,6 @@ interface HomepageDesktopProps {}
 
 const HomepageDesktop: React.FC<HomepageDesktopProps> = ({}) => {
   const { dataBanner, dataUsage } = useContext(HomePageDataLocalContext)
-  console.log('DATA dataUsage : ', dataUsage)
   const [topBannerData, setTopBannerData] =
     useState<BannerHomepageType[]>(dataBanner)
   const [uspData, setUspData] = useState<USPAttributes>(dataUsage)
@@ -50,7 +49,7 @@ const HomepageDesktop: React.FC<HomepageDesktopProps> = ({}) => {
     false,
   )
 
-  // TODO
+  // TODO @Robby
   // const location = useLocation<{
   //   [LocationStateKey.PAAmbassadorError]: string
   // }>()
@@ -123,14 +122,11 @@ const HomepageDesktop: React.FC<HomepageDesktopProps> = ({}) => {
               email: customerData.email,
               registerdate: customerData.createdAt,
             }
-            // TODO
-
-            // client && setTrackEventMoEngage('view_homepage', objData)
+            client && setTrackEventMoEngage('view_homepage', objData)
           })
           .catch((e) => console.error(e))
       } else {
-        // TODO
-        // client && setTrackEventMoEngageWithoutValue('view_homepage')
+        client && setTrackEventMoEngageWithoutValue('view_homepage')
       }
     }
 
@@ -145,7 +141,7 @@ const HomepageDesktop: React.FC<HomepageDesktopProps> = ({}) => {
     saveLocalStorage(LocalStorageKey.sevaCust, encryptedData)
   }
 
-  // TODO
+  // TODO @Robby
   // useEffect(() => {
   //   if (location.state?.[LocationStateKey.PAAmbassadorError]) {
   //     showToast()
@@ -168,7 +164,7 @@ const HomepageDesktop: React.FC<HomepageDesktopProps> = ({}) => {
       </Head>
       <MaxWidthStyle />
       <Container>
-        {/* TODO */}
+        {/* TODO @Robby */}
         {/* <PageHeaderSeva> */}
         <SearchWrapper>{/* <HeaderVariant /> */}</SearchWrapper>
         {/* </PageHeaderSeva> */}

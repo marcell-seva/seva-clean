@@ -55,7 +55,6 @@ export const useDialogModal = () => {
           <StyledContent>
             {isCloseIconShow && (
               <StyledCloseIcon onClick={onClickCancel}>
-                {/* TODO width height */}
                 <IconClose color={colors.primary1} width={24} height={24} />
               </StyledCloseIcon>
             )}

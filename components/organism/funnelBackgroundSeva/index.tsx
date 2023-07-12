@@ -1,6 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { LazyLoadComponent } from 'react-lazy-load-image-component'
 import { useMediaQuery } from 'react-responsive'
 import {
   trackCarOfMonthLeadsFormSubmit,
@@ -17,7 +16,7 @@ import {
 import {
   OriginationLeads,
   useContactUsModal,
-} from 'components/molecules/contactUsModal'
+} from 'components/molecules/ContactUsModal/ContactUsModal'
 import { useLoginAlertModal } from 'components/molecules/LoginAlertModal/LoginAlertModal'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { LocalStorageKey } from 'utils/enum'
@@ -136,8 +135,7 @@ export const FunnelBackgroundSeva = ({
       'eventAction': 'Homepage - Leads Form - Control',
       'eventLabel': t(`advisorSection.button`),
     });
-    // TODO
-    // client && setTrackEventMoEngageWithoutValue('leads_created')
+    client && setTrackEventMoEngageWithoutValue('leads_created')
   }
 
   return (

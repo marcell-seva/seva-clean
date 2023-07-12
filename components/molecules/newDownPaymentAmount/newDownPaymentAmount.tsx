@@ -15,6 +15,7 @@ import { CarRecommendationResponse } from 'utils/types/utils'
 import { downPaymentConfig } from 'config/downPaymentAmount.config'
 import { DownOutlined } from 'components/atoms'
 import { NewSelect } from 'components/atoms/SelectOld/NewSelect'
+import { trackFilterCarResults } from 'helpers/amplitude/newFunnelEventTracking'
 
 interface DownPaymentAmountProps {
   isSideMenuFilter?: boolean
@@ -84,8 +85,8 @@ export const NewDownPaymentAmount = ({
       brands: funnelQuery.brand ? funnelQuery.brand : [],
       ...carResultParameters,
     }
-    // TODO
-    // trackFilterCarResults(filterCarResult)
+
+    trackFilterCarResults(filterCarResult)
 
     getNewFunnelRecommendations(paramQuery)
       .then((response: AxiosResponse<CarRecommendationResponse>) => {

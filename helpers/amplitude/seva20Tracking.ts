@@ -12,6 +12,7 @@ import {
   TrackingExpandFAQ,
   TrackingExpandSEOFooter,
 } from './eventTypes'
+import { FunnelTrackingEvent } from './newFunnelEventTracking'
 import { NewHomePageTrackingEvent } from './newHomePageEventTracking'
 
 type SearchWidgetParams = CarBrandOnlyParam &
@@ -930,6 +931,7 @@ export type Seva20TrackingEvent =
       data: CreditQualificationReviewParam
     }
   | NewHomePageTrackingEvent
+  | FunnelTrackingEvent
 
 export const trackLandingPageView = () => {
   logAmplitudeEvent({

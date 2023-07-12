@@ -26,7 +26,6 @@ const rightArrow = '/v3/assets/icon/arrowRightSmall.webp'
 
 const Testimonial = () => {
   const { dataTestimony } = useContext(HomePageDataLocalContext)
-  console.log('DATA TESTIMONY : ', dataTestimony)
   const isMobileSmall = useMediaQuery({ query: '(max-width: 390px)' })
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const [toggle, setToggle] = useState(true)

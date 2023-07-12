@@ -8,4 +8,5 @@ interface Window {
   gtag: any
   dataLayer: Array
   checkForDrag: any
+  fbq: any
 }

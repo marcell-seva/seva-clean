@@ -38,10 +38,8 @@ export const LocalFormPhoneNumber = ({
   )
 
   const [phoneNumber, setPhoneNumber] = useState('')
-  console.log('qwe phoneNumber', phoneNumber)
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log('qwe val', event.target.value)
     if (event.target.value[0] != '0') {
       const phoneNumberTemp = filterNonDigitCharacters(event.target.value)
       setPhoneNumber(phoneNumberTemp)
