@@ -58,19 +58,19 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
       model: carModelDetails?.model,
       price:
         carModelDetails?.variants && carModelDetails?.variants.length > 0
-          ? carModelDetails.variants[0].priceValue
+          ? carModelDetails?.variants[0].priceValue
           : '-',
       monthly_installment:
         carModelDetails?.variants && carModelDetails?.variants.length > 0
-          ? carModelDetails.variants[0].monthlyInstallment
+          ? carModelDetails?.variants[0].monthlyInstallment
           : '-',
       down_payment:
         carModelDetails?.variants && carModelDetails?.variants.length > 0
-          ? carModelDetails.variants[0].dpAmount
+          ? carModelDetails?.variants[0].dpAmount
           : '-',
       loan_tenure:
-        carModelDetails?.variants && carModelDetails.variants.length > 0
-          ? carModelDetails.variants[0].tenure
+        carModelDetails?.variants && carModelDetails?.variants.length > 0
+          ? carModelDetails?.variants[0].tenure
           : '-',
       body_type: carVariantDetails?.variantDetail.bodyType
         ? carVariantDetails?.variantDetail.bodyType
@@ -78,19 +78,19 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
       Image_URL: carImages[0],
       Brand_Model: `${carModelDetails?.brand} ${carModelDetails?.model}`,
     }
-    // setTrackEventMoEngage('view_variant_list', objData)
+    setTrackEventMoEngage('view_variant_list', objData)
   }
   useEffect(() => {
     if (carModelDetails && cityOtr) {
       const trackNewCarVariantList: WebVariantListPageParam = {
-        Car_Brand: carModelDetails.brand as string,
-        Car_Model: carModelDetails.model as string,
+        Car_Brand: carModelDetails?.brand as string,
+        Car_Model: carModelDetails?.model as string,
         OTR: `Rp${replacePriceSeparatorByLocalization(
-          carModelDetails.variants[0].priceValue as number,
+          carModelDetails?.variants[0]?.priceValue as number,
           LanguageCode.id,
         )}`,
         DP: `Rp${formatSortPrice(
-          carModelDetails.variants[0].dpAmount as number,
+          carModelDetails?.variants[0]?.dpAmount as number,
         )} Juta`,
         Tenure: '5 Tahun',
         City: cityOtr.cityName || 'Jakarta Pusat',
@@ -112,13 +112,15 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
   }, [tab])
 
   useEffect(() => {
-    const carVariantHighest = carModelDetails?.variants.reduce(
-      (p: CarVariantRecommendation, c: CarVariantRecommendation) =>
-        p.priceValue > c.priceValue ? p : c,
-    )
+    if (carModelDetails && carModelDetails?.variants.length > 0) {
+      const carVariantHighest = carModelDetails?.variants.reduce(
+        (p: CarVariantRecommendation, c: CarVariantRecommendation) =>
+          p.priceValue > c.priceValue ? p : c,
+      )
 
-    setSpecialRateResults([])
-    setCarVariantHighestPrice(carVariantHighest)
+      setSpecialRateResults([])
+      setCarVariantHighestPrice(carVariantHighest)
+    }
   }, [carModelDetails])
 
   const openPopupPromo = () => {
@@ -146,7 +148,7 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
   const faqTitle =
     'Punya pertanyaan seputar pengajuan kredit mobil? Cek di sini!'
   const faqTitleMobile = `Punya pertanyaan seputar ${
-    carModelDetails.brand + ' ' + carModelDetails.model
+    carModelDetails?.brand + ' ' + carModelDetails?.model
   }? Cek di sini!`
 
   const getDataForAmplitude = () => {
@@ -180,8 +182,8 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
       />
       <DescriptionWrapper>
         <Description
-          title={`Tentang ${carModelDetails.brand} ${
-            carModelDetails.model
+          title={`Tentang ${carModelDetails?.brand} ${
+            carModelDetails?.model
           } di ${
             cityOtr && cityOtr.cityName ? cityOtr.cityName : 'Jakarta Pusat'
           }`}
@@ -196,7 +198,7 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
           fuelType={carVariantHighestPrice?.fuelType || ''}
           carSeats={carVariantHighestPrice?.carSeats || 0}
           transmission={carVariantHighestPrice?.transmission || ''}
-          BrandAndModel={carModelDetails.brand + ' ' + carModelDetails.model}
+          BrandAndModel={carModelDetails?.brand + ' ' + carModelDetails?.model}
           contentPadding={'26px 16px;'}
           onClickDetail={amplitudeSpecificationHandler}
         />
@@ -205,7 +207,7 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
         fuelType={carVariantHighestPrice?.fuelType || ''}
         carSeats={carVariantHighestPrice?.carSeats || 0}
         transmission={carVariantHighestPrice?.transmission || ''}
-        BrandAndModel={carModelDetails.brand + ' ' + carModelDetails.model}
+        BrandAndModel={carModelDetails?.brand + ' ' + carModelDetails?.model}
         onClickDetail={amplitudeSpecificationHandler}
       />
       {/* )} */}
@@ -213,7 +215,8 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
         {/* {isMobile && <VariantColor />} */}
         <PriceListWrapper>
           <TitlePrice>
-            Harga Mobil {carModelDetails.brand + ' ' + carModelDetails.model} di{' '}
+            Harga Mobil {carModelDetails?.brand + ' ' + carModelDetails?.model}{' '}
+            di{' '}
             {cityOtr && cityOtr.cityName ? cityOtr.cityName : 'Jakarta Pusat'}
           </TitlePrice>
           <PriceList />
@@ -224,7 +227,7 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
         </PriceListWrapper>
         <GalleryWrapper>
           <GallerySectionV2
-            title={`Foto ${carModelDetails.brand} ${carModelDetails.model}`}
+            title={`Foto ${carModelDetails?.brand} ${carModelDetails?.model}`}
           />
         </GalleryWrapper>
       </Container>
@@ -252,7 +255,7 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
         <FAQ
           carModel={carModelDetails}
           recommendationsModel={
-            recommendations.filter((item) => item.id === carModelDetails.id)[0]
+            recommendations.filter((item) => item.id === carModelDetails?.id)[0]
           }
         />
       )}

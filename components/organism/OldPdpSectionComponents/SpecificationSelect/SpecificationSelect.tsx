@@ -1,7 +1,9 @@
 import { DownOutlined } from 'components/atoms'
 import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
+import { useRouter } from 'next/router'
 import React, { useState, useEffect, useRef } from 'react'
 import { api } from 'services/api'
+import { getCarVariantDetailsById } from 'services/recommendations'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
@@ -27,6 +29,7 @@ export const SpecificationSelect = ({
   setScrollToSpecification,
   onVariantChange,
 }: SpecificationSelectProps) => {
+  const router = useRouter()
   const [selected, setSelected] = useState(options[0])
   // const [isInitalValueEmpty, setIsInitalValueEmpty] = useState(false)
   const [showOption, setShowOption] = useState(false)
@@ -41,7 +44,7 @@ export const SpecificationSelect = ({
     if (initialValue) {
       setSelected(initialValue)
       getVarintDetail(initialValue.id)
-    } else {
+    } else if (!router.query?.variant) {
       onChooseOption && onChooseOption(options[0])
       getVarintDetail(options[0].id)
     }
@@ -79,9 +82,13 @@ export const SpecificationSelect = ({
             <StyledOption
               key={index}
               isSelected={option.name === selected?.name}
-              onMouseDown={async () => {
+              onMouseDown={() => {
                 setSelected(option)
-                getVarintDetail(option.id)
+                getCarVariantDetailsById(option.id).then((result3) => {
+                  if (result3.data.variantDetail.priceValue != null) {
+                    setCarVariantDetails(result3.data)
+                  }
+                })
                 onChooseOption && onChooseOption(option)
                 setShowOption(false)
                 onVariantChange && onVariantChange(true)

@@ -1,28 +1,34 @@
+import getCurrentEnvironment from 'helpers/environments'
+
+// TEMPORARY
+// TODO : implement .env file (migrate all variable from "environtments.ts")
+const baseUrl = getCurrentEnvironment.apiBaseUrl
+
 const utils = {
-  menu: 'https://api.seva.id/menu',
-  cities: 'https://api.seva.id/city/fe-selector',
-  testimonials: 'https://api.seva.id/testimonials',
+  menu: baseUrl + '/menu',
+  cities: baseUrl + '/city/fe-selector',
+  testimonials: baseUrl + '/testimonials',
   usage: 'https://api.sslpots.com/api/how-to-use-seva-config?populate=*',
-  banner: 'https://api.seva.id/banner-image/homepage',
-  announcementBox: 'https://api.seva.id/announcement-box',
+  banner: baseUrl + '/banner-image/homepage',
+  announcementBox: baseUrl + '/announcement-box',
   metaTag:
     'https://api.sslpots.com/api/meta-seos/?filters[master_model][model_code][$contains]=',
-  supportedBrowser: 'https://api.seva.id/web-browser/check',
+  supportedBrowser: '/web-browser/check',
 }
 
 const product = {
-  recommendation: 'https://api.seva.id/recommendations/new-funnel',
-  modelDetails: 'https://api.seva.id/models/:id',
-  variantDetails: 'https://api.seva.id/variants/:id',
-  variant: 'https://api.seva.id/variants',
-  type: 'https://api.seva.id/cars/body-type-data',
-  carofTheMonth: 'https://api.seva.id/car-of-the-month',
-  carVideoReview: 'https://api.seva.id/car-video-review',
+  recommendation: baseUrl + '/recommendations/new-funnel',
+  modelDetails: baseUrl + '/models/:id',
+  variantDetails: baseUrl + '/variants/:id',
+  variant: baseUrl + '/variants',
+  type: baseUrl + '/cars/body-type-data',
+  carofTheMonth: baseUrl + '/car-of-the-month',
+  carVideoReview: baseUrl + '/car-video-review',
 }
 
 const auth = {
-  user: 'https://api.seva.id/customers/info',
-  refresh: 'https://api.seva.id/auth/token',
+  user: baseUrl + '/customers/info',
+  refresh: baseUrl + '/auth/token',
 }
 
 const article = {
@@ -31,7 +37,7 @@ const article = {
 }
 
 const leads = {
-  unverified: 'https://api.seva.id/unverifiedLeads',
+  unverified: baseUrl + '/unverifiedLeads',
 }
 
 export const collections = {

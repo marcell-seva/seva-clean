@@ -5,8 +5,6 @@ import { ToggleSwitch } from 'components/atoms'
 import { Gallery360ImageV2 } from './Gallery360ImageV2'
 import { GalleryRegularImageV2 } from './GalleryRegularImageV2'
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import { availableList } from './AvailableList'
-import { trimLastChar } from 'utils/urlUtils'
 import { useMediaQuery } from 'react-responsive'
 import {
   TrackingEventName,
@@ -420,6 +418,7 @@ const StyledTab = styled.button<{
   isSelected: boolean
   disabled: boolean
 }>`
+  background: white;
   border: none;
   ${({ isSelected, disabled }) => getTabStyle(isSelected, disabled)};
   padding: 14px 35px;

@@ -28,6 +28,8 @@ import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/ca
 import { CarVariantRecommendation, CityOtrOption } from 'utils/types'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { trackVariantDetailsEvent } from 'components/organism/OldPdpSectionComponents/variantDetailsUtils'
+import { useCarResultParameter } from 'utils/hooks/useAmplitudePageView/useAmplitudePageView'
+import { trackSelectCarResultVariantDetailsViewBrochure } from 'helpers/amplitude/newFunnelEventTracking'
 
 type tabProps = {
   tab: string | undefined
@@ -35,8 +37,7 @@ type tabProps = {
 }
 const Specification = memo(({ tab, isSticky }: tabProps) => {
   const { carModelDetails } = useContextCarModelDetails()
-  // TODO @toni : old amplitude tracker
-  // const carResultParameter = useCarResultParameter()
+  const carResultParameter = useCarResultParameter()
   const { carVariantDetails } = useContextCarVariantDetails()
   const { setSpecialRateResults } = useContextSpecialRateResults()
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
@@ -126,7 +127,7 @@ const Specification = memo(({ tab, isSticky }: tabProps) => {
       Image_URL: carImages[0],
       Brand_Model: `${carModelDetails?.brand} ${carModelDetails?.model}`,
     }
-    // setTrackEventMoEngage('view_variant_list_specification_tab', objData)
+    setTrackEventMoEngage('view_variant_list_specification_tab', objData)
   }
 
   useEffect(() => {
@@ -139,12 +140,11 @@ const Specification = memo(({ tab, isSticky }: tabProps) => {
 
   const onBrochureClick = () => {
     if (carVariantDetails?.loanDetail) {
-      // TODO @toni : old amplitude tracker
-      // trackVariantDetailsEvent({
-      //   carVariantDetails,
-      //   carResultParameter,
-      //   trackFunction: trackSelectCarResultVariantDetailsViewBrochure,
-      // })
+      trackVariantDetailsEvent({
+        carVariantDetails,
+        carResultParameter,
+        trackFunction: trackSelectCarResultVariantDetailsViewBrochure,
+      })
     }
 
     if (carModelDetails && cityOtr) {
