@@ -69,6 +69,20 @@ export const sortOptions = [
   },
 ]
 
+export const incomeOptions = [
+  { label: '< Rp 2 juta', value: '<2M' },
+  { label: 'Rp 2-4 juta', value: '2M-4M' },
+  { label: 'Rp 4-6 juta', value: '4M-6M' },
+  { label: 'Rp 6-8 juta', value: '6M-8M' },
+  { label: 'Rp 8-10 juta', value: '8M-10M' },
+  { label: 'Rp 10-20 juta', value: '10M-20M' },
+  { label: 'Rp 20-50 juta', value: '20M-50M' },
+  { label: 'Rp 50-75 juta', value: '50M-75M' },
+  { label: 'Rp 75-100 juta', value: '75M-100M' },
+  { label: 'Rp 100-150 juta', value: '100M-150M' },
+  { label: 'Rp 150-200 juta', value: '150M-200M' },
+  { label: '> Rp 200 juta', value: '>200M' },
+]
 interface incomeOptionsType {
   label: string
   value: string
@@ -160,20 +174,7 @@ export const NewFilterSideMenu = () => {
     goToIncomeOption.current?.scrollIntoView({ behavior: 'smooth' })
   }
   const paramQuery = funnelQuery
-  const incomeOptions = [
-    { label: '< Rp 2 juta', value: '<2M' },
-    { label: 'Rp 2-4 juta', value: '2M-4M' },
-    { label: 'Rp 4-6 juta', value: '4M-6M' },
-    { label: 'Rp 6-8 juta', value: '6M-8M' },
-    { label: 'Rp 8-10 juta', value: '8M-10M' },
-    { label: 'Rp 10-20 juta', value: '10M-20M' },
-    { label: 'Rp 20-50 juta', value: '20M-50M' },
-    { label: 'Rp 50-75 juta', value: '50M-75M' },
-    { label: 'Rp 75-100 juta', value: '75M-100M' },
-    { label: 'Rp 100-150 juta', value: '100M-150M' },
-    { label: 'Rp 150-200 juta', value: '150M-200M' },
-    { label: '> Rp 200 juta', value: '>200M' },
-  ]
+
   const carList: CarButtonProps[] = [
     {
       key: 'Toyota',

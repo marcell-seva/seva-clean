@@ -1,5 +1,5 @@
 import React from 'react'
-import { PropsIcon } from '../../../utils/types'
+import { PropsIcon } from 'utils/types'
 
 export const Contact = ({ width = 88, height = 88 }: PropsIcon) => {
   return (

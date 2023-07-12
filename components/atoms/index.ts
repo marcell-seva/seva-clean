@@ -98,6 +98,11 @@ import { CarColorItem } from './carColorItem'
 import { Avatar } from './avatar'
 import { MenuItem } from './menuItem'
 import { ToggleSwitch } from './ToggleSwitch/ToggleSwitch'
+import { MaxWidthStyle } from './maxWidthStyle'
+import { WebShimmer } from './webShimmer'
+import { MobileShimmer } from './mobileShimmer'
+import { CheckedCircleOutlined } from './icon/CheckedCircleOutlined'
+import { UncheckedSquareOutlined } from './icon/UncheckedSquareOutlined'
 
 export {
   Card,
@@ -199,4 +204,9 @@ export {
   ToggleSwitch,
   CloseOutlined2,
   InfoCircleOutlined,
+  MaxWidthStyle,
+  WebShimmer,
+  MobileShimmer,
+  CheckedCircleOutlined,
+  UncheckedSquareOutlined,
 }

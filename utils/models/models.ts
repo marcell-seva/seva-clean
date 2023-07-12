@@ -753,3 +753,49 @@ export enum TrackerFlag {
   Init = 'init',
   Sent = 'sent',
 }
+
+export const initUSPAttributes = {
+  head_title: '',
+  icon_1: {
+    data: {
+      attributes: {
+        url: '',
+        formats: {
+          thumbnail: {
+            name: '',
+          },
+        },
+      },
+    },
+  },
+  icon_2: {
+    data: {
+      attributes: {
+        url: '',
+        formats: {
+          thumbnail: {
+            name: '',
+          },
+        },
+      },
+    },
+  },
+  icon_3: {
+    data: {
+      attributes: {
+        url: '',
+        formats: {
+          thumbnail: {
+            name: '',
+          },
+        },
+      },
+    },
+  },
+  subtitle_1: '',
+  subtitle_2: '',
+  subtitle_3: '',
+  title_1: '',
+  title_2: '',
+  title_3: '',
+}

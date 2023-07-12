@@ -223,3 +223,7 @@ export const Currency = (value: string | number) => {
     LanguageCode.id,
   )
 }
+
+export const isValidPhoneNumber = (value: string) => {
+  return /^\d{6,24}$/.test(value.replace(/[+]/gi, ''))
+}

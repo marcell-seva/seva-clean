@@ -82,6 +82,13 @@ const StyledButton = styled(Button)`
   width: 100%;
   height: 50px;
   border-radius: 8px;
+  background: rgb(255, 255, 255);
+  color: rgb(5, 37, 110);
+  font-family: KanyonBold;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0px;
 `
 
 const CloseIconWrapper = styled.div`
