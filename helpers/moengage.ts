@@ -17,8 +17,10 @@ export const MoengageEventName = {
 }
 
 export const setTrackEventMoEngage = (param1: any, param2: any): void => {
-  const moengage = window.Moengage
-  moengage.track_event(param1, param2)
+  const moengage = client && window.Moengage
+  if (moengage && moengage.track_event) {
+    moengage.track_event(param1, param2)
+  }
 }
 
 export const destroySessionMoEngage = (): void => {
