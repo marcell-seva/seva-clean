@@ -75,7 +75,10 @@ export const MenuList: React.FC<MenuListProps> = ({
     } else {
       if (menuUrl === '/akun/profil') {
         //@ts-ignore
-        saveLocalStorage(LocalStorageKey.sevaCust, window.location.pathname)
+        saveLocalStorage(
+          LocalStorageKey.PageBeforeLogin,
+          window.location.pathname,
+        )
       }
       window.location.href = menuUrl
     }
