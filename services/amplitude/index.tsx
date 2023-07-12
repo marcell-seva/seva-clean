@@ -1,9 +1,10 @@
 import amplitude from 'amplitude-js'
 import { TrackingEvent } from 'helpers/amplitude/trackingEvents'
-const NEXT_PUBLIC_AMPLITUDE_API_KEY =
-  process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY || ''
+
+const apiKey = '86bd0da4661aa24a7d2c9f658197b49a'
+
 export const initAmplitude = (): void => {
-  amplitude.getInstance().init(NEXT_PUBLIC_AMPLITUDE_API_KEY)
+  amplitude.getInstance().init(apiKey)
 }
 
 export const setAmplitudeUserId = (id: string | null): void =>
