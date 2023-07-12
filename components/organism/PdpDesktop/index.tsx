@@ -33,7 +33,7 @@ import {
   useContactUsModal,
 } from 'components/molecules/ContactUsModal/ContactUsModal'
 import { useLoginAlertModal } from 'components/molecules/LoginAlertModal/LoginAlertModal'
-import { useDialogModal } from 'components/molecules/DialogModal/DialogModal'
+import { useDialogModal } from 'components/molecules/DialogModal'
 import { setTrackEventMoEngageWithoutValue } from 'helpers/moengage'
 import {
   CarSearchPageMintaPenawaranParam,

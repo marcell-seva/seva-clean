@@ -19,7 +19,7 @@ import {
   UnverifiedLeadSubCategory,
 } from 'services/lead'
 import { ToastType, useToast } from 'components/atoms/OldToast/Toast'
-import { useDialogModal } from '../DialogModal/DialogModal'
+import { useDialogModal } from '../DialogModal'
 import { Contact } from 'components/atoms/icon/Contact'
 import { FBPixelStandardEvent } from 'helpers/facebookPixel'
 // import ReactPixel from 'react-facebook-pixel'
