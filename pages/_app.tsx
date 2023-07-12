@@ -34,11 +34,7 @@ import 'styles/saas/components/organism/funnel-background.scss'
 import 'styles/CustomAnimationStyle.css'
 
 import { IsSsrMobileContext } from 'context/isSsrMobileContext'
-import {
-  FBPixelStandardEvent,
-  FB_PIXEL_ID,
-  initFacebookPixel,
-} from 'helpers/facebookPixel'
+import { FBPixelStandardEvent, FB_PIXEL_ID } from 'helpers/facebookPixel'
 import { client } from 'const/const'
 
 const kanyon = localFont({
