@@ -31,8 +31,12 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { CityOtrOption } from 'utils/types'
 import { api } from 'services/api'
 import { t } from 'config/localization/locales/id'
+import { useRouter } from 'next/router'
+import { trackWhatsappButtonClickFromCarResults } from 'helpers/amplitude/trackingEvents'
+import { EventFromType } from 'helpers/amplitude/newHomePageEventTracking'
 
 export const TanyaSeva = () => {
+  const router = useRouter()
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   // const { t } = useTranslation()
   const { carModelDetails } = useContextCarModelDetails()
@@ -41,10 +45,6 @@ export const TanyaSeva = () => {
     LocalStorageKey.CityOtr,
     null,
   )
-  // TODO @toni : read "loanRankCVL" from query param
-  // const location = useLocation<
-  //   { [LocationStateKey.loanRankCVL]: LoanRank } | undefined
-  // >()
   const minimumDp = useMemo(() => {
     if (!carModelDetails) return ''
     return getMinimumDp(carModelDetails.variants, LanguageCode.en, million, ten)
@@ -71,35 +71,35 @@ export const TanyaSeva = () => {
       monthlyRange: minimumMonthlyInstallment,
       tenure: funnelQuery?.tenure || 5,
     })
-    // trackWhatsappButtonClickFromCarResults(
-    //   EventFromType.carResults,
-    //   carName,
-    //   `${minimumDp} jt`,
-    //   `${minimumMonthlyInstallment} jt`,
-    //   PageFrom?.CarResultVariant,
-    // )
-    // const loanRankcr = location.state?.loanRankCVL
-    // const trackerProperty: CarSearchPageMintaPenawaranParam = {
-    //   Car_Brand: brand,
-    //   Car_Model: model,
-    //   OTR: `Rp${replacePriceSeparatorByLocalization(
-    //     carModelDetails?.variants[0].priceValue,
-    //     LanguageCode?.id,
-    //   )}`,
-    //   DP: `Rp${minimumDp} Juta`,
-    //   Cicilan: `Rp${minimumMonthlyInstallment} jt/bln`,
-    //   Tenure: `${funnelQuery?.tenure || 5} Tahun`, // convert string
-    //   City: cityOtr?.cityName || 'Jakarta Pusat',
-    //   Peluang_Kredit:
-    //     funnelQuery?.monthlyIncome && funnelQuery?.age && loanRankcr
-    //       ? loanRankcr === LoanRank.Green
-    //         ? 'Mudah'
-    //         : loanRankcr === LoanRank.Red
-    //         ? 'Sulit'
-    //         : 'Null'
-    //       : 'Null',
-    // }
-    // trackCarVariantPageWaChatbot(trackerProperty)
+    trackWhatsappButtonClickFromCarResults(
+      EventFromType.carResults,
+      carName,
+      `${minimumDp} jt`,
+      `${minimumMonthlyInstallment} jt`,
+      PageFrom?.CarResultVariant,
+    )
+    const loanRankcr = router.query.loanRankCVL ?? ''
+    const trackerProperty: CarSearchPageMintaPenawaranParam = {
+      Car_Brand: brand,
+      Car_Model: model,
+      OTR: `Rp${replacePriceSeparatorByLocalization(
+        carModelDetails?.variants[0].priceValue,
+        LanguageCode?.id,
+      )}`,
+      DP: `Rp${minimumDp} Juta`,
+      Cicilan: `Rp${minimumMonthlyInstallment} jt/bln`,
+      Tenure: `${funnelQuery?.tenure || 5} Tahun`, // convert string
+      City: cityOtr?.cityName || 'Jakarta Pusat',
+      Peluang_Kredit:
+        funnelQuery?.monthlyIncome && funnelQuery?.age && loanRankcr
+          ? loanRankcr === LoanRank.Green
+            ? 'Mudah'
+            : loanRankcr === LoanRank.Red
+            ? 'Sulit'
+            : 'Null'
+          : 'Null',
+    }
+    trackCarVariantPageWaChatbot(trackerProperty)
     const whatsAppUrl = defaultCSANumber
     const windowReference: any = window.open()
     windowReference.location = `${whatsAppUrl}?text=${encodeURI(message)}`

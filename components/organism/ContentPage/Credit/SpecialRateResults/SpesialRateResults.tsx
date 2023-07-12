@@ -45,11 +45,13 @@ import {
   InstallmentTypeOptions,
   LanguageCode,
   LocalStorageKey,
+  NewFunnelLoanRank,
   SessionStorageKey,
 } from 'utils/models/models'
 import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { api } from 'services/api'
 import { NonPassengerCars } from 'config/LoanCalculator.config'
+import { tracSelectV2LoanCalculatorSpeak } from 'helpers/amplitude/newLoanCalculatorEventTracking'
 
 const PromoAsuransi = '/assets/illustration/PromoAsuransi.gif'
 const AstraLogo = '/assets/icon/AstraLogo.webp'
@@ -174,11 +176,10 @@ export const SpecialRateResults = ({
         ? carVariantDetails?.variantDetail.bodyType
         : '-',
     }
-    // TODO @toni : moengage issue
-    // setTrackEventMoEngage(
-    //   'click_hitung_cicilan_regular_rate_calculator',
-    //   objData,
-    // )
+    setTrackEventMoEngage(
+      'click_hitung_cicilan_regular_rate_calculator',
+      objData,
+    )
 
     if (data[0].loanRank == 'Green') {
       setIsSelectedLoanRankBg('#f1fbf9')
@@ -416,15 +417,14 @@ export const SpecialRateResults = ({
     setLoadingWhatsApp(false)
     window.open(`${whatsAppUrl}?text=${encodeURI(finalMessage)}`, '_blank')
 
-    // TODO @toni : old amplitude tracker
-    // tracSelectV2LoanCalculatorSpeak({
-    //   loanRank: loanRank as NewFunnelLoanRank,
-    //   age: String(age?.value),
-    //   income: Number(totalIncome?.value),
-    //   monthlyInstallments: monthlyInstallment,
-    //   downPayment: dpAmount,
-    //   tenure,
-    // })
+    tracSelectV2LoanCalculatorSpeak({
+      loanRank: loanRank as NewFunnelLoanRank,
+      age: String(age?.value),
+      income: Number(totalIncome?.value),
+      monthlyInstallments: monthlyInstallment,
+      downPayment: dpAmount,
+      tenure,
+    })
 
     const trackerWACredit: CarVariantCreditTabParam = {
       Car_Brand: carVariantDetails.modelDetail.brand as string,

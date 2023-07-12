@@ -312,8 +312,8 @@ export default function PLPDesktop({
                 .replace(/ +/g, '')
                 .toLowerCase(),
             )
-            .replace(':tab', ''),
-          //   { loanRankCVL: carModel.loanRank },
+            .replace(':tab', '')
+            .replace('?', `?loanRankCVL=${carModel.loanRank}`),
         )
       })
       .catch((error: any) => {

@@ -101,7 +101,7 @@ const Price = memo(({ tab, isSticky }: tabProps) => {
       Image_URL: carImages[0],
       Brand_Model: `${carModelDetails?.brand} ${carModelDetails?.model}`,
     }
-    // setTrackEventMoEngage('view_variant_list_price_tab', objData)
+    setTrackEventMoEngage('view_variant_list_price_tab', objData)
   }
   useEffect(() => {
     if (carModelDetails && cityOtr) {

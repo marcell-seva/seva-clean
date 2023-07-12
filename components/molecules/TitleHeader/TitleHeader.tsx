@@ -29,7 +29,7 @@ export function TitleHeader(props: StickyButtonProps) {
   }, [carModelDetails])
 
   const carOtrPrice = useMemo(() => {
-    return carModelDetails
+    return sortCarModelVariant.length > 0
       ? replacePriceSeparatorByLocalization(
           sortCarModelVariant[0].priceValue || 0,
           LanguageCode.id,
