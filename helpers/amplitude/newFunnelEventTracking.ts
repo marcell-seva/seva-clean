@@ -35,10 +35,15 @@ export type LoanCalculatorParamsWithoutLoanRating = Omit<
   'loanRating'
 >
 
-export type FunnelTrackingEvent = {
-  name: TrackingEventName.SELECT_CAR_RESULT_VARIANT_DETAILS_VIEW_BROCHURE
-  data: CarResultAndVariantParameters
-}
+export type FunnelTrackingEvent =
+  | {
+      name: TrackingEventName.SELECT_CAR_RESULT_VARIANT_DETAILS_VIEW_BROCHURE
+      data: CarResultAndVariantParameters
+    }
+  | {
+      name: TrackingEventName.FILTER_CAR_RESULTS
+      data: FilterCarResults
+    }
 
 export const trackSelectCarResultVariantDetailsViewBrochure = (
   selectCarResultVariant: CarResultAndVariantParameters,
@@ -46,5 +51,19 @@ export const trackSelectCarResultVariantDetailsViewBrochure = (
   logAmplitudeEvent({
     name: TrackingEventName.SELECT_CAR_RESULT_VARIANT_DETAILS_VIEW_BROCHURE,
     data: selectCarResultVariant,
+  })
+}
+
+type FilterCarResults = CarResultParameters & {
+  maxMonthlyInstallments: number | null
+  downPayment: number | null
+  downPaymentPercentage: number | null
+  brands: string[]
+}
+
+export const trackFilterCarResults = (filterCarResult: FilterCarResults) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.FILTER_CAR_RESULTS,
+    data: filterCarResult,
   })
 }

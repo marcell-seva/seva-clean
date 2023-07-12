@@ -1,3 +1,5 @@
+import { client } from 'const/const'
+
 export const MoengageEventName = {
   view_homepage: 'view_homepage',
   view_car_search: 'view_car_search',
@@ -30,8 +32,10 @@ export const addUserIdMoEngage = (value: any): void => {
 }
 
 export const setTrackEventMoEngageWithoutValue = (value: any): void => {
-  const moengage = window.Moengage
-  moengage.track_event(value)
+  const moengage = client && window.Moengage
+  if (moengage && moengage.track_event) {
+    moengage.track_event(value)
+  }
 }
 
 export const addAttributeMoEngage = (

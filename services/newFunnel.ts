@@ -204,3 +204,31 @@ export const getNewFunnelRecommendationsByCity = (
 export const getCarVideoReview = (config?: AxiosRequestConfig) => {
   return API.get(endpoints.carVideoReview, config)
 }
+
+export const getSuggestionsCars = (
+  config?: AxiosRequestConfig,
+  keyword?: string,
+  sortBy?: string,
+) => {
+  const params = new URLSearchParams()
+  params.append('city', getCity().cityCode as string)
+  params.append('cityId', getCity().id as string)
+  sortBy && params.append('sortBy', sortBy as string)
+  return API.get(endpoints.variantSuggestions + keyword, { ...config, params })
+}
+export const getNewFunnelRecommendationsCarModel = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  { model }: any,
+  config?: AxiosRequestConfig,
+) => {
+  return API.get(
+    `${endpoints.recommendations}/new-funnel?search=${model}`,
+    config,
+  )
+}
+
+export const getCarBodyTypes = (config?: AxiosRequestConfig) => {
+  const params = new URLSearchParams()
+  getCity().cityCode && params.append('city', getCity().cityCode as string)
+  return API.get(endpoints.carsBodyTypes, { params, ...config })
+}

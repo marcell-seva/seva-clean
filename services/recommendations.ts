@@ -104,3 +104,7 @@ export const handleCarModelDetailsUpdate =
       setCarModelDetails,
     )
   }
+
+export const getIncomeList = () => {
+  return API.get(endpoints.incomeList)
+}

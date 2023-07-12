@@ -652,3 +652,169 @@ export interface CarModelResponse {
   numberOfPopulation: number
   // variants: CarVariantRecommendation[]
 }
+
+export interface BannerHomepageType {
+  name: string
+  attribute: {
+    web_desktop: string
+    web_mobile: string
+    native: string
+    thumbnail: {
+      web_desktop: string
+      web_mobile: string
+      native: string
+    }
+  }
+  slot: string
+  url: string
+  creativeContext: string | null
+}
+
+export type IconThumbnail = {
+  thumbnail: {
+    name: string
+  }
+}
+
+export type IconImage = {
+  url: string
+  formats: IconThumbnail
+}
+
+export interface USPAttributes {
+  head_title: string
+  icon_1: {
+    data: {
+      attributes: IconImage
+    }
+  }
+  icon_2: {
+    data: {
+      attributes: IconImage
+    }
+  }
+  icon_3: {
+    data: {
+      attributes: IconImage
+    }
+  }
+  subtitle_1: string
+  subtitle_2: string
+  subtitle_3: string
+  title_1: string
+  title_2: string
+  title_3: string
+}
+
+export type CarSuggestions = {
+  id: number
+  model: string
+  variant_name: string
+  variant_title: string
+  price_currency: number
+  price_value: number
+  price_formatted_value: number
+}
+
+export type COMDataModel = {
+  id: number
+  modelId: string
+  url: string
+  startDate: string
+  data: {
+    folder: string
+    image: string
+    thumbnail: {
+      image: string
+    }
+  }
+  description: string
+  modifiedBy: number
+  status: boolean
+  createdAt: string
+  updatedAt: string
+  isArchived: boolean
+  variantId: string
+  carModel: {
+    id: string
+    brand: string
+    model: string
+    imageUrls: {
+      main_color: string[]
+      colors: string[]
+      gallery: string[]
+      brochure: string[]
+      new_funnel_main_color: string[]
+    }
+    promoFlag: boolean | null
+    productCode: string | null
+    status: boolean
+    otrStatus: null
+    modelWordpressTag: string
+  }
+  carCatalog: {
+    id: number
+    make: string
+    model: string
+    base_product: string
+    body_type: string
+    variant_name: string
+    body_type_url: string
+    code: string
+    colour_name: string | null
+    description_bahasa: string
+    description_english: string
+    engine_capacity: number
+    price_currency: string
+    price_formatted_value: string
+    price_value: number
+    seat: number
+    variant_title: string
+    transmission: string
+    seva_url: string
+    length: number
+    width: number
+    height: number
+    fuel_type: string
+    model_id: string
+    variant_id: string
+    discount: number
+    price_value_sby: number | null
+    price_formatted_value_sby: string | null
+    status: boolean
+  }
+  priceValueJkt: number
+  price: number | null
+}
+
+export type COMData = {
+  id: number
+  brand: string
+  order: number
+  status: boolean
+  model?: COMDataModel
+}
+
+export interface TestimonialData {
+  pictureName: string
+  pictureUrl: string
+  detail: string
+  rating: number
+  name: string
+  age?: number
+  cityName: string
+  purchaseDate: string
+  displayNumber: number
+}
+
+export interface ArticleData {
+  title: string
+  excerpt: string
+  publish_date: string
+  writer_name: string
+  writer_initial: string
+  category: string
+  category_link: string
+  url: string
+  featured_image: string
+}

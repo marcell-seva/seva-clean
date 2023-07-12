@@ -35,6 +35,8 @@ import Articles from './articles/index'
 import { CalculationResult } from './calculationResult/index'
 import PDPCarOverviewSkeleton from './pdpCarOverviewSkeleton'
 import SidebarMobile from './sidebarMobile'
+import HomepageDesktop from './homepageDesktop'
+import HomepageMobile from './homepageMobile'
 import dynamic from 'next/dynamic'
 
 const Exterior360ViewerTab = dynamic(
@@ -82,4 +84,6 @@ export {
   CalculationResult,
   PDPCarOverviewSkeleton,
   SidebarMobile,
+  HomepageDesktop,
+  HomepageMobile,
 }

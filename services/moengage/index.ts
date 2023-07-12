@@ -5,8 +5,9 @@ declare global {
 }
 
 export const setTrackEventMoEngageWithoutValue = (value: any): void => {
+  console.log('VALUE : ', value)
   const moengage = window.Moengage
-  moengage.track_event(value)
+  moengage?.track_event(value)
 }
 
 export const destroySessionMoEngage = (): void => {

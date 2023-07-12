@@ -1,13 +1,5 @@
-import ReactPixel from 'react-facebook-pixel'
+export const FB_PIXEL_ID = '496731661654244'
 
-export const initFacebookPixel = () => {
-  const options = {
-    autoConfig: true,
-    debug: false,
-  }
-  ReactPixel.init('496731661654244', undefined, options)
-  ReactPixel.track(FBPixelStandardEvent.PageView)
-}
 export enum FBPixelStandardEvent {
   PageView = 'PageView',
   Contact = 'Contact',

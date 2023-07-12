@@ -105,7 +105,7 @@ export const NewSelect = <T extends FormControlValue>({
   )
   const [isNoOptionMode, setIsNoOptionMode] = useState(false)
   const [rect, setRect] = useState<any>()
-  const domEl = document.querySelector('body')
+  const domEl = client && document.querySelector('body')
 
   const onSelect = ({ value: valueParam, label: labelParam }: Option<T>) => {
     setTimeout(() => {
@@ -378,6 +378,7 @@ const StyledSelect = styled.input<InputProps>`
   border-radius: 16px;
   padding: 9px;
   background: ${colors.white};
+  outline: none;
   &::placeholder {
     color: ${colors.label};
     opacity: 0.5;
