@@ -930,6 +930,10 @@ export type Seva20TrackingEvent =
       name: TrackingEventName.WEB_KUALIFIKASI_KREDIT_WA_DIRECT_CLICK
       data: CreditQualificationReviewParam
     }
+  | {
+      name: TrackingEventName.WEB_BURGER_MENU_CLICK
+      data: MenuParam
+    }
   | NewHomePageTrackingEvent
   | FunnelTrackingEvent
 
@@ -1835,12 +1839,12 @@ export const trackRegularCalculatorPage = (
 //   })
 // }
 
-// export const trackBurgerMenuClick = (data: MenuParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_BURGER_MENU_CLICK,
-//     data,
-//   })
-// }
+export const trackBurgerMenuClick = (data: MenuParam) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_BURGER_MENU_CLICK,
+    data,
+  })
+}
 
 export const trackSevaLogoClick = (data: UrlOriginationParam) => {
   logAmplitudeEvent({

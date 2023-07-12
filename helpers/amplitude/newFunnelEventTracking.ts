@@ -21,6 +21,8 @@ type CarVariantParameters = {
 export type CarResultAndVariantParameters = CarResultParameters &
   CarVariantParameters
 
+export type SearchCarResults = CarResultParameters & { search: string }
+
 export type LoanCalculatorParams = {
   loanRating: LoanRating
   income: number
@@ -44,6 +46,14 @@ export type FunnelTrackingEvent =
       name: TrackingEventName.FILTER_CAR_RESULTS
       data: FilterCarResults
     }
+  | {
+      name: TrackingEventName.VIEW_CAR_RESULTS
+      data: CarResultParameters
+    }
+  | {
+      name: TrackingEventName.SEARCH_CAR_RESULTS
+      data: SearchCarResults
+    }
 
 export const trackSelectCarResultVariantDetailsViewBrochure = (
   selectCarResultVariant: CarResultAndVariantParameters,
@@ -65,5 +75,21 @@ export const trackFilterCarResults = (filterCarResult: FilterCarResults) => {
   logAmplitudeEvent({
     name: TrackingEventName.FILTER_CAR_RESULTS,
     data: filterCarResult,
+  })
+}
+
+export const trackViewCarResult = (
+  carResultParameters: CarResultParameters,
+) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.VIEW_CAR_RESULTS,
+    data: carResultParameters,
+  })
+}
+
+export const trackSearchCarResults = (searchCarResults: SearchCarResults) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.SEARCH_CAR_RESULTS,
+    data: searchCarResults,
   })
 }

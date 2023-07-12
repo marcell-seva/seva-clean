@@ -818,3 +818,16 @@ export interface ArticleData {
   url: string
   featured_image: string
 }
+
+export interface NavbarItemResponse {
+  id: number
+  menuName: string
+  menuDesc: string
+  menuCode: string
+  menuParent: string
+  menuUrl: string
+  menuLevel: number
+  status: boolean
+  toggleNew: boolean
+  subMenu: NavbarItemResponse[]
+}

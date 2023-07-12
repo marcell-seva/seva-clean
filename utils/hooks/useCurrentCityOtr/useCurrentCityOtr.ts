@@ -1,7 +1,7 @@
 import { client } from 'const/const'
 import { LocalStorageKey } from 'utils/enum'
 import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
-import { Location } from 'utils/types'
+import { CityOtrOption, Location } from 'utils/types'
 
 export const defaultCity = {
   cityName: 'Jakarta Pusat',
@@ -37,6 +37,6 @@ export const getCityWithoutDefault = () => {
   }
 }
 
-export const saveCity = (city: Location) => {
+export const saveCity = (city: Location | CityOtrOption) => {
   saveLocalStorage(LocalStorageKey.CityOtr, JSON.stringify(city))
 }

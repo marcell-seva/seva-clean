@@ -82,6 +82,8 @@ import { SeoParagraphSection } from '../SeoParagraphSection/SeoParagraphSection'
 import { NewFilterSideMenu } from './Filter/FilterSideMenu/NewFilterSideMenu'
 import { t } from 'config/localization/locales/id'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
+import HeaderCarResult from 'components/molecules/header/headerCarResult'
+import { PageHeaderSevaCarResults } from '../PageHeaderSeva/PageHeaderSevaCarResults'
 
 interface CarResultPageProps {
   carRecommendation: CarRecommendationResponse
@@ -501,9 +503,11 @@ export default function PLPDesktop({
   return (
     <>
       <StyledCarResultsPage scroll={!modal.isOpenCarFilter}>
-        {/* <PageHeaderSevaCarResults> */}
-        <SearchWrapper>{/* <HeaderCarResult /> */}</SearchWrapper>
-        {/* </PageHeaderSevaCarResults> */}
+        <PageHeaderSevaCarResults>
+          <SearchWrapper>
+            <HeaderCarResult />
+          </SearchWrapper>
+        </PageHeaderSevaCarResults>
         <FloatingIcon />
         <Content ref={scrollToContent}>
           <ResultAndFilterWrapper>
