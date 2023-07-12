@@ -211,7 +211,7 @@ export const CarBrandItemCreditTab = ({
         <ImageSection>
           <CarImage
             src={carModel.image}
-            alt="car image"
+            alt={carModel.brandAndModel}
             useIntersectionObserver={true}
             threshold={100}
             placeholder={<ShimmerBox height={132} />}

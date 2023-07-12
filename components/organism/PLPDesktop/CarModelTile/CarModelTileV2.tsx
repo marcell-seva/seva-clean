@@ -176,7 +176,10 @@ export const CarModelTileV2 = ({
                     }
                     key={index}
                     src={item}
-                    alt="car image"
+                    alt={
+                      carModel.brandAndModel ||
+                      `${carModel.brand} ${carModel.model}`
+                    }
                     width={366}
                     height={274}
                   />
