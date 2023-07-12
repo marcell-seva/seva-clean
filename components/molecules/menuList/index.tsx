@@ -74,6 +74,7 @@ export const MenuList: React.FC<MenuListProps> = ({
       handleTemanSeva()
     } else {
       if (menuUrl === '/akun/profil') {
+        //@ts-ignore
         saveLocalStorage(
           LocalStorageKey.PageBeforeProfile,
           String(window.location.pathname),
