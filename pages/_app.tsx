@@ -36,6 +36,7 @@ import 'styles/CustomAnimationStyle.css'
 import { IsSsrMobileContext } from 'context/isSsrMobileContext'
 import { FBPixelStandardEvent, FB_PIXEL_ID } from 'helpers/facebookPixel'
 import { client } from 'const/const'
+import Head from 'next/head'
 
 const kanyon = localFont({
   src: '../public/Kanyon-Regular.otf',
@@ -72,49 +73,11 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [])
   return (
     <>
-      {process.env.REACT_APP_ENVIRONMENT === 'production' && (
-        <Script
-          id="fb-pixel"
-          strategy="afterInteractive"
+      <Head>
+        <script
+          type="text/javascript"
           dangerouslySetInnerHTML={{
-            __html: `
-            !function(f,b,e,v,n,t,s)
-            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window, document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('set', 'debug', false, ${FB_PIXEL_ID});
-            fbq('set', 'autoConfig', true, ${FB_PIXEL_ID});
-            fbq('init', ${FB_PIXEL_ID});
-            
-          `,
-          }}
-        />
-      )}
-      <IsSsrMobileContext.Provider value={pageProps.isSsrMobile}>
-        <GlobalContextProvider>
-          <ConfigProvider>
-            <AuthProvider>
-              <LocationProvider>
-                <CarProvider>
-                  <style jsx global>{`
-                    :root {
-                      --kanyon: ${kanyon.style.fontFamily};
-                      --kanyon-bold: ${kanyonBold.style.fontFamily};
-                      --open-sans: ${OpenSans.style.fontFamily};
-                      --open-sans-semi-bold: ${OpenSansSemiBold.style
-                        .fontFamily};
-                    }
-                  `}</style>
-                  <Component {...pageProps} />
-                  <Script
-                    type="text/javascript"
-                    strategy="afterInteractive"
-                    dangerouslySetInnerHTML={{
-                      __html: `(function(i, s, o, g, r, a, m, n) {
+            __html: `(function(i, s, o, g, r, a, m, n) {
         i.moengage_object = r
         t = {}
         q = function (f) {
@@ -185,8 +148,47 @@ export default function App({ Component, pageProps }: AppProps) {
           debug_logs: 0,
         })
         }`,
-                    }}
-                  ></Script>
+          }}
+        ></script>
+      </Head>
+      {process.env.REACT_APP_ENVIRONMENT === 'production' && (
+        <Script
+          id="fb-pixel"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('set', 'debug', false, ${FB_PIXEL_ID});
+            fbq('set', 'autoConfig', true, ${FB_PIXEL_ID});
+            fbq('init', ${FB_PIXEL_ID});
+            
+          `,
+          }}
+        />
+      )}
+      <IsSsrMobileContext.Provider value={pageProps.isSsrMobile}>
+        <GlobalContextProvider>
+          <ConfigProvider>
+            <AuthProvider>
+              <LocationProvider>
+                <CarProvider>
+                  <style jsx global>{`
+                    :root {
+                      --kanyon: ${kanyon.style.fontFamily};
+                      --kanyon-bold: ${kanyonBold.style.fontFamily};
+                      --open-sans: ${OpenSans.style.fontFamily};
+                      --open-sans-semi-bold: ${OpenSansSemiBold.style
+                        .fontFamily};
+                    }
+                  `}</style>
+                  <Component {...pageProps} />
                 </CarProvider>
               </LocationProvider>
             </AuthProvider>
