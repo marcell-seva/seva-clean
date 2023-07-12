@@ -82,6 +82,11 @@ import { SeoParagraphSection } from '../SeoParagraphSection/SeoParagraphSection'
 import { NewFilterSideMenu } from './Filter/FilterSideMenu/NewFilterSideMenu'
 import { t } from 'config/localization/locales/id'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
+import { setTrackEventMoEngage } from 'helpers/moengage'
+import {
+  trackSelectCarResult,
+  trackViewCarResult,
+} from 'helpers/amplitude/newFunnelEventTracking'
 
 interface CarResultPageProps {
   carRecommendation: CarRecommendationResponse
@@ -112,11 +117,7 @@ export default function PLPDesktop({
     queryTemp.monthlyInstallment = monthlyInstallment
     queryTemp.downPaymentType = DownPaymentType.DownPaymentAmount
   }
-  //   if (id && id.includes('SEVA')) {
-  //     const temp = initData
-  //     temp.sortBy = 'lowToHigh'
-  //     queryTemp = temp
-  //   }
+
   const [isShowLoading, setShowLoading] = useState(true)
   const { recommendations, setRecommendations } = useContextRecommendations()
   const [recommendationLists, setRecommendationLists] = useState<
@@ -137,7 +138,7 @@ export default function PLPDesktop({
   const { setCarModelDetails } = useContextCarModelDetails()
   const carResultParameters = useCarResultParameter()
   useAmplitudePageView(() => {
-    // trackViewCarResult(carResultParameters)
+    trackViewCarResult(carResultParameters)
   })
   const { setCarModel } = useContextCarModel()
   const [brandName, setBrandName] = useState<string | undefined>()
@@ -196,7 +197,7 @@ export default function PLPDesktop({
           : '-',
       city: cityOtr ? cityOtr.cityName : '-',
     }
-    // if (!isMobile) setTrackEventMoEngage('view_car_search', objData)
+    if (!isMobile) setTrackEventMoEngage('view_car_search', objData)
     cityHandler()
   }, [])
 
@@ -299,7 +300,7 @@ export default function PLPDesktop({
     }
     localStorage.setItem('carDetail', selectCarResult.price)
     setCarModel(carModel || undefined)
-    // trackSelectCarResult(selectCarResult)
+    trackSelectCarResult(selectCarResult)
     getCarModelDetailsById(carModel.id)
       .then(handleCarModelDetailsUpdate(recommendations, setCarModelDetails))
       .then(() => {

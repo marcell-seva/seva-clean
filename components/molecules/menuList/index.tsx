@@ -11,6 +11,7 @@ import { useRouter } from 'next/router'
 import { IconAccount, IconHistory, IconWishlist } from 'components/atoms/icon'
 import { LocalStorageKey } from 'utils/enum'
 import { MobileWebTopMenuType, CustomerInfoSeva } from 'utils/types/utils'
+import { trackBurgerMenuClick } from 'helpers/amplitude/seva20Tracking'
 
 type MenuListProps = {
   menuList?: MobileWebTopMenuType[]
@@ -61,10 +62,10 @@ export const MenuList: React.FC<MenuListProps> = ({
   }
 
   const handleClickMenu = (menuUrl: string, menuName: string) => {
-    // trackBurgerMenuClick({
-    //   Page_Origination_URL: window.location.href,
-    //   Menu: menuName,
-    // })
+    trackBurgerMenuClick({
+      Page_Origination_URL: window.location.href,
+      Menu: menuName,
+    })
 
     if (menuName === 'Teman SEVA') {
       handleTemanSeva()

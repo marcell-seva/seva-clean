@@ -5,8 +5,8 @@ import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import Fuse from 'fuse.js'
 import {
   trackCityListClick,
-  // trackCitySelectorApply,
-  // trackCitySelectorCancel,
+  trackCitySelectorApply,
+  trackCitySelectorCancel,
 } from 'helpers/amplitude/seva20Tracking'
 import { Modal } from 'antd'
 import { saveLocalStorage } from 'utils/localstorageUtils'
@@ -81,9 +81,9 @@ export const CitySelectorModal = ({
       setInputValue(cityOtr.cityName)
       setLastChoosenValue(cityOtr.cityName)
     }
-    // trackCitySelectorCancel({
-    //   Page_Origination_URL: window.location.href,
-    // })
+    trackCitySelectorCancel({
+      Page_Origination_URL: window.location.href,
+    })
     onClickCloseButton()
   }
 
@@ -106,10 +106,10 @@ export const CitySelectorModal = ({
       Page_Origination_URL: window.location.href.replace('https://www.', ''),
       City: inputValue,
     })
-    // trackCitySelectorApply({
-    //   Page_Origination_URL: window.location.href,
-    //   City: inputValue,
-    // })
+    trackCitySelectorApply({
+      Page_Origination_URL: window.location.href,
+      City: inputValue,
+    })
 
     location.reload()
   }

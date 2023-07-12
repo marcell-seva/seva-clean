@@ -32,6 +32,7 @@ import { useRouter } from 'next/router'
 import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import { CarRecommendationResponse, FunnelQuery } from 'utils/types/context'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
+import { trackFilterCarResults } from 'helpers/amplitude/newFunnelEventTracking'
 
 interface ParamsUrl {
   age?: string
@@ -253,7 +254,7 @@ const FilterMobile = ({
       minPrice: minPriceFilter,
       maxPrice: maxPriceFilter,
     }
-    // trackFilterCarResults(filterCarResult)
+    trackFilterCarResults(filterCarResult)
     setLoading(true)
     const paramUpdate = {
       ...paramQuery,

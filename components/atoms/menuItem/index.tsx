@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '../../../styles/saas/components/atoms/menuItem.module.scss'
 import { IconChevronDown } from 'components/atoms'
 import { MobileWebTopMenuType } from 'utils/types/utils'
-// import { trackBurgerMenuClick } from 'helpers/amplitude/seva20Tracking'
+import { trackBurgerMenuClick } from 'helpers/amplitude/seva20Tracking'
 
 type MenuItemProps = {
   item?: MobileWebTopMenuType
@@ -12,10 +12,10 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item }): JSX.Element => {
   const [state, setState] = React.useState(false)
 
   const handleClickMenu = (menuUrl: string, menuName: string) => {
-    // trackBurgerMenuClick({
-    //   Page_Origination_URL: window.location.href,
-    //   Menu: menuName,
-    // })
+    trackBurgerMenuClick({
+      Page_Origination_URL: window.location.href,
+      Menu: menuName,
+    })
     window.location.href = menuUrl
   }
 

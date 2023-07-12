@@ -23,6 +23,7 @@ import { hundred, million, ten } from 'const/const'
 import {
   CarSearchPageMintaPenawaranParam,
   trackCarResultPageWaChatbot,
+  trackWhatsappButtonClickFromCarResults,
 } from 'helpers/amplitude/seva20Tracking'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
 import elementId from 'helpers/elementIds'
@@ -33,6 +34,8 @@ import { CarInfo } from './CarInfo'
 import Image from 'next/image'
 import { WhatsAppIcon } from 'components/atoms/icon/WhatsAppIcon'
 import { BadgeLoanStatus } from './BadgeLoanStatus'
+import { PageFrom } from 'utils/models/models'
+import { EventFromType } from 'helpers/amplitude/newHomePageEventTracking'
 
 interface CarTileProps extends HTMLAttributes<HTMLDivElement> {
   carModel: CarRecommendation
@@ -84,13 +87,13 @@ export const CarModelTileV2 = ({
       monthlyRange: minimumMonthlyInstallment,
       tenure: funnelQuery.tenure || 5,
     })
-    // trackWhatsappButtonClickFromCarResults(
-    //   EventFromType.carResults,
-    //   carName,
-    //   `${minimumDp} jt`,
-    //   `${minimumMonthlyInstallment} jt`,
-    //   PageFrom.CarResult,
-    // )
+    trackWhatsappButtonClickFromCarResults(
+      EventFromType.carResults,
+      carName,
+      `${minimumDp} jt`,
+      `${minimumMonthlyInstallment} jt`,
+      PageFrom.CarResult,
+    )
     const trackerProperty: CarSearchPageMintaPenawaranParam = {
       Car_Brand: brand,
       Car_Model: model,
