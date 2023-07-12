@@ -9,7 +9,7 @@ import { LabelPromo } from 'components/molecules'
 import styles from '../../../styles/components/organism/alternativeCarCard.module.scss'
 import {
   trackCarBrandRecomItemClick,
-  // trackLCCarRecommendationClick,
+  trackLCCarRecommendationClick,
 } from 'helpers/amplitude/seva20Tracking'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { Location } from 'utils/types'
@@ -51,13 +51,13 @@ export const AlternativeCarCard = ({
         lowestInstallment,
         LanguageCode.id,
       )
-      // trackLCCarRecommendationClick({
-      //   Car_Brand: recommendation.brand,
-      //   Car_Model: recommendation.model,
-      //   City: cityOtr?.cityName,
-      //   Monthly_Installment: `Rp${formatLowestInstallment}`,
-      //   Page_Origination: window.location.href,
-      // })
+      trackLCCarRecommendationClick({
+        Car_Brand: recommendation.brand,
+        Car_Model: recommendation.model,
+        City: cityOtr?.cityName,
+        Monthly_Installment: `Rp${formatLowestInstallment}`,
+        Page_Origination: window.location.href,
+      })
     } else {
       trackCarBrandRecomItemClick({
         Car_Brand: recommendation.brand,

@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styles from '/styles/components/molecules/citySelectorModal.module.scss'
 import Fuse from 'fuse.js'
+import {
+  trackCityListClick,
+  trackCitySelectorApply,
+  trackCitySelectorCancel,
+} from 'helpers/amplitude/seva20Tracking'
 import { Modal } from 'antd'
 // import 'styles/main.scss'
 import { Button, InputSelect } from 'components/atoms'
@@ -102,6 +107,10 @@ const CitySelectorModal = ({
       },
     )
     sendAmplitudeData(AmplitudeEventName.WEB_CITYSELECTOR_APPLY, {
+      Page_Origination_URL: window.location.href,
+      City: inputValue,
+    })
+    trackCitySelectorApply({
       Page_Origination_URL: window.location.href,
       City: inputValue,
     })

@@ -8,7 +8,7 @@ import { getMobileWebTopMenu } from 'services/menu'
 import { getToken } from 'utils/api'
 import {
   trackLoginButtonClick,
-  // trackProfileAkunSayaClick,
+  trackProfileAkunSayaClick,
 } from 'helpers/amplitude/seva20Tracking'
 import { savePageBeforeLogin } from 'utils/loginUtils'
 import clsx from 'clsx'
@@ -91,9 +91,9 @@ const sidebarMobile = ({
   }
 
   const handleClickMyAccount = (url: string) => {
-    // trackProfileAkunSayaClick({
-    //   Page_Origination_URL: window.location.href,
-    // })
+    trackProfileAkunSayaClick({
+      Page_Origination_URL: window.location.href,
+    })
     router.push(url)
   }
 

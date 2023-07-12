@@ -44,7 +44,7 @@ export const RVCDesktop = ({
         <ImageSection>
           <CarImage
             src={carModel.images[0]}
-            alt="car image"
+            alt={carModel.brandAndModel}
             placeholder={<ShimmerBox height={170} />}
             visibleByDefault={false}
           />

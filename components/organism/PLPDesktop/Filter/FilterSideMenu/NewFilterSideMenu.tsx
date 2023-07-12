@@ -8,13 +8,13 @@ import { getNewFunnelRecommendations } from 'services/newFunnel'
 import { AxiosResponse } from 'axios'
 import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import { carResultsUrl } from 'routes/routes'
-// import { trackFilterCarResults } from 'helpers/amplitude/newFunnelEventTracking'
+import { trackFilterCarResults } from 'helpers/amplitude/newFunnelEventTracking'
 import { removeWhitespaces, toNumber } from 'utils/stringUtils'
 import {
   trackAgeTooltipCloseClick,
   trackAgeTooltipPrevClick,
   trackFilterAgeTooltipClick,
-  // trackFilterIncomeTooltipClick,
+  trackFilterIncomeTooltipClick,
   trackIncomeTooltipCloseClick,
   trackIncomeTooltipNextClick,
   trackPLPClearFilter,
@@ -127,7 +127,7 @@ export const NewFilterSideMenu = () => {
     useState(false)
 
   const handleDebounceTrackTooltipIncome = () => {
-    // trackFilterIncomeTooltipClick()
+    trackFilterIncomeTooltipClick()
     setIsAlreadyTrackTooltipIncome(true)
   }
 
@@ -349,7 +349,7 @@ export const NewFilterSideMenu = () => {
       ...carResultParameters,
       tenure: tenureFilter,
     }
-    // trackFilterCarResults(filterCarResult)
+    trackFilterCarResults(filterCarResult)
     setLoading(true)
     getNewFunnelRecommendations(paramQuery)
       .then((response: AxiosResponse<CarRecommendationResponse>) => {

@@ -302,7 +302,7 @@ export const PLP = ({
   //handle scrolling
   useEffect(() => {
     window.scrollTo(0, 0)
-    // moengageViewPLP()
+    moengageViewPLP()
     checkCitiesData()
     getAnnouncementBox()
 

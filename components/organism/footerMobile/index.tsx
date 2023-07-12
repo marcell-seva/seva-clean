@@ -6,7 +6,7 @@ import { getMobileFooterMenu } from 'services/menu'
 import urls from 'helpers/urls'
 import elementId from 'helpers/elementIds'
 import Image from 'next/image'
-// import { trackFooterClick } from 'helpers/amplitude/seva20Tracking'
+import { trackFooterClick } from 'helpers/amplitude/seva20Tracking'
 
 const SevaLogo = '/v3/assets/icon/logo-on-dark.webp'
 const ISOIcon = '/v3/assets/icon/iso.webp'
@@ -57,10 +57,10 @@ export const FooterMobile = () => {
   }
 
   const handleClickMenu = (menuName: string) => {
-    // trackFooterClick({
-    //   Page_Origination_URL: window.location.href,
-    //   Menu: menuName,
-    // })
+    trackFooterClick({
+      Page_Origination_URL: window.location.href,
+      Menu: menuName,
+    })
   }
 
   return (

@@ -32,6 +32,7 @@ import 'styles/CustomAnimationStyle.css'
 import { IsSsrMobileContext } from 'context/isSsrMobileContext'
 import { FBPixelStandardEvent, FB_PIXEL_ID } from 'helpers/facebookPixel'
 import { client } from 'const/const'
+import Head from 'next/head'
 
 const kanyon = localFont({
   src: '../public/Kanyon-Regular.otf',
@@ -73,12 +74,10 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [])
   return (
     <>
-      {process.env.REACT_APP_ENVIRONMENT === 'production' && (
-        <Script
-          id="fb-pixel"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
+      <script
+        type="text/javascript"
+        dangerouslySetInnerHTML={{
+          __html: `
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
             n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -92,9 +91,8 @@ export default function App({ Component, pageProps }: AppProps) {
             fbq('init', ${FB_PIXEL_ID});
             
           `,
-          }}
-        />
-      )}
+        }}
+      />
       <IsSsrMobileContext.Provider value={pageProps.isSsrMobile}>
         <GlobalContextProvider>
           <Script

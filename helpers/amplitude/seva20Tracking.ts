@@ -1,4 +1,5 @@
 import { logAmplitudeEvent } from 'services/amplitude'
+import { PageFrom } from 'utils/models/models'
 import {
   TrackingEventLeadsForm,
   TrackingEventName,
@@ -13,7 +14,11 @@ import {
   TrackingExpandSEOFooter,
 } from './eventTypes'
 import { FunnelTrackingEvent } from './newFunnelEventTracking'
-import { NewHomePageTrackingEvent } from './newHomePageEventTracking'
+import {
+  EventFromType,
+  NewHomePageTrackingEvent,
+  NewHomePageVersion,
+} from './newHomePageEventTracking'
 
 type SearchWidgetParams = CarBrandOnlyParam &
   CarBodyTypeOnlyParam & {
@@ -696,7 +701,7 @@ export type Seva20TrackingEvent =
     }
   | {
       name: TrackingEventName.WEB_PLP_FILTER_INCOME_TOOLTIP_CLICK
-      data: LoanRankBadgeParam
+      data: LoanRankBadgeParam | null
     }
   | {
       name: TrackingEventName.WEB_PLP_FILTER_AGE_TOOLTIP_CLICK
@@ -929,6 +934,42 @@ export type Seva20TrackingEvent =
   | {
       name: TrackingEventName.WEB_KUALIFIKASI_KREDIT_WA_DIRECT_CLICK
       data: CreditQualificationReviewParam
+    }
+  | {
+      name: TrackingEventName.WEB_FOOTER_CLICK
+      data: MenuParam
+    }
+  | {
+      name: TrackingEventName.WEB_BURGER_MENU_CLICK
+      data: MenuParam
+    }
+  | {
+      name: TrackingEventName.WEB_BURGER_MENU_OPEN
+      data: UrlOriginationParam
+    }
+  | {
+      name: TrackingEventName.WEB_CITYSELECTOR_CANCEL
+      data: UrlOriginationParam
+    }
+  | {
+      name: TrackingEventName.WEB_CITYSELECTOR_APPLY
+      data: UrlOriginationWithCityParam
+    }
+  | {
+      name: TrackingEventName.WEB_PROFILE_AKUN_SAYA_CLICK
+      data: UrlOriginationParam
+    }
+  | {
+      name: TrackingEventName.SEND_WHATSAPP_MESSAGE
+      data: {
+        from: EventFromType
+        carModel: string
+        downPayment: string
+        monthlyInstallment: string
+        pageFrom: PageFrom
+        variantName?: string
+        version?: NewHomePageVersion
+      }
     }
   | NewHomePageTrackingEvent
   | FunnelTrackingEvent
@@ -1562,12 +1603,12 @@ export const trackPeluangSulitPopUpCloseClick = (value: LoanRankBadgeParam) => {
     data: value,
   })
 }
-// export const trackFilterIncomeTooltipClick = () => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_PLP_FILTER_INCOME_TOOLTIP_CLICK,
-//     data: null,
-//   })
-// }
+export const trackFilterIncomeTooltipClick = () => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_PLP_FILTER_INCOME_TOOLTIP_CLICK,
+    data: null,
+  })
+}
 export const trackFilterAgeTooltipClick = () => {
   logAmplitudeEvent({
     name: TrackingEventName.WEB_PLP_FILTER_AGE_TOOLTIP_CLICK,
@@ -1828,19 +1869,19 @@ export const trackRegularCalculatorPage = (
   })
 }
 
-// export const trackOpenBurgerMenu = (data: UrlOriginationParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_BURGER_MENU_OPEN,
-//     data,
-//   })
-// }
+export const trackOpenBurgerMenu = (data: UrlOriginationParam) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_BURGER_MENU_OPEN,
+    data,
+  })
+}
 
-// export const trackBurgerMenuClick = (data: MenuParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_BURGER_MENU_CLICK,
-//     data,
-//   })
-// }
+export const trackBurgerMenuClick = (data: MenuParam) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_BURGER_MENU_CLICK,
+    data,
+  })
+}
 
 export const trackSevaLogoClick = (data: UrlOriginationParam) => {
   logAmplitudeEvent({
@@ -1870,12 +1911,12 @@ export const trackLoginButtonClick = (data: UrlOriginationParam) => {
   })
 }
 
-// export const trackProfileAkunSayaClick = (data: UrlOriginationParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_PROFILE_AKUN_SAYA_CLICK,
-//     data,
-//   })
-// }
+export const trackProfileAkunSayaClick = (data: UrlOriginationParam) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_PROFILE_AKUN_SAYA_CLICK,
+    data,
+  })
+}
 
 // export const trackCitySelectorOpen = (data: UrlOriginationParam) => {
 //   logAmplitudeEvent({
@@ -1884,26 +1925,26 @@ export const trackLoginButtonClick = (data: UrlOriginationParam) => {
 //   })
 // }
 
-// export const trackCitySelectorCancel = (data: UrlOriginationParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_CITYSELECTOR_CANCEL,
-//     data,
-//   })
-// }
+export const trackCitySelectorCancel = (data: UrlOriginationParam) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_CITYSELECTOR_CANCEL,
+    data,
+  })
+}
 
-// export const trackCitySelectorApply = (data: UrlOriginationWithCityParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_CITYSELECTOR_APPLY,
-//     data,
-//   })
-// }
+export const trackCitySelectorApply = (data: UrlOriginationWithCityParam) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_CITYSELECTOR_APPLY,
+    data,
+  })
+}
 
-// export const trackFooterClick = (data: MenuParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_FOOTER_CLICK,
-//     data,
-//   })
-// }
+export const trackFooterClick = (data: MenuParam) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_FOOTER_CLICK,
+    data,
+  })
+}
 
 export const trackLCCarRecommendationClick = (
   data: LCCarRecommendationParam,
@@ -2280,5 +2321,28 @@ export const trackKualifikasiKreditWaDirectClick = (
   logAmplitudeEvent({
     name: TrackingEventName.WEB_KUALIFIKASI_KREDIT_WA_DIRECT_CLICK,
     data,
+  })
+}
+
+export const trackWhatsappButtonClickFromCarResults = (
+  from: EventFromType,
+  carModel: string,
+  downPayment: string,
+  monthlyInstallment: string,
+  pageFrom: PageFrom,
+  variantName?: string,
+  version?: NewHomePageVersion,
+) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.SEND_WHATSAPP_MESSAGE,
+    data: {
+      from,
+      carModel,
+      downPayment,
+      monthlyInstallment,
+      pageFrom,
+      variantName,
+      version,
+    },
   })
 }

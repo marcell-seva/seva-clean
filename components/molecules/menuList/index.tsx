@@ -4,13 +4,15 @@ import styles from 'styles/components/molecules/menuList.module.scss'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { saveLocalStorage } from 'utils/handler/localStorage'
-import { LocalStorageKey } from 'utils/types/models'
-import { IconAccount, IconHistory, IconWishlist } from 'components/atoms/icons'
 import urls from 'utils/helpers/url'
 import { MenuItem } from 'components/atoms'
-import { CustomerInfoSeva, MobileWebTopMenuType } from 'utils/types/props'
 import { useRouter } from 'next/router'
 import { getToken } from 'utils/handler/auth'
+import { IconAccount, IconHistory, IconWishlist } from 'components/atoms/icon'
+import { LocalStorageKey } from 'utils/enum'
+import { MobileWebTopMenuType, CustomerInfoSeva } from 'utils/types/utils'
+import { trackBurgerMenuClick } from 'helpers/amplitude/seva20Tracking'
+
 type MenuListProps = {
   menuList?: MobileWebTopMenuType[]
   customerDetail?: CustomerInfoSeva
