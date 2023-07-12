@@ -9,4 +9,5 @@ interface Window {
   dataLayer: Array
   checkForDrag: any
   fbq: any
+  Moengage: any
 }
