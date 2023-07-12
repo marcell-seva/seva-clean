@@ -9,9 +9,9 @@ import { MenuItem } from 'components/atoms'
 import { useRouter } from 'next/router'
 import { getToken } from 'utils/handler/auth'
 import { IconAccount, IconHistory, IconWishlist } from 'components/atoms/icon'
-import { LocalStorageKey } from 'utils/enum'
 import { MobileWebTopMenuType, CustomerInfoSeva } from 'utils/types/utils'
 import { trackBurgerMenuClick } from 'helpers/amplitude/seva20Tracking'
+import { LocalStorageKey } from 'utils/types/models'
 
 type MenuListProps = {
   menuList?: MobileWebTopMenuType[]
@@ -75,8 +75,8 @@ export const MenuList: React.FC<MenuListProps> = ({
     } else {
       if (menuUrl === '/akun/profil') {
         saveLocalStorage(
-          LocalStorageKey.PageBeforeProfile,
-          window.location.pathname,
+          LocalStorageKey.PageBeforeLogin,
+          String(window.location.pathname),
         )
       }
       window.location.href = menuUrl

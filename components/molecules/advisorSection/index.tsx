@@ -210,7 +210,7 @@ export const AdvisorSection = ({
           <div className="tablet-as">
             <div className="input-container-as">
               <StyledInput
-                dataTestId={elementId.Homepage.ContactAgent.FullName}
+                data-testid={elementId.Homepage.ContactAgent.FullName}
                 type={'text'}
                 maxLength={100}
                 placeholder={'Nama Lengkap'}
