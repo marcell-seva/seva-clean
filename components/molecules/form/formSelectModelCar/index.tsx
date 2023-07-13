@@ -11,7 +11,7 @@ import {
   InputSelect,
   Label,
 } from 'components/atoms'
-import styles from 'styles/saas/components/molecules/form/formSelectModelCar.module.scss'
+import styles from 'styles/components/molecules/form/formSelectModelCar.module.scss'
 import { CarModel } from 'utils/types/carModel'
 
 const searchOption = {

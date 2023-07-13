@@ -7,7 +7,7 @@ import {
   PdpUpperSection,
   ProductDetailEmptyState,
 } from 'components/organism'
-import styles from 'styles/saas/pages/carVariantList.module.scss'
+import styles from 'styles/pages/carVariantList.module.scss'
 import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
 import {
   AnnouncementBoxDataType,

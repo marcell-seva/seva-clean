@@ -71,7 +71,7 @@ export const CarTypeItem = ({ carModel, bodyTypeSelected }: CarTileProps) => {
           fallbackImage={
             <CarImage
               src={carModel.image}
-              alt="car image"
+              alt={carModel.modelAndBrand}
               useIntersectionObserver={true}
               threshold={100}
               placeholder={<ShimmerBox height={132} />}

@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../../../styles/saas/components/atoms/overlay.module.scss'
+import styles from 'styles/components/atoms/overlay.module.scss'
 
 interface OverlayProps {
   isShow: boolean
@@ -7,7 +7,7 @@ interface OverlayProps {
   zIndex?: number
 }
 
-export const Overlay = ({ isShow, onClick, zIndex }: OverlayProps) => {
+const Overlay = ({ isShow, onClick, zIndex }: OverlayProps) => {
   return (
     <div
       style={{ zIndex }}
@@ -16,3 +16,4 @@ export const Overlay = ({ isShow, onClick, zIndex }: OverlayProps) => {
     />
   )
 }
+export default Overlay

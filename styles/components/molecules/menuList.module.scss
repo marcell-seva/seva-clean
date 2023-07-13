@@ -1,0 +1,45 @@
+@import '../../abstract/colors';
+
+.container {
+  overflow-y: auto;
+  max-height: 96%;
+  padding-bottom: 50px;
+  margin-right: -20px;
+
+  .menuContainer {
+    margin-right: 20px;
+  }
+}
+
+.menuWrapper {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #{$shades-grey-10};
+}
+
+.mainMenu {
+  font-family: var(--open-sans-semi-bold);
+  font-weight: 600;
+  font-size: 14px;
+  color: #{$primary-dark-blue};
+}
+
+.iconContainer {
+  margin-right: 12px;
+}
+
+.parentMenu {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.menu {
+  font-size: 14px;
+  font-family: var(--open-sans);
+  color: #{$primary-black};
+
+  &.isActive {
+    font-weight: 600;
+  }
+}

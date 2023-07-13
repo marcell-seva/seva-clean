@@ -1,5 +1,5 @@
 import React, { TextareaHTMLAttributes } from 'react'
-import styles from '../../../styles/saas/components/atoms/modal.module.scss'
+import styles from '../../../styles/components/atoms/modal.module.scss'
 import { PropsModal } from 'utils/types'
 import { Modal } from 'antd'
 import { IconClose } from '../icon'

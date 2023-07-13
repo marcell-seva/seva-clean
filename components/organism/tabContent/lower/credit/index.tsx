@@ -33,7 +33,7 @@ import {
   CalculationResult,
   LeadsFormSecondary,
 } from 'components/organism'
-import styles from 'styles/saas/components/organism/creditTab.module.scss'
+import styles from 'styles/components/organism/creditTab.module.scss'
 import { Button, Gap, IconCalculator, IconLoading } from 'components/atoms'
 import {
   FormPromoCode,

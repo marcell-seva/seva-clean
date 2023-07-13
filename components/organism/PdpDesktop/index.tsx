@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
-import styles from 'styles/saas/organism/pdpDesktop.module.scss'
+import styles from 'styles/organism/pdpDesktop.module.scss'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useRouter } from 'next/router'
 import { useMediaQuery } from 'react-responsive'
@@ -33,7 +33,7 @@ import {
   useContactUsModal,
 } from 'components/molecules/ContactUsModal/ContactUsModal'
 import { useLoginAlertModal } from 'components/molecules/LoginAlertModal/LoginAlertModal'
-import { useDialogModal } from 'components/molecules/DialogModal/DialogModal'
+import { useDialogModal } from 'components/molecules/dialogModal/DialogModal'
 import { setTrackEventMoEngageWithoutValue } from 'helpers/moengage'
 import {
   CarSearchPageMintaPenawaranParam,

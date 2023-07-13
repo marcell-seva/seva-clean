@@ -1,9 +1,9 @@
 import React from 'react'
-import styles from '../../../styles/saas/components/atoms/toast.module.scss'
-import { IconChecked, IconWarningCircle } from '../icon'
+import styles from 'styles/components/atoms/toast.module.scss'
 import { Modal } from 'antd'
-import { PropsToast } from 'utils/types'
-import { colors } from 'styles/colors'
+import { IconChecked, IconWarningCircle } from '../icons'
+import { colors } from 'utils/helpers/style/colors'
+import { PropsToast } from 'utils/types/props'
 
 export const Toast: React.FC<PropsToast> = ({
   text,

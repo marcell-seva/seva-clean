@@ -1,0 +1,211 @@
+import React, { useContext, useEffect } from 'react'
+import styles from '/styles/components/organisms/carOfTheMonth.module.scss'
+import DOMPurify from 'dompurify'
+import LogoToyota from '/assets/icon/Logo-Potrait-Toyota.webp'
+import LogoDaihatsu from '/assets/icon/Logo-Potrait-Daihatsu.webp'
+import LogoIsuzu from '/assets/icon/Logo-Potrait-Isuzu.webp'
+import LogoBmw from '/assets/icon/Logo-Potrait-BMW.webp'
+import LogoPeugeot from '/assets/icon/Logo-Potrait-Peugeot.webp'
+import { CarouselContext } from 'pure-react-carousel'
+import elementId from 'utils/helpers/trackerId'
+import {
+  formatBillionPoint,
+  formatNumberByLocalization,
+} from 'utils/handler/rupiah'
+import Image from 'next/image'
+import {
+  ButtonSize,
+  ButtonVersion,
+  LanguageCode,
+  LocalStorageKey,
+} from 'utils/types/models'
+import { sendAmplitudeData } from 'services/amplitude'
+import { AmplitudeEventName } from 'services/amplitude/types'
+import { Button } from 'components/atoms'
+import { saveLocalStorage } from 'utils/handler/localStorage'
+type carOfTheMonthData = {
+  name: string
+  desc: string
+  link: string
+  brand: string
+  price: number
+  imageUrl: string
+  priceValueJkt: number
+}
+interface CarOfTheMonthProps {
+  item: carOfTheMonthData
+  onCurrentSlide: (slide: number, maxSlide: number) => void
+  onSendOffer: () => void
+}
+const CardCarOfTheMonth = ({
+  item,
+  onCurrentSlide,
+  onSendOffer,
+}: CarOfTheMonthProps) => {
+  const carouselContext = useContext(CarouselContext)
+
+  useEffect(() => {
+    function onChange() {
+      const currentSlide = carouselContext.state.currentSlide
+      const maxSlide = carouselContext.state.totalSlides
+      onCurrentSlide(currentSlide, maxSlide)
+    }
+    carouselContext.subscribe(onChange)
+    return () => carouselContext.unsubscribe(onChange)
+  }, [carouselContext])
+  const renderBrandLogo = (carBrand: string) => {
+    switch (carBrand) {
+      case 'Toyota':
+        return (
+          <Image
+            src={LogoToyota}
+            className={styles.imgLogo}
+            alt="Toyota"
+            style={{ width: '40px', height: '100%' }}
+          />
+        )
+      case 'Daihatsu':
+        return (
+          <Image
+            src={LogoDaihatsu}
+            className={styles.imgLogo}
+            alt="Daihatsu"
+            style={{ width: '40px', height: '100%' }}
+          />
+        )
+      case 'Isuzu':
+        return (
+          <Image
+            src={LogoIsuzu}
+            className={styles.imgLogo}
+            alt="Isuzu"
+            style={{ width: '40px', height: '100%' }}
+          />
+        )
+      case 'BMW':
+        return (
+          <Image
+            src={LogoBmw}
+            className={styles.imgLogo}
+            alt="BMW"
+            style={{ width: '40px', height: '100%' }}
+          />
+        )
+      case 'Peugeot':
+        return (
+          <Image
+            src={LogoPeugeot}
+            className={styles.imgLogo}
+            alt="Peugeot"
+            style={{ width: '40px', height: '100%' }}
+          />
+        )
+      default:
+        return null
+    }
+  }
+  return (
+    <div className={styles.cardContainer}>
+      <img
+        alt="seva-image"
+        src={item.imageUrl}
+        className={styles.imageCar}
+        style={{ width: '256px' }}
+      />
+      <div className={styles.cardCarOfTheMonth}>
+        <div>
+          <div className={styles.carDetailWrapper}>
+            {renderBrandLogo(item.brand)}
+            <div>
+              <span className={styles.textModel}>{item.name}</span>
+              <p
+                className={styles.textOtr}
+                style={{ fontSize: '12px', lineHeight: '18px' }}
+              >
+                {'Harga mulai dari '}
+                <span>
+                  {item.priceValueJkt.toString().length <= 9
+                    ? item.price !== 0
+                      ? 'Rp' +
+                        formatNumberByLocalization(
+                          item.price,
+                          LanguageCode.id,
+                          1000000,
+                          100,
+                        ) +
+                        ' Jt'
+                      : 'Rp' +
+                        formatNumberByLocalization(
+                          item.priceValueJkt,
+                          LanguageCode.id,
+                          1000000,
+                          1,
+                        ) +
+                        ' Jt'
+                    : 'Rp' +
+                      formatBillionPoint(
+                        formatNumberByLocalization(
+                          item.priceValueJkt,
+                          LanguageCode.id,
+                          1000000,
+                          1,
+                        ),
+                      ) +
+                      ' Jt'}
+                </span>
+              </p>
+            </div>
+          </div>
+          <div className={styles.line} />
+          <div>
+            <div
+              className={styles.descriptionWrapper}
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(item.desc),
+              }}
+            />
+            <div className={styles.ctaWrapper}>
+              <Button
+                version={ButtonVersion.Secondary}
+                size={ButtonSize.Small}
+                onClick={() => {
+                  sendAmplitudeData(
+                    AmplitudeEventName.WEB_LP_CAROFTHEMONTH_CAR_CLICK,
+                    {
+                      Car_Brand: item.brand,
+                      Car_Model: item.name,
+                    },
+                  )
+                  window.location.href = item.link
+                }}
+                data-testid={elementId.Homepage.Button.LihatRincian}
+              >
+                <span className={styles.textButton}>Lihat Rincian</span>
+              </Button>
+              <Button
+                version={ButtonVersion.Secondary}
+                size={ButtonSize.Small}
+                onClick={() => {
+                  const currentCar = JSON.stringify({
+                    Car_Brand: item.brand,
+                    Car_Model: item.name,
+                  })
+                  saveLocalStorage(
+                    LocalStorageKey.CurrentCarOfTheMonthItem,
+                    currentCar,
+                  )
+                  onSendOffer()
+                }}
+                data-testid={elementId.Homepage.Button.LihatPenawaran}
+              >
+                <span className={styles.textButton}>Minta Penawaran</span>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default CardCarOfTheMonth

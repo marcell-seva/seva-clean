@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { NavigationTabV1 } from 'components/molecules'
 import { lowerSectionNavigationTab } from 'config/carVariantList.config'
-import styles from 'styles/saas/pages/carVariantList.module.scss'
+import styles from 'styles/pages/carVariantList.module.scss'
 import {
   CreditTab,
   PriceTab,

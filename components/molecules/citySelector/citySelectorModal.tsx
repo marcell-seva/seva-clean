@@ -25,7 +25,7 @@ import {
   TextMediumRegular,
   TextMediumRegularStyle,
 } from 'components/atoms/typography/TextMediumRegular'
-import { SearchInput } from 'components/atoms/searchInput/searchInput'
+import { SearchInput } from 'components/atoms/searchInput/oldSearchInput'
 import { client } from 'const/const'
 
 interface CityOptions {

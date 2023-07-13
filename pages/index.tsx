@@ -6,6 +6,7 @@ import { api } from 'services/api'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { HomepageDesktop, HomepageMobile } from 'components/organism'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
+import { getCity } from 'utils/hooks/useGetCity'
 
 interface HomePageDataLocalContextType {
   dataBanner: any
@@ -37,6 +38,7 @@ export const HomePageDataLocalContext =
   })
 
 export default function WithTracker({
+  dataReccomendation,
   dataBanner,
   dataMenu,
   dataCities,
@@ -71,7 +73,13 @@ export default function WithTracker({
         dataCarofTheMonth,
       }}
     >
-      {/* <>{isMobile ? <HomepageMobile /> : <HomepageDesktop />}</> */}
+      <>
+        {isMobile ? (
+          <HomepageMobile dataReccomendation={dataReccomendation} />
+        ) : (
+          <HomepageDesktop />
+        )}
+      </>
 
       <HomepageDesktop />
     </HomePageDataLocalContext.Provider>
@@ -83,8 +91,10 @@ export async function getServerSideProps(context: any) {
     'Cache-Control',
     'public, s-maxage=10, stale-while-revalidate=59',
   )
+  const params = `?city=${getCity().cityCode}&cityId=${getCity().id}`
   try {
     const [
+      recommendationRes,
       bannerRes,
       menuRes,
       citiesRes,
@@ -96,6 +106,7 @@ export async function getServerSideProps(context: any) {
       typeCarRes,
       carofTheMonthRes,
     ]: any = await Promise.all([
+      api.getRecommendation(params),
       api.getBanner(),
       api.getMenu(),
       api.getCities(),
@@ -108,6 +119,7 @@ export async function getServerSideProps(context: any) {
       api.getCarofTheMonth(),
     ])
     const [
+      dataReccomendation,
       dataBanner,
       dataMenu,
       dataCities,
@@ -119,6 +131,7 @@ export async function getServerSideProps(context: any) {
       dataTypeCar,
       dataCarofTheMonth,
     ] = await Promise.all([
+      recommendationRes.carRecommendations,
       bannerRes.data,
       menuRes.data,
       citiesRes,
@@ -132,6 +145,7 @@ export async function getServerSideProps(context: any) {
     ])
     return {
       props: {
+        dataReccomendation,
         dataBanner,
         dataMenu,
         dataCities,

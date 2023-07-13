@@ -249,7 +249,7 @@ const TabWrapper = styled.div`
   }
 `
 
-const TabMenu = styled(Link)<{ active: boolean }>`
+const TabMenu = styled.a<{ active: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;

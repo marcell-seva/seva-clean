@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from 'styles/saas/components/atoms/carColorItem.module.scss'
+import styles from 'styles/components/atoms/carColorItem.module.scss'
 
 interface Props {
   color: string | string[]

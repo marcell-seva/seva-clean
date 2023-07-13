@@ -1,21 +1,20 @@
 import React, { useEffect } from 'react'
 import { Avatar, Button } from 'components/atoms'
-import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { MenuList } from 'components/molecules'
-import styles from '../../../styles/saas/components/organism/sidebarMobile.module.scss'
+import styles from '../../../styles/components/organism/sidebarMobile.module.scss'
 import { LoginSevaUrl } from 'routes/routes'
 import { useContextMobileWebTopMenus } from 'context/mobileWebTopMenuContext/mobileWebTopMenuContext'
 import { getMobileWebTopMenu } from 'services/menu'
 import { getToken } from 'utils/api'
 import {
   trackLoginButtonClick,
-  // trackProfileAkunSayaClick,
+  trackProfileAkunSayaClick,
 } from 'helpers/amplitude/seva20Tracking'
 import { savePageBeforeLogin } from 'utils/loginUtils'
 import clsx from 'clsx'
 import { saveLocalStorage } from 'utils/localstorageUtils'
 import { useRouter } from 'next/router'
-import { LocalStorageKey } from 'utils/enum'
+import { ButtonSize, ButtonVersion, LocalStorageKey } from 'utils/enum'
 import { separatePhoneNumber } from 'utils/handler/separatePhoneNumber'
 import { fetchCustomerDetails } from 'utils/httpUtils/customerUtils'
 import { CustomerInfoSeva } from 'utils/types/utils'
@@ -92,9 +91,9 @@ const sidebarMobile = ({
   }
 
   const handleClickMyAccount = (url: string) => {
-    // trackProfileAkunSayaClick({
-    //   Page_Origination_URL: window.location.href,
-    // })
+    trackProfileAkunSayaClick({
+      Page_Origination_URL: window.location.href,
+    })
     router.push(url)
   }
 

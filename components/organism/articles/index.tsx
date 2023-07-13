@@ -4,7 +4,7 @@ import {
 } from 'helpers/amplitude/seva20Tracking'
 import React from 'react'
 import PrimaryCard from 'components/molecules/card/primaryCard'
-import styles from 'styles/saas/components/organism/articles.module.scss'
+import styles from 'styles/components/organism/articles.module.scss'
 import { Article } from 'utils/types'
 
 type TArticlesProps = {

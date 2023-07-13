@@ -1,11 +1,4 @@
-declare global {
-  interface Window {
-    Moengage: any
-  }
-}
-
 export const setTrackEventMoEngageWithoutValue = (value: any): void => {
-  console.log('VALUE : ', value)
   const moengage = window.Moengage
   moengage?.track_event(value)
 }

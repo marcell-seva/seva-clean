@@ -22,7 +22,7 @@ import {
 } from 'helpers/amplitude/newFunnelEventTracking'
 import { FunnelQueryKey } from 'utils/models/models'
 import { Loading } from 'components/atoms/loading'
-import { SearchInput } from 'components/atoms/searchInput/searchInput'
+import { SearchInput } from 'components/atoms/searchInput/oldSearchInput'
 import { client } from 'const/const'
 
 interface HeaderCarResultProps {

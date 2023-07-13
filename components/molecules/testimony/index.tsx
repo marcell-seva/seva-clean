@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styles from 'styles/saas/components/molecules/Testimony.module.scss'
+import styles from 'styles/components/molecules/Testimony.module.scss'
 import Image from 'next/image'
 import { IconBackButton, IconNextButton, IconStar } from 'components/atoms'
 import { timeSince, useIsMobile } from 'utils'

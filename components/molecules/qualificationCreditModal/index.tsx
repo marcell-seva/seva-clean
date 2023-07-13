@@ -1,6 +1,6 @@
 import { Modal } from 'antd'
 import React, { useEffect } from 'react'
-import styles from 'styles/saas/components/molecules/qualifacationModal.module.scss'
+import styles from 'styles/components/molecules/qualifacationModal.module.scss'
 import { Button } from 'components/atoms'
 import { ButtonVersion } from 'components/atoms/button'
 import { ButtonSize } from 'components/atoms/button'

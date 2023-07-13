@@ -8,7 +8,7 @@ export type CarResultQuery = {
 }
 
 export type CarResultParameters = {
-  carResultParameters: CarResultQuery
+  carResultParameters?: CarResultQuery
 }
 type CarVariantParameters = {
   variantID: string
@@ -39,16 +39,24 @@ export type LoanCalculatorParamsWithoutLoanRating = Omit<
 
 export type FunnelTrackingEvent =
   | {
-      name: TrackingEventName.SELECT_CAR_RESULT_VARIANT_DETAILS_VIEW_BROCHURE
-      data: CarResultAndVariantParameters
+      name: TrackingEventName.VIEW_CAR_RESULTS
+      data: CarResultParameters
     }
   | {
       name: TrackingEventName.FILTER_CAR_RESULTS
       data: FilterCarResults
     }
   | {
-      name: TrackingEventName.VIEW_CAR_RESULTS
-      data: CarResultParameters
+      name: TrackingEventName.SELECT_CAR_RESULT
+      data: SelectCarResult
+    }
+  | {
+      name: TrackingEventName.SELECT_CAR_RESULT_VARIANT_DETAILS_VIEW_BROCHURE
+      data: CarResultAndVariantParameters
+    }
+  | {
+      name: TrackingEventName.FILTER_CAR_RESULTS
+      data: FilterCarResults
     }
   | {
       name: TrackingEventName.SEARCH_CAR_RESULTS
@@ -69,6 +77,18 @@ type FilterCarResults = CarResultParameters & {
   downPayment: number | null
   downPaymentPercentage: number | null
   brands: string[]
+  tenure?: number | string
+  minPrice?: number | string
+  maxPrice?: number | string
+}
+
+type SelectCarResult = CarResultParameters & {
+  index: number
+  carID: string
+  carName: string
+  price: string
+  monthlyInstallments: string
+  downPayment: string
 }
 
 export const trackFilterCarResults = (filterCarResult: FilterCarResults) => {
@@ -91,5 +111,12 @@ export const trackSearchCarResults = (searchCarResults: SearchCarResults) => {
   logAmplitudeEvent({
     name: TrackingEventName.SEARCH_CAR_RESULTS,
     data: searchCarResults,
+  })
+}
+
+export const trackSelectCarResult = (selectCarResult: SelectCarResult) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.SELECT_CAR_RESULT,
+    data: selectCarResult,
   })
 }

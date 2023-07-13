@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useRef } from 'react'
-import styles from '../../../../styles/saas/components/molecules/form/formPromoCode.module.scss'
+import styles from '../../../../styles/components/molecules/form/formPromoCode.module.scss'
 import {
   IconChecked,
   IconLoading,

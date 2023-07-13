@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from 'styles/saas/components/molecules/calculationResultItem.module.scss'
+import styles from 'styles/components/molecules/calculationResultItem.module.scss'
 import { SpecialRateListType } from 'utils/types/utils'
 import { IconChecklist, IconWarning } from 'components/atoms'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'

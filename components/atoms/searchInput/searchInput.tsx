@@ -1,82 +1,81 @@
-import React, { ChangeEvent, InputHTMLAttributes } from 'react'
-import { LocationRed } from '../icon/LocationRed'
-import { Close } from '../icon/OldClose'
-import { Search } from '../icon/OldSearch'
-import { Input } from '../OldInput/Input'
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, {
+  ForwardedRef,
+  InputHTMLAttributes,
+  ReactElement,
+  useEffect,
+  useState,
+} from 'react'
+import elementId from 'utils/helpers/trackerId'
+import styles from 'styles/components/atoms/searchInput.module.scss'
+export enum InputTheme {
+  default = 'default',
+  profilePage = 'profile-page',
+}
 
-interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  onSearchInputChange?: (value: string) => void
-  onIconSearchClick?: (value: string) => void
-  searchInputValue: string
-  placeholder?: string
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  type: string
+  inputTheme?: InputTheme
+  suffixIcon?: () => JSX.Element
+  prefixComponent?: () => JSX.Element
+  prefixMarginRight?: number
+  bottomComponent?: () => JSX.Element
   height?: number
-  enablePrefixIcon?: boolean
-  searchIconSuffix?: boolean
+  ref?: ForwardedRef<HTMLInputElement>
+  overrideRedBorder?: boolean
   overrideHeightMobile?: boolean
   citySelectorMobile?: boolean
+  dataTestId?: string
+  name?: string
 }
 
-export const SearchInput = ({
-  onSearchInputChange,
-  onIconSearchClick,
-  searchInputValue,
-  placeholder = '',
-  height = 50,
-  enablePrefixIcon = true,
-  searchIconSuffix = false,
-  overrideHeightMobile = false,
-  citySelectorMobile = false,
-  ...restProps
-}: SearchInputProps) => {
-  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onSearchInputChange && onSearchInputChange(event.target.value)
+const noForwardRefInput = (
+  {
+    prefixComponent,
+    suffixIcon,
+    bottomComponent,
+    dataTestId,
+    onFocus,
+    onBlur,
+    name,
+    ...restProps
+  }: InputProps,
+  ref?: ForwardedRef<HTMLInputElement>,
+): ReactElement => {
+  const [nameForm, setNameForm] = useState('')
+  const [isFocus, setIsFocus] = useState(false)
+
+  const handleFocus = (e: any) => {
+    onFocus && onFocus(e)
+    setIsFocus(true)
   }
 
-  const prefixIcon = () =>
-    enablePrefixIcon ? (
-      <div
-        onClick={() => {
-          onIconSearchClick && onIconSearchClick(searchInputValue)
-        }}
-      >
-        <Search />
-      </div>
-    ) : (
-      <></>
-    )
-
-  const prefixIconCitySelector = () =>
-    enablePrefixIcon ? <LocationRed /> : <></>
-
-  const suffixIconClick = () => {
-    onSearchInputChange && onSearchInputChange('')
-    onIconSearchClick && onIconSearchClick('')
+  const handleBlur = (e: any) => {
+    onBlur && onBlur(e)
+    setIsFocus(false)
   }
 
-  const suffixWhenEmpty = () => (searchIconSuffix ? <Search /> : <></>)
-
-  const suffixIcon = () =>
-    searchInputValue ? (
-      <div onClick={suffixIconClick}>
-        <Close />
-      </div>
-    ) : (
-      suffixWhenEmpty()
-    )
+  useEffect(() => {
+    if (name === 'birthdate-register') {
+      setNameForm(elementId.HamburgerMenu.Register.BirthDate)
+    }
+  }, [])
 
   return (
-    <Input
-      value={searchInputValue}
-      onChange={onInputChange}
-      prefixComponent={citySelectorMobile ? prefixIconCitySelector : prefixIcon}
-      suffixIcon={citySelectorMobile ? undefined : suffixIcon}
-      placeholder={placeholder}
-      type={'text'}
-      height={height}
-      prefixMarginRight={citySelectorMobile ? 9 : 6}
-      citySelectorMobile={citySelectorMobile}
-      overrideHeightMobile={overrideHeightMobile}
-      {...restProps}
-    />
+    <div className={styles.container}>
+      <div className={styles.searchInput}>
+        <input
+          className={`input-element ${styles.input}`}
+          data-testid={dataTestId || nameForm}
+          ref={ref}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          {...restProps}
+        />
+        {suffixIcon && suffixIcon()}
+      </div>
+      {bottomComponent && bottomComponent()}
+    </div>
   )
 }
+export const Input = React.forwardRef(noForwardRefInput)

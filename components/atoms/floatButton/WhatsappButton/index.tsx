@@ -1,10 +1,10 @@
 import React from 'react'
 import { FloatButton, FloatButtonProps } from 'antd'
-import { IconWhatsapp } from 'components/atoms'
+import { IconWhatsapp } from 'components/atoms/icons'
 
 type Props = Omit<FloatButtonProps, 'icon'>
 
-export const WhatsappButton = (props: Props) => {
+const WhatsappButton = (props: Props) => {
   return (
     <FloatButton
       className="whatsapp-floating-button"
@@ -13,3 +13,5 @@ export const WhatsappButton = (props: Props) => {
     />
   )
 }
+
+export default WhatsappButton

@@ -13,7 +13,7 @@ import { upperSectionNavigationTab } from 'config/carVariantList.config'
 import { NavigationTabV2 } from 'components/molecules'
 import { CityOtrOption, VideoDataType } from 'utils/types/utils'
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import styles from 'styles/saas/components/organism/pdpUpperSection.module.scss'
+import styles from 'styles/components/organism/pdpUpperSection.module.scss'
 import { exteriorImagesListNew } from 'config/Exterior360ImageList.config'
 import { interiorImagesListNew } from 'config/Interior360ImageList.config'
 import {

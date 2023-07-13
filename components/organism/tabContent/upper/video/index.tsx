@@ -1,6 +1,6 @@
 import React from 'react'
 import { CityOtrOption, VideoDataType } from 'utils/types/utils'
-import styles from 'styles/saas/components/organism/videoTab.module.scss'
+import styles from 'styles/components/organism/videoTab.module.scss'
 import Youtube from 'react-youtube'
 import elementId from 'helpers/elementIds'
 import { trackPDPGalleryVideo } from 'helpers/amplitude/seva20Tracking'

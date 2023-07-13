@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import styles from 'styles/saas/components/organism/variantsOptions.module.scss'
+import styles from 'styles/components/organism/variantsOptions.module.scss'
 import {
   CarModelDetailsResponse,
   CarVariantRecommendation,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styles from 'styles/saas/components/molecules/info.module.scss'
+import styles from 'styles/components/molecules/info.module.scss'
 import { IconInfo } from 'components/atoms'
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'

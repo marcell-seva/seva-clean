@@ -19,7 +19,6 @@ import {
   UnverifiedLeadSubCategory,
 } from 'services/lead'
 import { ToastType, useToast } from 'components/atoms/OldToast/Toast'
-import { useDialogModal } from '../DialogModal/DialogModal'
 import { Contact } from 'components/atoms/icon/Contact'
 import { FBPixelStandardEvent } from 'helpers/facebookPixel'
 // import ReactPixel from 'react-facebook-pixel'
@@ -44,6 +43,7 @@ import { IconSquareCheckBox, IconSquareCheckedBox } from 'components/atoms/icon'
 import { client } from 'const/const'
 import { CityOtrOption, UTMTagsData } from 'utils/types/utils'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useDialogModal } from 'components/molecules/dialogModal/DialogModal'
 
 interface ContactUsFloatingComponentProps
   extends HTMLAttributes<HTMLDivElement> {

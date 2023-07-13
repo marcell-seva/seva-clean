@@ -1,4 +1,3 @@
-import Card from './card'
 import TypeCar from './typeCar'
 import Capsule from './capsule'
 import {
@@ -73,14 +72,10 @@ import {
 import Brand from './brand'
 import Logo from './logo'
 import { ShimmerCardArticle, ShimmerCardProduct } from './shimmer'
-import { Button } from './button'
-import { CardShadow } from './card/CardShadow'
-import { InputSelect } from './inputSelect'
-import { BottomSheet } from './bottomSheet'
-import { Overlay } from './overlay'
-import { Skeleton } from './skeleton'
-import { WhatsappButton } from './floatButton/WhatsappButton'
-import { CSAButton } from './floatButton/CSAButton'
+import Overlay from './overlay'
+import Skeleton from './skeleton'
+import WhatsappButton from './floatButton/WhatsappButton'
+import CSAButton from './floatButton/CSAButton'
 import { InputWithIcon } from './input/inputWithIcon'
 import { Label } from './label'
 import { Tooltip } from './tooltip'
@@ -95,17 +90,23 @@ import { Link } from './link'
 import ErrorMessage from './errorMessage'
 import { TextButton } from './textButton'
 import { CarColorItem } from './carColorItem'
-import { Avatar } from './avatar'
-import { MenuItem } from './menuItem'
 import { ToggleSwitch } from './ToggleSwitch/ToggleSwitch'
 import { MaxWidthStyle } from './maxWidthStyle'
 import { WebShimmer } from './webShimmer'
 import { MobileShimmer } from './mobileShimmer'
 import { CheckedCircleOutlined } from './icon/CheckedCircleOutlined'
 import { UncheckedSquareOutlined } from './icon/UncheckedSquareOutlined'
-
+import Button from './button'
+import { CardShadow } from './card/cardShadow'
+import Avatar from './avatar'
+import MenuItem from './menuItem'
+import { InputSelect } from './inputSelect'
+import { Separator } from './separator'
+import CustomModal from './modal/custom'
+import BottomSheet from './bottomSheet'
+import { SearchInput } from './searchInput'
 export {
-  Card,
+  Button,
   TypeCar,
   Capsule,
   IconBackButton,
@@ -128,8 +129,6 @@ export {
   Logo,
   ShimmerCardProduct,
   ShimmerCardArticle,
-  Button,
-  CardShadow,
   IconRemove,
   IconEdit,
   IconDownload,
@@ -177,8 +176,6 @@ export {
   IconThreeSixty,
   IconHamburger,
   IconChevronRight,
-  InputSelect,
-  BottomSheet,
   Overlay,
   Skeleton,
   CSAButton,
@@ -209,4 +206,10 @@ export {
   MobileShimmer,
   CheckedCircleOutlined,
   UncheckedSquareOutlined,
+  CardShadow,
+  InputSelect,
+  Separator,
+  CustomModal,
+  BottomSheet,
+  SearchInput,
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Label, Tooltip } from 'components/atoms'
-import styles from '../../../styles/saas/components/molecules/labelWithTooltip.module.scss'
+import styles from '../../../styles/components/molecules/labelWithTooltip.module.scss'
 
 interface Props {
   label: string

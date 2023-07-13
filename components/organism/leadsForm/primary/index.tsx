@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styles from '../../../../styles/saas/components/organism/leadsFormPrimary.module.scss'
+import styles from '../../../../styles/components/organism/leadsFormPrimary.module.scss'
 import {
   Button,
   Gap,

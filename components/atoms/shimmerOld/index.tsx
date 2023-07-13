@@ -3,7 +3,7 @@ import styled from 'styled-components'
 const ShimmerLoader = '/v3/assets/illustration/placeholder.gif'
 
 export const Shimmer = styled.div<{ radius?: number }>`
-  background-image: url(${ShimmerLoader});
+  background-image: url(${ShimmerLoader as any});
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;

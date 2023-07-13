@@ -1,17 +1,13 @@
 import type React from 'react'
 import type { RefHandles } from 'react-spring-bottom-sheet/dist/types'
-export type ForwardedRef = React.ForwardedRef<RefHandles>
-
-import styles from '../../../styles/saas/components/atoms/bottomSheet.module.scss'
-
-import {
-  BottomSheet as SpringSheet,
-  BottomSheetProps,
-} from 'react-spring-bottom-sheet'
-import { IconClose } from '../icon'
-import { colors } from 'styles/colors'
+import { BottomSheet, BottomSheetProps } from 'react-spring-bottom-sheet'
 import { forwardRef } from 'react'
+import { IconClose } from '../icons'
+import { colors } from 'utils/helpers/style/colors'
+import 'react-spring-bottom-sheet/dist/style.css'
+import styles from 'styles/components/atoms/bottomSheet.module.scss'
 
+type ForwardedRef = React.ForwardedRef<RefHandles>
 interface GeneralBottomSheetProps extends BottomSheetProps {
   title: string
   closeDatatestid?: string
@@ -22,7 +18,7 @@ const forwardBottomSheet = (
   ref: ForwardedRef,
 ) => {
   return (
-    <SpringSheet ref={ref} {...props}>
+    <BottomSheet ref={ref} {...props}>
       <div className={styles.header}>
         <div className={styles.subHeader}>
           <p>{title}</p>
@@ -32,8 +28,8 @@ const forwardBottomSheet = (
         </div>
       </div>
       {children}
-    </SpringSheet>
+    </BottomSheet>
   )
 }
 
-export const BottomSheet = forwardRef(forwardBottomSheet)
+export default forwardRef(forwardBottomSheet)

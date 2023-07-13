@@ -1,6 +1,6 @@
 import React from 'react'
 import { Skeleton } from 'components/atoms'
-import styles from 'styles/saas/components/organism/carDetailLoadPdp.module.scss'
+import styles from 'styles/components/organism/carDetailLoadPdp.module.scss'
 const CarSkeleton = '/v3/assets/illustration/car-skeleton.webp'
 
 const CarDetailLoadPdp = () => {

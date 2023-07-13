@@ -1,9 +1,9 @@
 import clsx from 'clsx'
 import React from 'react'
-import styles from '../../../styles/saas/components/atoms/tooltip.module.scss'
+import styles from '../../../styles/components/atoms/tooltip.module.scss'
 
 import { IconClose, IconInfo } from '../icon'
-import { Overlay } from '../overlay'
+import Overlay from '../overlay'
 
 interface Props {
   content: string

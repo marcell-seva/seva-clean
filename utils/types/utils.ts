@@ -47,7 +47,7 @@ export interface Time {
 export interface Location {
   cityName: string
   cityCode: string
-  id: number | string
+  id?: string
   province: string
 }
 
@@ -103,7 +103,7 @@ export interface Testimony {
   detail: string
 }
 
-export interface HowToUse {
+export interface HowToUseSection {
   head_title: string
   title_1: string
   subtitle_1: string

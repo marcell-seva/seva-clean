@@ -5,7 +5,7 @@ import {
   trackSeeAllPromoClick,
 } from 'helpers/amplitude/seva20Tracking'
 import React from 'react'
-import styles from 'styles/saas/components/organism/summary.module.scss'
+import styles from 'styles/components/organism/summary.module.scss'
 
 const promoBannerTSO = '/v3/assets/illustration/PromoTSO.webp'
 const promoBannerCumaDiSEVA = '/v3/assets/illustration/PromoCumaDiSEVA.webp'

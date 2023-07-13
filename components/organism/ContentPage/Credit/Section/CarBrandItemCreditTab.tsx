@@ -211,7 +211,7 @@ export const CarBrandItemCreditTab = ({
         <ImageSection>
           <CarImage
             src={carModel.image}
-            alt="car image"
+            alt={carModel.brandAndModel}
             useIntersectionObserver={true}
             threshold={100}
             placeholder={<ShimmerBox height={132} />}
@@ -279,7 +279,7 @@ export const CarBrandItemCreditTab = ({
 }
 
 const Shimmer = styled.div<{ radius?: number }>`
-  background-image: url(${ShimmerLoader});
+  background-image: url(${ShimmerLoader as any});
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;

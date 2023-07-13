@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { api } from 'services/api'
-import styles from '../../../../styles/saas/components/molecules/Search.module.scss'
+import styles from 'styles/components/molecules/Search.module.scss'
 import { IconChevronLeft, IconCross, IconSearch } from 'components/atoms'
 import { Variant, PropsSearchMobile } from 'utils/types'
 

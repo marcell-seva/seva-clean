@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes } from 'react'
-import styles from 'styles/saas/components/atoms/textButton.module.scss'
+import styles from 'styles/components/atoms/textButton.module.scss'
 
 interface TextButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   leftIcon?: () => JSX.Element

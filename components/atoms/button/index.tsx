@@ -1,5 +1,11 @@
 import React, { ButtonHTMLAttributes } from 'react'
-import styles from '../../../styles/saas/components/atoms/button.module.scss'
+import styles from 'styles/components/atoms/button.module.scss'
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  version: ButtonVersion
+  size: ButtonSize
+  secondaryClassName?: any
+}
 
 export enum ButtonVersion {
   Secondary = 'Secondary',
@@ -15,13 +21,7 @@ export enum ButtonSize {
   Small = 'Small',
 }
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  version: ButtonVersion
-  size: ButtonSize
-  secondaryClassName?: any
-}
-
-export const Button = ({
+const Button = ({
   version,
   size = ButtonSize.Big,
   children,
@@ -59,3 +59,5 @@ export const Button = ({
     </button>
   )
 }
+
+export default Button

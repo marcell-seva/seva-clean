@@ -17,7 +17,7 @@ import React, { useEffect, useState } from 'react'
 import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import { getNewFunnelRecommendations, getMinMaxPrice } from 'services/newFunnel'
 import axios, { AxiosResponse } from 'axios'
-import styles from '../../../styles/saas/pages/mobil-baru.module.scss'
+import styles from '../../../styles/pages/mobil-baru.module.scss'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import { CSAButton } from 'components/atoms'
 import clsx from 'clsx'
@@ -302,7 +302,7 @@ export const PLP = ({
   //handle scrolling
   useEffect(() => {
     window.scrollTo(0, 0)
-    // moengageViewPLP()
+    moengageViewPLP()
     checkCitiesData()
     getAnnouncementBox()
 

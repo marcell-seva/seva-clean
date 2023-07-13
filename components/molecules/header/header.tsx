@@ -15,7 +15,7 @@ import { getCarsSearchBar } from 'services/searchbar'
 import { FunnelQueryKey, LocalStorageKey } from 'utils/models/models'
 import { convertObjectQuery } from 'utils/handler/convertObjectQuery'
 import { Loading } from 'components/atoms/loading'
-import { SearchInput } from 'components/atoms/searchInput/searchInput'
+import { SearchInput } from 'components/atoms/searchInput/oldSearchInput'
 import { client } from 'const/const'
 
 interface HeaderVariantProps {
