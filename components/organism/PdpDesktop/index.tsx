@@ -40,6 +40,8 @@ import {
   trackCarVariantListPageLeadsFormSumit,
 } from 'helpers/amplitude/seva20Tracking'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
+import HeaderVariant from 'components/molecules/header/header'
 
 export default function index() {
   const router = useRouter()
@@ -213,7 +215,7 @@ export default function index() {
   return (
     <>
       <div className={styles.pageHeaderWrapper}>
-        {/* <PageHeaderSeva>{!isMobile ? <HeaderVariant /> : <></>}</PageHeaderSeva> */}
+        <PageHeaderSeva>{!isMobile ? <HeaderVariant /> : <></>}</PageHeaderSeva>
       </div>
       <div className={styles.container}>
         {isShowLoading && (

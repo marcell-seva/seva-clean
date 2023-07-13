@@ -59,3 +59,7 @@ input {
 button {
   background: none;
 }
+
+a {
+  text-decoration: none;
+}

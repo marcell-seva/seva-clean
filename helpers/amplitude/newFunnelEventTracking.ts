@@ -21,6 +21,8 @@ type CarVariantParameters = {
 export type CarResultAndVariantParameters = CarResultParameters &
   CarVariantParameters
 
+export type SearchCarResults = CarResultParameters & { search: string }
+
 export type LoanCalculatorParams = {
   loanRating: LoanRating
   income: number
@@ -34,6 +36,32 @@ export type LoanCalculatorParamsWithoutLoanRating = Omit<
   LoanCalculatorParams,
   'loanRating'
 >
+
+export type FunnelTrackingEvent =
+  | {
+      name: TrackingEventName.VIEW_CAR_RESULTS
+      data: CarResultParameters
+    }
+  | {
+      name: TrackingEventName.FILTER_CAR_RESULTS
+      data: FilterCarResults
+    }
+  | {
+      name: TrackingEventName.SELECT_CAR_RESULT
+      data: SelectCarResult
+    }
+  | {
+      name: TrackingEventName.SELECT_CAR_RESULT_VARIANT_DETAILS_VIEW_BROCHURE
+      data: CarResultAndVariantParameters
+    }
+  | {
+      name: TrackingEventName.FILTER_CAR_RESULTS
+      data: FilterCarResults
+    }
+  | {
+      name: TrackingEventName.SEARCH_CAR_RESULTS
+      data: SearchCarResults
+    }
 
 export const trackSelectCarResultVariantDetailsViewBrochure = (
   selectCarResultVariant: CarResultAndVariantParameters,
@@ -63,28 +91,6 @@ type SelectCarResult = CarResultParameters & {
   downPayment: string
 }
 
-export type FunnelTrackingEvent =
-  | {
-      name: TrackingEventName.VIEW_CAR_RESULTS
-      data: CarResultParameters
-    }
-  | {
-      name: TrackingEventName.FILTER_CAR_RESULTS
-      data: FilterCarResults
-    }
-  | {
-      name: TrackingEventName.SELECT_CAR_RESULT
-      data: SelectCarResult
-    }
-  | {
-      name: TrackingEventName.SELECT_CAR_RESULT_VARIANT_DETAILS_VIEW_BROCHURE
-      data: CarResultAndVariantParameters
-    }
-  | {
-      name: TrackingEventName.FILTER_CAR_RESULTS
-      data: FilterCarResults
-    }
-
 export const trackFilterCarResults = (filterCarResult: FilterCarResults) => {
   logAmplitudeEvent({
     name: TrackingEventName.FILTER_CAR_RESULTS,
@@ -98,6 +104,13 @@ export const trackViewCarResult = (
   logAmplitudeEvent({
     name: TrackingEventName.VIEW_CAR_RESULTS,
     data: carResultParameters,
+  })
+}
+
+export const trackSearchCarResults = (searchCarResults: SearchCarResults) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.SEARCH_CAR_RESULTS,
+    data: searchCarResults,
   })
 }
 
