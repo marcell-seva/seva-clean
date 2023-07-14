@@ -10,7 +10,6 @@ import {
 } from 'utils/types/utils'
 import { hundred, itemLimit, million, ten } from 'const/const'
 import { AxiosResponse } from 'axios'
-import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import { CarModelTileV2 } from './CarModelTile/CarModelTileV2'
@@ -33,29 +32,16 @@ import {
 import { FreeInstallment } from './FreeInstallment/FreeInstallment'
 import { Pagination } from './Pagination/Pagination'
 import { useContextCarModel } from 'context/carModelContext/carModelContext'
-import {
-  initData,
-  useFunnelQueryData,
-} from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import { useMediaQuery } from 'react-responsive'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
-import {
-  trackCarSearchPageView,
-  trackPLPCarClick,
-} from 'helpers/amplitude/seva20Tracking'
+import { trackPLPCarClick } from 'helpers/amplitude/seva20Tracking'
 // import { useNewCitySelectoreModal } from 'pages/CitySelector/NewCitySelectorModal'
 // import { PageHeaderSevaCarResults } from 'pages/component/PageHeaderSeva/PageHeaderSevaCarResults'
 import { useModalContext } from 'context/modalContext/modalContext'
-// import { CarResultPageShimmer } from 'pages/component/Shimmer/CarResultPage/CarResultPageShimmer'
-// import { StyledPlaceholder } from 'pages/component/Shimmer/Shimmer'
-// import { ArrowClose } from 'components/icon/ArrowClose/ArrowClose'
-// import { FilterBrandMobile } from 'pages/component/Filter/FilterSideMenu/FilterBrandMobile'
-import { saveLocalStorage } from 'utils/localstorageUtils'
-// import { setTrackEventMoEngage } from 'helpers/moengage'
 import { CityDisclaimer } from './CityDisclaimer/CityDisclaimer'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
 import elementId from 'helpers/elementIds'
-// import HeaderCarResult from 'pages/HomePageSeva/Header/HeaderCarResult'
 import { useRouter } from 'next/router'
 import { FilterParam } from 'utils/types/context'
 import {
@@ -89,6 +75,7 @@ import {
   trackSelectCarResult,
   trackViewCarResult,
 } from 'helpers/amplitude/newFunnelEventTracking'
+import { useCitySelectorModal } from 'components/molecules/citySelector/citySelectorModal'
 
 interface CarResultPageProps {
   carRecommendation: CarRecommendationResponse
@@ -101,17 +88,8 @@ export default function PLPDesktop({
 }: CarResultPageProps) {
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const router = useRouter()
-  const {
-    bodyType,
-    brand,
-    downPaymentAmount,
-    monthlyIncome,
-    tenure,
-    priceRangeGroup,
-    age,
-    sortBy,
-    monthlyInstallment,
-  } = router.query as FilterParam
+  const { bodyType, brand, downPaymentAmount, monthlyInstallment } =
+    router.query as FilterParam
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
   let queryTemp = funnelQuery
   if (downPaymentAmount || monthlyInstallment) {
@@ -144,8 +122,8 @@ export default function PLPDesktop({
   })
   const { setCarModel } = useContextCarModel()
   const [brandName, setBrandName] = useState<string | undefined>()
-  //   const { showModal: showCitySelectorModal, CitySelectorModal } =
-  //     useNewCitySelectoreModal()
+  const { showModal: showCitySelectorModal, CitySelectorModal } =
+    useCitySelectorModal()
 
   const { modal, patchModal } = useModalContext()
   const [showModalTmp, setShowModal] = useState(false)
@@ -183,7 +161,7 @@ export default function PLPDesktop({
   const cityHandler = async () => {
     // prevent cannot scroll in revamp mobile
     if (!cityOtr && !isMobile) {
-      //   showCitySelectorModal()
+      showCitySelectorModal()
     }
   }
 
@@ -390,7 +368,10 @@ export default function PLPDesktop({
   }
 
   useEffect(() => {
-    if (getCity().cityName !== 'Jakarta Pusat') {
+    if (
+      getCity().cityName !== 'Jakarta Pusat' ||
+      carRecommendation.carRecommendations.length === 0
+    ) {
       if (brand) {
         if (!brand.includes('SEVA')) {
           setBrandName(
@@ -472,7 +453,6 @@ export default function PLPDesktop({
   //   <StyledInputTopBar>{SearchBar()}</StyledInputTopBar>
   // )
 
-  const [tabFilter, setTabFilter] = useState(true)
   useEffect(() => {
     if (funnelQuery.brand) {
       if (funnelQuery.brand.length === 1) {
@@ -481,22 +461,7 @@ export default function PLPDesktop({
         setBrandName('')
       }
     }
-    if (modal.isOpenCarFilter) {
-      setShowModal(true)
-    }
-    if (!modal.isOpenCarFilter) {
-      setTabFilter(true)
-    }
   }, [funnelQuery, modal])
-
-  const onClickCancel = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    setShowModal(!showModalTmp)
-    setShowAnimate(true)
-    setTimeout(() => {
-      patchModal({ isOpenCarFilter: false })
-    }, 500)
-  }
 
   // TEMPORARY
   const enableFreeInstallmentBanner = false
@@ -602,7 +567,7 @@ export default function PLPDesktop({
         </Content>
       </StyledCarResultsPage>
       <RenderToast type={ToastType.Error} message={t.common.errorMessage} />
-      {/* <CitySelectorModal /> */}
+      <CitySelectorModal />
     </>
   )
 }

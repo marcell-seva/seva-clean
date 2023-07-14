@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styles from '../../../styles/components/organism/headerMobile.module.scss'
 import {
   IconHamburger,
@@ -10,22 +10,18 @@ import { SidebarMobile } from 'components/organism'
 // import { useSearchModal } from 'components/molecules/searchModal'
 import { rootUrl } from 'routes/routes'
 import clsx from 'clsx'
-// import { WebAnnouncementBox } from 'pages/component/PageHeaderSeva/WebAnnouncementBox'
 import {
-  // trackCitySelectorOpen,
-  // trackOpenBurgerMenu,
-  // trackSearchbarOpen,
+  trackCitySelectorOpen,
+  trackOpenBurgerMenu,
+  trackSearchbarOpen,
   trackSevaLogoClick,
 } from 'helpers/amplitude/seva20Tracking'
 import getCurrentEnvironment from 'helpers/environments'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { AnnouncementBox } from 'components/molecules'
-import { AnnouncementBoxDataType } from 'utils/types/utils'
-import { API, getToken } from 'utils/api'
-import { AxiosResponse } from 'axios'
-import endpoints from 'helpers/endpoints'
+import { WebAnnouncementBox } from 'components/organisms'
+import { useSearchModal } from 'components/molecules'
 
 const LogoPrimary = '/v3/assets/icon/logo-primary.webp'
 
@@ -51,37 +47,35 @@ export const HeaderMobile = ({
   isShowAnnouncementBox = false,
   style,
 }: HeaderMobileProps): JSX.Element => {
-  // const { showModal: showSearchModal, SearchModal } = useSearchModal()
+  const { showModal: showSearchModal, SearchModal } = useSearchModal()
   const enableAnnouncementBoxAleph =
     getCurrentEnvironment.featureToggles.enableAnnouncementBoxAleph
-
-  const [announcement, setAnnouncement] = useState<AnnouncementBoxDataType>()
 
   const router = useRouter()
 
   const handleClickCityIcon = () => {
     if (!isActive) {
-      // trackCitySelectorOpen({
-      //   Page_Origination_URL: window.location.href,
-      // })
+      trackCitySelectorOpen({
+        Page_Origination_URL: window.location.href,
+      })
       emitClickCityIcon()
     }
   }
 
   const handleSearch = () => {
     if (!isActive) {
-      // showSearchModal()
-      // trackSearchbarOpen({
-      //   Page_Origination_URL: window.location.href,
-      // })
+      showSearchModal()
+      trackSearchbarOpen({
+        Page_Origination_URL: window.location.href,
+      })
     }
   }
 
   const handleToggleBurgerMenu = () => {
     if (!isActive) {
-      // trackOpenBurgerMenu({
-      //   Page_Origination_URL: window.location.href,
-      // })
+      trackOpenBurgerMenu({
+        Page_Origination_URL: window.location.href,
+      })
     }
     setIsActive(() => !isActive)
   }
@@ -91,16 +85,6 @@ export const HeaderMobile = ({
       Page_Origination_URL: window.location.href,
     })
   }
-
-  useEffect(() => {
-    API.get(endpoints.announcementBox, {
-      headers: {
-        'is-login': getToken() ? 'true' : 'false',
-      },
-    }).then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-      setAnnouncement(res.data.data)
-    })
-  }, [])
 
   return (
     <>
@@ -118,17 +102,11 @@ export const HeaderMobile = ({
         })}
       >
         <div className={styles.wrapperAnnouncementBox}>
-          {isShowAnnouncementBox &&
-            announcement &&
-            router.pathname !== '/' &&
-            enableAnnouncementBoxAleph && (
-              <AnnouncementBox
-                data={announcement}
-                onCloseButton={() =>
-                  setShowAnnouncementBox && setShowAnnouncementBox(false)
-                }
-              />
-            )}
+          {router.pathname !== '/' && enableAnnouncementBoxAleph && (
+            <WebAnnouncementBox
+              onCloseAnnouncementBox={setShowAnnouncementBox}
+            />
+          )}
           <div className={styles.container}>
             <div data-testid={elementId.Homepage.GlobalHeader.HamburgerMenu}>
               <IconHamburger
@@ -163,7 +141,7 @@ export const HeaderMobile = ({
             </div>
           </div>
         </div>
-        {/* <SearchModal /> */}
+        <SearchModal />
       </header>
       <Overlay isShow={isActive} onClick={() => setIsActive(false)} />
     </>

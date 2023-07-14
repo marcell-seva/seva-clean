@@ -13,6 +13,7 @@ export const encryptValue = (input: string) => {
 
 // decryption failed will return empty string => ''
 export const decryptValue = (input: string) => {
+  if (!input) return ''
   return AES.decrypt(
     input.replace(encryptedPrefix, ''),
     encryptionKey,
