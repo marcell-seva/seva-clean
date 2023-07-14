@@ -130,7 +130,6 @@ export default function HeaderCarResult({
         return window.location.href.replace('https://www.', '')
       }
     }
-    router.replace(urlDestination)
     router.push(urlDestination)
     trackSearchBarSuggestionClick({
       Page_Origination_URL: getOriginationUrl(),
@@ -227,7 +226,7 @@ export default function HeaderCarResult({
                   onSearchInputChange={onSearchInputChange}
                   searchInputValue={searchInputValue}
                   onKeyDown={(e) => clickEnter(e)}
-                  placeholder={t('funnelFormPageSeva.placeholder')}
+                  placeholder={'Cari model mobil...'}
                   searchIconSuffix={true}
                 />
               ) : (
@@ -239,7 +238,7 @@ export default function HeaderCarResult({
                   onSearchInputChange={onSearchInputChange}
                   searchInputValue={searchInputValue}
                   onKeyDown={(e) => clickEnter(e)}
-                  placeholder={t('funnelFormPageSeva.placeholder')}
+                  placeholder={'Cari model mobil...'}
                 />
               )}
             </InputWrapper>

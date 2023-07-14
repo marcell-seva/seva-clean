@@ -4,7 +4,6 @@ import {
   HeaderMobile,
   LeadsFormPrimary,
   PLPEmpty,
-  PLPSkeleton,
   PopupPromo,
   PopupResultSulit,
   PopupResultMudah,
@@ -51,7 +50,7 @@ import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import { getToken } from 'utils/api'
 import { carResultsUrl } from 'routes/routes'
 import endpoints from 'helpers/endpoints'
-import { client, hundred, million } from 'const/const'
+import { hundred, million } from 'const/const'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
@@ -367,7 +366,10 @@ export const PLP = ({
   }, [recommendations])
 
   useEffect(() => {
-    if (getCity().cityName !== 'Jakarta Pusat') {
+    if (
+      getCity().cityName !== 'Jakarta Pusat' ||
+      carRecommendation.carRecommendations.length === 0
+    ) {
       getMinMaxPrice({})
         .then((response: AxiosResponse<MinMaxPrice>) => {
           if (response.data) {

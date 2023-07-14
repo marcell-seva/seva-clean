@@ -8,7 +8,6 @@ import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
 import { CarRecommendation, FooterSEOAttributes } from 'utils/types/utils'
 import PLPDesktop from 'components/organism/PLPDesktop'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 
 const NewCarResultPage = ({
   meta,

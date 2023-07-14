@@ -971,6 +971,14 @@ export type Seva20TrackingEvent =
         version?: NewHomePageVersion
       }
     }
+  | {
+      name: TrackingEventName.WEB_CITYSELECTOR_OPEN
+      data: UrlOriginationParam
+    }
+  | {
+      name: TrackingEventName.WEB_SEARCHBAR_OPEN
+      data: UrlOriginationParam
+    }
   | NewHomePageTrackingEvent
   | FunnelTrackingEvent
 
@@ -1890,12 +1898,12 @@ export const trackSevaLogoClick = (data: UrlOriginationParam) => {
   })
 }
 
-// export const trackSearchbarOpen = (data: UrlOriginationParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_SEARCHBAR_OPEN,
-//     data,
-//   })
-// }
+export const trackSearchbarOpen = (data: UrlOriginationParam) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_SEARCHBAR_OPEN,
+    data,
+  })
+}
 
 export const trackSearchbarSuggestionClick = (data: UrlOriginationParam) => {
   logAmplitudeEvent({
@@ -1918,12 +1926,12 @@ export const trackProfileAkunSayaClick = (data: UrlOriginationParam) => {
   })
 }
 
-// export const trackCitySelectorOpen = (data: UrlOriginationParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_CITYSELECTOR_OPEN,
-//     data,
-//   })
-// }
+export const trackCitySelectorOpen = (data: UrlOriginationParam) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.WEB_CITYSELECTOR_OPEN,
+    data,
+  })
+}
 
 export const trackCitySelectorCancel = (data: UrlOriginationParam) => {
   logAmplitudeEvent({
