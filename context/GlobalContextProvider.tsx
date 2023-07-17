@@ -13,6 +13,8 @@ import { FunnelFormContextProvider } from './funnelFormContext/funnelFormContext
 import { CurrentLanguageContextProvider } from './currentLanguageContext/currentLanguageContext'
 import { CarModelContextProvider } from './carModelContext/carModelContext'
 import { ContactFormProvider } from './contactFormContext/contactFormContext'
+import { SideMenuContextProvider } from './sideMenuContext/sideMenuContext'
+import { SideMenuListContextProvider } from './sideMenuListContext/sideMenuListContext'
 
 const providers: Array<
   React.JSXElementConstructor<React.PropsWithChildren<any>>
@@ -31,6 +33,8 @@ const providers: Array<
   CurrentLanguageContextProvider,
   CarModelContextProvider,
   ContactFormProvider,
+  SideMenuContextProvider,
+  SideMenuListContextProvider,
 ]
 
 export const GlobalContextProvider = (props: HTMLAttributes<HTMLElement>) => {

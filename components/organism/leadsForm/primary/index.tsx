@@ -29,6 +29,7 @@ import { createUnverifiedLeadNew } from 'services/lead'
 import { onlyLettersAndSpaces } from 'utils/handler/regex'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { OTP } from 'components/organism/otp'
+import Image from 'next/image'
 
 const SupergraphicSecondarySmall =
   'assets/illustration/supergraphic-secondary-small.webp'
@@ -232,7 +233,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
           <div className={styles.wrapper}>
             <div className={styles.background}>
               <div className={styles.wrapperSupergraphicSmall}>
-                <img
+                <Image
                   src={SupergraphicSecondarySmall}
                   alt="seva-vector-blue-rounded"
                   width={200}
@@ -241,7 +242,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
                 />
               </div>
               <div className={styles.wrapperSupergraphicLarge}>
-                <img
+                <Image
                   src={SupergraphicSecondaryLarge}
                   alt="seva-vector-red-rounded"
                   width={343}

@@ -1,6 +1,7 @@
 import { MaxWidthStyle } from 'components/atoms'
 import { useToast } from 'components/atoms/OldToast/Toast'
 import { HomePageShimmer } from 'components/molecules'
+import HeaderVariant from 'components/molecules/header/header'
 import { client } from 'const/const'
 import { useContextContactFormPatch } from 'context/contactFormContext/contactFormContext'
 import { trackLandingPageView } from 'helpers/amplitude/seva20Tracking'
@@ -28,6 +29,7 @@ import {
 } from 'utils/models/models'
 import { BannerHomepageType, USPAttributes } from 'utils/types/utils'
 import { FunnelBackgroundSeva } from '../funnelBackgroundSeva'
+import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
 
 const apiBanner = 'https://api.sslpots.com'
 
@@ -164,10 +166,11 @@ const HomepageDesktop: React.FC<HomepageDesktopProps> = ({}) => {
       </Head>
       <MaxWidthStyle />
       <Container>
-        {/* TODO @Robby */}
-        {/* <PageHeaderSeva> */}
-        <SearchWrapper>{/* <HeaderVariant /> */}</SearchWrapper>
-        {/* </PageHeaderSeva> */}
+        <PageHeaderSeva>
+          <SearchWrapper>
+            <HeaderVariant />
+          </SearchWrapper>
+        </PageHeaderSeva>
 
         <Wrapper scroll={!load}>
           {load && <HomePageShimmer />}

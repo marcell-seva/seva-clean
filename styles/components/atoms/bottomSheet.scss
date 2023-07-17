@@ -2,7 +2,7 @@
 }
 
 [data-rsbs-overlay] {
-  z-index: 99;
+  z-index: 99 !important;
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
 }
