@@ -1,7 +1,7 @@
 import React, { ForwardedRef, forwardRef, HTMLAttributes } from 'react'
-import styles from 'styles/components/atoms/card/cardshadow.module.scss'
+import styles from '../../../../styles/saas/components/atoms/card/cardshadow.module.scss'
 
-const CardShadow = (
+const forwardCardShadow = (
   { children, className, ...props }: HTMLAttributes<HTMLDivElement>,
   ref?: ForwardedRef<HTMLDivElement>,
 ) => {
@@ -12,4 +12,4 @@ const CardShadow = (
   )
 }
 
-export default forwardRef(CardShadow)
+export const CardShadow = forwardRef(forwardCardShadow)
