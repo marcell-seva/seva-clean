@@ -25,8 +25,6 @@ import { useSearchModal } from 'components/molecules/searchModal/searchModal'
 import { NavbarItemResponse } from 'utils/types/utils'
 import { useEnableNewLogin } from 'utils/hooks/useEnableNewLogin'
 import { LocalStorageKey } from 'utils/models/models'
-// TODO @Robby
-// import MoEngage from 'react-moengage'
 import { SidebarBurger } from 'components/molecules/sidebarBurger/sidebarBurger'
 import { TextLegalSemiBold } from 'utils/typography/TextLegalSemiBold'
 import { CitySelector } from 'components/molecules/citySelector/citySelector'
@@ -108,9 +106,11 @@ export const PageHeaderSeva = memo((props: PageHeaderSevaProps) => {
   }, [])
 
   const setMoengageUser = async (payload: string) => {
-    // TODO @Robby
-    // MoEngage.addMobile(payload)
-    // MoEngage.addUniqueUserId(payload)
+    const moengage = client && window.Moengage
+    if (moengage) {
+      moengage.addMobile(payload)
+      moengage.addUniqueUserId(payload)
+    }
   }
 
   const assignCustomerInfo = (payload: Customer) => {

@@ -180,7 +180,7 @@ export const FunnelBackgroundSeva = ({
         }}
       />
       <ContactUsModal
-        title={t('carResultsPage.questionTitle')}
+        title="Punya Pertanyaan?"
         onSubmitSuccess={onSubmitCarOfMonthLeads}
         originationLeads={OriginationLeads.CarOfMonth}
         onCheckLogin={() => {
@@ -188,9 +188,9 @@ export const FunnelBackgroundSeva = ({
         }}
       />
       <DialogModal
-        title={t('homePageSearch.advisor.thanksTitle')}
-        desc={t('homePageSearch.advisor.thanksDesc')}
-        confirmButtonText={t('homePageSearch.advisor.alertButton')}
+        title="Terima kasih 🙌"
+        desc="Agen kami akan segera menghubungi kamu di nomor telpon yang kamu sediakan"
+        confirmButtonText="Ok"
       />
       <LoginAlertModal />
       <CitySelectorModal
