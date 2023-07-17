@@ -192,7 +192,7 @@ export const NewFilterSideMenu = () => {
     },
     {
       key: 'Isuzu',
-      icon: <img src={Isuzu} alt="Isuzu" width={52} height={23} />,
+      icon: <Image src={Isuzu} alt="Isuzu" width={52} height={23} />,
       value: 'Isuzu',
       isChecked: isCheckedBrand.includes('Isuzu'),
     },
