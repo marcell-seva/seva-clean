@@ -65,10 +65,11 @@ export default function index() {
   const { showModal: showContactUsModal, ContactUsModal } = useContactUsModal()
   const { funnelQuery } = useFunnelQueryData()
   const { DialogModal, showModal: showDialogModal } = useDialogModal()
-  const [isShowLoading, setShowLoading] = useState(true)
+  const [isShowLoading, setShowLoading] = useState(false)
   const { setCarVariantDetails } = useContextCarVariantDetails()
   const { setRecommendations } = useContextRecommendations()
   const { carModelDetails, setCarModelDetails } = useContextCarModelDetails()
+  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
   // const { showModal: showCitySelectorModal, CitySelectorModal } =
   //   useNewCitySelectoreModal()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
@@ -88,29 +89,29 @@ export default function index() {
   }
 
   const minimumDp = useMemo(() => {
-    if (!carModelDetails) return ''
-    return getMinimumDp(carModelDetails.variants, LanguageCode.en, million, ten)
-  }, [carModelDetails])
+    if (!modelDetailData) return ''
+    return getMinimumDp(modelDetailData.variants, LanguageCode.en, million, ten)
+  }, [modelDetailData])
 
   const minimumMonthlyInstallment = useMemo(() => {
-    if (!carModelDetails) return ''
+    if (!modelDetailData) return ''
     return getMinimumMonthlyInstallment(
-      carModelDetails.variants,
+      modelDetailData.variants,
       LanguageCode.en,
       million,
       hundred,
     )
-  }, [carModelDetails])
+  }, [modelDetailData])
 
   const onSubmitLeadSuccess = () => {
     showDialogModal()
 
     const loanRankcr = router.query.loanRankCVL ?? ''
     const trackerProperty: CarSearchPageMintaPenawaranParam = {
-      Car_Brand: carModelDetails?.brand as string,
-      Car_Model: carModelDetails?.model as string,
+      Car_Brand: modelDetailData?.brand as string,
+      Car_Model: modelDetailData?.model as string,
       OTR: `Rp${replacePriceSeparatorByLocalization(
-        carModelDetails?.variants[0].priceValue as number,
+        modelDetailData?.variants[0].priceValue as number,
         LanguageCode.id,
       )}`,
       DP: `Rp${minimumDp} Juta`,
@@ -218,11 +219,6 @@ export default function index() {
         <PageHeaderSeva>{!isMobile ? <HeaderVariant /> : <></>}</PageHeaderSeva>
       </div>
       <div className={styles.container}>
-        {isShowLoading && (
-          <div className={styles.shimmerWrapper}>
-            <VariantListPageShimmer />
-          </div>
-        )}
         <HeaderAndContent
           onClickPenawaran={showContactUsModal}
           toLoan={
@@ -254,11 +250,11 @@ export default function index() {
           showLoginModal()
         }}
         carVariantData={{
-          brand: carModelDetails?.brand as string,
-          model: carModelDetails?.model as string,
-          dp: getLowestDp(carModelDetails?.variants || []),
+          brand: modelDetailData?.brand as string,
+          model: modelDetailData?.model as string,
+          dp: getLowestDp(modelDetailData?.variants || []),
           monthlyInstallment: getLowestInstallment(
-            carModelDetails?.variants || [],
+            modelDetailData?.variants || [],
           ),
           tenure: (funnelQuery.tenure as number) || 5,
         }}
