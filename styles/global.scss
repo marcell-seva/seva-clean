@@ -267,8 +267,8 @@ button {
   outline: none !important;
 }
 
-:global(.ant-tooltip) {
-  max-width: 320px;
+.ant-tooltip {
+  max-width: 320px !important;
 }
 
 .errorForm :global(.ant-slider .ant-slider-track) {
