@@ -1,6 +1,7 @@
 import React, {
   createRef,
   MutableRefObject,
+  useContext,
   useEffect,
   useRef,
   useState,
@@ -25,6 +26,7 @@ import {
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { api } from 'services/api'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 
 type VideoProps = {
   modelDetail: CarModelDetailsResponse
@@ -63,6 +65,7 @@ export const Video = ({ modelDetail }: VideoProps) => {
     LocalStorageKey.CityOtr,
     null,
   )
+  const { carVideoReviewRes } = useContext(PdpDataLocalContext)
 
   const containerRef = useRef() as MutableRefObject<HTMLDivElement>
   const refs =
@@ -92,8 +95,7 @@ export const Video = ({ modelDetail }: VideoProps) => {
   }
 
   const getVideoReview = async () => {
-    // TODO @toni : use data from server side
-    const dataVideoReview: any = await api.getCarVideoReview()
+    const dataVideoReview = carVideoReviewRes
     const filterVideoReview = dataVideoReview.data.filter(
       (video: MainVideoResponseType) => video.modelId === modelDetail.id,
     )[0]

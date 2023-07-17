@@ -1,6 +1,6 @@
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
-import React, { memo, useEffect, useRef, useState } from 'react'
+import React, { memo, useContext, useEffect, useRef, useState } from 'react'
 import GallerySectionV2 from './GallerySection/GallerySectionV2'
 import styled from 'styled-components'
 import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
@@ -24,6 +24,7 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { CityOtrOption } from 'utils/types'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { Description } from 'components/organism/OldPdpSectionComponents/Description/Description'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 type tabProps = {
   tab: string | undefined
   isSticky?: boolean
@@ -31,6 +32,19 @@ type tabProps = {
 const GalleryTab = memo(({ tab, isSticky }: tabProps) => {
   const { carModelDetails } = useContextCarModelDetails()
   const { carVariantDetails } = useContextCarVariantDetails()
+  const { recommendations } = useContextRecommendations()
+  const {
+    carModelDetailsResDefaultCity,
+    carVariantDetailsResDefaultCity,
+    carRecommendationsResDefaultCity,
+    carArticleReviewRes,
+  } = useContext(PdpDataLocalContext)
+  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const variantDetailData = carVariantDetails || carVariantDetailsResDefaultCity
+  const recommendationsDetailData =
+    recommendations.length !== 0
+      ? recommendations
+      : carRecommendationsResDefaultCity
   const { currentLanguage } = useCurrentLanguageFromContext()
   const { setSpecialRateResults } = useContextSpecialRateResults()
   const categoryList = articleCategoryList[2]
@@ -40,18 +54,20 @@ const GalleryTab = memo(({ tab, isSticky }: tabProps) => {
     LocalStorageKey.CityOtr,
     null,
   )
-  const { recommendations } = useContextRecommendations()
 
   const getReview = async () => {
-    // TODO @toni : use data from server side
-    const [reviewCar] = await Promise.all([
-      fetch(categoryList.url).then((res) => res.json()),
-    ])
+    let reviewCar = carArticleReviewRes
+    if (!reviewCar) {
+      const [carArticleReviewDataFromApiClient] = await Promise.all([
+        fetch(categoryList.url).then((res) => res.json()),
+      ])
+      reviewCar = carArticleReviewDataFromApiClient
+    }
 
     const modelWordpressTag =
-      carModelDetails &&
-      carModelDetails.modelWordpressTag &&
-      carModelDetails?.modelWordpressTag.replace('-', ' ')
+      modelDetailData &&
+      modelDetailData.modelWordpressTag &&
+      modelDetailData?.modelWordpressTag.replace('-', ' ')
     const relatedArticle = reviewCar
       .filter((cat: any) => cat.title.toLowerCase().includes(modelWordpressTag))
       .slice(0, 3)
@@ -85,65 +101,63 @@ const GalleryTab = memo(({ tab, isSticky }: tabProps) => {
 
   const trackEventMoengage = (carImages: string[]) => {
     const objData = {
-      brand: carModelDetails?.brand,
-      model: carModelDetails?.model,
+      brand: modelDetailData?.brand,
+      model: modelDetailData?.model,
       price:
-        carModelDetails?.variants && carModelDetails?.variants.length > 0
-          ? carModelDetails.variants[0].priceValue
+        modelDetailData?.variants && modelDetailData?.variants.length > 0
+          ? modelDetailData.variants[0].priceValue
           : '-',
       monthly_installment:
-        carModelDetails?.variants && carModelDetails?.variants.length > 0
-          ? carModelDetails.variants[0].monthlyInstallment
+        modelDetailData?.variants && modelDetailData?.variants.length > 0
+          ? modelDetailData.variants[0].monthlyInstallment
           : '-',
       down_payment:
-        carModelDetails?.variants && carModelDetails?.variants.length > 0
-          ? carModelDetails.variants[0].dpAmount
+        modelDetailData?.variants && modelDetailData?.variants.length > 0
+          ? modelDetailData.variants[0].dpAmount
           : '-',
       loan_tenure:
-        carModelDetails?.variants && carModelDetails.variants.length > 0
-          ? carModelDetails.variants[0].tenure
+        modelDetailData?.variants && modelDetailData.variants.length > 0
+          ? modelDetailData.variants[0].tenure
           : '-',
-      car_seat: carVariantDetails?.variantDetail.carSeats,
-      fuel: carVariantDetails?.variantDetail.fuelType,
-      transmition: carVariantDetails?.variantDetail.transmission,
+      car_seat: variantDetailData?.variantDetail.carSeats,
+      fuel: variantDetailData?.variantDetail.fuelType,
+      transmition: variantDetailData?.variantDetail.transmission,
       dimension:
-        recommendations?.filter(
-          (car) => car.id === carVariantDetails?.modelDetail.id,
+        recommendationsDetailData?.filter(
+          (car) => car.id === variantDetailData?.modelDetail.id,
         ).length > 0
-          ? recommendations?.filter(
-              (car) => car.id === carVariantDetails?.modelDetail.id,
+          ? recommendationsDetailData?.filter(
+              (car) => car.id === variantDetailData?.modelDetail.id,
             )[0].height
           : '',
-      body_type: carVariantDetails?.variantDetail.bodyType
-        ? carVariantDetails?.variantDetail.bodyType
+      body_type: variantDetailData?.variantDetail.bodyType
+        ? variantDetailData?.variantDetail.bodyType
         : '-',
       Image_URL: carImages[0],
-      Brand_Model: `${carModelDetails?.brand} ${carModelDetails?.model}`,
+      Brand_Model: `${modelDetailData?.brand} ${modelDetailData?.model}`,
     }
     setTrackEventMoEngage('view_variant_list_gallery_tab', objData)
   }
   useEffect(() => {
-    if (carModelDetails && cityOtr) {
+    if (modelDetailData && cityOtr) {
       const trackNewCarVariantList: WebVariantListPageParam = {
-        Car_Brand: carModelDetails.brand as string,
-        Car_Model: carModelDetails.model as string,
+        Car_Brand: modelDetailData.brand as string,
+        Car_Model: modelDetailData.model as string,
         OTR: `Rp${replacePriceSeparatorByLocalization(
-          carModelDetails.variants[0].priceValue as number,
+          modelDetailData.variants[0].priceValue as number,
           LanguageCode.id,
         )}`,
         DP: `Rp${formatSortPrice(
-          carModelDetails.variants[0].dpAmount as number,
+          modelDetailData.variants[0].dpAmount as number,
         )} Juta`,
         Tenure: '5 Tahun',
         City: cityOtr.cityName || 'Jakarta Pusat',
       }
 
       trackWebPDPGalleryTab(trackNewCarVariantList)
-      trackEventMoengage(carModelDetails?.images)
+      trackEventMoengage(modelDetailData?.images)
     }
-  }, [carModelDetails, cityOtr])
-
-  if (!carModelDetails || !carVariantDetails) return <></>
+  }, [modelDetailData, cityOtr])
 
   return (
     <>
@@ -153,22 +167,22 @@ const GalleryTab = memo(({ tab, isSticky }: tabProps) => {
       />
       <Container>
         <Description
-          title={`Galeri ${carModelDetails.brand} ${carModelDetails.model}`}
-          description={carVariantDetails.variantDetail.description.id}
-          carModel={carModelDetails}
-          carVariant={carVariantDetails}
+          title={`Galeri ${modelDetailData.brand} ${modelDetailData.model}`}
+          description={variantDetailData.variantDetail.description.id}
+          carModel={modelDetailData}
+          carVariant={variantDetailData}
           tab="gallery"
         />
       </Container>
       <ContainerGallery>
         <GallerySectionV2
-          title={`Foto ${carModelDetails.brand} ${carModelDetails.model}`}
+          title={`Foto ${modelDetailData.brand} ${modelDetailData.model}`}
         />
       </ContainerGallery>
-      <Video modelDetail={carModelDetails} />
+      <Video modelDetail={modelDetailData} />
       <ContainerContentArticle>
         <StyledText>
-          Artikel Terkait {carModelDetails.brand + ' ' + carModelDetails.model}
+          Artikel Terkait {modelDetailData.brand + ' ' + modelDetailData.model}
         </StyledText>
         <ContainerArticle>
           {articleList.map((article: any) => {

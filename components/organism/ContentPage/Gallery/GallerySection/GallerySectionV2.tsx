@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
 import { ToggleSwitch } from 'components/atoms'
@@ -15,10 +15,11 @@ import {
   trackPDPPhotoClick,
 } from 'helpers/amplitude/seva20Tracking'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { CityOtrOption } from 'utils/types'
+import { CarModelDetailsResponse, CityOtrOption } from 'utils/types'
 import { LocalStorageKey } from 'utils/enum'
 import { exteriorImagesListNew } from 'config/Exterior360ImageList.config'
 import { interiorImagesListNew } from 'config/Interior360ImageList.config'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 
 interface Props {
   title: string
@@ -26,7 +27,10 @@ interface Props {
 
 const GallerySectionV2 = ({ title }: Props) => {
   const { carModelDetails } = useContextCarModelDetails()
-  const { images: carModelImages } = { ...carModelDetails }
+  const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
+  const modelDetailData: CarModelDetailsResponse | undefined =
+    carModelDetails || carModelDetailsResDefaultCity
+  const { images: carModelImages } = { ...modelDetailData }
   const [isSelectedExterior, setIsSelectedExterior] = useState(true)
   const [isSelected360, setIsSelected360] = useState(false)
   const [exteriorImageList, setExteriorImageList] = useState<string[]>([])
@@ -103,8 +107,8 @@ const GallerySectionV2 = ({ title }: Props) => {
     photoType: string,
   ) => {
     const trackProperties: CarVariantPhotoParam = {
-      Car_Brand: carModelDetails?.brand as string,
-      Car_Model: carModelDetails?.model as string,
+      Car_Brand: modelDetailData?.brand as string,
+      Car_Model: modelDetailData?.model as string,
       Page_Origination_URL: window.location.href.replace('https://www.', ''),
       Photo_Type: photoType,
       City: cityOtr?.cityName || 'null',

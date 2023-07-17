@@ -1,4 +1,11 @@
-import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  Suspense,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 // import { useShareModal } from 'components/ShareModal/ShareModal'
 // import { FooterSeva } from 'pages/component/FooterSeva/FooterSeva'
 // import { Link, useParams } from 'react-router-dom'
@@ -22,6 +29,7 @@ import { ContentPage } from '../ContentPage/ContentPage'
 import { useShareModal } from 'components/molecules/OldShareModal/ShareModal'
 import { client } from 'const/const'
 import { FooterSeva } from '../FooterSeva'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 
 export interface HeaderAndContentProps extends StickyButtonProps {
   onSticky?: (sticky: boolean) => void
@@ -41,6 +49,8 @@ export const HeaderAndContent = ({
   const isDesktop = useMediaQuery({ query: '(min-width: 1025px)' })
   const [scrollPosition, setScrollPosition] = useState(0)
   const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
+  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -131,11 +141,11 @@ export const HeaderAndContent = ({
 
   const sortCarModelVariant = useMemo(() => {
     return (
-      carModelDetails?.variants.sort(function (a, b) {
+      modelDetailData?.variants.sort(function (a, b) {
         return a.priceValue - b.priceValue
       }) || []
     )
-  }, [carModelDetails])
+  }, [modelDetailData])
 
   const carOtrPrice = useMemo(() => {
     return sortCarModelVariant.length > 0
@@ -148,15 +158,13 @@ export const HeaderAndContent = ({
 
   const getDataForAmplitude = () => {
     return {
-      Car_Brand: carModelDetails?.brand ?? '',
-      Car_Model: carModelDetails?.model ?? '',
+      Car_Brand: modelDetailData?.brand ?? '',
+      Car_Model: modelDetailData?.model ?? '',
       OTR: `Rp${carOtrPrice}`,
       City: cityOtr?.cityName || 'null',
       Page_Origination_URL: client ? window.location.href : '',
     }
   }
-
-  if (!carModelDetails) return <></>
 
   return (
     <>
@@ -193,14 +201,12 @@ export const HeaderAndContent = ({
         </TabWrapper>
       </TabContainer>
       <TabContentWrapper sticky={isSticky}>
-        <Suspense fallback={''}>
-          <ContentPage
-            tab={tab}
-            isSticky={isSticky}
-            isShowLoading={isShowLoading}
-          />
-          <FooterSeva />
-        </Suspense>
+        <ContentPage
+          tab={tab}
+          isSticky={isSticky}
+          isShowLoading={isShowLoading}
+        />
+        <FooterSeva />
       </TabContentWrapper>
       <ShareModal dataForAmplitude={getDataForAmplitude()} />
     </>

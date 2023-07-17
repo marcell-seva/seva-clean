@@ -1,6 +1,6 @@
 import { BackIcon, IconShare } from 'components/atoms'
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import React from 'react'
+import React, { useContext } from 'react'
 import { carResultsUrl } from 'routes/routes'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
@@ -8,6 +8,7 @@ import Img from 'react-cool-img'
 import { TitleHeader } from '../TitleHeader/TitleHeader'
 import { HeaderAndContentProps } from 'components/organism/HeaderAndContent/HeaderAndContent'
 import { useRouter } from 'next/router'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 
 export interface CarHeaderProps extends HeaderAndContentProps {
   onClickShare: () => void
@@ -21,6 +22,8 @@ export function CarHeader({
 }: CarHeaderProps) {
   const router = useRouter()
   const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
+  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
 
   const handleGoBack = () => {
     router.push(carResultsUrl)
@@ -44,8 +47,8 @@ export function CarHeader({
             </div>
           </IconControlWrapper>
           <DesktopWrapper>
-            {carModelDetails?.images && (
-              <StyledImage src={carModelDetails.images[0]} />
+            {modelDetailData?.images && (
+              <StyledImage src={modelDetailData.images[0]} />
             )}
             <TitleHeader {...props} />
           </DesktopWrapper>

@@ -25,6 +25,7 @@ interface PdpDataLocalContextType {
   carVariantDetailsResDefaultCity: any
   metaTagDataRes: any
   carVideoReviewRes: any
+  carArticleReviewRes: any
 }
 /**
  * used to pass props without drilling through components
@@ -35,6 +36,7 @@ export const PdpDataLocalContext = createContext<PdpDataLocalContextType>({
   carVariantDetailsResDefaultCity: null,
   metaTagDataRes: null,
   carVideoReviewRes: null,
+  carArticleReviewRes: null,
 })
 export default function index({
   carRecommendationsRes,
@@ -42,6 +44,7 @@ export default function index({
   carVariantDetailsRes,
   metaTagDataRes,
   carVideoReviewRes,
+  carArticleReviewRes,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isMobile, setIsMobile] = useState(useIsMobileSSr())
 
@@ -76,6 +79,7 @@ export default function index({
           carVariantDetailsResDefaultCity: carVariantDetailsRes,
           metaTagDataRes: metaTagDataRes,
           carVideoReviewRes: carVideoReviewRes,
+          carArticleReviewRes: carArticleReviewRes,
         }}
       >
         {isMobile ? <PdpMobile /> : <PdpDesktop />}
@@ -124,6 +128,13 @@ export async function getServerSideProps(context: any) {
       sortedVariantsOfCurrentModel[0].id,
       '?city=jakarta&cityId=118',
     )
+
+    const [carArticleReviewRes] = await Promise.all([
+      fetch('https://www.seva.id/wp-json/seva/latest-posts/972').then((res) =>
+        res.json(),
+      ),
+    ])
+
     return {
       props: {
         carRecommendationsRes,
@@ -131,6 +142,7 @@ export async function getServerSideProps(context: any) {
         carVariantDetailsRes,
         metaTagDataRes,
         carVideoReviewRes,
+        carArticleReviewRes,
         isSsrMobile: getIsSsrMobile(context),
       },
     }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import DOMPurify from 'dompurify'
 import { colors } from 'styles/colors'
+import { client } from 'const/const'
 
 interface SEOParagraphItemProps {
   title: string
@@ -38,7 +39,7 @@ export const SeoParagraphItem = ({
       <ContentTextWrapper>
         <ContentText
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(content),
+            __html: client ? DOMPurify.sanitize(content) : content,
           }}
           isOpen={open}
         />

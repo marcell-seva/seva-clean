@@ -1,5 +1,5 @@
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import React, { memo, useEffect, useRef, useState } from 'react'
+import React, { memo, useContext, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import { Button, IconDownload } from 'components/atoms'
@@ -34,6 +34,7 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { trackVariantDetailsEvent } from 'components/organism/OldPdpSectionComponents/variantDetailsUtils'
 import { useCarResultParameter } from 'utils/hooks/useAmplitudePageView/useAmplitudePageView'
 import { trackSelectCarResultVariantDetailsViewBrochure } from 'helpers/amplitude/newFunnelEventTracking'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 
 type tabProps = {
   tab: string | undefined
@@ -41,14 +42,25 @@ type tabProps = {
 }
 const Specification = memo(({ tab, isSticky }: tabProps) => {
   const { carModelDetails } = useContextCarModelDetails()
-  const carResultParameter = useCarResultParameter()
   const { carVariantDetails } = useContextCarVariantDetails()
+  const { recommendations } = useContextRecommendations()
+  const {
+    carModelDetailsResDefaultCity,
+    carVariantDetailsResDefaultCity,
+    carRecommendationsResDefaultCity,
+  } = useContext(PdpDataLocalContext)
+  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const variantDetailData = carVariantDetails || carVariantDetailsResDefaultCity
+  const recommendationsDetailData =
+    recommendations.length !== 0
+      ? recommendations
+      : carRecommendationsResDefaultCity
+  const carResultParameter = useCarResultParameter()
   const { setSpecialRateResults } = useContextSpecialRateResults()
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const [selected, setSelected] = useState<CarVariantRecommendation | null>(
     null,
   )
-  const { recommendations } = useContextRecommendations()
   const scrollToContent = useRef<null | HTMLDivElement>(null)
   const scrollToSectionContent = () => {
     scrollToContent.current?.scrollIntoView({
@@ -63,10 +75,10 @@ const Specification = memo(({ tab, isSticky }: tabProps) => {
   )
 
   const trackBrosur = {
-    Car_Brand: carModelDetails?.brand as string,
-    Car_Model: carModelDetails?.model as string,
+    Car_Brand: modelDetailData?.brand as string,
+    Car_Model: modelDetailData?.model as string,
     OTR: `Rp${replacePriceSeparatorByLocalization(
-      carModelDetails?.variants[0].priceValue as number,
+      modelDetailData?.variants[0].priceValue as number,
       LanguageCode.id,
     )}`,
     City: cityOtr?.cityName || 'null',
@@ -75,7 +87,7 @@ const Specification = memo(({ tab, isSticky }: tabProps) => {
   const trackNewCarVariantList: WebVariantListPageParam = {
     ...trackBrosur,
     DP: `Rp${formatSortPrice(
-      carModelDetails?.variants[0].dpAmount as number,
+      modelDetailData?.variants[0].dpAmount as number,
     )} Juta`,
     Tenure: '5 Tahun',
   }
@@ -96,54 +108,54 @@ const Specification = memo(({ tab, isSticky }: tabProps) => {
 
   const trackEventMoengage = (carImages: string[]) => {
     const objData = {
-      brand: carModelDetails?.brand,
-      model: carModelDetails?.model,
+      brand: modelDetailData?.brand,
+      model: modelDetailData?.model,
       price:
-        carModelDetails?.variants && carModelDetails?.variants.length > 0
-          ? carModelDetails.variants[0].priceValue
+        modelDetailData?.variants && modelDetailData?.variants.length > 0
+          ? modelDetailData.variants[0].priceValue
           : '-',
       monthly_installment:
-        carModelDetails?.variants && carModelDetails?.variants.length > 0
-          ? carModelDetails.variants[0].monthlyInstallment
+        modelDetailData?.variants && modelDetailData?.variants.length > 0
+          ? modelDetailData.variants[0].monthlyInstallment
           : '-',
       down_payment:
-        carModelDetails?.variants && carModelDetails?.variants.length > 0
-          ? carModelDetails.variants[0].dpAmount
+        modelDetailData?.variants && modelDetailData?.variants.length > 0
+          ? modelDetailData.variants[0].dpAmount
           : '-',
       loan_tenure:
-        carModelDetails?.variants && carModelDetails.variants.length > 0
-          ? carModelDetails.variants[0].tenure
+        modelDetailData?.variants && modelDetailData.variants.length > 0
+          ? modelDetailData.variants[0].tenure
           : '-',
-      car_seat: carVariantDetails?.variantDetail.carSeats,
-      fuel: carVariantDetails?.variantDetail.fuelType,
-      transmition: carVariantDetails?.variantDetail.transmission,
+      car_seat: variantDetailData?.variantDetail.carSeats,
+      fuel: variantDetailData?.variantDetail.fuelType,
+      transmition: variantDetailData?.variantDetail.transmission,
       dimension:
         recommendations?.filter(
-          (car) => car.id === carVariantDetails?.modelDetail.id,
+          (car) => car.id === variantDetailData?.modelDetail.id,
         ).length > 0
           ? recommendations?.filter(
-              (car) => car.id === carVariantDetails?.modelDetail.id,
+              (car) => car.id === variantDetailData?.modelDetail.id,
             )[0].height
           : '',
-      body_type: carVariantDetails?.variantDetail.bodyType
-        ? carVariantDetails?.variantDetail.bodyType
+      body_type: variantDetailData?.variantDetail.bodyType
+        ? variantDetailData?.variantDetail.bodyType
         : '-',
       Image_URL: carImages[0],
-      Brand_Model: `${carModelDetails?.brand} ${carModelDetails?.model}`,
+      Brand_Model: `${modelDetailData?.brand} ${modelDetailData?.model}`,
     }
     setTrackEventMoEngage('view_variant_list_specification_tab', objData)
   }
 
   useEffect(() => {
-    if (carModelDetails && cityOtr) {
+    if (modelDetailData && cityOtr) {
       trackWebPDPSpecificationTab(trackNewCarVariantList)
 
-      trackEventMoengage(carModelDetails?.images)
+      trackEventMoengage(modelDetailData?.images)
     }
-  }, [carModelDetails, cityOtr])
+  }, [modelDetailData, cityOtr])
 
   const onBrochureClick = () => {
-    if (carVariantDetails?.loanDetail) {
+    if (variantDetailData?.loanDetail) {
       trackVariantDetailsEvent({
         carVariantDetails,
         carResultParameter,
@@ -151,12 +163,10 @@ const Specification = memo(({ tab, isSticky }: tabProps) => {
       })
     }
 
-    if (carModelDetails && cityOtr) {
+    if (modelDetailData && cityOtr) {
       trackDownloadBrosurClick(trackBrosur)
     }
   }
-
-  if (!carModelDetails || !carVariantDetails) return <></>
 
   return (
     <>
@@ -167,21 +177,21 @@ const Specification = memo(({ tab, isSticky }: tabProps) => {
       <Container>
         <DescriptionWrapper>
           <Description
-            title={`Spesifikasi ${carModelDetails.brand} ${
-              carModelDetails.model
+            title={`Spesifikasi ${modelDetailData.brand} ${
+              modelDetailData.model
             } di ${
               cityOtr && cityOtr.cityName ? cityOtr.cityName : 'Jakarta Pusat'
             }`}
-            description={carVariantDetails.variantDetail.description.id}
-            carModel={carModelDetails}
-            carVariant={carVariantDetails}
+            description={variantDetailData.variantDetail.description.id}
+            carModel={modelDetailData}
+            carVariant={variantDetailData}
             tab="spesification"
           />
         </DescriptionWrapper>
         <SpecsAndBrochureWrapper>
           <SpecificationSelectWrapper>
             <SpecificationSelect
-              options={carModelDetails.variants.sort(
+              options={modelDetailData.variants.sort(
                 (a, b) => a.priceValue - b.priceValue,
               )}
               onChooseOption={(item) => {
@@ -209,7 +219,7 @@ const Specification = memo(({ tab, isSticky }: tabProps) => {
               Butuh Informasi Lebih Lengkap?
             </DownloadUpperText>
             <a
-              href={carVariantDetails?.variantDetail.pdfUrl}
+              href={variantDetailData?.variantDetail.pdfUrl}
               style={{ width: '100%', display: 'flex' }}
               target="_blank"
               rel="noreferrer"

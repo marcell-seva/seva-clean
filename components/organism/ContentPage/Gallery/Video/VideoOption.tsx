@@ -23,7 +23,7 @@ export const ForwardVideoOption = (
   })
 
   const getVideoReview = () => {
-    // TODO @toni : use data from server side
+    // might need to change API request so that it can be fetched from server using brand and model data in URL dynamic slug
     fetch(`https://noembed.com/embed?dataType=json&url=${videoOption.videoUrl}`)
       .then((res) => res.json())
       .then((data) => {

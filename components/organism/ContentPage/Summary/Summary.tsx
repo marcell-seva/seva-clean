@@ -1,6 +1,6 @@
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
-import React, { memo, useEffect, useRef, useState } from 'react'
+import React, { memo, useContext, useEffect, useRef, useState } from 'react'
 import { Description } from '../../OldPdpSectionComponents/Description/Description'
 import GallerySectionV2 from '../Gallery/GallerySection/GallerySectionV2'
 import styled from 'styled-components'
@@ -30,6 +30,7 @@ import { setTrackEventMoEngage } from 'helpers/moengage'
 import { CarVariantRecommendation, CityOtrOption } from 'utils/types'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 
 type tabProps = {
   tab: string | undefined
@@ -39,6 +40,17 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
   const { carModelDetails } = useContextCarModelDetails()
   const { carVariantDetails } = useContextCarVariantDetails()
   const { recommendations } = useContextRecommendations()
+  const {
+    carModelDetailsResDefaultCity,
+    carVariantDetailsResDefaultCity,
+    carRecommendationsResDefaultCity,
+  } = useContext(PdpDataLocalContext)
+  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const variantDetailData = carVariantDetails || carVariantDetailsResDefaultCity
+  const recommendationsDetailData =
+    recommendations.length !== 0
+      ? recommendations
+      : carRecommendationsResDefaultCity
   const { setSpecialRateResults } = useContextSpecialRateResults()
   const [openPromo, setOpenPromo] = useState(false)
   const { showModal: showPromoModal, CarVariantPromoModal } =
@@ -54,52 +66,52 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
 
   const trackEventMoengage = (carImages: string[]) => {
     const objData = {
-      brand: carModelDetails?.brand,
-      model: carModelDetails?.model,
+      brand: modelDetailData?.brand,
+      model: modelDetailData?.model,
       price:
-        carModelDetails?.variants && carModelDetails?.variants.length > 0
-          ? carModelDetails?.variants[0].priceValue
+        modelDetailData?.variants && modelDetailData?.variants.length > 0
+          ? modelDetailData?.variants[0].priceValue
           : '-',
       monthly_installment:
-        carModelDetails?.variants && carModelDetails?.variants.length > 0
-          ? carModelDetails?.variants[0].monthlyInstallment
+        modelDetailData?.variants && modelDetailData?.variants.length > 0
+          ? modelDetailData?.variants[0].monthlyInstallment
           : '-',
       down_payment:
-        carModelDetails?.variants && carModelDetails?.variants.length > 0
-          ? carModelDetails?.variants[0].dpAmount
+        modelDetailData?.variants && modelDetailData?.variants.length > 0
+          ? modelDetailData?.variants[0].dpAmount
           : '-',
       loan_tenure:
-        carModelDetails?.variants && carModelDetails?.variants.length > 0
-          ? carModelDetails?.variants[0].tenure
+        modelDetailData?.variants && modelDetailData?.variants.length > 0
+          ? modelDetailData?.variants[0].tenure
           : '-',
-      body_type: carVariantDetails?.variantDetail.bodyType
-        ? carVariantDetails?.variantDetail.bodyType
+      body_type: variantDetailData?.variantDetail.bodyType
+        ? variantDetailData?.variantDetail.bodyType
         : '-',
       Image_URL: carImages[0],
-      Brand_Model: `${carModelDetails?.brand} ${carModelDetails?.model}`,
+      Brand_Model: `${modelDetailData?.brand} ${modelDetailData?.model}`,
     }
     setTrackEventMoEngage('view_variant_list', objData)
   }
   useEffect(() => {
-    if (carModelDetails && cityOtr) {
+    if (modelDetailData && cityOtr) {
       const trackNewCarVariantList: WebVariantListPageParam = {
-        Car_Brand: carModelDetails?.brand as string,
-        Car_Model: carModelDetails?.model as string,
+        Car_Brand: modelDetailData?.brand as string,
+        Car_Model: modelDetailData?.model as string,
         OTR: `Rp${replacePriceSeparatorByLocalization(
-          carModelDetails?.variants[0]?.priceValue as number,
+          modelDetailData?.variants[0]?.priceValue as number,
           LanguageCode.id,
         )}`,
         DP: `Rp${formatSortPrice(
-          carModelDetails?.variants[0]?.dpAmount as number,
+          modelDetailData?.variants[0]?.dpAmount as number,
         )} Juta`,
         Tenure: '5 Tahun',
         City: cityOtr.cityName || 'Jakarta Pusat',
       }
 
       trackNewVariantListPageView(trackNewCarVariantList)
-      trackEventMoengage(carModelDetails?.images)
+      trackEventMoengage(modelDetailData?.images)
     }
-  }, [carModelDetails, cityOtr])
+  }, [modelDetailData, cityOtr])
 
   useEffect(() => {
     if (isSticky) {
@@ -112,8 +124,8 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
   }, [tab])
 
   useEffect(() => {
-    if (carModelDetails && carModelDetails?.variants.length > 0) {
-      const carVariantHighest = carModelDetails?.variants.reduce(
+    if (modelDetailData && modelDetailData?.variants.length > 0) {
+      const carVariantHighest = modelDetailData?.variants.reduce(
         (p: CarVariantRecommendation, c: CarVariantRecommendation) =>
           p.priceValue > c.priceValue ? p : c,
       )
@@ -121,7 +133,7 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
       setSpecialRateResults([])
       setCarVariantHighestPrice(carVariantHighest)
     }
-  }, [carModelDetails])
+  }, [modelDetailData])
 
   const openPopupPromo = () => {
     showPromoModal()
@@ -143,18 +155,19 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
       patchModal({ isOpenPromoList: false })
     }, 500)
   }
-  if (!carModelDetails || !carVariantDetails || !recommendations) return <></>
+  if (!modelDetailData || !variantDetailData || !recommendationsDetailData)
+    return <></>
 
   const faqTitle =
     'Punya pertanyaan seputar pengajuan kredit mobil? Cek di sini!'
   const faqTitleMobile = `Punya pertanyaan seputar ${
-    carModelDetails?.brand + ' ' + carModelDetails?.model
+    modelDetailData?.brand + ' ' + modelDetailData?.model
   }? Cek di sini!`
 
   const getDataForAmplitude = () => {
     return {
-      Car_Brand: carModelDetails?.brand ?? '',
-      Car_Model: carModelDetails?.model ?? '',
+      Car_Brand: modelDetailData?.brand ?? '',
+      Car_Model: modelDetailData?.model ?? '',
       City: cityOtr?.cityName || 'null',
     }
   }
@@ -167,7 +180,7 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
     trackCarVariantBannerPromoPopupClose({
       ...getDataForAmplitude(),
       OTR: `Rp${replacePriceSeparatorByLocalization(
-        carModelDetails?.variants[0].priceValue || 0,
+        modelDetailData?.variants[0].priceValue || 0,
         LanguageCode.id,
       )}`,
       Page_Origination_URL: window.location.href,
@@ -182,14 +195,14 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
       />
       <DescriptionWrapper>
         <Description
-          title={`Tentang ${carModelDetails?.brand} ${
-            carModelDetails?.model
+          title={`Tentang ${modelDetailData?.brand} ${
+            modelDetailData?.model
           } di ${
             cityOtr && cityOtr.cityName ? cityOtr.cityName : 'Jakarta Pusat'
           }`}
-          description={carVariantDetails.variantDetail.description.id}
-          carModel={carModelDetails}
-          carVariant={carVariantDetails}
+          description={variantDetailData.variantDetail.description.id}
+          carModel={modelDetailData}
+          carVariant={variantDetailData}
           tab="summary"
         />
       </DescriptionWrapper>
@@ -198,7 +211,7 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
           fuelType={carVariantHighestPrice?.fuelType || ''}
           carSeats={carVariantHighestPrice?.carSeats || 0}
           transmission={carVariantHighestPrice?.transmission || ''}
-          BrandAndModel={carModelDetails?.brand + ' ' + carModelDetails?.model}
+          BrandAndModel={modelDetailData?.brand + ' ' + modelDetailData?.model}
           contentPadding={'26px 16px;'}
           onClickDetail={amplitudeSpecificationHandler}
         />
@@ -207,7 +220,7 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
         fuelType={carVariantHighestPrice?.fuelType || ''}
         carSeats={carVariantHighestPrice?.carSeats || 0}
         transmission={carVariantHighestPrice?.transmission || ''}
-        BrandAndModel={carModelDetails?.brand + ' ' + carModelDetails?.model}
+        BrandAndModel={modelDetailData?.brand + ' ' + modelDetailData?.model}
         onClickDetail={amplitudeSpecificationHandler}
       />
       {/* )} */}
@@ -215,7 +228,7 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
         {/* {isMobile && <VariantColor />} */}
         <PriceListWrapper>
           <TitlePrice>
-            Harga Mobil {carModelDetails?.brand + ' ' + carModelDetails?.model}{' '}
+            Harga Mobil {modelDetailData?.brand + ' ' + modelDetailData?.model}{' '}
             di{' '}
             {cityOtr && cityOtr.cityName ? cityOtr.cityName : 'Jakarta Pusat'}
           </TitlePrice>
@@ -227,7 +240,7 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
         </PriceListWrapper>
         <GalleryWrapper>
           <GallerySectionV2
-            title={`Foto ${carModelDetails?.brand} ${carModelDetails?.model}`}
+            title={`Foto ${modelDetailData?.brand} ${modelDetailData?.model}`}
           />
         </GalleryWrapper>
       </Container>
@@ -251,15 +264,17 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
       >
         {isMobile ? faqTitleMobile : faqTitle}
       </TitleFaq>
-      {recommendations.length > 0 && (
+      {recommendationsDetailData.length > 0 && (
         <FAQ
-          carModel={carModelDetails}
+          carModel={modelDetailData}
           recommendationsModel={
-            recommendations.filter((item) => item.id === carModelDetails?.id)[0]
+            recommendationsDetailData.filter(
+              (item) => item.id === modelDetailData?.id,
+            )[0]
           }
         />
       )}
-      <SEOSectionV2 carModel={carModelDetails} />
+      <SEOSectionV2 carModel={modelDetailData} />
       {/* <StyledSlideUpModal showPopup={modal.isOpenPromoList}>
         <PromoListMobile openPromo={openPromo} onClose={closePopupPromo} />
       </StyledSlideUpModal> */}
