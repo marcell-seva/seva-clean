@@ -45,7 +45,7 @@ import { IconInfoSmall } from 'components/atoms/icon/InfoSmall'
 
 const LogoToyota = '/v3/assets/icon/toyota-1989.png'
 const LogoDaihatsu = '/v3/assets/icon/daihatsu-update.png'
-const Isuzu = '/v3/assets/icon/isuzu-new.png'
+const Isuzu = '/v3/assets/icon/Isuzu-new.png'
 const LogoBmw = '/v3/assets/icon/logo-bmw.webp'
 const Peugeot = '/v3/assets/icon/peugeot.png'
 
@@ -192,7 +192,7 @@ export const NewFilterSideMenu = () => {
     },
     {
       key: 'Isuzu',
-      icon: <img src={Isuzu} alt="Isuzu" width={52} height={23} />,
+      icon: <Image src={Isuzu} alt="Isuzu" width={52} height={23} />,
       value: 'Isuzu',
       isChecked: isCheckedBrand.includes('Isuzu'),
     },

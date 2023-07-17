@@ -107,9 +107,9 @@ export const PageHeaderSeva = memo((props: PageHeaderSevaProps) => {
 
   const setMoengageUser = async (payload: string) => {
     const moengage = client && window.Moengage
-    if (moengage) {
-      moengage.addMobile(payload)
-      moengage.addUniqueUserId(payload)
+    if (moengage && !!moengage?.addMobile && !!moengage?.addUniqueUserId) {
+      moengage?.addMobile(payload)
+      moengage?.addUniqueUserId(payload)
     }
   }
 
