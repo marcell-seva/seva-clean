@@ -192,7 +192,7 @@ const Specification = memo(({ tab, isSticky }: tabProps) => {
           <SpecificationSelectWrapper>
             <SpecificationSelect
               options={modelDetailData.variants.sort(
-                (a, b) => a.priceValue - b.priceValue,
+                (a: any, b: any) => a.priceValue - b.priceValue,
               )}
               onChooseOption={(item) => {
                 setSelected(item)

@@ -124,7 +124,7 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
   useEffect(() => {
     if (router.query?.variant) {
       const filterOption = modelDetailData?.variants.filter(
-        (item) => item.id === router.query?.variant,
+        (item: any) => item.id === router.query?.variant,
       )
       if (filterOption) {
         setInitialValue(filterOption[0])
@@ -242,10 +242,10 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
       transmition: variantDetailData?.variantDetail.transmission,
       dimension:
         recommendationsDetailData?.filter(
-          (car) => car.id === variantDetailData?.modelDetail.id,
+          (car: any) => car.id === variantDetailData?.modelDetail.id,
         ).length > 0
           ? recommendationsDetailData?.filter(
-              (car) => car.id === variantDetailData?.modelDetail.id,
+              (car: any) => car.id === variantDetailData?.modelDetail.id,
             )[0].height
           : '',
       body_type: variantDetailData?.variantDetail.bodyType

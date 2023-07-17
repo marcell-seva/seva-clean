@@ -113,11 +113,11 @@ export const PriceList = () => {
   return (
     <PriceListWrapper>
       {modelDetailData.variants
-        .filter((item) => item.name)
-        .sort(function (a, b) {
+        .filter((item: any) => item.name)
+        .sort(function (a: any, b: any) {
           return a.priceValue - b.priceValue
         })
-        .map((item, index) => (
+        .map((item: any, index: number) => (
           <>
             <PriceBox
               key={item.id}

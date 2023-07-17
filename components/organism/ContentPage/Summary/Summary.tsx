@@ -269,7 +269,7 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
           carModel={modelDetailData}
           recommendationsModel={
             recommendationsDetailData.filter(
-              (item) => item.id === modelDetailData?.id,
+              (item: any) => item.id === modelDetailData?.id,
             )[0]
           }
         />

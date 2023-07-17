@@ -141,7 +141,7 @@ export const HeaderAndContent = ({
 
   const sortCarModelVariant = useMemo(() => {
     return (
-      modelDetailData?.variants.sort(function (a, b) {
+      modelDetailData?.variants.sort(function (a: any, b: any) {
         return a.priceValue - b.priceValue
       }) || []
     )

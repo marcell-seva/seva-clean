@@ -101,10 +101,10 @@ const Price = memo(({ tab, isSticky }: tabProps) => {
       transmition: variantDetailData?.variantDetail.transmission,
       dimension:
         recommendationsDetailData?.filter(
-          (car) => car.id === variantDetailData?.modelDetail.id,
+          (car: any) => car.id === variantDetailData?.modelDetail.id,
         ).length > 0
           ? recommendationsDetailData?.filter(
-              (car) => car.id === variantDetailData?.modelDetail.id,
+              (car: any) => car.id === variantDetailData?.modelDetail.id,
             )[0].height
           : '',
       body_type: variantDetailData?.variantDetail.bodyType

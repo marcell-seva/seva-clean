@@ -10,6 +10,7 @@ import { colors } from 'styles/colors'
 import { DownOutlined } from 'components/atoms'
 import {
   CarModelDetailsResponse,
+  CarRecommendation,
   CarVariantDetails,
   CityOtrOption,
 } from 'utils/types'
@@ -126,16 +127,19 @@ export const Description = ({
     }
     if (recommendationsDetailData && recommendationsDetailData?.length > 0) {
       setCarHeight(
-        recommendationsDetailData.filter((car) => car.id === carModel?.id)[0]
-          .height,
+        recommendationsDetailData.filter(
+          (car: any) => car.id === carModel?.id,
+        )[0].height,
       )
       setCarLength(
-        recommendationsDetailData.filter((car) => car.id === carModel?.id)[0]
-          .length,
+        recommendationsDetailData.filter(
+          (car: any) => car.id === carModel?.id,
+        )[0].length,
       )
       setCarWidth(
-        recommendationsDetailData.filter((car) => car.id === carModel?.id)[0]
-          .width,
+        recommendationsDetailData.filter(
+          (car: any) => car.id === carModel?.id,
+        )[0].width,
       )
     }
   }, [])
