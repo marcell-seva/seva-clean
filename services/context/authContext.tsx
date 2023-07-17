@@ -2,6 +2,9 @@ import { createContext, useEffect, useState } from 'react'
 import { setAmplitudeUserId } from '../amplitude'
 import { api } from '../api'
 import { User, Token, Filter } from 'utils/types'
+import { encryptValue } from 'utils/encryptionUtils'
+import { saveLocalStorage } from 'utils/localstorageUtils'
+import { LocalStorageKey } from 'utils/models/models'
 
 export type AuthContextType = {
   isLoggedIn: boolean
@@ -35,7 +38,8 @@ export const AuthProvider = ({ children }: any) => {
       const res: any = await api.getUserInfo()
       const dataUser: any = res[0]
       saveAuthData(dataUser)
-      localStorage.setItem('seva-cust', JSON.stringify(dataUser))
+      const encryptedData = encryptValue(JSON.stringify(dataUser))
+      saveLocalStorage(LocalStorageKey.sevaCust, encryptedData)
       setAmplitudeUserId(dataUser.id)
     } catch (error) {
       throw error
