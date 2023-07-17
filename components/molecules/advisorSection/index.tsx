@@ -210,7 +210,7 @@ export const AdvisorSection = ({
           <div className="tablet-as">
             <div className="input-container-as">
               <StyledInput
-                dataTestId={elementId.Homepage.ContactAgent.FullName}
+                data-testid={elementId.Homepage.ContactAgent.FullName}
                 type={'text'}
                 maxLength={100}
                 placeholder={'Nama Lengkap'}
@@ -290,7 +290,7 @@ const StyledButtonText = styled(TextMediumRegular)`
     line-height: 20px;
   }
 `
-const StyledInput = styled.input`
+const StyledInput = styled(Input)`
   width: 103%;
 
   @media (min-width: 1025px) {

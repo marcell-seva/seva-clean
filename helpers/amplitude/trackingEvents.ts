@@ -1,5 +1,5 @@
 import { LoanRank, PageFrom } from 'utils/models/models'
-import { Seva20TrackingEvent } from './seva20Tracking'
+import { MenuParam, Seva20TrackingEvent } from './seva20Tracking'
 import { NewLoanCalculatorTrackingEvent } from './newLoanCalculatorEventTracking'
 import { FunnelTrackingEvent } from './newFunnelEventTracking'
 import {
@@ -9,6 +9,7 @@ import {
 } from './newHomePageEventTracking'
 import { logAmplitudeEvent } from 'services/amplitude'
 import { TrackingEventName } from './eventTypes'
+import { TemanSevaTrackingEvent } from './temanSevaEventTracking'
 
 export enum LoanRating {
   Easy = 'easy',
@@ -40,10 +41,15 @@ export type TrackingEvent =
         variantName?: string
       }
     }
+  | {
+      name: TrackingEventName.SELECT_LANGUAGE
+      data: { language: string }
+    }
   | Seva20TrackingEvent
   | NewLoanCalculatorTrackingEvent
   | FunnelTrackingEvent
   | NewHomePageTrackingEvent
+  | TemanSevaTrackingEvent
 
 export const trackWhatsappButtonClickFromCarResults = (
   from: EventFromType,
@@ -66,4 +72,13 @@ export const trackWhatsappButtonClickFromCarResults = (
       version,
     },
   } as any)
+}
+
+export const trackSelectLanguage = (language: string) => {
+  logAmplitudeEvent({
+    name: TrackingEventName.SELECT_LANGUAGE,
+    data: {
+      language,
+    },
+  })
 }

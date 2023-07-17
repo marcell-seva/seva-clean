@@ -113,13 +113,17 @@ const TabContentLowerVariant = ({
   const navigateToCreditTab = (carVariant: CarVariantRecommendation) => {
     trackCarVariantPricelistClickCta(getDataForAmplitude(carVariant))
     setSelectedTabValue && setSelectedTabValue('Kredit')
-    router.replace({
-      pathname: variantListUrl
-        .replace(':brand', brand)
-        .replace(':model', model)
-        .replace(':tab?', 'kredit'),
-      query: { selectedVariantId: carVariant.id },
-    })
+    router.replace(
+      {
+        pathname: variantListUrl
+          .replace(':brand', brand)
+          .replace(':model', model)
+          .replace(':tab?', 'kredit'),
+        query: { selectedVariantId: carVariant.id },
+      },
+      undefined,
+      { scroll: false },
+    )
   }
 
   return (

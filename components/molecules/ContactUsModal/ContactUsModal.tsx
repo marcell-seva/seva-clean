@@ -43,7 +43,7 @@ import { IconSquareCheckBox, IconSquareCheckedBox } from 'components/atoms/icon'
 import { client } from 'const/const'
 import { CityOtrOption, UTMTagsData } from 'utils/types/utils'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { useDialogModal } from 'components/molecules/DialogModal'
+import { useDialogModal } from 'components/molecules/dialogModal/DialogModal'
 
 interface ContactUsFloatingComponentProps
   extends HTMLAttributes<HTMLDivElement> {
