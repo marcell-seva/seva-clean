@@ -14,7 +14,7 @@ import { FormLCState, SpecialRateList } from 'utils/types/utils'
 import { trackLCKualifikasiKreditPopUpCtaClick } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
 
-const MainImage = '/v3/assets/illustration/loan-calculator.webp'
+const MainImage = '/assets/illustration/loan-calculator.webp'
 
 interface QualificationCreditModalProps {
   onClickCloseButton: () => void

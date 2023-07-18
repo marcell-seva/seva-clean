@@ -3,8 +3,8 @@ import styled from 'styled-components'
 // import { useInstalmentFreeModal } from 'pages/VariantListPageSeva/InstalmentFreeModal/InstalmentFreeModal'
 import { useMediaQuery } from 'react-responsive'
 
-const webImage = '/v3/assets/illustration/car_search_desktop.png'
-const mobileImage = '/v3/assets/illustration/car_search_mobile.png'
+const webImage = '/assets/illustration/car_search_desktop.png'
+const mobileImage = '/assets/illustration/car_search_mobile.png'
 
 export const FreeInstallment = () => {
   // const {

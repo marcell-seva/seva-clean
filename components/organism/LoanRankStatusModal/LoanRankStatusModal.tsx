@@ -9,9 +9,8 @@ import { LoanRank } from 'utils/enum'
 import { IconClose } from 'components/atoms'
 
 const BackgroundDesktopGreen =
-  '/v3/assets/illustration/background-desktop-green.webp'
-const BackgroundDesktopRed =
-  '/v3/assets/illustration/background-desktop-red.webp'
+  '/assets/illustration/background-desktop-green.webp'
+const BackgroundDesktopRed = '/assets/illustration/background-desktop-red.webp'
 
 export enum LoanRankStatusAmplitudeType {
   GreenCta = 'greenCta',

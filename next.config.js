@@ -1,7 +1,7 @@
 const path = require('path')
 
 const nextConfig = {
-  basePath: '/v3',
+  basePath: '',
   poweredByHeader: false,
   reactStrictMode: true,
   sassOptions: {

@@ -31,7 +31,7 @@ import elementId from 'helpers/elementIds'
 import { CityOtrOption } from 'utils/types/utils'
 import { useRouter } from 'next/router'
 
-const rpIcon = '/v3/assets/illustration/rp-icon.webp'
+const rpIcon = '/assets/illustration/rp-icon.webp'
 
 type VariantsProps = {
   carModelDetails: CarModelDetailsResponse

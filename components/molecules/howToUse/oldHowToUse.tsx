@@ -5,8 +5,8 @@ import { colors } from 'styles/colors'
 import { USPAttributes } from 'utils/types/utils'
 import { H2MediumBold } from 'utils/typography/H2MediumBold'
 
-const vector6 = '/v3/assets/illustration/vector-6.png'
-const vector7 = '/v3/assets/illustration/vector-7.png'
+const vector6 = '/assets/illustration/vector-6.png'
+const vector7 = '/assets/illustration/vector-7.png'
 
 interface HowToUseProps {
   uspData: USPAttributes

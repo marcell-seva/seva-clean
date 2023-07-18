@@ -43,20 +43,18 @@ import { LinkLabelSmallSemiBold } from 'utils/typography/LinkLabelSmallSemiBold'
 import { CarButtonProps } from 'utils/types/context'
 import { IconInfoSmall } from 'components/atoms/icon/InfoSmall'
 
-const LogoToyota = '/v3/assets/icon/toyota-1989.png'
-const LogoDaihatsu = '/v3/assets/icon/daihatsu-update.png'
-const Isuzu = '/v3/assets/icon/Isuzu-new.png'
-const LogoBmw = '/v3/assets/icon/logo-bmw.webp'
-const Peugeot = '/v3/assets/icon/peugeot.png'
+const LogoToyota = '/assets/icon/toyota-1989.png'
+const LogoDaihatsu = '/assets/icon/daihatsu-update.png'
+const Isuzu = '/assets/icon/Isuzu-new.png'
+const LogoBmw = '/assets/icon/logo-bmw.webp'
+const Peugeot = '/assets/icon/peugeot.png'
 
-const IconTypeSuv = '/v3/assets/icon/OldBodyTypesIcon/Car_Type_Icons_SUV.png'
-const IconTypeSport =
-  '/v3/assets/icon/OldBodyTypesIcon/Car_Type_Icons_Sport.png'
-const IconTypeSedan =
-  '/v3/assets/icon/OldBodyTypesIcon/Car_Type_Icons_Sedan.png'
-const IconTypeMpv = '/v3/assets/icon/OldBodyTypesIcon/Car_Type_Icons_MPV.png'
+const IconTypeSuv = '/assets/icon/OldBodyTypesIcon/Car_Type_Icons_SUV.png'
+const IconTypeSport = '/assets/icon/OldBodyTypesIcon/Car_Type_Icons_Sport.png'
+const IconTypeSedan = '/assets/icon/OldBodyTypesIcon/Car_Type_Icons_Sedan.png'
+const IconTypeMpv = '/assets/icon/OldBodyTypesIcon/Car_Type_Icons_MPV.png'
 const IconTypeHatchback =
-  '/v3/assets/icon/OldBodyTypesIcon/Car_Type_Icons_Hatchback.png'
+  '/assets/icon/OldBodyTypesIcon/Car_Type_Icons_Hatchback.png'
 
 export const sortOptions = [
   {

@@ -4,7 +4,7 @@ import { LinkLabelMediumBold } from 'utils/typography/LinkLabelMediumBold'
 import { TextLegalMedium } from 'utils/typography/TextLegalMedium'
 import { TextLegalSemiBold } from 'utils/typography/TextLegalSemiBold'
 
-const RegisterImg = '/v3/assets/illustration/Register.png'
+const RegisterImg = '/assets/illustration/Register.png'
 
 export const StyledWrapper = styled.div`
   display: flex;

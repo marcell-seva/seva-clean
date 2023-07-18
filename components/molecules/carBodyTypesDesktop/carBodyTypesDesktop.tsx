@@ -35,8 +35,8 @@ import { CarButtonProps } from 'utils/types/context'
 import { newBodyTypes } from './carBodyTypes'
 import { HomePageDataLocalContext } from 'pages'
 
-const leftArrow = '/v3/assets/icon/arrowLeftSmall.svg'
-const rightArrow = '/v3/assets/icon/arrowRightSmall.svg'
+const leftArrow = '/assets/icon/arrowLeftSmall.svg'
+const rightArrow = '/assets/icon/arrowRightSmall.svg'
 
 interface BodyTypes {
   body_type: string

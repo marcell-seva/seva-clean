@@ -46,7 +46,7 @@ import {
 import { isIphone } from 'utils/window'
 import { LoanRankStatus } from '../LoanRankStatus/BadgeLoanStatus'
 
-const ShimmerLoader = '/v3/assets/illustration/placeholder.gif'
+const ShimmerLoader = '/assets/illustration/placeholder.gif'
 
 interface CarTileProps {
   carModel: CarRecommendation

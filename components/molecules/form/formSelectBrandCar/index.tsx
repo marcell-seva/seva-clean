@@ -5,10 +5,10 @@ import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContex
 import elementId from 'helpers/elementIds'
 
 const LogoToyota = 'assets/icon/logo-toyota.webp'
-const LogoDaihatsu = '/v3/assets/icon/logo-daihatsu.webp'
-const Isuzu = '/v3/assets/icon/logo-isuzu.webp'
-const LogoBmw = '/v3/assets/icon/logo-bmw.webp'
-const Peugeot = '/v3/assets/icon/logo-peugeot.webp'
+const LogoDaihatsu = '/assets/icon/logo-daihatsu.webp'
+const Isuzu = '/assets/icon/logo-isuzu.webp'
+const LogoBmw = '/assets/icon/logo-bmw.webp'
+const Peugeot = '/assets/icon/logo-peugeot.webp'
 
 export interface FilterMobileProps {
   setIsCheckedBrand: any

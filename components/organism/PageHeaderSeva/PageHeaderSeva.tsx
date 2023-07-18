@@ -41,8 +41,8 @@ import { Hamburger } from 'components/atoms/icon/OldHamburger'
 import { TextLegalMedium } from 'utils/typography/TextLegalMedium'
 import { client } from 'const/const'
 
-const LogoSeva = '/v3/assets/illustration/seva-header.svg'
-const RegisterImg = '/v3/assets/illustration/Register.png'
+const LogoSeva = '/assets/illustration/seva-header.svg'
+const RegisterImg = '/assets/illustration/Register.png'
 
 interface PageHeaderSevaProps {
   children?: JSX.Element

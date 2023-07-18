@@ -1,6 +1,6 @@
 import React from 'react'
 
-const FlagUSAImg = '/v3/assets/illustration/FlagUSA.png'
+const FlagUSAImg = '/assets/illustration/FlagUSA.png'
 
 interface FlagUSAProps {
   width?: number
