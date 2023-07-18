@@ -45,7 +45,7 @@ const Price = memo(({ tab, isSticky }: tabProps) => {
   const recommendationsDetailData =
     recommendations.length !== 0
       ? recommendations
-      : carRecommendationsResDefaultCity
+      : carRecommendationsResDefaultCity.carRecommendations
   const { setSpecialRateResults } = useContextSpecialRateResults()
   const [openPromo, setOpenPromo] = useState(false)
   const { modal, patchModal } = useModalContext()

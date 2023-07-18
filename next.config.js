@@ -41,6 +41,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'storage.googleapis.com/www.images.dev.torqio.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'drive.google.com',
+      },
     ],
   },
 

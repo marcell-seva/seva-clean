@@ -25,10 +25,13 @@ import { CityOtrOption } from 'utils/types'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { Description } from 'components/organism/OldPdpSectionComponents/Description/Description'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import Image from 'next/image'
+
 type tabProps = {
   tab: string | undefined
   isSticky?: boolean
 }
+
 const GalleryTab = memo(({ tab, isSticky }: tabProps) => {
   const { carModelDetails } = useContextCarModelDetails()
   const { carVariantDetails } = useContextCarVariantDetails()
@@ -44,7 +47,7 @@ const GalleryTab = memo(({ tab, isSticky }: tabProps) => {
   const recommendationsDetailData =
     recommendations.length !== 0
       ? recommendations
-      : carRecommendationsResDefaultCity
+      : carRecommendationsResDefaultCity.carRecommendations
   const { currentLanguage } = useCurrentLanguageFromContext()
   const { setSpecialRateResults } = useContextSpecialRateResults()
   const categoryList = articleCategoryList[2]
@@ -188,7 +191,13 @@ const GalleryTab = memo(({ tab, isSticky }: tabProps) => {
           {articleList.map((article: any) => {
             return (
               <ArticleItem key={article.post_id} href={article.url}>
-                <ArticleItemImage src={article.featured_image} />
+                <Image
+                  src={article.featured_image}
+                  width={105}
+                  height={70}
+                  alt={`article-image-${article.post_id}`}
+                  style={{ borderRadius: '4px' }}
+                />
                 <ArticleItemContent>
                   <StyledTextTitleArticle>
                     {article.title}
@@ -277,12 +286,6 @@ const StyledTextSeeAll = styled.a`
 const ArticleItem = styled.a`
   display: flex;
   margin-bottom: 19px;
-`
-
-const ArticleItemImage = styled.img`
-  border-radius: 4px;
-  width: 105px;
-  aspect-ratio: 3 / 2;
 `
 
 const ArticleItemContent = styled.div`
