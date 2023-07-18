@@ -7,7 +7,8 @@ import {
   trackCarVariantPricelistClickCta,
 } from 'helpers/amplitude/seva20Tracking'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import React, { useContext, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { variantListUrl } from 'routes/routes'
 import { api } from 'services/api'
@@ -28,6 +29,8 @@ export const PriceList = () => {
   const tab = Array.isArray(slug) ? slug[0] : undefined
   const { carModelDetails } = useContextCarModelDetails()
   const { setCarVariantDetails } = useContextCarVariantDetails()
+  const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
+  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
   const [indexOpen, setIndexOpen] = useState<number | null>()
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
@@ -41,8 +44,8 @@ export const PriceList = () => {
 
   const getDataForAmplitude = (item: CarVariantRecommendation) => {
     return {
-      Car_Brand: carModelDetails?.brand ?? '',
-      Car_Model: carModelDetails?.model ?? '',
+      Car_Brand: modelDetailData?.brand ?? '',
+      Car_Model: modelDetailData?.model ?? '',
       City: cityOtr?.cityName || 'null',
       OTR: `Rp${replacePriceSeparatorByLocalization(
         item.priceValue,
@@ -107,15 +110,14 @@ export const PriceList = () => {
     })
   }
 
-  if (!carModelDetails) return <></>
   return (
     <PriceListWrapper>
-      {carModelDetails.variants
-        .filter((item) => item.name)
-        .sort(function (a, b) {
+      {modelDetailData.variants
+        .filter((item: any) => item.name)
+        .sort(function (a: any, b: any) {
           return a.priceValue - b.priceValue
         })
-        .map((item, index) => (
+        .map((item: any, index: number) => (
           <>
             <PriceBox
               key={item.id}

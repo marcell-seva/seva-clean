@@ -4,7 +4,7 @@ import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/ca
 import { useContextSpecialRateResults } from 'context/specialRateResultsContext/specialRateResultsContext'
 import { useContextSurveyFormData } from 'context/surveyFormContext/surveyFormContext'
 import { SpecialRateResults } from './SpecialRateResults/SpesialRateResults'
-import React, { useState, useEffect, useRef, memo } from 'react'
+import React, { useState, useEffect, useRef, memo, useContext } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
@@ -39,6 +39,7 @@ import { Input } from 'components/atoms/OldInput/Input'
 import { IconWarning } from 'components/atoms'
 import { useLoginAlertModal } from 'components/molecules/LoginAlertModal/LoginAlertModal'
 import { useRouter } from 'next/router'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 
 const EmptyCalculationImage = '/assets/illustration/EmptyCalculationImage.webp'
 const AccLogo = '/assets/icon/logo-acc.webp'
@@ -56,6 +57,18 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
   >()
   const { carModelDetails } = useContextCarModelDetails()
   const { carVariantDetails } = useContextCarVariantDetails()
+  const { recommendations } = useContextRecommendations()
+  const {
+    carModelDetailsResDefaultCity,
+    carVariantDetailsResDefaultCity,
+    carRecommendationsResDefaultCity,
+  } = useContext(PdpDataLocalContext)
+  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const variantDetailData = carVariantDetails || carVariantDetailsResDefaultCity
+  const recommendationsDetailData =
+    recommendations.length !== 0
+      ? recommendations
+      : carRecommendationsResDefaultCity
   const [selected, setSelected] = useState<CarVariantRecommendation | null>(
     null,
   )
@@ -68,7 +81,6 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
   const [invalidCodeMessage, setInvalidCodeMessage] = useState('')
 
   const { specialRateResults } = useContextSpecialRateResults()
-  const { recommendations } = useContextRecommendations()
 
   const { showModal: showLoginModal, LoginAlertModal } = useLoginAlertModal()
 
@@ -111,8 +123,8 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
 
   useEffect(() => {
     if (router.query?.variant) {
-      const filterOption = carModelDetails?.variants.filter(
-        (item) => item.id === router.query?.variant,
+      const filterOption = modelDetailData?.variants.filter(
+        (item: any) => item.id === router.query?.variant,
       )
       if (filterOption) {
         setInitialValue(filterOption[0])
@@ -204,83 +216,82 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
   }
   const trackEventMoengage = (carImages: string[]) => {
     const objData = {
-      brand: carModelDetails?.brand,
-      model: carModelDetails?.model,
+      brand: modelDetailData?.brand,
+      model: modelDetailData?.model,
       price:
-        carModelDetails?.variants && carModelDetails?.variants.length > 0
-          ? carModelDetails.variants[0].priceValue
+        modelDetailData?.variants && modelDetailData?.variants.length > 0
+          ? modelDetailData.variants[0].priceValue
           : '-',
-      variants: carVariantDetails?.variantDetail.name,
+      variants: variantDetailData?.variantDetail.name,
       monthly_installment:
-        carModelDetails?.variants && carModelDetails?.variants.length > 0
-          ? carModelDetails.variants[0].monthlyInstallment
+        modelDetailData?.variants && modelDetailData?.variants.length > 0
+          ? modelDetailData.variants[0].monthlyInstallment
           : '-',
       down_payment:
-        carModelDetails?.variants && carModelDetails?.variants.length > 0
-          ? carModelDetails.variants[0].dpAmount
+        modelDetailData?.variants && modelDetailData?.variants.length > 0
+          ? modelDetailData.variants[0].dpAmount
           : '-',
       loan_tenure:
-        carModelDetails?.variants && carModelDetails.variants.length > 0
-          ? carModelDetails.variants[0].tenure
+        modelDetailData?.variants && modelDetailData.variants.length > 0
+          ? modelDetailData.variants[0].tenure
           : '-',
       est_monthly_income: originInput.length !== 0 ? originInput : '',
       age: originAge.length !== 0 ? originAge : '',
-      car_seat: carVariantDetails?.variantDetail.carSeats,
-      fuel: carVariantDetails?.variantDetail.fuelType,
-      transmition: carVariantDetails?.variantDetail.transmission,
+      car_seat: variantDetailData?.variantDetail.carSeats,
+      fuel: variantDetailData?.variantDetail.fuelType,
+      transmition: variantDetailData?.variantDetail.transmission,
       dimension:
-        recommendations?.filter(
-          (car) => car.id === carVariantDetails?.modelDetail.id,
+        recommendationsDetailData?.filter(
+          (car: any) => car.id === variantDetailData?.modelDetail.id,
         ).length > 0
-          ? recommendations?.filter(
-              (car) => car.id === carVariantDetails?.modelDetail.id,
+          ? recommendationsDetailData?.filter(
+              (car: any) => car.id === variantDetailData?.modelDetail.id,
             )[0].height
           : '',
-      body_type: carVariantDetails?.variantDetail.bodyType
-        ? carVariantDetails?.variantDetail.bodyType
+      body_type: variantDetailData?.variantDetail.bodyType
+        ? variantDetailData?.variantDetail.bodyType
         : '-',
       Image_URL: carImages[0],
-      Brand_Model: `${carModelDetails?.brand} ${carModelDetails?.model}`,
+      Brand_Model: `${modelDetailData?.brand} ${modelDetailData?.model}`,
     }
     setTrackEventMoEngage('view_variant_list_credit_tab', objData)
   }
 
   useEffect(() => {
-    if (carModelDetails && cityOtr) {
+    if (modelDetailData && cityOtr) {
       const trackNewCarVariantList: WebVariantListPageParam = {
-        Car_Brand: carModelDetails.brand as string,
-        Car_Model: carModelDetails.model as string,
+        Car_Brand: modelDetailData.brand as string,
+        Car_Model: modelDetailData.model as string,
         OTR: `Rp${replacePriceSeparatorByLocalization(
-          carModelDetails.variants[0].priceValue as number,
+          modelDetailData.variants[0].priceValue as number,
           LanguageCode.id,
         )}`,
         DP: `Rp${formatSortPrice(
-          carModelDetails.variants[0].dpAmount as number,
+          modelDetailData.variants[0].dpAmount as number,
         )} Juta`,
         Tenure: '5 Tahun',
         City: cityOtr.cityName || 'Jakarta Pusat',
       }
 
       trackWebPDPCreditTab(trackNewCarVariantList)
-      trackEventMoengage(carModelDetails?.images)
+      trackEventMoengage(modelDetailData?.images)
     }
-  }, [carModelDetails, cityOtr])
+  }, [modelDetailData, cityOtr])
 
-  if (!carModelDetails || !carVariantDetails) return <></>
   return isMobile ? (
     <div>
       <div ref={scrollToTop}></div>
       {isMobile && !isCalculated && (
         <ContentDescription>
           <Description
-            title={`Kredit ${carModelDetails.brand} ${
-              carModelDetails.model
+            title={`Kredit ${modelDetailData.brand} ${
+              modelDetailData.model
             } di ${
               cityOtr && cityOtr.cityName ? cityOtr.cityName : 'Jakarta Pusat'
             }`}
-            description={carVariantDetails.variantDetail.description.id}
-            carModel={carModelDetails}
-            carVariant={carVariantDetails}
+            description={variantDetailData.variantDetail.description.id}
+            carModel={modelDetailData}
+            carVariant={variantDetailData}
             tab="credit"
           />
         </ContentDescription>
@@ -295,7 +306,7 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
               <Space />
               <SpecificationSelect
                 initialValue={initialValue}
-                options={carModelDetails.variants}
+                options={modelDetailData.variants}
                 onChooseOption={(item) => setSelected(item)}
                 // setInitialValue={setInitialValue}
               />
@@ -325,9 +336,9 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
 
         <div ref={scrollToSlider}></div>
         <ContainerField>
-          {carVariantDetails && (
+          {variantDetailData && (
             <SliderDpAmountCreditTab
-              carVariantDetails={carVariantDetails}
+              carVariantDetails={variantDetailData}
               onRecommendationsResults={onRecommendationsResults}
               onCalculate={setIsCalculated}
               onSubmitted={setIsSubmit}
@@ -374,7 +385,7 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
               <SpecialRateWrapper>
                 <SpecialRateResults
                   data={specialRateResults}
-                  carVariantDetails={carVariantDetails}
+                  variantDetailData={variantDetailData}
                   isNewRegularPage={true}
                   onCheckLogin={showLoginModal}
                   carVariantPage={true}
@@ -412,12 +423,12 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
       <div ref={scrollToTop}></div>
       <ContentDescription>
         <Description
-          title={`Kredit ${carModelDetails.brand} ${carModelDetails.model} di ${
+          title={`Kredit ${modelDetailData.brand} ${modelDetailData.model} di ${
             cityOtr && cityOtr.cityName ? cityOtr.cityName : 'Jakarta Pusat'
           }`}
-          description={carVariantDetails.variantDetail.description.id}
-          carModel={carModelDetails}
-          carVariant={carVariantDetails}
+          description={variantDetailData.variantDetail.description.id}
+          carModel={modelDetailData}
+          carVariant={variantDetailData}
           tab="credit"
         />
       </ContentDescription>
@@ -436,7 +447,7 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
               <Space />
               <SpecificationSelect
                 initialValue={initialValue}
-                options={carModelDetails.variants}
+                options={modelDetailData.variants}
                 onChooseOption={(item) => setSelected(item)}
               />
             </ContainerFieldVariantOption>
@@ -463,9 +474,9 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
 
             <div ref={scrollToSlider}></div>
             <ContainerField>
-              {carVariantDetails && (
+              {variantDetailData && (
                 <SliderDpAmountCreditTab
-                  carVariantDetails={carVariantDetails}
+                  carVariantDetails={variantDetailData}
                   onRecommendationsResults={onRecommendationsResults}
                   onCalculate={setIsCalculated}
                   onSubmitted={setIsSubmit}
@@ -516,7 +527,7 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
                   <SpecialRateWrapper>
                     <SpecialRateResults
                       data={specialRateResults}
-                      carVariantDetails={carVariantDetails}
+                      carVariantDetails={variantDetailData}
                       isNewRegularPage={true}
                       onCheckLogin={showLoginModal}
                       carVariantPage={true}

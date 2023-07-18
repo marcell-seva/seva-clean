@@ -1,5 +1,5 @@
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import React, { useMemo } from 'react'
+import React, { useContext, useMemo } from 'react'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
 import { BrandIcon } from './BrandIcon'
@@ -12,9 +12,12 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { CityOtrOption } from 'utils/types'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { ActionButton } from '../HeaderActionButton/HeaderActionButton'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 
 export function TitleHeader(props: StickyButtonProps) {
   const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
+  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -22,11 +25,11 @@ export function TitleHeader(props: StickyButtonProps) {
 
   const sortCarModelVariant = useMemo(() => {
     return (
-      carModelDetails?.variants.sort(function (a, b) {
+      modelDetailData?.variants.sort(function (a: any, b: any) {
         return a.priceValue - b.priceValue
       }) || []
     )
-  }, [carModelDetails])
+  }, [modelDetailData])
 
   const carOtrPrice = useMemo(() => {
     return sortCarModelVariant.length > 0
@@ -40,11 +43,11 @@ export function TitleHeader(props: StickyButtonProps) {
   return (
     <InfoHeaderContainer>
       <TitleHeaderWrapper>
-        <BrandIcon brand={carModelDetails?.brand || ''} />
+        <BrandIcon brand={modelDetailData?.brand || ''} />
         <BrandModelWrapper>
           <StyledBrand>
-            {carModelDetails?.brand}{' '}
-            <StyledModel>{carModelDetails?.model}</StyledModel>{' '}
+            {modelDetailData?.brand}{' '}
+            <StyledModel>{modelDetailData?.model}</StyledModel>{' '}
           </StyledBrand>
         </BrandModelWrapper>
       </TitleHeaderWrapper>
@@ -54,7 +57,7 @@ export function TitleHeader(props: StickyButtonProps) {
           <OTR>OTR</OTR>
           <OTRPrice>Rp {carOtrPrice}</OTRPrice>
           <OTRCity>{`(OTR ${
-            carModelDetails?.brand === 'Daihatsu'
+            modelDetailData?.brand === 'Daihatsu'
               ? 'Jakarta Pusat'
               : cityOtr?.cityName || 'Jakarta Pusat'
           })`}</OTRCity>
@@ -140,7 +143,7 @@ const StyledBrand = styled.h1`
   color: ${colors.body2};
 `
 
-const StyledModel = styled.div`
+const StyledModel = styled.h1`
   font-family: 'KanyonBold';
   font-size: 22px;
   line-height: 28px;

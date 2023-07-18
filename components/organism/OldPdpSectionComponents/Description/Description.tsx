@@ -1,9 +1,16 @@
-import React, { useRef, useState, useEffect, useLayoutEffect } from 'react'
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useContext,
+} from 'react'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
 import { DownOutlined } from 'components/atoms'
 import {
   CarModelDetailsResponse,
+  CarRecommendation,
   CarVariantDetails,
   CityOtrOption,
 } from 'utils/types'
@@ -31,6 +38,7 @@ import {
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 
 type DescriptionProps = {
   title: string
@@ -58,6 +66,13 @@ export const Description = ({
   const [carLength, setCarLength] = useState(0)
   const { recommendations } = useContextRecommendations()
   const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetailsResDefaultCity, carRecommendationsResDefaultCity } =
+    useContext(PdpDataLocalContext)
+  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const recommendationsDetailData =
+    recommendations.length !== 0
+      ? recommendations
+      : carRecommendationsResDefaultCity
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -110,23 +125,29 @@ export const Description = ({
           .filter((value, index, self) => self.indexOf(value) === index),
       )
     }
-    if (recommendations) {
+    if (recommendationsDetailData && recommendationsDetailData?.length > 0) {
       setCarHeight(
-        recommendations.filter((car) => car.id === carModel?.id)[0].height,
+        recommendationsDetailData.filter(
+          (car: any) => car.id === carModel?.id,
+        )[0].height,
       )
       setCarLength(
-        recommendations.filter((car) => car.id === carModel?.id)[0].length,
+        recommendationsDetailData.filter(
+          (car: any) => car.id === carModel?.id,
+        )[0].length,
       )
       setCarWidth(
-        recommendations.filter((car) => car.id === carModel?.id)[0].width,
+        recommendationsDetailData.filter(
+          (car: any) => car.id === carModel?.id,
+        )[0].width,
       )
     }
   }, [])
 
   const getDataForAmplitude = () => {
     return {
-      Car_Brand: carModelDetails?.brand ?? '',
-      Car_Model: carModelDetails?.model ?? '',
+      Car_Brand: modelDetailData?.brand ?? '',
+      Car_Model: modelDetailData?.model ?? '',
       City: cityOtr?.cityName || 'null',
       Page_Origination_URL: window.location.href,
     }
