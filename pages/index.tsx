@@ -49,14 +49,9 @@ export default function WithTracker({
   dataMainArticle,
   dataTypeCar,
   dataCarofTheMonth,
+  isSsrMobile,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
-
-  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
-
-  useEffect(() => {
-    setIsMobile(isClientMobile)
-  }, [isClientMobile])
+  const isMobile = isSsrMobile
 
   return (
     <HomePageDataLocalContext.Provider
@@ -80,8 +75,6 @@ export default function WithTracker({
           <HomepageDesktop />
         )}
       </>
-
-      <HomepageDesktop />
     </HomePageDataLocalContext.Provider>
   )
 }

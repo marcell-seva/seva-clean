@@ -39,22 +39,29 @@ import {
 } from 'components/organisms'
 import { CarContext, CarContextType } from 'services/context'
 import { getCity } from 'utils/hooks/useGetCity'
+import { HomePageDataLocalContext } from 'pages'
 
 const HomepageMobile = ({ dataReccomendation }: any) => {
   useEffect(() => {
     sendAmplitudeData(AmplitudeEventName.WEB_LANDING_PAGE_VIEW, {})
   }, [])
+  const { dataCities, dataCarofTheMonth, dataMainArticle } = useContext(
+    HomePageDataLocalContext,
+  )
   const { saveRecommendation } = useContext(CarContext) as CarContextType
   const [openCitySelectorModal, setOpenCitySelectorModal] = useState(false)
-  const [cityListApi, setCityListApi] = useState<Array<CityOtrOption>>([])
+  const [cityListApi, setCityListApi] =
+    useState<Array<CityOtrOption>>(dataCities)
   const [loadLP, setLoadLP] = useState(true)
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
   )
-  const [carOfTheMonthData, setCarOfTheMonthData] = useState<COMData[]>([])
+  const [carOfTheMonthData, setCarOfTheMonthData] =
+    useState<COMData[]>(dataCarofTheMonth)
   const [articles, setArticles] = useState<Article[]>([])
-  const [articlesTabList, setArticlesTabList] = useState<Article[]>([])
+  const [articlesTabList, setArticlesTabList] =
+    useState<Article[]>(dataMainArticle)
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
   const [selectedCarOfTheMonth, setSelectedCarOfTheMonth] =
     useState<COMDataTracking>()
