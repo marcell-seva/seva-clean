@@ -16,11 +16,11 @@ import { CarRecommendation } from 'utils/types'
 import { CarRecommendationResponse } from 'utils/types/context'
 
 const LogoToyota = 'assets/icon/logo-toyota.webp'
-const LogoDaihatsu = '/v3/assets/icon/logo-daihatsu.webp'
-const Isuzu = '/v3/assets/icon/logo-isuzu.webp'
-const LogoBmw = '/v3/assets/icon/logo-bmw.webp'
-const Peugeot = '/v3/assets/icon/logo-peugeot.webp'
-const ImageCarNotExist = '/v3/assets/illustration/CarNotExistImg.webp'
+const LogoDaihatsu = '/assets/icon/logo-daihatsu.webp'
+const Isuzu = '/assets/icon/logo-isuzu.webp'
+const LogoBmw = '/assets/icon/logo-bmw.webp'
+const Peugeot = '/assets/icon/logo-peugeot.webp'
+const ImageCarNotExist = '/assets/illustration/CarNotExistImg.webp'
 
 export interface CarButtonProps {
   key: string

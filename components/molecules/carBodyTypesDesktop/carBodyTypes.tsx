@@ -1,12 +1,12 @@
 import { CarButtonProps } from 'utils/types/context'
 
-const IconTypeSuv = '/v3/assets/illustration/Car_Type_Icons_SUV.png'
-const IconTypeSport = '/v3/assets/illustration/Car_Type_Icons_Sport.png'
-const IconTypeSedan = '/v3/assets/illustration/Car_Type_Icons_Sedan.png'
-const IconTypeMpv = '/v3/assets/illustration/Car_Type_Icons_MPV.png'
-const IconTypeMinivan = '/v3/assets/illustration/Car_Type_Icons_Minivan.png'
-const IconTypeHatchback = '/v3/assets/illustration/Car_Type_Icons_Hatchback.png'
-const IconTypeCrossover = '/v3/assets/illustration/Car_Type_Icons_Crossover.png'
+const IconTypeSuv = '/assets/illustration/Car_Type_Icons_SUV.png'
+const IconTypeSport = '/assets/illustration/Car_Type_Icons_Sport.png'
+const IconTypeSedan = '/assets/illustration/Car_Type_Icons_Sedan.png'
+const IconTypeMpv = '/assets/illustration/Car_Type_Icons_MPV.png'
+const IconTypeMinivan = '/assets/illustration/Car_Type_Icons_Minivan.png'
+const IconTypeHatchback = '/assets/illustration/Car_Type_Icons_Hatchback.png'
+const IconTypeCrossover = '/assets/illustration/Car_Type_Icons_Crossover.png'
 
 export const newBodyTypes: CarButtonProps[] = [
   {

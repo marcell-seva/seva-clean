@@ -31,7 +31,7 @@ import { SearchInputV2 } from '../searchInputV2'
 import { Loading } from 'components/atoms/loading'
 
 const BackgroundImageDesktop =
-  '/v3/assets/illustration/background-image-desktop.webp'
+  '/assets/illustration/background-image-desktop.webp'
 
 export const LoanCalculatorWidgetV2 = () => {
   const router = useRouter()

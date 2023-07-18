@@ -8,7 +8,7 @@ import styles from '../../../../styles/components/organism/popupResultInfo.modul
 import { Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'utils/enum'
 
-const PLPEmpty = '/v3/assets/illustration/plp-empty.webp'
+const PLPEmpty = '/assets/illustration/plp-empty.webp'
 
 type PopupResultInfo = Omit<ModalProps, 'children'>
 export const PopupResultInfo = (props: PopupResultInfo) => {

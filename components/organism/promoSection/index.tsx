@@ -7,9 +7,9 @@ import {
 import React from 'react'
 import styles from 'styles/components/organism/summary.module.scss'
 
-const promoBannerTSO = '/v3/assets/illustration/PromoTSO.webp'
-const promoBannerCumaDiSEVA = '/v3/assets/illustration/PromoCumaDiSEVA.webp'
-const promoTradeIn = '/v3/assets/illustration/PromoTradeIn.webp'
+const promoBannerTSO = '/assets/illustration/PromoTSO.webp'
+const promoBannerCumaDiSEVA = '/assets/illustration/PromoCumaDiSEVA.webp'
+const promoTradeIn = '/assets/illustration/PromoTradeIn.webp'
 
 import {
   IconChevronRight,

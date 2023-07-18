@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
-const ShimmerLoader = '/v3/assets/illustration/placeholder.gif'
+const ShimmerLoader = '/assets/illustration/placeholder.gif'
 
 export const WebShimmer = () => {
   return (

@@ -5,7 +5,7 @@ import { LocalFormPhoneNumber } from './LocalFormPhoneNumber'
 import { CountryCodePlusSign } from 'utils/hooks/useContactFormData/useContactFormData'
 import { GlobalFormPhoneNumber } from './GlobalFormPhoneNumber'
 
-const FlagIndonesia = '/v3/assets/icon/FlagIndonesia.svg'
+const FlagIndonesia = '/assets/icon/FlagIndonesia.svg'
 
 interface FormPhoneNumberProps {
   showDefaultLabel?: boolean
