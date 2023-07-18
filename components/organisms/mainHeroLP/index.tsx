@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styles from 'styles/components/organisms/mainHeroLp.module.scss'
 import SupergraphicImage from 'assets/illustration/supergraphic-secondary-large.webp'
 import MainHeroImage from 'assets/illustration/main-hero-raize-cencored.webp'
@@ -12,15 +12,18 @@ import { ButtonSize, ButtonVersion } from 'utils/types/models'
 import { useRouter } from 'next/router'
 import { api } from 'services/api'
 import { CityOtrOption } from 'utils/types/props'
+import { HomePageDataLocalContext } from 'pages'
 
 type MainHeroLPProps = {
   onCityIconClick: () => void
 }
 
 const MainHeroLP = ({ onCityIconClick }: MainHeroLPProps) => {
+  const { dataCities } = useContext(HomePageDataLocalContext)
   const history = useRouter()
   const [showSidebar, setShowSidebar] = useState(false)
-  const [cityListApi, setCityListApi] = useState<Array<CityOtrOption>>([])
+  const [cityListApi, setCityListApi] =
+    useState<Array<CityOtrOption>>(dataCities)
 
   const gotoLoanCalculator = () => {
     sendAmplitudeData(

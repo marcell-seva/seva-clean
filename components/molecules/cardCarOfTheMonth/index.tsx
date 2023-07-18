@@ -23,6 +23,7 @@ import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { Button } from 'components/atoms'
 import { saveLocalStorage } from 'utils/handler/localStorage'
+import { client } from 'const/const'
 type carOfTheMonthData = {
   name: string
   desc: string
@@ -161,7 +162,7 @@ const CardCarOfTheMonth = ({
             <div
               className={styles.descriptionWrapper}
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(item.desc),
+                __html: client ? DOMPurify.sanitize(item.desc) : item.desc,
               }}
             />
             <div className={styles.ctaWrapper}>

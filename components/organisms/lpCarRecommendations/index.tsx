@@ -39,13 +39,12 @@ const LpCarRecommendations = ({
   const swiperRef = useRef<SwiperType>()
   const { recommendation } = useContext(CarContext) as CarContextType
 
-  const [recommendationList, setRecommendationList] = useState<
-    CarRecommendation[]
-  >([])
+  const [recommendationList, setRecommendationList] =
+    useState<CarRecommendation[]>(dataReccomendation)
   const [city] = useLocalStorage(LocalStorageKey.CityOtr, null)
   const [openPromo, setOpenPromo] = useState(false)
   const [selectedBrand, setSelectedBrand] = useState('')
-  const [load, setLoad] = useState(true)
+  const [load, setLoad] = useState(false)
 
   const handleCalculateAbility = (item: CarRecommendation) => {
     const selectedCity = city ? city.cityName : 'Jakarta Pusat'
