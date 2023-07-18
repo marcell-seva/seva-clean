@@ -4,7 +4,7 @@ import { Space } from 'antd'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import elementId from 'helpers/elementIds'
 
-const LogoToyota = 'assets/icon/logo-toyota.webp'
+const LogoToyota = '/assets/icon/logo-toyota.webp'
 const LogoDaihatsu = '/assets/icon/logo-daihatsu.webp'
 const Isuzu = '/assets/icon/logo-isuzu.webp'
 const LogoBmw = '/assets/icon/logo-bmw.webp'

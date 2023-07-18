@@ -27,6 +27,7 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { api } from 'services/api'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import Image from 'next/image'
 
 type VideoProps = {
   modelDetail: CarModelDetailsResponse
@@ -162,12 +163,14 @@ export const Video = ({ modelDetail }: VideoProps) => {
               height={!isMobile ? 32.25 : 19}
             />
           </PlayButtonWrapper>
-          <MainVideoImage
-            src={mainVideo.thumbnailVideo}
-            onClick={onShowVideo}
-            alt={`${modelDetail.brand} ${modelDetail.model} video review`}
-            loading="lazy"
-          />
+          <MainVideoImageWrapper onClick={onShowVideo}>
+            <Image
+              src={mainVideo.thumbnailVideo}
+              alt={`${modelDetail.brand} ${modelDetail.model} video review`}
+              width={731}
+              height={411}
+            />
+          </MainVideoImageWrapper>
           <StyledTextTitleVideo>{mainVideo.title}</StyledTextTitleVideo>
           <StyledTextChannelVideo>
             {'Uploaded by ' + mainVideo.uploadedBy}
@@ -255,9 +258,8 @@ const ContentMainVideo = styled.div`
   }
 `
 
-const MainVideoImage = styled.img`
+const MainVideoImageWrapper = styled.div`
   height: 223px;
-  object-fit: cover;
   @media (min-width: 1025px) {
     width: 731px;
     height: auto;

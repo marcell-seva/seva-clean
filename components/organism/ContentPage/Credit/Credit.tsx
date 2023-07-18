@@ -40,6 +40,7 @@ import { IconWarning } from 'components/atoms'
 import { useLoginAlertModal } from 'components/molecules/LoginAlertModal/LoginAlertModal'
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import Image from 'next/image'
 
 const EmptyCalculationImage = '/assets/illustration/EmptyCalculationImage.webp'
 const AccLogo = '/assets/icon/logo-acc.webp'
@@ -68,7 +69,7 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
   const recommendationsDetailData =
     recommendations.length !== 0
       ? recommendations
-      : carRecommendationsResDefaultCity
+      : carRecommendationsResDefaultCity.carRecommendations
   const [selected, setSelected] = useState<CarVariantRecommendation | null>(
     null,
   )
@@ -548,7 +549,12 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
               </>
             ) : (
               <ImageWrapper>
-                <img src={EmptyCalculationImage} />
+                <Image
+                  src={EmptyCalculationImage}
+                  width={320}
+                  height={264}
+                  alt="empty-calculation-illustration"
+                />
                 <StyledTextEmptyCalculation>
                   Lengkapi informasi di sebelah untuk mendapatkan hitungan
                   kredit yang sesuai dan rekomendasi finansial dari SEVA.

@@ -3,6 +3,7 @@ import { useMediaQuery } from 'react-responsive'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 // import { isIphone } from 'utils/window'
+import Image from 'next/image'
 
 interface Props {
   imageOptionsList: string[]
@@ -63,13 +64,19 @@ export const GalleryImageOptionsListV2 = ({
     <Container ref={containerRef}>
       <ImageListWrapper>
         {imageOptionsList.map((item, index) => (
-          <StyledImage
-            ref={refs[item]}
-            src={item}
+          <StyledImageWrapper
             key={index}
+            ref={refs[item]}
             onClick={() => onClickImage(index, item)}
             isSelected={currentSlide === index}
-          />
+          >
+            <Image
+              src={item}
+              width={266}
+              height={200}
+              alt={`gallery-image-${index + 1}`}
+            />
+          </StyledImageWrapper>
         ))}
       </ImageListWrapper>
     </Container>
@@ -118,7 +125,7 @@ const ImageListWrapper = styled.div`
   }
 `
 
-const StyledImage = styled.img<{
+const StyledImageWrapper = styled.div<{
   isSelected: boolean
 }>`
   width: 28vw;

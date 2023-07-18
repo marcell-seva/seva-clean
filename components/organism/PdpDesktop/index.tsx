@@ -42,6 +42,7 @@ import {
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
 import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
 import HeaderVariant from 'components/molecules/header/header'
+import { useCitySelectorModal } from 'components/molecules/citySelector/citySelectorModal'
 
 export default function index() {
   const router = useRouter()
@@ -70,8 +71,8 @@ export default function index() {
   const { setRecommendations } = useContextRecommendations()
   const { carModelDetails, setCarModelDetails } = useContextCarModelDetails()
   const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
-  // const { showModal: showCitySelectorModal, CitySelectorModal } =
-  //   useNewCitySelectoreModal()
+  const { showModal: showCitySelectorModal, CitySelectorModal } =
+    useCitySelectorModal()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -79,9 +80,9 @@ export default function index() {
   const { modal } = useModalContext()
 
   const cityHandler = async () => {
-    // if (!cityOtr) {
-    //   showCitySelectorModal()
-    // }
+    if (!cityOtr) {
+      showCitySelectorModal()
+    }
   }
 
   const formatTabUrl = (path: string) => {
@@ -240,7 +241,8 @@ export default function index() {
           isSticky={stickyCTA}
         />
       )}
-      {/* <CitySelectorModal /> */}
+
+      <CitySelectorModal />
       <PreApprovalCarNotAvailableModal />
       <ContactUsModal
         title={'Punya Pertanyaan?'}

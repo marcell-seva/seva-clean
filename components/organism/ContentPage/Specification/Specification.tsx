@@ -54,7 +54,7 @@ const Specification = memo(({ tab, isSticky }: tabProps) => {
   const recommendationsDetailData =
     recommendations.length !== 0
       ? recommendations
-      : carRecommendationsResDefaultCity
+      : carRecommendationsResDefaultCity.carRecommendations
   const carResultParameter = useCarResultParameter()
   const { setSpecialRateResults } = useContextSpecialRateResults()
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
@@ -130,11 +130,11 @@ const Specification = memo(({ tab, isSticky }: tabProps) => {
       fuel: variantDetailData?.variantDetail.fuelType,
       transmition: variantDetailData?.variantDetail.transmission,
       dimension:
-        recommendations?.filter(
-          (car) => car.id === variantDetailData?.modelDetail.id,
+        recommendationsDetailData?.filter(
+          (car: any) => car.id === variantDetailData?.modelDetail.id,
         ).length > 0
-          ? recommendations?.filter(
-              (car) => car.id === variantDetailData?.modelDetail.id,
+          ? recommendationsDetailData?.filter(
+              (car: any) => car.id === variantDetailData?.modelDetail.id,
             )[0].height
           : '',
       body_type: variantDetailData?.variantDetail.bodyType

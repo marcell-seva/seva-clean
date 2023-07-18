@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import Image from 'next/image'
 
-const LogoToyota = 'assets/icon/logo-toyota.webp'
+const LogoToyota = '/assets/icon/logo-toyota.webp'
 const LogoDaihatsu = '/assets/icon/logo-daihatsu.webp'
 const Isuzu = '/assets/icon/logo-isuzu.webp'
 const LogoBmw = '/assets/icon/logo-bmw.webp'
@@ -13,40 +14,14 @@ export const BrandIcon = ({ brand }: { brand: string }) => {
       {
         {
           Toyota: (
-            <img
-              src={LogoToyota}
-              alt="Toyota"
-              style={{ width: 48, height: 'auto' }}
-            />
+            <Image src={LogoToyota} alt="Toyota" width={47} height={41} />
           ),
           Daihatsu: (
-            <img
-              src={LogoDaihatsu}
-              alt="Daihatsu"
-              style={{ width: 47, height: 'auto' }}
-            />
+            <Image src={LogoDaihatsu} alt="Daihatsu" width={47} height={33} />
           ),
-          BMW: (
-            <img
-              src={LogoBmw}
-              alt="BMW"
-              style={{ width: 47, height: 'auto' }}
-            />
-          ),
-          Peugeot: (
-            <img
-              src={Peugeot}
-              alt="Peugeot"
-              style={{ width: 47, height: 'auto' }}
-            />
-          ),
-          Isuzu: (
-            <img
-              src={Isuzu}
-              alt="Isuzu"
-              style={{ width: 47, height: 'auto' }}
-            />
-          ),
+          BMW: <Image src={LogoBmw} alt="BMW" width={47} height={47} />,
+          Peugeot: <Image src={Peugeot} alt="Peugeot" width={47} height={52} />,
+          Isuzu: <Image src={Isuzu} alt="Isuzu" width={47} height={15} />,
         }[brand]
       }
     </StyledIcon>

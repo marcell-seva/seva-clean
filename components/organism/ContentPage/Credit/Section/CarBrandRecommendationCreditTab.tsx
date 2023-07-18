@@ -15,7 +15,7 @@ import 'pure-react-carousel/dist/react-carousel.es.css'
 import { CarRecommendation } from 'utils/types'
 import { CarRecommendationResponse } from 'utils/types/context'
 
-const LogoToyota = 'assets/icon/logo-toyota.webp'
+const LogoToyota = '/assets/icon/logo-toyota.webp'
 const LogoDaihatsu = '/assets/icon/logo-daihatsu.webp'
 const Isuzu = '/assets/icon/logo-isuzu.webp'
 const LogoBmw = '/assets/icon/logo-bmw.webp'

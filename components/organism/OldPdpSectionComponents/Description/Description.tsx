@@ -72,7 +72,7 @@ export const Description = ({
   const recommendationsDetailData =
     recommendations.length !== 0
       ? recommendations
-      : carRecommendationsResDefaultCity
+      : carRecommendationsResDefaultCity.carRecommendations
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
