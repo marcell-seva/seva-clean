@@ -10,17 +10,17 @@ import { NavbarItemResponse } from 'utils/types/utils'
 import { LocalStorageKey } from 'utils/models/models'
 import { NavbarItem } from './navbarItem'
 import { BeliMobilMenu } from './beliMobilMenu'
-import { HomePageDataLocalContext } from 'pages'
+import { MenuContext } from 'context/menuContext'
 
 export const Navbar = () => {
-  const { dataMenu } = useContext(HomePageDataLocalContext)
+  const { dataMenu: menus } = useContext(MenuContext)
 
   const filterCategory = (
     data: Array<NavbarItemResponse>,
     category: string,
   ) => {
     const temp: Array<NavbarItemResponse> = data
-    const result: NavbarItemResponse = temp.filter(
+    const result: NavbarItemResponse = temp?.filter(
       (item: NavbarItemResponse) =>
         removeWhitespacesAndToLowerCase(item.menuName) ===
         removeWhitespacesAndToLowerCase(category),
@@ -29,21 +29,21 @@ export const Navbar = () => {
   }
 
   const [beliMobilData, setBeliMobilData] = useState<NavbarItemResponse>(
-    filterCategory(dataMenu, 'Beli Mobil'),
+    filterCategory(menus, 'Beli Mobil'),
   )
   const [fasilitasDanaData, setFasilitasDanaData] =
-    useState<NavbarItemResponse>(filterCategory(dataMenu, 'Fasilitas Dana'))
+    useState<NavbarItemResponse>(filterCategory(menus, 'Fasilitas Dana'))
   const [layananSuratData, setLayananSuratData] = useState<NavbarItemResponse>(
-    filterCategory(dataMenu, 'Layanan Surat Kendaraan'),
+    filterCategory(menus, 'Layanan Surat Kendaraan'),
   )
   const [artikelData, setArtikelData] = useState<NavbarItemResponse>(
-    filterCategory(dataMenu, 'Artikel'),
+    filterCategory(menus, 'Artikel'),
   )
   const [tentangSevaData, setTentangSevaData] = useState<NavbarItemResponse>(
-    filterCategory(dataMenu, 'Tentang Seva'),
+    filterCategory(menus, 'Tentang Seva'),
   )
   const [lainnyaData, setLainnyaData] = useState<NavbarItemResponse>(
-    filterCategory(dataMenu, 'Lainnya'),
+    filterCategory(menus, 'Lainnya'),
   )
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 

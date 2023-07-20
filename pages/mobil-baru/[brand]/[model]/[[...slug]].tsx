@@ -7,6 +7,7 @@ import Head from 'next/head'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
+import { MenuContext } from 'context/menuContext'
 interface PdpDataLocalContextType {
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.
@@ -45,6 +46,7 @@ export default function index({
   metaTagDataRes,
   carVideoReviewRes,
   carArticleReviewRes,
+  dataMenu,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isMobile, setIsMobile] = useState(useIsMobileSSr())
 
@@ -72,18 +74,25 @@ export default function index({
         <meta name="title" content={meta.title} />
         <meta name="description" content={meta.description} />
       </Head>
-      <PdpDataLocalContext.Provider
+
+      <MenuContext.Provider
         value={{
-          carRecommendationsResDefaultCity: carRecommendationsRes,
-          carModelDetailsResDefaultCity: carModelDetailsRes,
-          carVariantDetailsResDefaultCity: carVariantDetailsRes,
-          metaTagDataRes: metaTagDataRes,
-          carVideoReviewRes: carVideoReviewRes,
-          carArticleReviewRes: carArticleReviewRes,
+          dataMenu,
         }}
       >
-        {isMobile ? <PdpMobile /> : <PdpDesktop />}
-      </PdpDataLocalContext.Provider>
+        <PdpDataLocalContext.Provider
+          value={{
+            carRecommendationsResDefaultCity: carRecommendationsRes,
+            carModelDetailsResDefaultCity: carModelDetailsRes,
+            carVariantDetailsResDefaultCity: carVariantDetailsRes,
+            metaTagDataRes: metaTagDataRes,
+            carVideoReviewRes: carVideoReviewRes,
+            carArticleReviewRes: carArticleReviewRes,
+          }}
+        >
+          {isMobile ? <PdpMobile /> : <PdpDesktop />}
+        </PdpDataLocalContext.Provider>
+      </MenuContext.Provider>
     </>
   )
 }
@@ -98,12 +107,17 @@ export async function getServerSideProps(context: any) {
         notFound: true,
       }
     }
-    const [carRecommendationsRes, metaTagDataRes, carVideoReviewRes]: any =
-      await Promise.all([
-        api.getRecommendation('?city=jakarta&cityId=118'),
-        api.getMetaTagData(context.query.model.replaceAll('-', '')),
-        api.getCarVideoReview(),
-      ])
+    const [
+      carRecommendationsRes,
+      metaTagDataRes,
+      carVideoReviewRes,
+      menuRes,
+    ]: any = await Promise.all([
+      api.getRecommendation('?city=jakarta&cityId=118'),
+      api.getMetaTagData(context.query.model.replaceAll('-', '')),
+      api.getCarVideoReview(),
+      api.getMenu(),
+    ])
     let id = ''
     const carList = carRecommendationsRes.carRecommendations
     const currentCar = carList.filter(
@@ -137,6 +151,7 @@ export async function getServerSideProps(context: any) {
 
     return {
       props: {
+        dataMenu: menuRes.data,
         carRecommendationsRes,
         carModelDetailsRes,
         carVariantDetailsRes,
