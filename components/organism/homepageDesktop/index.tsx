@@ -51,10 +51,6 @@ const HomepageDesktop: React.FC<HomepageDesktopProps> = ({}) => {
     false,
   )
 
-  // TODO @Robby
-  // const location = useLocation<{
-  //   [LocationStateKey.PAAmbassadorError]: string
-  // }>()
   const { showToast, RenderToast } = useToast()
 
   const getBannerHomepage = async () => {
@@ -142,13 +138,6 @@ const HomepageDesktop: React.FC<HomepageDesktopProps> = ({}) => {
     const encryptedData = encryptValue(JSON.stringify(payload))
     saveLocalStorage(LocalStorageKey.sevaCust, encryptedData)
   }
-
-  // TODO @Robby
-  // useEffect(() => {
-  //   if (location.state?.[LocationStateKey.PAAmbassadorError]) {
-  //     showToast()
-  //   }
-  // }, [location.state?.[LocationStateKey.PAAmbassadorError]])
 
   return (
     <>

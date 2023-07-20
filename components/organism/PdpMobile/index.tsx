@@ -130,13 +130,8 @@ export default function NewCarVariantList() {
   const [storedFilter] = useLocalStorage<null>(LocalStorageKey.CarFilter, null)
 
   const [isActive, setIsActive] = useState(false)
-  // const location = useLocation<
-  //   { [LocationStateKey.loanRankCVL]: LoanRank } | undefined
-  // >()
-  // const loanRankcr = location.state?.loanRankCVL
 
-  // TODO temporary
-  const loanRankcr = LoanRank.Green
+  const loanRankcr = router.query.loanRankCVL ?? ''
 
   const [showAnnouncementBox, setShowAnnouncementBox] = useState<
     boolean | null

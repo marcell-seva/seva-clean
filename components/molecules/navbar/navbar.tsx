@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import { getMenus } from 'services/menu'
 import { removeWhitespacesAndToLowerCase } from 'utils/stringUtils'
@@ -10,15 +10,41 @@ import { NavbarItemResponse } from 'utils/types/utils'
 import { LocalStorageKey } from 'utils/models/models'
 import { NavbarItem } from './navbarItem'
 import { BeliMobilMenu } from './beliMobilMenu'
+import { HomePageDataLocalContext } from 'pages'
 
 export const Navbar = () => {
-  const [beliMobilData, setBeliMobilData] = useState<NavbarItemResponse>()
+  const { dataMenu } = useContext(HomePageDataLocalContext)
+
+  const filterCategory = (
+    data: Array<NavbarItemResponse>,
+    category: string,
+  ) => {
+    const temp: Array<NavbarItemResponse> = data
+    const result: NavbarItemResponse = temp.filter(
+      (item: NavbarItemResponse) =>
+        removeWhitespacesAndToLowerCase(item.menuName) ===
+        removeWhitespacesAndToLowerCase(category),
+    )[0]
+    return result
+  }
+
+  const [beliMobilData, setBeliMobilData] = useState<NavbarItemResponse>(
+    filterCategory(dataMenu, 'Beli Mobil'),
+  )
   const [fasilitasDanaData, setFasilitasDanaData] =
-    useState<NavbarItemResponse>()
-  const [layananSuratData, setLayananSuratData] = useState<NavbarItemResponse>()
-  const [artikelData, setArtikelData] = useState<NavbarItemResponse>()
-  const [tentangSevaData, setTentangSevaData] = useState<NavbarItemResponse>()
-  const [lainnyaData, setLainnyaData] = useState<NavbarItemResponse>()
+    useState<NavbarItemResponse>(filterCategory(dataMenu, 'Fasilitas Dana'))
+  const [layananSuratData, setLayananSuratData] = useState<NavbarItemResponse>(
+    filterCategory(dataMenu, 'Layanan Surat Kendaraan'),
+  )
+  const [artikelData, setArtikelData] = useState<NavbarItemResponse>(
+    filterCategory(dataMenu, 'Artikel'),
+  )
+  const [tentangSevaData, setTentangSevaData] = useState<NavbarItemResponse>(
+    filterCategory(dataMenu, 'Tentang Seva'),
+  )
+  const [lainnyaData, setLainnyaData] = useState<NavbarItemResponse>(
+    filterCategory(dataMenu, 'Lainnya'),
+  )
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
   useEffect(() => {
@@ -69,18 +95,6 @@ export const Navbar = () => {
     setLainnyaData(lainnyaData)
   }
 
-  const filterCategory = (
-    data: Array<NavbarItemResponse>,
-    category: string,
-  ) => {
-    const temp: Array<NavbarItemResponse> = data
-    const result: NavbarItemResponse = temp.filter(
-      (item: NavbarItemResponse) =>
-        removeWhitespacesAndToLowerCase(item.menuName) ===
-        removeWhitespacesAndToLowerCase(category),
-    )[0]
-    return result
-  }
   const dataPromo: NavbarItemResponse = {
     id: 99,
     menuName: 'Promo',
