@@ -7,6 +7,7 @@ import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { HomepageDesktop, HomepageMobile } from 'components/organism'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { getCity } from 'utils/hooks/useGetCity'
+import { MenuContext } from 'context/menuContext'
 
 interface HomePageDataLocalContextType {
   dataBanner: any
@@ -59,28 +60,34 @@ export default function WithTracker({
   }, [isClientMobile])
 
   return (
-    <HomePageDataLocalContext.Provider
+    <MenuContext.Provider
       value={{
-        dataBanner,
         dataMenu,
-        dataCities,
-        dataTestimony,
-        dataRecToyota,
-        dataRecMVP,
-        dataUsage,
-        dataMainArticle,
-        dataTypeCar,
-        dataCarofTheMonth,
       }}
     >
-      <>
-        {isMobile ? (
-          <HomepageMobile dataReccomendation={dataReccomendation} />
-        ) : (
-          <HomepageDesktop />
-        )}
-      </>
-    </HomePageDataLocalContext.Provider>
+      <HomePageDataLocalContext.Provider
+        value={{
+          dataBanner,
+          dataMenu,
+          dataCities,
+          dataTestimony,
+          dataRecToyota,
+          dataRecMVP,
+          dataUsage,
+          dataMainArticle,
+          dataTypeCar,
+          dataCarofTheMonth,
+        }}
+      >
+        <>
+          {isMobile ? (
+            <HomepageMobile dataReccomendation={dataReccomendation} />
+          ) : (
+            <HomepageDesktop />
+          )}
+        </>
+      </HomePageDataLocalContext.Provider>
+    </MenuContext.Provider>
   )
 }
 

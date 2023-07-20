@@ -5,13 +5,20 @@ import Head from 'next/head'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
 import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
-import { CarRecommendation, FooterSEOAttributes } from 'utils/types/utils'
+import {
+  CarRecommendation,
+  FooterSEOAttributes,
+  NavbarItemResponse,
+} from 'utils/types/utils'
 import PLPDesktop from 'components/organism/PLPDesktop'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
+import { MenuContext } from 'context/menuContext'
+import { api } from 'services/api'
 
 const NewCarResultPage = ({
   meta,
   isSsrMobile,
+  dataMenu,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const isMobile = isSsrMobile
 
@@ -23,18 +30,24 @@ const NewCarResultPage = ({
         <meta name="description" content={meta.description} />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      {isMobile ? (
-        <PLP
-          carRecommendation={meta.carRecommendations}
-          minmaxPrice={meta.MinMaxPrice}
-          alternativeRecommendation={meta.alternativeCarRecommendation}
-        />
-      ) : (
-        <PLPDesktop
-          carRecommendation={meta.carRecommendations}
-          footer={meta.footer}
-        />
-      )}
+      <MenuContext.Provider
+        value={{
+          dataMenu,
+        }}
+      >
+        {isMobile ? (
+          <PLP
+            carRecommendation={meta.carRecommendations}
+            minmaxPrice={meta.MinMaxPrice}
+            alternativeRecommendation={meta.alternativeCarRecommendation}
+          />
+        ) : (
+          <PLPDesktop
+            carRecommendation={meta.carRecommendations}
+            footer={meta.footer}
+          />
+        )}
+      </MenuContext.Provider>
     </>
   )
 }
@@ -65,6 +78,7 @@ const getBrand = (brand: string | string[] | undefined) => {
 export const getServerSideProps: GetServerSideProps<{
   meta: PLPProps
   isSsrMobile: boolean
+  dataMenu: NavbarItemResponse[]
 }> = async (ctx) => {
   const metabrand = getBrand(ctx.query.brand)
   const metaTagBaseApi =
@@ -108,9 +122,10 @@ export const getServerSideProps: GetServerSideProps<{
   } = ctx.query
 
   try {
-    const [fetchMeta, fetchFooter] = await Promise.all([
+    const [fetchMeta, fetchFooter, menuRes]: any = await Promise.all([
       axios.get(metaTagBaseApi + metabrand),
       axios.get(footerTagBaseApi + metabrand),
+      api.getMenu(),
     ])
 
     const metaData = fetchMeta.data.data
@@ -161,8 +176,10 @@ export const getServerSideProps: GetServerSideProps<{
     if (recommendation) meta.carRecommendations = recommendation
     meta.alternativeCarRecommendation = alternativeData.carRecommendations
 
-    return { props: { meta, isSsrMobile: getIsSsrMobile(ctx) } }
+    return {
+      props: { meta, isSsrMobile: getIsSsrMobile(ctx), dataMenu: menuRes.data },
+    }
   } catch (e) {
-    return { props: { meta, isSsrMobile: getIsSsrMobile(ctx) } }
+    return { props: { meta, isSsrMobile: getIsSsrMobile(ctx), dataMenu: [] } }
   }
 }
