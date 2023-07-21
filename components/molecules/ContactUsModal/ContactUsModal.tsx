@@ -298,15 +298,7 @@ export const useContactUsModal = () => {
         })
 
       trackGASubmitContactInfo()
-      if (client) {
-        // TODO : facebook pixel nextjs
-        // import('react-facebook-pixel')
-        //   .then((module) => module.default)
-        //   .then((ReactPixel) => {
-        //     ReactPixel.track(FBPixelStandardEvent.SendContactDetail)
-        //   })
-        // ReactPixel.track(FBPixelStandardEvent.SendContactDetail)
-      }
+      client && window.fbq('track', FBPixelStandardEvent.SendContactDetail)
     }
 
     const onClickCancel = (e: React.MouseEvent) => {
