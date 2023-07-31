@@ -222,12 +222,9 @@ export default function index() {
       <div className={styles.container}>
         <HeaderAndContent
           onClickPenawaran={showContactUsModal}
-          toLoan={
-            '/v3' +
-            formatTabUrl('kredit')
-              .replace(':brand', (brand as string) ?? '')
-              .replace(':model', (model as string) ?? '')
-          }
+          toLoan={formatTabUrl('kredit')
+            .replace(':brand', (brand as string) ?? '')
+            .replace(':model', (model as string) ?? '')}
           onSticky={(sticky) => !isMobile && setStickyCTA(sticky)}
           isShowLoading={isShowLoading}
         />

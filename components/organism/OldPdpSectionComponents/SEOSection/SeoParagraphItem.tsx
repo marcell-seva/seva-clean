@@ -72,6 +72,7 @@ const ContentTextWrapper = styled.div`
 
   @media (min-width: 1025px) {
     margin-top: 10px;
+    line-height: 1;
   }
 `
 

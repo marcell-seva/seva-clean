@@ -303,6 +303,7 @@ const StyledDownloadButton = styled(Button)`
   gap: 12px;
   font-size: 14px;
   line-height: 20px;
+  cursor: pointer;
 
   @media (min-width: 1025px) {
     display: flex;
