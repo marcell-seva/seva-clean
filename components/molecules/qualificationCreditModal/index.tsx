@@ -9,11 +9,12 @@ import { LoginSevaUrl, creditQualificationUrl } from 'routes/routes'
 import { savePageBeforeLogin } from 'utils/loginUtils'
 import { IconClose } from 'components/atoms'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
-import { LanguageCode, LoanRank, SessionStorageKey } from 'utils/models/models'
+import { LanguageCode, LoanRank } from 'utils/models/models'
 import { FormLCState, SpecialRateList } from 'utils/types/utils'
 import { trackLCKualifikasiKreditPopUpCtaClick } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
 import { saveSessionStorage } from 'utils/sessionstorageUtils'
+import { SessionStorageKey } from 'utils/enum'
 
 const MainImage = '/assets/illustration/loan-calculator.webp'
 
