@@ -201,12 +201,12 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
     return (
       <>
         <DisclaimerTextInfo>
-          {redAsterisk()}{' '}
-          {t('newFunnelLoanCalculatorPage.editHeader.installmentInfo')}
+          {redAsterisk()} Total Pembayaran Pertama = DP + Administrasi + Cicilan
+          Pertama + Polis + TJH
         </DisclaimerTextInfo>
         <DisclaimerTextInfo>
-          {redAsterisk()}{' '}
-          {t('newFunnelLoanCalculatorPage.editHeader.installmentInfo2')}
+          {redAsterisk()} Cicilan Per Bulan: Sudah termasuk cicilan dan premi
+          asuransi mobil
         </DisclaimerTextInfo>
         <DisclaimerTextInfo>
           {redAsterisk()} Hasil perhitungan masih bersifat estimasi. Perhitungan

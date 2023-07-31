@@ -34,6 +34,7 @@ import { t } from 'config/localization/locales/id'
 import { useRouter } from 'next/router'
 import { trackWhatsappButtonClickFromCarResults } from 'helpers/amplitude/trackingEvents'
 import { EventFromType } from 'helpers/amplitude/newHomePageEventTracking'
+import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
 
 export const TanyaSeva = () => {
   const router = useRouter()
@@ -100,7 +101,7 @@ export const TanyaSeva = () => {
           : 'Null',
     }
     trackCarVariantPageWaChatbot(trackerProperty)
-    const whatsAppUrl = defaultCSANumber
+    const whatsAppUrl = await getCustomerAssistantWhatsAppNumber()
     const windowReference: any = window.open()
     windowReference.location = `${whatsAppUrl}?text=${encodeURI(message)}`
   }
