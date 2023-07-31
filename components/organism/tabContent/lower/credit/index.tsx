@@ -823,6 +823,7 @@ export const CreditTab = () => {
 
       const dataFinancial = {
         ...financialQuery,
+        downPaymentAmount: dpValue,
         age: forms.age ? String(forms.age) : financialQuery.age,
         monthlyIncome: forms.monthlyIncome
           ? forms.monthlyIncome

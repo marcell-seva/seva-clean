@@ -5,14 +5,15 @@ import { Button } from 'components/atoms'
 import { ButtonVersion } from 'components/atoms/button'
 import { ButtonSize } from 'components/atoms/button'
 import { getToken } from 'utils/api'
-import { LoginSevaUrl, preApprovalStartUrl } from 'routes/routes'
+import { LoginSevaUrl, creditQualificationUrl } from 'routes/routes'
 import { savePageBeforeLogin } from 'utils/loginUtils'
 import { IconClose } from 'components/atoms'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
-import { LanguageCode, LoanRank } from 'utils/models/models'
+import { LanguageCode, LoanRank, SessionStorageKey } from 'utils/models/models'
 import { FormLCState, SpecialRateList } from 'utils/types/utils'
 import { trackLCKualifikasiKreditPopUpCtaClick } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
+import { saveSessionStorage } from 'utils/sessionstorageUtils'
 
 const MainImage = '/assets/illustration/loan-calculator.webp'
 
@@ -67,10 +68,14 @@ export const QualificationCreditModal: React.FC<
 
   const handleClickCredit = () => {
     trackLCKualifikasiKreditPopUpCtaClick(getDataForAmplitude())
+    saveSessionStorage(
+      SessionStorageKey.KalkulatorKreditForm,
+      JSON.stringify(formData),
+    )
     if (isLogin) {
-      window.location.href = preApprovalStartUrl
+      window.location.href = creditQualificationUrl
     } else {
-      savePageBeforeLogin(preApprovalStartUrl)
+      savePageBeforeLogin(creditQualificationUrl)
       window.location.href = LoginSevaUrl
     }
   }
@@ -79,7 +84,7 @@ export const QualificationCreditModal: React.FC<
     // Cek jika pengguna sudah login dan ada URL halaman instantApproval
     if (isLogin && window.location.href === LoginSevaUrl) {
       // Arahkan pengguna ke halaman instantApproval setelah login
-      savePageBeforeLogin(preApprovalStartUrl)
+      savePageBeforeLogin(creditQualificationUrl)
     }
   }, [isLogin])
 
