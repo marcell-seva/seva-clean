@@ -681,6 +681,7 @@ export enum SessionStorageKey {
   ExternalPreApprovalData = 'externalPreApprovalData',
   PAAmbassadorUrlId = 'PAAmbassadorUrlId',
   LoanRankFromPLP = 'LoanRankFromPLP',
+  KalkulatorKreditForm = 'KalkulatorKreditForm',
 }
 
 export enum CrmBussinessUnits {
