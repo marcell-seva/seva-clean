@@ -16,9 +16,10 @@ import { HomePageDataLocalContext } from 'pages'
 
 type MainHeroLPProps = {
   onCityIconClick: () => void
+  onCtaClick: () => void
 }
 
-const MainHeroLP = ({ onCityIconClick }: MainHeroLPProps) => {
+const MainHeroLP = ({ onCityIconClick, onCtaClick }: MainHeroLPProps) => {
   const { dataCities } = useContext(HomePageDataLocalContext)
   const history = useRouter()
   const [showSidebar, setShowSidebar] = useState(false)
@@ -62,17 +63,17 @@ const MainHeroLP = ({ onCityIconClick }: MainHeroLPProps) => {
               Perjalanan Finansial Mobil Barumu
             </h1>
             <span className={`${styles.mainSubtitle} ${styles.regularGrey}`}>
-              Sudah tahu mobil yang kamu inginkan?
+              Ingin tahu mobil yang cocok untukmu?
             </span>
             <span className={`${styles.mainSubtitle} ${styles.semiboldBlack}`}>
-              Hitung Kemampuan Finansial dan Cek Kualifikasi Kredit kamu.
+              Cek Kualifikasi Kredit dan temukan mobil sesuai budgetmu.
             </span>
           </div>
           <div className={styles.buttonWrapper}>
             <Button
               version={ButtonVersion.PrimaryDarkBlue}
               size={ButtonSize.Big}
-              onClick={gotoLoanCalculator}
+              onClick={onCtaClick}
               data-testid={elementId.Homepage.Button.CekKK}
             >
               Cek Kualifikasi Kredit

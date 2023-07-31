@@ -40,6 +40,12 @@ import {
 import { CarContext, CarContextType } from 'services/context'
 import { getCity } from 'utils/hooks/useGetCity'
 import { HomePageDataLocalContext } from 'pages'
+import { trackLPKualifikasiKreditTopCtaClick } from 'helpers/amplitude/seva20Tracking'
+import { getToken } from 'utils/api'
+import { useRouter } from 'next/router'
+import { multiCreditQualificationPageUrl } from 'routes/routes'
+import { savePageBeforeLogin } from 'utils/loginUtils'
+import { LoginModalMultiKK } from '../loginModalMultiKK'
 
 const HomepageMobile = ({ dataReccomendation }: any) => {
   useEffect(() => {
@@ -57,6 +63,7 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
     LocalStorageKey.CityOtr,
     null,
   )
+  const [isLoginModalOpened, setIsLoginModalOpened] = useState(false)
   const [carOfTheMonthData, setCarOfTheMonthData] =
     useState<COMData[]>(dataCarofTheMonth)
   const [articles, setArticles] = useState<Article[]>([])
@@ -67,6 +74,8 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
     useState<COMDataTracking>()
   const enableAnnouncementBoxAleph =
     getCurrentEnvironment.featureToggles.enableAnnouncementBoxAleph
+
+  const router = useRouter()
 
   const {
     ref: landingPageLeadsFormSectionRef,
@@ -194,6 +203,17 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
       Car_Model: selectedCarOfTheMonth?.Car_Model,
     }
   }
+
+  const onClickMainHeroLP = () => {
+    trackLPKualifikasiKreditTopCtaClick()
+    if (!!getToken()) {
+      router.push(multiCreditQualificationPageUrl)
+    } else {
+      savePageBeforeLogin(multiCreditQualificationPageUrl)
+      setIsLoginModalOpened(true)
+    }
+  }
+
   return (
     <>
       <Head>
@@ -208,7 +228,10 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
         )}
 
         <div className={styles.container}>
-          <MainHeroLP onCityIconClick={() => setOpenCitySelectorModal(true)} />
+          <MainHeroLP
+            onCityIconClick={() => setOpenCitySelectorModal(true)}
+            onCtaClick={onClickMainHeroLP}
+          />
           <SearchWidget />
           <div className={styles.line} />
           <PromoSection onPage={'Homepage'} />
@@ -255,6 +278,10 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
         )}
         {!isLeadsFormSectionVisible && (
           <CSAButton onClick={scrollToLeadsForm} />
+        )}
+
+        {isLoginModalOpened && (
+          <LoginModalMultiKK onCancel={() => setIsLoginModalOpened(false)} />
         )}
       </main>
     </>
