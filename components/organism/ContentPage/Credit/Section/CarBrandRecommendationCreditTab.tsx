@@ -15,12 +15,12 @@ import 'pure-react-carousel/dist/react-carousel.es.css'
 import { CarRecommendation } from 'utils/types'
 import { CarRecommendationResponse } from 'utils/types/context'
 
-const LogoToyota = '/assets/icon/logo-toyota.webp'
-const LogoDaihatsu = '/assets/icon/logo-daihatsu.webp'
-const Isuzu = '/assets/icon/logo-isuzu.webp'
-const LogoBmw = '/assets/icon/logo-bmw.webp'
-const Peugeot = '/assets/icon/logo-peugeot.webp'
-const ImageCarNotExist = '/assets/illustration/CarNotExistImg.webp'
+const LogoToyota = '/revamp/icon/logo-toyota.webp'
+const LogoDaihatsu = '/revamp/icon/logo-daihatsu.webp'
+const Isuzu = '/revamp/icon/logo-isuzu.webp'
+const LogoBmw = '/revamp/icon/logo-bmw.webp'
+const Peugeot = '/revamp/icon/logo-peugeot.webp'
+const ImageCarNotExist = '/revamp/illustration/CarNotExistImg.webp'
 
 export interface CarButtonProps {
   key: string

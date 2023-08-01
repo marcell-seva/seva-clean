@@ -53,8 +53,8 @@ import { api } from 'services/api'
 import { NonPassengerCars } from 'config/LoanCalculator.config'
 import { tracSelectV2LoanCalculatorSpeak } from 'helpers/amplitude/newLoanCalculatorEventTracking'
 
-const PromoAsuransi = '/assets/illustration/PromoAsuransi.gif'
-const AstraLogo = '/assets/icon/AstraLogo.webp'
+const PromoAsuransi = '/revamp/illustration/PromoAsuransi.gif'
+const AstraLogo = '/revamp/icon/AstraLogo.webp'
 
 interface SpecialRateResultsProps {
   data: SpecialRateList[]

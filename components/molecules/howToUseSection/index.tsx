@@ -1,8 +1,8 @@
 import React from 'react'
 import styles from 'styles/components/molecules/HowToUse.module.scss'
 import Image from 'next/image'
-import blueRoundedImage from '/assets/vector/howToUse/blueRounded.png'
-import redRoundedImage from '/assets/vector/howToUse/redRounded.png'
+import blueRoundedImage from '/public/revamp/vector/howToUse/blueRounded.png'
+import redRoundedImage from '/public/revamp/vector/howToUse/redRounded.png'
 import { PropsHowToUse } from 'utils/types'
 
 type TypesHowToUse = {

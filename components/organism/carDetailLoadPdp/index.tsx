@@ -2,7 +2,7 @@ import React from 'react'
 import { Skeleton } from 'components/atoms'
 import styles from 'styles/components/organism/carDetailLoadPdp.module.scss'
 
-const CarSkeleton = '/assets/illustration/car-skeleton.webp'
+const CarSkeleton = '/revamp/illustration/car-skeleton.webp'
 
 const CarDetailLoadPdp = () => {
   return (

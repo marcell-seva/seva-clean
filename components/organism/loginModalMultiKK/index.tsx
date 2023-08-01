@@ -6,7 +6,7 @@ import { LoginSevaUrl } from 'routes/routes'
 import { useRouter } from 'next/router'
 
 const IlustrationLoginModal =
-  '/assets/illustration/ilustration-login-modal.webp'
+  '/revamp/illustration/ilustration-login-modal.webp'
 
 interface PropsLoginModalMultiKK {
   onCancel: () => void

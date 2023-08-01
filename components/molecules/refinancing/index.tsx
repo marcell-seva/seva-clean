@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import React from 'react'
 import styles from 'styles/components/molecules/Refinancing.module.scss'
-import circle from 'assets/images/refinancing/circle.webp'
-import model from 'assets/images/refinancing/model.webp'
+import circle from '/public/revamp/images/refinancing/circle.webp'
+import model from '/public/revamp/images/refinancing/model.webp'
 
 const Refinancing: React.FC = (): JSX.Element => {
   const headerText: string = 'Butuh Dana Cepat?'

@@ -32,9 +32,9 @@ import { OTP } from 'components/organism/otp'
 import Image from 'next/image'
 
 const SupergraphicSecondarySmall =
-  'assets/illustration/supergraphic-secondary-small.webp'
+  '/revamp/illustration/supergraphic-secondary-small.webp'
 const SupergraphicSecondaryLarge =
-  'assets/illustration/supergraphic-secondary-large.webp'
+  '/revamp/illustration/supergraphic-secondary-large.webp'
 
 interface PropsLeadsForm {
   otpStatus?: any

@@ -9,9 +9,9 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { LocalStorageKey } from 'utils/models/models'
 import { CityOtrOption } from 'utils/types/utils'
 
-const promoBannerTSO = '/assets/illustration/PromoTSO.webp'
-const promoBannerCumaDiSEVA = '/assets/illustration/PromoCumaDiSEVA.webp'
-const promoBannerTradeIn = '/assets/illustration/PromoTradeIn.webp'
+const promoBannerTSO = '/revamp/illustration/PromoTSO.webp'
+const promoBannerCumaDiSEVA = '/revamp/illustration/PromoCumaDiSEVA.webp'
+const promoBannerTradeIn = '/revamp/illustration/PromoTradeIn.webp'
 
 type FilterMobileProps = {
   onButtonClick?: (value: boolean) => void

@@ -1,6 +1,6 @@
 import React from 'react'
-import SupergraphicLeft from 'assets/illustration/supergraphic-small.webp'
-import SupergraphicRight from 'assets/illustration/supergraphic-large.webp'
+import SupergraphicLeft from '/public/revamp/illustration/supergraphic-small.webp'
+import SupergraphicRight from '/public/revamp/illustration/supergraphic-large.webp'
 import styles from 'styles/components/organisms/ctaWidget.module.scss'
 import Image from 'next/image'
 import { sendAmplitudeData } from 'services/amplitude'

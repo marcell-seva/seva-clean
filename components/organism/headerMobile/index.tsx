@@ -23,7 +23,7 @@ import Link from 'next/link'
 import { WebAnnouncementBox } from 'components/organisms'
 import { useSearchModal } from 'components/molecules'
 
-const LogoPrimary = '/assets/icon/logo-primary.webp'
+const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
 type HeaderMobileProps = {
   startScroll?: boolean

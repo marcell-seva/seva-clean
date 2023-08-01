@@ -20,7 +20,7 @@ import {
 } from 'utils/hooks/useContactFormData/useContactFormData'
 import { ContactFormKey, LocalStorageKey } from 'utils/models/models'
 
-const FlagIndonesia = '/assets/icon/FlagIndonesia.svg'
+const FlagIndonesia = '/revamp/icon/FlagIndonesia.svg'
 
 interface FormPhoneNumberProps {
   showDefaultLabel?: boolean

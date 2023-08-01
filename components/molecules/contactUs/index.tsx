@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import styles from 'styles/components/molecules/ContactUs.module.scss'
-import FlagIndonesia from 'assets/images/flagIndonesia.png'
+import FlagIndonesia from '/public/revamp/images/flagIndonesia.png'
 import Image from 'next/image'
 import amplitude from 'amplitude-js'
 import { api } from 'services/api'

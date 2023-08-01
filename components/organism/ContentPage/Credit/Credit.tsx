@@ -42,9 +42,9 @@ import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import Image from 'next/image'
 
-const EmptyCalculationImage = '/assets/illustration/EmptyCalculationImage.webp'
-const AccLogo = '/assets/icon/logo-acc.webp'
-const TafLogo = '/assets/icon/OldTafLogo.webp'
+const EmptyCalculationImage = '/revamp/illustration/EmptyCalculationImage.webp'
+const AccLogo = '/revamp/icon/logo-acc.webp'
+const TafLogo = '/revamp/icon/OldTafLogo.webp'
 
 type tabProps = {
   tab: string | undefined

@@ -3,7 +3,7 @@ import elementId from 'helpers/elementIds'
 import React, { useEffect, useRef, useState } from 'react'
 import { getNewFunnelAllRecommendations } from 'services/newFunnel'
 import { FormControlValue, Option, OptionWithImage } from 'utils/types'
-import CarSillhouete from '/public/assets/illustration/car-sillhouete.webp'
+import CarSillhouete from '/public/revamp/illustration/car-sillhouete.webp'
 import {
   ErrorMessage,
   IconChevronDown,

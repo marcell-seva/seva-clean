@@ -21,8 +21,8 @@ import { LinkLabelLargeSemiBold } from 'components/atoms/typography/LinkLabelLar
 import { TestimoniTile } from './testimoniTile'
 import { HomePageDataLocalContext } from 'pages'
 
-const leftArrow = '/assets/icon/arrowLeftSmall.webp'
-const rightArrow = '/assets/icon/arrowRightSmall.webp'
+const leftArrow = '/revamp/icon/arrowLeftSmall.webp'
+const rightArrow = '/revamp/icon/arrowRightSmall.webp'
 
 const Testimonial = () => {
   const { dataTestimony } = useContext(HomePageDataLocalContext)

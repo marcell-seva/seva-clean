@@ -14,9 +14,9 @@ import { useModal } from 'components/atoms/ModalOld/Modal'
 import { client } from 'const/const'
 import { t } from 'config/localization/locales/id'
 
-const WhatsappLogo = '/assets/icon/OldShareWhatsappLogo.webp'
-const TwitterLogo = '/assets/icon/OldShareTwitterLogo.webp'
-const EmailLogo = '/assets/icon/OldShareEmailLogo.webp'
+const WhatsappLogo = '/revamp/icon/OldShareWhatsappLogo.webp'
+const TwitterLogo = '/revamp/icon/OldShareTwitterLogo.webp'
+const EmailLogo = '/revamp/icon/OldShareEmailLogo.webp'
 
 interface ShareButton {
   icon: JSX.Element

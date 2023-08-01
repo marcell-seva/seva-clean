@@ -5,7 +5,7 @@ import { trackGAContact, trackGALead } from 'services/googleAds'
 import styles from 'styles/components/molecules/Widget.module.scss'
 import { rupiah, useComponentVisible } from 'utils'
 import { IconChevronDown, IconChevronUp } from 'components/atoms'
-import FlagIndonesia from 'assets/images/flagIndonesia.png'
+import FlagIndonesia from '/public/revamp/images/flagIndonesia.png'
 import {
   AuthContext,
   ConfigContext,
