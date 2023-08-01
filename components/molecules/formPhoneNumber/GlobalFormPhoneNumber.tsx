@@ -23,7 +23,7 @@ import { colors } from 'styles/colors'
 import { LinkLabelMediumBoldStyle } from 'utils/typography/LinkLabelMediumBold'
 import { formConfig } from './formConfig'
 
-const FlagIndonesia = '/assets/illustration/FlagIndonesiaNew.png'
+const FlagIndonesia = '/revamp/illustration/FlagIndonesiaNew.png'
 
 interface FormPhoneNumberProps {
   showDefaultLabel?: boolean

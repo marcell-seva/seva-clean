@@ -7,7 +7,7 @@ import { CarModelDetail } from './RecentlyViewed'
 import { CarouselContext } from 'pure-react-carousel'
 import { RVCCarInfo } from './RVCCarInfo'
 import { CarRecommendation } from 'utils/types'
-const ShimmerLoader = '/assets/illustration/placeholder.gif'
+const ShimmerLoader = '/revamp/illustration/placeholder.gif'
 
 interface CarTileProps extends HTMLAttributes<HTMLDivElement> {
   carModel: CarModelDetail

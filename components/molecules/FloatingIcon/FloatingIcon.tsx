@@ -8,8 +8,8 @@ import {
   trackFloatingIconOnExpandClick,
 } from 'helpers/amplitude/seva20Tracking'
 
-const FloatingImage = '/assets/images/floating/FloatingIconNew.webp'
-const ExpandImage = '/assets/images/floating/IconExpand.png'
+const FloatingImage = '/revamp/images/floating/FloatingIconNew.webp'
+const ExpandImage = '/revamp/images/floating/IconExpand.png'
 
 export default function FloatingIcon() {
   const [expand, setExpand] = useState(false)

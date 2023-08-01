@@ -14,7 +14,7 @@ import { parsedToUnCapitalizeWithHyphen } from 'utils/parsedToUnCapitalizeWithHy
 import { ArticleData } from 'utils/types/utils'
 import { decodeHTML } from 'entities'
 
-const PlaceholderImage = '/assets/illustration/placeholder-150.webp'
+const PlaceholderImage = '/revamp/illustration/placeholder-150.webp'
 
 export enum ArticleItemType {
   primary = 'primary',

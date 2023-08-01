@@ -5,7 +5,7 @@ import { SalesDashboardPAUrl, SalesDashboardUrl } from 'routes/routes'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 
-const LogoGiias = '/assets/illustration/logo-giias.webp'
+const LogoGiias = '/revamp/illustration/logo-giias.webp'
 
 interface Props {
   isEvent?: boolean

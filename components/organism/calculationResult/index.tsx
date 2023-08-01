@@ -18,8 +18,8 @@ import {
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
 import elementId from 'helpers/elementIds'
 
-const LogoAcc = '/assets/icon/logo-acc.webp'
-const LogoTaf = '/assets/icon/logo-taf.webp'
+const LogoAcc = '/revamp/icon/logo-acc.webp'
+const LogoTaf = '/revamp/icon/logo-taf.webp'
 
 interface Props {
   data: SpecialRateListType[]

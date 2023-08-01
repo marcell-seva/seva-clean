@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
-import SupergraphicRight from 'assets/illustration/supergraphic-secondary-small.webp'
+import SupergraphicRight from '/public/revamp/illustration/supergraphic-secondary-small.webp'
 import styles from 'styles/components/organisms/leadsFormTertiary.module.scss'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import {

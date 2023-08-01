@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-const ShimmerLoader = '/assets/illustration/placeholder.gif'
+const ShimmerLoader = '/revamp/illustration/placeholder.gif'
 
 export const DesktopShimmerCarBrand = () => (
   <StyledContainer>

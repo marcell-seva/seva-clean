@@ -49,7 +49,7 @@ import {
   defaultCity,
   saveCity,
 } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
-import CarSillhouete from '/public/assets/illustration/car-sillhouete.webp'
+import CarSillhouete from '/public/revamp/illustration/car-sillhouete.webp'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import IncomeForm from 'components/molecules/credit/income'
 import DpForm from 'components/molecules/credit/dp'

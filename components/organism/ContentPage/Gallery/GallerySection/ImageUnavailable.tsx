@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 const ImageNotAvailableDesktop =
-  '/assets/illustration/image-unavailable-desktop.webp'
+  '/revamp/illustration/image-unavailable-desktop.webp'
 
 interface Props {
   type: string

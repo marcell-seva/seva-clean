@@ -9,7 +9,7 @@ import { getNewFunnelCityRecommendations } from 'services/newFunnel'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { CityOtrOption } from 'utils/types/utils'
 
-const EmptyCar = '/assets/illustration/empty-car.webp'
+const EmptyCar = '/revamp/illustration/empty-car.webp'
 
 interface PropsPDPEmptyState {
   message: string

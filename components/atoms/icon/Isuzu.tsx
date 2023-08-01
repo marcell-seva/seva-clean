@@ -1,7 +1,7 @@
 import React from 'react'
 import { PropsIcon } from 'utils/types'
 
-const IsuzuBrand = '/assets/icon/Isuzu-new.png'
+const IsuzuBrand = '/revamp/icon/Isuzu-new.png'
 
 export const Isuzu = ({ width = 50, height }: PropsIcon) => {
   return (

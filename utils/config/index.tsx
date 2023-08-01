@@ -1,8 +1,8 @@
-import LogoToyota from '/assets/icon/logo-toyota.webp'
-import LogoDaihatsu from '/assets/icon/logo-daihatsu.webp'
-import Isuzu from '/assets/icon/logo-isuzu.webp'
-import LogoBmw from '/assets/icon/logo-bmw.webp'
-import Peugeot from '/assets/icon/logo-peugeot.webp'
+import LogoToyota from '/public/revamp/icon/logo-toyota.webp'
+import LogoDaihatsu from '/public/revamp/icon/logo-daihatsu.webp'
+import Isuzu from '/public/revamp/icon/logo-isuzu.webp'
+import LogoBmw from '/public/revamp/icon/logo-bmw.webp'
+import Peugeot from '/public/revamp/icon/logo-peugeot.webp'
 import Image from 'next/image'
 import styles from '/styles/components/organisms/lpCarRecommendations.module.scss'
 

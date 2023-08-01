@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Shimmer } from '../shimmerOld'
 
-const ShimmerLoader = '/assets/illustration/placeholder.gif'
+const ShimmerLoader = '/revamp/illustration/placeholder.gif'
 
 export const MobileShimmer = () => (
   <StyledContainer>

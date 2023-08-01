@@ -25,8 +25,8 @@ import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { useRouter } from 'next/router'
 
-const leftArrow = '/assets/icon/arrowLeftSmall.webp'
-const rightArrow = '/assets/icon/arrowRightSmall.webp'
+const leftArrow = '/revamp/icon/arrowLeftSmall.webp'
+const rightArrow = '/revamp/icon/arrowRightSmall.webp'
 
 export interface CarModelDetail {
   brand: string

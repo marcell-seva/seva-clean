@@ -22,7 +22,7 @@ import {
 import { rupiah } from 'utils/handler/rupiah'
 import { Info, VideoItemCard } from 'components/molecules'
 import { Gap, IconPlay } from 'components/atoms'
-// import promoBannerTradeIn from 'assets/illustration/PromoTradeIn.webp'
+// import promoBannerTradeIn from '/public/revamp/illustration/PromoTradeIn.webp'
 import Variants from '../variants'
 import PopupVariantDetail from 'components/organism/popupVariantDetail/index'
 import { Faq } from 'components/molecules/section/faq'

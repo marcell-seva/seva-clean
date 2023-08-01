@@ -16,7 +16,7 @@ import elementId from 'helpers/elementIds'
 import { saveSessionStorage } from 'utils/sessionstorageUtils'
 import { SessionStorageKey } from 'utils/enum'
 
-const MainImage = '/assets/illustration/loan-calculator.webp'
+const MainImage = '/revamp/illustration/loan-calculator.webp'
 
 interface QualificationCreditModalProps {
   onClickCloseButton: () => void

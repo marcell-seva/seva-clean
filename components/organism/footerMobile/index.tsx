@@ -8,9 +8,9 @@ import elementId from 'helpers/elementIds'
 import Image from 'next/image'
 import { trackFooterClick } from 'helpers/amplitude/seva20Tracking'
 
-const SevaLogo = '/assets/icon/logo-on-dark.webp'
-const ISOIcon = '/assets/icon/iso.webp'
-const FacebookLogo = '/assets/icon/facebook-outline.png'
+const SevaLogo = '/revamp/icon/logo-on-dark.webp'
+const ISOIcon = '/revamp/icon/iso.webp'
+const FacebookLogo = '/revamp/icon/facebook-outline.png'
 
 export interface FooterMenu {
   menuName: string

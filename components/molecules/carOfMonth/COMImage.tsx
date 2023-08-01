@@ -6,7 +6,7 @@ import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
 import { parsedToUnCapitalizeWithHyphen } from 'utils/parsedToUnCapitalizeWithHyphen'
 
-const Arrow = '/assets/illustration/Forward.svg'
+const Arrow = '/revamp/illustration/Forward.svg'
 
 export type carBrand = {
   name: string

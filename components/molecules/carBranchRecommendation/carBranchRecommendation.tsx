@@ -33,11 +33,11 @@ import { CarBrandItem } from './CarBrandItem'
 import { client } from 'const/const'
 import { HomePageDataLocalContext } from 'pages'
 
-const LogoToyota = '/assets/icon/logo-toyota-min.png'
-const LogoDaihatsu = '/assets/icon/logo-daihatsu-min.png'
-const LogoBmw = '/assets/icon/logo-bmw-min.png'
-const leftArrow = '/assets/illustration/buttonLeft.svg'
-const rightArrow = '/assets/illustration/buttonRight.svg'
+const LogoToyota = '/revamp/icon/logo-toyota-min.png'
+const LogoDaihatsu = '/revamp/icon/logo-daihatsu-min.png'
+const LogoBmw = '/revamp/icon/logo-bmw-min.png'
+const leftArrow = '/revamp/illustration/buttonLeft.svg'
+const rightArrow = '/revamp/illustration/buttonRight.svg'
 
 export interface CarButtonProps {
   key: string

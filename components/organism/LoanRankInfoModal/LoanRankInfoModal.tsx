@@ -6,7 +6,7 @@ import { useMediaQuery } from 'react-responsive'
 import { useModal } from 'components/atoms/ModalOld/Modal'
 import { IconClose } from 'components/atoms'
 
-const BackgroundDesktop = '/assets/illustration/background-desktop.webp'
+const BackgroundDesktop = '/revamp/illustration/background-desktop.webp'
 
 export enum LoanRankInfoAmplitudeType {
   ClickCta = 'clickCta',

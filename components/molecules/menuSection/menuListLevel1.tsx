@@ -47,7 +47,7 @@ import { ThreeDots } from 'components/atoms/icon/ThreeDots'
 import { Forward } from 'components/atoms/icon/Forward'
 import { Button, ButtonType } from 'components/atoms/ButtonOld/Button'
 
-const ProfileIcon = '/assets/illustration/Profile.svg'
+const ProfileIcon = '/revamp/illustration/Profile.svg'
 
 interface Props {
   isShow: boolean

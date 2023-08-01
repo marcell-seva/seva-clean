@@ -1,7 +1,7 @@
 import React from 'react'
 import { PropsIcon } from 'utils/types'
 
-const PeugeotBrand = '/assets/icon/peugeot.png'
+const PeugeotBrand = '/revamp/icon/peugeot.png'
 
 export const Peugeot = ({ width = 50, height = 40 }: PropsIcon) => {
   return (

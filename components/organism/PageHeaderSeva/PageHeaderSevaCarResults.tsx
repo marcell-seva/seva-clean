@@ -37,8 +37,8 @@ import { LinkLabelSmallMedium } from 'components/atoms/typography/LinkLabelSmall
 import HeaderCarResult from 'components/molecules/header/headerCarResult'
 import { client } from 'const/const'
 
-const LogoSeva = '/assets/illustration/seva-header.svg'
-const RegisterImg = '/assets/illustration/Register.png'
+const LogoSeva = '/revamp/illustration/seva-header.svg'
+const RegisterImg = '/revamp/illustration/Register.png'
 
 interface PageHeaderSevaProps {
   children?: JSX.Element

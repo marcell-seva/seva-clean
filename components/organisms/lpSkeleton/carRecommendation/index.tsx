@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from 'styles/components/organisms/lpSkeleton.module.scss'
-import CarSkeletonImage from 'assets/illustration/car-skeleton.webp'
+import CarSkeletonImage from '/public/revamp/illustration/car-skeleton.webp'
 import Image from 'next/image'
 import { CardShadow, Skeleton } from 'components/atoms'
 

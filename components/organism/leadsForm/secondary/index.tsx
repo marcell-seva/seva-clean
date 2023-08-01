@@ -42,8 +42,8 @@ import { variantListUrl } from 'routes/routes'
 import { getConvertFilterIncome } from 'utils/filterUtils'
 import { useRouter } from 'next/router'
 
-const SupergraphicLeft = '/assets/illustration/supergraphic-small.webp'
-const SupergraphicRight = '/assets/illustration/supergraphic-large.webp'
+const SupergraphicLeft = '/revamp/illustration/supergraphic-small.webp'
+const SupergraphicRight = '/revamp/illustration/supergraphic-large.webp'
 
 interface PropsLeadsForm {
   otpStatus?: any

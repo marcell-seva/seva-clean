@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from '/styles/components/molecules/LoginModal.module.scss'
-import modal from '/assets/svg/modal.svg'
+import modal from '/public/revamp/svg/modal.svg'
 import Image from 'next/image'
 import { IconCross } from 'components/atoms'
 

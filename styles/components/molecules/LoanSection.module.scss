@@ -2,7 +2,7 @@
 @import '../../abstract/mixins';
 
 .wrapper {
-  background-image: url('../../../assets/images/loan/bgLoanMobile.webp');
+  background-image: url('/revamp/images/loan/bgLoanMobile.webp');
   background-size: cover;
   margin: 40px 0px;
 }
@@ -118,7 +118,7 @@
 
 @include lg {
   .wrapper {
-    background-image: url('../../../assets/images/loan/bgLoanDesktop.webp');
+    background-image: url('/revamp/images/loan/bgLoanDesktop.webp');
     background-size: auto;
     background-repeat: no-repeat;
     display: flex;

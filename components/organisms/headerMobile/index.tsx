@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react'
 import styles from 'styles/components/organisms/headerMobile.module.scss'
-import LogoPrimary from 'assets/icon/logo-primary.webp'
+import LogoPrimary from '/public/revamp/icon/logo-primary.webp'
 import clsx from 'clsx'
 import {
   IconHamburger,

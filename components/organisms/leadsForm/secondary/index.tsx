@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import styles from 'styles/components/organisms/leadsFormSecondary.module.scss'
 import { Button, Gap, Input, InputPhone, Toast } from 'components/atoms'
-import SupergraphicLeft from 'assets/illustration/supergraphic-small.webp'
-import SupergraphicRight from 'assets/illustration/supergraphic-large.webp'
+import SupergraphicLeft from '/public/revamp/illustration/supergraphic-small.webp'
+import SupergraphicRight from '/public/revamp/illustration/supergraphic-large.webp'
 import {
   ButtonSize,
   ButtonVersion,
