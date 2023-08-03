@@ -1256,15 +1256,18 @@ export const CreditTab = () => {
               formData={forms}
             />
           </div>
-          <CarRecommendations
-            carRecommendationList={carRecommendations}
-            title="Rekomendasi Sesuai Kemampuan Finansialmu"
-            onClick={() => {
-              return
-            }}
-            selectedCity={forms?.city?.cityName}
-            additionalContainerStyle={styles.recommendationAdditionalStyle}
-          />
+          {carRecommendations.length > 0 && (
+            <CarRecommendations
+              carRecommendationList={carRecommendations}
+              title="Rekomendasi Sesuai Kemampuan Finansialmu"
+              onClick={() => {
+                return
+              }}
+              selectedCity={forms?.city?.cityName}
+              additionalContainerStyle={styles.recommendationAdditionalStyle}
+            />
+          )}
+
           <div className={styles.benefitCard}>
             <CreditCualificationBenefit
               additionalContainerStyle={styles.benefitAdditionalStyle}
