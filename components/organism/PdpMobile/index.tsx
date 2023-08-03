@@ -66,6 +66,7 @@ import { AxiosResponse } from 'axios'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { useQuery } from 'utils/hooks/useQuery'
 
 export interface CarVariantListPageUrlParams {
   brand: string
@@ -79,7 +80,9 @@ export default function NewCarVariantList() {
   const [status, setStatus] = useState<'loading' | 'empty' | 'exist'>('exist')
   const [galleryIndexActive, setGalleryIndexActive] = useState<number>(0)
   const [dataPreviewImages, setDataPreviewImages] = useState<Array<string>>([])
+  const { source }: { source: string } = useQuery(['source'])
 
+  console.log('SOURCE : ', source)
   const handlePreviewOpened = (payload: number) => {
     setGalleryIndexActive(payload)
     setIsPreviewGalleryOpened(true)
@@ -146,14 +149,20 @@ export default function NewCarVariantList() {
   const [variantFuelRatio, setVariantFuelRatio] = useState<string | undefined>()
   // for disable promo popup after change route
 
-  const apiRecommendationParam = {
-    downPaymentType: storedFilter?.downPaymentType,
-    downPaymentAmount: storedFilter?.downPaymentAmount,
-    downPaymentPercentage: storedFilter?.downPaymentPercentage,
-    monthlyIncome: storedFilter?.monthlyIncome,
-    tenure: storedFilter?.tenure,
-    age: storedFilter?.age,
-    priceRangeGroup: storedFilter?.priceRangeGroup,
+  const getQueryParamForApiRecommendation = () => {
+    if (source && source.toLowerCase() === 'plp') {
+      return {
+        downPaymentType: storedFilter?.downPaymentType,
+        downPaymentAmount: storedFilter?.downPaymentAmount,
+        downPaymentPercentage: storedFilter?.downPaymentPercentage,
+        monthlyIncome: storedFilter?.monthlyIncome,
+        tenure: storedFilter?.tenure,
+        age: storedFilter?.age,
+        priceRangeGroup: storedFilter?.priceRangeGroup,
+      }
+    } else {
+      return {}
+    }
   }
 
   useEffect(() => {
@@ -366,52 +375,54 @@ export default function NewCarVariantList() {
     }
     saveLocalStorage(LocalStorageKey.Model, model)
 
-    getNewFunnelRecommendations(apiRecommendationParam).then((result) => {
-      let id = ''
-      const carList = result.data.carRecommendations
-      const currentCar = carList.filter(
-        (value: CarRecommendation) =>
-          value.model.replace(/ +/g, '-').toLowerCase() === model,
-      )
-      if (currentCar.length > 0) {
-        id = currentCar[0].id
-        setStatus('exist')
-      } else {
-        setStatus('empty')
-        return
-      }
-
-      savePreviouslyViewed(currentCar[0])
-
-      Promise.all([
-        getNewFunnelRecommendations(apiRecommendationParam),
-        getCarModelDetailsById(id),
-      ])
-        .then((response) => {
-          const runRecommendation =
-            handleRecommendationsAndCarModelDetailsUpdate(
-              setRecommendations,
-              setCarModelDetails,
-            )
-          runRecommendation(response)
-          const sortedVariantsOfCurrentModel = response[1].data.variants
-            .map((item: any) => item)
-            .sort((a: any, b: any) => a.priceValue - b.priceValue)
-          getCarVariantDetailsById(
-            sortedVariantsOfCurrentModel[0].id, // get cheapest variant
-          ).then((result3) => {
-            if (result3.data.variantDetail.priceValue == null) {
-              setStatus('empty')
-            } else {
-              setCarVariantDetails(result3.data)
-              setStatus('exist')
-            }
-          })
-        })
-        .catch((err) => {
+    getNewFunnelRecommendations(getQueryParamForApiRecommendation()).then(
+      (result) => {
+        let id = ''
+        const carList = result.data.carRecommendations
+        const currentCar = carList.filter(
+          (value: CarRecommendation) =>
+            value.model.replace(/ +/g, '-').toLowerCase() === model,
+        )
+        if (currentCar.length > 0) {
+          id = currentCar[0].id
+          setStatus('exist')
+        } else {
           setStatus('empty')
-        })
-    })
+          return
+        }
+        savePreviouslyViewed(currentCar[0])
+
+        Promise.all([
+          getNewFunnelRecommendations(getQueryParamForApiRecommendation()),
+          getCarModelDetailsById(id),
+        ])
+          .then((response) => {
+            const runRecommendation =
+              handleRecommendationsAndCarModelDetailsUpdate(
+                setRecommendations,
+                setCarModelDetails,
+              )
+
+            runRecommendation(response)
+            const sortedVariantsOfCurrentModel = response[1].data.variants
+              .map((item: any) => item)
+              .sort((a: any, b: any) => a.priceValue - b.priceValue)
+            getCarVariantDetailsById(
+              sortedVariantsOfCurrentModel[0].id, // get cheapest variant
+            ).then((result3) => {
+              if (result3.data.variantDetail.priceValue == null) {
+                setStatus('empty')
+              } else {
+                setCarVariantDetails(result3.data)
+                setStatus('exist')
+              }
+            })
+          })
+          .catch(() => {
+            setStatus('empty')
+          })
+      },
+    )
   }, [brand, model, tab])
 
   useEffect(() => {
