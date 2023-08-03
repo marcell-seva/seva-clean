@@ -10,6 +10,9 @@ import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import Image from 'next/image'
 import { api } from 'services/api'
+import { getLocalStorage } from 'utils/localstorageUtils'
+import { UTMTagsData } from 'utils/types/utils'
+import { LocalStorageKey } from 'utils/enum'
 
 export interface FooterMenu {
   menuName: string
@@ -24,6 +27,7 @@ export interface FooterMenu {
 }
 
 const FooterMobile = () => {
+  const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
   const [menu, setMenu] = useState<FooterMenu[]>([])
 
   useEffect(() => {
@@ -135,6 +139,9 @@ const FooterMobile = () => {
         </div>
         <div className={styles.divider} />
         <span className={styles.copyrightText}>© 2023 Copyright SEVA</span>
+        {UTMTags?.utm_source && (
+          <span className={styles.utmText}>Source: {UTMTags?.utm_source}</span>
+        )}
       </div>
     </footer>
   )

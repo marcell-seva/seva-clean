@@ -1268,7 +1268,12 @@ export const CreditTab = () => {
             />
           )}
 
-          <div className={styles.benefitCard}>
+          <div
+            className={`${styles.benefitCard} ${
+              carRecommendations.length === 0 &&
+              styles.benefitCardAdditonalStyle
+            } `}
+          >
             <CreditCualificationBenefit
               additionalContainerStyle={styles.benefitAdditionalStyle}
             />
