@@ -7,6 +7,9 @@ import urls from 'helpers/urls'
 import elementId from 'helpers/elementIds'
 import Image from 'next/image'
 import { trackFooterClick } from 'helpers/amplitude/seva20Tracking'
+import { getLocalStorage } from 'utils/localstorageUtils'
+import { UTMTagsData } from 'utils/types/utils'
+import { LocalStorageKey } from 'utils/enum'
 
 const SevaLogo = '/revamp/icon/logo-on-dark.webp'
 const ISOIcon = '/revamp/icon/iso.webp'
@@ -25,6 +28,7 @@ export interface FooterMenu {
 }
 
 export const FooterMobile = () => {
+  const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
   const [menu, setMenu] = useState<FooterMenu[]>([])
 
   useEffect(() => {
@@ -138,6 +142,9 @@ export const FooterMobile = () => {
         </div>
         <div className={styles.divider} />
         <span className={styles.copyrightText}>© 2023 Copyright SEVA</span>
+        {UTMTags?.utm_source && (
+          <span className={styles.utmText}>Source: {UTMTags?.utm_source}</span>
+        )}
       </div>
     </footer>
   )

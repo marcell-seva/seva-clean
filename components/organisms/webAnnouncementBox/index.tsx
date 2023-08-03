@@ -2,29 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import DOMPurify from 'dompurify'
-import CustomRight from '/public/revamp/images/announcementBox/custom-desktop-right.webp'
-import CustomLeft from '/public/revamp/images/announcementBox/custom-desktop-left.webp'
-import CustomMobile from '/public/revamp/images/announcementBox/custom-mobile-right.webp'
-import ChristmasLeft from '/public/revamp/images/announcementBox/christmas-desktop-left.webp'
-import ChristmasRight from '/public/revamp/images/announcementBox/christmas-desktop-right.webp'
-import ChristmasMobileRight from '/public/revamp/images/announcementBox/christmas-mobile-right.webp'
-import ChristmasMobileLeft from '/public/revamp/images/announcementBox/christmas-mobile-left.webp'
-import NewYearLeft from '/public/revamp/images/announcementBox/newyear-desktop-left.webp'
-import NewYearRight from '/public/revamp/images/announcementBox/newyear-desktop-right.webp'
-import NewYearMobileRight from '/public/revamp/images/announcementBox/newyear-mobile-right.webp'
-import NewYearMobileLeft from '/public/revamp/images/announcementBox/newyear-mobile-left.webp'
-import CNYDesktopLeft from '/public/revamp/images/announcementBox/cny-desktop-left.svg'
-import CNYDesktopRight from '/public/revamp/images/announcementBox/cny-desktop-right.svg'
-import CNYMobileRight from '/public/revamp/images/announcementBox/cny-mobile-right.svg'
-import CNYMobileLeft from '/public/revamp/images/announcementBox/cny-mobile-left.svg'
-import RamadhanDesktopLeft from '/public/revamp/images/announcementBox/ramadhan-desktop-left.svg'
-import RamadhanDesktopRight from '/public/revamp/images/announcementBox/ramadhan-desktop-right.svg'
-import RamadhanMobileRight from '/public/revamp/images/announcementBox/ramadhan-mobile-right.svg'
-import RamadhanMobileLeft from '/public/revamp/images/announcementBox/ramadhan-mobile-left.svg'
-import IdulFitriDesktopLeft from '/public/revamp/images/announcementBox/idulfitri2023-desktop-left.svg'
-import IdulFitriDesktopRight from '/public/revamp/images/announcementBox/idulfitri2023-desktop-right.svg'
-import IdulFitriMobileRight from '/public/revamp/images/announcementBox/idulfitri2023-mobile-right.svg'
-import IdulFitriMobileLeft from '/public/revamp/images/announcementBox/idulfitri2023-mobile-left.svg'
 import { Shimmer } from './Shimmer'
 import {
   getSessionStorage,
@@ -41,6 +18,43 @@ import { getToken } from 'utils/handler/auth'
 import endpoints from 'utils/helpers/endpoints'
 import { api } from 'services/api'
 
+const CustomRight = '/revamp/images/announcementBox/custom-desktop-right.webp'
+const CustomLeft = '/revamp/images/announcementBox/custom-desktop-left.webp'
+const CustomMobile = '/revamp/images/announcementBox/custom-mobile-right.webp'
+const ChristmasLeft =
+  '/revamp/images/announcementBox/christmas-desktop-left.webp'
+const ChristmasRight =
+  '/revamp/images/announcementBox/christmas-desktop-right.webp'
+const ChristmasMobileRight =
+  '/revamp/images/announcementBox/christmas-mobile-right.webp'
+const ChristmasMobileLeft =
+  '/revamp/images/announcementBox/christmas-mobile-left.webp'
+const NewYearLeft = '/revamp/images/announcementBox/newyear-desktop-left.webp'
+const NewYearRight = '/revamp/images/announcementBox/newyear-desktop-right.webp'
+const NewYearMobileRight =
+  '/revamp/images/announcementBox/newyear-mobile-right.webp'
+const NewYearMobileLeft =
+  '/revamp/images/announcementBox/newyear-mobile-left.webp'
+const CNYDesktopLeft = '/revamp/images/announcementBox/cny-desktop-left.svg'
+const CNYDesktopRight = '/revamp/images/announcementBox/cny-desktop-right.svg'
+const CNYMobileRight = '/revamp/images/announcementBox/cny-mobile-right.svg'
+const CNYMobileLeft = '/revamp/images/announcementBox/cny-mobile-left.svg'
+const RamadhanDesktopLeft =
+  '/revamp/images/announcementBox/ramadhan-desktop-left.svg'
+const RamadhanDesktopRight =
+  '/revamp/images/announcementBox/ramadhan-desktop-right.svg'
+const RamadhanMobileRight =
+  '/revamp/images/announcementBox/ramadhan-mobile-right.svg'
+const RamadhanMobileLeft =
+  '/revamp/images/announcementBox/ramadhan-mobile-left.svg'
+const IdulFitriDesktopLeft =
+  '/revamp/images/announcementBox/idulfitri2023-desktop-left.svg'
+const IdulFitriDesktopRight =
+  '/revamp/images/announcementBox/idulfitri2023-desktop-right.svg'
+const IdulFitriMobileRight =
+  '/revamp/images/announcementBox/idulfitri2023-mobile-right.svg'
+const IdulFitriMobileLeft =
+  '/revamp/images/announcementBox/idulfitri2023-mobile-left.svg'
 declare global {
   interface Window {
     dataLayer: any
