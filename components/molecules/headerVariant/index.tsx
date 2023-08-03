@@ -25,6 +25,13 @@ import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { getCity } from 'utils/hooks/useGetCity'
 import { SearchInput } from 'components/atoms'
+import { Loading } from 'components/atoms/loading'
+import { carResultsUrl, variantListUrl } from 'routes/routes'
+import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { getCarsSearchBar } from 'services/searchbar'
+import { trackSearchBarSuggestionClick } from 'helpers/amplitude/seva20Tracking'
+import { API } from 'utils/api'
+import endpoints from 'utils/helpers/endpoints'
 interface HeaderVariantProps {
   overrideDisplay?: string
   isOnModal?: boolean
@@ -35,16 +42,14 @@ interface HeaderVariantProps {
 
 const SEARCH_NOT_FOUND_TEXT = 'Mobil tidak ditemukan'
 
-const HeaderVariant = ({
+export default function HeaderVariant({
   overrideDisplay = 'none',
   isOnModal = false,
   closeModal,
   hideModal,
   suggestionListMobileWidth = '90%',
-}: HeaderVariantProps) => {
-  const { patchFunnelQuery } = useContext(
-    FunnelQueryContext,
-  ) as FunnelQueryContextType
+}: HeaderVariantProps) {
+  const { patchFunnelQuery } = useFunnelQueryData()
   const [searchInputValue, setSearchInputValue] = useState('')
   const [suggestionsLists, setSuggestionsLists] = useState<Option<string>[]>([])
   const { showToast } = useToast()
@@ -59,13 +64,9 @@ const HeaderVariant = ({
   const [isNotFoundClicked, setIsNotFoundClicked] = useState(false)
 
   const handleDebounceFn = (inputValue: string) => {
-    const params = `?city=${getCity().cityCode}&cityId=${
-      getCity().id
-    }&query=${inputValue}`
-    api
-      .getSearchDataQuery(params)
-      .then((response: any) => {
-        const listedResult = response.map(
+    getCarsSearchBar(inputValue)
+      .then((response) => {
+        const listedResult = response.data.map(
           (item: { value: string; label: string }) => {
             const splitValue = item.label.split(' ')
             const carBrand = splitValue[0]
@@ -125,7 +126,7 @@ const HeaderVariant = ({
     }
     let urlDestination = ''
     if (item.value.length > 0) {
-      urlDestination = urls.internalUrls.variantListUrl
+      urlDestination = variantListUrl
         .replace('/:brand/:model', item.value)
         .replace(':tab?', '')
     } else {
@@ -135,10 +136,7 @@ const HeaderVariant = ({
       const funnelQueryTemp = {
         brand: [item.label],
       }
-      urlDestination =
-        urls.internalUrls.carResultsUrl +
-        '?' +
-        convertObjectQuery(funnelQueryTemp)
+      urlDestination = carResultsUrl + '?' + convertObjectQuery(funnelQueryTemp)
     }
 
     // simpan pencarian ke dalam local storage
@@ -153,7 +151,7 @@ const HeaderVariant = ({
 
     hideModal()
 
-    sendAmplitudeData(AmplitudeEventName.WEB_SEARCHBAR_SUGGESTION_CLICK, {
+    trackSearchBarSuggestionClick({
       Page_Origination_URL: window.location.href,
       Page_Direction_URL: window.location.origin + urlDestination,
     })
@@ -184,30 +182,6 @@ const HeaderVariant = ({
     )
   }
 
-  const clickEnter = (e: KeyboardEvent) => {
-    localStorage.setItem('searchEnter?', searchInputValue)
-    if (e.key === 'Enter') {
-      removeUnnecessaryDataFilter()
-      patchFunnelQuery({
-        [FunnelQueryKey.CarModel]: [searchInputValue],
-      })
-
-      if (isOnModal && closeModal) {
-        closeModal(e)
-      }
-      if (window.location.pathname !== urls.internalUrls.carResultsUrl) {
-        sendAmplitudeData(AmplitudeEventName.WEB_SEARCHBAR_SUGGESTION_CLICK, {
-          Page_Origination_URL: currentURL.replace('https://www.', ''),
-          Page_Direction_URL:
-            window.location.hostname.replace('www.', '') +
-            urls.internalUrls.carResultsUrl,
-        })
-      }
-
-      router.push(urls.internalUrls.carResultsUrl)
-    }
-  }
-
   const renderSearchOptionsItem = (textToHighlight: string) => {
     const searchWords: string[] = []
     searchWords.push(searchInputValue)
@@ -218,7 +192,7 @@ const HeaderVariant = ({
     })
 
     const temp = chunks
-      .map((chunk: any) => {
+      .map((chunk) => {
         const { end, highlight, start } = chunk
         const text = textToHighlight.substr(start, end - start)
         if (highlight) {
@@ -233,7 +207,7 @@ const HeaderVariant = ({
   }
 
   const carData = useMemo(() => {
-    const data = comDataNew?.slice(0, 5).map((item: any) => ({
+    const data = comDataNew?.slice(0, 5).map((item) => ({
       name: `${item.brand} ${item.model?.carModel.model ?? ''}`,
       image: (item.model && item.model.carModel.imageUrls.main_color[0]) || '',
       link: `/${item.brand}/${item.model?.carModel.model
@@ -245,10 +219,9 @@ const HeaderVariant = ({
   }, [comDataNew])
 
   useEffect(() => {
-    api
-      .getCarofTheMonth()
-      .then((res: any) => {
-        setComDataNew(res.data)
+    API.get(endpoints.carOfMonth)
+      .then((res) => {
+        setComDataNew(res.data.data)
       })
       .catch(() => {
         setIsError(true)
@@ -259,7 +232,7 @@ const HeaderVariant = ({
   const renderRecommendation = () => {
     return (
       <ul>
-        {carData.map((car: any) => (
+        {carData.map((car) => (
           <div className={styles.styledCarContentName} key={car.name}>
             <a
               className={styles.styledCarName}
@@ -272,11 +245,9 @@ const HeaderVariant = ({
                   padding: '14px',
                 }}
               >
-                <Image
+                <img
                   src={car.image}
                   alt={car.name}
-                  width={70}
-                  height={50}
                   style={{
                     width: '70px',
                     height: '50px',
@@ -303,40 +274,52 @@ const HeaderVariant = ({
         brand: data.label,
       }
       router.push({
-        pathname: urls.internalUrls.carResultsUrl,
+        pathname: carResultsUrl,
         search: convertObjectQuery(funnelQueryTemp),
       })
     } else {
       router.push({
-        pathname: urls.internalUrls.carResultsUrl + data.value,
+        pathname: carResultsUrl + data.value,
       })
     }
     // use location reload so that content re-fetched
     window.location.reload()
   }
 
+  type RenderedLabels = {
+    [label: string]: boolean
+  }
+
   const renderSearchHistory = () => {
     const searchHistory = JSON.parse(
       localStorage.getItem('searchHistory') || '[]',
     )
+    const renderedLabels: RenderedLabels = {}
+
     return (
       <ul>
-        {searchHistory.map((searchTerm: any) => (
-          <React.Fragment key={searchTerm.label}>
-            <h3 style={{ fontWeight: 'bold', marginBottom: '14px' }}>
-              Riwayat pencarian
-            </h3>
-            <div
-              className={styles.styledCarContentName}
-              onClick={() => onClickSearchHistory(searchTerm)}
-            >
-              <div className={styles.styledCarName}>
-                <a>{searchTerm.label}</a>
-              </div>
-              <Line width={'100%'} height={'1px'} background="#EBECEE" />
-            </div>
-          </React.Fragment>
-        ))}
+        <h3 style={{ fontWeight: 'bold', marginBottom: '14px' }}>
+          Riwayat pencarian
+        </h3>
+        {searchHistory.map((searchTerm: any) => {
+          if (!renderedLabels[searchTerm.label]) {
+            renderedLabels[searchTerm.label] = true
+            return (
+              <React.Fragment key={searchTerm.label}>
+                <div
+                  className={styles.styledCarContentName}
+                  onClick={() => onClickSearchHistory(searchTerm)}
+                >
+                  <div className={styles.styledCarName}>
+                    <a>{searchTerm.label}</a>
+                  </div>
+                  <Line width={'100%'} height={'1px'} background="#EBECEE" />
+                </div>
+              </React.Fragment>
+            )
+          }
+          return null
+        })}
       </ul>
     )
   }
@@ -372,16 +355,16 @@ const HeaderVariant = ({
             </div>
             {suggestionsLists.length !== 0 && searchInputValue.length > 0 ? (
               <div className={styles.styledDataResult}>
-                {suggestionsLists.map((car, key) => {
+                {suggestionsLists.map((car) => {
                   return (
                     <div
-                      key={key}
                       data-testid={
                         elementId.Homepage.SearchBar.CarModelOption +
                         car.label +
                         searchInputValue
                       }
                       onClick={() => clickList(car)}
+                      key={car.value}
                       className={`${styles.styledLink} ${
                         suggestionsLists[0].label === SEARCH_NOT_FOUND_TEXT
                           ? styles.disableClick
@@ -429,12 +412,10 @@ const HeaderVariant = ({
                 </div>
               </div>
             )}
-            {/* <Loading isShowLoading={isShowLoading} progress={progress} /> */}
+            <Loading isShowLoading={isShowLoading} progress={progress} />
           </div>
         </div>
       </div>
     </>
   )
 }
-
-export default HeaderVariant
