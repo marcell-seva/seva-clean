@@ -20,32 +20,43 @@ import { AnnouncementBoxDataType } from 'utils/types/utils'
 import { Close } from 'components/atoms/icon/OldClose'
 import { Shimmer } from 'components/atoms/shimmerOld'
 
-const CustomRight = '/revamp/illustration/custom-desktop-right.webp'
-const CustomLeft = '/revamp/illustration/custom-desktop-left.webp'
-const CustomMobile = '/revamp/illustration/custom-mobile-right.webp'
-const ChristmasLeft = '/revamp/illustration/christmas-desktop-left.webp'
-const ChristmasRight = '/revamp/illustration/christmas-desktop-right.webp'
-const ChristmasMobileRight = '/revamp/illustration/christmas-mobile-right.webp'
-const ChristmasMobileLeft = '/revamp/illustration/christmas-mobile-left.webp'
-const NewYearLeft = '/revamp/illustration/newyear-desktop-left.webp'
-const NewYearRight = '/revamp/illustration/newyear-desktop-right.webp'
-const NewYearMobileRight = '/revamp/illustration/newyear-mobile-right.webp'
-const NewYearMobileLeft = '/revamp/illustration/newyear-mobile-left.webp'
-const CNYDesktopLeft = '/revamp/illustration/cny-desktop-left.svg'
-const CNYDesktopRight = '/revamp/illustration/cny-desktop-right.svg'
-const CNYMobileRight = '/revamp/illustration/cny-mobile-right.svg'
-const CNYMobileLeft = '/revamp/illustration/cny-mobile-left.svg'
-const RamadhanDesktopLeft = '/revamp/illustration/ramadhan-desktop-left.svg'
-const RamadhanDesktopRight = '/revamp/illustration/ramadhan-desktop-right.svg'
-const RamadhanMobileRight = '/revamp/illustration/ramadhan-mobile-right.svg'
-const RamadhanMobileLeft = '/revamp/illustration/ramadhan-mobile-left.svg'
+const CustomRight = '/revamp/images/announcementBox/custom-desktop-right.webp'
+const CustomLeft = '/revamp/images/announcementBox/custom-desktop-left.webp'
+const CustomMobile = '/revamp/images/announcementBox/custom-mobile-right.webp'
+const ChristmasLeft =
+  '/revamp/images/announcementBox/christmas-desktop-left.webp'
+const ChristmasRight =
+  '/revamp/images/announcementBox/christmas-desktop-right.webp'
+const ChristmasMobileRight =
+  '/revamp/images/announcementBox/christmas-mobile-right.webp'
+const ChristmasMobileLeft =
+  '/revamp/images/announcementBox/christmas-mobile-left.webp'
+const NewYearLeft = '/revamp/images/announcementBox/newyear-desktop-left.webp'
+const NewYearRight = '/revamp/images/announcementBox/newyear-desktop-right.webp'
+const NewYearMobileRight =
+  '/revamp/images/announcementBox/newyear-mobile-right.webp'
+const NewYearMobileLeft =
+  '/revamp/images/announcementBox/newyear-mobile-left.webp'
+const CNYDesktopLeft = '/revamp/images/announcementBox/cny-desktop-left.svg'
+const CNYDesktopRight = '/revamp/images/announcementBox/cny-desktop-right.svg'
+const CNYMobileRight = '/revamp/images/announcementBox/cny-mobile-right.svg'
+const CNYMobileLeft = '/revamp/images/announcementBox/cny-mobile-left.svg'
+const RamadhanDesktopLeft =
+  '/revamp/images/announcementBox/ramadhan-desktop-left.svg'
+const RamadhanDesktopRight =
+  '/revamp/images/announcementBox/ramadhan-desktop-right.svg'
+const RamadhanMobileRight =
+  '/revamp/images/announcementBox/ramadhan-mobile-right.svg'
+const RamadhanMobileLeft =
+  '/revamp/images/announcementBox/ramadhan-mobile-left.svg'
 const IdulFitriDesktopLeft =
-  '/revamp/illustration/idulfitri2023-desktop-left.svg'
+  '/revamp/images/announcementBox/idulfitri2023-desktop-left.svg'
 const IdulFitriDesktopRight =
-  '/revamp/illustration/idulfitri2023-desktop-right.svg'
+  '/revamp/images/announcementBox/idulfitri2023-desktop-right.svg'
 const IdulFitriMobileRight =
-  '/revamp/illustration/idulfitri2023-mobile-right.svg'
-const IdulFitriMobileLeft = '/revamp/illustration/idulfitri2023-mobile-left.svg'
+  '/revamp/images/announcementBox/idulfitri2023-mobile-right.svg'
+const IdulFitriMobileLeft =
+  '/revamp/images/announcementBox/idulfitri2023-mobile-left.svg'
 
 type WebAnnouncementBoxProps = {
   onCloseAnnouncementBox?: (value: boolean) => void
