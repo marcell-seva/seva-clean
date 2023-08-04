@@ -1,8 +1,9 @@
 import { MaxWidthStyle } from 'components/atoms'
 import { useToast } from 'components/atoms/OldToast/Toast'
+import Seo from 'components/atoms/seo'
 import { HomePageShimmer } from 'components/molecules'
 import HeaderVariant from 'components/molecules/header/header'
-import { client } from 'const/const'
+import { client, defaultSeoImage } from 'const/const'
 import { useContextContactFormPatch } from 'context/contactFormContext/contactFormContext'
 import { trackLandingPageView } from 'helpers/amplitude/seva20Tracking'
 import endpoints from 'helpers/endpoints'
@@ -141,18 +142,12 @@ const HomepageDesktop: React.FC<HomepageDesktopProps> = ({}) => {
 
   return (
     <>
-      <Head>
-        <title>SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik</title>
-        <meta
-          name="title"
-          content="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
-        />
-        <meta
-          name="description"
-          content="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
-        />
-        <link rel="icon" href="/favicon.png" />
-      </Head>
+      <Seo
+        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
+        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
+        image={defaultSeoImage}
+      />
+
       <MaxWidthStyle />
       <Container>
         <PageHeaderSeva>

@@ -41,3 +41,5 @@ export const dpRateCollectionNewCalculator = [
   { dpRate: 45, dpCalc: 0.45 },
   { dpRate: 50, dpCalc: 0.5 },
 ]
+
+export const defaultSeoImage = '/revamp/illustration/seva-header.svg'
