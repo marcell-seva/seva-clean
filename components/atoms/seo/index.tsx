@@ -10,7 +10,6 @@ interface SeoProps {
 
 const Seo: React.FC<SeoProps> = ({ title, description, image }) => {
   const router = useRouter()
-  console.log('ROUTER : ', router)
   const currentUrl = router.asPath
 
   return (
