@@ -1,7 +1,6 @@
 import { PLP } from 'components/organism'
 import React from 'react'
 import axios from 'axios'
-import Head from 'next/head'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
 import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
@@ -14,6 +13,8 @@ import PLPDesktop from 'components/organism/PLPDesktop'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { MenuContext } from 'context/menuContext'
 import { api } from 'services/api'
+import Seo from 'components/atoms/seo'
+import { defaultSeoImage } from 'const/const'
 
 const NewCarResultPage = ({
   meta,
@@ -21,15 +22,14 @@ const NewCarResultPage = ({
   dataMenu,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const isMobile = isSsrMobile
-
   return (
     <>
-      <Head>
-        <title>{meta.title}</title>
-        <meta name="title" content={meta.title} />
-        <meta name="description" content={meta.description} />
-        <link rel="icon" href="/favicon.png" />
-      </Head>
+      <Seo
+        title={meta.title}
+        description={meta.description}
+        image={defaultSeoImage}
+      />
+
       <MenuContext.Provider
         value={{
           dataMenu,

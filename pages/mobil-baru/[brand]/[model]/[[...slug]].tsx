@@ -8,6 +8,8 @@ import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
 import { MenuContext } from 'context/menuContext'
+import Seo from 'components/atoms/seo'
+import { defaultSeoImage } from 'const/const'
 interface PdpDataLocalContextType {
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.
@@ -67,14 +69,14 @@ export default function index({
         : ''
     return { title, description }
   }, [metaTagDataRes])
+
   return (
     <>
-      <Head>
-        <title>{meta.title}</title>
-        <meta name="title" content={meta.title} />
-        <meta name="description" content={meta.description} />
-      </Head>
-
+      <Seo
+        title={meta.title}
+        description={meta.description}
+        image={carModelDetailsRes.images[0] || defaultSeoImage}
+      />
       <MenuContext.Provider
         value={{
           dataMenu,
