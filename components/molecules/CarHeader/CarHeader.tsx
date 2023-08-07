@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import Img from 'react-cool-img'
 import { TitleHeader } from '../TitleHeader/TitleHeader'
-import { HeaderAndContentProps } from 'components/organism/HeaderAndContent/HeaderAndContent'
+import { HeaderAndContentProps } from 'components/organisms/HeaderAndContent/HeaderAndContent'
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 

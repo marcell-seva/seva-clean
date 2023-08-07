@@ -1,4 +1,4 @@
-import { PLP } from 'components/organism'
+import { PLP } from 'components/organisms'
 import React, { useEffect } from 'react'
 import axios from 'axios'
 import Head from 'next/head'
@@ -14,7 +14,7 @@ import {
 } from 'utils/types/context'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { FooterSEOAttributes } from 'utils/types/utils'
-import PLPDesktop from 'components/organism/PLPDesktop'
+import PLPDesktop from 'components/organisms/PLPDesktop'
 
 const NewCarResultPage = ({
   meta,

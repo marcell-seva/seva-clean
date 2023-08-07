@@ -1,4 +1,4 @@
-import { PLP } from 'components/organism'
+import { PLP } from 'components/organisms'
 import React from 'react'
 import axios from 'axios'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
@@ -9,7 +9,7 @@ import {
   FooterSEOAttributes,
   NavbarItemResponse,
 } from 'utils/types/utils'
-import PLPDesktop from 'components/organism/PLPDesktop'
+import PLPDesktop from 'components/organisms/PLPDesktop'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { MenuContext } from 'context/menuContext'
 import { api } from 'services/api'

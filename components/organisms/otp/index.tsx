@@ -1,22 +1,27 @@
-import React, { useState, useMemo, useRef, useEffect, useContext } from 'react'
-import styles from 'styles/components/organisms/otp.module.scss'
+import React, { useState, useMemo, useRef, useEffect } from 'react'
+import { sendSMSGeneration, verifyOTPGeneration } from 'services/auth'
+import { useCountDownTimer } from 'utils/hooks/useCountDownTimer/useCountDownTimer'
+import { useLastOtpSentTime } from 'context/lastOtpSentTimeContext'
+import { saveOtpIsSent, saveOtpTimerIsStart } from 'utils/otpUtils'
+import { encryptValue } from 'utils/encryptionUtils'
+import { IconLoading, Modal } from 'components/atoms'
+import styles from '../../../styles/components/organisms/otp.module.scss'
+import { getRecaptchaToken } from 'services/firebase/firebaseAuth'
 import { useMediaQuery } from 'react-responsive'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import { HTTPResponseStatusCode, LocalStorageKey } from 'utils/types/models'
-import { encryptValue } from 'utils/handler/encryption'
-import elementId from 'utils/helpers/trackerId'
-import { CustomModal } from 'components/atoms'
-import { sendAmplitudeData } from 'services/amplitude'
-import { AmplitudeEventName } from 'services/amplitude/types'
-import { useCountDownTimer } from 'utils/hooks/useCountDownTimer'
-import { useCurrentLanguage } from 'utils/hooks/useCurrentLanguage/useCurrentLanguage'
-import { IconLoading } from 'components/atoms/icons'
-import { saveOtpIsSent, saveOtpTimerIsStart } from 'utils/handler/otp'
-import { api } from 'services/api'
-import { getRecaptchaToken } from 'services/firebase'
-import { UtilsContext, UtilsContextType } from 'services/context'
+import {
+  trackOtpClose,
+  trackOtpResendClick,
+} from 'helpers/amplitude/seva20Tracking'
+import elementId from 'helpers/elementIds'
+import {
+  HTTPResponseStatusCode,
+  LanguageCode,
+  LocalStorageKey,
+} from 'utils/enum'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { t } from 'config/localization/locales/id'
 
-const OTP = ({
+export const OTP = ({
   phoneNumber,
   isOpened,
   closeModal,
@@ -24,10 +29,7 @@ const OTP = ({
   onFailed,
   savedTokenAfterVerify,
 }: any): JSX.Element => {
-  const [currentLanguage] = useCurrentLanguage()
-  const { lastOtpSentTime, setLastOtpSentTime } = useContext(
-    UtilsContext,
-  ) as UtilsContextType
+  const { lastOtpSentTime, setLastOtpSentTime } = useLastOtpSentTime()
   const [otp, setOtp] = useState<string>(' ')
   const [isErrorInput, setIsErrorInput] = useState<boolean>(false)
   const [isInit, setIsInit] = useState(true)
@@ -219,23 +221,19 @@ const OTP = ({
         recaptchaWrapperRef.current.innerHTML = RecaptchaNode
       }
       const recaptchaToken = await getRecaptchaToken(
-        currentLanguage,
+        LanguageCode.id,
         RECAPTCHA_CONTAINER,
       )
       return recaptchaToken
     } catch (error) {
-      setCommonErrorMessage(
-        'Oops.. Sepertinya terjadi kesalahan. Coba lagi nanti.',
-      )
+      setCommonErrorMessage(t.common.errorMessage)
+      throw error
     }
   }
 
   const handleSubmit = async (payload: string) => {
     try {
-      const res: any = await api.postVerifyOTPGeneration(
-        payload,
-        `+62${phoneNumber}`,
-      )
+      const res: any = await verifyOTPGeneration(payload, `+62${phoneNumber}`)
       isOtpVerified()
       if (savedTokenAfterVerify)
         localStorage.setItem('token', JSON.stringify(res.data))
@@ -248,10 +246,8 @@ const OTP = ({
       ) {
         setIsErrorInput(true)
       } else {
-        setCommonErrorMessage(
-          'Oops.. Sepertinya terjadi kesalahan. Coba lagi nanti.',
-        )
-        onFailed() && onFailed()
+        setCommonErrorMessage(t.common.errorMessage)
+        onFailed()
         setIsErrorInput(true)
       }
     }
@@ -260,7 +256,7 @@ const OTP = ({
   const sendOtpCode = async () => {
     const captcha = await getCaptchaToken()
     try {
-      await api.postSendSMSGeneration(captcha, `+62${phoneNumber}`)
+      await sendSMSGeneration(captcha, `+62${phoneNumber}`)
       setIsInit(false)
       setCountDownTimeInMilliseconds(0)
       setLastOtpSentTime(Date.now())
@@ -288,23 +284,19 @@ const OTP = ({
         setIsError(false)
         shouldShowTimer()
       } else {
-        setCommonErrorMessage(
-          'Oops.. Sepertinya terjadi kesalahan. Coba lagi nanti.',
-        )
+        setCommonErrorMessage(t.common.errorMessage)
       }
     }
   }
 
   const resendOtp = async () => {
-    sendAmplitudeData(AmplitudeEventName.WEB_OTP_RESEND_CLICK, {
-      Page_Origination: window.location.href,
-    })
+    trackOtpResendClick({ Page_Origination: window.location.href })
     const captcha = await getCaptchaToken()
     try {
       if (recaptchaWrapperRef) {
         recaptchaWrapperRef.current.innerHTML = RecaptchaNode
       }
-      await api.postSendSMSGeneration(captcha, `+62${phoneNumber}`)
+      await sendSMSGeneration(captcha, `+62${phoneNumber}`)
       setLastOtpSentTime(Date.now())
       setLastOptSentPhoneNumber(encryptValue(phoneNumber.toString()))
       saveOtpTimerIsStart('true')
@@ -325,20 +317,16 @@ const OTP = ({
         setIsCountDownEnd(false)
         setIsError(false)
         shouldShowTimer()
-        onFailed() && onFailed()
+        onFailed()
       } else {
-        setCommonErrorMessage(
-          'Oops.. Sepertinya terjadi kesalahan. Coba lagi nanti.',
-        )
+        setCommonErrorMessage(t.common.errorMessage)
       }
-      onFailed() && onFailed()
+      onFailed()
     }
   }
 
   const handleCloseModal = (): void => {
-    sendAmplitudeData(AmplitudeEventName.WEB_OTP_CLOSE, {
-      Page_Origination: window.location.href,
-    })
+    trackOtpClose({ Page_Origination: window.location.href })
     sessionStorage.removeItem('lastOtpSent')
     sessionStorage.removeItem('lastOtpSentPhoneNumber')
     closeModal()
@@ -373,7 +361,7 @@ const OTP = ({
 
   return (
     <div>
-      <CustomModal
+      <Modal
         width={isMobile ? 343 : 588}
         open={isOpened}
         onCancel={() => handleCloseModal()}
@@ -423,9 +411,7 @@ const OTP = ({
             {RecaptchaNode}
           </div>
         </div>
-      </CustomModal>
+      </Modal>
     </div>
   )
 }
-
-export default OTP

@@ -1,10 +1,10 @@
 import { Modal } from 'antd'
 import React, { TextareaHTMLAttributes } from 'react'
 import type { ModalProps } from 'antd'
-import styles from 'styles/components/organisms/popupPromo.module.scss'
-import { IconClose } from 'components/atoms/icons'
-import elementId from 'utils/helpers/trackerId'
-import { colors } from 'utils/helpers/style/colors'
+import { colors } from 'styles/colors'
+import { IconClose } from 'components/atoms'
+import styles from '../../../styles/components/organisms/popupPromo.module.scss'
+import elementId from 'helpers/elementIds'
 
 const promoList = [
   {
@@ -46,7 +46,7 @@ const promoList = [
 
 type PopupPromo = Omit<ModalProps, 'children'>
 
-const PopupPromo = (props: PopupPromo) => {
+export const PopupPromo = (props: PopupPromo) => {
   const lastIndex = promoList.length - 1
   return (
     <Modal
@@ -106,5 +106,3 @@ const Title = ({
     {children}
   </h3>
 )
-
-export default PopupPromo

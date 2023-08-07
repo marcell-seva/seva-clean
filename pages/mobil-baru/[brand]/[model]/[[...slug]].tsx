@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react'
-import { PdpDesktop, PdpMobile } from 'components/organism'
+import { PdpDesktop, PdpMobile } from 'components/organisms'
 import { api } from 'services/api'
 import { CarRecommendation } from 'utils/types/utils'
 import { InferGetServerSidePropsType } from 'next'

@@ -26,7 +26,7 @@ import 'styles/components/molecules/testimoni-tile.scss'
 import 'styles/components/molecules/advisor-section.scss'
 import 'styles/components/molecules/car-brand-item.scss'
 import 'styles/components/molecules/testimonial.scss'
-import 'styles/components/organism/funnel-background.scss'
+import 'styles/components/organisms/funnel-background.scss'
 import 'styles/CustomAnimationStyle.css'
 
 import { IsSsrMobileContext } from 'context/isSsrMobileContext'

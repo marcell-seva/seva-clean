@@ -1,42 +1,49 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styles from 'styles/components/organisms/leadsFormSecondary.module.scss'
-import { Button, Gap, Input, InputPhone, Toast } from 'components/atoms'
-import SupergraphicLeft from '/public/revamp/illustration/supergraphic-small.webp'
-import SupergraphicRight from '/public/revamp/illustration/supergraphic-large.webp'
 import {
-  ButtonSize,
-  ButtonVersion,
+  Button,
+  Gap,
+  IconLoading,
+  Input,
+  InputPhone,
+  Toast,
+} from 'components/atoms'
+import { ButtonSize, ButtonVersion } from 'utils/enum'
+import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
+import {
   LoanRank,
   LocalStorageKey,
   SessionStorageKey,
+} from 'utils/models/models'
+import { decryptValue, encryptValue } from 'utils/encryptionUtils'
+import { filterNonDigitCharacters } from 'utils/stringUtils'
+import { onlyLettersAndSpaces } from 'utils/handler/regex'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
+import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import {
   UnverifiedLeadSubCategory,
-} from 'utils/types/models'
-import { OTP } from 'components/organisms'
-import { useMediaQuery } from 'react-responsive'
-import Image from 'next/image'
-import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
-import { IconLoading } from 'components/atoms/icons'
+  createUnverifiedLeadNew,
+} from 'services/lead'
+import elementId from 'helpers/elementIds'
+import { OTP } from '../../otp'
+import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 import {
-  filterNonDigitCharacters,
-  onlyLettersAndSpaces,
-} from 'utils/handler/stringManipulation'
-import { decryptValue, encryptValue } from 'utils/handler/encryption'
-import { api } from 'services/api'
-import elementId from 'utils/helpers/trackerId'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import { sendAmplitudeData } from 'services/amplitude'
-import { AmplitudeEventName } from 'services/amplitude/types'
-import { LeadsActionParam, PageOriginationName } from 'utils/types/tracker'
-import urls from 'utils/helpers/url'
-import { Currency, getConvertFilterIncome } from 'utils/handler/calculation'
+  LeadsActionParam,
+  PageOriginationName,
+  trackCTAWidgetDirection,
+  trackLeadsFormAction,
+} from 'helpers/amplitude/seva20Tracking'
+import { Currency } from 'utils/numberUtils/numberUtils'
+import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import { useSessionStorage } from 'utils/hooks/useSessionStorage/useSessionStorage'
+import { useMediaQuery } from 'react-responsive'
+import { variantListUrl } from 'routes/routes'
+import { getConvertFilterIncome } from 'utils/filterUtils'
 import { useRouter } from 'next/router'
-import {
-  CarContext,
-  CarContextType,
-  FunnelQueryContext,
-  FunnelQueryContextType,
-} from 'services/context'
+
+const SupergraphicLeft = '/revamp/illustration/supergraphic-small.webp'
+const SupergraphicRight = '/revamp/illustration/supergraphic-large.webp'
 
 interface PropsLeadsForm {
   otpStatus?: any
@@ -51,13 +58,7 @@ export interface CityOtrOption {
   id?: string
 }
 
-const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
-  const { funnelQuery } = useContext(
-    FunnelQueryContext,
-  ) as FunnelQueryContextType
-  const { carModelDetails, carVariantDetails } = useContext(
-    CarContext,
-  ) as CarContextType
+export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
   const platform = 'web'
   const toastSuccessInfo = 'Agen kami akan segera menghubungimu dalam 1x24 jam.'
   const [name, setName] = useState<string>('')
@@ -69,19 +70,23 @@ const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
     'otp' | 'success-toast' | 'none'
   >('none')
   const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false)
-
+  const { carModelDetails } = useContextCarModelDetails()
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
+  const { carVariantDetails } = useContextCarVariantDetails()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
   )
-
+  const { funnelQuery } = useFunnelQueryData()
   const [loanRankPLP] = useSessionStorage(
     SessionStorageKey.LoanRankFromPLP,
     false,
   )
+
   const router = useRouter()
-  const { brand, model }: any = router.query
+
+  const model = router.query.model as string
+  const brand = router.query.brand as string
 
   const handleInputName = (payload: any): void => {
     if (payload !== ' ' && onlyLettersAndSpaces(payload)) {
@@ -121,7 +126,7 @@ const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
 
   const sortedCarModelVariant = useMemo(() => {
     return (
-      carModelDetails?.variants.sort(function (a: any, b: any) {
+      carModelDetails?.variants.sort(function (a, b) {
         return a.priceValue - b.priceValue
       }) || []
     )
@@ -149,7 +154,6 @@ const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
         loanRank = 'Sulit'
       }
     }
-
     const filterIncome = getConvertFilterIncome(
       String(funnelQuery.monthlyIncome),
     )
@@ -184,7 +188,7 @@ const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
 
   const sendOtpCode = async () => {
     setIsLoading(true)
-    sendAmplitudeData(AmplitudeEventName.WEB_LEADS_FORM_SUBMIT, trackLeads())
+    trackLeadsFormAction(TrackingEventName.WEB_LEADS_FORM_SUBMIT, trackLeads())
     const dataLeads = checkDataFlagLeads()
     if (dataLeads) {
       if (phone === dataLeads.phone && name === dataLeads.name) {
@@ -232,9 +236,12 @@ const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
       carModelText: carModelDetails?.model,
     }
     try {
-      await api.postUnverifiedLeadsNew(data)
+      await createUnverifiedLeadNew(data)
       setModalOpened('success-toast')
-      sendAmplitudeData(AmplitudeEventName.WEB_LEADS_FORM_SUCCESS, trackLeads())
+      trackLeadsFormAction(
+        TrackingEventName.WEB_LEADS_FORM_SUCCESS,
+        trackLeads(),
+      )
       setIsLoading(false)
       setTimeout(() => setModalOpened('none'), 3000)
     } catch (error) {
@@ -275,11 +282,16 @@ const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
   }
 
   const onClickCalculateCta = () => {
-    const urlDirection = urls.internalUrls.variantListUrl
+    let urlDirection = variantListUrl
       .replace(':brand', brand)
       .replace(':model', model)
       .replace(':tab', 'kredit')
-    sendAmplitudeData(AmplitudeEventName.WEB_PAGE_DIRECTION_WIDGET_CTA_CLICK, {
+
+    if (router.basePath) {
+      urlDirection = router.basePath + urlDirection
+    }
+
+    trackCTAWidgetDirection({
       Page_Direction_URL:
         'https://' + window.location.host + urlDirection.replace('?', ''),
     })
@@ -291,7 +303,7 @@ const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
       <div className={styles.wrapper}>
         <div className={styles.background}>
           <div className={styles.wrapperSupergraphicLeft}>
-            <Image
+            <img
               src={SupergraphicLeft}
               alt="seva-vector-blue-rounded"
               width={200}
@@ -300,7 +312,7 @@ const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
             />
           </div>
           <div className={styles.wrapperSupergraphicRight}>
-            <Image
+            <img
               src={SupergraphicRight}
               alt="seva-vector-red-rounded"
               width={200}
@@ -378,5 +390,3 @@ const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
     </div>
   )
 }
-
-export default LeadsFormSecondary

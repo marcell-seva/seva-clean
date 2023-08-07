@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import styles from 'styles/components/organisms/mainHeroLp.module.scss'
 import SupergraphicImage from '/public/revamp/illustration/supergraphic-secondary-large.webp'
 import MainHeroImage from '/public/revamp/illustration/main-hero-raize-cencored.webp'
-import HeaderMobile from '../headerMobile'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import elementId from 'utils/helpers/trackerId'
@@ -13,6 +12,7 @@ import { useRouter } from 'next/router'
 import { api } from 'services/api'
 import { CityOtrOption } from 'utils/types/props'
 import { HomePageDataLocalContext } from 'pages'
+import { HeaderMobile } from '../headerMobile'
 
 type MainHeroLPProps = {
   onCityIconClick: () => void
