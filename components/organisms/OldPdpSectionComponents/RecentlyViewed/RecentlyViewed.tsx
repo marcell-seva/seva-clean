@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { getSessionStorage } from 'utils/sessionstorageUtils'
-import { variantListUrl } from 'routes/routes'
+import { variantListUrl } from 'const/routes'
 import {
   CarouselProvider,
   Slider,

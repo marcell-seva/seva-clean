@@ -12,7 +12,7 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { LanguageCode, LoanRank, LocalStorageKey } from 'utils/models/models'
 import { CityOtrOption } from 'utils/types'
 import { useModalContext } from 'context/modalContext/modalContext'
-import { variantListUrl } from 'routes/routes'
+import { variantListUrl } from 'const/routes'
 import { hundred, million, ten } from 'const/const'
 import {
   getLowestDp,

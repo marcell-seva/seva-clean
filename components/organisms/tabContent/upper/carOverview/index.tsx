@@ -27,7 +27,7 @@ import {
   trackDownloadBrosurClick,
   trackPDPHitungKemampuan,
 } from 'helpers/amplitude/seva20Tracking'
-import { variantListUrl } from 'routes/routes'
+import { variantListUrl } from 'const/routes'
 import { CityOtrOption, VariantDetail } from 'utils/types/utils'
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'

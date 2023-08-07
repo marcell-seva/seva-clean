@@ -6,7 +6,7 @@ import { useContextSurveyFormData } from 'context/surveyFormContext/surveyFormCo
 // import { WhatsAppContactUs } from 'pages/component/WhatsAppContactUs/WhatsAppContactUs'
 import React, { useEffect, useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { creditQualificationUrl, LoginSevaUrl, loginUrl } from 'routes/routes'
+import { creditQualificationUrl, LoginSevaUrl, loginUrl } from 'const/routes'
 import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'

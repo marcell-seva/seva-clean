@@ -4,7 +4,7 @@ import debounce from 'lodash.debounce'
 import {
   loanCalculatorWithCityBrandModelVariantUrl,
   variantListUrl,
-} from 'routes/routes'
+} from 'const/routes'
 import {
   getCarModelDetailsById,
   getCarVariantDetailsById,

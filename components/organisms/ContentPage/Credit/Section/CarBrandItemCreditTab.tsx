@@ -15,7 +15,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-import { variantListUrl } from 'routes/routes'
+import { variantListUrl } from 'const/routes'
 import { getNewFunnelAllRecommendations } from 'services/newFunnel'
 import {
   getCarModelDetailsById,

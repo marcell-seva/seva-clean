@@ -10,7 +10,7 @@ import {
 } from './navbarItemStyle'
 import elementId from 'helpers/elementIds'
 import { colors } from 'styles/colors'
-import { refinancingUrl } from 'routes/routes'
+import { refinancingUrl } from 'const/routes'
 import { NavbarItemResponse } from 'utils/types/utils'
 import { useDropdownMultilevel } from 'components/atoms/dropdownMultiLevel'
 import {

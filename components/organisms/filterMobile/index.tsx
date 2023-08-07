@@ -26,7 +26,7 @@ import {
   trackPLPSubmitFilter,
 } from 'helpers/amplitude/seva20Tracking'
 import { Currency } from 'utils/numberUtils/numberUtils'
-import { carResultsUrl } from 'routes/routes'
+import { carResultsUrl } from 'const/routes'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'

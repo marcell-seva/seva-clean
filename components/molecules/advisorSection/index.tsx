@@ -18,7 +18,7 @@ import {
 import React, { ChangeEvent, useEffect, useState } from 'react'
 // import ReactPixel from 'react-facebook-pixel'
 import { useTranslation } from 'react-i18next'
-import { LoginSevaUrl } from 'routes/routes'
+import { LoginSevaUrl } from 'const/routes'
 import { getCustomerInfoSeva } from 'services/customer'
 import {
   createUnverifiedLeadNew,

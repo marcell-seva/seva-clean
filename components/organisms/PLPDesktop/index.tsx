@@ -13,7 +13,7 @@ import { AxiosResponse } from 'axios'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import { CarModelTileV2 } from './CarModelTile/CarModelTileV2'
-import { variantListUrl } from 'routes/routes'
+import { variantListUrl } from 'const/routes'
 import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import {
   getNewFunnelAllRecommendations,

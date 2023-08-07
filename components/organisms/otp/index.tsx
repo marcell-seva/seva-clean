@@ -6,7 +6,7 @@ import { saveOtpIsSent, saveOtpTimerIsStart } from 'utils/otpUtils'
 import { encryptValue } from 'utils/encryptionUtils'
 import { IconLoading, Modal } from 'components/atoms'
 import styles from '../../../styles/components/organisms/otp.module.scss'
-import { getRecaptchaToken } from 'services/firebase/firebaseAuth'
+import { getRecaptchaToken } from 'services/firebase'
 import { useMediaQuery } from 'react-responsive'
 import {
   trackOtpClose,

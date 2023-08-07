@@ -26,7 +26,7 @@ import {
   trackChangeLayoutClick,
 } from 'helpers/amplitude/seva20Tracking'
 import { million, ten } from 'const/const'
-import { variantListUrl } from 'routes/routes'
+import { variantListUrl } from 'const/routes'
 import elementId from 'helpers/elementIds'
 import { CityOtrOption } from 'utils/types/utils'
 import { useRouter } from 'next/router'

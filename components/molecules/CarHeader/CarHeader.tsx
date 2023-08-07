@@ -1,7 +1,7 @@
 import { BackIcon, IconShare } from 'components/atoms'
 import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import React, { useContext } from 'react'
-import { carResultsUrl } from 'routes/routes'
+import { carResultsUrl } from 'const/routes'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import Img from 'react-cool-img'

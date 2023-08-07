@@ -7,7 +7,7 @@ import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContex
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import { AxiosResponse } from 'axios'
 import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
-import { carResultsUrl } from 'routes/routes'
+import { carResultsUrl } from 'const/routes'
 import { trackFilterCarResults } from 'helpers/amplitude/newFunnelEventTracking'
 import { removeWhitespaces, toNumber } from 'utils/stringUtils'
 import {

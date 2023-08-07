@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { LoginSevaUrl, rootUrl } from 'routes/routes'
+import { LoginSevaUrl, rootUrl } from 'const/routes'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import getCurrentEnvironment from 'helpers/environments'

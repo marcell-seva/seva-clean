@@ -38,7 +38,7 @@ import { Currency } from 'utils/numberUtils/numberUtils'
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import { useSessionStorage } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { useMediaQuery } from 'react-responsive'
-import { variantListUrl } from 'routes/routes'
+import { variantListUrl } from 'const/routes'
 import { getConvertFilterIncome } from 'utils/filterUtils'
 import { useRouter } from 'next/router'
 

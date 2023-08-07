@@ -8,7 +8,7 @@ import {
   Slider,
 } from 'pure-react-carousel'
 import React, { useContext, useEffect, useState } from 'react'
-import { carResultsUrl } from 'routes/routes'
+import { carResultsUrl } from 'const/routes'
 
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'

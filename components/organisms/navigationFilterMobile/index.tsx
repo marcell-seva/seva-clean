@@ -16,7 +16,7 @@ import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUti
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import { AxiosResponse } from 'axios'
-import { carResultsUrl } from 'routes/routes'
+import { carResultsUrl } from 'const/routes'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import { ButtonSize, ButtonVersion, LanguageCode } from 'utils/enum'

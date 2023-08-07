@@ -3,7 +3,7 @@ import { useModal } from 'components/atoms/ModalOld/Modal'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import CarImg from './images/CarNotExist.webp'
-import { carResultsUrl } from 'routes/routes'
+import { carResultsUrl } from 'const/routes'
 import { ModalBodyCarNotAvailable } from 'components/atoms/ModalBodyWrapper/ModalBodyCarNotAvailable'
 import { useRouter } from 'next/router'
 

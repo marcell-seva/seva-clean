@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
-import { carResultsUrl } from 'routes/routes'
+import { carResultsUrl } from 'const/routes'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'

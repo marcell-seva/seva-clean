@@ -8,7 +8,7 @@ import {
 } from 'components/atoms'
 import { SidebarMobile } from 'components/organisms'
 // import { useSearchModal } from 'components/molecules/searchModal'
-import { rootUrl } from 'routes/routes'
+import { rootUrl } from 'const/routes'
 import clsx from 'clsx'
 import {
   trackCitySelectorOpen,

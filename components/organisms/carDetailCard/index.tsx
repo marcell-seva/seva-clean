@@ -3,7 +3,7 @@ import React from 'react'
 import {
   loanCalculatorWithCityBrandModelVariantUrl,
   variantListUrl,
-} from 'routes/routes'
+} from 'const/routes'
 import {
   getMinimumDp,
   getMinimumMonthlyInstallment,

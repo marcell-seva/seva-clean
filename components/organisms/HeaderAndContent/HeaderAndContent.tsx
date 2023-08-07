@@ -9,7 +9,7 @@ import React, {
 // import { useShareModal } from 'components/ShareModal/ShareModal'
 // import { FooterSeva } from 'pages/component/FooterSeva/FooterSeva'
 // import { Link, useParams } from 'react-router-dom'
-import { variantListUrl } from 'routes/routes'
+import { variantListUrl } from 'const/routes'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 // import { Params } from './CarVariantListPage'

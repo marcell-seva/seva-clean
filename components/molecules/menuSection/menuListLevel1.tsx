@@ -18,7 +18,7 @@ import {
   refinancingUrl,
   TemanSevaDashboardUrl,
   TemanSevaOnboardingUrl,
-} from 'routes/routes'
+} from 'const/routes'
 import { savePageBeforeLogin } from 'utils/loginUtils'
 import { removeWhitespacesAndToLowerCase } from 'utils/stringUtils'
 import { fetchCustomerDetails } from 'utils/httpUtils/customerUtils'
