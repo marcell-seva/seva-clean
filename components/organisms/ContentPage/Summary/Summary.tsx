@@ -1,5 +1,3 @@
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 import React, { memo, useContext, useEffect, useRef, useState } from 'react'
 import { Description } from '../../OldPdpSectionComponents/Description/Description'
 import GallerySectionV2 from '../Gallery/GallerySection/GallerySectionV2'
@@ -10,7 +8,6 @@ import RecentlyViewed from 'components/organisms/OldPdpSectionComponents/Recentl
 import { useModalContext } from 'context/modalContext/modalContext'
 import { FAQ } from 'components/organisms/OldPdpSectionComponents/FAQ/FAQ'
 import { colors } from 'styles/colors'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import { SEOSectionV2 } from 'components/organisms/OldPdpSectionComponents/SEOSection/SEOSectionV2'
 import { useContextSpecialRateResults } from 'context/specialRateResultsContext/specialRateResultsContext'
 import { useMediaQuery } from 'react-responsive'
@@ -31,15 +28,14 @@ import { CarVariantRecommendation, CityOtrOption } from 'utils/types'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { useCar } from 'services/context/carContext'
 
 type tabProps = {
   tab: string | undefined
   isSticky?: boolean
 }
 const Summary = memo(({ tab, isSticky }: tabProps) => {
-  const { carModelDetails } = useContextCarModelDetails()
-  const { carVariantDetails } = useContextCarVariantDetails()
-  const { recommendations } = useContextRecommendations()
+  const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const {
     carModelDetailsResDefaultCity,
     carVariantDetailsResDefaultCity,
@@ -48,8 +44,8 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
   const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
   const variantDetailData = carVariantDetails || carVariantDetailsResDefaultCity
   const recommendationsDetailData =
-    recommendations.length !== 0
-      ? recommendations
+    recommendation.length !== 0
+      ? recommendation
       : carRecommendationsResDefaultCity.carRecommendations
   const { setSpecialRateResults } = useContextSpecialRateResults()
   const [openPromo, setOpenPromo] = useState(false)

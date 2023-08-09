@@ -6,8 +6,7 @@ import { Line } from 'components/atoms/Line'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import { AxiosResponse } from 'axios'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
-import { carResultsUrl } from 'const/routes'
+import { carResultsUrl } from 'utils/helpers/routes'
 import { trackFilterCarResults } from 'helpers/amplitude/newFunnelEventTracking'
 import { removeWhitespaces, toNumber } from 'utils/stringUtils'
 import {
@@ -20,7 +19,7 @@ import {
   trackPLPClearFilter,
   trackPLPSubmitFilter,
 } from 'helpers/amplitude/seva20Tracking'
-import { jt, Rp } from 'const/const'
+import { jt, Rp } from 'utils/helpers/const'
 import debounce from 'lodash.debounce'
 import elementId from 'helpers/elementIds'
 import { DownPaymentType } from 'utils/enum'
@@ -42,6 +41,7 @@ import { ButtonType, Button, rotate } from 'components/atoms/ButtonOld/Button'
 import { LinkLabelSmallSemiBold } from 'utils/typography/LinkLabelSmallSemiBold'
 import { CarButtonProps } from 'utils/types/context'
 import { IconInfoSmall } from 'components/atoms/icon/InfoSmall'
+import { useCar } from 'services/context/carContext'
 
 const LogoToyota = '/revamp/icon/toyota-1989.png'
 const LogoDaihatsu = '/revamp/icon/daihatsu-update.png'
@@ -107,7 +107,7 @@ export const NewFilterSideMenu = () => {
   const [sortBy, setSortBy] = useState(funnelQuery.sortBy)
   const carResultParameters = useCarResultParameter()
   const [isOptionMandatory, setIsOptionMandatory] = useState(false)
-  const { setRecommendations } = useContextRecommendations()
+  const { saveRecommendation } = useCar()
   const [isCheckedType, setIsCheckedType] = useState<string[]>(
     funnelQuery.bodyType ? funnelQuery.bodyType : [],
   )
@@ -248,9 +248,7 @@ export const NewFilterSideMenu = () => {
 
   const handleClickAgeOption = () => setOpenAgeOption(!openAgeOption)
   const handleClickSortOption = () => setOpenSortOption(!openSortOption)
-  const handleSuccess = async (
-    response: AxiosResponse<CarRecommendationResponse>,
-  ) => {
+  const handleSuccess = async (response) => {
     patchFunnelQuery({
       age: ageValue,
       downPaymentType: DownPaymentType.DownPaymentAmount,
@@ -261,14 +259,14 @@ export const NewFilterSideMenu = () => {
       brand: isCheckedBrand.length > 0 ? isCheckedBrand : [],
       tenure: tenureFilter,
     })
-    setRecommendations(response.data.carRecommendations || [])
+    saveRecommendation(response.carRecommendations || [])
   }
 
   const handleError = (errorCode: number) => {
     if (errorCode === 500) {
-      setRecommendations([])
+      saveRecommendation([])
     } else {
-      setRecommendations([])
+      saveRecommendation([])
     }
   }
 
@@ -350,7 +348,7 @@ export const NewFilterSideMenu = () => {
     trackFilterCarResults(filterCarResult)
     setLoading(true)
     getNewFunnelRecommendations(paramQuery)
-      .then((response: AxiosResponse<CarRecommendationResponse>) => {
+      .then((response) => {
         handleSuccess(response)
         setLoading(false)
       })

@@ -41,14 +41,12 @@ export function MonthlyIncome({
     if (type === IncomeFieldType.selectOption) {
       setIsLoading(true)
       getIncomeList().then((res) => {
-        const dataUpdate = res.data.map(
-          (item: { label: string; value: any }) => {
-            return {
-              label: item.label.replace(' - ', '-') + '/bulan',
-              value: item.value,
-            }
-          },
-        )
+        const dataUpdate = res.map((item: { label: string; value: any }) => {
+          return {
+            label: item.label.replace(' - ', '-') + '/bulan',
+            value: item.value,
+          }
+        })
         setIncomeOptions(dataUpdate)
         setIsLoading(false)
       })

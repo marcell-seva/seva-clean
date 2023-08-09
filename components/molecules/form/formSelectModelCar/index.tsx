@@ -79,7 +79,7 @@ export const FormSelectModelCar = ({
       undefined,
       selectedCity,
     )
-    setModelCarList(response.data.carRecommendations)
+    setModelCarList(response.carRecommendations)
   }
 
   const sortedModelCarList = () => {

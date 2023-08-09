@@ -9,7 +9,6 @@ import {
   IconWhatsapp,
 } from 'components/atoms'
 import elementId from 'helpers/elementIds'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { LocalStorageKey } from 'utils/models/models'
 // import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
@@ -20,12 +19,13 @@ import {
   trackCarVariantSharePopupWaClick,
 } from 'helpers/amplitude/seva20Tracking'
 import { CityOtrOption } from 'utils/types/utils'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
+import { useCar } from 'services/context/carContext'
 
 type Props = ModalProps
 
 export const ShareModal = (props: Props) => {
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,

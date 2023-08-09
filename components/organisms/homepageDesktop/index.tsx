@@ -3,7 +3,7 @@ import { useToast } from 'components/atoms/OldToast/Toast'
 import Seo from 'components/atoms/seo'
 import { HomePageShimmer } from 'components/molecules'
 import HeaderVariant from 'components/molecules/header/header'
-import { client, defaultSeoImage } from 'const/const'
+import { client, defaultSeoImage } from 'utils/helpers/const'
 import { useContextContactFormPatch } from 'context/contactFormContext/contactFormContext'
 import { trackLandingPageView } from 'helpers/amplitude/seva20Tracking'
 import endpoints from 'helpers/endpoints'
@@ -15,6 +15,7 @@ import Head from 'next/head'
 import { HomePageDataLocalContext } from 'pages'
 import React, { useContext, useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
+import { api } from 'services/api'
 import { getCustomerInfoWrapperSeva } from 'services/customer'
 import styled from 'styled-components'
 import { API, getToken } from 'utils/api'
@@ -56,8 +57,8 @@ const HomepageDesktop: React.FC<HomepageDesktopProps> = ({}) => {
 
   const getBannerHomepage = async () => {
     try {
-      const data = await API.get(endpoints.bannerHomepage)
-      setTopBannerData(data.data.data)
+      const data = await api.getBanner()
+      setTopBannerData(data.data)
     } catch (e) {
       setTopBannerData([])
       throw new Error("Can't get banner homepage")

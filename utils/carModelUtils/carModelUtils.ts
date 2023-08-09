@@ -6,7 +6,7 @@ import {
   formatPriceNumberThousandDivisor,
 } from 'utils/numberUtils/numberUtils'
 import { CarRecommendation, CarVariant } from 'utils/types/context'
-import { hundred, million, ten } from '../../const/const'
+import { hundred, million, ten } from '../../utils/helpers/const'
 
 type DpObject = {
   dpAmount: number
@@ -104,7 +104,7 @@ export const getMinimumMonthlyInstallment = (
   divider: number,
   digits: number,
 ) => {
-  const prices = variants.map((variant) => variant.monthlyInstallment)
+  const prices = variants?.map((variant) => variant.monthlyInstallment) || []
   return formatNumberByLocalization(
     Math.min(...prices),
     language,

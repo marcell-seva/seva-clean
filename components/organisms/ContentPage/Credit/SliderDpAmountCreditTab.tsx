@@ -7,7 +7,7 @@ import { Button, IconLoading, IconWarning } from 'components/atoms'
 import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
-import { dpRateCollectionNewCalculator, million } from 'const/const'
+import { dpRateCollectionNewCalculator, million } from 'utils/helpers/const'
 import {
   getNewFunnelLoanSpecialRate,
   getNewFunnelRecommendations,
@@ -302,7 +302,7 @@ export const SliderDpAmountCreditTab = ({
               : InstallmentTypeOptions.ADDB,
           })
             .then((response) => {
-              const dataTemp = response.data.data
+              const dataTemp = response.data
               // setSpecialRateList(data.reverse())
               setSpecialRateResults(dataTemp.reverse())
               onTrackCreditHitungCicilan(dataTemp)
@@ -343,7 +343,7 @@ export const SliderDpAmountCreditTab = ({
               : InstallmentTypeOptions.ADDB,
           })
             .then((response) => {
-              const dataTemp = response.data.data
+              const dataTemp = response.data
               // setSpecialRateList(data.reverse())
               setSpecialRateResults(dataTemp.reverse())
               onTrackCreditHitungCicilan(dataTemp)
@@ -385,7 +385,7 @@ export const SliderDpAmountCreditTab = ({
             : InstallmentTypeOptions.ADDB,
         })
           .then((response) => {
-            const dataTemp = response.data.data
+            const dataTemp = response.data
             // setSpecialRateList(data.reverse())
             setSpecialRateResults(dataTemp.reverse())
             onTrackCreditHitungCicilan(dataTemp)
@@ -418,8 +418,8 @@ export const SliderDpAmountCreditTab = ({
       }
 
       getNewFunnelRecommendations(NewFunnelRecommendationsQuery, false, false)
-        .then((response: AxiosResponse<CarRecommendationResponse>) => {
-          onRecommendationsResults(response.data.carRecommendations || [])
+        .then((response) => {
+          onRecommendationsResults(response.carRecommendations || [])
         })
         .catch(() => {
           onRecommendationsResults([])

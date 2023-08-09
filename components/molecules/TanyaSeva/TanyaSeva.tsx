@@ -3,7 +3,6 @@ import React, { useMemo } from 'react'
 import { IconWhatsapp } from 'components/atoms'
 import { colors } from 'styles/colors'
 import styled from 'styled-components'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import {
   getMinimumDp,
   getMinimumMonthlyInstallment,
@@ -15,7 +14,7 @@ import {
   LocationStateKey,
   PageFrom,
 } from 'utils/models/models'
-import { defaultCSANumber, hundred, million, ten } from 'const/const'
+import { defaultCSANumber, hundred, million, ten } from 'utils/helpers/const'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 // import { trackWhatsappButtonClickFromCarResults } from 'helpers/trackingEvents'
 import {
@@ -35,12 +34,13 @@ import { useRouter } from 'next/router'
 import { trackWhatsappButtonClickFromCarResults } from 'helpers/amplitude/trackingEvents'
 import { EventFromType } from 'helpers/amplitude/newHomePageEventTracking'
 import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
+import { useCar } from 'services/context/carContext'
 
 export const TanyaSeva = () => {
   const router = useRouter()
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   // const { t } = useTranslation()
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
   const { funnelQuery } = useFunnelQueryData()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,

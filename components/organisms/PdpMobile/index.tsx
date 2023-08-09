@@ -34,9 +34,6 @@ import {
   getCarVariantDetailsById,
   handleRecommendationsAndCarModelDetailsUpdate,
 } from 'services/recommendations'
-import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import {
   CitySelectorModal,
   OverlayGallery,
@@ -61,12 +58,13 @@ import {
 } from 'helpers/amplitude/seva20Tracking'
 // import { usePreApprovalCarNotAvailable } from 'pages/component/PreApprovalCarNotAvalable/useModalCarNotAvalable'
 import { getSessionStorage } from 'utils/sessionstorageUtils'
-import endpoints from 'helpers/endpoints'
 import { AxiosResponse } from 'axios'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useQuery } from 'utils/hooks/useQuery'
+import { api } from 'services/api'
+import { useCar } from 'services/context/carContext'
 
 export interface CarVariantListPageUrlParams {
   brand: string
@@ -82,7 +80,6 @@ export default function NewCarVariantList() {
   const [dataPreviewImages, setDataPreviewImages] = useState<Array<string>>([])
   const { source }: { source: string } = useQuery(['source'])
 
-  console.log('SOURCE : ', source)
   const handlePreviewOpened = (payload: number) => {
     setGalleryIndexActive(payload)
     setIsPreviewGalleryOpened(true)
@@ -105,9 +102,12 @@ export default function NewCarVariantList() {
   )
   // const { PreApprovalCarNotAvailableModal } = usePreApprovalCarNotAvailable()
 
-  const { setCarVariantDetails } = useContextCarVariantDetails()
-  const { setRecommendations } = useContextRecommendations()
-  const { carModelDetails, setCarModelDetails } = useContextCarModelDetails()
+  const {
+    saveCarVariantDetails,
+    carModelDetails,
+    saveRecommendation,
+    saveCarModelDetails,
+  } = useCar()
   const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
 
   const modelDetail = carModelDetails || carModelDetailsResDefaultCity
@@ -182,7 +182,7 @@ export default function NewCarVariantList() {
 
   const getVideoReview = async () => {
     const dataVideoReview = await getCarVideoReview()
-    const filterVideoReview = dataVideoReview.data.data.filter(
+    const filterVideoReview = dataVideoReview.data.filter(
       (video: MainVideoResponseType) => video.modelId === modelDetail?.id,
     )[0]
     if (filterVideoReview) {
@@ -208,22 +208,25 @@ export default function NewCarVariantList() {
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
       getCities().then((res) => {
-        setCityListApi(res.data)
+        setCityListApi(res)
       })
     }
   }
 
   const getAnnouncementBox = () => {
-    API.get(endpoints.announcementBox, {
-      headers: {
-        'is-login': getToken() ? 'true' : 'false',
-      },
-    }).then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-      if (res.data.data === undefined) {
-        setShowAnnouncementBox(false)
-      }
-    })
+    api
+      .getAnnouncementBox({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
+      })
+      .then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
+        if (res.data === undefined) {
+          setShowAnnouncementBox(false)
+        }
+      })
   }
+
   const getMonthlyInstallment = () => {
     return formatNumberByLocalization(
       sortedCarModelVariant[0].monthlyInstallment,
@@ -325,8 +328,8 @@ export default function NewCarVariantList() {
       const data: string | null = getLocalStorage(LocalStorageKey.sevaCust)
       if (data === null) {
         getCustomerInfoSeva().then((response) => {
-          if (response.data[0].temanSevaTrxCode) {
-            setConnectedRefCode(response.data[0].temanSevaTrxCode ?? '')
+          if (response[0].temanSevaTrxCode) {
+            setConnectedRefCode(response[0].temanSevaTrxCode ?? '')
           }
         })
       } else {
@@ -362,7 +365,7 @@ export default function NewCarVariantList() {
       getCarVariantDetailsById(
         variantIdFuel, // get cheapest variant
       ).then((result) => {
-        setVariantFuelRatio(result.data.variantDetail.rasioBahanBakar)
+        setVariantFuelRatio(result.variantDetail.rasioBahanBakar)
       })
   }
   useEffect(() => {
@@ -378,7 +381,7 @@ export default function NewCarVariantList() {
     getNewFunnelRecommendations(getQueryParamForApiRecommendation()).then(
       (result) => {
         let id = ''
-        const carList = result.data.carRecommendations
+        const carList = result.carRecommendations
         const currentCar = carList.filter(
           (value: CarRecommendation) =>
             value.model.replace(/ +/g, '-').toLowerCase() === model,
@@ -399,21 +402,21 @@ export default function NewCarVariantList() {
           .then((response) => {
             const runRecommendation =
               handleRecommendationsAndCarModelDetailsUpdate(
-                setRecommendations,
-                setCarModelDetails,
+                saveRecommendation,
+                saveCarModelDetails,
               )
 
             runRecommendation(response)
-            const sortedVariantsOfCurrentModel = response[1].data.variants
+            const sortedVariantsOfCurrentModel = response[1].variants
               .map((item: any) => item)
               .sort((a: any, b: any) => a.priceValue - b.priceValue)
             getCarVariantDetailsById(
               sortedVariantsOfCurrentModel[0].id, // get cheapest variant
             ).then((result3) => {
-              if (result3.data.variantDetail.priceValue == null) {
+              if (result3.variantDetail.priceValue == null) {
                 setStatus('empty')
               } else {
-                setCarVariantDetails(result3.data)
+                saveCarVariantDetails(result3)
                 setStatus('exist')
               }
             })
@@ -542,7 +545,7 @@ export default function NewCarVariantList() {
       <CitySelectorModal
         isOpen={isOpenCitySelectorModal}
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
-        cityListFromApi={cityListApi}
+        cityListFromApi={cityListApi || []}
       />
 
       <ShareModal

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react'
+import { Context, createContext, useContext, useEffect, useState } from 'react'
 import { CarDetail } from 'utils/types'
 import {
   CarModelDetailsResponse,
@@ -17,7 +17,16 @@ export type CarContextType = {
   saveRecommendation: (data: CarRecommendation[] | []) => void
 }
 
-export const CarContext = createContext<CarContextType | null>(null)
+export const CarContext = createContext<CarContextType>({
+  car: null,
+  saveCar: () => {},
+  carModelDetails: null,
+  saveCarModelDetails: () => {},
+  carVariantDetails: null,
+  recommendation: [],
+  saveCarVariantDetails: () => {},
+  saveRecommendation: () => {},
+})
 
 export const CarProvider = ({ children }: any) => {
   const [car, setCar] = useState<CarDetail | null>(null)
@@ -60,3 +69,5 @@ export const CarProvider = ({ children }: any) => {
     </CarContext.Provider>
   )
 }
+
+export const useCar = () => useContext(CarContext)

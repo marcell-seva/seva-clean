@@ -39,7 +39,7 @@ import { CarBodyTypesDesktop } from 'components/molecules/carBodyTypesDesktop/ca
 import { CarOfMonth } from 'components/molecules/carOfMonth/carOfMonth'
 import Testimonial from 'components/molecules/testimonial/testimonial'
 import { ArticlesV2Desktop } from 'components/molecules/articlesV2/articlesV2Desktop'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 
 interface FunnelBackgroundSevaProp {
   topBanner: BannerHomepageType[]
@@ -69,7 +69,7 @@ export const FunnelBackgroundSeva = ({
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
       getCities().then((res) => {
-        setCityListApi(res.data)
+        setCityListApi(res)
       })
     }
   }

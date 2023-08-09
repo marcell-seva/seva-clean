@@ -13,7 +13,7 @@ import { colors, transparent } from 'styles/colors'
 import { createPortal } from 'react-dom'
 import elementId from 'helpers/elementIds'
 import { FormControlValue, PropsIcon, Option } from 'utils/types'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 
 export interface SelectProps<T extends FormControlValue>
   extends SelectHTMLAttributes<HTMLSelectElement> {

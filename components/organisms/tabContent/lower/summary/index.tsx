@@ -7,12 +7,9 @@ import {
   VariantDetail,
   VideoDataType,
 } from 'utils/types/utils'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 import { availableList, availableListColors } from 'config/AvailableListColors'
 import { getMinimumMonthlyInstallment } from 'utils/carModelUtils/carModelUtils'
-import { client, hundred, million, ten } from 'const/const'
+import { client, hundred, million, ten } from 'utils/helpers/const'
 import {
   InstallmentTypeOptions,
   LanguageCode,
@@ -40,6 +37,7 @@ import { getNewFunnelLoanSpecialRate } from 'services/newFunnel'
 import elementId from 'helpers/elementIds'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useRouter } from 'next/router'
+import { useCar } from 'services/context/carContext'
 
 type RingkasanProps = {
   setPromoName: (value: string) => void
@@ -62,9 +60,7 @@ export const SummaryTab = ({
   setVariantIdFuelRatio,
   variantFuelRatio,
 }: RingkasanProps) => {
-  const { carModelDetails } = useContextCarModelDetails()
-  const { carVariantDetails } = useContextCarVariantDetails()
-  const { recommendations } = useContextRecommendations()
+  const { carModelDetails, carVariantDetails, recommendation } = useCar()
 
   const {
     carModelDetailsResDefaultCity,
@@ -77,8 +73,8 @@ export const SummaryTab = ({
   const modelDetail = carModelDetails || carModelDetailsResDefaultCity
   const variantDetail = carVariantDetails || carVariantDetailsResDefaultCity
   const carRecommendations =
-    recommendations.length > 0
-      ? recommendations
+    recommendation.length > 0
+      ? recommendation
       : carRecommendationsResDefaultCity.carRecommendations
 
   const [flag, setFlag] = useState<TrackerFlag>(TrackerFlag.Init)
@@ -112,7 +108,7 @@ export const SummaryTab = ({
       angsuranType: InstallmentTypeOptions.ADDM,
     })
       .then((res) => {
-        const result = res.data.data.reverse()
+        const result = res.data.reverse()
         const selectedLoanInitialValue =
           result.filter((item: SpecialRateListType) => item.tenure === 5)[0] ??
           null

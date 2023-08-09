@@ -3,7 +3,7 @@ import styled, { css, keyframes } from 'styled-components'
 import { colors } from 'styles/colors'
 import { IconClose } from 'components/atoms'
 import { createPortal } from 'react-dom'
-import { preApprovalQuestionFlowUrl } from 'const/routes'
+import { preApprovalQuestionFlowUrl } from 'utils/helpers/routes'
 import { useRouter } from 'next/router'
 import { isMobileDevice } from 'utils/window'
 

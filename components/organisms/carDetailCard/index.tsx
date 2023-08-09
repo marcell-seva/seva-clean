@@ -1,9 +1,9 @@
-import { hundred, million, ten } from 'const/const'
+import { hundred, million, ten } from 'utils/helpers/const'
 import React from 'react'
 import {
   loanCalculatorWithCityBrandModelVariantUrl,
   variantListUrl,
-} from 'const/routes'
+} from 'utils/helpers/routes'
 import {
   getMinimumDp,
   getMinimumMonthlyInstallment,

@@ -1,7 +1,7 @@
 import { Button, IconClose } from 'components/atoms'
 import elementId from 'helpers/elementIds'
 import React, { memo } from 'react'
-import { LoginSevaUrl } from 'const/routes'
+import { LoginSevaUrl } from 'utils/helpers/routes'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import { useModal } from 'components/atoms/ModalOld/Modal'

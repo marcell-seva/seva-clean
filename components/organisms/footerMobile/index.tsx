@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { colors } from 'styles/colors'
 import { IconInstagram, IconTwitterOutlined } from 'components/atoms/icon'
 import styles from '../../../styles/components/organisms/footerMobile.module.scss'
-import { getMobileFooterMenu } from 'services/menu'
 import urls from 'helpers/urls'
 import elementId from 'helpers/elementIds'
 import Image from 'next/image'
@@ -10,6 +9,7 @@ import { trackFooterClick } from 'helpers/amplitude/seva20Tracking'
 import { getLocalStorage } from 'utils/localstorageUtils'
 import { UTMTagsData } from 'utils/types/utils'
 import { LocalStorageKey } from 'utils/enum'
+import { api } from 'services/api'
 
 const SevaLogo = '/revamp/icon/logo-on-dark.webp'
 const ISOIcon = '/revamp/icon/iso.webp'
@@ -32,11 +32,13 @@ export const FooterMobile = () => {
   const [menu, setMenu] = useState<FooterMenu[]>([])
 
   useEffect(() => {
-    getMobileFooterMenu().then(
-      (result: { data: { data: React.SetStateAction<FooterMenu[]> } }) => {
-        setMenu(result.data.data)
-      },
-    )
+    api
+      .getMobileFooterMenu()
+      .then(
+        (result: { data: { data: React.SetStateAction<FooterMenu[]> } }) => {
+          setMenu(result.data.data)
+        },
+      )
   }, [])
 
   const dataTestId = (code: string) => {
@@ -83,8 +85,8 @@ export const FooterMobile = () => {
           pembiayaan dan dealer resmi dari Astra Group
         </span>
         <div className={styles.linkedTextWrapper}>
-          {menu.length > 0 &&
-            menu.map((item, index) => (
+          {menu?.length > 0 &&
+            menu?.map((item, index) => (
               <a
                 href={formatMenuUrl(item.menuUrl)}
                 key={index}

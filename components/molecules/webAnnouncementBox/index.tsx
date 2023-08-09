@@ -19,6 +19,7 @@ import { SessionStorageKey } from 'utils/models/models'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
 import { Close } from 'components/atoms/icon/OldClose'
 import { Shimmer } from 'components/atoms/shimmerOld'
+import { api } from 'services/api'
 
 const CustomRight = '/revamp/images/announcementBox/custom-desktop-right.webp'
 const CustomLeft = '/revamp/images/announcementBox/custom-desktop-left.webp'
@@ -78,13 +79,14 @@ export const WebAnnouncementBox = ({
 
   useEffect(() => {
     setIsLoading(true)
-    API.get(endpoints.announcementBox, {
-      headers: {
-        'is-login': getToken() ? 'true' : 'false',
-      },
-    })
+    api
+      .getAnnouncementBox({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
+      })
       .then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-        setAnnouncement(res.data.data)
+        setAnnouncement(res.data)
         setIsLoading(false)
       })
       .catch(() => {

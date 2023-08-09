@@ -1,4 +1,3 @@
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import React, { useContext, useMemo } from 'react'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
@@ -13,16 +12,16 @@ import { CityOtrOption } from 'utils/types'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { ActionButton } from '../HeaderActionButton/HeaderActionButton'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { useCar } from 'services/context/carContext'
 
 export function TitleHeader(props: StickyButtonProps) {
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
   const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
   const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
   )
-
   const sortCarModelVariant = useMemo(() => {
     return (
       modelDetailData?.variants.sort(function (a: any, b: any) {

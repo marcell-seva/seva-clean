@@ -1,65 +1,55 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
-import styles from 'styles/organism/pdpDesktop.module.scss'
-import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
-import { useRouter } from 'next/router'
-import { useMediaQuery } from 'react-responsive'
+import { useCitySelectorModal } from 'components/molecules/citySelector/citySelectorModal'
+import {
+  OriginationLeads,
+  useContactUsModal,
+} from 'components/molecules/ContactUsModal/ContactUsModal'
+import { useDialogModal } from 'components/molecules/dialogModal/DialogModal'
+import HeaderVariant from 'components/molecules/header/header'
+import { useLoginAlertModal } from 'components/molecules/LoginAlertModal/LoginAlertModal'
 import { usePreApprovalCarNotAvailable } from 'components/molecules/PreApprovalCarNotAvalable/useModalCarNotAvalable'
+import { StickyButton } from 'components/molecules/StickyButton/StickyButton'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
-import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { LanguageCode, LoanRank, LocalStorageKey } from 'utils/models/models'
-import { CityOtrOption } from 'utils/types'
 import { useModalContext } from 'context/modalContext/modalContext'
-import { variantListUrl } from 'const/routes'
-import { hundred, million, ten } from 'const/const'
+import {
+  CarSearchPageMintaPenawaranParam,
+  trackCarVariantListPageLeadsFormSumit,
+} from 'helpers/amplitude/seva20Tracking'
+import { setTrackEventMoEngageWithoutValue } from 'helpers/moengage'
+import { useRouter } from 'next/router'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { useContext, useEffect, useMemo, useState } from 'react'
+import { useMediaQuery } from 'react-responsive'
+import { api } from 'services/api'
+import { useCar } from 'services/context/carContext'
+import { handleRecommendationsAndCarModelDetailsUpdate } from 'services/recommendations'
+import styles from 'styles/organism/pdpDesktop.module.scss'
 import {
   getLowestDp,
   getLowestInstallment,
   getMinimumDp,
   getMinimumMonthlyInstallment,
 } from 'utils/carModelUtils/carModelUtils'
-import { saveLocalStorage } from 'utils/localstorageUtils'
-import { CarRecommendation } from 'utils/types/utils'
 import { savePreviouslyViewed } from 'utils/carUtils'
-import { api } from 'services/api'
-import { handleRecommendationsAndCarModelDetailsUpdate } from 'utils/recommendationUtils'
-import { VariantListPageShimmer } from './VariantListPageShimmer'
-import { HeaderAndContent } from '../HeaderAndContent/HeaderAndContent'
-import { StickyButton } from 'components/molecules/StickyButton/StickyButton'
-import {
-  OriginationLeads,
-  useContactUsModal,
-} from 'components/molecules/ContactUsModal/ContactUsModal'
-import { useLoginAlertModal } from 'components/molecules/LoginAlertModal/LoginAlertModal'
-import { useDialogModal } from 'components/molecules/dialogModal/DialogModal'
-import { setTrackEventMoEngageWithoutValue } from 'helpers/moengage'
-import {
-  CarSearchPageMintaPenawaranParam,
-  trackCarVariantListPageLeadsFormSumit,
-} from 'helpers/amplitude/seva20Tracking'
+import { hundred, million, ten } from 'utils/helpers/const'
+import { variantListUrl } from 'utils/helpers/routes'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { saveLocalStorage } from 'utils/localstorageUtils'
+import { LanguageCode, LoanRank, LocalStorageKey } from 'utils/models/models'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { CityOtrOption } from 'utils/types'
+import { CarRecommendation } from 'utils/types/utils'
+import { HeaderAndContent } from '../HeaderAndContent/HeaderAndContent'
 import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
-import HeaderVariant from 'components/molecules/header/header'
-import { useCitySelectorModal } from 'components/molecules/citySelector/citySelectorModal'
 
 export default function index() {
   const router = useRouter()
-  const {
-    carRecommendationsResDefaultCity,
-    carModelDetailsResDefaultCity,
-    carVariantDetailsResDefaultCity,
-    metaTagDataRes,
-    carVideoReviewRes,
-  } = useContext(PdpDataLocalContext)
+  const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
 
   const { model, brand, slug } = router.query
   const tab = Array.isArray(slug) ? slug[0] : undefined
   const [stickyCTA, setStickyCTA] = useState(false)
 
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
-  // const { t } = useTranslation()
   const { showModal: showCarNotExistModal, PreApprovalCarNotAvailableModal } =
     usePreApprovalCarNotAvailable()
   const { showModal: showLoginModal, LoginAlertModal } = useLoginAlertModal()
@@ -67,9 +57,12 @@ export default function index() {
   const { funnelQuery } = useFunnelQueryData()
   const { DialogModal, showModal: showDialogModal } = useDialogModal()
   const [isShowLoading, setShowLoading] = useState(false)
-  const { setCarVariantDetails } = useContextCarVariantDetails()
-  const { setRecommendations } = useContextRecommendations()
-  const { carModelDetails, setCarModelDetails } = useContextCarModelDetails()
+  const {
+    saveCarVariantDetails,
+    saveRecommendation,
+    carModelDetails,
+    saveCarModelDetails,
+  } = useCar()
   const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
   const { showModal: showCitySelectorModal, CitySelectorModal } =
     useCitySelectorModal()
@@ -77,6 +70,7 @@ export default function index() {
     LocalStorageKey.CityOtr,
     null,
   )
+
   const { modal } = useModalContext()
 
   const cityHandler = async () => {
@@ -183,8 +177,8 @@ export default function index() {
         .then((response: any) => {
           const runRecommendation =
             handleRecommendationsAndCarModelDetailsUpdate(
-              setRecommendations,
-              setCarModelDetails,
+              saveRecommendation,
+              saveCarModelDetails,
             )
 
           runRecommendation(response)
@@ -201,7 +195,7 @@ export default function index() {
               if (result3.variantDetail.priceValue == null) {
                 showCarNotExistModal()
               }
-              setCarVariantDetails(result3)
+              saveCarVariantDetails(result3)
               setShowLoading(false)
             })
         })

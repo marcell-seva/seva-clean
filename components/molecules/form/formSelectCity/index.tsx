@@ -55,7 +55,7 @@ export default function FormSelectCity({
 
   const fetchCities = async () => {
     const response = await getCities()
-    setCityListApi(response.data)
+    setCityListApi(response)
   }
 
   React.useEffect(() => {

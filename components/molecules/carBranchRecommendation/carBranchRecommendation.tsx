@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
-import { carResultsUrl } from 'const/routes'
+import { carResultsUrl } from 'utils/helpers/routes'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
@@ -30,7 +30,7 @@ import { convertObjectQuery } from 'utils/handler/convertObjectQuery'
 import { DesktopShimmerCarBrand } from 'components/organisms/ContentPage/Credit/Section/DesktopShimmerCarBrand'
 import { ArrowRightNew } from 'components/atoms/icon/ArrowRightNew'
 import { CarBrandItem } from './CarBrandItem'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 import { HomePageDataLocalContext } from 'pages'
 
 const LogoToyota = '/revamp/icon/logo-toyota-min.png'
@@ -121,7 +121,7 @@ export const CarBranchRecommendation = ({
 
   useEffect(() => {
     getNewFunnelRecommendations({ brand: [isCheckedGroups] }, false, false)
-      .then((response: AxiosResponse<CarRecommendationResponse>) => {
+      .then((response) => {
         handleSuccess(response)
       })
       .catch((e) => {
@@ -129,10 +129,8 @@ export const CarBranchRecommendation = ({
       })
   }, [isCheckedGroups, load])
 
-  const handleSuccess = (
-    response: AxiosResponse<CarRecommendationResponse>,
-  ) => {
-    const tmpData = response.data.carRecommendations.slice(0, 6) || []
+  const handleSuccess = (response: any) => {
+    const tmpData = response.carRecommendations.slice(0, 6) || []
     if (tmpData.length > 0) {
       if (tmpData.length < 5) {
         const tmpData2 = tmpData

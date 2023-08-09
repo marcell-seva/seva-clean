@@ -1,8 +1,5 @@
 import { rupiah } from 'utils/handler/rupiah'
 import { TrackVariantList } from 'utils/types/tracker'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import { trackWebPDPPriceTab } from 'helpers/amplitude/seva20Tracking'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import {
@@ -25,11 +22,12 @@ import PopupVariantDetail from 'components/organisms/popupVariantDetail/index'
 import styles from 'styles/components/organisms/price.module.scss'
 import { Info } from 'components/molecules'
 import { getMinimumMonthlyInstallment } from 'utils/carModelUtils/carModelUtils'
-import { hundred, million } from 'const/const'
+import { hundred, million } from 'utils/helpers/const'
 import { availableList, availableListColors } from 'config/AvailableListColors'
 import { setTrackEventMoEngage } from 'helpers/moengage'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import { getNewFunnelLoanSpecialRate } from 'services/newFunnel'
+import { useCar } from 'services/context/carContext'
 
 type PriceTabProps = {
   setSelectedTabValue: (value: string) => void
@@ -41,9 +39,7 @@ export const PriceTab = ({
   setVariantIdFuelRatio,
   variantFuelRatio,
 }: PriceTabProps) => {
-  const { carModelDetails } = useContextCarModelDetails()
-  const { carVariantDetails } = useContextCarVariantDetails()
-  const { recommendations } = useContextRecommendations()
+  const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -57,7 +53,7 @@ export const PriceTab = ({
   const [monthlyInstallment, setMonthlyInstallment] = useState<number>(0)
 
   const trackEventMoengage = () => {
-    if (!carModelDetails || !carVariantDetails || recommendations.length === 0)
+    if (!carModelDetails || !carVariantDetails || recommendation.length === 0)
       return
     const objData = {
       brand: carModelDetails?.brand,
@@ -82,12 +78,12 @@ export const PriceTab = ({
     if (
       carModelDetails !== undefined &&
       carVariantDetails !== undefined &&
-      recommendations !== undefined
+      recommendation !== undefined
     ) {
       trackEventMoengage()
       getSummaryInfo()
     }
-  }, [carModelDetails, carVariantDetails, recommendations])
+  }, [carModelDetails, carVariantDetails, recommendation])
 
   const sortedCarModelVariant = useMemo(() => {
     return (
@@ -177,7 +173,7 @@ export const PriceTab = ({
         angsuranType: InstallmentTypeOptions.ADDM,
       })
         .then((res) => {
-          const result = res.data.data.reverse()
+          const result = res.data.reverse()
           const selectedLoanInitialValue =
             result.filter(
               (item: SpecialRateListType) => item.tenure === 5,
@@ -204,7 +200,7 @@ export const PriceTab = ({
     }
   }
   const getSummaryInfo = () => {
-    const dimenssion = getDimenssion(recommendations)
+    const dimenssion = getDimenssion(recommendation)
     const brand = carModelDetails?.brand || ''
     const model = carModelDetails?.model || ''
     const type = carVariantDetails?.variantDetail.bodyType

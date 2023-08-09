@@ -1,5 +1,5 @@
 import React from 'react'
-import { variantListUrl } from 'const/routes'
+import { variantListUrl } from 'utils/helpers/routes'
 import styled from 'styled-components'
 import { IconFuel, IconSeat, IconTransmission } from 'components/atoms'
 import { useRouter } from 'next/router'

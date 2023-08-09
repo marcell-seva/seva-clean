@@ -1,4 +1,4 @@
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 import { UAParser } from 'ua-parser-js'
 
 const parser = new UAParser()

@@ -60,13 +60,15 @@ export const Navbar = () => {
     const data: string | null = getLocalStorage(LocalStorageKey.menu)
     if (data === null) {
       getMenus().then((res) => {
-        const result = res.data.data
+        const result = res.data
         setMenuCategory(result)
       })
     } else {
-      const decryptedValue: any = JSON.parse(decryptValue(data))
-      setMenusData(decryptedValue)
-      setMenuCategory(decryptedValue)
+      if (decryptValue(data)) {
+        const decryptedValue: any = JSON.parse(decryptValue(data))
+        setMenusData(decryptedValue)
+        setMenuCategory(decryptedValue)
+      }
     }
   }
 

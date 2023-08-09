@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
-import { itemLimit, pageLimit } from 'const/const'
+import { itemLimit, pageLimit } from 'utils/helpers/const'
 import { FastForward } from 'components/atoms/icon/FastForward'
 import { FastPrevious } from 'components/atoms/icon/FastPrevious'
 import { Forward } from 'components/atoms/icon/Forward'

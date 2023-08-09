@@ -2,7 +2,7 @@ import React, { useState, KeyboardEvent, useCallback, useEffect } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 import { colors } from 'styles/colors'
 import { useTranslation } from 'react-i18next'
-import { carResultsUrl, variantListUrl } from 'const/routes'
+import { carResultsUrl, variantListUrl } from 'utils/helpers/routes'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import debounce from 'lodash.debounce'
 import { trackSearchBarSuggestionClick } from 'helpers/amplitude/seva20Tracking'
@@ -23,7 +23,7 @@ import {
 import { FunnelQueryKey } from 'utils/models/models'
 import { Loading } from 'components/atoms/loading'
 import { SearchInput } from 'components/atoms/searchInput/oldSearchInput'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 
 interface HeaderCarResultProps {
   overrideDisplay?: string
@@ -58,7 +58,7 @@ export default function HeaderCarResult({
   const handleDebounceFn = (inputValue: string) => {
     getCarsSearchBar(inputValue)
       .then((response) => {
-        const listedResult = response.data.map(
+        const listedResult = response.map(
           (item: { value: string; label: string }) => {
             const splitValue = item.value.split(' ')
             const carBrand = splitValue[0]

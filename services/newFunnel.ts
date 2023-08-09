@@ -1,6 +1,5 @@
-import axios, { AxiosRequestConfig } from 'axios'
-import endpoints from 'helpers/endpoints'
-import { API } from 'utils/api'
+import { AxiosRequestConfig } from 'axios'
+import { api } from 'services/api'
 import {
   decryptValue,
   encryptedPrefix,
@@ -9,9 +8,8 @@ import {
 import { PaymentType } from 'utils/enum'
 import { defaultContactFormValue } from 'utils/hooks/useContactFormData/useContactFormData'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
-import { QueryKeys } from 'utils/models/models'
 import { defaultFormValue } from 'utils/hooks/useSurveyFormData/useSurveyFormData'
-import { LocalStorageKey } from 'utils/models/models'
+import { LocalStorageKey, QueryKeys } from 'utils/models/models'
 import { FunnelQuery } from 'utils/types/context'
 import { SpecialRateRequest } from 'utils/types/utils'
 
@@ -45,10 +43,7 @@ export const getNewFunnelAllRecommendations = (
     params.set('city', customCity as string)
   }
 
-  return API.get(endpoints.newFunnelRecommendation, {
-    ...config,
-    params,
-  })
+  return api.getRecommendation('', { params })
 }
 
 export const getNewFunnelRecommendations = (
@@ -104,38 +99,30 @@ export const getNewFunnelRecommendations = (
   getCity().cityCode && params.append('city', getCity().cityCode as string)
   getCity().id && params.append('cityId', getCity().id as string)
 
-  return API.get(endpoints.newFunnelRecommendation, { params })
+  return api.getRecommendation('', { params })
 }
 
-export const getMinMaxPrice = (config?: AxiosRequestConfig) => {
+export const getMinMaxPrice = () => {
   const params = new URLSearchParams()
   getCity().cityCode && params.append('city', getCity().cityCode as string)
 
-  return API.get(endpoints.minMaxPrice, {
-    ...config,
-    params,
-  })
+  return api.getMinMaxPrice('', { params })
 }
 
-export const getNewFunnelRecommendationsByQueries = (
-  {
-    bodyType,
-    brand,
-  }: {
-    bodyType?: string[]
-    brand?: string[]
-  },
-  config?: AxiosRequestConfig,
-) => {
+export const getNewFunnelRecommendationsByQueries = ({
+  bodyType,
+  brand,
+}: {
+  bodyType?: string[]
+  brand?: string[]
+}) => {
   const params = new URLSearchParams()
   bodyType && params.append(QueryKeys.CarBodyType, bodyType.join('/'))
   brand && params.append(QueryKeys.CarBrand, brand.join('/'))
   getCity().cityCode && params.append('city', getCity().cityCode as string)
   getCity().id && params.append('cityId', getCity().id as string)
-  return API.get(endpoints.newFunnelRecommendation, {
-    ...config,
-    params,
-  })
+
+  return api.getRecommendation('', { params })
 }
 
 export const getNewFunnelLoanSpecialRate = (
@@ -155,8 +142,7 @@ export const getNewFunnelLoanSpecialRate = (
 ) => {
   const params = new URLSearchParams()
   getCity().cityCode && params.append('city', getCity().cityCode as string)
-  return API.post(
-    endpoints.specialRate,
+  return api.postNewFunnelLoanSpecialRate(
     {
       otr,
       dp,
@@ -183,26 +169,22 @@ export const getNewFunnelCityRecommendations = (
   },
   config?: AxiosRequestConfig,
 ) => {
-  return API.post(endpoints.newFunnelCityRecommendation, data, config)
+  return api.postNewFunnelCityRecommendations(data, config)
 }
 
 export const getNewFunnelRecommendationsByCity = (
   cityId: string,
   city: string,
-  config?: AxiosRequestConfig,
 ) => {
   const params = new URLSearchParams()
   params.append('cityId', cityId as string)
   params.append('city', city as string)
 
-  return API.get(endpoints.newFunnelRecommendation, {
-    ...config,
-    params,
-  })
+  return api.getRecommendation('', { params })
 }
 
-export const getCarVideoReview = (config?: AxiosRequestConfig) => {
-  return API.get(endpoints.carVideoReview, config)
+export const getCarVideoReview = () => {
+  return api.getCarVideoReview()
 }
 
 export const getSuggestionsCars = (
@@ -214,21 +196,14 @@ export const getSuggestionsCars = (
   params.append('city', getCity().cityCode as string)
   params.append('cityId', getCity().id as string)
   sortBy && params.append('sortBy', sortBy as string)
-  return API.get(endpoints.variantSuggestions + keyword, { ...config, params })
+  return api.getVariantCar(`?query=${keyword}`, { ...config, ...params })
 }
-export const getNewFunnelRecommendationsCarModel = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  { model }: any,
-  config?: AxiosRequestConfig,
-) => {
-  return API.get(
-    `${endpoints.recommendations}/new-funnel?search=${model}`,
-    config,
-  )
+export const getNewFunnelRecommendationsCarModel = ({ model }: any) => {
+  return api.getRecommendation(`/new-funnel?search=${model}`)
 }
 
-export const getCarBodyTypes = (config?: AxiosRequestConfig) => {
+export const getCarBodyTypes = () => {
   const params = new URLSearchParams()
   getCity().cityCode && params.append('city', getCity().cityCode as string)
-  return API.get(endpoints.carsBodyTypes, { params, ...config })
+  return api.getTypeCar('', { params })
 }

@@ -3,7 +3,6 @@ import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContex
 import { useFinancialQueryData } from 'context/financialQueryContext/financialQueryContext'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import { AxiosResponse } from 'axios'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import { toNumber } from 'utils/stringUtils'
 import { useTranslation } from 'react-i18next'
 import elementId from 'helpers/elementIds'
@@ -16,6 +15,7 @@ import { downPaymentConfig } from 'config/downPaymentAmount.config'
 import { DownOutlined } from 'components/atoms'
 import { NewSelect } from 'components/atoms/SelectOld/NewSelect'
 import { trackFilterCarResults } from 'helpers/amplitude/newFunnelEventTracking'
+import { useCar } from 'services/context/carContext'
 
 interface DownPaymentAmountProps {
   isSideMenuFilter?: boolean
@@ -36,7 +36,7 @@ export const NewDownPaymentAmount = ({
   const { patchFinancialQuery } = useFinancialQueryData()
   const [dataDP, setDataDP] = useState(funnelQuery.downPaymentAmount)
   const { t } = useTranslation()
-  const { setRecommendations } = useContextRecommendations()
+  const { saveRecommendation } = useCar()
   const carResultParameters = useCarResultParameter()
   const [errorMsg] = useState<string>(t('common.errorMessage'))
   const paramQuery = funnelQuery
@@ -62,10 +62,8 @@ export const NewDownPaymentAmount = ({
     }
   }
 
-  const handleSuccess = (
-    response: AxiosResponse<CarRecommendationResponse>,
-  ) => {
-    setRecommendations(response.data.carRecommendations || [])
+  const handleSuccess = (response: any) => {
+    saveRecommendation(response.carRecommendations || [])
   }
 
   const handleError = () => {
@@ -89,7 +87,7 @@ export const NewDownPaymentAmount = ({
     trackFilterCarResults(filterCarResult)
 
     getNewFunnelRecommendations(paramQuery)
-      .then((response: AxiosResponse<CarRecommendationResponse>) => {
+      .then((response) => {
         handleSuccess(response)
       })
       .catch(() => {

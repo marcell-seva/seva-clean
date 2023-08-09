@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import DOMPurify from 'dompurify'
 import { colors } from 'styles/colors'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 
 interface SEOParagraphItemProps {
   title: string

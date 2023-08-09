@@ -1,9 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import styles from 'styles/components/organisms/spesification.module.scss'
 import { Gap, IconCar } from 'components/atoms'
-import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { TrackVariantList } from 'utils/types/tracker'
 import { LanguageCode, LocalStorageKey, TrackerFlag } from 'utils/models/models'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
@@ -12,18 +9,17 @@ import { formatNumberByLocalization } from 'utils/numberUtils/numberUtils'
 import { trackWebPDPSpecificationTab } from 'helpers/amplitude/seva20Tracking'
 import { LeadsFormSecondary } from 'components/organisms'
 import { Info } from 'components/molecules'
-import { hundred, million } from 'const/const'
+import { hundred, million } from 'utils/helpers/const'
 import { getMinimumMonthlyInstallment } from 'utils/carModelUtils/carModelUtils'
 import { availableList, availableListColors } from 'config/AvailableListColors'
 import { setTrackEventMoEngage } from 'helpers/moengage'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import { CityOtrOption } from 'utils/types/utils'
 import { PropsField, PropsFieldDetail } from 'utils/types/props'
+import { useCar } from 'services/context/carContext'
 
 export const SpecificationTab = () => {
-  const { carModelDetails } = useContextCarModelDetails()
-  const { carVariantDetails } = useContextCarVariantDetails()
-  const { recommendations } = useContextRecommendations()
+  const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const [spesification, setSpesification] = useState<any>()
   const headingText = 'Spesifikasi'
   const [flag, setFlag] = useState<TrackerFlag>(TrackerFlag.Init)
@@ -47,7 +43,7 @@ export const SpecificationTab = () => {
   }, [carModelDetails])
 
   const trackEventMoengage = () => {
-    if (!carModelDetails || !carVariantDetails || recommendations.length === 0)
+    if (!carModelDetails || !carVariantDetails || recommendation.length === 0)
       return
 
     const objData = {
@@ -75,7 +71,7 @@ export const SpecificationTab = () => {
       const engineCapacity = carVariantDetails?.variantDetail.engineCapacity
       const transmission = carVariantDetails?.variantDetail.transmission
       const seats = carVariantDetails!.variantDetail.carSeats
-      const dimenssion = getDimenssion(recommendations)
+      const dimenssion = getDimenssion(recommendation)
       const brand = carModelDetails?.brand
       const model = carModelDetails?.model
       const priceRange = getPriceRange(carModelDetails?.variants)
@@ -149,7 +145,7 @@ export const SpecificationTab = () => {
       setSpesification(dataDetail)
       trackEventMoengage()
     }
-  }, [carVariantDetails, carModelDetails, recommendations])
+  }, [carVariantDetails, carModelDetails, recommendation])
 
   useEffect(() => {
     if (carModelDetails && flag === TrackerFlag.Init) {

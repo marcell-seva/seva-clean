@@ -9,7 +9,7 @@ import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
 import { MenuContext } from 'context/menuContext'
 import Seo from 'components/atoms/seo'
-import { defaultSeoImage } from 'const/const'
+import { defaultSeoImage } from 'utils/helpers/const'
 interface PdpDataLocalContextType {
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.

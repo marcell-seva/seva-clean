@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import styles from 'styles/components/molecules/info.module.scss'
 import { IconInfo } from 'components/atoms'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { LocalStorageKey } from 'utils/models/models'
 import {
@@ -12,7 +11,8 @@ import {
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import elementId from 'helpers/elementIds'
 import { CityOtrOption } from 'utils/types/utils'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
+import { useCar } from 'services/context/carContext'
 
 export interface PropsInfo {
   isWithIcon?: boolean
@@ -29,7 +29,7 @@ export const Info: React.FC<PropsInfo> = ({
   const readMoreText = 'Baca Selengkapnya'
   const closeText = 'Tutup'
 
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
 import { SeoParagraphItem } from './SeoParagraphItem'
-import { carResultsUrl } from 'const/routes'
+import { carResultsUrl } from 'utils/helpers/routes'
 import { trackSEOFooterExpandClick } from 'helpers/amplitude/seva20Tracking'
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import { FooterSEOAttributes } from 'utils/types/utils'
@@ -18,7 +18,6 @@ interface Props {
 
 export const SeoParagraphSection = ({ data }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
-
   const handleClick = () => {
     if (isOpen) {
       trackSEOFooterExpandClick(TrackingEventName.WEB_SEO_FOOTER_CLICK_CLOSE)

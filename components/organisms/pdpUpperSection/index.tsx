@@ -12,7 +12,6 @@ import React, { useEffect, useState } from 'react'
 import { upperSectionNavigationTab } from 'config/carVariantList.config'
 import { NavigationTabV2 } from 'components/molecules'
 import { CityOtrOption, VideoDataType } from 'utils/types/utils'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import styles from 'styles/components/organisms/pdpUpperSection.module.scss'
 import { exteriorImagesListNew } from 'config/Exterior360ImageList.config'
 import { interiorImagesListNew } from 'config/Interior360ImageList.config'
@@ -27,6 +26,7 @@ import {
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { LocalStorageKey } from 'utils/models/models'
 import { useRouter } from 'next/router'
+import { useCar } from 'services/context/carContext'
 
 interface Props {
   emitActiveIndex: (e: number) => void
@@ -81,7 +81,7 @@ export const PdpUpperSection = ({
     return temp[0].source
   }
 
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
 
   const getInteriorImage = () => {
     const { images: carModelImages } = { ...carModelDetails }

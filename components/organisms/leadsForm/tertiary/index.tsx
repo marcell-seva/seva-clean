@@ -21,12 +21,12 @@ import elementId from 'utils/helpers/trackerId'
 import { Button, Input, InputPhone, Toast } from 'components/atoms'
 import Image from 'next/image'
 import { IconLoading } from 'components/atoms/icons'
-import { OTP } from 'components/organisms'
 import { PageOriginationName } from 'utils/types/tracker'
 import { api } from 'services/api'
 import { setTrackEventMoEngageWithoutValue } from 'services/moengage'
 import { FunnelQueryContext, FunnelQueryContextType } from 'services/context'
 import { useRouter } from 'next/router'
+import { OTP } from 'components/organisms/otp'
 
 interface PropsLeadsForm {
   otpStatus?: any

@@ -1,6 +1,6 @@
 import elementId from 'helpers/elementIds'
 import React from 'react'
-import { loanCalculatorDefaultUrl, variantListUrl } from 'const/routes'
+import { loanCalculatorDefaultUrl, variantListUrl } from 'utils/helpers/routes'
 import { getLowestInstallment } from 'utils/carModelUtils/carModelUtils'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
 import { Button, CardShadow } from 'components/atoms'

@@ -1,4 +1,4 @@
-import { COMMA, DOT } from 'utils/helpers/const'
+import { COMMA, DOT } from 'utils/stringUtils'
 import { LanguageCode } from 'utils/types/models'
 import { addSeparator, filterNonDigitCharacters } from '../stringManipulation'
 

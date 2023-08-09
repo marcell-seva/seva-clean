@@ -25,8 +25,8 @@ import {
   trackCarVariantPricelistClickCta,
   trackChangeLayoutClick,
 } from 'helpers/amplitude/seva20Tracking'
-import { million, ten } from 'const/const'
-import { variantListUrl } from 'const/routes'
+import { million, ten } from 'utils/helpers/const'
+import { variantListUrl } from 'utils/helpers/routes'
 import elementId from 'helpers/elementIds'
 import { CityOtrOption } from 'utils/types/utils'
 import { useRouter } from 'next/router'

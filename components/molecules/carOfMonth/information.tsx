@@ -4,7 +4,7 @@ import DOMPurify from 'dompurify'
 import { trackCarOfTheMonthItemClick } from 'helpers/amplitude/seva20Tracking'
 import { carBrand } from './COMImage'
 import { LocalStorageKey } from 'utils/models/models'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 // import { getToken } from 'utils/api'
 // import { useModalContext } from 'context/modalContext/modalContext'
 

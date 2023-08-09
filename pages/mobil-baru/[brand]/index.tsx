@@ -161,8 +161,8 @@ export const getServerSideProps: GetServerSideProps<{
       getNewFunnelRecommendations({ ...queryParam, brand: [] }),
     ])
 
-    const recommendation = funnel.data
-    const alternativeData = alternative.data
+    const recommendation = funnel
+    const alternativeData = alternative
 
     if (metaData && metaData.length > 0) {
       meta.title = metaData[0].attributes.meta_title

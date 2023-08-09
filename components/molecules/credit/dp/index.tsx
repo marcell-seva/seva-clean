@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Col, Input, Row, Slider } from 'antd'
 import styles from 'styles/components/molecules/dp/dpform.module.scss'
-import { dpRateCollectionNewCalculator } from 'const/const'
+import { dpRateCollectionNewCalculator } from 'utils/helpers/const'
 import { dpRateCollectionNewCalculatorTmp } from 'utils/types/utils'
 import clsx from 'clsx'
 import elementId from 'helpers/elementIds'

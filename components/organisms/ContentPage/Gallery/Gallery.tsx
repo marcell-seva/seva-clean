@@ -1,5 +1,3 @@
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 import React, { memo, useContext, useEffect, useRef, useState } from 'react'
 import GallerySectionV2 from './GallerySection/GallerySectionV2'
 import styled from 'styled-components'
@@ -18,7 +16,6 @@ import {
   replacePriceSeparatorByLocalization,
 } from 'utils/numberUtils/numberUtils'
 import { setTrackEventMoEngage } from 'helpers/moengage'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import { articleCategoryList } from 'config/articles.config'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { CityOtrOption } from 'utils/types'
@@ -26,6 +23,7 @@ import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { Description } from 'components/organisms/OldPdpSectionComponents/Description/Description'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import Image from 'next/image'
+import { useCar } from 'services/context/carContext'
 
 type tabProps = {
   tab: string | undefined
@@ -33,9 +31,7 @@ type tabProps = {
 }
 
 const GalleryTab = memo(({ tab, isSticky }: tabProps) => {
-  const { carModelDetails } = useContextCarModelDetails()
-  const { carVariantDetails } = useContextCarVariantDetails()
-  const { recommendations } = useContextRecommendations()
+  const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const {
     carModelDetailsResDefaultCity,
     carVariantDetailsResDefaultCity,
@@ -45,8 +41,8 @@ const GalleryTab = memo(({ tab, isSticky }: tabProps) => {
   const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
   const variantDetailData = carVariantDetails || carVariantDetailsResDefaultCity
   const recommendationsDetailData =
-    recommendations.length !== 0
-      ? recommendations
+    recommendation.length !== 0
+      ? recommendation
       : carRecommendationsResDefaultCity.carRecommendations
   const { currentLanguage } = useCurrentLanguageFromContext()
   const { setSpecialRateResults } = useContextSpecialRateResults()

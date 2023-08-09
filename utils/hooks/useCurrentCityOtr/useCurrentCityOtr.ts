@@ -1,4 +1,4 @@
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 import { LocalStorageKey } from 'utils/enum'
 import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
 import { CityOtrOption, Location } from 'utils/types'

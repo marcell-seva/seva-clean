@@ -1,4 +1,4 @@
-import { million, ten } from 'const/const'
+import { million, ten } from 'utils/helpers/const'
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import {
   CarVariantFAQParam,

@@ -9,7 +9,7 @@ import {
   carResultsUrl,
   loanCalculatorWithCityBrandModelUrl,
   variantListUrl,
-} from 'const/routes'
+} from 'utils/helpers/routes'
 import { CarRecommendation } from 'utils/types/utils'
 import { getLowestInstallment } from 'utils/carModelUtils/carModelUtils'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'

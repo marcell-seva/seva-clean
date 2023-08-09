@@ -8,7 +8,6 @@ import {
 } from 'components/atoms/ButtonOld/Button'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 // import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
-import { carResultsUrl } from 'const/routes'
 import {
   useContextContactFormData,
   useContextContactFormPatch,
@@ -18,7 +17,6 @@ import {
   UnverifiedLeadSubCategory,
 } from 'services/lead'
 import { trackLandingPageSearchWidgetSubmit } from 'helpers/amplitude/seva20Tracking'
-import { jt, Rp } from 'const/const'
 import { removeWhitespaces } from 'utils/stringUtils'
 import { createProbeTrack } from 'services/probe'
 import { getLocalStorage } from 'utils/localstorageUtils'
@@ -38,6 +36,8 @@ import { FormPhoneNumber } from '../formPhoneNumber/FormPhoneNumber'
 import { NewDownPaymentAmount } from '../newDownPaymentAmount/newDownPaymentAmount'
 import { Tenure } from '../tenure'
 import { AdvancedSearch } from '../advencedSearch/advencedSearch'
+import { jt, Rp } from 'utils/helpers/const'
+import { carResultsUrl } from 'utils/helpers/routes'
 
 export const SearchWidget = () => {
   const router = useRouter()
@@ -179,19 +179,19 @@ export const SearchWidget = () => {
       (item) => item.value === funnelQuery.monthlyIncome,
     )
 
-    trackLandingPageSearchWidgetSubmit({
-      DP: removeWhitespaces(
-        dpLabel[0].label.replace(`${Rp}`, '').replace(`${jt}`, '').trim(),
-      ),
-      Tenure: funnelQuery.tenure ? funnelQuery.tenure : null,
-      Income:
-        incomeLabel.length > 0
-          ? removeWhitespaces(incomeLabel[0].label.replace('juta', '').trim())
-          : null,
-      Age: funnelQuery.age ? String(funnelQuery.age) : null,
-      Phone_Number:
-        String(contactFormData.phoneNumberValid).length > 3 ? 'YES' : 'NO',
-    })
+    // trackLandingPageSearchWidgetSubmit({
+    //   DP: removeWhitespaces(
+    //     dpLabel[0].label.replace(`${Rp}`, '').replace(`${jt}`, '').trim(),
+    //   ),
+    //   Tenure: funnelQuery.tenure ? funnelQuery.tenure : null,
+    //   Income:
+    //     incomeLabel.length > 0
+    //       ? removeWhitespaces(incomeLabel[0].label.replace('juta', '').trim())
+    //       : null,
+    //   Age: funnelQuery.age ? String(funnelQuery.age) : null,
+    //   Phone_Number:
+    //     String(contactFormData.phoneNumberValid).length > 3 ? 'YES' : 'NO',
+    // })
 
     const tempQuery = {
       age: funnelQuery.age || '',

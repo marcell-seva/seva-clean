@@ -1,7 +1,5 @@
 import React, { useContext, useMemo, useState } from 'react'
 import styles from 'styles/components/organisms/carOverView.module.scss'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 import {
   Currency,
   formatNumberByLocalization,
@@ -27,11 +25,12 @@ import {
   trackDownloadBrosurClick,
   trackPDPHitungKemampuan,
 } from 'helpers/amplitude/seva20Tracking'
-import { variantListUrl } from 'const/routes'
+import { variantListUrl } from 'utils/helpers/routes'
 import { CityOtrOption, VariantDetail } from 'utils/types/utils'
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { ButtonSize, ButtonVersion } from 'utils/enum'
+import { useCar } from 'services/context/carContext'
 
 interface Props {
   onClickCityOtrCarOverview: () => void
@@ -47,8 +46,7 @@ export const CarOverview = ({
   const { carModelDetailsResDefaultCity, carVariantDetailsResDefaultCity } =
     useContext(PdpDataLocalContext)
 
-  const { carModelDetails } = useContextCarModelDetails()
-  const { carVariantDetails } = useContextCarVariantDetails()
+  const { carModelDetails, carVariantDetails } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,

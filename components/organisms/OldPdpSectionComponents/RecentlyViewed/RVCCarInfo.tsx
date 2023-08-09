@@ -6,7 +6,7 @@ import {
   getMinimumDp,
   getMinimumMonthlyInstallment,
 } from 'utils/carModelUtils/carModelUtils'
-import { hundred, million, ten } from 'const/const'
+import { hundred, million, ten } from 'utils/helpers/const'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import { CarRecommendation } from 'utils/types'
 import { LanguageCode } from 'utils/enum'

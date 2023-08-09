@@ -31,7 +31,7 @@ import 'styles/CustomAnimationStyle.css'
 
 import { IsSsrMobileContext } from 'context/isSsrMobileContext'
 import { FBPixelStandardEvent, FB_PIXEL_ID } from 'helpers/facebookPixel'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 import Head from 'next/head'
 
 const kanyon = localFont({

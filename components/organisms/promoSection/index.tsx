@@ -21,7 +21,7 @@ import {
   IconCar,
 } from 'components/atoms'
 import { CarVariantRecommendation } from 'utils/types/utils'
-import { variantListUrl } from 'const/routes'
+import { variantListUrl } from 'utils/helpers/routes'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 

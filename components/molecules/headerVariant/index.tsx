@@ -26,7 +26,7 @@ import { AmplitudeEventName } from 'services/amplitude/types'
 import { getCity } from 'utils/hooks/useGetCity'
 import { SearchInput } from 'components/atoms'
 import { Loading } from 'components/atoms/loading'
-import { carResultsUrl, variantListUrl } from 'const/routes'
+import { carResultsUrl, variantListUrl } from 'utils/helpers/routes'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import { getCarsSearchBar } from 'services/searchbar'
 import { trackSearchBarSuggestionClick } from 'helpers/amplitude/seva20Tracking'
@@ -66,7 +66,7 @@ export default function HeaderVariant({
   const handleDebounceFn = (inputValue: string) => {
     getCarsSearchBar(inputValue)
       .then((response) => {
-        const listedResult = response.data.map(
+        const listedResult = response.map(
           (item: { value: string; label: string }) => {
             const splitValue = item.label.split(' ')
             const carBrand = splitValue[0]
@@ -156,7 +156,7 @@ export default function HeaderVariant({
       Page_Direction_URL: window.location.origin + urlDestination,
     })
     router.push(urlDestination)
-    window.location.reload()
+    // window.location.reload()
     setIsNotFoundClicked(false)
   }
 
@@ -219,9 +219,10 @@ export default function HeaderVariant({
   }, [comDataNew])
 
   useEffect(() => {
-    API.get(endpoints.carOfMonth)
+    api
+      .getCarofTheMonth()
       .then((res) => {
-        setComDataNew(res.data.data)
+        setComDataNew(res.data)
       })
       .catch(() => {
         setIsError(true)
@@ -283,7 +284,7 @@ export default function HeaderVariant({
       })
     }
     // use location reload so that content re-fetched
-    window.location.reload()
+    // window.location.reload()
   }
 
   type RenderedLabels = {

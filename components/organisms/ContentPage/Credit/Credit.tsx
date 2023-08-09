@@ -1,6 +1,4 @@
 import { InfoCircleOutlined } from 'components/atoms'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 import { useContextSpecialRateResults } from 'context/specialRateResultsContext/specialRateResultsContext'
 import { useContextSurveyFormData } from 'context/surveyFormContext/surveyFormContext'
 import { SpecialRateResults } from './SpecialRateResults/SpesialRateResults'
@@ -22,7 +20,6 @@ import {
   replacePriceSeparatorByLocalization,
 } from 'utils/numberUtils/numberUtils'
 import { setTrackEventMoEngage } from 'helpers/moengage'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import elementId from 'helpers/elementIds'
 import {
   CarRecommendation,
@@ -41,6 +38,7 @@ import { useLoginAlertModal } from 'components/molecules/LoginAlertModal/LoginAl
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import Image from 'next/image'
+import { useCar } from 'services/context/carContext'
 
 const EmptyCalculationImage = '/revamp/illustration/EmptyCalculationImage.webp'
 const AccLogo = '/revamp/icon/logo-acc.webp'
@@ -56,9 +54,7 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
   const [initialValue, setInitialValue] = useState<
     CarVariantRecommendation | undefined
   >()
-  const { carModelDetails } = useContextCarModelDetails()
-  const { carVariantDetails } = useContextCarVariantDetails()
-  const { recommendations } = useContextRecommendations()
+  const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const {
     carModelDetailsResDefaultCity,
     carVariantDetailsResDefaultCity,
@@ -67,8 +63,8 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
   const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
   const variantDetailData = carVariantDetails || carVariantDetailsResDefaultCity
   const recommendationsDetailData =
-    recommendations.length !== 0
-      ? recommendations
+    recommendation.length !== 0
+      ? recommendation
       : carRecommendationsResDefaultCity.carRecommendations
   const [selected, setSelected] = useState<CarVariantRecommendation | null>(
     null,
@@ -93,7 +89,7 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
   )
   const [isSubmit, setIsSubmit] = useState(false)
   const [dpAmount, setDpAmount] = useState(0)
-  console.log('selected', selected)
+  
   const [, setPromoCodeSessionStorage] =
     useSessionStorageWithEncryption<string>(
       SessionStorageKey.PromoCodeGiiass,

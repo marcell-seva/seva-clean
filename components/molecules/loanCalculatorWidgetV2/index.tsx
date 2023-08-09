@@ -4,7 +4,7 @@ import debounce from 'lodash.debounce'
 import {
   loanCalculatorWithCityBrandModelVariantUrl,
   variantListUrl,
-} from 'const/routes'
+} from 'utils/helpers/routes'
 import {
   getCarModelDetailsById,
   getCarVariantDetailsById,
@@ -14,9 +14,6 @@ import { formatPriceNumberThousandDivisor } from 'utils/numberUtils/numberUtils'
 import DOMPurify from 'dompurify'
 import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
 import { useMediaQuery } from 'react-responsive'
-import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import { trackLoanCalcWidgetItemClick } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
@@ -29,6 +26,7 @@ import { handleProgressUpdate } from 'utils/loadingUtils'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import { SearchInputV2 } from '../searchInputV2'
 import { Loading } from 'components/atoms/loading'
+import { useCar } from 'services/context/carContext'
 
 const BackgroundImageDesktop =
   '/revamp/illustration/background-image-desktop.webp'
@@ -37,9 +35,8 @@ export const LoanCalculatorWidgetV2 = () => {
   const router = useRouter()
   const [searchInputValue, setSearchInputValue] = useState('')
   const [progress, setProgress] = useState(0)
-  const { setRecommendations } = useContextRecommendations()
-  const { setCarVariantDetails } = useContextCarVariantDetails()
-  const { setCarModelDetails } = useContextCarModelDetails()
+  const { saveCarModelDetails, saveCarVariantDetails, saveRecommendation } =
+    useCar()
   const [suggestionsLists, setSuggestionsLists] = useState<CarSuggestions[]>([])
   const [isShowLoading, setShowLoading] = useState(true)
   const { currentLanguage } = useCurrentLanguageFromContext()
@@ -59,7 +56,7 @@ export const LoanCalculatorWidgetV2 = () => {
       'lowToHigh',
     )
       .then((response) => {
-        setSuggestionsLists(response.data)
+        setSuggestionsLists(response)
         resetLoadingState()
       })
       .catch(() => {
@@ -119,20 +116,20 @@ export const LoanCalculatorWidgetV2 = () => {
 
   const onClickSuggestion = (id: string) => {
     getCarVariantDetailsById(id).then((response) => {
-      setCarVariantDetails(response.data)
+      saveCarVariantDetails(response.data)
       const carVariantDetails = {
-        brand: response.data.modelDetail.brand,
-        model: response.data.modelDetail.model,
-        variant: response.data.variantDetail.name,
+        brand: response.modelDetail.brand,
+        model: response.modelDetail.model,
+        variant: response.variantDetail.name,
       }
       Promise.all([
         getNewFunnelAllRecommendations(undefined, ''),
-        getCarModelDetailsById(response.data.modelDetail.id),
+        getCarModelDetailsById(response.modelDetail.id),
       ])
         .then(
           handleRecommendationsAndCarModelDetailsUpdate(
-            setRecommendations,
-            setCarModelDetails,
+            saveRecommendation,
+            saveCarModelDetails,
           ),
         )
         .finally(() => {

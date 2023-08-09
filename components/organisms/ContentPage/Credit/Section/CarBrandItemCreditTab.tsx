@@ -1,9 +1,5 @@
 import { ToastType, useToast } from 'components/atoms/OldToast/Toast'
-import { useContextCarModel } from 'context/carModelContext/carModelContext'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import { useContextSpecialRateResults } from 'context/specialRateResultsContext/specialRateResultsContext'
 import { useContextSurveyFormData } from 'context/surveyFormContext/surveyFormContext'
 import {
@@ -11,11 +7,10 @@ import {
   trackCreditPeluangLainnyaClick,
 } from 'helpers/amplitude/seva20Tracking'
 import { useRouter } from 'next/router'
-// import { LoanRankStatus } from 'pages/CarVariantListPage/CreditV2/LoanRankStatus/BadgeLoanStatus'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-import { variantListUrl } from 'const/routes'
+import { variantListUrl } from 'utils/helpers/routes'
 import { getNewFunnelAllRecommendations } from 'services/newFunnel'
 import {
   getCarModelDetailsById,
@@ -45,6 +40,8 @@ import {
 } from 'utils/types/utils'
 import { isIphone } from 'utils/window'
 import { LoanRankStatus } from '../LoanRankStatus/BadgeLoanStatus'
+import { useCar } from 'services/context/carContext'
+import { useContextCarModel } from 'context/carModelContext/carModelContext'
 
 const ShimmerLoader = '/revamp/illustration/placeholder.gif'
 
@@ -60,9 +57,12 @@ export const CarBrandItemCreditTab = ({
   onReset,
 }: CarTileProps) => {
   const router = useRouter()
-  const { recommendations, setRecommendations } = useContextRecommendations()
-  const { setCarModelDetails } = useContextCarModelDetails()
-  const { setCarVariantDetails } = useContextCarVariantDetails()
+  const {
+    recommendation,
+    saveRecommendation,
+    saveCarModelDetails,
+    saveCarVariantDetails,
+  } = useCar()
   const { setSpecialRateResults } = useContextSpecialRateResults()
   const { currentLanguage } = useCurrentLanguageFromContext()
   const carResultParameters = useCarResultParameter()
@@ -118,8 +118,8 @@ export const CarBrandItemCreditTab = ({
     ])
       .then(
         handleRecommendationsAndCarModelDetailsUpdate(
-          setRecommendations,
-          setCarModelDetails,
+          saveRecommendation,
+          saveCarModelDetails,
         ),
       )
       .then(() => {
@@ -128,7 +128,7 @@ export const CarBrandItemCreditTab = ({
         ).id
         getCarVariantDetailsById(variantId).then((result3) => {
           if (result3.data.variantDetail.priceValue != null) {
-            setCarVariantDetails(result3.data)
+            saveCarVariantDetails(result3.data)
             onClickNewModel && onClickNewModel(false)
             onReset && onReset(false)
             setSpecialRateResults([])
@@ -181,7 +181,7 @@ export const CarBrandItemCreditTab = ({
     localStorage.setItem('carDetail', selectCarResult.price)
     setCarModel(carModel || undefined)
     getCarModelDetailsById(carModel.id)
-      .then(handleCarModelDetailsUpdate(recommendations, setCarModelDetails))
+      .then(handleCarModelDetailsUpdate(recommendation, saveCarModelDetails))
       .then(() => {
         router.push(
           variantListUrl

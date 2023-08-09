@@ -1,5 +1,6 @@
+import { api } from 'services/api'
 import { AxiosResponse } from 'axios'
-import { defaultCSANumber } from 'const/const'
+import { defaultCSANumber } from 'utils/helpers/const'
 import {
   CountryCodePlusSign,
   defaultContactFormValue,
@@ -55,16 +56,14 @@ export interface CreateUnverifiedLeadRequestNew {
 }
 
 const getCustomerAssistantDetails = (phoneNumber: string) => {
-  return API.post(endpoints.customerAssistantDetails, {
-    phoneNumber,
-  })
+  return api.postCustomerAssistantDetails(phoneNumber)
 }
 
 export const createUnverifiedLeadNew = (
   requestBody: CreateUnverifiedLeadRequestNew,
 ) => {
   const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
-  return API.post(endpoints.unverifiedLeadNew, {
+  return api.postUnverifiedLeadsNew({
     ...requestBody,
     utmSource: UTMTags?.utm_source,
     utmMedium: UTMTags?.utm_medium,

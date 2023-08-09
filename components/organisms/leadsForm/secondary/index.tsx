@@ -19,7 +19,6 @@ import { decryptValue, encryptValue } from 'utils/encryptionUtils'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { onlyLettersAndSpaces } from 'utils/handler/regex'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import {
   UnverifiedLeadSubCategory,
@@ -27,7 +26,6 @@ import {
 } from 'services/lead'
 import elementId from 'helpers/elementIds'
 import { OTP } from '../../otp'
-import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 import {
   LeadsActionParam,
   PageOriginationName,
@@ -38,9 +36,10 @@ import { Currency } from 'utils/numberUtils/numberUtils'
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import { useSessionStorage } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { useMediaQuery } from 'react-responsive'
-import { variantListUrl } from 'const/routes'
+import { variantListUrl } from 'utils/helpers/routes'
 import { getConvertFilterIncome } from 'utils/filterUtils'
 import { useRouter } from 'next/router'
+import { useCar } from 'services/context/carContext'
 
 const SupergraphicLeft = '/revamp/illustration/supergraphic-small.webp'
 const SupergraphicRight = '/revamp/illustration/supergraphic-large.webp'
@@ -70,9 +69,8 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
     'otp' | 'success-toast' | 'none'
   >('none')
   const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false)
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails, carVariantDetails } = useCar()
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
-  const { carVariantDetails } = useContextCarVariantDetails()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,

@@ -119,10 +119,10 @@ const CitySelectorModal = ({
   }
 
   const setIsDisabledButtonSubmit = () => {
-    const matchedCity = cityListFromApi.filter(
+    const matchedCity = cityListFromApi?.filter(
       (item) => item.cityName === inputValue,
     )
-    if (matchedCity.length > 0) {
+    if (matchedCity?.length > 0) {
       return false
     } else {
       return true
@@ -142,8 +142,10 @@ const CitySelectorModal = ({
   }
 
   useEffect(() => {
-    const options = getCityListOption(cityListFromApi)
-    setCityListOptionsFull(options)
+    if (cityListFromApi) {
+      const options = getCityListOption(cityListFromApi)
+      setCityListOptionsFull(options)
+    }
   }, [cityListFromApi])
 
   const cityListWithTopCity = () => {

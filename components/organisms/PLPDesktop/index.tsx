@@ -8,19 +8,17 @@ import {
   CityOtrOption,
   FooterSEOAttributes,
 } from 'utils/types/utils'
-import { hundred, itemLimit, million, ten } from 'const/const'
+import { hundred, itemLimit, million, ten } from 'utils/helpers/const'
 import { AxiosResponse } from 'axios'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import { CarModelTileV2 } from './CarModelTile/CarModelTileV2'
-import { variantListUrl } from 'const/routes'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
+import { variantListUrl } from 'utils/helpers/routes'
 import {
   getNewFunnelAllRecommendations,
   getNewFunnelRecommendations,
   getNewFunnelRecommendationsByQueries,
 } from 'services/newFunnel'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import {
   getDpRange,
   getMinimumDp,
@@ -57,10 +55,7 @@ import {
 } from 'utils/hooks/useAmplitudePageView/useAmplitudePageView'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { TextSmallRegular } from 'utils/typography/TextSmallRegular'
-import {
-  getCarModelDetailsById,
-  handleCarModelDetailsUpdate,
-} from 'services/recommendation'
+
 import { FooterSeva } from '../FooterSeva'
 import { useToast, ToastType } from '../Toast'
 import FloatingIcon from 'components/molecules/FloatingIcon/FloatingIcon'
@@ -76,6 +71,11 @@ import {
   trackViewCarResult,
 } from 'helpers/amplitude/newFunnelEventTracking'
 import { useCitySelectorModal } from 'components/molecules/citySelector/citySelectorModal'
+import { useCar } from 'services/context/carContext'
+import {
+  getCarModelDetailsById,
+  handleCarModelDetailsUpdate,
+} from 'services/recommendations'
 
 interface CarResultPageProps {
   carRecommendation: CarRecommendationResponse
@@ -99,7 +99,7 @@ export default function PLPDesktop({
   }
 
   const [isShowLoading, setShowLoading] = useState(true)
-  const { recommendations, setRecommendations } = useContextRecommendations()
+  const { recommendation, saveRecommendation, saveCarModelDetails } = useCar()
   const [recommendationLists, setRecommendationLists] = useState<
     CarRecommendation[]
   >(carRecommendation.carRecommendations)
@@ -115,7 +115,6 @@ export default function PLPDesktop({
       null,
     )
   const [indexPage, setIndexPage] = useState<CarResultIndexPage>()
-  const { setCarModelDetails } = useContextCarModelDetails()
   const carResultParameters = useCarResultParameter()
   useAmplitudePageView(() => {
     trackViewCarResult(carResultParameters)
@@ -197,7 +196,7 @@ export default function PLPDesktop({
   const getAllRecommendations = () => {
     getNewFunnelAllRecommendations(undefined, '')
       .then((response: AxiosResponse<CarRecommendationResponse>) => {
-        setRecommendations(response.data.carRecommendations || [])
+        saveRecommendation(response.data.carRecommendations || [])
         timeoutShimmer()
         resetLoadingState()
       })
@@ -282,7 +281,7 @@ export default function PLPDesktop({
     setCarModel(carModel || undefined)
     trackSelectCarResult(selectCarResult)
     getCarModelDetailsById(carModel.id)
-      .then(handleCarModelDetailsUpdate(recommendations, setCarModelDetails))
+      .then(handleCarModelDetailsUpdate(recommendation, saveCarModelDetails))
       .then(() => {
         router.push(
           variantListUrl
@@ -315,8 +314,8 @@ export default function PLPDesktop({
         [QueryKeys.CarBodyType]: bodyType?.split(','),
         [QueryKeys.CarBrand]: brand?.split(','),
       })
-        .then((response: AxiosResponse<CarRecommendationResponse>) => {
-          setRecommendations(response.data.carRecommendations || [])
+        .then((response: any) => {
+          saveRecommendation(response.carRecommendations || [])
           timeoutShimmer()
           resetLoadingState()
         })
@@ -337,14 +336,12 @@ export default function PLPDesktop({
           downPaymentType: DownPaymentType.DownPaymentAmount,
           monthlyInstallment: monthlyInstallment,
         })
-        getNewFunnelRecommendations(queryTemp).then(
-          (response: AxiosResponse<CarRecommendationResponse>) => {
-            setRecommendations(response.data.carRecommendations || [])
-            timeoutShimmer()
-          },
-        )
+        getNewFunnelRecommendations(queryTemp).then((response) => {
+          saveRecommendation(response.carRecommendations || [])
+          timeoutShimmer()
+        })
       }
-    } else if (recommendations.length === 0) {
+    } else if (recommendation.length === 0) {
       setShowLoading(true)
       getAllRecommendations()
     }
@@ -354,17 +351,15 @@ export default function PLPDesktop({
     }
 
     return () => {
-      setRecommendations([])
+      saveRecommendation([])
     }
   }, [])
 
   const getDataFunnel = () => {
-    getNewFunnelRecommendations(funnelQuery).then(
-      (response: AxiosResponse<CarRecommendationResponse>) => {
-        setRecommendationLists(response.data.carRecommendations || [])
-        timeoutShimmer()
-      },
-    )
+    getNewFunnelRecommendations(funnelQuery).then((response) => {
+      setRecommendationLists(response.carRecommendations || [])
+      timeoutShimmer()
+    })
   }
 
   useEffect(() => {
@@ -379,7 +374,7 @@ export default function PLPDesktop({
               ? brand.toUpperCase()
               : capitalizeFirstLetter(brand),
           )
-          const forFilterRecommendations = recommendations.map((item: any) => {
+          const forFilterRecommendations = recommendation.map((item: any) => {
             item.brandAndModel = `${item.brand} ${item.model}`
             item.modelAndBrand = `${item.model} ${item.brand}`
             return item
@@ -390,16 +385,16 @@ export default function PLPDesktop({
                   .toLowerCase()
                   .includes(brand.toLowerCase()),
               )
-            : recommendations
+            : recommendation
           setRecommendationLists(filterRecommendations)
           timeoutShimmer()
         }
       } else {
-        setRecommendationLists(recommendations)
+        setRecommendationLists(recommendation)
         timeoutShimmer()
       }
     }
-  }, [recommendations])
+  }, [recommendation])
 
   useEffect(() => {
     if (!isMobile) {

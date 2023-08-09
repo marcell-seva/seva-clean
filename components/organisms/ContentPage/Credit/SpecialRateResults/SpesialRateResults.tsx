@@ -6,7 +6,11 @@ import { useContextSurveyFormData } from 'context/surveyFormContext/surveyFormCo
 // import { WhatsAppContactUs } from 'pages/component/WhatsAppContactUs/WhatsAppContactUs'
 import React, { useEffect, useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { creditQualificationUrl, LoginSevaUrl, loginUrl } from 'const/routes'
+import {
+  creditQualificationUrl,
+  LoginSevaUrl,
+  loginUrl,
+} from 'utils/helpers/routes'
 import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
@@ -30,7 +34,6 @@ import {
 import { setTrackEventMoEngage } from 'helpers/moengage'
 // import { WhatsAppContactUsNewIcon } from 'pages/component/WhatsAppContactUs/WhatsAppContactUsNewIcon'
 import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import elementId from 'helpers/elementIds'
 import { usePreApprovalIntroModal } from 'components/molecules/PreApprovalIntroModal/usePreApprovalIntroModal'
 import { SpecialRateList } from 'utils/types'
@@ -52,6 +55,7 @@ import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/u
 import { api } from 'services/api'
 import { NonPassengerCars } from 'config/LoanCalculator.config'
 import { tracSelectV2LoanCalculatorSpeak } from 'helpers/amplitude/newLoanCalculatorEventTracking'
+import { useCar } from 'services/context/carContext'
 
 const PromoAsuransi = '/revamp/illustration/PromoAsuransi.gif'
 const AstraLogo = '/revamp/icon/AstraLogo.webp'
@@ -129,7 +133,7 @@ export const SpecialRateResults = ({
   )
   const { setSpecialRateResults } = useContextSpecialRateResults()
   const enableNewLogin = true
-  const { recommendations } = useContextRecommendations()
+  const { recommendation } = useCar()
 
   const isCRM = useMemo(() => {
     const sessionRateType = getLocalStorage(LocalStorageKey.SelectedRateType)
@@ -498,10 +502,10 @@ export const SpecialRateResults = ({
             transmition: carVariantDetails?.variantDetail.transmission,
             body_type: carVariantDetails?.variantDetail.bodyType,
             dimension:
-              recommendations?.filter(
+              recommendation?.filter(
                 (car) => car.id === carVariantDetails?.modelDetail.id,
               ).length > 0
-                ? recommendations?.filter(
+                ? recommendation?.filter(
                     (car) => car.id === carVariantDetails?.modelDetail.id,
                   )[0].height
                 : '',

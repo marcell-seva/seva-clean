@@ -35,7 +35,7 @@ const Testimonial = () => {
   const constantDesktopSlideTrack = 3
 
   useEffect(() => {
-    getTestimonials().then((res) => setData(res.data.data))
+    getTestimonials().then((res) => setData(res.data))
     getDataBaseConfig()
 
     if (!isMobile) setTrackTotalViewed(3)

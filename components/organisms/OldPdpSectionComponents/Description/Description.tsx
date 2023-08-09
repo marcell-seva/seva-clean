@@ -10,7 +10,6 @@ import { colors } from 'styles/colors'
 import { DownOutlined } from 'components/atoms'
 import {
   CarModelDetailsResponse,
-  CarRecommendation,
   CarVariantDetails,
   CityOtrOption,
 } from 'utils/types'
@@ -23,8 +22,7 @@ import {
   availableListColors,
 } from '../VariantColor/AvailableListColors'
 import { trimLastChar } from 'utils/urlUtils'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
-import { hundred, million, ten } from 'const/const'
+import { hundred, million, ten } from 'utils/helpers/const'
 import {
   formatNumberByLocalization,
   formatPriceNumber,
@@ -35,10 +33,10 @@ import {
   trackCarVariantDescriptionCollapseClick,
   trackCarVariantDescriptionExpandClick,
 } from 'helpers/amplitude/seva20Tracking'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { useCar } from 'services/context/carContext'
 
 type DescriptionProps = {
   title: string
@@ -64,14 +62,13 @@ export const Description = ({
   const [carWidth, setCarWidth] = useState(0)
   const [carHeight, setCarHeight] = useState(0)
   const [carLength, setCarLength] = useState(0)
-  const { recommendations } = useContextRecommendations()
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails, recommendation } = useCar()
   const { carModelDetailsResDefaultCity, carRecommendationsResDefaultCity } =
     useContext(PdpDataLocalContext)
   const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
   const recommendationsDetailData =
-    recommendations.length !== 0
-      ? recommendations
+    recommendation.length !== 0
+      ? recommendation
       : carRecommendationsResDefaultCity.carRecommendations
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,

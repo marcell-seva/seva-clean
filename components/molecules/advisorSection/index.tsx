@@ -18,7 +18,7 @@ import {
 import React, { ChangeEvent, useEffect, useState } from 'react'
 // import ReactPixel from 'react-facebook-pixel'
 import { useTranslation } from 'react-i18next'
-import { LoginSevaUrl } from 'const/routes'
+import { LoginSevaUrl } from 'utils/helpers/routes'
 import { getCustomerInfoSeva } from 'services/customer'
 import {
   createUnverifiedLeadNew,
@@ -41,7 +41,7 @@ import { TextMediumRegular } from 'components/atoms/typography/TextMediumRegular
 import { useRouter } from 'next/router'
 import { FormPhoneNumber } from '../formPhoneNumber/FormPhoneNumber'
 import { isValidPhoneNumber } from 'utils/numberUtils/numberUtils'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 
 interface AdvisorSectionProps {
   onSubmitSuccess: (whatsappChecked?: boolean) => void

@@ -8,7 +8,6 @@ import { colors } from 'styles/colors'
 import { GalleryImageOptionsListV2 } from './GalleryImageOptionsListV2'
 import { useGalleryImagesModal } from './GalleryImagesModal'
 import { ImageUnavailable } from './ImageUnavailable'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import {
   CarVariantPhotoParam,
@@ -17,6 +16,7 @@ import {
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { CityOtrOption } from 'utils/types'
 import { LocalStorageKey } from 'utils/enum'
+import { useCar } from 'services/context/carContext'
 
 type ImageList = {
   exterior: string[]
@@ -31,7 +31,7 @@ export const GalleryRegularImageV2 = ({
   imageList,
   isSelectedExterior,
 }: Props) => {
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const [currentSlide, setCurrentSlide] = useState(0)
   const [currentImageList, setCurrentImageList] = useState(imageList.exterior)

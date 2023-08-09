@@ -1,7 +1,5 @@
 import { AdditionalInfoCarVariant } from 'components/molecules/TitleHeader/TitleHeader'
-import { client, million, ten } from 'const/const'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
+import { client, million, ten } from 'utils/helpers/const'
 import {
   trackCarVariantPricelistClick,
   trackCarVariantPricelistClickCta,
@@ -10,7 +8,7 @@ import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import React, { useContext, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
-import { variantListUrl } from 'const/routes'
+import { variantListUrl } from 'utils/helpers/routes'
 import { api } from 'services/api'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
@@ -22,13 +20,13 @@ import {
   replacePriceSeparatorByLocalization,
 } from 'utils/numberUtils/numberUtils'
 import { CarVariantRecommendation, CityOtrOption } from 'utils/types'
+import { useCar } from 'services/context/carContext'
 
 export const PriceList = () => {
   const router = useRouter()
   const { model, brand, slug } = router.query
   const tab = Array.isArray(slug) ? slug[0] : undefined
-  const { carModelDetails } = useContextCarModelDetails()
-  const { setCarVariantDetails } = useContextCarVariantDetails()
+  const { carModelDetails, saveCarVariantDetails } = useCar()
   const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
   const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
   const [indexOpen, setIndexOpen] = useState<number | null>()
@@ -95,7 +93,7 @@ export const PriceList = () => {
     trackCarVariantPricelistClickCta(getDataForAmplitude(item))
     api.getCarVariantDetails(item.id, getCityParam()).then((result3: any) => {
       if (result3.variantDetail.priceValue != null) {
-        setCarVariantDetails(result3)
+        saveCarVariantDetails(result3)
       }
     })
 

@@ -4,7 +4,6 @@ import { colors } from 'styles/colors'
 import { ToggleSwitch } from 'components/atoms'
 import { Gallery360ImageV2 } from './Gallery360ImageV2'
 import { GalleryRegularImageV2 } from './GalleryRegularImageV2'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useMediaQuery } from 'react-responsive'
 import {
   TrackingEventName,
@@ -20,13 +19,14 @@ import { LocalStorageKey } from 'utils/enum'
 import { exteriorImagesListNew } from 'config/Exterior360ImageList.config'
 import { interiorImagesListNew } from 'config/Interior360ImageList.config'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { useCar } from 'services/context/carContext'
 
 interface Props {
   title: string
 }
 
 const GallerySectionV2 = ({ title }: Props) => {
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
   const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
   const modelDetailData: CarModelDetailsResponse | undefined =
     carModelDetails || carModelDetailsResDefaultCity

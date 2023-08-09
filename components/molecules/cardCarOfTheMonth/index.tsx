@@ -23,7 +23,7 @@ import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { Button } from 'components/atoms'
 import { saveLocalStorage } from 'utils/handler/localStorage'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 type carOfTheMonthData = {
   name: string
   desc: string

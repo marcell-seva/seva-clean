@@ -14,10 +14,14 @@ const utils = {
   metaTag:
     'https://api.sslpots.com/api/meta-seos/?filters[master_model][model_code][$contains]=',
   supportedBrowser: '/web-browser/check',
+  incomeList: `${baseUrl}/recommendations/get-income-list`,
+  checkPromoCodeGias: `${baseUrl}/promo-code/status`,
+  probe: 'https://probe.addpush.com/d/sub/',
 }
 
 const product = {
   recommendation: `${baseUrl}/recommendations/new-funnel`,
+  cityRecommendation: `${baseUrl}/recommendations/get-city-by-model-name`,
   variant: `${baseUrl}/variants`,
   type: `${baseUrl}/cars/body-type-data`,
   carofTheMonth: `${baseUrl}/car-of-the-month`,
@@ -29,6 +33,7 @@ const product = {
 
 const leads = {
   unverifiedLeadNew: `${baseUrl}/unverifiedLeads/new`,
+  customerAssistantDetails: `${baseUrl}/unverifiedLeads/csaDetails`,
 }
 
 const auth = {
@@ -36,6 +41,10 @@ const auth = {
   refresh: `${baseUrl}/auth/token`,
   otp: `${baseUrl}/auth/otp`,
   otpVerification: `${baseUrl}/auth/verification`,
+}
+
+const loanCalculator = {
+  specialRate: `${baseUrl}/loan-calculator/calculate`,
 }
 
 const article = {
@@ -49,4 +58,5 @@ export const collections = {
   article,
   auth,
   leads,
+  loanCalculator,
 }

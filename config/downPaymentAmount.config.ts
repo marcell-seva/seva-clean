@@ -1,4 +1,4 @@
-import { greaterThan, jt, million, Rp } from 'const/const'
+import { greaterThan, jt, million, Rp } from 'utils/helpers/const'
 import { CheckboxItemType } from 'utils/types/utils'
 export interface OptionConfig {
   options: CheckboxItemType[]

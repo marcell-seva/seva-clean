@@ -4,10 +4,10 @@ import React from 'react'
 import styles from 'styles/components/organisms/promoPopupPdp.module.scss'
 import { IconClose } from 'components/atoms'
 import { trackCarVariantBannerPromoPopupClose } from 'helpers/amplitude/seva20Tracking'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { LocalStorageKey } from 'utils/models/models'
 import { CityOtrOption } from 'utils/types/utils'
+import { useCar } from 'services/context/carContext'
 
 const promoBannerTSO = '/revamp/illustration/PromoTSO.webp'
 const promoBannerCumaDiSEVA = '/revamp/illustration/PromoCumaDiSEVA.webp'
@@ -23,7 +23,7 @@ const PromoPopup = ({
   isButtonClick,
   promoName,
 }: FilterMobileProps) => {
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,

@@ -5,9 +5,9 @@ import Youtube from 'react-youtube'
 import elementId from 'helpers/elementIds'
 import { trackPDPGalleryVideo } from 'helpers/amplitude/seva20Tracking'
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { LocalStorageKey } from 'utils/models/models'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useCar } from 'services/context/carContext'
 
 interface Props {
   data: VideoDataType
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const VideoTab = ({ data, isShowAnnouncementBox }: Props) => {
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,

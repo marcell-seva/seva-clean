@@ -42,11 +42,11 @@ import { HomePageDataLocalContext } from 'pages'
 import { trackLPKualifikasiKreditTopCtaClick } from 'helpers/amplitude/seva20Tracking'
 import { getToken } from 'utils/api'
 import { useRouter } from 'next/router'
-import { multiCreditQualificationPageUrl } from 'const/routes'
+import { multiCreditQualificationPageUrl } from 'utils/helpers/routes'
 import { savePageBeforeLogin } from 'utils/loginUtils'
 import { LoginModalMultiKK } from '../loginModalMultiKK'
 import Seo from 'components/atoms/seo'
-import { defaultSeoImage } from 'const/const'
+import { defaultSeoImage } from 'utils/helpers/const'
 
 const HomepageMobile = ({ dataReccomendation }: any) => {
   useEffect(() => {

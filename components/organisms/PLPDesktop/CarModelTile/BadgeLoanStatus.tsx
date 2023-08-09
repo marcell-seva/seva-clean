@@ -18,7 +18,7 @@ import {
   getMinimumDp,
   getMinimumMonthlyInstallment,
 } from 'utils/carModelUtils/carModelUtils'
-import { hundred, million, ten } from 'const/const'
+import { hundred, million, ten } from 'utils/helpers/const'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import { LocalStorageKey, LoanRank, LanguageCode } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import styles from '../../../styles/components/organisms/filtermobile.module.scss'
 import {
   IconChevronDown,
@@ -26,14 +26,14 @@ import {
   trackPLPSubmitFilter,
 } from 'helpers/amplitude/seva20Tracking'
 import { Currency } from 'utils/numberUtils/numberUtils'
-import { carResultsUrl } from 'const/routes'
+import { carResultsUrl } from 'utils/helpers/routes'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import { CarRecommendationResponse, FunnelQuery } from 'utils/types/context'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import { trackFilterCarResults } from 'helpers/amplitude/newFunnelEventTracking'
 import { ButtonSize, ButtonVersion } from 'utils/enum'
+import { useCar } from 'services/context/carContext'
 
 interface ParamsUrl {
   age?: string
@@ -109,7 +109,7 @@ const FilterMobile = ({
   const [isErrorDp, setIsErrorDp] = useState(false)
   const [isErrorMinMaxDP, setIsErrorMinMaxDP] = useState('0')
   const [isErrorIncome, setIsErrorIncome] = useState(false)
-  const { setRecommendations } = useContextRecommendations()
+  const { saveRecommendation } = useCar()
   const [isApplied, setIsApplied] = useState(false)
   const [resetTmp, setResetTmp] = useState(false)
 
@@ -281,7 +281,7 @@ const FilterMobile = ({
     }
 
     getNewFunnelRecommendations(paramUpdate)
-      .then((response: AxiosResponse<CarRecommendationResponse>) => {
+      .then((response) => {
         handleSuccess(response)
         setLoading(false)
       })
@@ -291,9 +291,7 @@ const FilterMobile = ({
       })
   }
 
-  const handleSuccess = async (
-    response: AxiosResponse<CarRecommendationResponse>,
-  ) => {
+  const handleSuccess = async (response: any) => {
     const dataFunnelQuery: FunnelQuery = {
       age: ageFilter,
       // downPaymentType: DownPaymentType.DownPaymentAmount,
@@ -349,7 +347,7 @@ const FilterMobile = ({
       query: { ...paramUrl },
     })
 
-    setRecommendations(response?.data?.carRecommendations || [])
+    saveRecommendation(response?.carRecommendations || [])
     trackPLPSubmitFilter(trackFilterAction())
     onClickClose()
     setResetTmp(false)

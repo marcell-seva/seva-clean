@@ -1,8 +1,5 @@
 import { rupiah } from 'utils/handler/rupiah'
 import { Article, CityOtrOption } from 'utils/types/utils'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import {
   trackLCCTAHitungKemampuanClick,
   trackLCCtaWaDirectClick,
@@ -44,7 +41,7 @@ import {
 } from 'components/molecules'
 import { availableList, availableListColors } from 'config/AvailableListColors'
 import { getMinimumMonthlyInstallment } from 'utils/carModelUtils/carModelUtils'
-import { hundred, million } from 'const/const'
+import { hundred, million } from 'utils/helpers/const'
 import {
   defaultCity,
   saveCity,
@@ -82,6 +79,7 @@ import { useRouter } from 'next/router'
 import { CarModel } from 'utils/types/carModel'
 import { ModelVariant } from 'utils/types/carVariant'
 import { TrackVariantList } from 'utils/types/tracker'
+import { useCar } from 'services/context/carContext'
 
 interface FormState {
   city: CityOtrOption
@@ -111,9 +109,7 @@ interface FormState {
 
 export const CreditTab = () => {
   const router = useRouter()
-  const { carModelDetails } = useContextCarModelDetails()
-  const { carVariantDetails } = useContextCarVariantDetails()
-  const { recommendations } = useContextRecommendations()
+  const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -295,13 +291,13 @@ export const CreditTab = () => {
     if (
       carModelDetails !== undefined &&
       carVariantDetails !== undefined &&
-      recommendations !== undefined
+      recommendation !== undefined
     ) {
       trackEventMoengage()
       getSummaryInfo()
       autofillCarModelAndVariantData()
     }
-  }, [carModelDetails, carVariantDetails, recommendations])
+  }, [carModelDetails, carVariantDetails, recommendation])
 
   useEffect(() => {
     if (router.query.selectedVariantId) {
@@ -445,7 +441,7 @@ export const CreditTab = () => {
     if (
       !carModelDetails ||
       !carVariantDetails ||
-      recommendations.length === 0 ||
+      recommendation.length === 0 ||
       flagMoengage === TrackerFlag.Sent
     )
       return
@@ -483,23 +479,25 @@ export const CreditTab = () => {
 
   const getTransmissionType = (payload: any) => {
     const type: Array<string> = payload
-      .map((item: any) => item.transmission)
+      ?.map((item: any) => item.transmission)
       .filter(
         (value: any, index: number, self: any) => self.indexOf(value) === index,
       )
 
-    return type
+    return type || []
   }
   const getPriceRange = (payload: any) => {
-    const variantLength = payload.length
-    if (variantLength === 1) {
-      const price: string = rupiah(payload[0].priceValue)
-      return `yang tersedia dalam kisaran harga mulai dari ${price}`
-    } else {
-      const upperPrice = rupiah(payload[0].priceValue)
-      const lowerPrice = rupiah(payload[variantLength - 1].priceValue)
+    if (payload) {
+      const variantLength = payload?.length
+      if (variantLength === 1) {
+        const price: string = rupiah(payload[0].priceValue)
+        return `yang tersedia dalam kisaran harga mulai dari ${price}`
+      } else {
+        const upperPrice = rupiah(payload[0].priceValue)
+        const lowerPrice = rupiah(payload[variantLength - 1].priceValue)
 
-      return `yang tersedia dalam kisaran harga ${lowerPrice} - ${upperPrice} juta`
+        return `yang tersedia dalam kisaran harga ${lowerPrice} - ${upperPrice} juta`
+      }
     }
   }
 
@@ -545,9 +543,9 @@ export const CreditTab = () => {
     const priceRange = getPriceRange(carModelDetails?.variants)
     const totalType = carModelDetails?.variants.length
     const color = getColorVariant()
-    const dimenssion = getDimenssion(recommendations)
+    const dimenssion = getDimenssion(recommendation)
     const credit = getCreditPrice(carModelDetails?.variants)
-    const month = carModelDetails!.variants[0].tenure * 12
+    const month = carModelDetails && carModelDetails!.variants[0].tenure * 12
     const transmissionType = getTransmissionType(
       carModelDetails?.variants,
     ).length
@@ -589,12 +587,12 @@ export const CreditTab = () => {
       defaultCity.cityCode,
     )
 
-    setAllModalCarList(response.data.carRecommendations)
+    setAllModalCarList(response.carRecommendations)
   }
 
   const fetchCarVariant = async () => {
     const response = await getCarModelDetailsById(forms.model?.modelId ?? '')
-    setCarVariantList(response.data.variants)
+    setCarVariantList(response.variants)
   }
 
   const handleChange = (name: string, value: any) => {
@@ -850,7 +848,7 @@ export const CreditTab = () => {
         angsuranType: forms.paymentOption,
       })
         .then((res) => {
-          const result = res.data.data.reverse()
+          const result = res.data.reverse()
           setCalculationResult(result)
           const selectedLoanInitialValue =
             result.filter(
@@ -938,10 +936,10 @@ export const CreditTab = () => {
       transmition: carVariantDetails?.variantDetail.transmission,
       body_type: carVariantDetails?.variantDetail.bodyType,
       dimension:
-        recommendations?.filter(
+        recommendation?.filter(
           (car) => car.id === carVariantDetails?.modelDetail.id,
         ).length > 0
-          ? recommendations?.filter(
+          ? recommendation?.filter(
               (car) => car.id === carVariantDetails?.modelDetail.id,
             )[0].height
           : '',
@@ -995,7 +993,7 @@ export const CreditTab = () => {
       age: forms?.age,
       monthlyIncome: forms?.monthlyIncome,
     })
-    const filteredCarRecommendations = response.data.carRecommendations.filter(
+    const filteredCarRecommendations = response.carRecommendations.filter(
       (car: any) => car.loanRank === LoanRank.Green,
     )
     setCarRecommendations(filteredCarRecommendations.slice(0, 10))

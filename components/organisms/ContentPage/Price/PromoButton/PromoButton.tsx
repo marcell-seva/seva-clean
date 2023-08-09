@@ -1,4 +1,3 @@
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { trackCarVariantBannerPromoClick } from 'helpers/amplitude/seva20Tracking'
 import React from 'react'
 import { useMediaQuery } from 'react-responsive'
@@ -10,6 +9,7 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { CityOtrOption } from 'utils/types'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { DownOutlined } from 'components/atoms'
+import { useCar } from 'services/context/carContext'
 
 type PromoButtonProps = {
   onClick?: () => void
@@ -21,7 +21,7 @@ export const PromoButton = ({ onClick }: PromoButtonProps) => {
     LocalStorageKey.CityOtr,
     null,
   )
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
 
   const getDataForAmplitude = () => {
     return {

@@ -11,7 +11,7 @@ import {
   trackCarVariantSharePopupWaClick,
 } from 'helpers/amplitude/seva20Tracking'
 import { useModal } from 'components/atoms/ModalOld/Modal'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 import { t } from 'config/localization/locales/id'
 
 const WhatsappLogo = '/revamp/icon/OldShareWhatsappLogo.webp'

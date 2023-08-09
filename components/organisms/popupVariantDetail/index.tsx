@@ -1,4 +1,4 @@
-import { million, ten } from 'const/const'
+import { million, ten } from 'utils/helpers/const'
 import { LanguageCode } from 'utils/models/models'
 import React from 'react'
 import { CarVariantRecommendation } from 'utils/types/utils'

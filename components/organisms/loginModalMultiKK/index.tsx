@@ -2,7 +2,7 @@ import React from 'react'
 import styles from 'styles/components/organisms/loginModalMultiKK.module.scss'
 import { Button, Gap, Modal } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'utils/enum'
-import { LoginSevaUrl } from 'const/routes'
+import { LoginSevaUrl } from 'utils/helpers/routes'
 import { useRouter } from 'next/router'
 
 const IlustrationLoginModal =

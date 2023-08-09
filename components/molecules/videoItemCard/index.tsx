@@ -8,9 +8,9 @@ import Youtube, { YouTubeEvent } from 'react-youtube'
 import elementId from 'helpers/elementIds'
 import { trackPDPGalleryVideo } from 'helpers/amplitude/seva20Tracking'
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { LocalStorageKey } from 'utils/models/models'
+import { useCar } from 'services/context/carContext'
 
 interface Props {
   data: VideoDataType
@@ -19,7 +19,7 @@ interface Props {
 export const VideoItemCard = ({ data }: Props) => {
   const { currentLanguage } = useCurrentLanguageFromContext()
   const [showVideo, setShowVideo] = useState(false)
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,

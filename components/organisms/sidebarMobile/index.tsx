@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Avatar, Button } from 'components/atoms'
 import { MenuList } from 'components/molecules'
 import styles from '../../../styles/components/organisms/sidebarMobile.module.scss'
-import { LoginSevaUrl } from 'const/routes'
+import { LoginSevaUrl } from 'utils/helpers/routes'
 import { useContextMobileWebTopMenus } from 'context/mobileWebTopMenuContext/mobileWebTopMenuContext'
 import { getMobileWebTopMenu } from 'services/menu'
 import { getToken } from 'utils/api'
@@ -51,7 +51,7 @@ const sidebarMobile = ({
   const fetchMobileWebTopMenu = async () => {
     const response = await getMobileWebTopMenu()
     if (response.data) {
-      setMobileWebTopMenus(response.data.data)
+      setMobileWebTopMenus(response.data)
     }
   }
 

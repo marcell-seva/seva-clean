@@ -98,7 +98,6 @@ export const FormDP = ({
       //   Number(filterNonDigitCharacters(downPaymentAmountTmp.toString())),
       // )
     }
-    console.log('test1', downPaymentAmountTmp)
   }, [isResetFilter, isApplied, isButtonClick])
   useEffect(() => {
     setMinDp(Currency(Number(minPriceValidation / 100) * 20))

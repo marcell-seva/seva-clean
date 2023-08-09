@@ -1,6 +1,5 @@
 import { AxiosResponse } from 'axios'
-import endpoints from 'helpers/endpoints'
-import { API } from 'utils/api'
+import { api } from 'services/api'
 import { encryptValue } from 'utils/encryptionUtils'
 import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { saveLocalStorage } from 'utils/localstorageUtils'
@@ -10,7 +9,7 @@ import { CustomerInfoSeva } from 'utils/types/utils'
 import { setAmplitudeUserId } from './amplitude'
 
 export const getCustomerInfoSeva = () => {
-  return API.get(endpoints.customersInfo)
+  return api.getUserInfo()
 }
 
 export const getCustomerInfoWrapperSeva = () => {

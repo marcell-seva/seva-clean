@@ -1,6 +1,9 @@
 import get from './get'
 import post from './post'
 import { collections } from './collections'
+import { AxiosRequestConfig } from 'axios'
+import { SpecialRateRequest } from 'utils/types/utils'
+import { CreateProbeTrackRequest } from 'services/probe'
 // import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 // import { getLocalStorage } from 'utils/handler/localStorage'
 // import { UTMTagsData } from 'utils/types/props'
@@ -60,34 +63,47 @@ const getConfigToken = () => {
 const getMenu = () => get(collections.utils.menu)
 const getCities = () => get(collections.utils.cities)
 const getTestimony = () => get(collections.utils.testimonials)
-const getRecommendation = (params?: string) =>
-  get(collections.product.recommendation + params)
+const getRecommendation = (params?: string, config?: AxiosRequestConfig) =>
+  get(collections.product.recommendation + params, config)
 const getUsage = () => get(collections.utils.usage)
 const getMetaTagData = (carModel: string) =>
   get(collections.utils.metaTag + carModel)
 const getMainArticle = (params: string) =>
-  get(collections.article.mainArticle + params)
+  get(collections.article.mainArticle + params, {
+    headers: {
+      'Content-Type': 'text/plain',
+    },
+  })
 const getSubArticle = (params: number) =>
   get(collections.article.subArticle + params)
-const getCarModelDetails = (id: string, params: string) =>
-  get(collections.product.modelDetails.replace(':id', id) + params)
-const getCarVariantDetails = (id: string, params: string) =>
-  get(collections.product.variantDetails.replace(':id', id) + params)
-const getVariantCar = (params: string) =>
-  get(collections.product.variant + params)
-const getTypeCar = (params: string) => get(collections.product.type + params)
+const getCarModelDetails = (
+  id: string,
+  params: string,
+  config?: AxiosRequestConfig,
+) => get(collections.product.modelDetails.replace(':id', id) + params, config)
+const getCarVariantDetails = (
+  id: string,
+  params: string,
+  config?: AxiosRequestConfig,
+) => get(collections.product.variantDetails.replace(':id', id) + params, config)
+const getVariantCar = (params?: string, config?: AxiosRequestConfig) =>
+  get(collections.product.variant + params, config)
+const getTypeCar = (params: string, config?: AxiosRequestConfig) =>
+  get(collections.product.type + params, config)
 const getBanner = () => get(collections.utils.banner)
 const getCarofTheMonth = () => get(collections.product.carofTheMonth)
 const getCarVideoReview = () => get(collections.product.carVideoReview)
-const getAnnouncementBox = () => get(collections.utils.announcementBox)
+const getAnnouncementBox = (config: AxiosRequestConfig) =>
+  get(collections.utils.announcementBox, config)
 const getUserInfo = () => get(collections.auth.user, getConfigToken())
 const getSupportedBrowsers = () => get(collections.utils.supportedBrowser)
 const getMobileFooterMenu = () => get(collections.utils.mobileFooterMenu)
 const getMobileHeaderMenu = () => get(collections.utils.mobileHeaderMenu)
-const getMinMaxPrice = (params: string) =>
-  get(collections.product.pricing + params)
-const getSearchDataQuery = (params: string) =>
-  get(collections.utils.search + params)
+const getMinMaxPrice = (params: string, config?: AxiosRequestConfig) =>
+  get(collections.product.pricing + params, config)
+const getSearchDataQuery = (params: string, config?: AxiosRequestConfig) =>
+  get(collections.utils.search + params, config)
+const getIncomeList = () => get(collections.utils.incomeList)
 
 // post request
 const postUnverifiedLeadsNew = (body: any) =>
@@ -97,6 +113,23 @@ const postSendSMSGeneration = (recaptchaToken: string, phoneNumber: string) =>
   post(collections.auth.otp, { recaptchaToken, phoneNumber })
 const postVerifyOTPGeneration = (otpCode: string, phoneNumber: string) =>
   post(collections.auth.otpVerification, { otpCode, phoneNumber })
+const postNewFunnelLoanSpecialRate = (
+  body: SpecialRateRequest,
+  config: AxiosRequestConfig,
+) => post(collections.loanCalculator.specialRate, body, config)
+const postNewFunnelCityRecommendations = (
+  body: {
+    modelName: string
+    city: string
+  },
+  config?: AxiosRequestConfig,
+) => post(collections.product.cityRecommendation, body, config)
+const postCustomerAssistantDetails = (phoneNumber: string) =>
+  post(collections.leads.customerAssistantDetails, { phoneNumber })
+const postCheckPromoGiias = (promoCode: string) =>
+  post(collections.utils.checkPromoCodeGias, { promoCode })
+const postProbeTrack = (body: CreateProbeTrackRequest) =>
+  post(collections.utils.probe, { body })
 
 export const api = {
   getMenu,
@@ -121,9 +154,15 @@ export const api = {
   getMinMaxPrice,
   getSearchDataQuery,
   getSupportedBrowsers,
+  getIncomeList,
 
   postUnverifiedLeadsNew,
   postRefreshToken,
   postSendSMSGeneration,
   postVerifyOTPGeneration,
+  postNewFunnelLoanSpecialRate,
+  postNewFunnelCityRecommendations,
+  postCustomerAssistantDetails,
+  postCheckPromoGiias,
+  postProbeTrack,
 }

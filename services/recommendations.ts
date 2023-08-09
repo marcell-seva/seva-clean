@@ -1,3 +1,4 @@
+import { api } from 'services/api'
 import {
   CarModelBasicDetailsResponse,
   CarModelDetailsResponse,
@@ -6,8 +7,6 @@ import { CarRecommendation } from './../utils/types/utils'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { Dispatch, SetStateAction } from 'react'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
-import endpoints from '../helpers/endpoints'
-import { API } from '../utils/api'
 import { CarRecommendationResponse } from 'utils/types/context'
 
 export const getCarModelDetailsById = (
@@ -17,10 +16,7 @@ export const getCarModelDetailsById = (
   const params = new URLSearchParams()
   getCity().cityCode && params.append('city', getCity().cityCode as string)
   getCity().id && params.append('cityId', getCity().id as string)
-  return API.get(endpoints.modelDetails.replace(':id', id), {
-    params,
-    ...config,
-  })
+  return api.getCarModelDetails(id, '', { params })
 }
 
 export const getCarVariantDetailsById = (
@@ -30,10 +26,7 @@ export const getCarVariantDetailsById = (
   const params = new URLSearchParams()
   getCity().cityCode && params.append('city', getCity().cityCode as string)
   getCity().id && params.append('cityId', getCity().id as string)
-  return API.get(endpoints.variantDetails.replace(':id', id), {
-    params,
-    ...config,
-  })
+  return api.getCarVariantDetails(id, '', { params })
 }
 
 export const mergeModelDetailsWithLoanRecommendations = (
@@ -54,9 +47,7 @@ export const mergeModelDetailsWithLoanRecommendations = (
 const updateCarModelDetailsWithLoanInfo = (
   recommendations: CarRecommendation[],
   carModelDetails: CarModelBasicDetailsResponse,
-  setCarModelDetails: React.Dispatch<
-    React.SetStateAction<CarModelDetailsResponse | undefined>
-  >,
+  setCarModelDetails: (data: CarModelDetailsResponse) => void,
 ) => {
   carModelDetails &&
     setCarModelDetails(
@@ -69,18 +60,12 @@ const updateCarModelDetailsWithLoanInfo = (
 
 export const handleRecommendationsAndCarModelDetailsUpdate =
   (
-    setRecommendations: Dispatch<SetStateAction<CarRecommendation[]>>,
-    setCarModelDetails: Dispatch<
-      SetStateAction<CarModelDetailsResponse | undefined>
-    >,
+    setRecommendations: (data: CarRecommendation[] | []) => void,
+    setCarModelDetails: (data: CarModelDetailsResponse) => void,
   ) =>
-  ([recommendationsResponse, carModelDetailsResponse]: [
-    AxiosResponse<CarRecommendationResponse>,
-    AxiosResponse<CarModelDetailsResponse>,
-  ]) => {
-    const recommendations =
-      recommendationsResponse.data.carRecommendations || []
-    const carModelDetails = carModelDetailsResponse.data
+  ([recommendationsResponse, carModelDetailsResponse]: any) => {
+    const recommendations = recommendationsResponse.carRecommendations || []
+    const carModelDetails = carModelDetailsResponse
 
     setRecommendations(recommendations)
     updateCarModelDetailsWithLoanInfo(
@@ -106,5 +91,5 @@ export const handleCarModelDetailsUpdate =
   }
 
 export const getIncomeList = () => {
-  return API.get(endpoints.incomeList)
+  return api.getIncomeList()
 }

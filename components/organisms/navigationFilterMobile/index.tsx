@@ -10,17 +10,17 @@ import {
 } from 'components/atoms'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import { sortOptions } from 'config/funnel.config'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import clsx from 'clsx'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import { AxiosResponse } from 'axios'
-import { carResultsUrl } from 'const/routes'
+import { carResultsUrl } from 'utils/helpers/routes'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import { ButtonSize, ButtonVersion, LanguageCode } from 'utils/enum'
 import { CarRecommendationResponse } from 'utils/types/context'
+import { useCar } from 'services/context/carContext'
 // import { useQuery } from 'hooks/useQuery'
 
 type NavFilterMobileProps = {
@@ -49,7 +49,7 @@ export const NavigationFilterMobile = ({
 }: NavFilterMobileProps) => {
   const router = useRouter()
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
-  const { recommendations } = useContextRecommendations()
+  const { recommendation } = useCar()
   const { sortBy } = funnelQuery
   const filterSortOption = sortOptions.filter((x) => x.value === sortBy)[0]
   const sortFilter = filterSortOption?.label || ''
@@ -64,11 +64,11 @@ export const NavigationFilterMobile = ({
     )
   }
   const showInformDaihatsu = useMemo(() => {
-    const collectDaihatsu = recommendations.some(
+    const collectDaihatsu = recommendation.some(
       (item) => item.brand === 'Daihatsu',
     )
     return collectDaihatsu
-  }, [recommendations])
+  }, [recommendation])
 
   const removeFinancialFilter = () => {
     patchFunnelQuery({
@@ -128,39 +128,35 @@ export const NavigationFilterMobile = ({
     }
   }
   const newFunnel = async (filter: any) => {
-    getNewFunnelRecommendations(filter).then(
-      (response: AxiosResponse<CarRecommendationResponse>) => {
-        setRecommendations(response.data.carRecommendations)
-        const paramUrl = {
-          age: String(filter.age),
-          downPaymentAmount:
-            (filter.downPaymentAmount && filter.downPaymentAmount.toString()) ||
-            '',
-          monthlyIncome:
-            (filter.monthlyIncome && filter.monthlyIncome.toString()) || '',
-          priceRangeGroup: filter.priceRangeGroup,
-          bodyType:
-            filter.bodyType.length > 0
-              ? String(filter.bodyType).replace(' ', ',')
-              : '',
-          // sortBy: sortBy,
-          brand:
-            filter.brand.length > 0
-              ? String(filter.brand).replace(' ', ',')
-              : '',
-          tenure: String(filter.tenure),
-          sortBy: String(funnelQuery.sortBy) || 'lowToHigh',
-        }
-        router.replace({
-          pathname: carResultsUrl,
-          search: new URLSearchParams(
-            Object.entries(paramUrl).filter(([, v]) => v !== ''),
-          )
-            .toString()
-            .replace('%2C', ','),
-        })
-      },
-    )
+    getNewFunnelRecommendations(filter).then((response: any) => {
+      setRecommendations(response.carRecommendations)
+      const paramUrl = {
+        age: String(filter.age),
+        downPaymentAmount:
+          (filter.downPaymentAmount && filter.downPaymentAmount.toString()) ||
+          '',
+        monthlyIncome:
+          (filter.monthlyIncome && filter.monthlyIncome.toString()) || '',
+        priceRangeGroup: filter.priceRangeGroup,
+        bodyType:
+          filter.bodyType.length > 0
+            ? String(filter.bodyType).replace(' ', ',')
+            : '',
+        // sortBy: sortBy,
+        brand:
+          filter.brand.length > 0 ? String(filter.brand).replace(' ', ',') : '',
+        tenure: String(filter.tenure),
+        sortBy: String(funnelQuery.sortBy) || 'lowToHigh',
+      }
+      router.replace({
+        pathname: carResultsUrl,
+        search: new URLSearchParams(
+          Object.entries(paramUrl).filter(([, v]) => v !== ''),
+        )
+          .toString()
+          .replace('%2C', ','),
+      })
+    })
   }
 
   return (

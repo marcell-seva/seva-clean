@@ -1,7 +1,7 @@
 import { ArrowRightOutlined } from 'components/atoms/icon/ArrowRightOutlined'
 import Link from 'next/link'
 import React from 'react'
-import { SalesDashboardPAUrl, SalesDashboardUrl } from 'const/routes'
+import { SalesDashboardPAUrl, SalesDashboardUrl } from 'utils/helpers/routes'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 

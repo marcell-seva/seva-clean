@@ -1,8 +1,8 @@
 import { DownOutlined } from 'components/atoms'
-import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 import { useRouter } from 'next/router'
 import React, { useState, useEffect, useRef } from 'react'
 import { api } from 'services/api'
+import { useCar } from 'services/context/carContext'
 import { getCarVariantDetailsById } from 'services/recommendations'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
@@ -33,7 +33,7 @@ export const SpecificationSelect = ({
   const [selected, setSelected] = useState(options[0])
   // const [isInitalValueEmpty, setIsInitalValueEmpty] = useState(false)
   const [showOption, setShowOption] = useState(false)
-  const { setCarVariantDetails } = useContextCarVariantDetails()
+  const { saveCarVariantDetails } = useCar()
   const inputRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
@@ -86,7 +86,7 @@ export const SpecificationSelect = ({
                 setSelected(option)
                 getCarVariantDetailsById(option.id).then((result3) => {
                   if (result3.data.variantDetail.priceValue != null) {
-                    setCarVariantDetails(result3.data)
+                    saveCarVariantDetails(result3.data)
                   }
                 })
                 onChooseOption && onChooseOption(option)

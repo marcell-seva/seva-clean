@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios'
 import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import React, { useEffect, useState } from 'react'
-import { carResultsUrl } from 'const/routes'
+import { carResultsUrl } from 'utils/helpers/routes'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
@@ -10,7 +10,7 @@ import { useMediaQuery } from 'react-responsive'
 import { DesktopShimmerCarBrand } from './DesktopShimmerCarBrand'
 import { CarBrandItemCreditTab } from './CarBrandItemCreditTab'
 import { useContextSurveyFormData } from 'context/surveyFormContext/surveyFormContext'
-import { million } from 'const/const'
+import { million } from 'utils/helpers/const'
 import 'pure-react-carousel/dist/react-carousel.es.css'
 import { CarRecommendation } from 'utils/types'
 import { CarRecommendationResponse } from 'utils/types/context'
@@ -143,7 +143,7 @@ export const CarBrandRecommendationCreditTab = ({
       false,
       false,
     )
-      .then((response: AxiosResponse<CarRecommendationResponse>) => {
+      .then((response) => {
         handleSuccess(response)
       })
       .catch((e) => {
@@ -152,9 +152,9 @@ export const CarBrandRecommendationCreditTab = ({
   }, [isCheckedGroups, load])
 
   const handleSuccess = (
-    response: AxiosResponse<CarRecommendationResponse>,
+    response: any,
   ) => {
-    const tmpData = response.data.carRecommendations.slice(0, 6) || []
+    const tmpData = response.carRecommendations.slice(0, 6) || []
     if (tmpData.length > 0) {
       if (tmpData.length < 5) {
         const tmpData2 = tmpData

@@ -1,4 +1,3 @@
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import React, { memo, useContext, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
@@ -18,7 +17,6 @@ import {
   replacePriceSeparatorByLocalization,
 } from 'utils/numberUtils/numberUtils'
 import { setTrackEventMoEngage } from 'helpers/moengage'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
 import { Description } from 'components/organisms/OldPdpSectionComponents/Description/Description'
 import { SpecificationSelect } from 'components/organisms/OldPdpSectionComponents/SpecificationSelect/SpecificationSelect'
 import { SpecificationDetail } from 'components/organisms/OldPdpSectionComponents/SpecificationDetail/SpecificationDetail'
@@ -28,22 +26,20 @@ import {
   LanguageCode,
   LocalStorageKey,
 } from 'utils/enum'
-import { useContextCarVariantDetails } from 'context/carVariantDetailsContext/carVariantDetailsContext'
 import { CarVariantRecommendation, CityOtrOption } from 'utils/types'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { trackVariantDetailsEvent } from 'components/organisms/OldPdpSectionComponents/variantDetailsUtils'
 import { useCarResultParameter } from 'utils/hooks/useAmplitudePageView/useAmplitudePageView'
 import { trackSelectCarResultVariantDetailsViewBrochure } from 'helpers/amplitude/newFunnelEventTracking'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { useCar } from 'services/context/carContext'
 
 type tabProps = {
   tab: string | undefined
   isSticky?: boolean
 }
 const Specification = memo(({ tab, isSticky }: tabProps) => {
-  const { carModelDetails } = useContextCarModelDetails()
-  const { carVariantDetails } = useContextCarVariantDetails()
-  const { recommendations } = useContextRecommendations()
+  const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const {
     carModelDetailsResDefaultCity,
     carVariantDetailsResDefaultCity,
@@ -52,8 +48,8 @@ const Specification = memo(({ tab, isSticky }: tabProps) => {
   const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
   const variantDetailData = carVariantDetails || carVariantDetailsResDefaultCity
   const recommendationsDetailData =
-    recommendations.length !== 0
-      ? recommendations
+    recommendation.length !== 0
+      ? recommendation
       : carRecommendationsResDefaultCity.carRecommendations
   const carResultParameter = useCarResultParameter()
   const { setSpecialRateResults } = useContextSpecialRateResults()

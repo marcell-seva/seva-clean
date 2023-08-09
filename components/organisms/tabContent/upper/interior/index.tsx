@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Gallery } from 'components/molecules'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useMediaQuery } from 'react-responsive'
+import { useCar } from 'services/context/carContext'
 
 export const InteriorTab = ({
   emitActiveIndex,
@@ -10,7 +10,7 @@ export const InteriorTab = ({
   isPreviewOpened,
   isShowAnnouncementBox,
 }: any) => {
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
   const [interiorImage, setInteriorImage] = useState<Array<string>>([])
   const { images: carModelImages } = { ...carModelDetails }
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })

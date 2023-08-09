@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import { useMediaQuery } from 'react-responsive'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { CityOtrOption } from 'utils/types'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
@@ -11,6 +10,7 @@ import elementId from 'helpers/elementIds'
 import { ActionButton } from '../HeaderActionButton/HeaderActionButton'
 import Link from 'next/link'
 import { Button, ButtonType } from 'components/atoms/ButtonOld/Button'
+import { useCar } from 'services/context/carContext'
 
 export type StickyButtonProps = {
   onClickPenawaran?: () => void
@@ -32,7 +32,7 @@ export function StickyButton({ isSticky, ...props }: StickyButtonProps) {
 }
 
 const BrandModelActionButton = (props: StickyButtonProps) => {
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,

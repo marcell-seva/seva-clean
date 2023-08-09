@@ -9,14 +9,13 @@ import React, {
 // import { useShareModal } from 'components/ShareModal/ShareModal'
 // import { FooterSeva } from 'pages/component/FooterSeva/FooterSeva'
 // import { Link, useParams } from 'react-router-dom'
-import { variantListUrl } from 'const/routes'
+import { variantListUrl } from 'utils/helpers/routes'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 // import { Params } from './CarVariantListPage'
 // import { ContentPage } from './ContentPage'
 import { useMediaQuery } from 'react-responsive'
 import { trackCarVariantShareClick } from 'helpers/amplitude/seva20Tracking'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
 import { useRouter } from 'next/router'
 import { StickyButtonProps } from 'components/molecules/StickyButton/StickyButton'
@@ -27,9 +26,10 @@ import { CarHeader } from 'components/molecules/CarHeader/CarHeader'
 import Link from 'next/link'
 import { ContentPage } from '../ContentPage/ContentPage'
 import { useShareModal } from 'components/molecules/OldShareModal/ShareModal'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 import { FooterSeva } from '../FooterSeva'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { useCar } from 'services/context/carContext'
 
 export interface HeaderAndContentProps extends StickyButtonProps {
   onSticky?: (sticky: boolean) => void
@@ -48,7 +48,7 @@ export const HeaderAndContent = ({
   const [scrollXTab, setScrollXTab] = useState(0)
   const isDesktop = useMediaQuery({ query: '(min-width: 1025px)' })
   const [scrollPosition, setScrollPosition] = useState(0)
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
   const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
   const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(

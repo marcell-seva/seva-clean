@@ -1,4 +1,4 @@
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 import { LocalStorageKey } from './enum'
 
 interface DataWithExpiry<T> {
