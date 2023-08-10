@@ -25,7 +25,7 @@ import { getMinimumMonthlyInstallment } from 'utils/carModelUtils/carModelUtils'
 import { hundred, million } from 'utils/helpers/const'
 import { availableList, availableListColors } from 'config/AvailableListColors'
 import { setTrackEventMoEngage } from 'helpers/moengage'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { getNewFunnelLoanSpecialRate } from 'services/newFunnel'
 import { useCar } from 'services/context/carContext'
 
@@ -183,8 +183,6 @@ export const PriceTab = ({
         .catch(() => {
           // TODO add error toast
         })
-    } else {
-      console.log('ssss')
     }
   }
   const getPriceRange = (payload: any) => {

@@ -4,9 +4,7 @@ import Seo from 'components/atoms/seo'
 import { HomePageShimmer } from 'components/molecules'
 import HeaderVariant from 'components/molecules/header/header'
 import { client, defaultSeoImage } from 'utils/helpers/const'
-import { useContextContactFormPatch } from 'context/contactFormContext/contactFormContext'
 import { trackLandingPageView } from 'helpers/amplitude/seva20Tracking'
-import endpoints from 'helpers/endpoints'
 import {
   setTrackEventMoEngage,
   setTrackEventMoEngageWithoutValue,
@@ -18,20 +16,17 @@ import { useMediaQuery } from 'react-responsive'
 import { api } from 'services/api'
 import { getCustomerInfoWrapperSeva } from 'services/customer'
 import styled from 'styled-components'
-import { API, getToken } from 'utils/api'
+import { getToken } from 'utils/api'
 import { encryptValue } from 'utils/encryptionUtils'
 import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { useAmplitudePageView } from 'utils/hooks/useAmplitudePageView/useAmplitudePageView'
 import { useSessionStorage } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { saveLocalStorage } from 'utils/localstorageUtils'
-import {
-  ContactFormKey,
-  initUSPAttributes,
-  LocationStateKey,
-} from 'utils/models/models'
+import { ContactFormKey } from 'utils/models/models'
 import { BannerHomepageType, USPAttributes } from 'utils/types/utils'
 import { FunnelBackgroundSeva } from '../funnelBackgroundSeva'
 import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
+import { useContextForm } from 'services/context/formContext'
 
 const apiBanner = 'https://api.sslpots.com'
 
@@ -42,7 +37,7 @@ const HomepageDesktop: React.FC<HomepageDesktopProps> = ({}) => {
   const [topBannerData, setTopBannerData] =
     useState<BannerHomepageType[]>(dataBanner)
   const [uspData, setUspData] = useState<USPAttributes>(dataUsage)
-  const patchContactFormValue = useContextContactFormPatch()
+  const { patchFormContactValue: patchContactFormValue } = useContextForm()
   const [enableSalesDashboardButton, setEnableSalesDashboardButton] =
     useState(false)
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })

@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react'
 import { sendSMSGeneration, verifyOTPGeneration } from 'services/auth'
 import { useCountDownTimer } from 'utils/hooks/useCountDownTimer/useCountDownTimer'
-import { useLastOtpSentTime } from 'context/lastOtpSentTimeContext'
 import { saveOtpIsSent, saveOtpTimerIsStart } from 'utils/otpUtils'
 import { encryptValue } from 'utils/encryptionUtils'
 import { IconLoading, Modal } from 'components/atoms'
@@ -20,6 +19,7 @@ import {
 } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { t } from 'config/localization/locales/id'
+import { useUtils } from 'services/context/utilsContext'
 
 export const OTP = ({
   phoneNumber,
@@ -29,7 +29,7 @@ export const OTP = ({
   onFailed,
   savedTokenAfterVerify,
 }: any): JSX.Element => {
-  const { lastOtpSentTime, setLastOtpSentTime } = useLastOtpSentTime()
+  const { lastOtpSentTime, setLastOtpSentTime } = useUtils()
   const [otp, setOtp] = useState<string>(' ')
   const [isErrorInput, setIsErrorInput] = useState<boolean>(false)
   const [isInit, setIsInit] = useState(true)

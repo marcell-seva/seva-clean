@@ -1,7 +1,6 @@
 import { ToastType, useToast } from 'components/atoms/OldToast/Toast'
-import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
-import { useContextSpecialRateResults } from 'context/specialRateResultsContext/specialRateResultsContext'
-import { useContextSurveyFormData } from 'context/surveyFormContext/surveyFormContext'
+import { useUtils } from 'services/context/utilsContext'
+import { useContextCalculator } from 'services/context/calculatorContext'
 import {
   CarVariantCreditTabParam,
   trackCreditPeluangLainnyaClick,
@@ -41,7 +40,7 @@ import {
 import { isIphone } from 'utils/window'
 import { LoanRankStatus } from '../LoanRankStatus/BadgeLoanStatus'
 import { useCar } from 'services/context/carContext'
-import { useContextCarModel } from 'context/carModelContext/carModelContext'
+import { useContextForm } from 'services/context/formContext'
 
 const ShimmerLoader = '/revamp/illustration/placeholder.gif'
 
@@ -62,12 +61,12 @@ export const CarBrandItemCreditTab = ({
     saveRecommendation,
     saveCarModelDetails,
     saveCarVariantDetails,
+    setCarModel,
   } = useCar()
-  const { setSpecialRateResults } = useContextSpecialRateResults()
-  const { currentLanguage } = useCurrentLanguageFromContext()
+  const { setSpecialRateResults } = useContextCalculator()
+  const { currentLanguage } = useUtils()
   const carResultParameters = useCarResultParameter()
-  const contextSurveyFormData = useContextSurveyFormData()
-  const { setCarModel } = useContextCarModel()
+  const { formSurveyValue: contextSurveyFormData } = useContextForm()
   const { showToast, RenderToast } = useToast()
   const { t } = useTranslation()
   const [, setLoanDetails] = useLocalStorage<CarVariantLoan | null>(

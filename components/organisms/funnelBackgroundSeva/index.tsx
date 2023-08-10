@@ -6,7 +6,7 @@ import {
   trackLandingPageLeadsFormSubmit,
 } from 'helpers/amplitude/seva20Tracking'
 import { setTrackEventMoEngageWithoutValue } from 'helpers/moengage'
-import { useModalContext } from 'context/modalContext/modalContext'
+import { useModalContext } from 'services/context/modalContext'
 import { getCities } from 'services/cities'
 import {
   BannerHomepageType,

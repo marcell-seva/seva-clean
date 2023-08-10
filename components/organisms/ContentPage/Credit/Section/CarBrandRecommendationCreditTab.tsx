@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import React, { useEffect, useState } from 'react'
 import { carResultsUrl } from 'utils/helpers/routes'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
@@ -9,11 +9,11 @@ import { CarouselProvider, Slider, Slide } from 'pure-react-carousel'
 import { useMediaQuery } from 'react-responsive'
 import { DesktopShimmerCarBrand } from './DesktopShimmerCarBrand'
 import { CarBrandItemCreditTab } from './CarBrandItemCreditTab'
-import { useContextSurveyFormData } from 'context/surveyFormContext/surveyFormContext'
 import { million } from 'utils/helpers/const'
 import 'pure-react-carousel/dist/react-carousel.es.css'
 import { CarRecommendation } from 'utils/types'
 import { CarRecommendationResponse } from 'utils/types/context'
+import { useContextForm } from 'services/context/formContext'
 
 const LogoToyota = '/revamp/icon/logo-toyota.webp'
 const LogoDaihatsu = '/revamp/icon/logo-daihatsu.webp'
@@ -41,11 +41,11 @@ export const CarBrandRecommendationCreditTab = ({
   onClickNewModel,
   onReset,
 }: CarBranchRecommendationProps) => {
-  const { clearFunnelQuery } = useFunnelQueryData()
+  const { clearQueryFilter: clearFunnelQuery } = useFunnelQueryData()
   const [isCheckedGroups, setIsCheckedBrand] = useState('Toyota')
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const [load, setLoad] = useState(false)
-  const surveyFormData = useContextSurveyFormData()
+  const { formSurveyValue: surveyFormData } = useContextForm()
 
   const [recommendationLists, setRecommendationLists] = useState<
     CarRecommendation[]
@@ -151,9 +151,7 @@ export const CarBrandRecommendationCreditTab = ({
       })
   }, [isCheckedGroups, load])
 
-  const handleSuccess = (
-    response: any,
-  ) => {
+  const handleSuccess = (response: any) => {
     const tmpData = response.carRecommendations.slice(0, 6) || []
     if (tmpData.length > 0) {
       if (tmpData.length < 5) {
@@ -162,11 +160,13 @@ export const CarBrandRecommendationCreditTab = ({
         setAllRecommendationLists(tmpData2)
         const data = tmpData2
           .filter((car: any) => car.loanRank === 'Green')
-          .map((o) => o.id)
+          .map((o: any) => o.id)
         setRecommendationLists(
           tmpData2
             .filter((car: any) => car.loanRank === 'Green')
-            .filter(({ id }, index) => !data.includes(id, index + 1)),
+            .filter(
+              ({ id }: any, index: number) => !data.includes(id, index + 1),
+            ),
         )
       } else {
         setAllRecommendationLists(tmpData)

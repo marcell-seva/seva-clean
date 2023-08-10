@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
-import { useModalContext } from 'context/modalContext/modalContext'
+import { useModalContext } from 'services/context/modalContext'
 import { useMediaQuery } from 'react-responsive'
 import { useModal } from 'components/atoms/ModalOld/Modal'
 import { IconClose } from 'components/atoms'

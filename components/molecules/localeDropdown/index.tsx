@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import { useTranslation } from 'react-i18next'
-import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
+import { useUtils } from 'services/context/utilsContext'
 import { LanguageCode } from 'utils/models/models'
 import { FlagIndonesia } from 'components/atoms/icon/FlagIndonesia'
 import { FlagUSA } from 'components/atoms/icon/FlagUSA'
@@ -38,8 +38,7 @@ export const LocaleDropDown = () => {
 
   const { i18n } = useTranslation()
 
-  const { currentLanguage, setCurrentLanguage } =
-    useCurrentLanguageFromContext()
+  const { currentLanguage, setCurrentLanguage } = useUtils()
 
   const changeLanguage = (targetLanguage: LanguageCode) => {
     i18n.changeLanguage(targetLanguage)

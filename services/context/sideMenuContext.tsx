@@ -1,5 +1,5 @@
-import patchDataContext from 'context/patchDataContext/patchDataContext'
 import { useContext } from 'react'
+import patchDataContext from './patchDataContext'
 
 export interface SideMenuType {
   isOpenLevel1: boolean

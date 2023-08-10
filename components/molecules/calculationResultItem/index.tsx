@@ -3,7 +3,7 @@ import styles from 'styles/components/molecules/calculationResultItem.module.scs
 import { SpecialRateListType } from 'utils/types/utils'
 import { IconChecklist, IconWarning } from 'components/atoms'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
-import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
+import { useUtils } from 'services/context/utilsContext'
 import { LoanRank } from 'utils/models/models'
 import clsx from 'clsx'
 import elementId from 'helpers/elementIds'
@@ -19,7 +19,7 @@ export const CalculationResultItem = ({
   emitOnClick,
   isActive,
 }: Props) => {
-  const { currentLanguage } = useCurrentLanguageFromContext()
+  const { currentLanguage } = useUtils()
 
   const renderLoanRankIcon = () => {
     if (data.loanRank === LoanRank.Green) {

@@ -1,4 +1,4 @@
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import React from 'react'
 import { BottomSheetProps } from 'react-spring-bottom-sheet'
 import { BottomSheet } from 'components/atoms'

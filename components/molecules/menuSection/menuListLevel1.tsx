@@ -12,7 +12,7 @@ import {
   ProfileWrapperDetail,
   ProfileGreetingHai,
 } from './sidebarItemStyle'
-import { useSideMenuListContext } from 'context/sideMenuListContext/sideMenuListContext'
+import { useSideMenuListContext } from 'services/context/sideMenuListContext'
 import {
   LoginSevaUrl,
   refinancingUrl,
@@ -23,7 +23,7 @@ import { savePageBeforeLogin } from 'utils/loginUtils'
 import { removeWhitespacesAndToLowerCase } from 'utils/stringUtils'
 import { fetchCustomerDetails } from 'utils/httpUtils/customerUtils'
 import { getToken } from 'utils/api'
-import { useSideMenuContext } from 'context/sideMenuContext/sideMenuContext'
+import { useSideMenuContext } from 'services/context/sideMenuContext'
 import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
 import urls from 'helpers/urls'

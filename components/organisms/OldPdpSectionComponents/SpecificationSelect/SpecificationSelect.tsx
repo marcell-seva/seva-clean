@@ -67,7 +67,7 @@ export const SpecificationSelect = ({
   const getVarintDetail = async (optionId: string) => {
     api.getCarVariantDetails(optionId, getCityParam()).then((result3: any) => {
       if (result3.variantDetail.priceValue != null) {
-        setCarVariantDetails(result3)
+        saveCarVariantDetails(result3)
       }
     })
   }

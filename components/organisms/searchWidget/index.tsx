@@ -58,8 +58,8 @@ import {
 } from 'services/context'
 import { api } from 'services/api'
 import { getCity } from 'utils/hooks/useGetCity'
-import { useFinancialQueryData } from 'context/financialQueryContext/financialQueryContext'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 
 export const initDataWidget = {
   downPaymentAmount: '',

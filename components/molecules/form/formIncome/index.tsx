@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import styles from '../../../../styles/components/molecules/form/formPrice.module.scss'
 import { Input } from 'antd'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { getConvertFilterIncome } from 'utils/filterUtils'

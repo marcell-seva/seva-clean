@@ -1,5 +1,5 @@
 import { Context, createContext, useContext, useEffect, useState } from 'react'
-import { CarDetail } from 'utils/types'
+import { CarDetail, CarModelResponse } from 'utils/types'
 import {
   CarModelDetailsResponse,
   CarRecommendation,
@@ -9,6 +9,8 @@ import {
 export type CarContextType = {
   car: CarDetail | null
   saveCar: (data: CarDetail) => void
+  carModel: CarModelResponse | null
+  saveCarModel: (data: CarModelResponse) => void
   carModelDetails: CarModelDetailsResponse | null
   saveCarModelDetails: (data: CarModelDetailsResponse) => void
   carVariantDetails: CarVariantDetails | null
@@ -20,6 +22,8 @@ export type CarContextType = {
 export const CarContext = createContext<CarContextType>({
   car: null,
   saveCar: () => {},
+  carModel: null,
+  saveCarModel: () => {},
   carModelDetails: null,
   saveCarModelDetails: () => {},
   carVariantDetails: null,
@@ -30,6 +34,7 @@ export const CarContext = createContext<CarContextType>({
 
 export const CarProvider = ({ children }: any) => {
   const [car, setCar] = useState<CarDetail | null>(null)
+  const [carModel, setCarModel] = useState<CarModelResponse | null>(null)
   const [carModelDetails, setCarModelDetails] =
     useState<CarModelDetailsResponse | null>(null)
   const [carVariantDetails, setCarVariantDetails] =
@@ -40,6 +45,10 @@ export const CarProvider = ({ children }: any) => {
 
   const saveCar = (car: CarDetail) => {
     setCar(car)
+  }
+
+  const saveCarModel = (carModel: CarModelResponse) => {
+    setCarModel(carModel)
   }
 
   const saveCarModelDetails = (carModelDetailsData: CarModelDetailsResponse) =>
@@ -57,6 +66,8 @@ export const CarProvider = ({ children }: any) => {
       value={{
         car,
         saveCar,
+        carModel,
+        saveCarModel,
         carModelDetails,
         saveCarModelDetails,
         carVariantDetails,

@@ -11,7 +11,6 @@ import {
 } from 'utils/types/utils'
 import PLPDesktop from 'components/organisms/PLPDesktop'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
-import { MenuContext } from 'context/menuContext'
 import { api } from 'services/api'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
@@ -30,24 +29,18 @@ const NewCarResultPage = ({
         image={defaultSeoImage}
       />
 
-      <MenuContext.Provider
-        value={{
-          dataMenu,
-        }}
-      >
-        {isMobile ? (
-          <PLP
-            carRecommendation={meta.carRecommendations}
-            minmaxPrice={meta.MinMaxPrice}
-            alternativeRecommendation={meta.alternativeCarRecommendation}
-          />
-        ) : (
-          <PLPDesktop
-            carRecommendation={meta.carRecommendations}
-            footer={meta.footer}
-          />
-        )}
-      </MenuContext.Provider>
+      {isMobile ? (
+        <PLP
+          carRecommendation={meta.carRecommendations}
+          minmaxPrice={meta.MinMaxPrice}
+          alternativeRecommendation={meta.alternativeCarRecommendation}
+        />
+      ) : (
+        <PLPDesktop
+          carRecommendation={meta.carRecommendations}
+          footer={meta.footer}
+        />
+      )}
     </>
   )
 }

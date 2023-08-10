@@ -12,7 +12,7 @@ import {
 } from 'services/recommendations'
 import { formatPriceNumberThousandDivisor } from 'utils/numberUtils/numberUtils'
 import DOMPurify from 'dompurify'
-import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
+import { useUtils } from 'services/context/utilsContext'
 import { useMediaQuery } from 'react-responsive'
 import { trackLoanCalcWidgetItemClick } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
@@ -39,7 +39,7 @@ export const LoanCalculatorWidgetV2 = () => {
     useCar()
   const [suggestionsLists, setSuggestionsLists] = useState<CarSuggestions[]>([])
   const [isShowLoading, setShowLoading] = useState(true)
-  const { currentLanguage } = useCurrentLanguageFromContext()
+  const { currentLanguage } = useUtils()
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
   const resetLoadingState = () => {

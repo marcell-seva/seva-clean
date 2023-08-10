@@ -1,12 +1,12 @@
 import { NewInput } from 'components/atoms/input/newInput'
 import { Input } from 'components/atoms/OldInput/Input'
-import {
-  CountryCodePlusSign,
-  IndonesiaCountryCode,
-} from 'context/useContactFormData/useContactFormData'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import {
+  CountryCodePlusSign,
+  IndonesiaCountryCode,
+} from 'utils/hooks/useContactFormData/useContactFormData'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { FormLabel } from './FormComponents'
 import { formConfig } from './formConfig'

@@ -14,10 +14,10 @@ export const getCustomerInfoSeva = () => {
 
 export const getCustomerInfoWrapperSeva = () => {
   return getCustomerInfoSeva()
-    .then((response: AxiosResponse<CustomerInfoSeva[]>) => {
-      const customerId = response.data[0].id ?? ''
-      const customerName = response.data[0].fullName ?? ''
-      setAmplitudeUserId(response.data[0].phoneNumber ?? '')
+    .then((response) => {
+      const customerId = response[0].id ?? ''
+      const customerName = response[0].fullName ?? ''
+      setAmplitudeUserId(response[0].phoneNumber ?? '')
       saveLocalStorage(
         LocalStorageKey.CustomerId,
         encryptValue(customerId.toString()),

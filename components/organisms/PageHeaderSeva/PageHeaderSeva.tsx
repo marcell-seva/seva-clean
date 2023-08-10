@@ -20,7 +20,7 @@ import {
 } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
-import { useSideMenuContext } from 'context/sideMenuContext/sideMenuContext'
+import { useSideMenuContext } from 'services/context/sideMenuContext'
 import { useSearchModal } from 'components/molecules/searchModal/searchModal'
 import { NavbarItemResponse } from 'utils/types/utils'
 import { useEnableNewLogin } from 'utils/hooks/useEnableNewLogin'
@@ -100,8 +100,8 @@ export const PageHeaderSeva = memo((props: PageHeaderSevaProps) => {
       fetchDataCustomer()
     }
     getMenus().then((res) => {
-      setData(res.data.data)
-      setMenusData(res.data.data)
+      setData(res.data)
+      setMenusData(res.data)
     })
   }, [])
 

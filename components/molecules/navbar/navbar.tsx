@@ -10,11 +10,10 @@ import { NavbarItemResponse } from 'utils/types/utils'
 import { LocalStorageKey } from 'utils/models/models'
 import { NavbarItem } from './navbarItem'
 import { BeliMobilMenu } from './beliMobilMenu'
-import { MenuContext } from 'context/menuContext'
+import { useUtils } from 'services/context/utilsContext'
 
 export const Navbar = () => {
-  const { dataMenu: menus } = useContext(MenuContext)
-
+  const { dataMenu: menus } = useUtils()
   const filterCategory = (
     data: Array<NavbarItemResponse>,
     category: string,

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styles from 'styles/components/molecules/videoItemCard.module.scss'
 import { CityOtrOption, VideoDataType } from 'utils/types/utils'
 import { IconPlay } from 'components/atoms'
-import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
+import { useUtils } from 'services/context/utilsContext'
 import { articleDateFormat } from 'utils/dateUtils'
 import Youtube, { YouTubeEvent } from 'react-youtube'
 import elementId from 'helpers/elementIds'
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const VideoItemCard = ({ data }: Props) => {
-  const { currentLanguage } = useCurrentLanguageFromContext()
+  const { currentLanguage } = useUtils()
   const [showVideo, setShowVideo] = useState(false)
   const { carModelDetails } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(

@@ -1,14 +1,11 @@
 import { api } from 'services/api'
-import { AxiosRequestConfig } from 'axios'
-import { defaultContactFormValue } from 'context/useContactFormData/useContactFormData'
-import endpoints from 'helpers/endpoints'
-import { API } from 'utils/api'
 import {
   encryptedPrefix,
   decryptValue,
   encryptValue,
 } from 'utils/encryptionUtils'
 import { LocalStorageKey } from 'utils/enum'
+import { defaultContactFormValue } from 'utils/hooks/useContactFormData/useContactFormData'
 
 export const sendSMSGeneration = (
   recaptchaToken: string,

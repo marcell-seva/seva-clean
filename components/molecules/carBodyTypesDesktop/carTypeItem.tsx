@@ -1,6 +1,6 @@
 import { Shimmer } from 'components/atoms/shimmerOld'
 import { WebpPicture } from 'components/atoms/webpPicture'
-import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
+import { useUtils } from 'services/context/utilsContext'
 import { trackCarBodyTypeRecomItemClick } from 'helpers/amplitude/seva20Tracking'
 import { useRouter } from 'next/router'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
@@ -25,7 +25,7 @@ interface CarTileProps {
 export const CarTypeItem = ({ carModel, bodyTypeSelected }: CarTileProps) => {
   const router = useRouter()
   const { saveCarModelDetails, saveRecommendation } = useCar()
-  const { currentLanguage } = useCurrentLanguageFromContext()
+  const { currentLanguage } = useUtils()
   const onWrapperClick = () => {
     Promise.all([
       getNewFunnelAllRecommendations(),

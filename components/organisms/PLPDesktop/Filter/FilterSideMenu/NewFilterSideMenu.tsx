@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 import Image from 'next/image'
 import { colors } from 'styles/colors'
 import { Line } from 'components/atoms/Line'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import { AxiosResponse } from 'axios'
 import { carResultsUrl } from 'utils/helpers/routes'
@@ -92,7 +92,7 @@ export const NewFilterSideMenu = () => {
     funnelQuery,
     // setFunnelQuery,
     patchFunnelQuery,
-    clearFunnelQuery,
+    clearQueryFilter: clearFunnelQuery,
   } = useFunnelQueryData()
   const [openBodyType, setOpenBodyType] = useState(true)
   const [openDpOption, setOpenDpOption] = useState(true)

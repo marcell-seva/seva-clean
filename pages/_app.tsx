@@ -29,10 +29,10 @@ import 'styles/components/molecules/testimonial.scss'
 import 'styles/components/organisms/funnel-background.scss'
 import 'styles/CustomAnimationStyle.css'
 
-import { IsSsrMobileContext } from 'context/isSsrMobileContext'
 import { FBPixelStandardEvent, FB_PIXEL_ID } from 'helpers/facebookPixel'
 import { client } from 'utils/helpers/const'
 import Head from 'next/head'
+import { IsSsrMobileContext } from 'services/context/isSsrMobileContext'
 
 const kanyon = localFont({
   src: '../public/Kanyon-Regular.otf',

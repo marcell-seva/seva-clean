@@ -1,7 +1,7 @@
 import React, { MouseEventHandler } from 'react'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
-import { useModalContext } from 'context/modalContext/modalContext'
+import { useModalContext } from 'services/context/modalContext'
 import { useMediaQuery } from 'react-responsive'
 import elementId from 'helpers/elementIds'
 import { useModal } from 'components/atoms/ModalOld/Modal'

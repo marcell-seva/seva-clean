@@ -3,11 +3,7 @@ import { IconWarning, InfoCircleOutlined } from 'components/atoms'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
 import { filterNonDigitCharacters, isAmountValid } from 'utils/stringUtils'
-import {
-  useContextSurveyFormData,
-  useContextSurveyFormPatch,
-} from 'context/surveyFormContext/surveyFormContext'
-import { useContextSpecialRateResults } from 'context/specialRateResultsContext/specialRateResultsContext'
+import { useContextCalculator } from 'services/context/calculatorContext'
 import { getNewFunnelLoanSpecialRate } from 'services/newFunnel'
 import { saveLocalStorage } from 'utils/localstorageUtils'
 import { parsedMonthlyIncome } from 'utils/parsedMonthlyIncome'
@@ -18,11 +14,12 @@ import {
   SurveyFormKey,
 } from 'utils/models/models'
 import { NewFunnelCarVariantDetails, PreapprovalDataType } from 'utils/types'
-import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
+import { useUtils } from 'services/context/utilsContext'
 import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import { Input } from 'components/atoms/OldInput/Input'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { useContextForm } from 'services/context/formContext'
 
 interface AmountInputProps {
   value: string
@@ -59,16 +56,18 @@ export const CashAmountInputCarVariantPage = ({
   setIsLoadingLoanRank,
   name,
 }: AmountInputProps) => {
-  const { currentLanguage } = useCurrentLanguageFromContext()
-  const { setSpecialRateResults } = useContextSpecialRateResults()
-  const patchSurveyFormValue = useContextSurveyFormPatch()
+  const { currentLanguage } = useUtils()
+  const { setSpecialRateResults } = useContextCalculator()
+  const {
+    patchFormSurveyValue: patchSurveyFormValue,
+    formSurveyValue: contextSurveyFormData,
+  } = useContextForm()
   const [isInputError, setInputError] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState<string>(
     replacePriceSeparatorByLocalization(value, currentLanguage),
   )
   const [oldInputValue, setOldInputValue] = useState<string>(value)
   const [selectionStart, setSelectionStart] = useState<number>(0)
-  const contextSurveyFormData = useContextSurveyFormData()
   const inputRef = useRef<HTMLInputElement>(null)
   const [preapprovalSessionData, setPreapprovalSessionData] =
     useSessionStorageWithEncryption<PreapprovalDataType | string>(

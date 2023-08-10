@@ -6,33 +6,28 @@ import { UtilsContextProvider } from './utilsContext'
 import { ConfigProvider } from './configContext'
 import { CarProvider } from './carContext'
 import { AuthProvider } from './authContext'
-import { ContactFormProvider } from 'context/contactFormContext/contactFormContext'
-import { CurrentLanguageContextProvider } from 'context/currentLanguageContext/currentLanguageContext'
-import { FunnelFormContextProvider } from 'context/funnelFormContext/funnelFormContext'
-import { LastOtpSentTimeContextProviderRevamp } from 'context/lastOtpSentTimeContext'
-import { MobileWebTopMenusContextProvider } from 'context/mobileWebTopMenuContext/mobileWebTopMenuContext'
-import { ModalContextProvider } from 'context/modalContext/modalContext'
-import { SpecialRateListResultsContextProvider } from 'context/specialRateResultsContext/specialRateResultsContext'
-import { SurveyFormProvider } from 'context/surveyFormContext/surveyFormContext'
+import { CalculatorProvider } from './calculatorContext'
+import { FormContextProvider } from './formContext'
+import { ModalContextProvider } from './modalContext'
+import { SideMenuListContextProvider } from './sideMenuListContext'
+import { SideMenuContextProvider } from './sideMenuContext'
 
 const providers: Array<
   React.JSXElementConstructor<React.PropsWithChildren<any>>
 > = [
-  // FinancialQueryContextProvider,
+  FinancialQueryContextProvider,
   SearchWidgetProvider,
   UtilsContextProvider,
   ConfigProvider,
   AuthProvider,
   CarProvider,
   FunnelQueryContextProvider,
-  FunnelFormContextProvider,
-  MobileWebTopMenusContextProvider,
-  LastOtpSentTimeContextProviderRevamp,
+  AuthProvider,
+  CalculatorProvider,
+  FormContextProvider,
   ModalContextProvider,
-  SurveyFormProvider,
-  SpecialRateListResultsContextProvider,
-  CurrentLanguageContextProvider,
-  ContactFormProvider,
+  SideMenuListContextProvider,
+  SideMenuContextProvider,
 ]
 
 export const GlobalContextProvider = (props: HTMLAttributes<HTMLElement>) => {

@@ -7,7 +7,7 @@ import {
   getMinimumMonthlyInstallment,
 } from 'utils/carModelUtils/carModelUtils'
 import { hundred, million, ten } from 'utils/helpers/const'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
 import { LanguageCode } from 'utils/enum'
 import { getCityWithoutDefault } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'

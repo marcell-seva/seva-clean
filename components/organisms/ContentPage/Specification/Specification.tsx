@@ -4,7 +4,7 @@ import { colors } from 'styles/colors'
 import { Button, IconDownload } from 'components/atoms'
 // import { useCarResultParameter } from 'hooks/useAmplitudePageView/useAmplitudePageView'
 // import { trackSelectCarResultVariantDetailsViewBrochure } from 'helpers/amplitude/newFunnelEventTracking'
-import { useContextSpecialRateResults } from 'context/specialRateResultsContext/specialRateResultsContext'
+import { useContextCalculator } from 'services/context/calculatorContext'
 import { useMediaQuery } from 'react-responsive'
 import {
   trackDownloadBrosurClick,
@@ -52,7 +52,7 @@ const Specification = memo(({ tab, isSticky }: tabProps) => {
       ? recommendation
       : carRecommendationsResDefaultCity.carRecommendations
   const carResultParameter = useCarResultParameter()
-  const { setSpecialRateResults } = useContextSpecialRateResults()
+  const { setSpecialRateResults } = useContextCalculator()
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const [selected, setSelected] = useState<CarVariantRecommendation | null>(
     null,

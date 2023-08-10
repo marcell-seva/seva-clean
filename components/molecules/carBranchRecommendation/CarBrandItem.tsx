@@ -1,6 +1,6 @@
 import { Shimmer } from 'components/atoms/shimmerOld'
 import { WebpPicture } from 'components/atoms/webpPicture'
-import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
+import { useUtils } from 'services/context/utilsContext'
 import {
   trackCarBodyTypeRecomItemClick,
   trackCarBrandRecomItemClick,
@@ -31,7 +31,7 @@ export const CarBrandItem = ({
 }: CarTileProps) => {
   const router = useRouter()
   const { saveCarModelDetails, saveRecommendation } = useCar()
-  const { currentLanguage } = useCurrentLanguageFromContext()
+  const { currentLanguage } = useUtils()
   const onWrapperClick = () => {
     Promise.all([
       getNewFunnelAllRecommendations(),

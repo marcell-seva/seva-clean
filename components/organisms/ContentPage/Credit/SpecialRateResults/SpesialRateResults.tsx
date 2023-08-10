@@ -1,7 +1,6 @@
 import { IconInfo, IconWhatsapp } from 'components/atoms'
 import { ToastType, useToast } from 'components/atoms/OldToast/Toast'
-import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
-import { useContextSurveyFormData } from 'context/surveyFormContext/surveyFormContext'
+import { useUtils } from 'services/context/utilsContext'
 // import { tracSelectV2LoanCalculatorSpeak } from 'helpers/amplitude/newLoanCalculatorEventTracking'
 // import { WhatsAppContactUs } from 'pages/component/WhatsAppContactUs/WhatsAppContactUs'
 import React, { useEffect, useState, useMemo } from 'react'
@@ -24,7 +23,7 @@ import { convertSlashesInStringToVerticalLines } from 'utils/stringUtils'
 import { savePageBeforeLogin } from 'utils/loginUtils'
 import { usedBrowser } from 'utils/window'
 import urls from 'helpers/urls'
-import { useContextSpecialRateResults } from 'context/specialRateResultsContext/specialRateResultsContext'
+import { useContextCalculator } from 'services/context/calculatorContext'
 import {
   CarVariantCreditTabParam,
   trackCarVariantCreditPageWaChatbot,
@@ -56,6 +55,7 @@ import { api } from 'services/api'
 import { NonPassengerCars } from 'config/LoanCalculator.config'
 import { tracSelectV2LoanCalculatorSpeak } from 'helpers/amplitude/newLoanCalculatorEventTracking'
 import { useCar } from 'services/context/carContext'
+import { useContextForm } from 'services/context/formContext'
 
 const PromoAsuransi = '/revamp/illustration/PromoAsuransi.gif'
 const AstraLogo = '/revamp/icon/AstraLogo.webp'
@@ -82,7 +82,7 @@ export const SpecialRateResults = ({
 }: SpecialRateResultsProps) => {
   const enableSpecialRate = (data && data.length > 0) || false
   const [selectedLoan, setSelectedLoan] = useState<SpecialRateList>()
-  const { currentLanguage } = useCurrentLanguageFromContext()
+  const { currentLanguage } = useUtils()
   const [isActiveRow1, setIsActiveRow1] = useState('')
   const [isActiveRow2, setIsActiveRow2] = useState('')
   const [isActiveRow3, setIsActiveRow3] = useState('')
@@ -108,7 +108,7 @@ export const SpecialRateResults = ({
   const [isSelectedLoanRankBg, setIsSelectedLoanRankBg] = useState('')
   const { showModal: showPreapprovalModal, PreApprovalIntroModal } =
     usePreApprovalIntroModal()
-  const contextSurveyFormData = useContextSurveyFormData()
+  const { formSurveyValue: contextSurveyFormData } = useContextForm()
   // const { t } = useTranslation()
   const router = useRouter()
   const { showToast: showToastBrowser, RenderToast: RenderToastBrowser } =
@@ -131,7 +131,7 @@ export const SpecialRateResults = ({
     LocalStorageKey.SelectedLoanTmp,
     null,
   )
-  const { setSpecialRateResults } = useContextSpecialRateResults()
+  const { setSpecialRateResults } = useContextCalculator()
   const enableNewLogin = true
   const { recommendation } = useCar()
 
@@ -398,8 +398,7 @@ export const SpecialRateResults = ({
     showPreapprovalModal()
   }
 
-  const formValue = useContextSurveyFormData()
-  const { age, totalIncome } = formValue
+  const { age, totalIncome } = contextSurveyFormData
   const goToWhatsApp = async () => {
     if (!carVariantDetails) {
       return

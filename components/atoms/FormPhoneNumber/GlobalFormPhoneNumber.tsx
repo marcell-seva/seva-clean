@@ -6,10 +6,6 @@ import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import { getToken } from 'utils/api'
 import { Input } from 'components/atoms/OldInput/Input'
-import {
-  useContextContactFormData,
-  useContextContactFormPatch,
-} from '../../../context/contactFormContext/contactFormContext'
 import { filterNonDigitCharacters } from '../../../utils/stringUtils'
 import elementId from 'helpers/elementIds'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
@@ -19,6 +15,7 @@ import {
   IndonesiaCountryCode,
 } from 'utils/hooks/useContactFormData/useContactFormData'
 import { ContactFormKey, LocalStorageKey } from 'utils/models/models'
+import { useContextForm } from 'services/context/formContext'
 
 const FlagIndonesia = '/revamp/icon/FlagIndonesia.svg'
 
@@ -69,15 +66,14 @@ export const GlobalFormPhoneNumber = ({
   disableAfterAutofillLoggedInUser = false,
 }: FormPhoneNumberProps) => {
   const { t } = useTranslation()
-  const contactFormData = useContextContactFormData()
+  const { formContactValue, patchFormContactValue } = useContextForm()
   const savedPhoneNumber =
-    contactFormData.phoneNumber?.replace(
+    formContactValue.phoneNumber?.replace(
       CountryCodePlusSign + IndonesiaCountryCode,
       '',
     ) || ''
   const [phoneNumber, setPhoneNumber] = useState('')
   const [nameForm, setNameForm] = useState('')
-  const patchContactFormValue = useContextContactFormPatch()
   const [isDisablePhoneNumberField, setIsDisablePhoneNumberField] =
     useState(false)
 
@@ -85,7 +81,7 @@ export const GlobalFormPhoneNumber = ({
     if (event.target.value[0] != '0') {
       const phoneNumberTemp = filterNonDigitCharacters(event.target.value)
       setPhoneNumber(phoneNumberTemp)
-      patchContactFormValue({
+      patchFormContactValue({
         [ContactFormKey.PhoneNumberValid]: `${CountryCodePlusSign}${IndonesiaCountryCode}${phoneNumberTemp}`,
       })
     }

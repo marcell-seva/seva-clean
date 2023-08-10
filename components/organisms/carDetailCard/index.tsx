@@ -24,7 +24,7 @@ import {
 } from 'utils/numberUtils/numberUtils'
 import styles from '../../../styles/components/organisms/cardetailcard.module.scss'
 import { trackPLPCarClick } from 'helpers/amplitude/seva20Tracking'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import Link from 'next/link'

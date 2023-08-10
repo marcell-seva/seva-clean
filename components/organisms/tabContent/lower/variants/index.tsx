@@ -19,7 +19,7 @@ import {
   IconToggleListInactive,
 } from 'components/atoms'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import {
   trackCarVariantPricelistClick,
   trackCarVariantPricelistClickCta,

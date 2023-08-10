@@ -49,7 +49,7 @@ import {
 } from 'utils/numberUtils/numberUtils'
 import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
 import { API, getToken } from 'utils/api'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { getCustomerInfoSeva } from 'services/customer'
 import elementId from 'helpers/elementIds'
 import {

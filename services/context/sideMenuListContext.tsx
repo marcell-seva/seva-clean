@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import patchDataContext from '../patchDataContext/patchDataContext'
+import patchDataContext from '../../services/context/patchDataContext'
 
 export interface SideMenuListType {
   isMenuLevel1: boolean

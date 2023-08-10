@@ -4,10 +4,7 @@ import {
   IndonesiaCountryCode,
 } from 'utils/hooks/useContactFormData/useContactFormData'
 import { useTranslation } from 'react-i18next'
-import {
-  useContextContactFormData,
-  useContextContactFormPatch,
-} from 'context/contactFormContext/contactFormContext'
+import { useContextForm } from 'services/context/formContext'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
@@ -68,16 +65,15 @@ export const GlobalFormPhoneNumber = ({
   disableAfterAutofillLoggedInUser = false,
 }: FormPhoneNumberProps) => {
   const { t } = useTranslation()
-  const contactFormData = useContextContactFormData()
+  const { formContactValue, patchFormContactValue } = useContextForm()
   const savedPhoneNumber =
-    contactFormData.phoneNumber?.replace(
+    formContactValue.phoneNumber?.replace(
       CountryCodePlusSign + IndonesiaCountryCode,
       '',
     ) || ''
   const [phoneNumber, setPhoneNumber] = useState('')
 
   const [nameForm, setNameForm] = useState('')
-  const patchContactFormValue = useContextContactFormPatch()
   const [isDisablePhoneNumberField, setIsDisablePhoneNumberField] =
     useState(false)
 
@@ -85,7 +81,7 @@ export const GlobalFormPhoneNumber = ({
     if (event.target.value[0] != '0') {
       const phoneNumberTemp = filterNonDigitCharacters(event.target.value)
       setPhoneNumber(phoneNumberTemp)
-      patchContactFormValue({
+      patchFormContactValue({
         [ContactFormKey.PhoneNumberValid]: `${CountryCodePlusSign}${IndonesiaCountryCode}${phoneNumberTemp}`,
       })
     }

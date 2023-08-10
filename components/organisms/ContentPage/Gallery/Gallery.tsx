@@ -1,10 +1,10 @@
 import React, { memo, useContext, useEffect, useRef, useState } from 'react'
 import GallerySectionV2 from './GallerySection/GallerySectionV2'
 import styled from 'styled-components'
-import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
+import { useUtils } from 'services/context/utilsContext'
 import { articleDateFormat } from 'utils/dateUtils'
 import urls from 'helpers/urls'
-import { useContextSpecialRateResults } from 'context/specialRateResultsContext/specialRateResultsContext'
+import { useContextCalculator } from 'services/context/calculatorContext'
 import { Video } from './Video/Video'
 import { useMediaQuery } from 'react-responsive'
 import {
@@ -44,8 +44,8 @@ const GalleryTab = memo(({ tab, isSticky }: tabProps) => {
     recommendation.length !== 0
       ? recommendation
       : carRecommendationsResDefaultCity.carRecommendations
-  const { currentLanguage } = useCurrentLanguageFromContext()
-  const { setSpecialRateResults } = useContextSpecialRateResults()
+  const { currentLanguage } = useUtils()
+  const { setSpecialRateResults } = useContextCalculator()
   const categoryList = articleCategoryList[2]
   const [articleList, setArticleList] = useState([])
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })

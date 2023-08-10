@@ -15,7 +15,6 @@ import {
   PageFrom,
 } from 'utils/models/models'
 import { defaultCSANumber, hundred, million, ten } from 'utils/helpers/const'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 // import { trackWhatsappButtonClickFromCarResults } from 'helpers/trackingEvents'
 import {
   CarSearchPageMintaPenawaranParam,
@@ -35,6 +34,7 @@ import { trackWhatsappButtonClickFromCarResults } from 'helpers/amplitude/tracki
 import { EventFromType } from 'helpers/amplitude/newHomePageEventTracking'
 import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
 import { useCar } from 'services/context/carContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 
 export const TanyaSeva = () => {
   const router = useRouter()

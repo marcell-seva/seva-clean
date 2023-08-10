@@ -5,11 +5,11 @@ import styled from 'styled-components'
 import { PriceList } from '../Price/PriceList/PriceList'
 import { PromoButton } from '../Price/PromoButton/PromoButton'
 import RecentlyViewed from 'components/organisms/OldPdpSectionComponents/RecentlyViewed/RecentlyViewed'
-import { useModalContext } from 'context/modalContext/modalContext'
+import { useModalContext } from 'services/context/modalContext'
 import { FAQ } from 'components/organisms/OldPdpSectionComponents/FAQ/FAQ'
 import { colors } from 'styles/colors'
 import { SEOSectionV2 } from 'components/organisms/OldPdpSectionComponents/SEOSection/SEOSectionV2'
-import { useContextSpecialRateResults } from 'context/specialRateResultsContext/specialRateResultsContext'
+import { useContextCalculator } from 'services/context/calculatorContext'
 import { useMediaQuery } from 'react-responsive'
 import { SpecificationDesktop } from 'components/organisms/OldPdpSectionComponents/Specification/SpecificationDesktop'
 import { useCarVariantPromoModal } from 'components/molecules/CarVariantPromoModal/CarVariantPromoModal'
@@ -47,7 +47,7 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
     recommendation.length !== 0
       ? recommendation
       : carRecommendationsResDefaultCity.carRecommendations
-  const { setSpecialRateResults } = useContextSpecialRateResults()
+  const { setSpecialRateResults } = useContextCalculator()
   const [openPromo, setOpenPromo] = useState(false)
   const { showModal: showPromoModal, CarVariantPromoModal } =
     useCarVariantPromoModal()

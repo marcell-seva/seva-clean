@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { SelectLoanCalculatorPage } from 'components/atoms/OldSelect/SelectLoanCalculatorPage'
-import { useContextSpecialRateResults } from 'context/specialRateResultsContext/specialRateResultsContext'
+import { useContextCalculator } from 'services/context/calculatorContext'
 import { ageFormConfig } from 'config/ageFormConfig'
 import { isDataValid } from 'utils/surveyFormUtils'
-import {
-  useContextSurveyFormData,
-  useContextSurveyFormPatch,
-} from 'context/surveyFormContext/surveyFormContext'
 import { getNewFunnelLoanSpecialRate } from 'services/newFunnel'
 import elementId from 'helpers/elementIds'
 import { saveLocalStorage } from 'utils/localstorageUtils'
@@ -20,6 +16,7 @@ import {
   SurveyFormKey,
 } from 'utils/models/models'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
+import { useContextForm } from 'services/context/formContext'
 
 interface EditAgeProps {
   isNewRegularPage?: boolean
@@ -45,10 +42,12 @@ export const FullEditAgeCarVariant = ({
   dpPercent = 0,
   setIsLoadingLoanRank,
 }: EditAgeProps) => {
-  const surveyFormData = useContextSurveyFormData()
+  const {
+    formSurveyValue: surveyFormData,
+    patchFormSurveyValue: patchSurveyFormValue,
+  } = useContextForm()
   const [ageValue, setAgeValue] = useState(surveyFormData.age?.value)
-  const patchSurveyFormValue = useContextSurveyFormPatch()
-  const { setSpecialRateResults } = useContextSpecialRateResults()
+  const { setSpecialRateResults } = useContextCalculator()
 
   const [emptyAgeValue, setEmptyAgeValue] = useState(false)
   const [isOptionOpen, setIsOptionOpen] = useState(false)

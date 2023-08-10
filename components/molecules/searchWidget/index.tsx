@@ -6,12 +6,6 @@ import {
   Primary1Style,
   StyledLoading,
 } from 'components/atoms/ButtonOld/Button'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
-// import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
-import {
-  useContextContactFormData,
-  useContextContactFormPatch,
-} from 'context/contactFormContext/contactFormContext'
 import {
   createUnverifiedLeadNew,
   UnverifiedLeadSubCategory,
@@ -22,7 +16,6 @@ import { createProbeTrack } from 'services/probe'
 import { getLocalStorage } from 'utils/localstorageUtils'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
-import { useFinancialQueryData } from 'context/financialQueryContext/financialQueryContext'
 import { CityOtrOption, UTMTagsData } from 'utils/types/utils'
 import { LocalStorageKey } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
@@ -38,6 +31,9 @@ import { Tenure } from '../tenure'
 import { AdvancedSearch } from '../advencedSearch/advencedSearch'
 import { jt, Rp } from 'utils/helpers/const'
 import { carResultsUrl } from 'utils/helpers/routes'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { useContextForm } from 'services/context/formContext'
+import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 
 export const SearchWidget = () => {
   const router = useRouter()
@@ -51,8 +47,10 @@ export const SearchWidget = () => {
   const { funnelQuery } = useFunnelQueryData()
   const { patchFinancialQuery } = useFinancialQueryData()
   // const { setRecommendations } = useContextRecommendations()
-  const contactFormData = useContextContactFormData()
-  const patchContactFormValue = useContextContactFormPatch()
+  const {
+    formContactValue: contactFormData,
+    patchFormContactValue: patchContactFormValue,
+  } = useContextForm()
   const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,

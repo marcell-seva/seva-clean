@@ -1,6 +1,5 @@
 import { InfoCircleOutlined } from 'components/atoms'
-import { useContextSpecialRateResults } from 'context/specialRateResultsContext/specialRateResultsContext'
-import { useContextSurveyFormData } from 'context/surveyFormContext/surveyFormContext'
+import { useContextCalculator } from 'services/context/calculatorContext'
 import { SpecialRateResults } from './SpecialRateResults/SpesialRateResults'
 import React, { useState, useEffect, useRef, memo, useContext } from 'react'
 import { useMediaQuery } from 'react-responsive'
@@ -39,6 +38,7 @@ import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import Image from 'next/image'
 import { useCar } from 'services/context/carContext'
+import { useContextForm } from 'services/context/formContext'
 
 const EmptyCalculationImage = '/revamp/illustration/EmptyCalculationImage.webp'
 const AccLogo = '/revamp/icon/logo-acc.webp'
@@ -69,7 +69,7 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
   const [selected, setSelected] = useState<CarVariantRecommendation | null>(
     null,
   )
-  const surveyFormData = useContextSurveyFormData()
+  const { formSurveyValue: surveyFormData } = useContextForm()
   const originInput = surveyFormData?.totalIncome?.value?.toString() || ''
   const originAge = surveyFormData?.age?.value?.toString() || ''
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
@@ -77,7 +77,7 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
   const [promoCode, setPromoCode] = useState('')
   const [invalidCodeMessage, setInvalidCodeMessage] = useState('')
 
-  const { specialRateResults } = useContextSpecialRateResults()
+  const { specialRateResults } = useContextCalculator()
 
   const { showModal: showLoginModal, LoginAlertModal } = useLoginAlertModal()
 
@@ -89,7 +89,7 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
   )
   const [isSubmit, setIsSubmit] = useState(false)
   const [dpAmount, setDpAmount] = useState(0)
-  
+
   const [, setPromoCodeSessionStorage] =
     useSessionStorageWithEncryption<string>(
       SessionStorageKey.PromoCodeGiiass,

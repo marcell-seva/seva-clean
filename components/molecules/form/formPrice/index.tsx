@@ -3,7 +3,7 @@ import styles from '../../../../styles/components/molecules/form/formPrice.modul
 import { Input, Slider } from 'antd'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
 import { LanguageCode } from 'utils/enum'
 

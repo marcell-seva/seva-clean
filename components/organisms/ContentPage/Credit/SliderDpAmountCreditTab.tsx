@@ -4,7 +4,7 @@ import ReactSlider from 'react-slider'
 import { colors } from 'styles/colors'
 import { Input } from 'components/atoms/OldInput/Input'
 import { Button, IconLoading, IconWarning } from 'components/atoms'
-import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
+import { useUtils } from 'services/context/utilsContext'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { dpRateCollectionNewCalculator, million } from 'utils/helpers/const'
@@ -17,11 +17,7 @@ import {
   NewFunnelCarVariantDetails,
   SpecialRateList,
 } from 'utils/types'
-import {
-  useContextSurveyFormData,
-  useContextSurveyFormPatch,
-} from 'context/surveyFormContext/surveyFormContext'
-import { useContextSpecialRateResults } from 'context/specialRateResultsContext/specialRateResultsContext'
+import { useContextCalculator } from 'services/context/calculatorContext'
 import {
   InstallmentTypeOptions,
   LanguageCode,
@@ -30,7 +26,7 @@ import {
   SessionStorageKey,
   SurveyFormKey,
 } from 'utils/models/models'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { AxiosResponse } from 'axios'
 import { getToken } from 'utils/api'
 import { getCustomerInfoWrapperSeva } from 'services/customer'
@@ -59,6 +55,7 @@ import {
 } from 'utils/types/utils'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
+import { useContextForm } from 'services/context/formContext'
 
 interface AmountInputProps {
   carVariantDetails: NewFunnelCarVariantDetails
@@ -93,18 +90,18 @@ export const SliderDpAmountCreditTab = ({
   const [optionADDM, setOptionADDM] = useState(false)
   const [optionADDB, setOptionADDB] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { currentLanguage } = useCurrentLanguageFromContext()
-  const surveyFormData = useContextSurveyFormData()
-  const { specialRateResults, setSpecialRateResults } =
-    useContextSpecialRateResults()
-  const contextSurveyFormData = useContextSurveyFormData()
+  const { currentLanguage } = useUtils()
+  const {
+    formSurveyValue: surveyFormData,
+    patchFormSurveyValue: patchSurveyFormValue,
+  } = useContextForm()
+  const { specialRateResults, setSpecialRateResults } = useContextCalculator()
   const [inputValue, setInputValue] = useState<string>(
     replacePriceSeparatorByLocalization('', currentLanguage),
   )
   const [oldInputValue, setOldInputValue] = useState<string>('')
   const [selectionStart, setSelectionStart] = useState<number>(0)
   const inputRef = useRef<HTMLInputElement>(null)
-  const patchSurveyFormValue = useContextSurveyFormPatch()
   const [isSubmitted, setIsSubmitted] = useState(isSubmit)
   const monthlyIncomeValue = surveyFormData.totalIncome?.value
   const agevalue = surveyFormData.age?.value
@@ -312,8 +309,7 @@ export const SliderDpAmountCreditTab = ({
               scrollToSection()
               patchSurveyFormValue({
                 [SurveyFormKey.DownPaymentTmp]: {
-                  value:
-                    contextSurveyFormData[SurveyFormKey.DownPayment]?.value,
+                  value: surveyFormData[SurveyFormKey.DownPayment]?.value,
                   isDataValid: true,
                 },
                 [SurveyFormKey.SpecialRateEnable]: {
@@ -353,8 +349,7 @@ export const SliderDpAmountCreditTab = ({
               scrollToSection()
               patchSurveyFormValue({
                 [SurveyFormKey.DownPaymentTmp]: {
-                  value:
-                    contextSurveyFormData[SurveyFormKey.DownPayment]?.value,
+                  value: surveyFormData[SurveyFormKey.DownPayment]?.value,
                   isDataValid: true,
                 },
                 [SurveyFormKey.SpecialRateEnable]: {

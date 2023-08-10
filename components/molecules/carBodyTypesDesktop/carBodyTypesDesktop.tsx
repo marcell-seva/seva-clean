@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import {
   ButtonBack,
   ButtonNext,

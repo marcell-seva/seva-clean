@@ -1,11 +1,7 @@
 import { Input } from 'components/atoms/OldInput/Input'
 import { ToastType, useToast } from 'components/atoms/OldToast/Toast'
 import { UncheckedSquareOutlined } from 'components/atoms'
-import {
-  useContextContactFormData,
-  useContextContactFormPatch,
-} from 'context/contactFormContext/contactFormContext'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useContextForm } from 'services/context/formContext'
 import { trackSelectHomeSendDetails } from 'helpers/amplitude/newHomePageEventTracking'
 import { FBPixelStandardEvent } from 'helpers/facebookPixel'
 import { trackGASubmitContactInfo } from 'services/googleAds'
@@ -42,6 +38,7 @@ import { useRouter } from 'next/router'
 import { FormPhoneNumber } from '../formPhoneNumber/FormPhoneNumber'
 import { isValidPhoneNumber } from 'utils/numberUtils/numberUtils'
 import { client } from 'utils/helpers/const'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 
 interface AdvisorSectionProps {
   onSubmitSuccess: (whatsappChecked?: boolean) => void
@@ -52,7 +49,7 @@ export const AdvisorSection = ({
   onSubmitSuccess,
   onCheckLogin,
 }: AdvisorSectionProps) => {
-  const contactFormData = useContextContactFormData()
+  const { formContactValue } = useContextForm()
   const router = useRouter()
 
   const [fullName, setFullName] = useState<string>('')
@@ -70,10 +67,10 @@ export const AdvisorSection = ({
   )
 
   const autofillName = () => {
-    if (contactFormData.nameTmp) {
-      return contactFormData.nameTmp ?? ''
+    if (formContactValue.nameTmp) {
+      return formContactValue.nameTmp ?? ''
     } else {
-      return contactFormData.name ?? ''
+      return formContactValue.name ?? ''
     }
   }
 
@@ -109,11 +106,11 @@ export const AdvisorSection = ({
 
   useEffect(() => {
     if (
-      contactFormData.phoneNumber &&
-      contactFormData.phoneNumber != 'undefined' &&
-      contactFormData.phoneNumber?.toString().length > 3
+      formContactValue.phoneNumber &&
+      formContactValue.phoneNumber != 'undefined' &&
+      formContactValue.phoneNumber?.toString().length > 3
     ) {
-      const phoneNumber = String(contactFormData.phoneNumber)
+      const phoneNumber = String(formContactValue.phoneNumber)
       patchContactFormValue({
         [ContactFormKey.PhoneNumber]: phoneNumber,
       })
@@ -125,7 +122,7 @@ export const AdvisorSection = ({
 
     getCustomerFullName()
   }, [])
-  const patchContactFormValue = useContextContactFormPatch()
+  const { patchFormContactValue: patchContactFormValue } = useContextForm()
 
   const onNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value[0] != ' ') {
@@ -137,15 +134,15 @@ export const AdvisorSection = ({
   useEffect(() => {
     setConfirmEnabled(
       fullName.trim().length > 0 &&
-        isValidPhoneNumber(contactFormData.phoneNumberValid?.toString() ?? ''),
+        isValidPhoneNumber(formContactValue.phoneNumberValid?.toString() ?? ''),
     )
-  }, [fullName, contactFormData.phoneNumberValid])
+  }, [fullName, formContactValue.phoneNumberValid])
 
   const onClickOK = (e: React.MouseEvent | React.KeyboardEvent) => {
     e.stopPropagation()
     setLoading(true)
 
-    const phoneNumber = String(contactFormData.phoneNumberValid)
+    const phoneNumber = String(formContactValue.phoneNumberValid)
     patchContactFormValue({
       [ContactFormKey.PhoneNumber]: phoneNumber,
       [ContactFormKey.Name]: fullName,

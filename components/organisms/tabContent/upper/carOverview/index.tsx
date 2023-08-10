@@ -17,7 +17,7 @@ import {
   IconShare,
 } from 'components/atoms'
 import { useDetectClickOutside } from 'react-detect-click-outside'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
 import {
   CarVariantHitungKemampuanParam,

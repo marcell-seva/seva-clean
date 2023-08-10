@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { articleDateFormat } from 'utils/dateUtils'
-import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
 import styles from 'styles/ArticleStyle.module.css'
 import {
   trackArticleSecondaryItemClick,
@@ -13,6 +12,7 @@ import elementId from 'helpers/elementIds'
 import { parsedToUnCapitalizeWithHyphen } from 'utils/parsedToUnCapitalizeWithHyphen'
 import { ArticleData } from 'utils/types/utils'
 import { decodeHTML } from 'entities'
+import { useUtils } from 'services/context/utilsContext'
 
 const PlaceholderImage = '/revamp/illustration/placeholder-150.webp'
 
@@ -30,7 +30,7 @@ export const ArticlesItemV2Desktop = ({
   data,
   articleType = ArticleItemType.primary,
 }: Props) => {
-  const { currentLanguage } = useCurrentLanguageFromContext()
+  const { currentLanguage } = useUtils()
 
   const clickItemHander = () => {
     if (articleType === ArticleItemType.primary) {

@@ -9,10 +9,10 @@ import {
 import { IconClose } from 'components/atoms'
 import { setTrackEventMoEngage } from 'helpers/moengage'
 import { getLocalStorage } from 'utils/localstorageUtils'
-import { useContextContactFormData } from 'context/contactFormContext/contactFormContext'
 import { ModalBody } from 'components/atoms/ModalBodyWrapper/ModalBodyWrapper'
 import { Shield } from 'components/atoms/icon/Shield'
 import { LocalStorageKey } from 'utils/models/models'
+import { useContextForm } from 'services/context/formContext'
 
 interface PreApprovalIntroModalProps {
   onPositiveButtonClick: () => void
@@ -22,7 +22,7 @@ interface PreApprovalIntroModalProps {
 export const usePreApprovalIntroModal = () => {
   const { showModal, hideModal, RenderModal } = useModal()
   const moengageAttribute = getLocalStorage(LocalStorageKey.MoengageAttribute)
-  const contactFormData = useContextContactFormData()
+  const { formContactValue } = useContextForm()
 
   const renderStepItem = (stepConfig: PreApprovalStepConfig, index: number) => (
     <StyledStepItemWrapper key={index}>
@@ -73,7 +73,7 @@ export const usePreApprovalIntroModal = () => {
               hideModal()
               onPositiveButtonClick()
               const data: any = moengageAttribute
-              data.mobile_number = contactFormData.phoneNumber
+              data.mobile_number = formContactValue.phoneNumber
               setTrackEventMoEngage(
                 'Click_yuk_mulai_pop-up_start_instant_approval',
                 data,

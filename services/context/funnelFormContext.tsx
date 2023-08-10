@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { FormControlValue } from 'utils/types'
-import patchDataContext from '../patchDataContext/patchDataContext'
+import patchDataContext from './patchDataContext'
 
 export interface FunnelForm {
   paymentType?: FormControlValue

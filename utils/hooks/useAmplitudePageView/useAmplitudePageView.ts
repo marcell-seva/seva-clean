@@ -1,9 +1,9 @@
-import { useFunnelFormData } from 'context/funnelFormContext/funnelFormContext'
 import {
   CarResultParameters,
   CarResultQuery,
 } from 'helpers/amplitude/newFunnelEventTracking'
 import { useEffect } from 'react'
+import { useFunnelFormData } from 'services/context/funnelFormContext'
 
 export const useAmplitudePageView = (eventTrackingFunction: () => void) => {
   useEffect(() => {

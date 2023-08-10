@@ -29,14 +29,13 @@ import {
 } from 'utils/carModelUtils/carModelUtils'
 import { FreeInstallment } from './FreeInstallment/FreeInstallment'
 import { Pagination } from './Pagination/Pagination'
-import { useContextCarModel } from 'context/carModelContext/carModelContext'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { useMediaQuery } from 'react-responsive'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { trackPLPCarClick } from 'helpers/amplitude/seva20Tracking'
 // import { useNewCitySelectoreModal } from 'pages/CitySelector/NewCitySelectorModal'
 // import { PageHeaderSevaCarResults } from 'pages/component/PageHeaderSeva/PageHeaderSevaCarResults'
-import { useModalContext } from 'context/modalContext/modalContext'
+import { useModalContext } from 'services/context/modalContext'
 import { CityDisclaimer } from './CityDisclaimer/CityDisclaimer'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
 import elementId from 'helpers/elementIds'
@@ -119,7 +118,7 @@ export default function PLPDesktop({
   useAmplitudePageView(() => {
     trackViewCarResult(carResultParameters)
   })
-  const { setCarModel } = useContextCarModel()
+  const { saveCarModel } = useCar()
   const [brandName, setBrandName] = useState<string | undefined>()
   const { showModal: showCitySelectorModal, CitySelectorModal } =
     useCitySelectorModal()
@@ -278,7 +277,7 @@ export default function PLPDesktop({
       ...carResultParameters,
     }
     localStorage.setItem('carDetail', selectCarResult.price)
-    setCarModel(carModel || undefined)
+    saveCarModel(carModel || undefined)
     trackSelectCarResult(selectCarResult)
     getCarModelDetailsById(carModel.id)
       .then(handleCarModelDetailsUpdate(recommendation, saveCarModelDetails))

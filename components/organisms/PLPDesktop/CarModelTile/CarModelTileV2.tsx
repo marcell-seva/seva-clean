@@ -18,7 +18,7 @@ import { useMediaQuery } from 'react-responsive'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import { Carousel } from 'react-responsive-carousel'
 // import { Shimmer } from 'pages/component/Shimmer/Shimmer'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { hundred, million, ten } from 'utils/helpers/const'
 import {
   CarSearchPageMintaPenawaranParam,

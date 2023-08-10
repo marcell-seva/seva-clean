@@ -8,7 +8,7 @@ import {
   IconRemove,
   Button,
 } from 'components/atoms'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { sortOptions } from 'config/funnel.config'
 import clsx from 'clsx'
 import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'

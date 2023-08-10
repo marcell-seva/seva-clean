@@ -1,5 +1,4 @@
-import { useModalContext } from 'context/modalContext/modalContext'
-import { useContextSpecialRateResults } from 'context/specialRateResultsContext/specialRateResultsContext'
+import { useContextCalculator } from 'services/context/calculatorContext'
 import {
   trackCarVariantBannerPromoPopupClose,
   trackWebPDPPriceTab,
@@ -23,6 +22,7 @@ import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { Description } from 'components/organisms/OldPdpSectionComponents/Description/Description'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useCar } from 'services/context/carContext'
+import { useModalContext } from 'services/context/modalContext'
 
 type tabProps = {
   tab: string | undefined
@@ -42,7 +42,7 @@ const Price = memo(({ tab, isSticky }: tabProps) => {
     recommendation.length !== 0
       ? recommendation
       : carRecommendationsResDefaultCity.carRecommendations
-  const { setSpecialRateResults } = useContextSpecialRateResults()
+  const { setSpecialRateResults } = useContextCalculator()
   const [openPromo, setOpenPromo] = useState(false)
   const { modal, patchModal } = useModalContext()
   const { showModal: showPromoModal, CarVariantPromoModal } =

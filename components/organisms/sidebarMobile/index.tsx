@@ -3,7 +3,6 @@ import { Avatar, Button } from 'components/atoms'
 import { MenuList } from 'components/molecules'
 import styles from '../../../styles/components/organisms/sidebarMobile.module.scss'
 import { LoginSevaUrl } from 'utils/helpers/routes'
-import { useContextMobileWebTopMenus } from 'context/mobileWebTopMenuContext/mobileWebTopMenuContext'
 import { getMobileWebTopMenu } from 'services/menu'
 import { getToken } from 'utils/api'
 import {
@@ -18,6 +17,7 @@ import { ButtonSize, ButtonVersion, LocalStorageKey } from 'utils/enum'
 import { separatePhoneNumber } from 'utils/handler/separatePhoneNumber'
 import { fetchCustomerDetails } from 'utils/httpUtils/customerUtils'
 import { CustomerInfoSeva } from 'utils/types/utils'
+import { useUtils } from 'services/context/utilsContext'
 
 type sidebarMobileProps = {
   showSidebar?: boolean
@@ -33,8 +33,7 @@ const sidebarMobile = ({
   const [customerDetail, setCustomerDetail] = React.useState<CustomerInfoSeva>()
   const router = useRouter()
 
-  const { mobileWebTopMenus, setMobileWebTopMenus } =
-    useContextMobileWebTopMenus()
+  const { mobileWebTopMenus, saveMobileWebTopMenus } = useUtils()
 
   const setIconNameCustomer = (payload: string) => {
     if (payload.indexOf(' ') > 0) {
@@ -51,7 +50,7 @@ const sidebarMobile = ({
   const fetchMobileWebTopMenu = async () => {
     const response = await getMobileWebTopMenu()
     if (response.data) {
-      setMobileWebTopMenus(response.data)
+      saveMobileWebTopMenus(response.data)
     }
   }
 

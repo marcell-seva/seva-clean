@@ -19,7 +19,7 @@ import { decryptValue, encryptValue } from 'utils/encryptionUtils'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { onlyLettersAndSpaces } from 'utils/handler/regex'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import {
   UnverifiedLeadSubCategory,
   createUnverifiedLeadNew,

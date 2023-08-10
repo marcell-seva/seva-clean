@@ -17,8 +17,8 @@ import { FormAge } from '../../molecules/form/formAge'
 import { toNumber } from 'utils/stringUtils'
 // import { trackFilterCarResults } from 'helpers/amplitude/newFunnelEventTracking'
 import { AxiosResponse } from 'axios'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
-import { useFinancialQueryData } from 'context/financialQueryContext/financialQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import {
   CarResultPageFilterParam,
   trackPLPClearFilter,

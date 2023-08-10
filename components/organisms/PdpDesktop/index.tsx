@@ -8,8 +8,8 @@ import HeaderVariant from 'components/molecules/header/header'
 import { useLoginAlertModal } from 'components/molecules/LoginAlertModal/LoginAlertModal'
 import { usePreApprovalCarNotAvailable } from 'components/molecules/PreApprovalCarNotAvalable/useModalCarNotAvalable'
 import { StickyButton } from 'components/molecules/StickyButton/StickyButton'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
-import { useModalContext } from 'context/modalContext/modalContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { useModalContext } from 'services/context/modalContext'
 import {
   CarSearchPageMintaPenawaranParam,
   trackCarVariantListPageLeadsFormSumit,
@@ -140,7 +140,7 @@ export default function index() {
 
   const getCityParam = () => {
     return `?city=${cityOtr?.cityCode ?? 'jakarta'}&cityId=${
-      cityOtr?.cityId ?? '118'
+      cityOtr?.id ?? '118'
     }`
   }
 

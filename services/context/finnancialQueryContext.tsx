@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { LocalStorageKey } from 'utils/types/models'
 import { FinancialQuery } from 'utils/types/props'
@@ -50,7 +50,7 @@ export const FinancialQueryContext = createContext<
 export const FinancialQueryContextProvider = ({ children }: any) => {
   const [isInit, setIsInit] = useState<boolean>(true)
   const [storedValue] = useLocalStorage<FinancialQuery>(
-    LocalStorageKey.CarFilter,
+    LocalStorageKey.FinancialData,
     initData,
   )
   const [financialQuery, setFinancialQuery] = useState<FinancialQuery>(initData)
@@ -58,21 +58,27 @@ export const FinancialQueryContextProvider = ({ children }: any) => {
   const setFinancialQueryValue = (value: FinancialQuery) => {
     setFinancialQuery({ ...financialQuery, ...value })
 
-    const prevValue = localStorage.getItem(LocalStorageKey.CarFilter)
+    const prevValue = localStorage.getItem(LocalStorageKey.FinancialData)
     const prevValueParse = JSON.parse(String(prevValue)) || ''
 
     const updateValue = { ...prevValueParse, ...value }
-    localStorage.setItem(LocalStorageKey.CarFilter, JSON.stringify(updateValue))
+    localStorage.setItem(
+      LocalStorageKey.FinancialData,
+      JSON.stringify(updateValue),
+    )
   }
 
   const patchFinancialQuery = (value: FinancialQuery) => {
     setFinancialQuery({ ...financialQuery, ...value })
 
-    const prevValue = localStorage.getItem(LocalStorageKey.CarFilter)
+    const prevValue = localStorage.getItem(LocalStorageKey.FinancialData)
     const prevValueParse = JSON.parse(String(prevValue)) || ''
 
     const updateValue = { ...prevValueParse, ...value }
-    localStorage.setItem(LocalStorageKey.CarFilter, JSON.stringify(updateValue))
+    localStorage.setItem(
+      LocalStorageKey.FinancialData,
+      JSON.stringify(updateValue),
+    )
   }
 
   const clearQueryFilter = () => {
@@ -96,7 +102,7 @@ export const FinancialQueryContextProvider = ({ children }: any) => {
       monthlyIncome: '',
     }
     setFinancialQuery(initial)
-    localStorage.setItem(LocalStorageKey.CarFilter, JSON.stringify(initial))
+    localStorage.setItem(LocalStorageKey.FinancialData, JSON.stringify(initial))
   }
 
   const checkIsInit = (): boolean => {
@@ -123,7 +129,7 @@ export const FinancialQueryContextProvider = ({ children }: any) => {
       const temp = { ...financialQuery, ...storedValue }
       setFinancialQuery(temp)
       // set localStorage so that it will be the same with context state using the updated data
-      localStorage.setItem(LocalStorageKey.CarFilter, JSON.stringify(temp))
+      localStorage.setItem(LocalStorageKey.FinancialData, JSON.stringify(temp))
     }
   }, [isInit])
 
@@ -140,3 +146,6 @@ export const FinancialQueryContextProvider = ({ children }: any) => {
     </FinancialQueryContext.Provider>
   )
 }
+
+export const useFinancialQueryData = () =>
+  useContext(FinancialQueryContext) as FinancialQueryContextType

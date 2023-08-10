@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from '../../../../styles/components/molecules/form/formAge.module.scss'
 import { Space } from 'antd'
 import elementId from 'helpers/elementIds'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 
 export interface FilterMobileProps {
   setModalTmp?: (value: boolean) => void

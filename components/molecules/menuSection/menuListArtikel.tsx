@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useSideMenuListContext } from 'context/sideMenuListContext/sideMenuListContext'
+import { useSideMenuListContext } from 'services/context/sideMenuListContext'
 import { removeWhitespacesAndToLowerCase } from 'utils/stringUtils'
 import elementId from 'helpers/elementIds'
 import { NavbarItemResponse } from 'utils/types/utils'
