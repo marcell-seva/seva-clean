@@ -8,7 +8,7 @@ import {
   ProductDetailEmptyState,
 } from 'components/organisms'
 import styles from 'styles/pages/carVariantList.module.scss'
-import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import {
   AnnouncementBoxDataType,
   CarRecommendation,
@@ -17,13 +17,8 @@ import {
   VariantDetail,
   VideoDataType,
 } from 'utils/types/utils'
-import {
-  LanguageCode,
-  LoanRank,
-  LocalStorageKey,
-  SessionStorageKey,
-} from 'utils/enum'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import {
   getCarVideoReview,
   getNewFunnelRecommendations,
@@ -43,12 +38,7 @@ import PromoPopup from 'components/organisms/promoPopup'
 import { getCities } from 'services/cities'
 import { decryptValue } from 'utils/encryptionUtils'
 import { WhatsappButton } from 'components/atoms'
-import {
-  formatNumberByLocalization,
-  replacePriceSeparatorByLocalization,
-} from 'utils/numberUtils/numberUtils'
 import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
-import { API, getToken } from 'utils/api'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { getCustomerInfoSeva } from 'services/customer'
 import elementId from 'helpers/elementIds'
@@ -57,7 +47,7 @@ import {
   trackCarVariantPageWaChatbot,
 } from 'helpers/amplitude/seva20Tracking'
 // import { usePreApprovalCarNotAvailable } from 'pages/component/PreApprovalCarNotAvalable/useModalCarNotAvalable'
-import { getSessionStorage } from 'utils/sessionstorageUtils'
+import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { AxiosResponse } from 'axios'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
@@ -65,6 +55,12 @@ import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]
 import { useQuery } from 'utils/hooks/useQuery'
 import { api } from 'services/api'
 import { useCar } from 'services/context/carContext'
+import { getToken } from 'utils/handler/auth'
+import {
+  formatNumberByLocalization,
+  replacePriceSeparatorByLocalization,
+} from 'utils/handler/rupiah'
+import { LoanRank } from 'utils/types/models'
 
 export interface CarVariantListPageUrlParams {
   brand: string

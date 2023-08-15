@@ -1,4 +1,4 @@
-import { LocalStorageKey } from 'utils/models/models'
+import { LocalStorageKey } from 'utils/enum'
 import { testPhoneNumber } from 'utils/helpers/const'
 
 export const getOtpIsSent = () => {

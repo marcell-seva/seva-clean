@@ -6,7 +6,7 @@ import Image from 'next/image'
 import elementId from 'utils/helpers/trackerId'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
-import { IconChevronRight } from 'components/atoms/icons'
+import { IconChevronRight } from 'components/atoms/icon'
 
 const SubProduct = () => {
   const title = ['Fasilitas Dana', 'Layanan Surat Kendaraan']

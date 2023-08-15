@@ -4,20 +4,21 @@ import { MenuList } from 'components/molecules'
 import styles from '../../../styles/components/organisms/sidebarMobile.module.scss'
 import { LoginSevaUrl } from 'utils/helpers/routes'
 import { getMobileWebTopMenu } from 'services/menu'
-import { getToken } from 'utils/api'
+import { getToken } from 'utils/handler/auth'
 import {
   trackLoginButtonClick,
   trackProfileAkunSayaClick,
 } from 'helpers/amplitude/seva20Tracking'
 import { savePageBeforeLogin } from 'utils/loginUtils'
 import clsx from 'clsx'
-import { saveLocalStorage } from 'utils/localstorageUtils'
+import { saveLocalStorage } from 'utils/handler/localStorage'
 import { useRouter } from 'next/router'
-import { ButtonSize, ButtonVersion, LocalStorageKey } from 'utils/enum'
+import { LocalStorageKey } from 'utils/enum'
 import { separatePhoneNumber } from 'utils/handler/separatePhoneNumber'
 import { fetchCustomerDetails } from 'utils/httpUtils/customerUtils'
 import { CustomerInfoSeva } from 'utils/types/utils'
 import { useUtils } from 'services/context/utilsContext'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 type sidebarMobileProps = {
   showSidebar?: boolean

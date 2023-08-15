@@ -10,13 +10,8 @@ import {
 import { availableList, availableListColors } from 'config/AvailableListColors'
 import { getMinimumMonthlyInstallment } from 'utils/carModelUtils/carModelUtils'
 import { client, hundred, million, ten } from 'utils/helpers/const'
-import {
-  InstallmentTypeOptions,
-  LanguageCode,
-  LocalStorageKey,
-  TrackerFlag,
-} from 'utils/models/models'
-import { rupiah } from 'utils/handler/rupiah'
+
+import { formatNumberByLocalization, rupiah } from 'utils/handler/rupiah'
 import { Info, VideoItemCard } from 'components/molecules'
 import { Gap, IconPlay } from 'components/atoms'
 // import promoBannerTradeIn from '/public/revamp/illustration/PromoTradeIn.webp'
@@ -25,9 +20,8 @@ import PopupVariantDetail from 'components/organisms/popupVariantDetail/index'
 import { Faq } from 'components/molecules/section/faq'
 import { TrackVariantList } from 'utils/types/tracker'
 import { CityOtrOption } from 'utils/types/utils'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { trackNewVariantListPageView } from 'helpers/amplitude/seva20Tracking'
-import { formatNumberByLocalization } from 'utils/numberUtils/numberUtils'
 import { Modal } from 'antd'
 import { LeadsFormSecondary } from 'components/organisms'
 import { setTrackEventMoEngage } from 'helpers/moengage'
@@ -38,6 +32,8 @@ import elementId from 'helpers/elementIds'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useRouter } from 'next/router'
 import { useCar } from 'services/context/carContext'
+import { LanguageCode, LocalStorageKey } from 'utils/enum'
+import { TrackerFlag, InstallmentTypeOptions } from 'utils/types/models'
 
 type RingkasanProps = {
   setPromoName: (value: string) => void

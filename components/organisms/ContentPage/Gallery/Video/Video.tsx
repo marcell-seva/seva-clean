@@ -16,14 +16,14 @@ import { LazyLoadComponent } from 'react-lazy-load-image-component'
 import { VideoOption } from './VideoOption'
 import { trackPDPGalleryVideo } from 'helpers/amplitude/seva20Tracking'
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
-import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import {
   CarModelDetailsResponse,
   CityOtrOption,
   VideoOptionType,
   VideoReviewType,
 } from 'utils/types'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { api } from 'services/api'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'

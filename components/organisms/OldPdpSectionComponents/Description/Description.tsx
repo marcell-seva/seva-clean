@@ -24,19 +24,19 @@ import {
 import { trimLastChar } from 'utils/urlUtils'
 import { hundred, million, ten } from 'utils/helpers/const'
 import {
-  formatNumberByLocalization,
   formatPriceNumber,
   formatPriceNumberThousandDivisor,
 } from 'utils/numberUtils/numberUtils'
-import { articleDateFormat } from 'utils/dateUtils'
+import { articleDateFormat } from 'utils/handler/date'
 import {
   trackCarVariantDescriptionCollapseClick,
   trackCarVariantDescriptionExpandClick,
 } from 'helpers/amplitude/seva20Tracking'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useCar } from 'services/context/carContext'
+import { formatNumberByLocalization } from 'utils/handler/rupiah'
 
 type DescriptionProps = {
   title: string

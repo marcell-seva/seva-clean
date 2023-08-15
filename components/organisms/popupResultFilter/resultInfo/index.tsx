@@ -6,7 +6,7 @@ import { IconClose } from 'components/atoms'
 import styles from '../../../../styles/components/organisms/popupResultInfo.module.scss'
 
 import { Button } from 'components/atoms'
-import { ButtonSize, ButtonVersion } from 'utils/enum'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 const PLPEmpty = '/revamp/illustration/plp-empty.webp'
 

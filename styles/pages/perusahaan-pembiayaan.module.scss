@@ -1,0 +1,113 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+@import '../abstract/animations';
+
+.container {
+  width: 100%;
+  padding: 0px 16px;
+}
+
+.formHeader {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  padding: 9px;
+  margin-bottom: 16px;
+}
+
+.backButton {
+  position: absolute;
+  left: 0;
+  cursor: pointer;
+}
+
+.logoHeader {
+  width: 58px;
+  height: 35.11px;
+}
+
+.headerText {
+  font-family: 'Kanyon';
+  font-size: 20px;
+  line-height: 28px;
+  margin-top: 32px;
+}
+
+.checkBox {
+  padding-top: 3px;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1.5px solid #{$shades-grey-10};
+  text-align: start;
+  width: 100%;
+  cursor: pointer;
+  margin-top: 24px;
+  flex-grow: 0;
+}
+
+.active {
+  padding: 16px;
+  border: 1.5px solid #{$secondary-blue};
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  border: 1.5px solid #{$shades-grey-10};
+}
+
+.bundleLogo {
+  width: 40px;
+  height: 40px;
+}
+.logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.content {
+  margin-left: 16px;
+  width: 100%;
+}
+
+.titleText {
+  font-size: 16px;
+  line-height: 24px;
+  color: #{$primary-black};
+}
+
+.descText {
+  font-size: 11px;
+  line-height: 16px;
+  max-width: 211px;
+  color: #{$shades-grey-75};
+}
+
+.agreementTerms {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  margin-top: 40px;
+}
+
+.textOption {
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  margin-left: 8px;
+}
+
+.textRedirect {
+  color: #{$secondary-blue};
+}
+
+.button {
+  margin-top: 24px;
+}

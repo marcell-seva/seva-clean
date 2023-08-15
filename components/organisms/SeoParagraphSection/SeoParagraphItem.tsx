@@ -1,6 +1,5 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import DOMPurify from 'dompurify'
 import { colors } from 'styles/colors'
 
 interface SEOParagraphItemProps {

@@ -1,40 +1,32 @@
-import { hundred, million, ten } from 'utils/helpers/const'
-import React from 'react'
-import {
-  loanCalculatorWithCityBrandModelVariantUrl,
-  variantListUrl,
-} from 'utils/helpers/routes'
+import { Button, CardShadow } from 'components/atoms'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { LabelMudah, LabelPromo, LabelSulit } from 'components/molecules'
+import { trackPLPCarClick } from 'helpers/amplitude/seva20Tracking'
+import elementId from 'helpers/elementIds'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import {
   getMinimumDp,
   getMinimumMonthlyInstallment,
   getVariantsPriceRange,
 } from 'utils/carModelUtils/carModelUtils'
+import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { formatNumberByLocalization } from 'utils/handler/rupiah'
+import { hundred, million, ten } from 'utils/helpers/const'
 import {
-  ButtonSize,
-  ButtonVersion,
-  LanguageCode,
-  LoanRank,
-  LocalStorageKey,
-  SessionStorageKey,
-} from 'utils/enum'
-import { LabelPromo, LabelMudah, LabelSulit } from 'components/molecules'
-import {
-  formatNumberByLocalization,
-  formatBillionPoint,
-} from 'utils/numberUtils/numberUtils'
-import styles from '../../../styles/components/organisms/cardetailcard.module.scss'
-import { trackPLPCarClick } from 'helpers/amplitude/seva20Tracking'
-import { useFunnelQueryData } from 'services/context/funnelQueryContext'
-import elementId from 'helpers/elementIds'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
-import { Location } from 'utils/types'
+  loanCalculatorWithCityBrandModelVariantUrl,
+  variantListUrl,
+} from 'utils/helpers/routes'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
-import Image from 'next/image'
-import { CarRecommendation } from 'utils/types/context'
-import { Button, CardShadow } from 'components/atoms'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useSessionStorage } from 'utils/hooks/useSessionStorage/useSessionStorage'
+import { formatBillionPoint } from 'utils/numberUtils/numberUtils'
+import { Location } from 'utils/types'
+import { CarRecommendation } from 'utils/types/context'
+import { LoanRank } from 'utils/types/models'
+import styles from '../../../styles/components/organisms/cardetailcard.module.scss'
 
 type CarDetailCardProps = {
   recommendation: CarRecommendation

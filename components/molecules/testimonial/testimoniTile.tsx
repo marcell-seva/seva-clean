@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import { differentDateStatus } from 'utils/dateUtils'
 import { useMediaQuery } from 'react-responsive'
 import { CarouselContext } from 'pure-react-carousel'
 import { TestimonialData } from 'utils/types/utils'
 import { Star } from 'components/atoms/icon/Star'
+import { differentDateStatus } from 'utils/handler/date'
 
 interface TestimoniTileProps {
   item: TestimonialData

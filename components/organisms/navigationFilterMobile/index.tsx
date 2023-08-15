@@ -4,24 +4,22 @@ import {
   IconFilter,
   IconStrawberry,
   IconChevronDown,
-  // IconBrand,
   IconRemove,
   Button,
 } from 'components/atoms'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
-import { sortOptions } from 'config/funnel.config'
 import clsx from 'clsx'
-import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import { AxiosResponse } from 'axios'
 import { carResultsUrl } from 'utils/helpers/routes'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
-import { ButtonSize, ButtonVersion, LanguageCode } from 'utils/enum'
-import { CarRecommendationResponse } from 'utils/types/context'
+import { LanguageCode } from 'utils/enum'
 import { useCar } from 'services/context/carContext'
-// import { useQuery } from 'hooks/useQuery'
+import { sortOptions } from 'utils/config/funnel.config'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 type NavFilterMobileProps = {
   carlist?: any

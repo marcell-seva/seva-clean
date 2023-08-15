@@ -1,3 +1,8 @@
+import {
+  LoanCalculatorAsuransiKombinasiPayloadType,
+  LoanCalculatorIncludePromoPayloadType,
+  LoanCalculatorInsuranceParams,
+} from './../utils/types/utils'
 import { AxiosRequestConfig } from 'axios'
 import { api } from 'services/api'
 import {
@@ -9,9 +14,10 @@ import { PaymentType } from 'utils/enum'
 import { defaultContactFormValue } from 'utils/hooks/useContactFormData/useContactFormData'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import { defaultFormValue } from 'utils/hooks/useSurveyFormData/useSurveyFormData'
-import { LocalStorageKey, QueryKeys } from 'utils/models/models'
+import { LocalStorageKey } from 'utils/enum'
 import { FunnelQuery } from 'utils/types/context'
 import { SpecialRateRequest } from 'utils/types/utils'
+import { QueryKeys } from 'utils/types/models'
 
 export const getSurveyFormData = () => {
   let item = localStorage.getItem(LocalStorageKey.SurveyForm)
@@ -206,4 +212,22 @@ export const getCarBodyTypes = () => {
   const params = new URLSearchParams()
   getCity().cityCode && params.append('city', getCity().cityCode as string)
   return api.getTypeCar('', { params })
+}
+
+export const getLoanCalculatorInsurance = (
+  params: LoanCalculatorInsuranceParams,
+) => {
+  return api.getLoanCalculatorInsurance(params)
+}
+
+export const postLoanPermutationIncludePromo = (
+  body: LoanCalculatorIncludePromoPayloadType,
+) => {
+  return api.postLoanPermutationIncludePromo(body)
+}
+
+export const postLoanPermutationAsuransiKombinasi = (
+  body: LoanCalculatorAsuransiKombinasiPayloadType,
+) => {
+  return api.postLoanPermutationAsuransiKombinasi(body)
 }

@@ -1,10 +1,6 @@
-import { Context, createContext, useContext, useEffect, useState } from 'react'
-import { CarDetail, CarModelResponse } from 'utils/types'
-import {
-  CarModelDetailsResponse,
-  CarRecommendation,
-  CarVariantDetails,
-} from 'utils/types/props'
+import { createContext, useContext, useState } from 'react'
+import { CarDetail, CarModelResponse, CarVariantDetails } from 'utils/types'
+import { CarModelDetailsResponse, CarRecommendation } from 'utils/types/props'
 
 export type CarContextType = {
   car: CarDetail | null

@@ -1,4 +1,4 @@
-import { LoanRank, PageFrom } from 'utils/models/models'
+import { LoanRank, PageFrom } from 'utils/types/models'
 import { MenuParam, Seva20TrackingEvent } from './seva20Tracking'
 import { NewLoanCalculatorTrackingEvent } from './newLoanCalculatorEventTracking'
 import { FunnelTrackingEvent } from './newFunnelEventTracking'
@@ -10,6 +10,7 @@ import {
 import { logAmplitudeEvent } from 'services/amplitude'
 import { TrackingEventName } from './eventTypes'
 import { TemanSevaTrackingEvent } from './temanSevaEventTracking'
+import { PreApprovalTrackingEvent } from './preApprovalEventTracking'
 
 export enum LoanRating {
   Easy = 'easy',
@@ -50,6 +51,7 @@ export type TrackingEvent =
   | FunnelTrackingEvent
   | NewHomePageTrackingEvent
   | TemanSevaTrackingEvent
+  | PreApprovalTrackingEvent
 
 export const trackWhatsappButtonClickFromCarResults = (
   from: EventFromType,

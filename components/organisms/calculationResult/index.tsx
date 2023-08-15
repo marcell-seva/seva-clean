@@ -1,37 +1,44 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import styles from 'styles/components/organisms/calculationResult.module.scss'
-import { FormLCState, SpecialRateListType } from 'utils/types/utils'
+import {
+  FormLCState,
+  LoanCalculatorIncludePromoPayloadType,
+  LoanCalculatorInsuranceAndPromoType,
+  SpecialRateListType,
+  SpecialRateListWithPromoType,
+} from 'utils/types/utils'
 import { CalculationResultItem } from 'components/molecules'
 import { Button, IconWhatsapp, Overlay } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
-import {
-  InstallmentTypeOptions,
-  LanguageCode,
-  LoanRank,
-} from 'utils/models/models'
+import { InstallmentTypeOptions, LoanRank } from 'utils/types/models'
 import { Tooltip } from 'antd'
 import TooltipContentQualifacation from 'components/molecules/tooltipContent'
 import {
   trackLCKualifikasiKreditTooltipCTAClick,
   trackLCKualifikasiKreditTooltipCTACloseClick,
 } from 'helpers/amplitude/seva20Tracking'
-import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import elementId from 'helpers/elementIds'
+import PromoBottomSheet from '../promoBottomSheet'
+import { LanguageCode } from 'utils/enum'
 
 const LogoAcc = '/revamp/icon/logo-acc.webp'
 const LogoTaf = '/revamp/icon/logo-taf.webp'
 
 interface Props {
-  data: SpecialRateListType[]
-  selectedLoan: SpecialRateListType | null
-  setSelectedLoan: (value: SpecialRateListType) => void
+  data: SpecialRateListWithPromoType[]
+  selectedLoan: SpecialRateListWithPromoType | null
+  setSelectedLoan: (value: SpecialRateListWithPromoType) => void
   angsuranType: InstallmentTypeOptions
-  handleRedirectToWhatsapp: (loan: SpecialRateListType) => void
+  handleRedirectToWhatsapp: (loan: SpecialRateListWithPromoType) => void
   isTooltipOpen: boolean
   isQualificationModalOpen: boolean
   closeTooltip: () => void
-  handleClickButtonQualification: (loan: SpecialRateListType) => void
+  handleClickButtonQualification: (loan: SpecialRateListWithPromoType) => void
   formData: FormLCState
+  insuranceAndPromoForAllTenure: LoanCalculatorInsuranceAndPromoType[]
+  calculationApiPayload?: LoanCalculatorIncludePromoPayloadType
+  children?: React.ReactNode
 }
 
 export const CalculationResult = ({
@@ -41,12 +48,21 @@ export const CalculationResult = ({
   angsuranType,
   handleRedirectToWhatsapp,
   isTooltipOpen = false,
-  isQualificationModalOpen = false,
   closeTooltip,
   handleClickButtonQualification,
   formData,
+  insuranceAndPromoForAllTenure,
+  calculationApiPayload,
 }: Props) => {
-  const handleOnClickResultItem = (value: SpecialRateListType) => {
+  const [state, setState] = useState<LoanCalculatorInsuranceAndPromoType[]>(
+    insuranceAndPromoForAllTenure,
+  ) // assume this state as Context, mind about re-render
+  const contextValue = useMemo(() => ({ state, setState }), [state])
+  const [tenureForPopUp, setTenureForPopUp] = useState(data[0].tenure)
+  const [openPromo, setOpenPromo] = useState(false)
+  const [selectedCalculatePromo, setSelectedCalculatePromo] =
+    useState<LoanCalculatorInsuranceAndPromoType | null>()
+  const handleOnClickResultItem = (value: SpecialRateListWithPromoType) => {
     setSelectedLoan(value)
   }
 
@@ -137,6 +153,15 @@ export const CalculationResult = ({
     closeTooltip()
   }
 
+  const handleOpenPopup = (tenure: number) => {
+    setTenureForPopUp(tenure)
+    setOpenPromo(true)
+    const selectPromo = insuranceAndPromoForAllTenure.filter(
+      (x) => x.tenure === tenure,
+    )
+    setSelectedCalculatePromo(selectPromo[0])
+  }
+
   const renderLogoFinco = () => {
     return (
       <div className={styles.logoFincoWrapper}>
@@ -145,8 +170,15 @@ export const CalculationResult = ({
           width={24.24}
           height={32}
           className={styles.logoAcc}
+          alt="logo acc"
         />
-        <img src={LogoTaf} width={37} height={19} className={styles.logoTaf} />
+        <img
+          src={LogoTaf}
+          width={37}
+          height={19}
+          className={styles.logoTaf}
+          alt="logo taf"
+        />
       </div>
     )
   }
@@ -180,7 +212,7 @@ export const CalculationResult = ({
       return (
         <>
           <div className={styles.ctaGroup}>
-            {!isTooltipOpen && !isQualificationModalOpen && (
+            {!isTooltipOpen && (
               <Button
                 version={ButtonVersion.PrimaryDarkBlue}
                 size={ButtonSize.Big}
@@ -251,12 +283,18 @@ export const CalculationResult = ({
             <Button
               version={ButtonVersion.PrimaryDarkBlue}
               size={ButtonSize.Big}
+              onClick={() => handleClickButtonQualification(selectedLoan)}
+              data-testid={elementId.LoanCalculator.Info.KualifikasiKredit}
+            >
+              Cek Kualifikasi Kredit
+            </Button>
+            <Button
+              version={ButtonVersion.Secondary}
+              size={ButtonSize.Big}
               onClick={() => handleRedirectToWhatsapp(selectedLoan)}
               disabled={!selectedLoan}
             >
-              <div
-                className={`${styles.whatsappCtaTextWrapper} ${styles.whiteColor}`}
-              >
+              <div className={styles.whatsappCtaTextWrapper}>
                 <IconWhatsapp width={16} height={16} />
                 Hubungi Agen SEVA
               </div>
@@ -285,7 +323,6 @@ export const CalculationResult = ({
         <span className={styles.dataHeaderText}>Total DP*</span>
         <span className={styles.dataHeaderText}>Cicilan per bulan**</span>
       </div>
-
       <div className={styles.listWrapper}>
         {data.map((item, index) => {
           return (
@@ -294,10 +331,25 @@ export const CalculationResult = ({
               key={index}
               emitOnClick={handleOnClickResultItem}
               isActive={item.tenure === selectedLoan?.tenure}
+              onClickBottomSection={handleOpenPopup}
+              insuranceAndPromoData={
+                insuranceAndPromoForAllTenure.filter(
+                  (selectedDataItem) => selectedDataItem.tenure === item.tenure,
+                )[0]
+              }
             />
           )
         })}
       </div>
+      {selectedCalculatePromo && (
+        <PromoBottomSheet
+          open={openPromo}
+          onClose={() => setOpenPromo(false)}
+          selectedTenure={tenureForPopUp}
+          selectablePromo={selectedCalculatePromo}
+          calculationApiPayload={calculationApiPayload}
+        />
+      )}
 
       {renderCtaAndDisclaimer()}
     </div>

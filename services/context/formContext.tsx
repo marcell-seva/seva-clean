@@ -1,6 +1,5 @@
 import React, { createContext, useContext } from 'react'
 
-import { ContactFormKey } from 'utils/models/models'
 import {
   defaultContactFormValue,
   useContactFormData,
@@ -9,8 +8,8 @@ import {
   defaultFormValue,
   useSurveyFormData,
 } from 'utils/hooks/useSurveyFormData/useSurveyFormData'
-import { FormControlValue } from 'utils/types/props'
-import { SurveyFormKey } from 'utils/types/models'
+import { FormControlValue } from 'utils/types'
+import { ContactFormKey, SurveyFormKey } from 'utils/types/models'
 
 export interface FormControl<T extends FormControlValue> {
   value: T

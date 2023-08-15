@@ -9,15 +9,15 @@ import { useMediaQuery } from 'react-responsive'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import { getModelPriceRange } from 'utils/carModelUtils/carModelUtils'
-import {
-  formatNumberByLocalization,
-  formatPriceNumber,
-  formatPriceNumberThousandDivisor,
-} from 'utils/numberUtils/numberUtils'
 import { StyledIcon } from '../SpecificationSelect/SpecificationSelect'
 import { CarModelDetailsResponse, CarRecommendation } from 'utils/types'
 import { LanguageCode } from 'utils/enum'
 import { DownOutlined } from 'components/atoms'
+import { formatNumberByLocalization } from 'utils/handler/rupiah'
+import {
+  formatPriceNumber,
+  formatPriceNumberThousandDivisor,
+} from 'utils/numberUtils/numberUtils'
 
 type FAQProps = {
   carModel: CarModelDetailsResponse

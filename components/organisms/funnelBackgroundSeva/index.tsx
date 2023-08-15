@@ -18,9 +18,9 @@ import {
   useContactUsModal,
 } from 'components/molecules/ContactUsModal/ContactUsModal'
 import { useLoginAlertModal } from 'components/molecules/LoginAlertModal/LoginAlertModal'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { LocalStorageKey } from 'utils/enum'
-import { getLocalStorage } from 'utils/localstorageUtils'
+import { getLocalStorage } from 'utils/handler/localStorage'
 import { countDaysDifference } from 'utils/handler/countDaysDifference'
 import {
   AdvisorSection,

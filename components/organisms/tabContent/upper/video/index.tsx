@@ -5,8 +5,8 @@ import Youtube from 'react-youtube'
 import elementId from 'helpers/elementIds'
 import { trackPDPGalleryVideo } from 'helpers/amplitude/seva20Tracking'
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
-import { LocalStorageKey } from 'utils/models/models'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { LocalStorageKey } from 'utils/enum'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useCar } from 'services/context/carContext'
 
 interface Props {

@@ -21,8 +21,8 @@ import {
   trackPDPPhotoClick,
   trackPDPPhotoSwipe,
 } from 'helpers/amplitude/seva20Tracking'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { LocalStorageKey } from 'utils/models/models'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { LocalStorageKey } from 'utils/enum'
 import {
   TrackingEventName,
   TrackingEventWebPDPPhoto,

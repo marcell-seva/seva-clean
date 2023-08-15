@@ -13,17 +13,14 @@ import {
   formatNumberByLocalization,
 } from 'utils/handler/rupiah'
 import Image from 'next/image'
-import {
-  ButtonSize,
-  ButtonVersion,
-  LanguageCode,
-  LocalStorageKey,
-} from 'utils/types/models'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { Button } from 'components/atoms'
 import { saveLocalStorage } from 'utils/handler/localStorage'
 import { client } from 'utils/helpers/const'
+import { LanguageCode, LocalStorageKey } from 'utils/enum'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+
 type carOfTheMonthData = {
   name: string
   desc: string

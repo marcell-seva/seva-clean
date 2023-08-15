@@ -2,10 +2,10 @@ import { api } from 'services/api'
 import { AxiosResponse } from 'axios'
 import { defaultCSANumber } from 'utils/helpers/const'
 import urls from 'helpers/urls'
-import { getLocalStorage } from 'utils/localstorageUtils'
+import { getLocalStorage } from 'utils/handler/localStorage'
 import { UTMTagsData } from 'utils/types/utils'
 import { getStoredContactFormData } from './auth'
-import { ContactType, LocalStorageKey } from 'utils/models/models'
+import { ContactType, LocalStorageKey } from 'utils/enum'
 import {
   CountryCodePlusSign,
   defaultContactFormValue,

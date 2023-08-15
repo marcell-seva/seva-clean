@@ -50,7 +50,8 @@ export const CarBodyTypesDesktop = () => {
   const [bodyTypeSelected, setBodyTypeSelected] = useState('MPV')
   const [recommendationLists, setRecommendationLists] =
     useState<CarRecommendation[]>(dataRecToyota)
-  const { patchFunnelQuery, clearFunnelQuery } = useFunnelQueryData()
+  const { patchFunnelQuery, clearQueryFilter: clearFunnelQuery } =
+    useFunnelQueryData()
   const [loading, setLoading] = useState(false)
   useEffect(() => {
     if (bodyTypesList.length === 0) {

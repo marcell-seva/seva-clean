@@ -1,7 +1,7 @@
 import { LanguageCode } from 'utils/enum'
+import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import {
   formatBillionPoint,
-  formatNumberByLocalization,
   formatPriceNumber,
   formatPriceNumberThousandDivisor,
 } from 'utils/numberUtils/numberUtils'

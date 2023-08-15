@@ -14,10 +14,7 @@ import {
   trackWebPDPCreditTab,
   WebVariantListPageParam,
 } from 'helpers/amplitude/seva20Tracking'
-import {
-  formatSortPrice,
-  replacePriceSeparatorByLocalization,
-} from 'utils/numberUtils/numberUtils'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { setTrackEventMoEngage } from 'helpers/moengage'
 import elementId from 'helpers/elementIds'
 import {
@@ -25,12 +22,12 @@ import {
   CarVariantRecommendation,
   CityOtrOption,
 } from 'utils/types'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { Description } from 'components/organisms/OldPdpSectionComponents/Description/Description'
 import { SpecificationSelect } from 'components/organisms/OldPdpSectionComponents/SpecificationSelect/SpecificationSelect'
-import { SurveyFormKey } from 'utils/models/models'
+import { SurveyFormKey } from 'utils/types/models'
 import { Input } from 'components/atoms/OldInput/Input'
 import { IconWarning } from 'components/atoms'
 import { useLoginAlertModal } from 'components/molecules/LoginAlertModal/LoginAlertModal'
@@ -39,6 +36,7 @@ import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]
 import Image from 'next/image'
 import { useCar } from 'services/context/carContext'
 import { useContextForm } from 'services/context/formContext'
+import { formatSortPrice } from 'utils/numberUtils/numberUtils'
 
 const EmptyCalculationImage = '/revamp/illustration/EmptyCalculationImage.webp'
 const AccLogo = '/revamp/icon/logo-acc.webp'

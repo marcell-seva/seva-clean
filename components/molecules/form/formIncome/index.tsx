@@ -2,11 +2,12 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import styles from '../../../../styles/components/molecules/form/formPrice.module.scss'
 import { Input } from 'antd'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
-import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { getConvertFilterIncome } from 'utils/filterUtils'
 import elementId from 'helpers/elementIds'
 import { LanguageCode } from 'utils/enum'
+
 type FormIncomeProps = {
   setIncomeAmount?: any
   collapseTwo?: boolean
@@ -15,6 +16,7 @@ type FormIncomeProps = {
   setIsErrorIncome?: any
   isApplied?: boolean
 }
+
 export const FormIncome = ({
   setIncomeAmount,
   isResetFilter,

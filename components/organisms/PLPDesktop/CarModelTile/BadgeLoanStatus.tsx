@@ -20,8 +20,8 @@ import {
 } from 'utils/carModelUtils/carModelUtils'
 import { hundred, million, ten } from 'utils/helpers/const'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
-import { LocalStorageKey, LoanRank, LanguageCode } from 'utils/enum'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { LocalStorageKey, LanguageCode } from 'utils/enum'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { CarRecommendation, CityOtrOption } from 'utils/types'
 import { IconInfo } from 'components/atoms'
 import {
@@ -32,6 +32,7 @@ import {
   useLoanRankStatusModal,
   LoanRankStatusAmplitudeType,
 } from 'components/organisms/LoanRankStatusModal/LoanRankStatusModal'
+import { LoanRank } from 'utils/types/models'
 
 interface Props {
   loanRank: string

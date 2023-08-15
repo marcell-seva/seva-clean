@@ -1,11 +1,7 @@
 import { million, ten } from 'utils/helpers/const'
-import { LanguageCode } from 'utils/models/models'
+import { LanguageCode } from 'utils/enum'
 import React from 'react'
 import { CarVariantRecommendation } from 'utils/types/utils'
-import {
-  formatNumberByLocalization,
-  replacePriceSeparatorByLocalization,
-} from 'utils/numberUtils/numberUtils'
 import {
   IconEngine,
   IconFuel,
@@ -14,6 +10,10 @@ import {
 } from 'components/atoms'
 import { IconDimension, IconFuelTank } from 'components/atoms/icon'
 import styles from 'styles/components/organisms/summary.module.scss'
+import {
+  replacePriceSeparatorByLocalization,
+  formatNumberByLocalization,
+} from 'utils/handler/rupiah'
 
 type VariantsProps = {
   carVariant: CarVariantRecommendation

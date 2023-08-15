@@ -1,4 +1,4 @@
-import { DOT } from 'utils/helpers/const'
+import { DOT } from 'utils/stringUtils'
 
 export const prefixWithZero = (originalNumber: number | string) => {
   return `0${originalNumber}`.slice(-2)

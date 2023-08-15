@@ -8,7 +8,7 @@ import { getIncomeList } from 'services/recommendations'
 import styled from 'styled-components'
 import { LanguageCode } from 'utils/enum'
 import { getConvertFilterIncomeToRange } from 'utils/filterUtils'
-import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { FormControlValue } from 'utils/types'
 

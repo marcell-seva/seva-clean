@@ -2,10 +2,11 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import styles from 'styles/components/molecules/form/formPrice.module.scss'
 import { Input } from 'antd'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
-import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import elementId from 'helpers/elementIds'
 import { LanguageCode } from 'utils/enum'
+
 type FormDownPaymentProps = {
   setDownPaymentAmount?: any
   collapseTwo?: boolean

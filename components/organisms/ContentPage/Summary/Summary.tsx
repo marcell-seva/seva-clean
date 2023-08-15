@@ -19,16 +19,14 @@ import {
   trackNewVariantListPageView,
   WebVariantListPageParam,
 } from 'helpers/amplitude/seva20Tracking'
-import {
-  formatSortPrice,
-  replacePriceSeparatorByLocalization,
-} from 'utils/numberUtils/numberUtils'
+import { formatSortPrice } from 'utils/numberUtils/numberUtils'
 import { setTrackEventMoEngage } from 'helpers/moengage'
 import { CarVariantRecommendation, CityOtrOption } from 'utils/types'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useCar } from 'services/context/carContext'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 
 type tabProps = {
   tab: string | undefined

@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { getSessionStorage } from 'utils/sessionstorageUtils'
+import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { variantListUrl } from 'utils/helpers/routes'
 import {
   CarouselProvider,
@@ -16,14 +16,12 @@ import {
   CarVariantSummaryTabPriceSectionParam,
   trackRecentlyViewedClick,
 } from 'helpers/amplitude/seva20Tracking'
-import {
-  formatSortPrice,
-  replacePriceSeparatorByLocalization,
-} from 'utils/numberUtils/numberUtils'
+import { formatSortPrice } from 'utils/numberUtils/numberUtils'
 import { CarVariantLoan, CityOtrOption } from 'utils/types/utils'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useRouter } from 'next/router'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 
 const leftArrow = '/revamp/icon/arrowLeftSmall.webp'
 const rightArrow = '/revamp/icon/arrowRightSmall.webp'

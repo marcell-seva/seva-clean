@@ -5,7 +5,7 @@ import { IconInfo } from 'components/atoms'
 import { useMediaQuery } from 'react-responsive'
 import { useLoanRankInfoModal } from 'components/organisms/LoanRankInfoModal/LoanRankInfoModal'
 import { useLoanRankStatusModal } from 'components/organisms/LoanRankStatusModal/LoanRankStatusModal'
-import { LoanRank } from 'utils/models/models'
+import { LoanRank } from 'utils/types/models'
 
 interface Props {
   loanRank: string

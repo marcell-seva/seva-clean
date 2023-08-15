@@ -7,12 +7,12 @@ import { AmplitudeEventName } from 'services/amplitude/types'
 import elementId from 'utils/helpers/trackerId'
 import Image from 'next/image'
 import { Button } from 'components/atoms'
-import { ButtonSize, ButtonVersion } from 'utils/types/models'
 import { useRouter } from 'next/router'
 import { api } from 'services/api'
-import { CityOtrOption } from 'utils/types/props'
 import { HomePageDataLocalContext } from 'pages'
 import { HeaderMobile } from '../headerMobile'
+import { CityOtrOption } from 'utils/types'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 type MainHeroLPProps = {
   onCityIconClick: () => void

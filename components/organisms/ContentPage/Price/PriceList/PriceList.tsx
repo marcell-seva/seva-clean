@@ -13,14 +13,14 @@ import { api } from 'services/api'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import {
-  formatNumberByLocalization,
-  formatSortPrice,
-  replacePriceSeparatorByLocalization,
-} from 'utils/numberUtils/numberUtils'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { formatSortPrice } from 'utils/numberUtils/numberUtils'
 import { CarVariantRecommendation, CityOtrOption } from 'utils/types'
 import { useCar } from 'services/context/carContext'
+import {
+  formatNumberByLocalization,
+  replacePriceSeparatorByLocalization,
+} from 'utils/handler/rupiah'
 
 export const PriceList = () => {
   const router = useRouter()

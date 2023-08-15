@@ -39,6 +39,7 @@ interface Props<T extends FormControlValue> {
   disableIconClick?: boolean
   datatestid?: string
   optionTestid?: string
+  prefix?: string
 }
 
 const forwardedInputSelect = <T extends FormControlValue>(
@@ -70,11 +71,13 @@ const forwardedInputSelect = <T extends FormControlValue>(
     disableIconClick = false,
     datatestid,
     optionTestid,
+    prefix,
   }: Props<T>,
   ref?: ForwardedRef<HTMLInputElement>,
 ) => {
   const [isOpenDropdown, setIsOpenDropdown] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
+  const [currentValue, setCurrentValue] = useState('')
 
   const openDropdown = () => {
     return {
@@ -95,8 +98,10 @@ const forwardedInputSelect = <T extends FormControlValue>(
   const onChooseItem = (item: Option<T>) => {
     // onChange(item.label)
     if (showValueAsLabel) {
+      setCurrentValue(item.value as string)
       onChange(item.value as string)
     } else {
+      setCurrentValue(item.label)
       onChange(item.label)
     }
     onChoose && onChoose(item)
@@ -106,6 +111,19 @@ const forwardedInputSelect = <T extends FormControlValue>(
     // setIsOpenDropdown(false)
     openDropdown().onOpen(false)
     setIsFocused(false)
+    if (
+      !options.some(
+        (x) => x.label.toLowerCase() === currentValue.toLowerCase(),
+      ) ||
+      !options.some((x) =>
+        typeof x.value === 'string'
+          ? x.value.toLowerCase() === currentValue.toLowerCase()
+          : x.value === currentValue,
+      )
+    ) {
+      onChange(currentValue)
+    }
+
     onBlurInput && onBlurInput(e)
   }
 
@@ -149,6 +167,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
           [styles.error]: !isFocused && isError,
         })}
       >
+        {prefix && <span className={styles.prefix}>{prefix}</span>}
         <input
           ref={ref}
           value={inputValue()}

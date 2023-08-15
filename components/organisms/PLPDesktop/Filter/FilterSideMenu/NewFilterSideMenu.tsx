@@ -31,7 +31,7 @@ import {
 } from 'utils/typography/TextLegalMedium'
 import { DownOutlined } from 'components/atoms'
 import { useRouter } from 'next/router'
-import { useCarResultParameter } from 'utils/hooks/useAmplitudePageView/useAmplitudePageView'
+import { useCarResultParameter } from 'utils/hooks/useAmplitudePageView'
 import {
   downPaymentConfig,
   newDownPaymentConfig,
@@ -248,7 +248,7 @@ export const NewFilterSideMenu = () => {
 
   const handleClickAgeOption = () => setOpenAgeOption(!openAgeOption)
   const handleClickSortOption = () => setOpenSortOption(!openSortOption)
-  const handleSuccess = async (response) => {
+  const handleSuccess = async (response: any) => {
     patchFunnelQuery({
       age: ageValue,
       downPaymentType: DownPaymentType.DownPaymentAmount,

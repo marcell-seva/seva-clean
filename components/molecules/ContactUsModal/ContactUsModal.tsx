@@ -14,33 +14,30 @@ import {
   createUnverifiedLeadNew,
   UnverifiedLeadSubCategory,
 } from 'services/lead'
-import { ToastType, useToast } from 'components/atoms/OldToast/Toast'
+import { useToast } from 'components/atoms/OldToast/Toast'
 import { Contact } from 'components/atoms/icon/Contact'
 import { FBPixelStandardEvent } from 'helpers/facebookPixel'
 // import ReactPixel from 'react-facebook-pixel'
 import { useMediaQuery } from 'react-responsive'
 import { savePageBeforeLogin } from 'utils/loginUtils'
 import { LoginSevaUrl } from 'utils/helpers/routes'
-import { getToken } from 'utils/api'
-import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { getCustomerInfoWrapperSeva } from 'services/customer'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
 import elementId from 'helpers/elementIds'
 import { useModal } from 'components/atoms/ModalOld/Modal'
 import { useRouter } from 'next/router'
-import {
-  ContactFormKey,
-  ContactType,
-  LocalStorageKey,
-} from 'utils/models/models'
+import { ContactType, LocalStorageKey } from 'utils/enum'
 import { trackGASubmitContactInfo } from 'services/googleAds'
 import { IconSquareCheckBox, IconSquareCheckedBox } from 'components/atoms/icon'
 import { client } from 'utils/helpers/const'
 import { CityOtrOption, UTMTagsData } from 'utils/types/utils'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useDialogModal } from 'components/molecules/dialogModal/DialogModal'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { useModalContext } from 'services/context/modalContext'
+import { getToken } from 'utils/handler/auth'
+import { ContactFormKey, ToastType } from 'utils/types/models'
 
 interface ContactUsFloatingComponentProps
   extends HTMLAttributes<HTMLDivElement> {

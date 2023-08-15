@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styles from 'styles/components/molecules/info.module.scss'
 import { IconInfo } from 'components/atoms'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { LocalStorageKey } from 'utils/models/models'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { LocalStorageKey } from 'utils/enum'
 import {
   trackCarVariantDescriptionCollapseClick,
   trackCarVariantDescriptionExpandClick,

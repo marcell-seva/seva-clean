@@ -11,6 +11,8 @@ import { FormContextProvider } from './formContext'
 import { ModalContextProvider } from './modalContext'
 import { SideMenuListContextProvider } from './sideMenuListContext'
 import { SideMenuContextProvider } from './sideMenuContext'
+import { MultiUnitQueryContextProvider } from './multiUnitQueryContext'
+import { GalleryContextProvider } from './galleryContext'
 
 const providers: Array<
   React.JSXElementConstructor<React.PropsWithChildren<any>>
@@ -28,6 +30,8 @@ const providers: Array<
   ModalContextProvider,
   SideMenuListContextProvider,
   SideMenuContextProvider,
+  MultiUnitQueryContextProvider,
+  GalleryContextProvider,
 ]
 
 export const GlobalContextProvider = (props: HTMLAttributes<HTMLElement>) => {

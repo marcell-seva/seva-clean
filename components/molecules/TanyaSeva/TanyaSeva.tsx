@@ -7,13 +7,7 @@ import {
   getMinimumDp,
   getMinimumMonthlyInstallment,
 } from 'utils/carModelUtils/carModelUtils'
-import {
-  LanguageCode,
-  LoanRank,
-  LocalStorageKey,
-  LocationStateKey,
-  PageFrom,
-} from 'utils/models/models'
+import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { defaultCSANumber, hundred, million, ten } from 'utils/helpers/const'
 // import { trackWhatsappButtonClickFromCarResults } from 'helpers/trackingEvents'
 import {
@@ -24,10 +18,8 @@ import {
 // import { EventFromType } from 'helpers/amplitude/newHomePageEventTracking'
 // import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { CityOtrOption } from 'utils/types'
-import { api } from 'services/api'
 import { t } from 'config/localization/locales/id'
 import { useRouter } from 'next/router'
 import { trackWhatsappButtonClickFromCarResults } from 'helpers/amplitude/trackingEvents'
@@ -35,6 +27,8 @@ import { EventFromType } from 'helpers/amplitude/newHomePageEventTracking'
 import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
 import { useCar } from 'services/context/carContext'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
+import { LoanRank, PageFrom } from 'utils/types/models'
 
 export const TanyaSeva = () => {
   const router = useRouter()

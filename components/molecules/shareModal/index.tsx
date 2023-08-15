@@ -9,9 +9,9 @@ import {
   IconWhatsapp,
 } from 'components/atoms'
 import elementId from 'helpers/elementIds'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { LocalStorageKey } from 'utils/models/models'
-// import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { LocalStorageKey } from 'utils/enum'
+// import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import {
   trackCarVariantSharePopupClose,
   trackCarVariantSharePopupCopyLinkClick,

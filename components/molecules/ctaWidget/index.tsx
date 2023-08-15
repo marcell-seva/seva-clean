@@ -6,9 +6,9 @@ import Image from 'next/image'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { Button } from 'components/atoms'
-import { ButtonSize, ButtonVersion } from 'utils/types/models'
 import urls from 'utils/helpers/url'
 import { useRouter } from 'next/router'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 const CtaWidget = () => {
   const router = useRouter()

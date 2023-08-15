@@ -4,7 +4,7 @@ import axios from 'axios'
 import Head from 'next/head'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
-import { saveLocalStorage } from 'utils/localstorageUtils'
+import { saveLocalStorage } from 'utils/handler/localStorage'
 import { LocalStorageKey } from 'utils/enum'
 import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
 import {
@@ -132,8 +132,7 @@ export const getServerSideProps: GetServerSideProps<{
     const footerData = fetchFooter.data.data
 
     if (!priceRangeGroup) {
-      const minmax = await getMinMaxPrice({})
-      const minmaxPriceData = minmax.data
+      const minmaxPriceData = await getMinMaxPrice()
       meta.MinMaxPrice = {
         minPriceValue: minmaxPriceData.minPriceValue,
         maxPriceValue: minmaxPriceData.maxPriceValue,

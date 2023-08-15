@@ -1,0 +1,129 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+@import '../../abstract/animations';
+
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+
+  .imgLanding {
+    position: absolute;
+    z-index: 10;
+    top: 183px;
+  }
+}
+
+.header {
+  background-color: #2797ff;
+  height: 10px;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+}
+
+.containerHeader {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+
+  .header {
+    background: linear-gradient(360deg, #002d95 0%, #2797ff 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 120vw;
+    height: 364px;
+    overflow: hidden;
+    border-bottom-right-radius: 50%;
+    border-bottom-left-radius: 50%;
+  }
+
+  .titleInfo {
+    color: #{$primary-white};
+    text-align: center;
+    margin-top: 50px;
+    font-family: $font-kanyon;
+    font-size: 20px;
+    line-height: 28px;
+    position: absolute;
+    width: 80%;
+
+    .boldText {
+      font-family: $font-kanyon-bold;
+    }
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px;
+
+  .infotext {
+    text-align: center;
+    margin: 24px 0;
+    font-family: $font-openSans;
+    font-size: 12px;
+    line-height: 18px;
+    color: #{$primary-black};
+
+    .semiboldText {
+      font-family: $font-openSans-semiBold;
+    }
+  }
+
+  .rejectButtonWrapper {
+    padding: 12px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0px 0px;
+    position: relative;
+
+    div {
+      color: #{$primary-dark-blue};
+      font-family: $font-openSans;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .icon {
+      position: absolute;
+      right: -7%;
+      top: 14px;
+      @include rotate-animation;
+    }
+  }
+}
+
+.footer {
+  background-color: rgba(215, 215, 215, 0.1);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 0 10px;
+
+  span {
+    color: #{$shades-grey-75};
+    font-family: $font-openSans;
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .iconWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

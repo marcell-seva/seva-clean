@@ -5,11 +5,7 @@ import {
   CarVariantRecommendation,
 } from 'utils/types/utils'
 import { IconFuel, IconTransmission } from 'components/atoms'
-import {
-  formatNumberByLocalization,
-  replacePriceSeparatorByLocalization,
-} from 'utils/numberUtils/numberUtils'
-import { LanguageCode, LocalStorageKey } from 'utils/models/models'
+
 import {
   IconChevronDown,
   IconChevronUp,
@@ -18,7 +14,7 @@ import {
   IconToggleListActive,
   IconToggleListInactive,
 } from 'components/atoms'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import {
   trackCarVariantPricelistClick,
@@ -30,6 +26,11 @@ import { variantListUrl } from 'utils/helpers/routes'
 import elementId from 'helpers/elementIds'
 import { CityOtrOption } from 'utils/types/utils'
 import { useRouter } from 'next/router'
+import { LanguageCode, LocalStorageKey } from 'utils/enum'
+import {
+  replacePriceSeparatorByLocalization,
+  formatNumberByLocalization,
+} from 'utils/handler/rupiah'
 
 const rpIcon = '/revamp/illustration/rp-icon.webp'
 

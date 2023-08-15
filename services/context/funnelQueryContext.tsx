@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import { LocalStorageKey } from 'utils/types/models'
+import { LocalStorageKey } from 'utils/enum'
 import { FunnelQuery } from 'utils/types/context'
 
 enum PaymentType {

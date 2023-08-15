@@ -2,9 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { Col, Input, Row, Slider } from 'antd'
 import styles from 'styles/components/molecules/dp/dpform.module.scss'
 import { dpRateCollectionNewCalculator } from 'utils/helpers/const'
-import { dpRateCollectionNewCalculatorTmp } from 'utils/types/utils'
+import {
+  dpRateCollectionNewCalculatorTmp,
+  FormLCState,
+} from 'utils/types/utils'
 import clsx from 'clsx'
 import elementId from 'helpers/elementIds'
+import { SessionStorageKey } from 'utils/enum'
+import { getSessionStorage } from 'utils/handler/sessionStorage'
 
 interface DpFormProps {
   label: string
@@ -29,6 +34,7 @@ interface DpFormProps {
   setIsDpTooLow: (value: boolean) => void
   isDpExceedLimit: boolean
   setIsDpExceedLimit: (value: boolean) => void
+  isAutofillValueFromCreditQualificationData?: boolean
 }
 
 const DpForm: React.FC<DpFormProps> = ({
@@ -46,6 +52,7 @@ const DpForm: React.FC<DpFormProps> = ({
   setIsDpTooLow,
   isDpExceedLimit,
   setIsDpExceedLimit,
+  isAutofillValueFromCreditQualificationData = false,
 }) => {
   const formatCurrency = (value: number): string => {
     return `Rp${value.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`
@@ -55,15 +62,38 @@ const DpForm: React.FC<DpFormProps> = ({
     formatCurrency(value),
   )
 
+  const kkForm: FormLCState | null = getSessionStorage(
+    SessionStorageKey.KalkulatorKreditForm,
+  )
+
   useEffect(() => {
-    const initialDpValue = carPriceMinusDiscount * 0.2
-    setFormattedValue(formatCurrency(initialDpValue))
-    onChange(
-      initialDpValue,
-      calculatePercentage(initialDpValue, carPriceMinusDiscount),
-      getDpPercentageByMapping(initialDpValue),
-    )
-    handleChange(name, initialDpValue)
+    if (isAutofillValueFromCreditQualificationData) {
+      const initialDpValue = kkForm?.downPaymentAmount
+        ? parseInt(kkForm?.downPaymentAmount)
+        : 0
+      const carOtrFromStorage = parseInt(
+        kkForm?.variant?.otr.replaceAll('Rp', '').replaceAll('.', '') ?? '0',
+      )
+      const carDiscountFromStorage = kkForm?.variant?.discount ?? 0
+      const carPriceMinusDiscountFromStorage =
+        carOtrFromStorage - carDiscountFromStorage
+      setFormattedValue(formatCurrency(initialDpValue))
+      onChange(
+        initialDpValue,
+        calculatePercentage(initialDpValue, carPriceMinusDiscountFromStorage),
+        getDpPercentageByMapping(initialDpValue),
+      )
+      handleChange(name, initialDpValue)
+    } else {
+      const initialDpValue = carPriceMinusDiscount * 0.2
+      setFormattedValue(formatCurrency(initialDpValue))
+      onChange(
+        initialDpValue,
+        calculatePercentage(initialDpValue, carPriceMinusDiscount),
+        getDpPercentageByMapping(initialDpValue),
+      )
+      handleChange(name, initialDpValue)
+    }
   }, [carPriceMinusDiscount])
 
   const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -5,7 +5,7 @@ import { colors } from 'styles/colors'
 import { Input } from 'components/atoms/OldInput/Input'
 import { Button, IconLoading, IconWarning } from 'components/atoms'
 import { useUtils } from 'services/context/utilsContext'
-import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { dpRateCollectionNewCalculator, million } from 'utils/helpers/const'
 import {
@@ -20,15 +20,12 @@ import {
 import { useContextCalculator } from 'services/context/calculatorContext'
 import {
   InstallmentTypeOptions,
-  LanguageCode,
   LoanRank,
-  LocalStorageKey,
-  SessionStorageKey,
   SurveyFormKey,
-} from 'utils/models/models'
+} from 'utils/types/models'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { AxiosResponse } from 'axios'
-import { getToken } from 'utils/api'
+import { getToken } from 'utils/handler/auth'
 import { getCustomerInfoWrapperSeva } from 'services/customer'
 import { useMediaQuery } from 'react-responsive'
 import {
@@ -42,7 +39,7 @@ import { StyledErrorText, StyledInputPromo } from './Credit'
 import { InfoCircleOutlined } from 'components/atoms'
 import elementId from 'helpers/elementIds'
 import { parsedMonthlyIncome } from 'utils/parsedMonthlyIncome'
-import { saveLocalStorage } from 'utils/localstorageUtils'
+import { saveLocalStorage } from 'utils/handler/localStorage'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import {
   getCity,
@@ -53,9 +50,10 @@ import {
   CityOtrOption,
   dpRateCollectionNewCalculatorTmp,
 } from 'utils/types/utils'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { useContextForm } from 'services/context/formContext'
+import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 
 interface AmountInputProps {
   carVariantDetails: NewFunnelCarVariantDetails
@@ -390,7 +388,7 @@ export const SliderDpAmountCreditTab = ({
             scrollToSection()
             patchSurveyFormValue({
               [SurveyFormKey.DownPaymentTmp]: {
-                value: contextSurveyFormData[SurveyFormKey.DownPayment]?.value,
+                value: surveyFormData[SurveyFormKey.DownPayment]?.value,
                 isDataValid: true,
               },
               [SurveyFormKey.SpecialRateEnable]: {

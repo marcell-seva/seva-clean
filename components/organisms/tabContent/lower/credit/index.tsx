@@ -1,5 +1,15 @@
-import { rupiah } from 'utils/handler/rupiah'
-import { Article, CityOtrOption } from 'utils/types/utils'
+import {
+  formatNumberByLocalization,
+  replacePriceSeparatorByLocalization,
+  rupiah,
+} from 'utils/handler/rupiah'
+import {
+  Article,
+  CityOtrOption,
+  LoanCalculatorIncludePromoPayloadType,
+  LoanCalculatorInsuranceAndPromoType,
+  SpecialRateListWithPromoType,
+} from 'utils/types/utils'
 import {
   trackLCCTAHitungKemampuanClick,
   trackLCCtaWaDirectClick,
@@ -10,21 +20,13 @@ import {
   trackWebPDPCreditTab,
 } from 'helpers/amplitude/seva20Tracking'
 import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import {
   InstallmentTypeOptions,
-  LanguageCode,
   LoanRank,
-  LocalStorageKey,
-  SessionStorageKey,
   TrackerFlag,
-} from 'utils/models/models'
+} from 'utils/types/models'
 import React, { useEffect, useMemo, useState } from 'react'
-import {
-  formatNumberByLocalization,
-  formatPriceNumberThousandDivisor,
-  replacePriceSeparatorByLocalization,
-} from 'utils/numberUtils/numberUtils'
 import {
   Articles,
   CalculationResult,
@@ -46,20 +48,20 @@ import {
   defaultCity,
   saveCity,
 } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
-import CarSillhouete from '/public/revamp/illustration/car-sillhouete.webp'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import IncomeForm from 'components/molecules/credit/income'
 import DpForm from 'components/molecules/credit/dp'
 import { CicilOptionForm } from 'components/molecules/credit/cicil'
 import { FormAgeCredit } from 'components/molecules/credit/age'
 import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
-import { ageOptions } from 'config/funnel.config'
 import { checkPromoCodeGias } from 'services/preApproval'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import {
+  getLoanCalculatorInsurance,
   getNewFunnelLoanSpecialRate,
   getNewFunnelRecommendations,
   getNewFunnelRecommendationsByCity,
+  postLoanPermutationIncludePromo,
 } from 'services/newFunnel'
 import { getCarModelDetailsById } from 'services/recommendations'
 import {
@@ -73,13 +75,27 @@ import CreditCualificationBenefit from 'components/organisms/CreditCualification
 import { variantEmptyValue } from 'components/molecules/form/formSelectCarVariant'
 import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import { QualificationCreditModal } from 'components/molecules/qualificationCreditModal'
-import { saveLocalStorage } from 'utils/localstorageUtils'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import { CarModel } from 'utils/types/carModel'
 import { ModelVariant } from 'utils/types/carVariant'
 import { TrackVariantList } from 'utils/types/tracker'
 import { useCar } from 'services/context/carContext'
+import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { ageOptions } from 'utils/config/funnel.config'
+import { formatPriceNumberThousandDivisor } from 'utils/numberUtils/numberUtils'
+import { getToken } from 'utils/handler/auth'
+import { getCustomerInfoSeva } from 'services/customer'
+import {
+  generateAllBestPromoList,
+  getInstallmentAffectedByPromo,
+  getInterestRateAffectedByPromo,
+  getTdpAffectedByPromo,
+} from 'utils/loanCalculatorUtils'
+import { removeFirstWordFromString } from 'utils/stringUtils'
+
+const CarSillhouete = '/revamp/illustration/car-sillhouete.webp'
 
 interface FormState {
   city: CityOtrOption
@@ -151,9 +167,8 @@ export const CreditTab = () => {
     CarRecommendation[]
   >([])
   const [articles, setArticles] = React.useState<Article[]>([])
-  const [selectedLoan, setSelectedLoan] = useState<SpecialRateListType | null>(
-    null,
-  )
+  const [selectedLoan, setSelectedLoan] =
+    useState<SpecialRateListWithPromoType | null>(null)
   const [storedFilter] = useLocalStorage<null>(
     LocalStorageKey.FinancialData,
     null,
@@ -167,6 +182,18 @@ export const CreditTab = () => {
       LocalStorageKey.SimpleCarVariantDetails,
       null,
     )
+  const [insuranceAndPromoForAllTenure, setInsuranceAndPromoForAllTenure] =
+    useState<LoanCalculatorInsuranceAndPromoType[]>([])
+  const [isLoadingInsuranceAndPromo, setIsLoadingInsuranceAndPromo] =
+    useState(false)
+  const [isSelectPassengerCar, setIsSelectPassengerCar] = useState(false)
+  const [calculationApiPayload, setCalculationApiPayload] =
+    useState<LoanCalculatorIncludePromoPayloadType>()
+
+  const referralCodeLocalStorage = getLocalStorage<string>(
+    LocalStorageKey.referralTemanSeva,
+  )
+  const [isUserHasReffcode, setIsUserHasReffcode] = useState(false)
 
   const getAutofilledCityData = () => {
     // related to logic inside component "FormSelectCity"
@@ -184,7 +211,7 @@ export const CreditTab = () => {
       brandName: '',
       modelName: '',
       modelId: '',
-      modelImage: CarSillhouete as unknown as string,
+      modelImage: CarSillhouete,
     },
     variant: {
       variantId: '',
@@ -268,7 +295,17 @@ export const CreditTab = () => {
       return
     }
   }
-
+  const checkReffcode = () => {
+    if (referralCodeLocalStorage) {
+      setIsUserHasReffcode(true)
+    } else if (!!getToken()) {
+      getCustomerInfoSeva().then((response) => {
+        if (response[0].temanSevaTrxCode) {
+          setIsUserHasReffcode(true)
+        }
+      })
+    }
+  }
   useEffect(() => {
     fetchAllCarModels()
     fetchArticles()
@@ -304,7 +341,6 @@ export const CreditTab = () => {
       autofillCarModelAndVariantData()
     }
   }, [router.query.selectedVariantId])
-
   useEffect(() => {
     if (forms.model?.modelId && forms.city) {
       fetchCarVariant()
@@ -378,6 +414,7 @@ export const CreditTab = () => {
 
   useEffect(() => {
     updateSelectedVariantData()
+    checkReffcode()
   }, [carVariantList])
 
   const sortedCarModelVariant = useMemo(() => {
@@ -479,25 +516,23 @@ export const CreditTab = () => {
 
   const getTransmissionType = (payload: any) => {
     const type: Array<string> = payload
-      ?.map((item: any) => item.transmission)
+      .map((item: any) => item.transmission)
       .filter(
         (value: any, index: number, self: any) => self.indexOf(value) === index,
       )
 
-    return type || []
+    return type
   }
   const getPriceRange = (payload: any) => {
-    if (payload) {
-      const variantLength = payload?.length
-      if (variantLength === 1) {
-        const price: string = rupiah(payload[0].priceValue)
-        return `yang tersedia dalam kisaran harga mulai dari ${price}`
-      } else {
-        const upperPrice = rupiah(payload[0].priceValue)
-        const lowerPrice = rupiah(payload[variantLength - 1].priceValue)
+    const variantLength = payload.length
+    if (variantLength === 1) {
+      const price: string = rupiah(payload[0].priceValue)
+      return `yang tersedia dalam kisaran harga mulai dari ${price}`
+    } else {
+      const upperPrice = rupiah(payload[0].priceValue)
+      const lowerPrice = rupiah(payload[variantLength - 1].priceValue)
 
-        return `yang tersedia dalam kisaran harga ${lowerPrice} - ${upperPrice} juta`
-      }
+      return `yang tersedia dalam kisaran harga ${lowerPrice} - ${upperPrice} juta`
     }
   }
 
@@ -593,6 +628,7 @@ export const CreditTab = () => {
   const fetchCarVariant = async () => {
     const response = await getCarModelDetailsById(forms.model?.modelId ?? '')
     setCarVariantList(response.variants)
+    setIsSelectPassengerCar(response.isPassengerCar)
   }
 
   const handleChange = (name: string, value: any) => {
@@ -792,6 +828,92 @@ export const CreditTab = () => {
     setisSuccessPromoCode(false)
   }
 
+  const generateSelectedInsuranceAndPromo = async (
+    calculationResultValue: SpecialRateListWithPromoType[],
+  ) => {
+    const allTenure = calculationResultValue.map((item) => item.tenure)
+    const tempArr: LoanCalculatorInsuranceAndPromoType[] = []
+
+    setIsLoadingInsuranceAndPromo(true)
+    for (let i = 0; i < allTenure.length; i++) {
+      const currentTenurePermutation = calculationResultValue.filter(
+        (item) => item.tenure === allTenure[i],
+      )
+
+      const isAppliedSDD01Promo = currentTenurePermutation[0]?.promoArr.some(
+        (a) => a.promoId === 'SDD01',
+      )
+      const responseInsurance = await getLoanCalculatorInsurance({
+        modelId: forms.model?.modelId ?? '',
+        cityCode: forms.city.cityCode,
+        tenure: allTenure[i],
+      })
+      // await get promo list API with best insurance
+
+      tempArr.push({
+        tenure: allTenure[i],
+        allInsuranceList: responseInsurance,
+        selectedInsurance: responseInsurance.filter(
+          (item: any) => item.value === 'FC',
+        )[0],
+        applied: currentTenurePermutation[0]?.applied,
+        allPromoList: generateAllBestPromoList(
+          isUserHasReffcode // check for reffcode to remove promo id CDS02
+            ? currentTenurePermutation[0]?.promoArr.filter(
+                (a) => a.promoId !== 'CDS01' && a.promoId !== 'CDS02',
+              )
+            : currentTenurePermutation[0]?.promoArr.filter(
+                (a) => a.promoId !== 'CDS01',
+              ),
+        ),
+        allPromoListOnlyFullComprehensive: generateAllBestPromoList(
+          currentTenurePermutation[0]?.promoArr,
+        ), // this API return promo list related to full comprehensive
+        selectedPromo: generateAllBestPromoList(
+          isUserHasReffcode
+            ? currentTenurePermutation[0]?.promoArr.filter(
+                (a) => a.promoId !== 'CDS02',
+              )
+            : currentTenurePermutation[0]?.promoArr,
+        ), // by default use all because it is FC insurance promo
+        tdpBeforePromo: currentTenurePermutation[0]?.totalFirstPayment,
+        tdpAfterPromo: getTdpAffectedByPromo(currentTenurePermutation[0]),
+        tdpWithPromo: getTdpAffectedByPromo(currentTenurePermutation[0]),
+        installmentBeforePromo: currentTenurePermutation[0]?.installment,
+        installmentAfterPromo: getInstallmentAffectedByPromo(
+          currentTenurePermutation[0],
+        ),
+        installmentWithPromo: getInstallmentAffectedByPromo(
+          currentTenurePermutation[0],
+        ),
+        interestRateBeforePromo: currentTenurePermutation[0].interestRate,
+        interestRateWithPromo: getInterestRateAffectedByPromo(
+          currentTenurePermutation[0],
+        ),
+        interestRateAfterPromo: getInterestRateAffectedByPromo(
+          currentTenurePermutation[0],
+        ),
+        subsidiDp: isAppliedSDD01Promo
+          ? currentTenurePermutation[0]?.subsidiDp
+          : 0,
+      })
+    }
+    setIsLoadingInsuranceAndPromo(false)
+    scrollToResult()
+    setInsuranceAndPromoForAllTenure(tempArr)
+  }
+
+  const getFilteredCalculationResults = (calculationResult: any) => {
+    const tempArr = calculationResult
+    if (!isSelectPassengerCar) {
+      const fiveYearIndex = tempArr.findIndex((item: any) => item.tenure == 5)
+      if (fiveYearIndex !== -1) {
+        tempArr.splice(fiveYearIndex, 1)
+      }
+    }
+
+    return tempArr
+  }
   const onClickCalculate = async () => {
     validateFormFields()
 
@@ -836,27 +958,40 @@ export const CreditTab = () => {
       })
 
       fetchCarRecommendations()
-      getNewFunnelLoanSpecialRate({
-        otr: getCarOtrNumber() - getCarDiscountNumber(),
-        dp: mappedDpPercentage,
-        dpAmount: dpValue,
-        monthlyIncome: Number(forms.monthlyIncome),
+
+      const payload: LoanCalculatorIncludePromoPayloadType = {
+        brand: forms.model?.brandName ?? '',
+        model: removeFirstWordFromString(forms.model?.modelName ?? ''),
         age: forms.age,
+        angsuranType: forms.paymentOption,
         city: forms.city.cityCode,
         discount: getCarDiscountNumber(),
-        rateType: 'REGULAR',
-        angsuranType: forms.paymentOption,
-      })
-        .then((res) => {
-          const result = res.data.reverse()
-          setCalculationResult(result)
+        dp: mappedDpPercentage,
+        dpAmount: dpValue,
+        monthlyIncome: forms.monthlyIncome,
+        otr: getCarOtrNumber() - getCarDiscountNumber(),
+      }
+
+      postLoanPermutationIncludePromo(payload)
+        .then((response) => {
+          const result = response.data.reverse()
+          const filteredResult = getFilteredCalculationResults(result)
+          setCalculationResult(filteredResult)
+          generateSelectedInsuranceAndPromo(filteredResult)
+
+          // select loan with the longest tenure as default
           const selectedLoanInitialValue =
-            result.filter(
-              (item: SpecialRateListType) => item.tenure === 5,
+            filteredResult.sort(
+              (
+                a: SpecialRateListWithPromoType,
+                b: SpecialRateListWithPromoType,
+              ) => b.tenure - a.tenure,
             )[0] ?? null
           setSelectedLoan(selectedLoanInitialValue)
+
           setIsDataSubmitted(true)
-          scrollToResult()
+          setCalculationApiPayload(payload)
+          // scrollToResult()
         })
         .catch(() => {
           // TODO add error toast
@@ -910,7 +1045,9 @@ export const CreditTab = () => {
     }
   }
 
-  const handleRedirectToWhatsapp = async (loan: SpecialRateListType) => {
+  const handleRedirectToWhatsapp = async (
+    loan: SpecialRateListWithPromoType,
+  ) => {
     trackLCCtaWaDirectClick(getDataForAmplitudeQualification(loan))
     const { model, variant, downPaymentAmount } = forms
     const message = `Halo, saya tertarik dengan ${model?.modelName} ${variant?.variantName} dengan DP sebesar Rp ${downPaymentAmount}, cicilan per bulannya Rp ${loan?.installment}, dan tenor ${loan?.tenure} tahun.`
@@ -919,9 +1056,48 @@ export const CreditTab = () => {
     window.open(`${whatsAppUrl}?text=${encodeURI(message)}`, '_blank')
   }
 
-  const handleClickButtonQualification = (loan: SpecialRateListType) => {
+  const handleClickButtonQualification = (
+    loan: SpecialRateListWithPromoType,
+  ) => {
     trackLCKualifikasiKreditClick(getDataForAmplitudeQualification(loan))
     setIsQualificationModalOpen(true)
+
+    const selectedPromoTenure = insuranceAndPromoForAllTenure.filter(
+      (x) => x.tenure === loan.tenure,
+    )
+
+    const rateType =
+      selectedPromoTenure[0].interestRateAfterPromo !== 0
+        ? selectedPromoTenure[0].applied === 'totalBayarGiias'
+          ? 'GIIAS2023'
+          : selectedPromoTenure[0].applied === 'totalBayarSepkta'
+          ? 'TOYOTASPEKTA01'
+          : 'REGULAR'
+        : 'REGULAR'
+
+    saveLocalStorage(LocalStorageKey.SelectedRateType, rateType)
+    saveLocalStorage(
+      LocalStorageKey.SelectablePromo,
+      JSON.stringify(selectedPromoTenure[0]),
+    )
+
+    const installment =
+      selectedPromoTenure[0].selectedPromo.length > 0
+        ? selectedPromoTenure[0].installmentAfterPromo ||
+          selectedPromoTenure[0].installmentBeforePromo
+        : selectedPromoTenure[0].installmentBeforePromo
+
+    const tpp =
+      selectedPromoTenure[0].selectedPromo.length > 0
+        ? selectedPromoTenure[0].tdpAfterPromo ||
+          selectedPromoTenure[0].tdpBeforePromo
+        : selectedPromoTenure[0].tdpBeforePromo
+
+    const rate =
+      selectedPromoTenure[0].selectedPromo.length > 0
+        ? selectedPromoTenure[0].interestRateAfterPromo ||
+          selectedPromoTenure[0].interestRateBeforePromo
+        : selectedPromoTenure[0].interestRateBeforePromo
 
     const moengageAttribute = {
       brand: forms.model?.brandName,
@@ -954,19 +1130,15 @@ export const CreditTab = () => {
         ? InstallmentTypeOptions.ADDM
         : InstallmentTypeOptions.ADDB,
     )
-    saveLocalStorage(LocalStorageKey.SelectedRateType, 'REGULAR')
     setSimpleCarVariantDetails({
       modelId: forms.model?.modelId,
       variantId: forms.variant?.variantId,
       loanTenure: selectedLoan?.tenure,
-      loanDownPayment: selectedLoan?.totalFirstPayment,
-      loanMonthlyInstallment: selectedLoan?.installment,
+      loanDownPayment: tpp,
+      loanMonthlyInstallment: installment,
       loanRank: selectedLoan?.loanRank,
-      totalFirstPayment:
-        forms.paymentOption === InstallmentTypeOptions.ADDM
-          ? selectedLoan?.totalFirstPaymentADDM
-          : selectedLoan?.totalFirstPaymentADDB,
-      flatRate: selectedLoan?.interestRate,
+      totalFirstPayment: tpp,
+      flatRate: rate,
     })
   }
 
@@ -1027,7 +1199,7 @@ export const CreditTab = () => {
   }
 
   const getDataForAmplitudeQualification = (
-    loan: SpecialRateListType | null,
+    loan: SpecialRateListWithPromoType | null,
   ) => {
     return {
       Age: `${forms.age} Tahun`,
@@ -1252,6 +1424,8 @@ export const CreditTab = () => {
               closeTooltip={handleTooltipClose}
               handleClickButtonQualification={handleClickButtonQualification}
               formData={forms}
+              insuranceAndPromoForAllTenure={insuranceAndPromoForAllTenure}
+              calculationApiPayload={calculationApiPayload}
             />
           </div>
           {carRecommendations.length > 0 && (

@@ -1,0 +1,123 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.headerWrapper {
+  width: 100%;
+  box-shadow: 0px 6px 14px 1px rgba(76, 82, 95, 0.08);
+  position: fixed;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 16px;
+  align-items: center;
+
+  .heroImage {
+    width: 227px;
+    height: auto;
+    margin-top: 66px;
+  }
+
+  .informationWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 32px;
+
+    h2 {
+      font-family: $font-kanyon;
+      font-size: 20px;
+      line-height: 28px;
+      color: #{$primary-black};
+    }
+
+    span {
+      font-family: $font-openSans;
+      font-size: 14px;
+      line-height: 20px;
+      color: #{$shades-grey-75};
+
+      .semibold {
+        font-family: $font-openSans-semiBold;
+      }
+    }
+  }
+
+  .buttonWrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 12px;
+    margin-bottom: 32px;
+
+    .cariMobil {
+      width: 100%;
+    }
+  }
+
+  .ctaWrapper {
+    padding: 16px 16px 16px 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 32px;
+
+    .main {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .promoBanner {
+      width: 107px;
+      height: 81px;
+      margin-right: 16px;
+    }
+
+    .infoWrapper {
+      display: flex;
+      flex-direction: column;
+      .title {
+        font-family: $font-openSans-semiBold;
+        font-size: 14px;
+        line-height: 20px;
+        color: #{$primary-black};
+      }
+      .sub {
+        font-family: $font-openSans;
+        font-size: 12px;
+        line-height: 18px;
+        color: #{$shades-grey-75};
+      }
+    }
+  }
+
+  .directAppsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+
+    .title {
+      align-self: center;
+      font-family: $font-openSans-semiBold;
+      font-size: 12px;
+      line-height: 18px;
+      color: #{$primary-black};
+    }
+
+    .directAppsWrapper {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+
+      img {
+        width: 152px;
+        height: 46px;
+      }
+    }
+  }
+}

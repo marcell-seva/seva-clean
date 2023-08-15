@@ -7,13 +7,7 @@ import { preApprovalQuestionFlowUrl } from 'utils/helpers/routes'
 import { CloseSnackBar, OpenSnackBar } from 'components/atoms/Animation/slide'
 import { useRouter } from 'next/router'
 import { CloseOutlined } from 'components/atoms/icon/CloseOutlined'
-
-export enum ToastType {
-  Error = 'Error',
-  Success = 'Success',
-  Info = 'Info',
-  ErrorPreApproval = 'ErrorPreApproval',
-}
+import { ToastType } from 'utils/types/models'
 
 interface ToastProps extends HTMLAttributes<HTMLDivElement> {
   type: ToastType

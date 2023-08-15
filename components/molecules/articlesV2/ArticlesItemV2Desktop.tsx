@@ -2,7 +2,7 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-import { articleDateFormat } from 'utils/dateUtils'
+import { articleDateFormat } from 'utils/handler/date'
 import styles from 'styles/ArticleStyle.module.css'
 import {
   trackArticleSecondaryItemClick,

@@ -23,7 +23,7 @@ export const PLPEmpty = ({ alternativeCars, onClickLabel }: PLPEmptyProps) => {
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
       getCities().then((res) => {
-        setCityListApi(res.data)
+        setCityListApi(res)
       })
     }
   }

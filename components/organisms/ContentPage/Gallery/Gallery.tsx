@@ -2,7 +2,7 @@ import React, { memo, useContext, useEffect, useRef, useState } from 'react'
 import GallerySectionV2 from './GallerySection/GallerySectionV2'
 import styled from 'styled-components'
 import { useUtils } from 'services/context/utilsContext'
-import { articleDateFormat } from 'utils/dateUtils'
+import { articleDateFormat } from 'utils/handler/date'
 import urls from 'helpers/urls'
 import { useContextCalculator } from 'services/context/calculatorContext'
 import { Video } from './Video/Video'
@@ -11,19 +11,17 @@ import {
   trackWebPDPGalleryTab,
   WebVariantListPageParam,
 } from 'helpers/amplitude/seva20Tracking'
-import {
-  formatSortPrice,
-  replacePriceSeparatorByLocalization,
-} from 'utils/numberUtils/numberUtils'
+import { formatSortPrice } from 'utils/numberUtils/numberUtils'
 import { setTrackEventMoEngage } from 'helpers/moengage'
 import { articleCategoryList } from 'config/articles.config'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { CityOtrOption } from 'utils/types'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { Description } from 'components/organisms/OldPdpSectionComponents/Description/Description'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import Image from 'next/image'
 import { useCar } from 'services/context/carContext'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 
 type tabProps = {
   tab: string | undefined

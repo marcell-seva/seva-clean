@@ -23,8 +23,8 @@ import {
   CarVariantPhotoParam,
   trackPDPPhotoClick,
 } from 'helpers/amplitude/seva20Tracking'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { LocalStorageKey } from 'utils/models/models'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { LocalStorageKey } from 'utils/enum'
 import { useRouter } from 'next/router'
 import { useCar } from 'services/context/carContext'
 

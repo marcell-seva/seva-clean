@@ -22,7 +22,7 @@ const isPreApprovalFlowPage = (url: string): boolean =>
 export const maxPageWidth =
   client && isPreApprovalFlowPage(window.location.pathname) ? '700px' : '100%'
 export const maxPageWidthNumber = 700
-// export const screenHeight = document.documentElement.clientHeight
+export const screenHeight = client ? document.documentElement.clientHeight : 700
 export const screenWidth = client
   ? document.documentElement.clientWidth
   : '700px'

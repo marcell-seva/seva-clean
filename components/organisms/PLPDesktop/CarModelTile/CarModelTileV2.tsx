@@ -25,17 +25,17 @@ import {
   trackCarResultPageWaChatbot,
   trackWhatsappButtonClickFromCarResults,
 } from 'helpers/amplitude/seva20Tracking'
-import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import elementId from 'helpers/elementIds'
-import { LanguageCode, LocalStorageKey, LoanRank } from 'utils/enum'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { LanguageCode, LocalStorageKey } from 'utils/enum'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { CarRecommendation, CityOtrOption } from 'utils/types'
 import { CarInfo } from './CarInfo'
 import Image from 'next/image'
 import { WhatsAppIcon } from 'components/atoms/icon/WhatsAppIcon'
 import { BadgeLoanStatus } from './BadgeLoanStatus'
-import { PageFrom } from 'utils/models/models'
 import { EventFromType } from 'helpers/amplitude/newHomePageEventTracking'
+import { LoanRank, PageFrom } from 'utils/types/models'
 
 interface CarTileProps extends HTMLAttributes<HTMLDivElement> {
   carModel: CarRecommendation

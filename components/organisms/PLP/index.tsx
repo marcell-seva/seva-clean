@@ -1,27 +1,23 @@
+import { Spin } from 'antd'
+import { AxiosResponse } from 'axios'
+import clsx from 'clsx'
+import { CSAButton } from 'components/atoms'
+import { CitySelectorModal } from 'components/molecules'
 import {
   CarDetailCard,
+  FilterMobile,
   FooterMobile,
   HeaderMobile,
   LeadsFormPrimary,
+  NavigationFilterMobile,
   PLPEmpty,
   PopupPromo,
-  PopupResultSulit,
-  PopupResultMudah,
   PopupResultInfo,
+  PopupResultMudah,
+  PopupResultSulit,
   SortingMobile,
-  NavigationFilterMobile,
-  FilterMobile,
 } from 'components/organisms'
-import React, { useEffect, useState } from 'react'
-import { getNewFunnelRecommendations, getMinMaxPrice } from 'services/newFunnel'
-import axios, { AxiosResponse } from 'axios'
-import styles from '../../../styles/pages/mobil-baru.module.scss'
-import { useFunnelQueryData } from 'services/context/funnelQueryContext'
-import { CSAButton } from 'components/atoms'
-import clsx from 'clsx'
-import InfiniteScroll from 'react-infinite-scroll-component'
-import { Spin } from 'antd'
-import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
+import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import {
   LeadsActionParam,
   PageOriginationName,
@@ -36,38 +32,39 @@ import {
   trackPLPFilterShow,
   trackPLPSortShow,
 } from 'helpers/amplitude/seva20Tracking'
-import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
-import { MoengageViewCarSearch } from 'utils/types/moengage'
-import {
-  Currency,
-  formatNumberByLocalization,
-} from 'utils/numberUtils/numberUtils'
-import { delayedExec } from 'utils/handler/delayed'
-import { CitySelectorModal } from 'components/molecules'
-import { getCities } from 'services/cities'
-import { TrackingEventName } from 'helpers/amplitude/eventTypes'
-import { getToken } from 'utils/api'
-import { carResultsUrl } from 'utils/helpers/routes'
-import endpoints from 'helpers/endpoints'
-import { hundred, million } from 'utils/helpers/const'
 import elementId from 'helpers/elementIds'
+import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
 import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import { api } from 'services/api'
+import { getCities } from 'services/cities'
+import { useCar } from 'services/context/carContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
-import { getSessionStorage } from 'utils/sessionstorageUtils'
+import { getConvertFilterIncome } from 'utils/filterUtils'
+import { getToken } from 'utils/handler/auth'
+import { Currency } from 'utils/handler/calculation'
+import { delayedExec } from 'utils/handler/delayed'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
+import { formatNumberByLocalization } from 'utils/handler/rupiah'
+import { getSessionStorage } from 'utils/handler/sessionStorage'
+import { hundred, million } from 'utils/helpers/const'
+import { carResultsUrl } from 'utils/helpers/routes'
+import { useAmplitudePageView } from 'utils/hooks/useAmplitudePageView'
+import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { Location } from 'utils/types'
-import { useAmplitudePageView } from 'utils/hooks/useAmplitudePageView/useAmplitudePageView'
 import {
   CarRecommendation,
   CarRecommendationResponse,
   FilterParam,
   MinMaxPrice,
 } from 'utils/types/context'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { getConvertFilterIncome } from 'utils/filterUtils'
+import { MoengageViewCarSearch } from 'utils/types/moengage'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
-import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
-import { api } from 'services/api'
-import { useCar } from 'services/context/carContext'
+import styles from '../../../styles/pages/mobil-baru.module.scss'
 
 interface PLPProps {
   carRecommendation: CarRecommendationResponse

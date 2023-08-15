@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { LocalStorageKey } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import { LocalStorageKey } from 'utils/types/models'
 import { FinancialQuery } from 'utils/types/props'
 
 enum PaymentType {

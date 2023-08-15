@@ -1,35 +1,29 @@
-import React, {
-  useState,
-  KeyboardEvent,
-  useCallback,
-  useMemo,
-  useEffect,
-  useContext,
-} from 'react'
-import debounce from 'lodash.debounce'
-import { findAll } from 'highlight-words-core'
-import { Line } from './Line'
-import styles from 'styles/components/molecules/headerSearch.module.scss'
-import { useMediaQuery } from 'react-responsive'
-import elementId from 'utils/helpers/trackerId'
-import { COMData, FunnelQueryKey, LocalStorageKey } from 'utils/types/models'
-import { useRouter } from 'next/router'
-import { Option } from 'utils/types/props'
-import { convertObjectQuery } from 'utils/handler/convertObjectQuery'
-import { useToast } from './Toast'
-import { FunnelQueryContext, FunnelQueryContextType } from 'services/context'
-import { api } from 'services/api'
-import { sendAmplitudeData } from 'services/amplitude'
-import { AmplitudeEventName } from 'services/amplitude/types'
-import { getCity } from 'utils/hooks/useGetCity'
 import { SearchInput } from 'components/atoms'
 import { Loading } from 'components/atoms/loading'
-import { carResultsUrl, variantListUrl } from 'utils/helpers/routes'
+import { trackSearchBarSuggestionClick } from 'helpers/amplitude/seva20Tracking'
+import { findAll } from 'highlight-words-core'
+import debounce from 'lodash.debounce'
+import { useRouter } from 'next/router'
+import React, {
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
+import { useMediaQuery } from 'react-responsive'
+import { api } from 'services/api'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { getCarsSearchBar } from 'services/searchbar'
-import { trackSearchBarSuggestionClick } from 'helpers/amplitude/seva20Tracking'
-import { API } from 'utils/api'
-import endpoints from 'utils/helpers/endpoints'
+import styles from 'styles/components/molecules/headerSearch.module.scss'
+import { LocalStorageKey } from 'utils/enum'
+import { convertObjectQuery } from 'utils/handler/convertObjectQuery'
+import { carResultsUrl, variantListUrl } from 'utils/helpers/routes'
+import elementId from 'utils/helpers/trackerId'
+import { Option } from 'utils/types'
+import { COMData, FunnelQueryKey } from 'utils/types/models'
+import { Line } from './Line'
+import { useToast } from './Toast'
 interface HeaderVariantProps {
   overrideDisplay?: string
   isOnModal?: boolean

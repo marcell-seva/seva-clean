@@ -1,5 +1,5 @@
 import { IconInfo, IconWhatsapp } from 'components/atoms'
-import { ToastType, useToast } from 'components/atoms/OldToast/Toast'
+import { useToast } from 'components/atoms/OldToast/Toast'
 import { useUtils } from 'services/context/utilsContext'
 // import { tracSelectV2LoanCalculatorSpeak } from 'helpers/amplitude/newLoanCalculatorEventTracking'
 // import { WhatsAppContactUs } from 'pages/component/WhatsAppContactUs/WhatsAppContactUs'
@@ -13,12 +13,9 @@ import {
 import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
-import { getToken } from 'utils/api'
+import { getToken } from 'utils/handler/auth'
 import { getModelName } from 'utils/carModelUtils/carModelUtils'
-import {
-  formatSortPrice,
-  replacePriceSeparatorByLocalization,
-} from 'utils/numberUtils/numberUtils'
+import { formatSortPrice } from 'utils/numberUtils/numberUtils'
 import { convertSlashesInStringToVerticalLines } from 'utils/stringUtils'
 import { savePageBeforeLogin } from 'utils/loginUtils'
 import { usedBrowser } from 'utils/window'
@@ -32,12 +29,12 @@ import {
 } from 'helpers/amplitude/seva20Tracking'
 import { setTrackEventMoEngage } from 'helpers/moengage'
 // import { WhatsAppContactUsNewIcon } from 'pages/component/WhatsAppContactUs/WhatsAppContactUsNewIcon'
-import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import elementId from 'helpers/elementIds'
 import { usePreApprovalIntroModal } from 'components/molecules/PreApprovalIntroModal/usePreApprovalIntroModal'
 import { SpecialRateList } from 'utils/types'
 import { useRouter } from 'next/router'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import {
   CityOtrOption,
   NewFunnelCarVariantDetails,
@@ -45,17 +42,17 @@ import {
 } from 'utils/types/utils'
 import {
   InstallmentTypeOptions,
-  LanguageCode,
-  LocalStorageKey,
   NewFunnelLoanRank,
-  SessionStorageKey,
-} from 'utils/models/models'
+  ToastType,
+} from 'utils/types/models'
+import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { api } from 'services/api'
 import { NonPassengerCars } from 'config/LoanCalculator.config'
 import { tracSelectV2LoanCalculatorSpeak } from 'helpers/amplitude/newLoanCalculatorEventTracking'
 import { useCar } from 'services/context/carContext'
 import { useContextForm } from 'services/context/formContext'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 
 const PromoAsuransi = '/revamp/illustration/PromoAsuransi.gif'
 const AstraLogo = '/revamp/icon/AstraLogo.webp'

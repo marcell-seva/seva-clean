@@ -4,22 +4,21 @@ import { colors } from 'styles/colors'
 import {
   getSessionStorage,
   saveSessionStorage,
-} from 'utils/sessionstorageUtils'
+} from 'utils/handler/sessionStorage'
 import DOMPurify from 'dompurify'
 import { ZIndex } from 'styles/zIndex'
-import { API, getToken } from 'utils/api'
-import endpoints from 'helpers/endpoints'
 import { AxiosResponse } from 'axios'
 
 import {
   trackAnnouncementBoxClick,
   trackAnnouncementBoxClose,
 } from 'helpers/amplitude/seva20Tracking'
-import { SessionStorageKey } from 'utils/models/models'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
 import { Close } from 'components/atoms/icon/OldClose'
 import { Shimmer } from 'components/atoms/shimmerOld'
 import { api } from 'services/api'
+import { SessionStorageKey } from 'utils/enum'
+import { getToken } from 'utils/handler/auth'
 
 const CustomRight = '/revamp/images/announcementBox/custom-desktop-right.webp'
 const CustomLeft = '/revamp/images/announcementBox/custom-desktop-left.webp'
@@ -85,7 +84,7 @@ export const WebAnnouncementBox = ({
           'is-login': getToken() ? 'true' : 'false',
         },
       })
-      .then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
+      .then((res) => {
         setAnnouncement(res.data)
         setIsLoading(false)
       })

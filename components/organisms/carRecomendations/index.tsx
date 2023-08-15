@@ -3,7 +3,7 @@ import {
   trackLCCarRecommendationCTAClick,
 } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
-import { LanguageCode } from 'utils/models/models'
+import { LanguageCode } from 'utils/enum'
 import React from 'react'
 import {
   carResultsUrl,
@@ -12,13 +12,13 @@ import {
 } from 'utils/helpers/routes'
 import { CarRecommendation } from 'utils/types/utils'
 import { getLowestInstallment } from 'utils/carModelUtils/carModelUtils'
-import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { Button } from 'components/atoms'
 import { LabelMudah } from 'components/molecules'
 import styles from 'styles/components/organisms/carRecomendations.module.scss'
-import { ButtonSize, ButtonVersion } from 'utils/enum'
 import { AlternativeCarCard } from '../alternativeCarCard'
 import { useRouter } from 'next/router'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 type CarRecommendationsPropss = {
   title: string

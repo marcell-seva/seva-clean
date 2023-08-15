@@ -12,27 +12,21 @@ import {
   trackWebPDPSpecificationTab,
   WebVariantListPageParam,
 } from 'helpers/amplitude/seva20Tracking'
-import {
-  formatSortPrice,
-  replacePriceSeparatorByLocalization,
-} from 'utils/numberUtils/numberUtils'
+import { formatSortPrice } from 'utils/numberUtils/numberUtils'
 import { setTrackEventMoEngage } from 'helpers/moengage'
 import { Description } from 'components/organisms/OldPdpSectionComponents/Description/Description'
 import { SpecificationSelect } from 'components/organisms/OldPdpSectionComponents/SpecificationSelect/SpecificationSelect'
 import { SpecificationDetail } from 'components/organisms/OldPdpSectionComponents/SpecificationDetail/SpecificationDetail'
-import {
-  ButtonVersion,
-  ButtonSize,
-  LanguageCode,
-  LocalStorageKey,
-} from 'utils/enum'
+import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { CarVariantRecommendation, CityOtrOption } from 'utils/types'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { trackVariantDetailsEvent } from 'components/organisms/OldPdpSectionComponents/variantDetailsUtils'
-import { useCarResultParameter } from 'utils/hooks/useAmplitudePageView/useAmplitudePageView'
+import { useCarResultParameter } from 'utils/hooks/useAmplitudePageView'
 import { trackSelectCarResultVariantDetailsViewBrochure } from 'helpers/amplitude/newFunnelEventTracking'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useCar } from 'services/context/carContext'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 type tabProps = {
   tab: string | undefined

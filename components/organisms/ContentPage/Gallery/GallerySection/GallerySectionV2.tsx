@@ -13,7 +13,7 @@ import {
   CarVariantPhotoParam,
   trackPDPPhotoClick,
 } from 'helpers/amplitude/seva20Tracking'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { CarModelDetailsResponse, CityOtrOption } from 'utils/types'
 import { LocalStorageKey } from 'utils/enum'
 import { exteriorImagesListNew } from 'config/Exterior360ImageList.config'

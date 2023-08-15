@@ -1,0 +1,437 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.wrapper {
+  background-color: #{$shades-grey-5};
+  padding: 16px 16px;
+}
+
+.wrapperCar {
+  margin-top: 40px;
+  width: 186px;
+  align-self: center;
+}
+
+.borderFrame {
+  border-top: 1px solid #{$shades-grey-10};
+  border-bottom: 1px solid #{$shades-grey-10};
+}
+
+.promoWrapper {
+  padding: 16px 16px 16px 16px;
+  gap: 1rem;
+  width: 100%;
+}
+
+.textPromoWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.badgePromoWrapper {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.textPromo {
+  font-family: 'OpenSansBold';
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1rem; /* 145.455% */
+  color: #{$primarySkyBlue};
+  height: 1.25rem;
+  align-self: stretch;
+}
+.textPromoBold {
+  font-family: 'OpenSans';
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  color: #{$shades-grey-75};
+}
+.cardInfoDetail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  // padding: 16px;
+  gap: 16px;
+  height: 136px;
+  background: #ffffff;
+  border-radius: 8px;
+  margin: 24px 0px;
+  .bannerPromo {
+    &:first-child {
+      margin-left: 18px;
+    }
+  }
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+.rowWithGap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 50%;
+}
+.rowScrollHorizontal {
+  display: flex;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  gap: 15px;
+  width: 100%;
+}
+.rowScrollHorizontal::-webkit-scrollbar {
+  display: none;
+}
+.popupHeader {
+  height: 100%;
+  padding: 0px 24px;
+}
+
+.popupSubHeader {
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 24px;
+  height: 28px;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.wrapperTextBanner {
+  display: flex;
+  align-items: center;
+}
+
+.textPromoBanner {
+  @extend .openSans;
+  display: flex;
+  align-items: flex-end;
+  margin-top: -81px;
+  padding-left: 16px;
+  padding-bottom: 16px;
+  color: #ffffff !important;
+  background-image: linear-gradient(to bottom, rgba(255, 0, 0, 0), black);
+  height: 78px;
+  position: absolute;
+  width: 100%;
+  border-radius: 0px 0px 8px 8px;
+}
+
+.kanyonMedium {
+  font-family: 'KanyonMedium';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #13131b;
+}
+
+.openSansSemiBold {
+  font-family: 'OpenSansSemiBold';
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #000000;
+}
+.openSans {
+  font-family: 'OpenSans';
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #000000;
+}
+.openSansMedium {
+  @extend .openSans;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  color: #246ed4 !important;
+}
+.openSansBoldGrey {
+  font-family: 'OpenSansBold';
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 16px;
+  color: #878d98;
+}
+.openSansLigtGrey {
+  @extend .openSans;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px !important;
+  color: #878d98;
+}
+.openSansSemiblack {
+  @extend .openSans;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #13131b;
+}
+
+.priceStrike {
+  @extend .openSans;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  text-decoration: line-through;
+}
+
+.bannerPromo {
+  min-height: 165px;
+  position: relative;
+}
+.imagePromoSpacing {
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+.spacingChevronIcon {
+  margin-left: 9px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5px;
+}
+.pdpLowerSection {
+  background: #f5f6f6;
+}
+.promoBannerSmall {
+  border-radius: 8px;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+.columnFull {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.divider {
+  height: 1px;
+  background: #ebecee;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  width: 94%;
+}
+.titleSelectCar {
+  padding: 0px 16px 0px 16px;
+  font-family: 'KanyonMedium';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #{$primary-black};
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+.textCar {
+  padding: 0px 16px 0px 16px;
+  font-family: 'OpenSansSemiBold';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px;
+  color: #878d98;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin-top: 8px;
+}
+.textType {
+  padding: 0px 16px 0px 16px;
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin-top: 4px;
+}
+.textPrice {
+  padding: 0px 16px 0px 16px;
+  font-family: 'Kanyon';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #{$primary-black};
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin-top: 2px;
+}
+.textCity {
+  padding: 0px 16px 0px 16px;
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  flex-grow: 0;
+  flex: none;
+  order: 2;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+}
+.wrapperWithBorderBottom {
+  padding: 16px 0px 16px 0px;
+}
+.rowWithSmallGap {
+  @extend .row;
+  gap: 8px !important;
+  margin-bottom: 12px !important;
+}
+.rowWithLargeMarginBottom {
+  @extend .row;
+  margin-bottom: 18px;
+}
+.rowWithSpaceBottom {
+  @extend .row;
+  align-items: baseline;
+  padding: 0px 16px 0px 16px;
+  margin-top: 16px;
+  margin-bottom: 22px;
+}
+
+.videoSectionCard {
+  width: 100%;
+  background: #{$primary-white};
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.videoSectionHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.videoSectionHeaderText {
+  font-family: 'KanyonMedium';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #{$primary-black};
+}
+
+.bItem {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  right: 9px;
+  bottom: 0;
+  left: 9px;
+  padding: 18px;
+  background-size: cover;
+  background-position: center center;
+}
+
+.bItem:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent 0%, black 100%);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+  padding-top: 8px;
+}
+
+.contentPromo {
+  display: flex;
+  flex-direction: column;
+}
+
+.gap {
+  height: 24px;
+}
+.kanyonMediumBlue {
+  font-family: 'Kanyon';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  color: #05256e;
+}
+
+.headerWrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+@include lg {
+  .container {
+  }
+
+  .content {
+  }
+}
+
+.margin {
+  margin-right: 3px;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: none;
+  z-index: 5;
+  overscroll-behavior: contain;
+
+  &.showOverlay {
+    display: block;
+  }
+}
+
+.wrapperFinancial {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 16px;
+  width: 250px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}

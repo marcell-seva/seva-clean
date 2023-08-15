@@ -6,17 +6,14 @@ import { ageFormConfig } from 'config/ageFormConfig'
 import { isDataValid } from 'utils/surveyFormUtils'
 import { getNewFunnelLoanSpecialRate } from 'services/newFunnel'
 import elementId from 'helpers/elementIds'
-import { saveLocalStorage } from 'utils/localstorageUtils'
+import { saveLocalStorage } from 'utils/handler/localStorage'
 import { DownOutlined, IconWarning } from 'components/atoms'
 import { colors } from 'styles/colors'
 import { FormControlValue, NewFunnelCarVariantDetails } from 'utils/types'
-import {
-  InstallmentTypeOptions,
-  LocalStorageKey,
-  SurveyFormKey,
-} from 'utils/models/models'
+import { InstallmentTypeOptions, SurveyFormKey } from 'utils/types/models'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import { useContextForm } from 'services/context/formContext'
+import { LocalStorageKey } from 'utils/enum'
 
 interface EditAgeProps {
   isNewRegularPage?: boolean

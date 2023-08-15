@@ -30,7 +30,7 @@ export const getCarResultAndVariantParameter = ({
 }
 
 type TrackVariantDetailsEvent = {
-  carVariantDetails: CarVariantDetails | undefined
+  carVariantDetails: CarVariantDetails | null
   carResultParameter: any //CarResultParameters
   trackFunction: (
     selectCarResultVariant: any, //CarResultAndVariantParameterWithVariantIndex,

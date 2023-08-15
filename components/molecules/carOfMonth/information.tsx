@@ -1,11 +1,11 @@
 import React from 'react'
-import { saveLocalStorage } from 'utils/localstorageUtils'
+import { saveLocalStorage } from 'utils/handler/localStorage'
 import DOMPurify from 'dompurify'
 import { trackCarOfTheMonthItemClick } from 'helpers/amplitude/seva20Tracking'
 import { carBrand } from './COMImage'
-import { LocalStorageKey } from 'utils/models/models'
+import { LocalStorageKey } from 'utils/enum'
 import { client } from 'utils/helpers/const'
-// import { getToken } from 'utils/api'
+// import { getToken } from 'utils/handler/auth'
 // import { useModalContext } from 'services/context/modalContext'
 
 type carModel = {

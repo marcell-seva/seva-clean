@@ -1,22 +1,15 @@
 import React from 'react'
 import styles from 'styles/components/organisms/loginModalMultiKK.module.scss'
 import { Button, Gap, Modal } from 'components/atoms'
-import { ButtonSize, ButtonVersion } from 'utils/enum'
 import { LoginSevaUrl } from 'utils/helpers/routes'
 import { useRouter } from 'next/router'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 const IlustrationLoginModal =
   '/revamp/illustration/ilustration-login-modal.webp'
 
 interface PropsLoginModalMultiKK {
   onCancel: () => void
-}
-
-export interface CityOtrOption {
-  cityName: string
-  cityCode: string
-  province: string
-  id?: string
 }
 
 export const LoginModalMultiKK: React.FC<PropsLoginModalMultiKK> = ({

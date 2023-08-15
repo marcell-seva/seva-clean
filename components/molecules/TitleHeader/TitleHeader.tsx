@@ -2,17 +2,15 @@ import React, { useContext, useMemo } from 'react'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
 import { BrandIcon } from './BrandIcon'
-import {
-  formatSortPrice,
-  replacePriceSeparatorByLocalization,
-} from 'utils/numberUtils/numberUtils'
+import { formatSortPrice } from 'utils/numberUtils/numberUtils'
 import { StickyButtonProps } from '../StickyButton/StickyButton'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { CityOtrOption } from 'utils/types'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { ActionButton } from '../HeaderActionButton/HeaderActionButton'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useCar } from 'services/context/carContext'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 
 export function TitleHeader(props: StickyButtonProps) {
   const { carModelDetails } = useCar()

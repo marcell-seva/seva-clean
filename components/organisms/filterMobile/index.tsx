@@ -25,15 +25,15 @@ import {
   trackPLPFilterShow,
   trackPLPSubmitFilter,
 } from 'helpers/amplitude/seva20Tracking'
-import { Currency } from 'utils/numberUtils/numberUtils'
 import { carResultsUrl } from 'utils/helpers/routes'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import { CarRecommendationResponse, FunnelQuery } from 'utils/types/context'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import { trackFilterCarResults } from 'helpers/amplitude/newFunnelEventTracking'
-import { ButtonSize, ButtonVersion } from 'utils/enum'
 import { useCar } from 'services/context/carContext'
+import { Currency } from 'utils/handler/calculation'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 interface ParamsUrl {
   age?: string

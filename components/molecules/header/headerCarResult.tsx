@@ -12,7 +12,7 @@ import { getCarsSearchBar } from 'services/searchbar'
 import {
   useAmplitudePageView,
   useCarResultParameter,
-} from 'utils/hooks/useAmplitudePageView/useAmplitudePageView'
+} from 'utils/hooks/useAmplitudePageView'
 import { Option } from 'utils/types'
 import { useToast } from 'components/atoms/OldToast/Toast'
 import { useRouter } from 'next/router'
@@ -20,10 +20,10 @@ import {
   trackSearchCarResults,
   trackViewCarResult,
 } from 'helpers/amplitude/newFunnelEventTracking'
-import { FunnelQueryKey } from 'utils/models/models'
 import { Loading } from 'components/atoms/loading'
 import { SearchInput } from 'components/atoms/searchInput/oldSearchInput'
 import { client } from 'utils/helpers/const'
+import { FunnelQueryKey } from 'utils/types/models'
 
 interface HeaderCarResultProps {
   overrideDisplay?: string

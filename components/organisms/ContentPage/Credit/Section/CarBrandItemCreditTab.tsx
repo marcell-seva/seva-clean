@@ -1,4 +1,4 @@
-import { ToastType, useToast } from 'components/atoms/OldToast/Toast'
+import { useToast } from 'components/atoms/OldToast/Toast'
 import { useUtils } from 'services/context/utilsContext'
 import { useContextCalculator } from 'services/context/calculatorContext'
 import {
@@ -24,13 +24,8 @@ import {
   getModelPriceRange,
   getMonthlyInstallmentRange,
 } from 'utils/carModelUtils/carModelUtils'
-import { useCarResultParameter } from 'utils/hooks/useAmplitudePageView/useAmplitudePageView'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { LanguageCode, LoanRank, LocalStorageKey } from 'utils/models/models'
-import {
-  replacePriceSeparatorByLocalization,
-  transformToJtWithTargetTwoDecimal,
-} from 'utils/numberUtils/numberUtils'
+import { useCarResultParameter } from 'utils/hooks/useAmplitudePageView'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { CarRecommendation } from 'utils/types'
 import {
   CarVariantLoan,
@@ -41,6 +36,10 @@ import { isIphone } from 'utils/window'
 import { LoanRankStatus } from '../LoanRankStatus/BadgeLoanStatus'
 import { useCar } from 'services/context/carContext'
 import { useContextForm } from 'services/context/formContext'
+import { LanguageCode, LocalStorageKey } from 'utils/enum'
+import { LoanRank, ToastType } from 'utils/types/models'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
+import { transformToJtWithTargetTwoDecimal } from 'utils/numberUtils/numberUtils'
 
 const ShimmerLoader = '/revamp/illustration/placeholder.gif'
 
@@ -61,7 +60,7 @@ export const CarBrandItemCreditTab = ({
     saveRecommendation,
     saveCarModelDetails,
     saveCarVariantDetails,
-    setCarModel,
+    saveCarModel,
   } = useCar()
   const { setSpecialRateResults } = useContextCalculator()
   const { currentLanguage } = useUtils()
@@ -178,7 +177,7 @@ export const CarBrandItemCreditTab = ({
       ...carResultParameters,
     }
     localStorage.setItem('carDetail', selectCarResult.price)
-    setCarModel(carModel || undefined)
+    saveCarModel(carModel || undefined)
     getCarModelDetailsById(carModel.id)
       .then(handleCarModelDetailsUpdate(recommendation, saveCarModelDetails))
       .then(() => {

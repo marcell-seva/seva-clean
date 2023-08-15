@@ -1,12 +1,18 @@
 import { Modal } from 'antd'
-import React, { TextareaHTMLAttributes } from 'react'
+import React, {
+  TextareaHTMLAttributes,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import type { ModalProps } from 'antd'
 import { colors } from 'styles/colors'
 import { IconClose } from 'components/atoms'
 import styles from '../../../styles/components/organisms/popupPromo.module.scss'
 import elementId from 'helpers/elementIds'
+import { PopupPromoDataItemType } from 'utils/types/utils'
 
-const promoList = [
+const initPromoList: PopupPromoDataItemType[] = [
   {
     title: 'Promo Cuma di SEVA',
     body: [
@@ -44,10 +50,24 @@ const promoList = [
   },
 ]
 
-type PopupPromo = Omit<ModalProps, 'children'>
+type PopupPromo = Omit<ModalProps, 'children'> & {
+  data?: PopupPromoDataItemType[]
+  additionalContainerClassname?: string
+}
 
 export const PopupPromo = (props: PopupPromo) => {
-  const lastIndex = promoList.length - 1
+  const [promoList, setPromoList] = useState(initPromoList)
+
+  useEffect(() => {
+    if (props.data) {
+      setPromoList(props.data)
+    }
+  }, [props.data])
+
+  const lastIndex = useMemo(() => {
+    return promoList.length - 1
+  }, [promoList])
+
   return (
     <Modal
       title={
@@ -62,12 +82,14 @@ export const PopupPromo = (props: PopupPromo) => {
         />
       }
       footer={null}
-      className="custom-modal"
+      className="custom-modal-promo"
       width={343}
       centered
       {...props}
     >
-      <div className={styles.container}>
+      <div
+        className={`${styles.container} ${props.additionalContainerClassname}`}
+      >
         {promoList.map((item, index) => (
           <div key={index} className={styles.contentPromo}>
             <span className={styles.titlePromo}>{item.title}</span>

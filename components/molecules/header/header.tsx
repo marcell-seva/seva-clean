@@ -12,11 +12,12 @@ import { useToast } from 'components/atoms/OldToast/Toast'
 import { Option } from 'utils/types'
 import { useRouter } from 'next/router'
 import { getCarsSearchBar } from 'services/searchbar'
-import { FunnelQueryKey, LocalStorageKey } from 'utils/models/models'
+import { LocalStorageKey } from 'utils/enum'
 import { convertObjectQuery } from 'utils/handler/convertObjectQuery'
 import { Loading } from 'components/atoms/loading'
 import { SearchInput } from 'components/atoms/searchInput/oldSearchInput'
 import { client } from 'utils/helpers/const'
+import { FunnelQueryKey } from 'utils/types/models'
 
 interface HeaderVariantProps {
   overrideDisplay?: string

@@ -5,7 +5,7 @@ import { Modal } from 'antd'
 import clsx from 'clsx'
 import { PropsModal } from 'utils/types/props'
 import { colors } from 'utils/helpers/style/colors'
-import { IconClose } from 'components/atoms/icons'
+import { IconClose } from 'components/atoms/icon'
 
 const CustomModal = ({
   children,

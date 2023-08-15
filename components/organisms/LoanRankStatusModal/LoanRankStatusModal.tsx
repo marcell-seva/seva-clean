@@ -5,8 +5,8 @@ import { useModalContext } from 'services/context/modalContext'
 import { useMediaQuery } from 'react-responsive'
 import elementId from 'helpers/elementIds'
 import { useModal } from 'components/atoms/ModalOld/Modal'
-import { LoanRank } from 'utils/enum'
 import { IconClose } from 'components/atoms'
+import { LoanRank } from 'utils/types/models'
 
 const BackgroundDesktopGreen =
   '/revamp/illustration/background-desktop-green.webp'

@@ -8,13 +8,8 @@ import {
   InputPhone,
   Toast,
 } from 'components/atoms'
-import {
-  ButtonSize,
-  ButtonVersion,
-  LocalStorageKey,
-  UnverifiedLeadSubCategory,
-} from 'utils/enum'
-import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
+import { LocalStorageKey, UnverifiedLeadSubCategory } from 'utils/enum'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import elementId from 'helpers/elementIds'
@@ -27,9 +22,11 @@ import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import { useMediaQuery } from 'react-responsive'
 import { createUnverifiedLeadNew } from 'services/lead'
 import { onlyLettersAndSpaces } from 'utils/handler/regex'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { OTP } from 'components/organisms/otp'
 import Image from 'next/image'
+import { CityOtrOption } from 'utils/types'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 const SupergraphicSecondarySmall =
   '/revamp/illustration/supergraphic-secondary-small.webp'
@@ -43,13 +40,6 @@ interface PropsLeadsForm {
   onCancel?: () => void
   trackerProperties?: LeadsActionParam
   onPage?: string
-}
-
-export interface CityOtrOption {
-  cityName: string
-  cityCode: string
-  province: string
-  id?: string
 }
 
 export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({

@@ -1,4 +1,4 @@
-import { IconWarningCircle } from 'components/atoms/icons'
+import { IconWarningCircle } from 'components/atoms/icon'
 import React, { HTMLAttributes } from 'react'
 import styles from 'styles/components/molecules/labelCard/sulit/sulit.module.scss'
 import { colors } from 'utils/helpers/style/colors'

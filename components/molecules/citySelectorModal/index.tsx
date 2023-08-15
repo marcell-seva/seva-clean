@@ -9,14 +9,16 @@ import {
 import { Modal } from 'antd'
 // import 'styles/main.scss'
 import { Button, InputSelect } from 'components/atoms'
-import { ButtonSize, ButtonVersion, LocalStorageKey } from 'utils/types/models'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import elementId from 'utils/helpers/trackerId'
 import { saveLocalStorage } from 'utils/handler/localStorage'
-import { Option, FormControlValue, CityOtrOption } from 'utils/types/props'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { getCity, saveCity } from 'utils/hooks/useGetCity'
+import { CityOtrOption, FormControlValue, Option } from 'utils/types'
+import { LocalStorageKey } from 'utils/enum'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+
 const searchOption = {
   keys: ['label'],
   isCaseSensitive: true,

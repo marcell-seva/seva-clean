@@ -8,10 +8,10 @@ import {
 } from './PreApprovalIntroModal.config'
 import { IconClose } from 'components/atoms'
 import { setTrackEventMoEngage } from 'helpers/moengage'
-import { getLocalStorage } from 'utils/localstorageUtils'
+import { getLocalStorage } from 'utils/handler/localStorage'
 import { ModalBody } from 'components/atoms/ModalBodyWrapper/ModalBodyWrapper'
 import { Shield } from 'components/atoms/icon/Shield'
-import { LocalStorageKey } from 'utils/models/models'
+import { LocalStorageKey } from 'utils/enum'
 import { useContextForm } from 'services/context/formContext'
 
 interface PreApprovalIntroModalProps {

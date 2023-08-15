@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Input from 'components/atoms/input/default'
-import styles from '../../../../styles/molecules/dp/dpform.module.scss'
+import styles from 'styles/components/molecules/dp/dpform.module.scss'
 import clsx from 'clsx'
 
 interface PropsIncomeInput {

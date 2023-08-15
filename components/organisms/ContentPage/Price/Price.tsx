@@ -9,20 +9,18 @@ import React, { memo, useContext, useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
-import {
-  formatSortPrice,
-  replacePriceSeparatorByLocalization,
-} from 'utils/numberUtils/numberUtils'
+import { formatSortPrice } from 'utils/numberUtils/numberUtils'
 import { PriceList } from './PriceList/PriceList'
 import { PromoButton } from './PromoButton/PromoButton'
 import { useCarVariantPromoModal } from 'components/molecules/CarVariantPromoModal/CarVariantPromoModal'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { CityOtrOption } from 'utils/types'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { Description } from 'components/organisms/OldPdpSectionComponents/Description/Description'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useCar } from 'services/context/carContext'
 import { useModalContext } from 'services/context/modalContext'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 
 type tabProps = {
   tab: string | undefined

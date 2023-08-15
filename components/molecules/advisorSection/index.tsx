@@ -1,16 +1,11 @@
 import { Input } from 'components/atoms/OldInput/Input'
-import { ToastType, useToast } from 'components/atoms/OldToast/Toast'
+import { useToast } from 'components/atoms/OldToast/Toast'
 import { UncheckedSquareOutlined } from 'components/atoms'
 import { useContextForm } from 'services/context/formContext'
 import { trackSelectHomeSendDetails } from 'helpers/amplitude/newHomePageEventTracking'
 import { FBPixelStandardEvent } from 'helpers/facebookPixel'
 import { trackGASubmitContactInfo } from 'services/googleAds'
 import { useEnableNewLogin } from 'utils/hooks/useEnableNewLogin'
-import {
-  ContactFormKey,
-  ContactType,
-  LocalStorageKey,
-} from 'utils/models/models'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 // import ReactPixel from 'react-facebook-pixel'
 import { useTranslation } from 'react-i18next'
@@ -21,15 +16,12 @@ import {
   UnverifiedLeadSubCategory,
 } from 'services/lead'
 import styled from 'styled-components'
-import { getToken } from 'utils/api'
 import { savePageBeforeLogin } from 'utils/loginUtils'
 import { Button, ButtonType } from 'components/atoms/ButtonOld/Button'
 import { colors } from 'styles/colors'
 import { createProbeTrack } from 'services/probe'
-import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
 import { CityOtrOption, UTMTagsData } from 'utils/types/utils'
 import elementId from 'helpers/elementIds'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
 import { TextLargeRegular } from 'components/atoms/typography/TextLargeRegular'
 import { CheckedSquareOutlined } from 'components/atoms/icon/CheckedSquareOutlined'
@@ -39,6 +31,11 @@ import { FormPhoneNumber } from '../formPhoneNumber/FormPhoneNumber'
 import { isValidPhoneNumber } from 'utils/numberUtils/numberUtils'
 import { client } from 'utils/helpers/const'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { ContactType, LocalStorageKey } from 'utils/enum'
+import { ContactFormKey, ToastType } from 'utils/types/models'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { getToken } from 'utils/handler/auth'
 
 interface AdvisorSectionProps {
   onSubmitSuccess: (whatsappChecked?: boolean) => void

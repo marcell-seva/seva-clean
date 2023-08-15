@@ -1,15 +1,9 @@
-import { rupiah } from 'utils/handler/rupiah'
+import { formatNumberByLocalization, rupiah } from 'utils/handler/rupiah'
 import { TrackVariantList } from 'utils/types/tracker'
 import { trackWebPDPPriceTab } from 'helpers/amplitude/seva20Tracking'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import {
-  InstallmentTypeOptions,
-  LanguageCode,
-  LocalStorageKey,
-  TrackerFlag,
-} from 'utils/models/models'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+
 import React, { useEffect, useMemo, useState } from 'react'
-import { formatNumberByLocalization } from 'utils/numberUtils/numberUtils'
 import { LeadsFormSecondary } from 'components/organisms'
 import Variants from '../variants'
 import {
@@ -28,6 +22,8 @@ import { setTrackEventMoEngage } from 'helpers/moengage'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { getNewFunnelLoanSpecialRate } from 'services/newFunnel'
 import { useCar } from 'services/context/carContext'
+import { LanguageCode, LocalStorageKey } from 'utils/enum'
+import { TrackerFlag, InstallmentTypeOptions } from 'utils/types/models'
 
 type PriceTabProps = {
   setSelectedTabValue: (value: string) => void

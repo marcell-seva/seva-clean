@@ -7,8 +7,8 @@ import { getCarVariantDetailsById } from 'services/recommendations'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { CarVariantRecommendation, CityOtrOption } from 'utils/types'
 
 interface SpecificationSelectProps {
@@ -85,8 +85,8 @@ export const SpecificationSelect = ({
               onMouseDown={() => {
                 setSelected(option)
                 getCarVariantDetailsById(option.id).then((result3) => {
-                  if (result3.data.variantDetail.priceValue != null) {
-                    saveCarVariantDetails(result3.data)
+                  if (result3.variantDetail.priceValue != null) {
+                    saveCarVariantDetails(result3)
                   }
                 })
                 onChooseOption && onChooseOption(option)

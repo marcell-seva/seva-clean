@@ -5,21 +5,17 @@ import { colors } from 'styles/colors'
 import { filterNonDigitCharacters, isAmountValid } from 'utils/stringUtils'
 import { useContextCalculator } from 'services/context/calculatorContext'
 import { getNewFunnelLoanSpecialRate } from 'services/newFunnel'
-import { saveLocalStorage } from 'utils/localstorageUtils'
+import { saveLocalStorage } from 'utils/handler/localStorage'
 import { parsedMonthlyIncome } from 'utils/parsedMonthlyIncome'
-import {
-  InstallmentTypeOptions,
-  LocalStorageKey,
-  SessionStorageKey,
-  SurveyFormKey,
-} from 'utils/models/models'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { NewFunnelCarVariantDetails, PreapprovalDataType } from 'utils/types'
 import { useUtils } from 'services/context/utilsContext'
 import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import { Input } from 'components/atoms/OldInput/Input'
-import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { useContextForm } from 'services/context/formContext'
+import { InstallmentTypeOptions, SurveyFormKey } from 'utils/types/models'
 
 interface AmountInputProps {
   value: string

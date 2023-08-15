@@ -1,4 +1,4 @@
-import { LocalStorageKey } from 'utils/types/models'
+import { LocalStorageKey } from 'utils/enum'
 
 interface DataWithExpiry<T> {
   value: T

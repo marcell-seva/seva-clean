@@ -1,5 +1,5 @@
 import React, { ChangeEvent, InputHTMLAttributes, useRef } from 'react'
-import { IconSearch, IconClose, IconLocationLine } from 'components/atoms/icons'
+import { IconSearch, IconClose, IconLocationLine } from 'components/atoms/icon'
 import { Input } from './searchInput'
 interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   onSearchInputChange?: (value: string) => void

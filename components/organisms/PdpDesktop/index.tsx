@@ -22,7 +22,7 @@ import { useMediaQuery } from 'react-responsive'
 import { api } from 'services/api'
 import { useCar } from 'services/context/carContext'
 import { handleRecommendationsAndCarModelDetailsUpdate } from 'services/recommendations'
-import styles from 'styles/organism/pdpDesktop.module.scss'
+import styles from 'styles/components/organisms/pdpDesktop.module.scss'
 import {
   getLowestDp,
   getLowestInstallment,
@@ -32,14 +32,15 @@ import {
 import { savePreviouslyViewed } from 'utils/carUtils'
 import { hundred, million, ten } from 'utils/helpers/const'
 import { variantListUrl } from 'utils/helpers/routes'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { saveLocalStorage } from 'utils/localstorageUtils'
-import { LanguageCode, LoanRank, LocalStorageKey } from 'utils/models/models'
-import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { saveLocalStorage } from 'utils/handler/localStorage'
+import { LoanRank } from 'utils/types/models'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { CityOtrOption } from 'utils/types'
 import { CarRecommendation } from 'utils/types/utils'
 import { HeaderAndContent } from '../HeaderAndContent/HeaderAndContent'
 import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
+import { LanguageCode, LocalStorageKey } from 'utils/enum'
 
 export default function index() {
   const router = useRouter()

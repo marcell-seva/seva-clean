@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from 'react'
 import { LanguageCode } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useSessionStorage } from 'utils/hooks/useSessionStorage/useSessionStorage'
-import { LocalStorageKey } from 'utils/types/models'
+import { LocalStorageKey } from 'utils/enum'
 import { MobileWebTopMenuType } from 'utils/types/props'
 import { NavbarItemResponse } from 'utils/types/utils'
 

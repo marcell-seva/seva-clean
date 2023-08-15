@@ -1,4 +1,5 @@
 import getCurrentEnvironment from 'helpers/environments'
+import { temanSevaUrlPath } from 'services/temanseva'
 const baseUrl = getCurrentEnvironment.apiBaseUrl
 
 const utils = {
@@ -17,6 +18,8 @@ const utils = {
   incomeList: `${baseUrl}/recommendations/get-income-list`,
   checkPromoCodeGias: `${baseUrl}/promo-code/status`,
   probe: 'https://probe.addpush.com/d/sub/',
+  checkReferralCode: temanSevaUrlPath.checkRefCode,
+  checkNIKAvailable: `${baseUrl}/customers/check-ktp-availability`,
 }
 
 const product = {
@@ -45,11 +48,33 @@ const auth = {
 
 const loanCalculator = {
   specialRate: `${baseUrl}/loan-calculator/calculate`,
+  insurance: `${baseUrl}/loan-calculator-v2/insurance/:modelId/:cityCode/:tenure`,
+  loanPermutationIncludePromo: `${baseUrl}/loan-calculator-v2/calculate-included-promo`,
+  loanPermutationAsuransiKombinasi: `${baseUrl}/loan-calculator-v2/calculate-asuransi-kombinasi`,
 }
 
 const article = {
   mainArticle: `https://seva.id/wp-json/foodicious/latest-posts/`,
   subArticle: `https://seva.id/wp-json/seva/latest-posts/`,
+}
+
+const upload = {
+  file: `${baseUrl}/customers/me/loan-documents`,
+  ktpFile: `${baseUrl}/customers/ocr-ktp-new`,
+  fileNew: `${baseUrl}/customers/me/loan-documents/new`,
+}
+
+const creditQualification = {
+  single: `${baseUrl}/kualifikasi-kredit`,
+  multi: `${baseUrl}/kualifikasi-kredit/multi`,
+  instantApproval: `${baseUrl}/kualifikasi-kredit/ia`,
+}
+
+const ktp = {
+  customer: `${baseUrl}/customers/get-ktp-existing`,
+  customerSpouse: `${baseUrl}/customers/get-ktp-spouse-existing`,
+  saveKtp: `${baseUrl}/customers/submit-ktp-new`,
+  saveKtpSpouse: `${baseUrl}/customers/submit-ktp-spouse-only`,
 }
 
 export const collections = {
@@ -59,4 +84,7 @@ export const collections = {
   auth,
   leads,
   loanCalculator,
+  upload,
+  creditQualification,
+  ktp,
 }

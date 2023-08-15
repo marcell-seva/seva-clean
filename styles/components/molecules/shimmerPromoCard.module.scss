@@ -1,0 +1,74 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #{$shades-grey-10};
+  background: #{$primary-white};
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  width: 100%;
+  height: 33px;
+  border-radius: 6px 6px 0px 0px;
+  background: #{$shades-grey-5};
+}
+
+.uppperSection {
+  display: flex;
+  padding: 14px 21px 14px 18px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.text {
+  height: 12px;
+  border-radius: 17.5px;
+  background: #{$shades-grey-5};
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.separator {
+  height: 1px;
+  width: 100%;
+  border: 1px dashed #{$shades-grey-10};
+}
+
+.bottomSection {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 17px;
+}
+
+.circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #{$shades-grey-5};
+}
+
+.hideComponent {
+  display: none;
+}
+
+.whiteShade5 {
+  background: #{$shades-grey-5};
+}
+
+.whiteShade10 {
+  background: #{$shades-grey-10};
+}

@@ -27,11 +27,12 @@ import 'styles/components/molecules/advisor-section.scss'
 import 'styles/components/molecules/car-brand-item.scss'
 import 'styles/components/molecules/testimonial.scss'
 import 'styles/components/organisms/funnel-background.scss'
+import 'styles/components/organisms/landingIA.scss'
 import 'styles/CustomAnimationStyle.css'
+import 'styles/pages/multi-kk.scss'
 
 import { FBPixelStandardEvent, FB_PIXEL_ID } from 'helpers/facebookPixel'
 import { client } from 'utils/helpers/const'
-import Head from 'next/head'
 import { IsSsrMobileContext } from 'services/context/isSsrMobileContext'
 
 const kanyon = localFont({

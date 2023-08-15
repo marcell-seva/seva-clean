@@ -5,9 +5,9 @@ import { useMediaQuery } from 'react-responsive'
 import Fuse from 'fuse.js'
 import { useModal } from 'components/atoms/ModalOld/Modal'
 import { CityOtrOption } from 'utils/types'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { LocalStorageKey } from 'utils/models/models'
-import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { LocalStorageKey } from 'utils/enum'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
 import {
   getCity,

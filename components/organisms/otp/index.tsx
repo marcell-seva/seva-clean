@@ -17,7 +17,7 @@ import {
   LanguageCode,
   LocalStorageKey,
 } from 'utils/enum'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { t } from 'config/localization/locales/id'
 import { useUtils } from 'services/context/utilsContext'
 

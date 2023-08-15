@@ -1,0 +1,15 @@
+@import '../../abstract/colors';
+
+.divider {
+  background-color: #{$shades-sky-blue-10};
+  border: none;
+  height: 2px;
+  margin: 24px 0;
+}
+
+.overviewTitle {
+  font-family: 'OpenSansSemiBold';
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$primary-black};
+}

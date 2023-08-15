@@ -11,7 +11,7 @@ import { getToken } from 'utils/handler/auth'
 import { IconAccount, IconHistory, IconWishlist } from 'components/atoms/icon'
 import { MobileWebTopMenuType, CustomerInfoSeva } from 'utils/types/utils'
 import { trackBurgerMenuClick } from 'helpers/amplitude/seva20Tracking'
-import { LocalStorageKey } from 'utils/types/models'
+import { LocalStorageKey } from 'utils/enum'
 
 type MenuListProps = {
   menuList?: MobileWebTopMenuType[]

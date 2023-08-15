@@ -1,13 +1,6 @@
 import React, { useContext, useMemo, useState } from 'react'
 import styles from 'styles/components/organisms/carOverView.module.scss'
-import {
-  Currency,
-  formatNumberByLocalization,
-  formatPriceNumber,
-  formatPriceNumberThousandDivisor,
-} from 'utils/numberUtils/numberUtils'
-import { LanguageCode, LocalStorageKey } from 'utils/models/models'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import {
   IconEdit,
   IconInfo,
@@ -29,8 +22,15 @@ import { variantListUrl } from 'utils/helpers/routes'
 import { CityOtrOption, VariantDetail } from 'utils/types/utils'
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
-import { ButtonSize, ButtonVersion } from 'utils/enum'
 import { useCar } from 'services/context/carContext'
+import { LanguageCode, LocalStorageKey } from 'utils/enum'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { Currency } from 'utils/handler/calculation'
+import { formatNumberByLocalization } from 'utils/handler/rupiah'
+import {
+  formatPriceNumberThousandDivisor,
+  formatPriceNumber,
+} from 'utils/numberUtils/numberUtils'
 
 interface Props {
   onClickCityOtrCarOverview: () => void

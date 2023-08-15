@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import styles from 'styles/components/organisms/productDetailEmptyState.module.scss'
 import { Link } from 'components/atoms'
 import { CitySelectorModal } from 'components/molecules'
-import { saveLocalStorage } from 'utils/localstorageUtils'
-import { LocalStorageKey } from 'utils/models/models'
+import { saveLocalStorage } from 'utils/handler/localStorage'
+import { LocalStorageKey } from 'utils/enum'
 import { getCities } from 'services/cities'
 import { getNewFunnelCityRecommendations } from 'services/newFunnel'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { CityOtrOption } from 'utils/types/utils'
 
 const EmptyCar = '/revamp/illustration/empty-car.webp'
@@ -59,7 +59,7 @@ export const ProductDetailEmptyState: React.FC<PropsPDPEmptyState> = ({
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
       getCities().then((res) => {
-        setCityListApi(res.data)
+        setCityListApi(res)
       })
     }
   }

@@ -8,17 +8,11 @@ import {
   InputPhone,
   Toast,
 } from 'components/atoms'
-import { ButtonSize, ButtonVersion } from 'utils/enum'
-import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
-import {
-  LoanRank,
-  LocalStorageKey,
-  SessionStorageKey,
-} from 'utils/models/models'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { onlyLettersAndSpaces } from 'utils/handler/regex'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import {
   UnverifiedLeadSubCategory,
@@ -32,7 +26,6 @@ import {
   trackCTAWidgetDirection,
   trackLeadsFormAction,
 } from 'helpers/amplitude/seva20Tracking'
-import { Currency } from 'utils/numberUtils/numberUtils'
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import { useSessionStorage } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { useMediaQuery } from 'react-responsive'
@@ -40,6 +33,11 @@ import { variantListUrl } from 'utils/helpers/routes'
 import { getConvertFilterIncome } from 'utils/filterUtils'
 import { useRouter } from 'next/router'
 import { useCar } from 'services/context/carContext'
+import { ButtonVersion, ButtonSize } from 'components/atoms/button'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { Currency } from 'utils/handler/calculation'
+import { CityOtrOption } from 'utils/types'
+import { LoanRank } from 'utils/types/models'
 
 const SupergraphicLeft = '/revamp/illustration/supergraphic-small.webp'
 const SupergraphicRight = '/revamp/illustration/supergraphic-large.webp'
@@ -48,13 +46,6 @@ interface PropsLeadsForm {
   otpStatus?: any
   onVerify?: (e: any) => void
   onFailed?: (e: any) => void
-}
-
-export interface CityOtrOption {
-  cityName: string
-  cityCode: string
-  province: string
-  id?: string
 }
 
 export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {

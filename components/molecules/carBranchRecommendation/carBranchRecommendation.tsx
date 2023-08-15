@@ -55,7 +55,8 @@ export const CarBranchRecommendation = ({
 }: CarBranchRecommendationProps) => {
   const router = useRouter()
   const { dataRecToyota } = useContext(HomePageDataLocalContext)
-  const { patchFunnelQuery, clearFunnelQuery } = useFunnelQueryData()
+  const { patchFunnelQuery, clearQueryFilter: clearFunnelQuery } =
+    useFunnelQueryData()
   const [isCheckedGroups, setIsCheckedBrand] = useState('Toyota')
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const isSmallMobile = useMediaQuery({ query: '(max-width: 380px)' })

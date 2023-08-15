@@ -37,26 +37,20 @@ import { trackPLPCarClick } from 'helpers/amplitude/seva20Tracking'
 // import { PageHeaderSevaCarResults } from 'pages/component/PageHeaderSeva/PageHeaderSevaCarResults'
 import { useModalContext } from 'services/context/modalContext'
 import { CityDisclaimer } from './CityDisclaimer/CityDisclaimer'
-import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import { FilterParam } from 'utils/types/context'
-import {
-  DownPaymentType,
-  LanguageCode,
-  LoanRank,
-  LocalStorageKey,
-} from 'utils/enum'
-import { QueryKeys } from 'utils/models/models'
+import { DownPaymentType, LanguageCode, LocalStorageKey } from 'utils/enum'
 import {
   useAmplitudePageView,
   useCarResultParameter,
-} from 'utils/hooks/useAmplitudePageView/useAmplitudePageView'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+} from 'utils/hooks/useAmplitudePageView'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { TextSmallRegular } from 'utils/typography/TextSmallRegular'
 
 import { FooterSeva } from '../FooterSeva'
-import { useToast, ToastType } from '../Toast'
+import { useToast } from '../Toast'
 import FloatingIcon from 'components/molecules/FloatingIcon/FloatingIcon'
 import { SeoParagraphSection } from '../SeoParagraphSection/SeoParagraphSection'
 import { NewFilterSideMenu } from './Filter/FilterSideMenu/NewFilterSideMenu'
@@ -75,6 +69,7 @@ import {
   getCarModelDetailsById,
   handleCarModelDetailsUpdate,
 } from 'services/recommendations'
+import { LoanRank, QueryKeys, ToastType } from 'utils/types/models'
 
 interface CarResultPageProps {
   carRecommendation: CarRecommendationResponse

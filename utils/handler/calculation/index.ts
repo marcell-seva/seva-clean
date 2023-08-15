@@ -1,6 +1,6 @@
-import { COMMA, DOT } from 'utils/stringUtils'
-import { LanguageCode } from 'utils/types/models'
-import { addSeparator, filterNonDigitCharacters } from '../stringManipulation'
+import { LanguageCode } from 'utils/enum'
+import { replacePriceSeparatorByLocalization } from '../rupiah'
+import { filterNonDigitCharacters } from '../stringManipulation'
 
 type MonthlyInstallmentObject = {
   monthlyInstallment: number
@@ -8,14 +8,6 @@ type MonthlyInstallmentObject = {
 export const getLowestInstallment = (variants: MonthlyInstallmentObject[]) => {
   const prices = variants.map((variant) => variant.monthlyInstallment)
   return Math.min(...prices)
-}
-
-export const replacePriceSeparatorByLocalization = (
-  num: number | string,
-  languageId: LanguageCode,
-) => {
-  const separator = languageId === LanguageCode.en ? COMMA : DOT
-  return addSeparator(num?.toString(), separator)
 }
 
 export const Currency = (value: string | number) => {

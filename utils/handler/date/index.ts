@@ -1,3 +1,23 @@
+type ArticleDateFormatOption = {
+  collapsedMonth: boolean
+}
+
+export const articleDateFormat = (
+  date: Date,
+  language: string,
+  option?: ArticleDateFormatOption,
+): string => {
+  const day = date.getDate()
+  const month = date.getMonth()
+  const year = date.getFullYear()
+
+  const monthString = ToMonthString(month, language)
+
+  return `${day} ${
+    option?.collapsedMonth ? monthString?.substring(0, 3) : monthString
+  } ${year}`
+}
+
 export const timeSince = (date: string): string => {
   const todayDate: any = new Date()
   const parsedDate: any = new Date(date)
@@ -68,14 +88,6 @@ export const countDaysDifference = (startDate: string, endDate: string) => {
   return diffDays
 }
 
-export const articleDateFormat = (date: Date, language: string): string => {
-  const day = date.getDate()
-  const month = date.getMonth()
-  const year = date.getFullYear()
-
-  return `${day} ${ToMonthString(month, language)} ${year}`
-}
-
 export const ToMonthString = (month: number, language: string) => {
   if (language === 'id') {
     return monthId(month)
@@ -116,4 +128,48 @@ const monthEn = (month: number) => {
     10: 'November',
     11: 'December',
   }[month]
+}
+
+export const addZero = (i: any) => {
+  if (i < 10) {
+    i = '0' + i
+  }
+  return i
+}
+
+export const getYear = () => {
+  return new Date().getFullYear()
+}
+
+export const getDayName = (day: number) => {
+  const weekday = [
+    'Minggu',
+    'Senin',
+    'Selasa',
+    'Rabu',
+    'Kamis',
+    'Jumat',
+    'Sabtu',
+  ]
+
+  return weekday[day]
+}
+
+export const isToday = (someDate: Date) => {
+  const today = new Date()
+  return (
+    someDate.getDate() == today.getDate() &&
+    someDate.getMonth() == today.getMonth() &&
+    someDate.getFullYear() == today.getFullYear()
+  )
+}
+
+export const formatDate = (date: Date) => {
+  const day = date.getDate()
+  const month = date.getMonth() + 1
+  const year = date.getFullYear()
+
+  return `${day < 10 ? '0' + day : day}/${
+    month < 10 ? '0' + month : month
+  }/${year}`
 }
