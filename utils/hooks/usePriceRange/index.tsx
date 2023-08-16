@@ -17,10 +17,10 @@ export const usePriceRange = () => {
   const [errorMaxTwoField, setErrorMaxTwoField] = useState(false)
 
   const fetchMinMaxPrice = () => {
-    getMinMaxPrice().then((response: AxiosResponse<MinMaxPrice>) => {
+    getMinMaxPrice().then((response) => {
       setLimitPrice({
-        min: response.data.minPriceValue,
-        max: response.data.maxPriceValue,
+        min: response.minPriceValue,
+        max: response.maxPriceValue,
       })
     })
   }

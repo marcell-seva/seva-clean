@@ -835,7 +835,6 @@ export default function LoanCalculatorPage() {
     }
     setIsLoadingInsuranceAndPromo(false)
     scrollToResult()
-    console.log('TEMP ARR', tempArr)
     setInsuranceAndPromoForAllTenure(tempArr)
   }
 
@@ -910,7 +909,6 @@ export default function LoanCalculatorPage() {
 
       postLoanPermutationIncludePromo(payload)
         .then((response) => {
-          console.log('qwe RESPONSEE : ', response)
           const result = response.data.reverse()
           const filteredResult = getFilteredCalculationResults(result)
           setCalculationResult(filteredResult)

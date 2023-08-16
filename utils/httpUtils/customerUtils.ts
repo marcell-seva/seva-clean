@@ -25,7 +25,7 @@ export const fetchCustomerName = async (): Promise<string | null> => {
 export const fetchCustomerKtp = async (): Promise<any | null> => {
   try {
     const responseCustomerInfo: any = await getCustomerKtpSeva()
-    return responseCustomerInfo.data
+    return responseCustomerInfo
   } catch (e) {
     return null
   }

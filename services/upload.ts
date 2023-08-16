@@ -16,7 +16,6 @@ export const buildFileUploadData = (
 }
 export const buildFileKTPData = (file: File, fileType: DocumentType) => {
   const formData = new FormData()
-  console.log('qweee file : ', file)
   formData.append(UploadDataKey.File, file)
   formData.append(UploadDataKey.FileType, fileType)
   return formData

@@ -36,7 +36,6 @@ const PromoBottomSheet = ({
     setInsuranceAndPromo: setPromoInsurance,
   } = useContextCalculator()
 
-  console.log('qwe PROMO : ', promoInsurance)
   const indexForSelectedTenure = promoInsurance.findIndex(
     (obj: LoanCalculatorInsuranceAndPromoType) => {
       return obj.tenure === selectedTenure
@@ -102,9 +101,11 @@ const PromoBottomSheet = ({
           (a: any) => a.promoId === 'SDD01',
         )
       ) {
-        temp[indexForSelectedTenure].tdpAfterPromo =
-          temp[indexForSelectedTenure].tdpBeforePromo -
-          temp[indexForSelectedTenure].subsidiDp
+        if (temp[indexForSelectedTenure]) {
+          temp[indexForSelectedTenure].tdpAfterPromo =
+            temp[indexForSelectedTenure].tdpBeforePromo -
+            temp[indexForSelectedTenure].subsidiDp
+        }
       } else {
         if (
           promoInsurance[indexForSelectedTenure]?.applied
@@ -114,17 +115,21 @@ const PromoBottomSheet = ({
             (a: any) => a.promoId === 'TS01',
           )
         ) {
-          temp[indexForSelectedTenure].tdpAfterPromo =
-            temp[indexForSelectedTenure].tdpWithPromo
+          if (temp[indexForSelectedTenure]) {
+            temp[indexForSelectedTenure].tdpAfterPromo =
+              temp[indexForSelectedTenure].tdpWithPromo
 
-          temp[indexForSelectedTenure].installmentAfterPromo =
-            temp[indexForSelectedTenure].installmentWithPromo
-          temp[indexForSelectedTenure].interestRateAfterPromo =
-            temp[indexForSelectedTenure].interestRateWithPromo
+            temp[indexForSelectedTenure].installmentAfterPromo =
+              temp[indexForSelectedTenure].installmentWithPromo
+            temp[indexForSelectedTenure].interestRateAfterPromo =
+              temp[indexForSelectedTenure].interestRateWithPromo
+          }
         } else {
-          temp[indexForSelectedTenure].tdpAfterPromo = 0
-          temp[indexForSelectedTenure].installmentAfterPromo = 0
-          temp[indexForSelectedTenure].interestRateAfterPromo = 0
+          if (temp[indexForSelectedTenure]) {
+            temp[indexForSelectedTenure].tdpAfterPromo = 0
+            temp[indexForSelectedTenure].installmentAfterPromo = 0
+            temp[indexForSelectedTenure].interestRateAfterPromo = 0
+          }
         }
       }
 

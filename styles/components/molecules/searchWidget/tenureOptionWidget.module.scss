@@ -1,7 +1,7 @@
 @import '../../../abstract/colors';
 @import '../../../abstract/mixins';
 
-.container {
+.containerTenure {
   margin: 16px 0 67px;
   padding: 0 24px;
   display: flex;
@@ -11,7 +11,7 @@
 
   .box {
     height: 52px;
-    width: 52px;
+    min-width: 52px;
     border-radius: 8px;
     border: 1px solid #{$shades-grey-10};
     display: flex;
@@ -24,7 +24,7 @@
     }
 
     span {
-      font-family: var(--open-sans);
+      font-family: $font-openSans;
       font-size: 14px;
       line-height: 20px;
       color: #{$primary-black};

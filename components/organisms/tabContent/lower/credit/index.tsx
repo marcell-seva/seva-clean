@@ -515,24 +515,29 @@ export const CreditTab = () => {
   }
 
   const getTransmissionType = (payload: any) => {
-    const type: Array<string> = payload
-      .map((item: any) => item.transmission)
-      .filter(
-        (value: any, index: number, self: any) => self.indexOf(value) === index,
-      )
+    if (payload) {
+      const type: Array<string> = payload
+        .map((item: any) => item.transmission)
+        .filter(
+          (value: any, index: number, self: any) =>
+            self.indexOf(value) === index,
+        )
 
-    return type
+      return type
+    }
   }
   const getPriceRange = (payload: any) => {
-    const variantLength = payload.length
-    if (variantLength === 1) {
-      const price: string = rupiah(payload[0].priceValue)
-      return `yang tersedia dalam kisaran harga mulai dari ${price}`
-    } else {
-      const upperPrice = rupiah(payload[0].priceValue)
-      const lowerPrice = rupiah(payload[variantLength - 1].priceValue)
+    if (payload) {
+      const variantLength = payload.length
+      if (variantLength === 1) {
+        const price: string = rupiah(payload[0].priceValue)
+        return `yang tersedia dalam kisaran harga mulai dari ${price}`
+      } else {
+        const upperPrice = rupiah(payload[0].priceValue)
+        const lowerPrice = rupiah(payload[variantLength - 1].priceValue)
 
-      return `yang tersedia dalam kisaran harga ${lowerPrice} - ${upperPrice} juta`
+        return `yang tersedia dalam kisaran harga ${lowerPrice} - ${upperPrice} juta`
+      }
     }
   }
 
@@ -583,10 +588,10 @@ export const CreditTab = () => {
     const month = carModelDetails && carModelDetails!.variants[0].tenure * 12
     const transmissionType = getTransmissionType(
       carModelDetails?.variants,
-    ).length
+    )?.length
     const transmissionDetail = getTransmissionType(
       carModelDetails?.variants,
-    ).join(' dan ')
+    )?.join(' dan ')
     const CarVariants = carModelDetails?.variants
     const dpAmount = carModelDetails?.variants.sort(
       (a: any, b: any) => a.priceValue - b.priceValue,
@@ -850,6 +855,7 @@ export const CreditTab = () => {
       })
       // await get promo list API with best insurance
 
+      console.log('qwe responseInsurance', responseInsurance)
       tempArr.push({
         tenure: allTenure[i],
         allInsuranceList: responseInsurance,
@@ -900,6 +906,8 @@ export const CreditTab = () => {
     }
     setIsLoadingInsuranceAndPromo(false)
     scrollToResult()
+
+    console.log('qwe tempArr', tempArr)
     setInsuranceAndPromoForAllTenure(tempArr)
   }
 
@@ -977,6 +985,7 @@ export const CreditTab = () => {
           const result = response.data.reverse()
           const filteredResult = getFilteredCalculationResults(result)
           setCalculationResult(filteredResult)
+          console.log('qwe filteredResult', filteredResult)
           generateSelectedInsuranceAndPromo(filteredResult)
 
           // select loan with the longest tenure as default

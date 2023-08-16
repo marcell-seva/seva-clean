@@ -53,7 +53,6 @@ export const FormSelectModelCar = ({
   const [carImage, setCarImage] = React.useState(
     CarSillhouete as unknown as string,
   )
-  console.log('qwe image : ', valueImage)
   const [isError, setIsError] = React.useState(false)
 
   const [choosenModel, setChoosenModel] = useState(valueId)

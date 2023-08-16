@@ -52,7 +52,7 @@ const FormSelectAssurance = ({
   )
   const isLoading = false
   const isCarDontHavePromo =
-    promoInsurance[indexForSelectedTenure].allPromoListOnlyFullComprehensive
+    promoInsurance[indexForSelectedTenure]?.allPromoListOnlyFullComprehensive
       .length === 0
 
   const referralCodeLocalStorage = getLocalStorage<string>(
@@ -64,7 +64,7 @@ const FormSelectAssurance = ({
       setIsUserHasReffcode(true)
     } else if (!!getToken()) {
       getCustomerInfoSeva().then((response: any) => {
-        if (response.data[0].temanSevaTrxCode) {
+        if (response[0].temanSevaTrxCode) {
           setIsUserHasReffcode(true)
         }
       })
@@ -132,7 +132,6 @@ const FormSelectAssurance = ({
     newList[indexForSelectedTenure].subsidiDp = isAppliedSDD01Promo
       ? responseData.subsidiDp
       : 0
-    console.log('qwe newList', newList)
     setPromoInsurance(newList)
   }
 
@@ -177,7 +176,6 @@ const FormSelectAssurance = ({
           asuransiKombinasi: item.value,
         })
           .then((response) => {
-            console.log('RESPONSE : ', response)
             updateDataInsuranceAndPromo(response.data[0])
           })
           .finally(() => {
@@ -217,7 +215,7 @@ const FormSelectAssurance = ({
           )}
         </span>
         <div>
-          {promoInsurance[indexForSelectedTenure].selectedInsurance.value ===
+          {promoInsurance[indexForSelectedTenure]?.selectedInsurance?.value ===
           item.value ? (
             <IconRadioButtonActive width={24} height={24} />
           ) : (
@@ -259,7 +257,7 @@ const FormSelectAssurance = ({
         <div className={styles.selectFormContainer}>
           {isLoading
             ? [...Array(4)].map((x, i) => renderShimmerItem(i))
-            : promoInsurance[indexForSelectedTenure].allInsuranceList.map(
+            : promoInsurance[indexForSelectedTenure]?.allInsuranceList?.map(
                 (item, index) => {
                   return renderInsuranceItem(item, index)
                 },

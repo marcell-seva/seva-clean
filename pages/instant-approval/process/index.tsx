@@ -168,8 +168,8 @@ const CreditQualificationProcess = () => {
     getCustomerInfoSeva()
       .then((response) => {
         // setLoadShimmer2(false)
-        if (!!response.data[0].dob && isIsoDateFormat(response.data[0].dob)) {
-          setCustomerYearBorn(response.data[0].dob.slice(0, 4))
+        if (!!response[0].dob && isIsoDateFormat(response[0].dob)) {
+          setCustomerYearBorn(response[0].dob.slice(0, 4))
         }
       })
       .catch((err) => {

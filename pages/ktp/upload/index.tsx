@@ -102,7 +102,6 @@ export default function CameraKtp() {
         }
       }
       const imageSrc = ref.getScreenshot(resolution)
-      console.log('qwe imageSrc', imageSrc)
       if (imageSrc) {
         const file = dataURItoFile(imageSrc)
         setImageFile(file)
@@ -125,13 +124,13 @@ export default function CameraKtp() {
 
   useEffect(() => {
     if (imageData) {
-      console.log('qwe imageFile', imageFile)
       setGalleryFile(imageData as string)
       setPhotoFile(imageFile)
       const nextLocation = {
-        pathname: verifyKtpUrl + getNextLocationQueryParam(),
+        pathname: verifyKtpUrl,
         query: {
           [LocationStateKey.Channel]: UploadChannel.Camera as string,
+          ...getNextLocationQueryParam(),
         },
       }
 
@@ -186,7 +185,9 @@ export default function CameraKtp() {
 
   const getNextLocationQueryParam = () => {
     if (ktpType && ktpType.toLowerCase() === 'spouse') {
-      return uploadKtpSpouseQueryParam
+      return {
+        ktpType: 'spouse',
+      }
     } else {
       return ''
     }
@@ -199,10 +200,11 @@ export default function CameraKtp() {
         setPhotoFile(file)
 
         const nextLocation = {
-          pathname: verifyKtpUrl + getNextLocationQueryParam(),
+          pathname: verifyKtpUrl,
           query: {
             [LocationStateKey.Channel]: UploadChannel.Camera as string,
             [LocationStateKey.Base64]: value as string,
+            ...getNextLocationQueryParam(),
           },
         }
         router.push(nextLocation)

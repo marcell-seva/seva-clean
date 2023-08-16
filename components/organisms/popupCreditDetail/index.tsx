@@ -27,7 +27,6 @@ const PopupCreditDetail = ({
   simpleCarVariantDetails,
   optionADDM,
 }: VariantsProps) => {
-  console.log(simpleCarVariantDetails)
   const [isTooltipOpen, setIsTooltipOpen] = useState(false)
 
   const selectablePromo = getLocalStorage<LoanCalculatorInsuranceAndPromoType>(

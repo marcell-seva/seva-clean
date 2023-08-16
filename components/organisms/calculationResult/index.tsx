@@ -21,6 +21,7 @@ import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import elementId from 'helpers/elementIds'
 import PromoBottomSheet from '../promoBottomSheet'
 import { LanguageCode } from 'utils/enum'
+import { useContextCalculator } from 'services/context/calculatorContext'
 
 const LogoAcc = '/revamp/icon/logo-acc.webp'
 const LogoTaf = '/revamp/icon/logo-taf.webp'
@@ -54,10 +55,12 @@ export const CalculationResult = ({
   insuranceAndPromoForAllTenure,
   calculationApiPayload,
 }: Props) => {
-  const [state, setState] = useState<LoanCalculatorInsuranceAndPromoType[]>(
-    insuranceAndPromoForAllTenure,
-  ) // assume this state as Context, mind about re-render
-  const contextValue = useMemo(() => ({ state, setState }), [state])
+  const { setInsuranceAndPromo: setPromoInsurance } = useContextCalculator()
+
+  useEffect(() => {
+    setPromoInsurance(insuranceAndPromoForAllTenure)
+  }, [insuranceAndPromoForAllTenure])
+
   const [tenureForPopUp, setTenureForPopUp] = useState(data[0].tenure)
   const [openPromo, setOpenPromo] = useState(false)
   const [selectedCalculatePromo, setSelectedCalculatePromo] =
@@ -335,7 +338,7 @@ export const CalculationResult = ({
               insuranceAndPromoData={
                 insuranceAndPromoForAllTenure.filter(
                   (selectedDataItem) => selectedDataItem.tenure === item.tenure,
-                )[0]
+                )[0] || []
               }
             />
           )

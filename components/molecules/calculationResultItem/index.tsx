@@ -33,15 +33,15 @@ export const CalculationResultItem = ({
 }: Props) => {
   const { currentLanguage } = useUtils()
 
-  const isUsingBestPromo = insuranceAndPromoData.selectedPromo.some(
+  const isUsingBestPromo = insuranceAndPromoData.selectedPromo?.some(
     (x: any) => x.is_Best_Promo,
   )
-  const isUsingRegularPromo = !insuranceAndPromoData.selectedPromo.some(
+  const isUsingRegularPromo = !insuranceAndPromoData.selectedPromo?.some(
     (x: any) => x.is_Best_Promo,
   )
-  const isNotUsingAnyPromo = insuranceAndPromoData.selectedPromo.length === 0
+  const isNotUsingAnyPromo = insuranceAndPromoData.selectedPromo?.length === 0
   const isCarDontHavePromo =
-    insuranceAndPromoData.allPromoListOnlyFullComprehensive.length === 0
+    insuranceAndPromoData.allPromoListOnlyFullComprehensive?.length === 0
 
   const renderLoanRankIcon = () => {
     if (data.loanRank === LoanRank.Green) {
@@ -86,7 +86,7 @@ export const CalculationResultItem = ({
             [styles.secondaryGreenColor]: data.loanRank === LoanRank.Green,
           })}
         >
-          {insuranceAndPromoData.selectedPromo.length} promo diterapkan
+          {insuranceAndPromoData.selectedPromo?.length} promo diterapkan
         </span>
       )
     } else if (isUsingBestPromo) {
@@ -97,7 +97,7 @@ export const CalculationResultItem = ({
             [styles.bestPromoCounter]: true,
           })}
         >
-          {insuranceAndPromoData.selectedPromo.length} promo diterapkan
+          {insuranceAndPromoData.selectedPromo?.length} promo diterapkan
         </span>
       )
     } else {

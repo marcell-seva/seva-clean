@@ -54,9 +54,8 @@ export const PromoBottomList = ({
   )
 
   const handleSelect = (item: PromoItemType) => {
-    console.log('qwe promoInsurance 2', promoInsurance)
     if (
-      !promoInsurance[indexForSelectedTenure].selectedPromo.some(
+      !promoInsurance[indexForSelectedTenure]?.selectedPromo?.some(
         (x: any) => x.promoId === item.promoId,
       )
     ) {
@@ -67,9 +66,9 @@ export const PromoBottomList = ({
       ]
       setPromoInsurance(temp)
     } else {
-      const temp = promoInsurance[indexForSelectedTenure].selectedPromo.filter(
-        (x: any) => x.promoId !== item.promoId,
-      )
+      const temp = promoInsurance[
+        indexForSelectedTenure
+      ]?.selectedPromo?.filter((x: any) => x.promoId !== item.promoId)
       const newList = [...promoInsurance]
       newList[indexForSelectedTenure].selectedPromo = temp
       setPromoInsurance(newList)
@@ -78,13 +77,13 @@ export const PromoBottomList = ({
 
   useEffect(() => {
     if (
-      promoInsurance[indexForSelectedTenure].selectedPromo.some(
+      promoInsurance[indexForSelectedTenure]?.selectedPromo?.some(
         (x: any) => x.is_Best_Promo,
       )
     ) {
       setGroupPromo('best-promo')
     } else if (
-      promoInsurance[indexForSelectedTenure].selectedPromo.some(
+      promoInsurance[indexForSelectedTenure]?.selectedPromo?.some(
         (x: any) => !x.is_Best_Promo,
       )
     ) {
@@ -92,7 +91,7 @@ export const PromoBottomList = ({
     } else {
       setGroupPromo('')
     }
-  }, [promoInsurance[indexForSelectedTenure].selectedPromo])
+  }, [promoInsurance[indexForSelectedTenure]?.selectedPromo])
 
   return (
     <>
@@ -119,7 +118,7 @@ export const PromoBottomList = ({
                     item={promo}
                     selected={promoInsurance[
                       indexForSelectedTenure
-                    ].selectedPromo.some(
+                    ]?.selectedPromo?.some(
                       (x: any) => x.promoId === promo.promoId,
                     )}
                     groupPromo={groupPromo}

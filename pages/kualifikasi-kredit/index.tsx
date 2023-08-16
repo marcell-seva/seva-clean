@@ -219,8 +219,8 @@ const CreditQualificationPage = () => {
           )
         }
 
-        if (response.data[0].temanSevaTrxCode) {
-          setConnectedCode(response.data[0].temanSevaTrxCode ?? '')
+        if (response[0].temanSevaTrxCode) {
+          setConnectedCode(response[0].temanSevaTrxCode ?? '')
         } else {
           setConnectedCode('')
         }

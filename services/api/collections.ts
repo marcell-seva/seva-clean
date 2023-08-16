@@ -14,7 +14,7 @@ const utils = {
   search: `${baseUrl}/cars/search-bar`,
   metaTag:
     'https://api.sslpots.com/api/meta-seos/?filters[master_model][model_code][$contains]=',
-  supportedBrowser: '/web-browser/check',
+  supportedBrowser: `${baseUrl}/web-browser/check`,
   incomeList: `${baseUrl}/recommendations/get-income-list`,
   checkPromoCodeGias: `${baseUrl}/promo-code/status`,
   probe: 'https://probe.addpush.com/d/sub/',

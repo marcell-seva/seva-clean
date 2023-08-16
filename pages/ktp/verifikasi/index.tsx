@@ -49,13 +49,11 @@ const VerifyKtp = () => {
   }
 
   const detectText = () => {
-    console.log('qwe file', file)
     if (file) {
       uploadKTPFile({
         data: buildFileKTPData(file, DocumentType.KTP),
       })
         .then((response) => {
-          console.log('qwe response', response)
           localStorage.setItem('formKtp', JSON.stringify(response.data))
           if (ktpType && ktpType.toLowerCase() === 'spouse') {
             router.push(formKtpUrl + uploadKtpSpouseQueryParam)
@@ -76,10 +74,9 @@ const VerifyKtp = () => {
     }
   }
 
-  console.log('qwee galleryFile :', galleryFile)
-  // {
-  //   galleryFile ?? router.push(cameraKtpUrl)
-  // }
+  {
+    galleryFile ?? router.push(cameraKtpUrl)
+  }
   return (
     <>
       <div className={styles.form_header}>

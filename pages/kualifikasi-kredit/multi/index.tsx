@@ -171,9 +171,9 @@ const MultiKK = () => {
 
   const getCustomerInfo = () => {
     getCustomerInfoSeva().then((response) => {
-      if (!!response.data[0].dob) {
-        setCustomerDob(response.data[0].dob)
-        setMultiForm((prev) => ({ ...prev, dob: response.data[0].dob }))
+      if (!!response[0].dob) {
+        setCustomerDob(response[0].dob)
+        setMultiForm((prev) => ({ ...prev, dob: response[0].dob }))
       }
     })
   }
@@ -347,10 +347,9 @@ const MultiKK = () => {
 
     sendMultiKualifikasiKredit(sendData)
       .then((result) => {
-        const carListNonSulit = filteredCarList(result.data.carRecommendations)
-
+        const carListNonSulit = filteredCarList(result.carRecommendations)
         if (
-          result.data.carRecommendations.length === 0 ||
+          result.carRecommendations.length === 0 ||
           carListNonSulit.length === 0
         ) {
           setMultiUnitQuery({
@@ -366,7 +365,7 @@ const MultiKK = () => {
             downPaymentAmount: fmtDp,
             monthlyIncome: fmtIncome,
             cityName: currentCity?.cityName,
-            multikkResponse: result.data,
+            multikkResponse: result,
             filteredCarList: carListNonSulit,
           })
           router.push(multiResultCreditQualificationPageUrl)
