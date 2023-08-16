@@ -18,7 +18,7 @@ interface ImageSwipeProps {
 }
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 
 export const ImageCarousel = ({ data, children }: ImageSwipeProps) => {
   const router = useRouter()

@@ -1,23 +1,28 @@
+import {
+  trackCarVariantBannerPromoClick,
+  trackPromoBannerClick,
+  trackPromoBannerSeeAllClick,
+  trackSeeAllPromoClick,
+} from 'helpers/amplitude/seva20Tracking'
 import React from 'react'
 import styles from 'styles/components/organisms/summary.module.scss'
-import promoBannerTSO from '/public/revamp/illustration/PromoTSO.webp'
-import promoBannerCumaDiSEVA from '/public/revamp/illustration/PromoCumaDiSEVA.webp'
-import promoTradeIn from '/public/revamp/illustration/PromoTradeIn.webp'
-import { sendAmplitudeData } from 'services/amplitude'
-import { AmplitudeEventName } from 'services/amplitude/types'
-import Image from 'next/image'
+
+const promoBannerTSO = '/revamp/illustration/PromoTSO.webp'
+const promoBannerCumaDiSEVA = '/revamp/illustration/PromoCumaDiSEVA.webp'
+const promoTradeIn = '/revamp/illustration/PromoTradeIn.webp'
+
 import {
-  IconCar,
   IconChevronRight,
   IconEngine,
   IconFuel,
   IconPromo,
   IconSeat,
   IconTransmission,
-} from 'components/atoms/icons'
-import { CarVariantRecommendation } from 'utils/types/props'
-import urls from 'utils/helpers/url'
-import elementId from 'utils/helpers/trackerId'
+  IconCar,
+} from 'components/atoms'
+import { CarVariantRecommendation } from 'utils/types/utils'
+import { variantListUrl } from 'utils/helpers/routes'
+import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 
 type PromoSectionProps = {
@@ -40,11 +45,14 @@ const PromoSection = ({
   setSelectedTabValue,
 }: PromoSectionProps) => {
   const router = useRouter()
-  const { brand, model }: any = router.query
+
+  const brand = router.query.brand as string
+  const model = router.query.model as string
+
   const navigateToSpecificationTab = () => {
     setSelectedTabValue && setSelectedTabValue('Spesifikasi')
     router.push(
-      urls.internalUrls.variantListUrl
+      variantListUrl
         .replace(':brand', brand)
         .replace(':model', model)
         .replace(':tab?', 'spesifikasi'),
@@ -57,7 +65,7 @@ const PromoSection = ({
           <div className={styles.row}>
             <div className={styles.rowWithGap}>
               <IconCar width={24} height={24} color={'#B4231E'} />
-              <span className={styles.kanyonMedium}>Detail</span>
+              <p className={styles.kanyonMedium}>Detail</p>
             </div>
             <div
               className={styles.rowWithGap}
@@ -65,37 +73,37 @@ const PromoSection = ({
               style={{ justifyContent: 'end' }}
               data-testid={elementId.PDP.CTA.LihatDetail}
             >
-              <span className={styles.openSans} style={{ color: '#246ED4' }}>
+              <p className={styles.openSans} style={{ color: '#246ED4' }}>
                 {'Lihat Detil'}
-              </span>
+              </p>
             </div>
           </div>
           <div className={styles.row}>
             <div className={styles.rowWithGap}>
               <IconSeat width={24} height={24} color={'#246ED4'} />
-              <span className={styles.openSans} style={{ color: '#13131B' }}>
+              <p className={styles.openSans} style={{ color: '#13131B' }}>
                 {info.seats + ' Kursi'}
-              </span>
+              </p>
             </div>
             <div className={styles.rowWithGap}>
               <IconTransmission width={24} height={24} color={'#246ED4'} />
-              <span className={styles.openSans} style={{ color: '#13131B' }}>
+              <p className={styles.openSans} style={{ color: '#13131B' }}>
                 {cheapestVariantData?.transmission}
-              </span>
+              </p>
             </div>
           </div>
           <div className={styles.row}>
             <div className={styles.rowWithGap}>
               <IconEngine width={24} height={24} color={'#246ED4'} />
-              <span className={styles.openSans} style={{ color: '#13131B' }}>
+              <p className={styles.openSans} style={{ color: '#13131B' }}>
                 {'Mesin ' + cheapestVariantData?.engineCapacity + ' cc'}
-              </span>
+              </p>
             </div>
             <div className={styles.rowWithGap}>
               <IconFuel width={24} height={24} color={'#246ED4'} />
-              <span className={styles.openSans} style={{ color: '#13131B' }}>
+              <p className={styles.openSans} style={{ color: '#13131B' }}>
                 {cheapestVariantData?.fuelType}
-              </span>
+              </p>
             </div>
           </div>
         </div>
@@ -115,12 +123,12 @@ const PromoSection = ({
                 <h2 className={styles.kanyonMedium}>Promo</h2>
               </div>
             ) : (
-              <span
+              <p
                 className={styles.kanyonMediumBlue}
                 data-testid={elementId.Homepage.Button.PromoEkslusif}
               >
                 Promo Eksklusif
-              </span>
+              </p>
             )}
           </div>
           {onPage === 'VariantListPage' ? (
@@ -130,12 +138,7 @@ const PromoSection = ({
               rel="noopener noreferrer"
               className={styles.openSans}
               style={{ color: '#246ED4', paddingRight: '16px' }}
-              onClick={() =>
-                sendAmplitudeData(
-                  AmplitudeEventName.WEB_PDP_PROMO_LIHAT_SEMUA_CLICK,
-                  dataForAmplitude,
-                )
-              }
+              onClick={() => trackSeeAllPromoClick(dataForAmplitude)}
               data-testid={elementId.PDP.CTA.LihatSemuaPromo}
             >
               Lihat Semua
@@ -147,12 +150,7 @@ const PromoSection = ({
               rel="noopener noreferrer"
               className={styles.openSansMedium}
               style={{ color: '#246ED4', paddingRight: '16px' }}
-              onClick={() =>
-                sendAmplitudeData(
-                  AmplitudeEventName.WEB_PROMO_BANNER_SEE_ALL_CLICK,
-                  null,
-                )
-              }
+              onClick={() => trackPromoBannerSeeAllClick()}
               data-testid={elementId.Homepage.Promo.LihatSemua}
             >
               Lihat semua
@@ -166,16 +164,11 @@ const PromoSection = ({
               if (onPage === 'VariantListPage') {
                 onButtonClick && onButtonClick(true)
                 setPromoName && setPromoName('promo1')
-                sendAmplitudeData(
-                  AmplitudeEventName.WEB_PDP_BANNER_PROMO_CLICK,
-                  dataForAmplitude,
-                )
+                trackCarVariantBannerPromoClick(dataForAmplitude)
               } else {
                 const Page_Direction_URL =
                   'https://www.seva.id/info/promo/cuma-di-seva/'
-                sendAmplitudeData(AmplitudeEventName.WEB_PROMO_BANNER_CLICK, {
-                  Page_Direction_URL,
-                })
+                trackPromoBannerClick({ Page_Direction_URL })
                 window.open(Page_Direction_URL, '_blank')
               }
             }}
@@ -185,19 +178,18 @@ const PromoSection = ({
                 : elementId.Homepage.Promo.DetailPromo
             }
           >
-            <Image
-              alt="promo-banner"
+            <img
               src={promoBannerCumaDiSEVA}
               className={styles.promoBannerSmall}
               height="156"
             />
             <div>
-              <span className={styles.textPromoBanner}>
+              <p className={styles.textPromoBanner}>
                 Lihat detail{' '}
                 <div className={styles.spacingChevronIcon}>
                   <IconChevronRight width={16} height={16} color="#FFFFFF" />
                 </div>
-              </span>
+              </p>
             </div>
           </div>
           <div
@@ -206,35 +198,33 @@ const PromoSection = ({
               if (onPage === 'VariantListPage') {
                 onButtonClick && onButtonClick(true)
                 setPromoName && setPromoName('promo2')
-                sendAmplitudeData(
-                  AmplitudeEventName.WEB_PDP_BANNER_PROMO_CLICK,
-                  dataForAmplitude,
-                )
+                trackCarVariantBannerPromoClick(dataForAmplitude)
               } else {
                 const Page_Direction_URL =
                   'https://www.seva.id/info/promo/toyota-spektakuler/'
-                sendAmplitudeData(AmplitudeEventName.WEB_PROMO_BANNER_CLICK, {
-                  Page_Direction_URL,
-                })
+                trackPromoBannerClick({ Page_Direction_URL })
                 window.open(Page_Direction_URL, '_blank')
               }
             }}
             data-testid={elementId.Homepage.Promo.DetailPromo}
           >
-            <Image
-              alt="promo-banner"
+            <img
               src={promoBannerTSO}
               className={styles.promoBannerSmall}
               height="156"
             />
 
-            <div className={styles.wrapperDetail}>
-              <span className={styles.textPromoBanner}>
+            <div
+              style={{
+                backgroundImage: `linear-gradient(to bottom, rgba(255,0,0,0), black);`,
+              }}
+            >
+              <p className={styles.textPromoBanner}>
                 Lihat detail
                 <div className={styles.spacingChevronIcon}>
                   <IconChevronRight width={16} height={16} color="#FFFFFF" />
                 </div>
-              </span>
+              </p>
             </div>
           </div>
           <div
@@ -243,35 +233,33 @@ const PromoSection = ({
               if (onPage === 'VariantListPage') {
                 onButtonClick && onButtonClick(true)
                 setPromoName && setPromoName('promo3')
-                sendAmplitudeData(
-                  AmplitudeEventName.WEB_PDP_BANNER_PROMO_CLICK,
-                  dataForAmplitude,
-                )
+                trackCarVariantBannerPromoClick(dataForAmplitude)
               } else {
                 const Page_Direction_URL =
                   'https://www.seva.id/info/promo/promo-trade-in-daihatsu/'
-                sendAmplitudeData(AmplitudeEventName.WEB_PROMO_BANNER_CLICK, {
-                  Page_Direction_URL,
-                })
+                trackPromoBannerClick({ Page_Direction_URL })
                 window.open(Page_Direction_URL, '_blank')
               }
             }}
             data-testid={elementId.Homepage.Promo.DetailPromo}
           >
-            <Image
-              alt="promo-banner"
+            <img
               src={promoTradeIn}
               className={styles.promoBannerSmall}
               height="156"
             />
 
-            <div className={styles.wrapperDetail}>
-              <span className={styles.textPromoBanner}>
+            <div
+              style={{
+                backgroundImage: `linear-gradient(to bottom, rgba(255,0,0,0), black);`,
+              }}
+            >
+              <p className={styles.textPromoBanner}>
                 Lihat detail
                 <div className={styles.spacingChevronIcon}>
                   <IconChevronRight width={16} height={16} color="#FFFFFF" />
                 </div>
-              </span>
+              </p>
             </div>
           </div>
         </div>

@@ -4,7 +4,7 @@ import type { ModalProps } from 'antd'
 import styles from 'styles/components/organisms/popupTestimony.module.scss'
 import { colors } from 'utils/helpers/style/colors'
 import { TestimonialData } from 'utils/types/props'
-import { IconClose } from 'components/atoms/icons'
+import { IconClose } from 'components/atoms/icon'
 import { differentDateStatus } from 'utils/handler/date'
 
 type PopupTestimonyProps = Omit<ModalProps, 'children'> & {

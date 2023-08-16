@@ -3,7 +3,7 @@ import styles from 'styles/components/atoms/menuItem.module.scss'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { MobileWebTopMenuType } from 'utils/types/props'
-import { IconChevronDown } from '../icons'
+import { IconChevronDown } from '../icon'
 
 type MenuItemProps = {
   item?: MobileWebTopMenuType

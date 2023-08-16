@@ -2,13 +2,13 @@ import { DownOutlined } from 'components/atoms'
 import { NewInput } from 'components/atoms/input/newInput'
 import { NewSelect } from 'components/atoms/SelectOld/NewSelect'
 import { Shimmer } from 'components/atoms/shimmerOld'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { getIncomeList } from 'services/recommendations'
 import styled from 'styled-components'
 import { LanguageCode } from 'utils/enum'
 import { getConvertFilterIncomeToRange } from 'utils/filterUtils'
-import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { FormControlValue } from 'utils/types'
 
@@ -41,14 +41,12 @@ export function MonthlyIncome({
     if (type === IncomeFieldType.selectOption) {
       setIsLoading(true)
       getIncomeList().then((res) => {
-        const dataUpdate = res.data.map(
-          (item: { label: string; value: any }) => {
-            return {
-              label: item.label.replace(' - ', '-') + '/bulan',
-              value: item.value,
-            }
-          },
-        )
+        const dataUpdate = res.map((item: { label: string; value: any }) => {
+          return {
+            label: item.label.replace(' - ', '-') + '/bulan',
+            value: item.value,
+          }
+        })
         setIncomeOptions(dataUpdate)
         setIsLoading(false)
       })

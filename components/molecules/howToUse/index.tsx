@@ -5,7 +5,7 @@ import {
   IconCar2,
   IconChevronRight,
   IconFast,
-} from 'components/atoms/icons'
+} from 'components/atoms/icon'
 import urls from 'utils/helpers/url'
 import elementId from 'utils/helpers/trackerId'
 import { sendAmplitudeData } from 'services/amplitude'

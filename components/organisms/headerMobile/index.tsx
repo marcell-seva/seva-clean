@@ -1,24 +1,29 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react'
-import styles from 'styles/components/organisms/headerMobile.module.scss'
-import LogoPrimary from '/public/revamp/icon/logo-primary.webp'
-import clsx from 'clsx'
+import styles from '../../../styles/components/organisms/headerMobile.module.scss'
 import {
   IconHamburger,
-  IconLocationLine,
   IconSearch,
-} from 'components/atoms/icons'
-import Image from 'next/image'
-import { Overlay } from 'components/atoms'
-import elementId from 'utils/helpers/trackerId'
-import getCurrentEnvironment from 'utils/handler/getCurrentEnvironment'
-import { sendAmplitudeData } from 'services/amplitude'
-import { AmplitudeEventName } from 'services/amplitude/types'
-import SidebarMobile from '../sidebarMobile'
-import { useSearchModal } from 'components/molecules'
+  IconLocationLine,
+  Overlay,
+} from 'components/atoms'
+import { SidebarMobile } from 'components/organisms'
+// import { useSearchModal } from 'components/molecules/searchModal'
+import { rootUrl } from 'utils/helpers/routes'
+import clsx from 'clsx'
+import {
+  trackCitySelectorOpen,
+  trackOpenBurgerMenu,
+  trackSearchbarOpen,
+  trackSevaLogoClick,
+} from 'helpers/amplitude/seva20Tracking'
+import getCurrentEnvironment from 'helpers/environments'
+import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
-import { WebAnnouncementBox } from '../webAnnouncementBox'
 import Link from 'next/link'
+import { WebAnnouncementBox } from 'components/organisms'
+import { useSearchModal } from 'components/molecules'
+
+const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
 type HeaderMobileProps = {
   startScroll?: boolean
@@ -33,7 +38,7 @@ type HeaderMobileProps = {
   }
 }
 
-const headerMobile = ({
+export const HeaderMobile = ({
   startScroll,
   isActive = false,
   setIsActive,
@@ -46,11 +51,11 @@ const headerMobile = ({
   const enableAnnouncementBoxAleph =
     getCurrentEnvironment.featureToggles.enableAnnouncementBoxAleph
 
-  const location = useRouter()
+  const router = useRouter()
 
   const handleClickCityIcon = () => {
     if (!isActive) {
-      sendAmplitudeData(AmplitudeEventName.WEB_CITYSELECTOR_OPEN, {
+      trackCitySelectorOpen({
         Page_Origination_URL: window.location.href,
       })
       emitClickCityIcon()
@@ -60,7 +65,7 @@ const headerMobile = ({
   const handleSearch = () => {
     if (!isActive) {
       showSearchModal()
-      sendAmplitudeData(AmplitudeEventName.WEB_SEARCHBAR_OPEN, {
+      trackSearchbarOpen({
         Page_Origination_URL: window.location.href,
       })
     }
@@ -68,7 +73,7 @@ const headerMobile = ({
 
   const handleToggleBurgerMenu = () => {
     if (!isActive) {
-      sendAmplitudeData(AmplitudeEventName.WEB_BURGER_MENU_OPEN, {
+      trackOpenBurgerMenu({
         Page_Origination_URL: window.location.href,
       })
     }
@@ -76,12 +81,11 @@ const headerMobile = ({
   }
 
   const handleLogoClick = () => {
-    sendAmplitudeData(AmplitudeEventName.WEB_SEVALOGO_CLICK, {
+    trackSevaLogoClick({
       Page_Origination_URL: window.location.href,
     })
   }
 
-  const { asPath } = useRouter()
   return (
     <>
       <header
@@ -92,14 +96,13 @@ const headerMobile = ({
           [styles.hideHeader]: startScroll && !isActive,
           [styles.showHeader]: !startScroll,
           [styles.isActive]: isActive,
-          [styles.showAAnnouncementBox]:
-            enableAnnouncementBoxAleph && isShowAnnouncementBox,
+          [styles.showAAnnouncementBox]: isShowAnnouncementBox,
           [styles.shadow]: style?.withBoxShadow,
-          [styles.homepage]: location.pathname === '/' && !isActive,
+          [styles.homepage]: router.pathname === '/' && !isActive,
         })}
       >
         <div className={styles.wrapperAnnouncementBox}>
-          {asPath !== '/' && enableAnnouncementBoxAleph && (
+          {router.pathname !== '/' && enableAnnouncementBoxAleph && (
             <WebAnnouncementBox
               onCloseAnnouncementBox={setShowAnnouncementBox}
             />
@@ -112,8 +115,8 @@ const headerMobile = ({
                 onClick={handleToggleBurgerMenu}
               />
             </div>
-            <Link href={'/'} onClick={handleLogoClick}>
-              <Image
+            <Link href={rootUrl} onClick={handleLogoClick}>
+              <img
                 src={LogoPrimary}
                 height={30}
                 alt="seva"
@@ -144,5 +147,3 @@ const headerMobile = ({
     </>
   )
 }
-
-export default headerMobile

@@ -1,4 +1,4 @@
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 import { useState } from 'react'
 import {
   decryptValue,

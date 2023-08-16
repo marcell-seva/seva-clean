@@ -1,4 +1,4 @@
-import { Location } from './utils'
+import { FormControlValue, Location } from './utils'
 import { HTMLAttributes } from 'react'
 import { LoanRank, ToastType } from './models'
 import type { ModalProps } from 'antd'
@@ -87,35 +87,6 @@ export interface CarModelBasicInfo {
   brand: string
   model: string
   promoFlag: boolean
-}
-
-export interface VariantDetail {
-  id: string
-  name: string
-  priceValue: number
-  fuelType: string
-  transmission: string
-  engineCapacity: number
-  bodyType: string
-  carSeats: number
-  length: number
-  pdfUrl: string
-  images: string[]
-  newFunnelMainColorImage: string
-  description: {
-    en: string
-    id: string
-  }
-  discount: number
-  rasioBahanBakar: string
-}
-export interface NewFunnelCarVariantDetails {
-  modelDetail: CarModelBasicInfo
-  variantDetail: VariantDetail
-}
-
-export interface CarVariantDetails extends NewFunnelCarVariantDetails {
-  loanDetail: LoanDetail
 }
 
 export interface ToastProps extends HTMLAttributes<HTMLDivElement> {
@@ -255,21 +226,6 @@ export interface AlephArticleCategoryType {
   testid?: string
 }
 
-export interface CustomerInfoSeva {
-  id: number
-  phoneNumber: string
-  fullName: string
-  gender: string
-  dob: string
-  nik: string
-  email: string
-  marital: string
-  registType: string
-  isSales: boolean
-  isCrmCustomer: boolean
-  createdAt?: string
-}
-
 export interface MobileWebTopMenuItemType {
   menuName: string
   menuDesc: string
@@ -305,44 +261,6 @@ export interface CarVariantRecommendation extends CarVariant {
   dpAmount: number
   monthlyInstallment: number
 }
-
-export interface Option<T extends FormControlValue> {
-  label: string
-  value: T
-  testid?: string
-}
-
-export type FormControlValue = string | number | readonly string[] | undefined
-
-export interface OptionWithText<T extends FormControlValue> {
-  text?: string
-  label: string
-  value: T
-  testid?: string
-}
-
-export interface Option<T extends FormControlValue> {
-  label: string
-  value: T
-  testid?: string
-}
-
-export interface OptionWithImage<T extends FormControlValue> {
-  image?: string
-  label: string
-  value: T
-  disabled?: boolean
-  brand?: string
-  testid?: string
-}
-
-export interface CityOtrOption {
-  cityName: string
-  cityCode: string
-  province: string
-  id?: string
-}
-
 export interface TestimonialData {
   pictureName: string
   pictureUrl: string
@@ -503,24 +421,6 @@ export interface Article {
   featured_image: string
 }
 
-export interface AnnouncementBoxDataType {
-  id: number
-  title: string
-  data: {
-    folder: string
-    icon: string
-    thumbnail: {
-      icon: string
-    }
-  }
-  url: string | null
-  description: string
-  textDisplay: string | null
-  backgroundColor: string
-  bannerDesign: string
-  userTarget: string
-}
-
 export interface MinMaxPrice {
   maxPriceValue: number
   minPriceValue: number
@@ -541,4 +441,22 @@ export interface FinancialFunnelWidgetError {
   tenure: string
   age: string
   monthlyIncome: string
+}
+
+export interface PropsBannerCard {
+  title: string
+  subTitle: string
+  icon: JSX.Element
+  onClick?: () => void
+  isWithoutClick?: boolean
+  children?: any
+}
+
+export interface PropsInputDate
+  extends React.ComponentPropsWithoutRef<'input'> {
+  title?: string
+  dataTestId?: string
+  isError?: boolean
+  message?: string
+  showValueAs?: string
 }

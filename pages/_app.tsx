@@ -26,13 +26,14 @@ import 'styles/components/molecules/testimoni-tile.scss'
 import 'styles/components/molecules/advisor-section.scss'
 import 'styles/components/molecules/car-brand-item.scss'
 import 'styles/components/molecules/testimonial.scss'
-import 'styles/components/organism/funnel-background.scss'
+import 'styles/components/organisms/funnel-background.scss'
+import 'styles/components/organisms/landingIA.scss'
 import 'styles/CustomAnimationStyle.css'
+import 'styles/pages/multi-kk.scss'
 
-import { IsSsrMobileContext } from 'context/isSsrMobileContext'
 import { FBPixelStandardEvent, FB_PIXEL_ID } from 'helpers/facebookPixel'
-import { client } from 'const/const'
-import Head from 'next/head'
+import { client } from 'utils/helpers/const'
+import { IsSsrMobileContext } from 'services/context/isSsrMobileContext'
 
 const kanyon = localFont({
   src: '../public/Kanyon-Regular.otf',

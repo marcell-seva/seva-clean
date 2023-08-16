@@ -1,4 +1,4 @@
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'

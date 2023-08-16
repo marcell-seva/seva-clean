@@ -5,9 +5,9 @@ import { Input, Slider } from 'antd'
 import { Currency } from 'utils/handler/calculation'
 import { filterNonDigitCharacters } from 'utils/handler/stringManipulation'
 import { Button } from 'components/atoms'
-import { ButtonSize, ButtonVersion } from 'utils/types/models'
 import elementId from 'utils/helpers/trackerId'
 import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 interface PriceRangeWidgetProps {
   onClose: () => void

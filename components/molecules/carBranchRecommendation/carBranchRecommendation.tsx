@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
-import { carResultsUrl } from 'routes/routes'
+import { carResultsUrl } from 'utils/helpers/routes'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
@@ -27,10 +27,10 @@ import { Peugeot } from 'components/atoms/icon/Peugeot'
 import { CarRecommendationResponse } from 'utils/types/utils'
 import { LocalStorageKey } from 'utils/enum'
 import { convertObjectQuery } from 'utils/handler/convertObjectQuery'
-import { DesktopShimmerCarBrand } from 'components/organism/ContentPage/Credit/Section/DesktopShimmerCarBrand'
+import { DesktopShimmerCarBrand } from 'components/organisms/ContentPage/Credit/Section/DesktopShimmerCarBrand'
 import { ArrowRightNew } from 'components/atoms/icon/ArrowRightNew'
 import { CarBrandItem } from './CarBrandItem'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 import { HomePageDataLocalContext } from 'pages'
 
 const LogoToyota = '/revamp/icon/logo-toyota-min.png'
@@ -55,7 +55,8 @@ export const CarBranchRecommendation = ({
 }: CarBranchRecommendationProps) => {
   const router = useRouter()
   const { dataRecToyota } = useContext(HomePageDataLocalContext)
-  const { patchFunnelQuery, clearFunnelQuery } = useFunnelQueryData()
+  const { patchFunnelQuery, clearQueryFilter: clearFunnelQuery } =
+    useFunnelQueryData()
   const [isCheckedGroups, setIsCheckedBrand] = useState('Toyota')
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const isSmallMobile = useMediaQuery({ query: '(max-width: 380px)' })
@@ -121,7 +122,7 @@ export const CarBranchRecommendation = ({
 
   useEffect(() => {
     getNewFunnelRecommendations({ brand: [isCheckedGroups] }, false, false)
-      .then((response: AxiosResponse<CarRecommendationResponse>) => {
+      .then((response) => {
         handleSuccess(response)
       })
       .catch((e) => {
@@ -129,10 +130,8 @@ export const CarBranchRecommendation = ({
       })
   }, [isCheckedGroups, load])
 
-  const handleSuccess = (
-    response: AxiosResponse<CarRecommendationResponse>,
-  ) => {
-    const tmpData = response.data.carRecommendations.slice(0, 6) || []
+  const handleSuccess = (response: any) => {
+    const tmpData = response.carRecommendations.slice(0, 6) || []
     if (tmpData.length > 0) {
       if (tmpData.length < 5) {
         const tmpData2 = tmpData

@@ -1,42 +1,21 @@
-import { AxiosRequestConfig } from 'axios'
-import { defaultContactFormValue } from 'context/useContactFormData/useContactFormData'
-import endpoints from 'helpers/endpoints'
-import { API } from 'utils/api'
+import { api } from 'services/api'
 import {
   encryptedPrefix,
   decryptValue,
   encryptValue,
 } from 'utils/encryptionUtils'
 import { LocalStorageKey } from 'utils/enum'
+import { defaultContactFormValue } from 'utils/hooks/useContactFormData/useContactFormData'
 
 export const sendSMSGeneration = (
   recaptchaToken: string,
   phoneNumber: string,
-  config?: AxiosRequestConfig,
 ) => {
-  return API.post(
-    endpoints.sendSMS,
-    {
-      phoneNumber: phoneNumber,
-      recaptchaToken,
-    },
-    config,
-  )
+  return api.postSendSMSGeneration(recaptchaToken, phoneNumber)
 }
 
-export const verifyOTPGeneration = (
-  otpCode: string,
-  phoneNumber: string,
-  config?: AxiosRequestConfig,
-) => {
-  return API.post(
-    endpoints.verifyOTP,
-    {
-      code: otpCode,
-      phoneNumber: phoneNumber,
-    },
-    config,
-  )
+export const verifyOTPGeneration = (otpCode: string, phoneNumber: string) => {
+  return api.postVerifyOTPGeneration(otpCode, phoneNumber)
 }
 
 export const getStoredContactFormData = () => {

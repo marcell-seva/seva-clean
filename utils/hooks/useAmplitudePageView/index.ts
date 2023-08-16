@@ -1,4 +1,4 @@
-import { useFunnelFormData } from 'context/funnelFormContext/funnelFormContext'
+import { useFunnelFormData } from 'services/context/funnelFormContext'
 import { useEffect } from 'react'
 
 type CarResultQuery = {

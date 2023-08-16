@@ -1,10 +1,10 @@
-import { PLP } from 'components/organism'
+import { PLP } from 'components/organisms'
 import React, { useEffect } from 'react'
 import axios from 'axios'
 import Head from 'next/head'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
-import { saveLocalStorage } from 'utils/localstorageUtils'
+import { saveLocalStorage } from 'utils/handler/localStorage'
 import { LocalStorageKey } from 'utils/enum'
 import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
 import {
@@ -14,7 +14,7 @@ import {
 } from 'utils/types/context'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { FooterSEOAttributes } from 'utils/types/utils'
-import PLPDesktop from 'components/organism/PLPDesktop'
+import PLPDesktop from 'components/organisms/PLPDesktop'
 
 const NewCarResultPage = ({
   meta,
@@ -132,8 +132,7 @@ export const getServerSideProps: GetServerSideProps<{
     const footerData = fetchFooter.data.data
 
     if (!priceRangeGroup) {
-      const minmax = await getMinMaxPrice({})
-      const minmaxPriceData = minmax.data
+      const minmaxPriceData = await getMinMaxPrice()
       meta.MinMaxPrice = {
         minPriceValue: minmaxPriceData.minPriceValue,
         maxPriceValue: minmaxPriceData.maxPriceValue,
@@ -161,8 +160,8 @@ export const getServerSideProps: GetServerSideProps<{
       getNewFunnelRecommendations({ ...queryParam, brand: [] }),
     ])
 
-    const recommendation = funnel.data
-    const alternativeData = alternative.data
+    const recommendation = funnel
+    const alternativeData = alternative
 
     if (metaData && metaData.length > 0) {
       meta.title = metaData[0].attributes.meta_title

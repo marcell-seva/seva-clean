@@ -1,4 +1,3 @@
-import { NewFunnelLoanRank } from 'utils/models/models'
 import { TrackingEventName } from './eventTypes'
 import {
   LoanCalculatorParams,
@@ -6,6 +5,7 @@ import {
 } from './newFunnelEventTracking'
 import { logAmplitudeEvent } from 'services/amplitude'
 import { LoanRating, getLoanRating } from './trackingEvents'
+import { NewFunnelLoanRank } from 'utils/types/models'
 
 type LoanCalcRecommendationParams = {
   index: number

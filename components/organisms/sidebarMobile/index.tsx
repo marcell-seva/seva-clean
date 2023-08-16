@@ -1,25 +1,31 @@
-import React, { useContext, useEffect } from 'react'
-import styles from 'styles/components/organisms/sidebarMobile.module.scss'
-import clsx from 'clsx'
+import React, { useEffect } from 'react'
 import { Avatar, Button } from 'components/atoms'
-import { ButtonSize, ButtonVersion, LocalStorageKey } from 'utils/types/models'
+import { MenuList } from 'components/molecules'
+import styles from '../../../styles/components/organisms/sidebarMobile.module.scss'
+import { LoginSevaUrl } from 'utils/helpers/routes'
+import { getMobileWebTopMenu } from 'services/menu'
+import { getToken } from 'utils/handler/auth'
+import {
+  trackLoginButtonClick,
+  trackProfileAkunSayaClick,
+} from 'helpers/amplitude/seva20Tracking'
+import { savePageBeforeLogin } from 'utils/loginUtils'
+import clsx from 'clsx'
 import { saveLocalStorage } from 'utils/handler/localStorage'
-import { sendAmplitudeData } from 'services/amplitude'
-import { AmplitudeEventName } from 'services/amplitude/types'
-import { CustomerInfoSeva } from 'utils/types/props'
-import { MenuList } from 'components/molecules/menuList'
-import { separatePhoneNumber } from 'utils/handler/separatePhoneNumber'
 import { useRouter } from 'next/router'
-import { api } from 'services/api'
-import { getToken, savePageBeforeLogin } from 'utils/handler/auth'
-import { UtilsContext, UtilsContextType } from 'services/context'
+import { LocalStorageKey } from 'utils/enum'
+import { separatePhoneNumber } from 'utils/handler/separatePhoneNumber'
+import { fetchCustomerDetails } from 'utils/httpUtils/customerUtils'
+import { CustomerInfoSeva } from 'utils/types/utils'
+import { useUtils } from 'services/context/utilsContext'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 type sidebarMobileProps = {
   showSidebar?: boolean
   isShowAnnouncementBox?: boolean | null
 }
 
-const SidebarMobile = ({
+const sidebarMobile = ({
   showSidebar,
   isShowAnnouncementBox,
 }: sidebarMobileProps): JSX.Element => {
@@ -28,9 +34,7 @@ const SidebarMobile = ({
   const [customerDetail, setCustomerDetail] = React.useState<CustomerInfoSeva>()
   const router = useRouter()
 
-  const { mobileWebTopMenus, saveMobileWebTopMenus } = useContext(
-    UtilsContext,
-  ) as UtilsContextType
+  const { mobileWebTopMenus, saveMobileWebTopMenus } = useUtils()
 
   const setIconNameCustomer = (payload: string) => {
     if (payload.indexOf(' ') > 0) {
@@ -45,7 +49,7 @@ const SidebarMobile = ({
   }
 
   const fetchMobileWebTopMenu = async () => {
-    const response: any = await api.getMobileHeaderMenu()
+    const response = await getMobileWebTopMenu()
     if (response.data) {
       saveMobileWebTopMenus(response.data)
     }
@@ -53,7 +57,7 @@ const SidebarMobile = ({
 
   const getCustomerInfoData = async () => {
     try {
-      const response: any = await api.getUserInfo()
+      const response = await fetchCustomerDetails()
       const customerDetails = response[0]
       setCustomerDetail(customerDetails)
       setIconNameCustomer(customerDetails.fullName)
@@ -79,17 +83,15 @@ const SidebarMobile = ({
   }, [customerDetail])
 
   const handleLogin = () => {
-    sendAmplitudeData(AmplitudeEventName.WEB_LOGIN_BUTTON_CLICK, {
+    trackLoginButtonClick({
       Page_Origination_URL: window.location.href,
     })
     savePageBeforeLogin(window.location.pathname)
-    if (typeof window !== 'undefined') {
-      window.location.href = 'seva.id/masuk-akun'
-    }
+    router.push(LoginSevaUrl)
   }
 
   const handleClickMyAccount = (url: string) => {
-    sendAmplitudeData(AmplitudeEventName.WEB_PROFILE_AKUN_SAYA_CLICK, {
+    trackProfileAkunSayaClick({
       Page_Origination_URL: window.location.href,
     })
     router.push(url)
@@ -105,24 +107,51 @@ const SidebarMobile = ({
       })}
     >
       {isLogin ? (
-        <div
-          onClick={() => {
-            saveLocalStorage(
-              LocalStorageKey.PageBeforeProfile,
-              window.location.pathname,
-            )
-            handleClickMyAccount('/akun/profil')
-          }}
-          className={styles.profileWrapper}
-        >
-          <Avatar title={nameIcon} />
-          <div className={styles.profileContent}>
-            <h2 className={styles.profileName}>{customerDetail?.fullName}</h2>
-            <h2 className={styles.profileNumber}>
-              {phoneNumber?.code} | {phoneNumber?.number}
-            </h2>
-          </div>
-        </div>
+        <>
+          <a
+            onClick={() => {
+              saveLocalStorage(
+                LocalStorageKey.PageBeforeProfile,
+                window.location.pathname,
+              )
+              handleClickMyAccount('/akun/profil')
+            }}
+            className={styles.profileWrapper}
+          >
+            <Avatar title={nameIcon} />
+
+            <div className={styles.profileContent}>
+              <h2 className={styles.profileName}>{customerDetail?.fullName}</h2>
+              <h2 className={styles.profileNumber}>
+                {phoneNumber?.code} | {phoneNumber?.number}
+              </h2>
+            </div>
+          </a>
+
+          {/* TODO component for credit, maybe used later */}
+          {/* <div className={styles.creditInfoWrapper}>
+            <div className={styles.creditCircle} />
+            <div className={styles.creditInfoHeader}>
+              <h2 className={styles.creditInfoHeading}>
+                Lanjutkan Kualifikasi Kreditmu
+              </h2>
+              <IconChevronRight width={20} height={20} color="white" />
+            </div>
+
+            <div className={styles.creditInfoDetailWrapper}>
+              <img
+                className={styles.creditInfoPicture}
+                src="https://imageio.forbes.com/specials-images/imageserve/5d35eacaf1176b0008974b54/0x0.jpg?format=jpg&crop=4560,2565,x790,y784,safe&width=1200"
+                alt="car"
+              />
+
+              <div>
+                <h2 className={styles.creditInfoTitle}>Toyota Raize</h2>
+                <h2 className={styles.creditInfoPrice}>Rp247.300.000</h2>
+              </div>
+            </div>
+          </div> */}
+        </>
       ) : (
         <Button
           version={ButtonVersion.Secondary}
@@ -138,4 +167,4 @@ const SidebarMobile = ({
   )
 }
 
-export default SidebarMobile
+export default sidebarMobile

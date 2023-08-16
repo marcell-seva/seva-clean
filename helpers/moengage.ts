@@ -1,4 +1,4 @@
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 
 export const MoengageEventName = {
   view_homepage: 'view_homepage',

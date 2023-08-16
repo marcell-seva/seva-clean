@@ -1,9 +1,11 @@
 import React, { ButtonHTMLAttributes } from 'react'
 import styles from 'styles/components/atoms/button.module.scss'
+import { IconLoading } from '../icon'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   version: ButtonVersion
   size: ButtonSize
+  loading?: boolean
   secondaryClassName?: any
 }
 
@@ -26,6 +28,7 @@ const Button = ({
   size = ButtonSize.Big,
   children,
   secondaryClassName,
+  loading,
   ...props
 }: ButtonProps) => {
   const buttonVersion = () => {
@@ -55,7 +58,13 @@ const Button = ({
       className={`${buttonVersion()} ${buttonSize} ${secondaryClassName}`}
       {...props}
     >
-      {children}
+      {loading ? (
+        <div className={`${styles.iconLoading} rotateAnimation`}>
+          <IconLoading width={14} height={14} color="#FFFFFF" />
+        </div>
+      ) : (
+        children
+      )}
     </button>
   )
 }

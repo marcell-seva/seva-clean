@@ -7,11 +7,6 @@ export enum LanguageCode {
   id = 'id',
 }
 
-export enum LoanRank {
-  Green = 'Green',
-  Red = 'Red',
-}
-
 export enum Environment {
   Localhost = 'localhost',
   Development = 'development',
@@ -19,27 +14,9 @@ export enum Environment {
   Production = 'production',
 }
 
-export enum ButtonVersion {
-  Secondary = 'Secondary',
-  SecondaryDark = 'SecondaryDark',
-  PrimaryDarkBlue = 'PrimaryDarkBlue',
-  Disable = 'Disable',
-  Default = 'Default',
-}
-
-export enum ButtonSize {
-  Big = 'Big',
-  Small = 'Small',
-}
-
 export enum InputVersion {
   Default = 'Default',
   Mobile = 'Mobile',
-}
-
-export enum MinAmount {
-  downPaymentAmount = 20000000,
-  monthlyIncome = 3000000,
 }
 
 export enum PaymentType {
@@ -111,10 +88,18 @@ export enum LocalStorageKey {
   LastTimeSelectCity = 'lastTimeSelectCity',
   resultPreApproval = 'resultPreApproval',
   PageBeforeProfile = 'pageBeforeProfile',
+  CreditQualificationResult = 'creditQualificationResult',
+  CreditQualificationLeadPayload = 'creditQualificationLeadPayload',
+  SelectablePromo = 'selectablePromo',
+  QualifcationCredit = 'qualification_credit',
+  ChangeKtp = 'change_ktp',
+  FormKtp = 'formKtp',
+  PreApprovalResult = 'preApprovalResult',
 }
 
 export enum SessionStorageKey {
   lastOtpSent = 'lastOtpSent',
+  OCRKTP = 'OCRKTP',
   PreviouslyViewed = 'previouslyViewed',
   CustomerId = 'customerId',
   RegisteredName = 'registeredName',
@@ -142,6 +127,13 @@ export enum SessionStorageKey {
   PAAmbassadorUrlId = 'PAAmbassadorUrlId',
   LoanRankFromPLP = 'LoanRankFromPLP',
   KalkulatorKreditForm = 'KalkulatorKreditForm',
+  DataUploadKTP = 'DataUploadKTP',
+  DataUploadKTPSpouse = 'DataUploadKTPSpouse',
+  MainKtpDomicileOptionData = 'mainKtpDomicileOptionData',
+  ReviewedKtpData = 'reviewedKtpData',
+  MainKtpType = 'mainKtpType',
+  KTPUploaded = 'KTPUploaded',
+  HasOpenedInsuranceToast = 'hasOpenedInsuranceToast',
 }
 
 export enum HTTPResponseStatusCode {
@@ -188,4 +180,40 @@ export enum AgeGroup {
   'From28to34' = '28-34',
   'From35to50' = '35-50',
   'OlderThan50' = '>51',
+}
+
+export enum DocumentType {
+  KTP = 'KTP',
+}
+
+export enum DocumentFileNameKey {
+  Self = 'self',
+}
+
+export enum FrameType {
+  Capture = 'Capture',
+  Preview = 'Preview',
+  Crop = 'Crop',
+}
+
+export const frameRatios = {
+  [DocumentType.KTP]: {
+    [FrameType.Capture]: 203 / 328,
+    [FrameType.Crop]: 203 / 328,
+    [FrameType.Preview]: 203 / 328,
+  },
+}
+
+export const frameMargins = {
+  [DocumentType.KTP]: {
+    [FrameType.Capture]: [0, 16],
+    [FrameType.Crop]: [0, 16],
+    [FrameType.Preview]: [0, 16],
+  },
+}
+
+export enum UploadDataKey {
+  File = 'file',
+  FileKey = 'fileKey',
+  FileType = 'fileType',
 }

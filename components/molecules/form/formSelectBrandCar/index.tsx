@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from '../../../../styles/components/molecules/form/formSelectBrandCar.module.scss'
 import { Space } from 'antd'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
 
 const LogoToyota = '/revamp/icon/logo-toyota.webp'

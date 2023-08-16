@@ -5,9 +5,9 @@ import { useMediaQuery } from 'react-responsive'
 import Fuse from 'fuse.js'
 import { useModal } from 'components/atoms/ModalOld/Modal'
 import { CityOtrOption } from 'utils/types'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { LocalStorageKey } from 'utils/models/models'
-import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { LocalStorageKey } from 'utils/enum'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
 import {
   getCity,
@@ -26,7 +26,7 @@ import {
   TextMediumRegularStyle,
 } from 'components/atoms/typography/TextMediumRegular'
 import { SearchInput } from 'components/atoms/searchInput/oldSearchInput'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 
 interface CityOptions {
   value: string
@@ -72,10 +72,10 @@ export const useCitySelectorModal = () => {
       const data: string | null = getLocalStorage(LocalStorageKey.citySelector)
       if (data === null) {
         getCities().then((res) => {
-          setCityListApi(res.data)
-          const options = getCityListOption(res.data)
+          setCityListApi(res)
+          const options = getCityListOption(res)
           setCityListFull(options)
-          setCitiesData(res.data)
+          setCitiesData(res)
         })
       } else {
         const decryptedValue: any = JSON.parse(decryptValue(data))

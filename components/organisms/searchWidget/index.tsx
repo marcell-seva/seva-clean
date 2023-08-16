@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios'
 import clsx from 'clsx'
 import React, {
   isValidElement,
@@ -10,12 +9,7 @@ import React, {
   useState,
 } from 'react'
 import styles from 'styles/components/organisms/searchWidget.module.scss'
-import {
-  ButtonSize,
-  ButtonVersion,
-  LocalStorageKey,
-  MinAmount,
-} from 'utils/types/models'
+import { MinAmount } from 'utils/types/models'
 import urls from 'utils/helpers/url'
 import elementId from 'utils/helpers/trackerId'
 import { colors } from 'utils/helpers/style/colors'
@@ -31,7 +25,7 @@ import {
   IconMoney,
   IconPlus,
   IconTenure,
-} from 'components/atoms/icons'
+} from 'components/atoms/icon'
 import { FinancialFunnelWidgetError, FunnelWidget } from 'utils/types/props'
 import {
   ageOptions,
@@ -48,18 +42,13 @@ import {
 } from 'components/molecules'
 import { useRouter } from 'next/router'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import {
-  FinancialQueryContext,
-  FinancialQueryContextType,
-  FunnelQueryContext,
-  FunnelQueryContextType,
-  SearchWidgetContext,
-  SearchWidgetContextType,
-} from 'services/context'
+import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
 import { api } from 'services/api'
 import { getCity } from 'utils/hooks/useGetCity'
-import { useFinancialQueryData } from 'context/financialQueryContext/financialQueryContext'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { LocalStorageKey } from 'utils/enum'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 export const initDataWidget = {
   downPaymentAmount: '',

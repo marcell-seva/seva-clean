@@ -3,8 +3,8 @@ import { setAmplitudeUserId } from '../amplitude'
 import { api } from '../api'
 import { User, Token, Filter } from 'utils/types'
 import { encryptValue } from 'utils/encryptionUtils'
-import { saveLocalStorage } from 'utils/localstorageUtils'
-import { LocalStorageKey } from 'utils/models/models'
+import { saveLocalStorage } from 'utils/handler/localStorage'
+import { LocalStorageKey } from 'utils/enum'
 
 export type AuthContextType = {
   isLoggedIn: boolean

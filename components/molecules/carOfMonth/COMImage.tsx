@@ -1,4 +1,4 @@
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 import { trackCarOfTheMonthBrandClick } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
 import React, { useState, useEffect, useRef } from 'react'

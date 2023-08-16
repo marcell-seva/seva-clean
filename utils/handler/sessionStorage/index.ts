@@ -1,4 +1,4 @@
-import { SessionStorageKey } from 'utils/types/models'
+import { SessionStorageKey } from 'utils/enum'
 
 export const saveSessionStorage = (key: SessionStorageKey, data: string) => {
   if (window) sessionStorage.setItem(key, data)

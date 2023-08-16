@@ -1,10 +1,46 @@
 @import '../../abstract/colors';
 @import '../../abstract/mixins';
 
+@mixin greenBorder {
+  border: 2px solid #{$secondary-green};
+}
+
+@mixin redBorder {
+  border: 2px solid #{$secondary-brick-red};
+}
+
 .container {
   width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.upperInfo {
+  padding: 4px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 8px 8px 0 0;
+
+  font-family: 'OpenSansBold';
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16px;
+  color: #{$primary-white};
+}
+
+.upperInfoGreen {
+  @include greenBorder();
+  background: #{$secondary-green};
+  border-bottom: none;
+}
+
+.upperInfoRed {
+  @include redBorder();
+  background: #{$secondary-brick-red};
+  border-bottom: none;
 }
 
 .detailSection {
@@ -20,20 +56,21 @@
 }
 
 .detailSectionGreen {
+  @include greenBorder();
   background: #{$shades-green-5};
-  border: 2px solid #{$secondary-green};
   border-bottom: none;
-  border-radius: 8px 8px 0px 0px;
+  border-radius: 0;
 }
 
 .detailSectionRed {
+  @include redBorder();
   background: #{$shades-brick-red-5};
-  border: 2px solid #{$secondary-brick-red};
   border-bottom: none;
-  border-radius: 8px 8px 0px 0px;
+  border-radius: 0;
 }
 
 .rankTenureInterestWrapper {
+  flex: 1;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -43,8 +80,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
 }
 
@@ -63,7 +100,10 @@
 
 .priceTextWrapper {
   flex: 1;
+  min-height: 34px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .priceText {
@@ -76,6 +116,16 @@
   mix-blend-mode: normal;
 }
 
+.oldPriceText {
+  color: #{$shades-grey-75};
+  font-size: 9px;
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  text-decoration: line-through;
+}
+
 .interestText {
   font-family: 'OpenSans';
   font-style: normal;
@@ -86,34 +136,106 @@
   mix-blend-mode: normal;
 }
 
-.bottomInfo {
-  flex: 1;
-  padding: 4px 0px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0px 0px 8px 8px;
+.separator {
+  width: 100%;
+  height: 1px;
+  background: #{$shades-grey-10};
 }
 
-.hideBottomInfo {
+.separatorGreen {
+  @include greenBorder();
+  border-top: none;
+  border-bottom: none;
+}
+
+.separatorRed {
+  @include redBorder();
+  border-top: none;
+  border-bottom: none;
+}
+
+.bottomInfo {
+  flex: 1;
+  position: relative;
+  padding: 10px 16px 14px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0px 0px 8px 8px;
+  cursor: pointer;
+}
+
+.hideComponent {
   display: none;
 }
 
+.bottomInfoBestPromo {
+  padding: 8px 16px 13px 0;
+  justify-content: flex-end;
+  gap: 9px;
+}
+
 .bottomInfoGreen {
-  background: #{$secondary-green};
+  @include greenBorder();
+  background: #{$shades-green-5};
+  border-top: none;
 }
 
 .bottomInfoRed {
-  background: #{$secondary-brick-red};
+  @include redBorder();
+  background: #{$shades-brick-red-5};
+  border-top: none;
 }
 
-.bottomIndoText {
-  font-family: 'OpenSansBold';
-  font-style: normal;
-  font-weight: 700;
+.bottomSection {
+  display: flex;
+  align-items: center;
+}
+
+.bestPromoBadgeSmallSquare {
+  position: absolute;
+  left: -8px;
+  top: 3.5px;
+  width: 6px;
+  height: 8px;
+  border-radius: 3px 0px 0px 0px;
+  background: #{$primary-dark-blue};
+}
+
+.bestPromoBadge {
+  position: absolute;
+  left: -8px;
+  top: 7px;
+  border-radius: 0px 5px 5px 5px;
+  background: #{$secondary-blue};
+  padding: 3px 8px 5px 9px;
+
+  color: #{$primary-white};
   font-size: 11px;
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 600;
   line-height: 16px;
-  text-align: center;
-  color: #ffffff;
-  mix-blend-mode: normal;
+}
+
+.bestPromoCounter {
+  @media (min-width: 400px) {
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+}
+
+.checkOtherPromo {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.secondaryGreenColor {
+  color: #{$secondary-green};
+}
+
+.secondaryRedColor {
+  color: #{$secondary-brick-red};
 }

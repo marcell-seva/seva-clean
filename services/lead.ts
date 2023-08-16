@@ -1,16 +1,15 @@
+import { api } from 'services/api'
 import { AxiosResponse } from 'axios'
-import { defaultCSANumber } from 'const/const'
+import { defaultCSANumber } from 'utils/helpers/const'
+import urls from 'helpers/urls'
+import { getLocalStorage } from 'utils/handler/localStorage'
+import { UTMTagsData } from 'utils/types/utils'
+import { getStoredContactFormData } from './auth'
+import { ContactType, LocalStorageKey } from 'utils/enum'
 import {
   CountryCodePlusSign,
   defaultContactFormValue,
-} from 'context/useContactFormData/useContactFormData'
-import endpoints from 'helpers/endpoints'
-import urls from 'helpers/urls'
-import { API } from 'utils/api'
-import { getLocalStorage } from 'utils/localstorageUtils'
-import { UTMTagsData } from 'utils/types/utils'
-import { getStoredContactFormData } from './auth'
-import { ContactType, LocalStorageKey } from 'utils/models/models'
+} from 'utils/hooks/useContactFormData/useContactFormData'
 
 export enum UnverifiedLeadSubCategory {
   SEVA_NEW_CAR_LP_LEADS_FORM = 'SEVNCLFH',
@@ -55,16 +54,14 @@ export interface CreateUnverifiedLeadRequestNew {
 }
 
 const getCustomerAssistantDetails = (phoneNumber: string) => {
-  return API.post(endpoints.customerAssistantDetails, {
-    phoneNumber,
-  })
+  return api.postCustomerAssistantDetails(phoneNumber)
 }
 
 export const createUnverifiedLeadNew = (
   requestBody: CreateUnverifiedLeadRequestNew,
 ) => {
   const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
-  return API.post(endpoints.unverifiedLeadNew, {
+  return api.postUnverifiedLeadsNew({
     ...requestBody,
     utmSource: UTMTags?.utm_source,
     utmMedium: UTMTags?.utm_medium,

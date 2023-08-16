@@ -11,8 +11,8 @@
 // import { SimpleCarVariantDetail } from 'types/types'
 // import { useLocalStorage } from 'hooks/useLocalStorage/useLocalStorage'
 // import { DownPaymentType, FunnelQueryKey, LocalStorageKey } from 'models/models'
-// import { carResultsUrl } from 'routes/routes'
-// import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+// import { carResultsUrl } from 'const/routes'
+// import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 // import { ModalBodyCarNotAvailable } from 'components/ModalBodyWrapper/ModalBodyCarNotAvailable'
 
 // export const usePreApprovalCarNotAvalable = () => {

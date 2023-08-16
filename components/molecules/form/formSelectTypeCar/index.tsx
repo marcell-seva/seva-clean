@@ -8,7 +8,7 @@ import {
   IconHatchback,
   IconSport,
 } from '../../../atoms'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
 
 export interface FilterMobileProps {

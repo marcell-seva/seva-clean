@@ -1,10 +1,10 @@
-import { LanguageCode, SessionStorageKey } from 'utils/models/models'
+import { LanguageCode, SessionStorageKey } from 'utils/enum'
 // import { getNewFunnelAllRecommendations } from 'services/newFunnel'
 // import { getCarModelDetailsById } from 'services/recommendations'
 import { CarRecommendation, CarVariantRecommendation } from 'utils/types'
 import { getModelPriceRange } from './carModelUtils/carModelUtils'
-import { getSessionStorage, saveSessionStorage } from './sessionstorageUtils'
 import { api } from 'services/api'
+import { getSessionStorage, saveSessionStorage } from './handler/sessionStorage'
 
 // export const getVariantId = async (model: string, variant: string) => {
 //   const response = await getNewFunnelAllRecommendations()

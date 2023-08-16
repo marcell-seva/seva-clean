@@ -4,16 +4,13 @@ import {
   IndonesiaCountryCode,
 } from 'utils/hooks/useContactFormData/useContactFormData'
 import { useTranslation } from 'react-i18next'
-import {
-  useContextContactFormData,
-  useContextContactFormPatch,
-} from 'context/contactFormContext/contactFormContext'
+import { useContextForm } from 'services/context/formContext'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
-import { ContactFormKey, LocalStorageKey } from 'utils/models/models'
-import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
-import { getToken } from 'utils/api'
+import { LocalStorageKey } from 'utils/enum'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
+import { getToken } from 'utils/handler/auth'
 import { getCustomerInfoSeva } from 'services/customer'
 import elementId from 'helpers/elementIds'
 import { FormLabel } from './FormComponents'
@@ -22,6 +19,7 @@ import { Input } from 'components/atoms/OldInput/Input'
 import { colors } from 'styles/colors'
 import { LinkLabelMediumBoldStyle } from 'utils/typography/LinkLabelMediumBold'
 import { formConfig } from './formConfig'
+import { ContactFormKey } from 'utils/types/models'
 
 const FlagIndonesia = '/revamp/illustration/FlagIndonesiaNew.png'
 
@@ -68,16 +66,15 @@ export const GlobalFormPhoneNumber = ({
   disableAfterAutofillLoggedInUser = false,
 }: FormPhoneNumberProps) => {
   const { t } = useTranslation()
-  const contactFormData = useContextContactFormData()
+  const { formContactValue, patchFormContactValue } = useContextForm()
   const savedPhoneNumber =
-    contactFormData.phoneNumber?.replace(
+    formContactValue.phoneNumber?.replace(
       CountryCodePlusSign + IndonesiaCountryCode,
       '',
     ) || ''
   const [phoneNumber, setPhoneNumber] = useState('')
 
   const [nameForm, setNameForm] = useState('')
-  const patchContactFormValue = useContextContactFormPatch()
   const [isDisablePhoneNumberField, setIsDisablePhoneNumberField] =
     useState(false)
 
@@ -85,7 +82,7 @@ export const GlobalFormPhoneNumber = ({
     if (event.target.value[0] != '0') {
       const phoneNumberTemp = filterNonDigitCharacters(event.target.value)
       setPhoneNumber(phoneNumberTemp)
-      patchContactFormValue({
+      patchFormContactValue({
         [ContactFormKey.PhoneNumberValid]: `${CountryCodePlusSign}${IndonesiaCountryCode}${phoneNumberTemp}`,
       })
     }

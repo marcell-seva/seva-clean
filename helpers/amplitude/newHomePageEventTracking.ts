@@ -1,10 +1,5 @@
 import { TrackingEventName } from './eventTypes'
 import { logAmplitudeEvent } from 'services/amplitude'
-import {
-  AdVariation,
-  SupportedBrand,
-  VariantBodyType,
-} from 'utils/models/models'
 
 export enum NewHomePageVersion {
   standard = 'standard',

@@ -3,7 +3,7 @@ import { colors } from 'styles/colors'
 import styled from 'styled-components'
 import { IconClose } from 'components/atoms'
 import { useModal } from 'components/atoms/ModalOld/Modal'
-import { PromoList } from 'components/organism/ContentPage/Price/PromoList/PromoList'
+import { PromoList } from 'components/organisms/ContentPage/Price/PromoList/PromoList'
 
 interface Props {
   onCloseModal?: () => void

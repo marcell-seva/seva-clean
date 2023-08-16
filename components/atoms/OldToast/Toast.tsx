@@ -3,16 +3,10 @@ import styled, { css, keyframes } from 'styled-components'
 import { colors } from 'styles/colors'
 import { IconClose } from 'components/atoms'
 import { createPortal } from 'react-dom'
-import { preApprovalQuestionFlowUrl } from 'routes/routes'
+import { preApprovalQuestionFlowUrl } from 'utils/helpers/routes'
 import { useRouter } from 'next/router'
 import { isMobileDevice } from 'utils/window'
-
-export enum ToastType {
-  Error = 'Error',
-  Success = 'Success',
-  Info = 'Info',
-  ErrorPreApproval = 'ErrorPreApproval',
-}
+import { ToastType } from 'utils/types/models'
 
 interface ToastProps extends HTMLAttributes<HTMLDivElement> {
   type: ToastType

@@ -1,6 +1,6 @@
 import React from 'react'
 import { FloatButton, FloatButtonProps } from 'antd'
-import { IconWhatsapp } from 'components/atoms/icons'
+import { IconWhatsapp } from 'components/atoms/icon'
 
 type Props = Omit<FloatButtonProps, 'icon'>
 

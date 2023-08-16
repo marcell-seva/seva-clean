@@ -1,4 +1,4 @@
-import { LocalStorageKey } from 'utils/types/models'
+import { LocalStorageKey } from 'utils/enum'
 
 export const getOtpIsSent = () => {
   return localStorage.getItem(LocalStorageKey.OtpIsSent)

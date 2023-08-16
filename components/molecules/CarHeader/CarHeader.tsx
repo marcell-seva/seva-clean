@@ -1,14 +1,14 @@
 import { BackIcon, IconShare } from 'components/atoms'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import React, { useContext } from 'react'
-import { carResultsUrl } from 'routes/routes'
+import { carResultsUrl } from 'utils/helpers/routes'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import Img from 'react-cool-img'
 import { TitleHeader } from '../TitleHeader/TitleHeader'
-import { HeaderAndContentProps } from 'components/organism/HeaderAndContent/HeaderAndContent'
+import { HeaderAndContentProps } from 'components/organisms/HeaderAndContent/HeaderAndContent'
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { useCar } from 'services/context/carContext'
 
 export interface CarHeaderProps extends HeaderAndContentProps {
   onClickShare: () => void
@@ -21,7 +21,7 @@ export function CarHeader({
   ...props
 }: CarHeaderProps) {
   const router = useRouter()
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
   const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
   const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
 

@@ -1,5 +1,4 @@
-import { API } from '../utils/api'
-import environments from 'helpers/environments'
+import { api } from 'services/api'
 
 export interface CreateProbeTrackRequest {
   utmCampaign: string
@@ -24,5 +23,5 @@ export interface CreateProbeTrackRequest {
 }
 
 export const createProbeTrack = (requestBody: CreateProbeTrackRequest) => {
-  return API.post(environments.probe, { ...requestBody })
+  return api.postProbeTrack(requestBody)
 }

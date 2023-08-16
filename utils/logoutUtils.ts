@@ -1,4 +1,4 @@
-import { logoutModalId } from '../const/const'
+import { logoutModalId } from '../utils/helpers/const'
 // import { setAmplitudeUserId } from 'helpers/amplitude'
 import { destroySessionMoEngage } from 'helpers/moengage'
 import { LocalStorageKey, SessionStorageKey } from './enum'
