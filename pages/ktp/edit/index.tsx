@@ -42,6 +42,8 @@ import { checkNIKAvailable } from 'services/customer'
 import { trackProfileSaveKtpChanges } from 'helpers/amplitude/seva20Tracking'
 import PopupError from 'components/organisms/popupError'
 import { getLocalStorage } from 'utils/handler/localStorage'
+import Seo from 'components/atoms/seo'
+import { defaultSeoImage } from 'utils/helpers/const'
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
@@ -342,6 +344,11 @@ const KtpForm = () => {
 
   return (
     <>
+      <Seo
+        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
+        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
+        image={defaultSeoImage}
+      />
       <div className={styles.form_header}>
         <div className={styles.back__button} onClick={() => router.back()}>
           <IconChevronLeft width={24} height={24} color="#13131B" />

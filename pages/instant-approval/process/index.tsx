@@ -37,6 +37,8 @@ import { Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { CitySelectorModal } from 'components/molecules'
 import { getLocalStorage } from 'utils/handler/localStorage'
+import Seo from 'components/atoms/seo'
+import { defaultSeoImage } from 'utils/helpers/const'
 
 const KualifikasiKreditImage = '/revamp/illustration/kualifikasi-kredit.webp'
 const PlayStoreImage = '/revamp/images/profile/google-play.webp'
@@ -268,6 +270,11 @@ const CreditQualificationProcess = () => {
 
   return (
     <>
+      <Seo
+        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
+        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
+        image={defaultSeoImage}
+      />
       <div className={styles.headerWrapper}>
         <HeaderMobile
           isActive={showSidebar}

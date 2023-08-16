@@ -51,6 +51,8 @@ import { LandingIA } from 'components/organisms/landingIA'
 import { useBadgePromo } from 'utils/hooks/usebadgePromo'
 import { FormLCState } from 'pages/kalkulator-kredit/[[...slug]]'
 import { isIsoDateFormat } from 'utils/handler/regex'
+import Seo from 'components/atoms/seo'
+import { defaultSeoImage } from 'utils/helpers/const'
 
 const CreditQualificationReviewPage = () => {
   useProtectPage()
@@ -302,6 +304,11 @@ const CreditQualificationReviewPage = () => {
 
   return (
     <>
+      <Seo
+        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
+        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
+        image={defaultSeoImage}
+      />
       <HeaderCreditClasificationMobile />
       <div className={styles.progressBar}>
         <Progress

@@ -66,6 +66,8 @@ import { MobileView } from 'components/atoms/mobileView'
 import { DatePicker } from 'components/atoms/inputDate'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { NotFoundMultiUnit } from 'components/organisms/NotFoundMultiUnitModal'
+import Seo from 'components/atoms/seo'
+import { defaultSeoImage } from 'utils/helpers/const'
 
 const initErrorFinancial = {
   downPaymentAmount: '' as any,
@@ -432,6 +434,11 @@ const MultiKK = () => {
 
   return (
     <>
+      <Seo
+        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
+        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
+        image={defaultSeoImage}
+      />
       <HeaderMobile
         isActive={isActive}
         setIsActive={setIsActive}

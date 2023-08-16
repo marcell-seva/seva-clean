@@ -55,6 +55,8 @@ import { useBadgePromo } from 'utils/hooks/usebadgePromo'
 import { monthId } from 'utils/handler/date'
 import { sendInstantApproval } from 'services/KK'
 import HeaderCreditClasificationMobile from 'components/organisms/headerCreditClasificationMobile'
+import Seo from 'components/atoms/seo'
+import { defaultSeoImage } from 'utils/helpers/const'
 
 const CreditQualificationReviewPage = () => {
   useProtectPage()
@@ -332,6 +334,11 @@ const CreditQualificationReviewPage = () => {
 
   return (
     <>
+      <Seo
+        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
+        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
+        image={defaultSeoImage}
+      />
       <HeaderCreditClasificationMobile />
       <div className={styles.progressBar}>
         <Progress

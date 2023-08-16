@@ -1,13 +1,12 @@
 /* eslint-disable react/no-children-prop */
 import Seo from 'components/atoms/seo'
 import { CreditQualificationSuccess } from 'components/organisms/resultPages/success'
-import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
 import { defaultSeoImage } from 'utils/helpers/const'
-import { useFetch } from 'utils/hooks/useFetch/useFetch'
 import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
-import { MetaTagApiResponse } from 'utils/types/utils'
 import styles from 'styles/pages/kualifikasi-kredit-result.module.scss'
+import { InferGetServerSidePropsType } from 'next'
+import { api } from 'services/api'
 
 export interface Params {
   brand: string
@@ -15,16 +14,10 @@ export interface Params {
   tab: string
 }
 
-const CreditQualificationPageSuccess = () => {
+const CreditQualificationPageSuccess = ({
+  meta: dataHead,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   useProtectPage()
-  const metaTagBaseApi =
-    'https://api.sslpots.com/api/meta-seos/?filters[master_model][model_code][$contains]='
-  const router = useRouter()
-  // TODO @robby
-  const model = router.query.model as string
-  const { data: dataHead } = useFetch<MetaTagApiResponse[]>(
-    metaTagBaseApi + model?.replaceAll('-', ''),
-  )
 
   const head = useMemo(() => {
     const title =
@@ -54,3 +47,14 @@ const CreditQualificationPageSuccess = () => {
 }
 
 export default CreditQualificationPageSuccess
+
+export const getServerSideProps = async (ctx: any) => {
+  const model = (ctx.query.model as string)?.replaceAll('-', '')
+
+  try {
+    const [meta]: any = await Promise.all([api.getMetaTagData(model as string)])
+    return { props: { meta: meta.data } }
+  } catch (e) {
+    return { props: { meta: {} } }
+  }
+}

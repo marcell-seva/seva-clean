@@ -1,5 +1,4 @@
 import { InferGetServerSidePropsType } from 'next'
-import Head from 'next/head'
 import { createContext, useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { api } from 'services/api'

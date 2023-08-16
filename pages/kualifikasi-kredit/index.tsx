@@ -48,6 +48,8 @@ import { filterNonDigitCharacters } from 'utils/stringUtils'
 import HeaderCreditClasificationMobile from 'components/organisms/headerCreditClasificationMobile'
 import { FormReferralCode } from 'components/molecules/form/formReferralCode'
 import PopupCreditDetail from 'components/organisms/popupCreditDetail'
+import Seo from 'components/atoms/seo'
+import { defaultSeoImage } from 'utils/helpers/const'
 
 const searchOption = {
   keys: ['label'],
@@ -474,6 +476,11 @@ const CreditQualificationPage = () => {
 
   return (
     <>
+      <Seo
+        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
+        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
+        image={defaultSeoImage}
+      />
       <HeaderCreditClasificationMobile />
       <div className={styles.progressBar}>
         <Progress

@@ -43,6 +43,8 @@ import HeaderCreditClasificationMobile from 'components/organisms/headerCreditCl
 import { ProgressBar } from 'components/atoms/progressBar'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { ToastType } from 'utils/types/models'
+import Seo from 'components/atoms/seo'
+import { defaultSeoImage } from 'utils/helpers/const'
 
 const searchOption = {
   keys: ['label'],
@@ -611,69 +613,76 @@ export default function KtpReview() {
   }
 
   return (
-    <div className={styles.container}>
-      <HeaderCreditClasificationMobile />
-      <div className={styles.progressBarWrapper}>
-        <ProgressBar percentage={80} colorPrecentage="#51A8DB" />
-      </div>
-
-      {isLoadingKtpData ? (
-        <div className={clsx(styles.content, styles.shimmerWrapper)}>
-          {[...Array(15)].map((x, i) => (
-            <Skeleton height={20} width={300} key={i} />
-          ))}
+    <>
+      <Seo
+        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
+        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
+        image={defaultSeoImage}
+      />
+      <div className={styles.container}>
+        <HeaderCreditClasificationMobile />
+        <div className={styles.progressBarWrapper}>
+          <ProgressBar percentage={80} colorPrecentage="#51A8DB" />
         </div>
-      ) : (
-        <div className={styles.content}>
-          <h2 className={styles.header}>Data KTP untuk Instant Approval</h2>
 
-          <div className={styles.ktpContent}>
-            {allKtpData.map((item, index) => {
-              return renderKtpDataSection(item, index)
-            })}
+        {isLoadingKtpData ? (
+          <div className={clsx(styles.content, styles.shimmerWrapper)}>
+            {[...Array(15)].map((x, i) => (
+              <Skeleton height={20} width={300} key={i} />
+            ))}
+          </div>
+        ) : (
+          <div className={styles.content}>
+            <h2 className={styles.header}>Data KTP untuk Instant Approval</h2>
 
-            {allKtpData.length === 1 ? (
-              <div
-                role="button"
-                className={styles.addSpouseKtpCard}
-                onClick={onClickAddSpouseKtp}
-              >
-                <div className={styles.addSpouseKtpCardHeader}>
-                  <div className={styles.iconWrapper}>
-                    <IconAdd width={16} height={16} />
+            <div className={styles.ktpContent}>
+              {allKtpData.map((item, index) => {
+                return renderKtpDataSection(item, index)
+              })}
+
+              {allKtpData.length === 1 ? (
+                <div
+                  role="button"
+                  className={styles.addSpouseKtpCard}
+                  onClick={onClickAddSpouseKtp}
+                >
+                  <div className={styles.addSpouseKtpCardHeader}>
+                    <div className={styles.iconWrapper}>
+                      <IconAdd width={16} height={16} />
+                    </div>
+                    <span className={styles.addSpouseKtpTitle}>
+                      Tambah Data KTP Pasangan
+                    </span>
                   </div>
-                  <span className={styles.addSpouseKtpTitle}>
-                    Tambah Data KTP Pasangan
+                  <span className={styles.addSpouseKtpSubtitle}>
+                    Jika sudah menikah, kamu wajib menambahkan KTP pasanganmu
+                    (suami/istri sah) untuk mendapatkan hasil Instant Approval
+                    yang akurat.
                   </span>
                 </div>
-                <span className={styles.addSpouseKtpSubtitle}>
-                  Jika sudah menikah, kamu wajib menambahkan KTP pasanganmu
-                  (suami/istri sah) untuk mendapatkan hasil Instant Approval
-                  yang akurat.
-                </span>
-              </div>
-            ) : null}
-          </div>
+              ) : null}
+            </div>
 
-          <div className={styles.buttonWrapper}>
-            <Button
-              version={ButtonVersion.PrimaryDarkBlue}
-              size={ButtonSize.Big}
-              disabled={getButtonDisabledStatus()}
-              onClick={onClickNextButton}
-            >
-              Selanjutnya
-            </Button>
+            <div className={styles.buttonWrapper}>
+              <Button
+                version={ButtonVersion.PrimaryDarkBlue}
+                size={ButtonSize.Big}
+                disabled={getButtonDisabledStatus()}
+                onClick={onClickNextButton}
+              >
+                Selanjutnya
+              </Button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <RenderToast
-        type={ToastType.Error}
-        message={t('common.errorMessage')}
-        overridePositionToBottom={true}
-        duration={3}
-      />
-    </div>
+        <RenderToast
+          type={ToastType.Error}
+          message={t('common.errorMessage')}
+          overridePositionToBottom={true}
+          duration={3}
+        />
+      </div>
+    </>
   )
 }
