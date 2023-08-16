@@ -56,7 +56,7 @@ import {
   replacePriceSeparatorByLocalization,
 } from 'utils/handler/rupiah'
 import { loanCalculatorDefaultUrl } from 'utils/helpers/routes'
-import { defaultCity, saveCity } from 'utils/hooks/useGetCity'
+import { defaultCity, getCity, saveCity } from 'utils/hooks/useGetCity'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import {
@@ -86,6 +86,8 @@ import {
 } from 'utils/types/utils'
 import { InstallmentTypeOptions, LoanRank } from 'utils/types/models'
 import { ButtonVersion, ButtonSize } from 'components/atoms/button'
+import Seo from 'components/atoms/seo'
+import { defaultSeoImage } from 'utils/helpers/const'
 
 const CarSillhouete = '/revamp/illustration/car-sillhouete.webp'
 
@@ -114,9 +116,6 @@ export interface FormLCState {
   downPaymentAmount: string
   paymentOption: InstallmentTypeOptions
   leasingOption?: string
-}
-type LocationState = {
-  from: string
 }
 
 const getSlug = (query: any, index: number) => {
@@ -1170,245 +1169,258 @@ export default function LoanCalculatorPage() {
   }
 
   return (
-    <div className={styles.container}>
-      <HeaderMobile
-        isActive={isActive}
-        setIsActive={setIsActive}
-        style={{
-          position: 'fixed',
-        }}
-        emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
-        setShowAnnouncementBox={setShowAnnouncementBox}
-        isShowAnnouncementBox={showAnnouncementBox}
+    <>
+      <Seo
+        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
+        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
+        image={defaultSeoImage}
       />
-      <div
-        className={clsx({
-          [styles.content]: !showAnnouncementBox,
-          [styles.contentWithSpace]: showAnnouncementBox,
-          [styles.announcementboxpadding]: showAnnouncementBox,
-          [styles.announcementboxpadding]: false,
-        })}
-      >
-        <div className={styles.titleWrapper}>
-          <h2 className={styles.title}>
-            {router.query.from === 'homepageKualifikasi'
-              ? 'Yuk, Hitung Dulu Kemampuan Finansialmu'
-              : 'Cari Tahu Kemampuan Finansialmu'}
-          </h2>
-          <p className={styles.subtitle}>
-            {router.query.from === 'homepageKualifikasi'
-              ? 'Sebelum cek kualifikasi kredit, isi data secara lengkap untuk tahu kemampuan finansialmu.'
-              : 'Isi data secara lengkap untuk mengetahui hasil kemampuan finansialmu dengan akurat.'}
-          </p>
-        </div>
-        <div className={styles.formWrapper}>
-          <div id="loan-calculator-form-city">
-            <FormSelectCity
-              isHasCarParameter={isHasCarParameter}
-              handleChange={handleChange}
-              name="city"
-            />
-            {isValidatingEmptyField && !forms.city
-              ? renderErrorMessageEmpty()
-              : null}
+      <div className={styles.container}>
+        <HeaderMobile
+          isActive={isActive}
+          setIsActive={setIsActive}
+          style={{
+            position: 'fixed',
+          }}
+          emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
+          setShowAnnouncementBox={setShowAnnouncementBox}
+          isShowAnnouncementBox={showAnnouncementBox}
+        />
+        <div
+          className={clsx({
+            [styles.content]: !showAnnouncementBox,
+            [styles.contentWithSpace]: showAnnouncementBox,
+            [styles.announcementboxpadding]: showAnnouncementBox,
+            [styles.announcementboxpadding]: false,
+          })}
+        >
+          <div className={styles.titleWrapper}>
+            <h2 className={styles.title}>
+              {router.query.from === 'homepageKualifikasi'
+                ? 'Yuk, Hitung Dulu Kemampuan Finansialmu'
+                : 'Cari Tahu Kemampuan Finansialmu'}
+            </h2>
+            <p className={styles.subtitle}>
+              {router.query.from === 'homepageKualifikasi'
+                ? 'Sebelum cek kualifikasi kredit, isi data secara lengkap untuk tahu kemampuan finansialmu.'
+                : 'Isi data secara lengkap untuk mengetahui hasil kemampuan finansialmu dengan akurat.'}
+            </p>
           </div>
-          <div id="loan-calculator-form-car-model">
-            <FormSelectModelCar
-              selectedCity={forms?.city?.cityCode || ''}
-              handleChange={handleChange}
-              name="model"
-              value={forms?.model?.modelName || ''}
-              valueImage={
-                forms.model?.modelImage || (CarSillhouete as unknown as string)
-              }
-              valueId={forms?.model?.modelId || ''}
-              allModelCarList={allModelCarList}
-              setModelError={setModelError}
-            />
-            {isValidatingEmptyField &&
-            (!forms.model?.modelId || !forms.model.modelName)
-              ? renderErrorMessageEmpty()
-              : null}
-          </div>
-          <div id="loan-calculator-form-car-variant">
-            <FormSelectCarVariant
-              selectedModel={forms?.model?.modelId || ''}
-              handleChange={handleChange}
-              name="variant"
-              carVariantList={carVariantList}
-              value={forms.variant || variantEmptyValue}
-              modelError={modelError}
-            />
-            {isValidatingEmptyField &&
-            (!forms.variant?.variantId || !forms.variant.variantName)
-              ? renderErrorMessageEmpty()
-              : null}
-          </div>
-          <div id="loan-calculator-form-income">
-            <IncomeForm
-              name="monthlyIncome"
-              title="Pendapatan bulanan"
-              value={Number(forms.monthlyIncome)}
-              defaultValue={Number(forms.monthlyIncome)}
-              handleChange={handleChange}
-              isErrorTooLow={isIncomeTooLow}
-              emitOnBlurInput={onBlurIncomeInput}
-            />
-            {renderIncomeErrorMessage()}
-          </div>
-          <div id="loan-calculator-form-dp">
-            <DpForm
-              label="Kemampuan DP (Min. 20%)"
-              value={dpValue}
-              percentage={dpPercentage}
-              onChange={handleDpChange}
-              emitDpPercentageChange={handleDpPercentageChange}
-              carPriceMinusDiscount={getCarOtrNumber() - getCarDiscountNumber()}
-              handleChange={handleChange}
-              name="downPaymentAmount"
-              isDisabled={
-                !forms.variant?.variantName || !forms?.model?.modelId
-                  ? true
-                  : false
-              }
-              isErrorEmptyField={
-                isValidatingEmptyField && !forms.downPaymentAmount
-              }
-              isDpTooLow={isDpTooLow}
-              setIsDpTooLow={setIsDpTooLow}
-              isDpExceedLimit={isDpExceedLimit}
-              setIsDpExceedLimit={setIsDpExceedLimit}
-              isAutofillValueFromCreditQualificationData={
-                !!kkForm && !isUserChooseVariantDropdown
-              }
-            />
-          </div>
-          <div id="loan-calculator-form-installment-type">
-            <CicilOptionForm
-              name="paymentOption"
-              isClicked={installmentType === InstallmentTypeOptions.ADDM}
-              onClick={(value: boolean) =>
-                handleInstallmentTypeChange(InstallmentTypeOptions.ADDM, value)
-              }
-              handleChange={handleChange}
-              value={forms.paymentOption}
-            />
-            {isValidatingEmptyField && !forms.paymentOption
-              ? renderErrorMessageEmpty()
-              : null}
-          </div>
-          <div
-            id="loan-calculator-form-age"
-            className={styles.loanCalculatorFormAge}
-          >
-            <FormAgeCredit
-              ageList={AgeList}
-              name="age"
-              handleChange={handleChange}
-              defaultValue={forms.age}
-            />
-            {isValidatingEmptyField && !forms.age
-              ? renderErrorMessageEmpty()
-              : null}
-          </div>
-
-          {false && (
-            <div id="loan-calculator-form-promo-code">
-              <FormPromoCode
-                emitOnChange={handleOnChangePromoCode}
-                emitPromoCodeValidResult={handlePromoCodeValidResult}
-                isLoadingPromoCode={isLoadingPromoCode}
-                isErrorPromoCode={isErrorPromoCode}
-                isSuccessPromoCode={isSuccessPromoCode}
-                passedResetPromoCodeStatusFunc={resetPromoCodeStatus}
-                passedCheckPromoCodeFunc={checkPromoCode}
-                onClearInput={clearPromoCodeHandler}
-                value={forms.promoCode}
+          <div className={styles.formWrapper}>
+            <div id="loan-calculator-form-city">
+              <FormSelectCity
+                isHasCarParameter={isHasCarParameter}
+                handleChange={handleChange}
+                name="city"
+              />
+              {isValidatingEmptyField && !forms.city
+                ? renderErrorMessageEmpty()
+                : null}
+            </div>
+            <div id="loan-calculator-form-car-model">
+              <FormSelectModelCar
+                selectedCity={forms?.city?.cityCode || ''}
+                handleChange={handleChange}
+                name="model"
+                value={forms?.model?.modelName || ''}
+                valueImage={
+                  forms.model?.modelImage ||
+                  (CarSillhouete as unknown as string)
+                }
+                valueId={forms?.model?.modelId || ''}
+                allModelCarList={allModelCarList}
+                setModelError={setModelError}
+              />
+              {isValidatingEmptyField &&
+              (!forms.model?.modelId || !forms.model.modelName)
+                ? renderErrorMessageEmpty()
+                : null}
+            </div>
+            <div id="loan-calculator-form-car-variant">
+              <FormSelectCarVariant
+                selectedModel={forms?.model?.modelId || ''}
+                handleChange={handleChange}
+                name="variant"
+                carVariantList={carVariantList}
+                value={forms.variant || variantEmptyValue}
+                modelError={modelError}
+              />
+              {isValidatingEmptyField &&
+              (!forms.variant?.variantId || !forms.variant.variantName)
+                ? renderErrorMessageEmpty()
+                : null}
+            </div>
+            <div id="loan-calculator-form-income">
+              <IncomeForm
+                name="monthlyIncome"
+                title="Pendapatan bulanan"
+                value={Number(forms.monthlyIncome)}
+                defaultValue={Number(forms.monthlyIncome)}
+                handleChange={handleChange}
+                isErrorTooLow={isIncomeTooLow}
+                emitOnBlurInput={onBlurIncomeInput}
+              />
+              {renderIncomeErrorMessage()}
+            </div>
+            <div id="loan-calculator-form-dp">
+              <DpForm
+                label="Kemampuan DP (Min. 20%)"
+                value={dpValue}
+                percentage={dpPercentage}
+                onChange={handleDpChange}
+                emitDpPercentageChange={handleDpPercentageChange}
+                carPriceMinusDiscount={
+                  getCarOtrNumber() - getCarDiscountNumber()
+                }
+                handleChange={handleChange}
+                name="downPaymentAmount"
+                isDisabled={
+                  !forms.variant?.variantName || !forms?.model?.modelId
+                    ? true
+                    : false
+                }
+                isErrorEmptyField={
+                  isValidatingEmptyField && !forms.downPaymentAmount
+                }
+                isDpTooLow={isDpTooLow}
+                setIsDpTooLow={setIsDpTooLow}
+                isDpExceedLimit={isDpExceedLimit}
+                setIsDpExceedLimit={setIsDpExceedLimit}
+                isAutofillValueFromCreditQualificationData={
+                  !!kkForm && !isUserChooseVariantDropdown
+                }
               />
             </div>
-          )}
+            <div id="loan-calculator-form-installment-type">
+              <CicilOptionForm
+                name="paymentOption"
+                isClicked={installmentType === InstallmentTypeOptions.ADDM}
+                onClick={(value: boolean) =>
+                  handleInstallmentTypeChange(
+                    InstallmentTypeOptions.ADDM,
+                    value,
+                  )
+                }
+                handleChange={handleChange}
+                value={forms.paymentOption}
+              />
+              {isValidatingEmptyField && !forms.paymentOption
+                ? renderErrorMessageEmpty()
+                : null}
+            </div>
+            <div
+              id="loan-calculator-form-age"
+              className={styles.loanCalculatorFormAge}
+            >
+              <FormAgeCredit
+                ageList={AgeList}
+                name="age"
+                handleChange={handleChange}
+                defaultValue={forms.age}
+              />
+              {isValidatingEmptyField && !forms.age
+                ? renderErrorMessageEmpty()
+                : null}
+            </div>
 
-          <Button
-            // not using "disabled" attrib because some func need to be run
-            // when disabled button is clicked
-            version={
-              isDisableCtaCalculate
-                ? ButtonVersion.Disable
-                : ButtonVersion.PrimaryDarkBlue
-            }
-            secondaryClassName={styles.buttonSubmit}
-            disabled={isDisableCtaCalculate}
-            size={ButtonSize.Big}
-            onClick={onClickCalculate}
-            data-testid={elementId.LoanCalculator.Button.HitungKemampuan}
-          >
-            {isLoadingCalculation || isLoadingInsuranceAndPromo ? (
-              <div className={`${styles.iconWrapper} rotateAnimation`}>
-                <IconLoading width={14} height={14} color="#FFFFFF" />
+            {false && (
+              <div id="loan-calculator-form-promo-code">
+                <FormPromoCode
+                  emitOnChange={handleOnChangePromoCode}
+                  emitPromoCodeValidResult={handlePromoCodeValidResult}
+                  isLoadingPromoCode={isLoadingPromoCode}
+                  isErrorPromoCode={isErrorPromoCode}
+                  isSuccessPromoCode={isSuccessPromoCode}
+                  passedResetPromoCodeStatusFunc={resetPromoCodeStatus}
+                  passedCheckPromoCodeFunc={checkPromoCode}
+                  onClearInput={clearPromoCodeHandler}
+                  value={forms.promoCode}
+                />
               </div>
-            ) : (
-              'Hitung Kemampuan'
             )}
-          </Button>
+
+            <Button
+              // not using "disabled" attrib because some func need to be run
+              // when disabled button is clicked
+              version={
+                isDisableCtaCalculate
+                  ? ButtonVersion.Disable
+                  : ButtonVersion.PrimaryDarkBlue
+              }
+              secondaryClassName={styles.buttonSubmit}
+              disabled={isDisableCtaCalculate}
+              size={ButtonSize.Big}
+              onClick={onClickCalculate}
+              data-testid={elementId.LoanCalculator.Button.HitungKemampuan}
+            >
+              {isLoadingCalculation || isLoadingInsuranceAndPromo ? (
+                <div className={`${styles.iconWrapper} rotateAnimation`}>
+                  <IconLoading width={14} height={14} color="#FFFFFF" />
+                </div>
+              ) : (
+                'Hitung Kemampuan'
+              )}
+            </Button>
+          </div>
+
+          <div id="loan-calculator-form-and-result-separator"></div>
+
+          {calculationResult.length > 0 &&
+          !isLoadingCalculation &&
+          !isLoadingInsuranceAndPromo &&
+          isDataSubmitted ? (
+            <>
+              <CalculationResult
+                handleRedirectToWhatsapp={handleRedirectToWhatsapp}
+                data={calculationResult}
+                selectedLoan={selectedLoan}
+                setSelectedLoan={setSelectedLoan}
+                angsuranType={forms.paymentOption}
+                isTooltipOpen={isTooltipOpen}
+                isQualificationModalOpen={isQualificationModalOpen}
+                closeTooltip={handleTooltipClose}
+                handleClickButtonQualification={handleClickButtonQualification}
+                formData={forms}
+                insuranceAndPromoForAllTenure={insuranceAndPromoForAllTenure}
+                calculationApiPayload={calculationApiPayload}
+              />
+              <CarRecommendations
+                carRecommendationList={carRecommendations}
+                title="Rekomendasi Sesuai
+Kemampuan Finansialmu"
+                onClick={() => {
+                  return
+                }}
+                selectedCity={forms?.city?.cityName}
+              />
+              <CreditCualificationBenefit />
+              <Articles
+                articles={articles}
+                cityName={forms?.city?.cityName || ''}
+                carModel={forms?.model?.modelName || ''}
+                carBrand={forms?.model?.brandName || ''}
+              />
+            </>
+          ) : (
+            <CalculationResultEmpty />
+          )}
         </div>
 
-        <div id="loan-calculator-form-and-result-separator"></div>
+        <FooterMobile />
 
-        {calculationResult.length > 0 &&
-        !isLoadingCalculation &&
-        !isLoadingInsuranceAndPromo &&
-        isDataSubmitted ? (
-          <>
-            <CalculationResult
-              handleRedirectToWhatsapp={handleRedirectToWhatsapp}
-              data={calculationResult}
-              selectedLoan={selectedLoan}
-              setSelectedLoan={setSelectedLoan}
-              angsuranType={forms.paymentOption}
-              isTooltipOpen={isTooltipOpen}
-              isQualificationModalOpen={isQualificationModalOpen}
-              closeTooltip={handleTooltipClose}
-              handleClickButtonQualification={handleClickButtonQualification}
-              formData={forms}
-              insuranceAndPromoForAllTenure={insuranceAndPromoForAllTenure}
-              calculationApiPayload={calculationApiPayload}
-            />
-            <CarRecommendations
-              carRecommendationList={carRecommendations}
-              title="Rekomendasi Sesuai
-Kemampuan Finansialmu"
-              onClick={() => {
-                return
-              }}
-              selectedCity={forms?.city?.cityName}
-            />
-            <CreditCualificationBenefit />
-            <Articles
-              articles={articles}
-              cityName={forms?.city?.cityName || ''}
-              carModel={forms?.model?.modelName || ''}
-              carBrand={forms?.model?.brandName || ''}
-            />
-          </>
-        ) : (
-          <CalculationResultEmpty />
-        )}
+        <CitySelectorModal
+          isOpen={isOpenCitySelectorModal}
+          onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
+          cityListFromApi={cityListApi}
+        />
+
+        <QualificationCreditModal
+          isOpen={isQualificationModalOpen}
+          onClickCloseButton={onCloseQualificationPopUp}
+          formData={forms}
+          selectedLoan={selectedLoan}
+        />
       </div>
-
-      <FooterMobile />
-
-      <CitySelectorModal
-        isOpen={isOpenCitySelectorModal}
-        onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
-        cityListFromApi={cityListApi}
-      />
-
-      <QualificationCreditModal
-        isOpen={isQualificationModalOpen}
-        onClickCloseButton={onCloseQualificationPopUp}
-        formData={forms}
-        selectedLoan={selectedLoan}
-      />
-    </div>
+    </>
   )
 }

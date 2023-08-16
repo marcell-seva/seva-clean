@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from 'styles/pages/ktp-verifikasi.module.scss'
 import elementId from 'helpers/elementIds'
 import { colors } from 'styles/colors'
@@ -17,6 +17,8 @@ import { IconLockFill } from 'components/atoms/icon/LockFill'
 import PopupError from 'components/organisms/popupError'
 import { DocumentType } from 'utils/enum'
 import { buildFileKTPData, uploadKTPFile } from 'services/upload'
+import Seo from 'components/atoms/seo'
+import { defaultSeoImage } from 'utils/helpers/const'
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
@@ -31,6 +33,10 @@ const VerifyKtp = () => {
   const { galleryFile, photoFile } = useGalleryContext()
 
   const file = photoFile
+
+  useEffect(() => {
+    galleryFile ?? router.push(cameraKtpUrl)
+  }, [])
 
   const getTitleText = () => {
     if (ktpType && ktpType.toLowerCase() === 'spouse') {
@@ -74,11 +80,13 @@ const VerifyKtp = () => {
     }
   }
 
-  {
-    galleryFile ?? router.push(cameraKtpUrl)
-  }
   return (
     <>
+      <Seo
+        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
+        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
+        image={defaultSeoImage}
+      />
       <div className={styles.form_header}>
         <div className={styles.back__button} onClick={() => router.back()}>
           <IconChevronLeft width={24} height={24} color="#13131B" />

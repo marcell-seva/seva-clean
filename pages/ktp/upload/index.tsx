@@ -33,6 +33,8 @@ import { IconChecked } from 'components/atoms'
 import { IconCamera, IconUpload } from 'components/atoms/icon'
 import { maxPageWidth, screenHeight } from 'styles/globalStyle'
 import { CameraSelect } from 'components/molecules/cameraSelect'
+import Seo from 'components/atoms/seo'
+import { defaultSeoImage } from 'utils/helpers/const'
 
 const ChevronLeft = '/revamp/icon/chevron-left.webp'
 
@@ -220,6 +222,11 @@ export default function CameraKtp() {
 
   return (
     <>
+      <Seo
+        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
+        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
+        image={defaultSeoImage}
+      />
       <StyledWrapper padding={horizontalMargin}>
         <img
           src={ChevronLeft}

@@ -1,12 +1,11 @@
 /* eslint-disable react/no-children-prop */
 import Seo from 'components/atoms/seo'
 import { CreditQualificationRejected } from 'components/organisms/resultPages/rejected'
-import { useRouter } from 'next/router'
-import React, { useMemo } from 'react'
-import { defaultSeoImage } from 'utils/helpers/const'
-import { useFetch } from 'utils/hooks/useFetch/useFetch'
-import { MetaTagApiResponse } from 'utils/types/utils'
+import { InferGetServerSidePropsType } from 'next'
+import { useMemo } from 'react'
+import { api } from 'services/api'
 import styles from 'styles/pages/kualifikasi-kredit-result.module.scss'
+import { defaultSeoImage } from 'utils/helpers/const'
 
 export interface Params {
   brand: string
@@ -14,15 +13,9 @@ export interface Params {
   tab: string
 }
 
-const CreditQualificationPageRejected = () => {
-  const metaTagBaseApi =
-    'https://api.sslpots.com/api/meta-seos/?filters[master_model][model_code][$contains]='
-  const router = useRouter()
-  const model = router.query.model as string
-  const { data: dataHead } = useFetch<MetaTagApiResponse[]>(
-    metaTagBaseApi + model?.replaceAll('-', ''),
-  )
-
+const CreditQualificationPageRejected = ({
+  meta: dataHead,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const head = useMemo(() => {
     const title =
       dataHead && dataHead.length > 0
@@ -52,3 +45,14 @@ const CreditQualificationPageRejected = () => {
 }
 
 export default CreditQualificationPageRejected
+
+export const getServerSideProps = async (ctx: any) => {
+  const model = (ctx.query.model as string)?.replaceAll('-', '')
+
+  try {
+    const [meta]: any = await Promise.all([api.getMetaTagData(model as string)])
+    return { props: { meta: meta.data } }
+  } catch (e) {
+    return { props: { meta: {} } }
+  }
+}

@@ -6,9 +6,6 @@ import {
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
-import { useRouter } from 'next/router'
-import { useFetch } from 'utils/hooks/useFetch/useFetch'
-import { MetaTagApiResponse } from 'utils/types/utils'
 import { FormLCState } from 'pages/kalkulator-kredit/[[...slug]]'
 import { SessionStorageKey } from 'utils/enum'
 import { IconCheckedBox, IconChevronLeft } from 'components/atoms/icon'
@@ -18,6 +15,9 @@ import { defaultSeoImage } from 'utils/helpers/const'
 import { ProgressBar } from 'components/atoms/progressBar'
 import { Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { api } from 'services/api'
+import { InferGetServerSidePropsType } from 'next'
+import { useRouter } from 'next/router'
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 const LogoACC = '/revamp/icon/logo-acc.webp'
@@ -38,17 +38,12 @@ interface OptionProps {
   isDisabled?: boolean
   onClick: any
 }
-const LeasingCompanyOptionPage = () => {
+const LeasingCompanyOptionPage = ({
+  meta: dataHead,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   useProtectPage()
-  const metaTagBaseApi =
-    'https://api.sslpots.com/api/meta-seos/?filters[master_model][model_code][$contains]='
   const router = useRouter()
-  // TODO @robby
-  const model = router.query.model as string
   const [descDisabledCard, setDescDisabledCard] = useState<string>()
-  const { data: dataHead } = useFetch<MetaTagApiResponse[]>(
-    metaTagBaseApi + model?.replaceAll('-', ''),
-  )
 
   const head = useMemo(() => {
     const title =
@@ -231,3 +226,14 @@ const LeasingCompanyOptionPage = () => {
   )
 }
 export default LeasingCompanyOptionPage
+
+export const getServerSideProps = async (ctx: any) => {
+  const model = (ctx.query.model as string)?.replaceAll('-', '')
+
+  try {
+    const [meta]: any = await Promise.all([api.getMetaTagData(model as string)])
+    return { props: { meta: meta.data } }
+  } catch (e) {
+    return { props: { meta: {} } }
+  }
+}
