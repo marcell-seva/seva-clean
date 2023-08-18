@@ -16,6 +16,7 @@ import { Location } from 'utils/types'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useRouter } from 'next/router'
 import { CarRecommendation } from 'utils/types/context'
+import Image from 'next/image'
 
 type AlternativeCarCardProps = {
   recommendation: CarRecommendation
@@ -80,12 +81,14 @@ export const AlternativeCarCard = ({
   return (
     <div className={styles.container}>
       <CardShadow className={styles.cardWrapper}>
-        <img
+        <Image
           src={recommendation.images[0]}
           className={styles.heroImg}
           alt={`${recommendation.brand} ${recommendation.model}`}
           onClick={navigateToPDP}
           data-testid={elementId.CarRecommendation.Image}
+          width={180}
+          height={135}
         />
         {label ?? (
           <LabelPromo

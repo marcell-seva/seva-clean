@@ -104,11 +104,12 @@ const CardCarOfTheMonth = ({
   }
   return (
     <div className={styles.cardContainer}>
-      <img
+      <Image
         alt="seva-image"
         src={item.imageUrl}
         className={styles.imageCar}
-        style={{ width: '256px' }}
+        width={256}
+        height={144}
       />
       <div className={styles.cardCarOfTheMonth}>
         <div>
