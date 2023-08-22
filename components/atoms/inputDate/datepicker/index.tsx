@@ -1,41 +1,60 @@
 import React, { useState } from 'react'
-import {
-  DatePicker as AntdDatePicker,
-  ConfigProvider,
-  DatePickerProps,
-} from 'antd'
-import styles from 'styles/components/atoms/datepicker.module.scss'
+import styles from '/styles/components/atoms/datepicker.module.scss'
 import clsx from 'clsx'
 import { IconCalendar } from '../../icon'
+import {
+  ConfigProvider,
+  DatePicker as DatePickerMobile,
+  DatePickerProps,
+} from 'antd-mobile'
+import id_ID from 'antd-mobile/es/locales/id-ID'
+import 'dayjs/locale/id'
+import dayjs from 'dayjs'
 import { PropsIcon } from 'utils/types'
 
 type PropsDatePicker = DatePickerProps & {
   isError?: boolean
   errorMessage?: string
   title?: string
+  placeholder?: string
+  name?: string
   onBlurInput?: (e: React.FocusEvent<HTMLButtonElement>) => void
   customStyle?: {
     iconCalendar?: Partial<Pick<PropsIcon, 'width' | 'height' | 'color'>>
   }
-  formatValue?: string
+  formatValue?: (value: DatePickerProps['value']) => string
+  titleDatePicker?: string
+}
+
+const defaultRenderLabel: PropsDatePicker['renderLabel'] = (type, number) => {
+  if (type === 'month')
+    return dayjs()
+      .month(number - 1)
+      .locale('id')
+      .format('MMMM')
+  return number
 }
 
 const DatePicker = (props: PropsDatePicker) => {
   const {
     className,
     value,
-    placeholder,
+    placeholder = 'DD/MM/YYYY',
     isError,
     errorMessage,
     title,
     onBlurInput,
     name,
     customStyle,
-    formatValue,
+    formatValue = (value) => dayjs(value).format('DD/MM/YYYY'),
+    renderLabel = defaultRenderLabel,
+    titleDatePicker = 'Pilih Tanggal',
+    onClose,
     ...datePickerProps
   } = props
 
   const [datePickerOpen, setDatePickerOpen] = useState(false)
+  const isValueDate = value instanceof Date && !isNaN(value.valueOf())
 
   return (
     <>
@@ -49,13 +68,14 @@ const DatePicker = (props: PropsDatePicker) => {
             type="button"
             name={name}
             className={clsx(styles.input, {
-              [styles.placeholder]: !value,
+              [styles.placeholder]: !isValueDate,
               [styles.error]: isError,
+              ['shake-animation-X']: isError,
             })}
             onBlur={onBlurInput}
             onClick={() => setDatePickerOpen(true)}
           >
-            {value ? value.format(formatValue ?? 'DD/MM/YYYY') : placeholder}
+            {isValueDate ? formatValue(value) : placeholder}
           </button>
           <div className={styles.iconCalendar}>
             <IconCalendar
@@ -65,31 +85,30 @@ const DatePicker = (props: PropsDatePicker) => {
             />
           </div>
         </div>
-        {isError && <p className={styles.errorText}>{errorMessage}</p>}
+        {isError && <span className={styles.errorText}>{errorMessage}</span>}
+
         <ConfigProvider
-          theme={{
-            components: {
-              DatePicker: {
-                colorPrimary: '#246ED4',
-                colorLink: '#246ED4',
-              },
+          locale={{
+            ...id_ID,
+            common: {
+              cancel: 'Batal',
+              close: 'Close',
+              confirm: 'Simpan',
+              loading: 'memuat',
             },
           }}
         >
-          <AntdDatePicker
+          <DatePickerMobile
             {...datePickerProps}
-            name={name}
-            className={clsx(
-              styles.datePicker,
-              {
-                [styles.isTitle]: !!title,
-              },
-              className,
-            )}
-            placeholder={placeholder}
-            value={value}
-            open={datePickerOpen}
-            onOpenChange={setDatePickerOpen}
+            className={className}
+            value={isValueDate ? value : new Date()}
+            title={titleDatePicker}
+            visible={datePickerOpen}
+            onClose={() => {
+              onClose && onClose()
+              setDatePickerOpen(false)
+            }}
+            renderLabel={renderLabel}
           />
         </ConfigProvider>
       </div>

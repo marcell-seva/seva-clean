@@ -78,6 +78,7 @@ export const FooterMobile = () => {
           height={31}
           alt="seva"
           className={styles.sevaLogo}
+          loading="lazy"
         />
         <span className={styles.footerText}>
           SEVA - Platform yang berada di bawah Astra Financial yang menyediakan
@@ -135,6 +136,7 @@ export const FooterMobile = () => {
             height={29}
             alt="CBQA ISO 27001"
             datatest-id={elementId.Footer.LogoISO}
+            loading="lazy"
           />
           <span className={styles.footerText}>
             Kami mengambil langkah-langkah untuk membantu

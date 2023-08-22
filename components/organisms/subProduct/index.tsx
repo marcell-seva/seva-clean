@@ -35,6 +35,7 @@ const SubProduct = () => {
               src={fasilitasDanaBanner}
               className={styles.promoBannerSmall}
               height="196"
+              loading="lazy"
             />
             <div>
               <p className={styles.textTitlePromoBanner}>{title[0]}</p>
@@ -68,6 +69,7 @@ const SubProduct = () => {
               src={layananSuratKendaraanBanner}
               className={styles.promoBannerSmall}
               height="196"
+              loading="lazy"
             />
             <div className={styles.wrapperDetail}>
               <p className={styles.textTitlePromoBanner}>{title[1]}</p>

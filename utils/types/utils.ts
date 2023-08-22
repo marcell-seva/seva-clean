@@ -1023,3 +1023,17 @@ export interface GetCustomerKtpSeva {
   created: string
   isSpouse?: boolean
 }
+
+export type DeleteAccountRequestType = {
+  phoneNumber: string
+  createdBy?: string
+  reason?: string
+}
+
+export interface UpdateProfileType {
+  fullName: string
+  dob: string
+  gender: string
+  marital: string
+  email: string | null
+}

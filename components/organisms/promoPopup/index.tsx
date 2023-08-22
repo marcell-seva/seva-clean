@@ -51,7 +51,11 @@ const PromoPopup = ({
         </div>
       </div>
       <div className={styles.imagePromoSpacing}>
-        <img src={promoBannerCumaDiSEVA} className={styles.promoBanner} />
+        <img
+          src={promoBannerCumaDiSEVA}
+          alt="promo banner cuma di seva"
+          className={styles.promoBanner}
+        />
       </div>
       <div>
         <p className={styles.openSans}>
@@ -95,7 +99,11 @@ const PromoPopup = ({
         </div>
       </div>
       <div className={styles.imagePromoSpacing}>
-        <img src={promoBannerTSO} className={styles.promoBanner} />
+        <img
+          src={promoBannerTSO}
+          alt="promo banner TSO"
+          className={styles.promoBanner}
+        />
       </div>
       <div>
         <p className={styles.openSans}>
@@ -131,7 +139,11 @@ const PromoPopup = ({
         </div>
       </div>
       <div className={styles.imagePromoSpacing}>
-        <img src={promoBannerTradeIn} className={styles.promoBanner} />
+        <img
+          src={promoBannerTradeIn}
+          alt="promo banner trade In"
+          className={styles.promoBanner}
+        />
       </div>
       <div>
         <p className={styles.openSans}>

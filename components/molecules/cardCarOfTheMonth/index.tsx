@@ -60,6 +60,7 @@ const CardCarOfTheMonth = ({
             className={styles.imgLogo}
             alt="Toyota"
             style={{ width: '40px', height: '100%' }}
+            loading="lazy"
           />
         )
       case 'Daihatsu':
@@ -69,6 +70,7 @@ const CardCarOfTheMonth = ({
             className={styles.imgLogo}
             alt="Daihatsu"
             style={{ width: '40px', height: '100%' }}
+            loading="lazy"
           />
         )
       case 'Isuzu':
@@ -78,6 +80,7 @@ const CardCarOfTheMonth = ({
             className={styles.imgLogo}
             alt="Isuzu"
             style={{ width: '40px', height: '100%' }}
+            loading="lazy"
           />
         )
       case 'BMW':
@@ -87,6 +90,7 @@ const CardCarOfTheMonth = ({
             className={styles.imgLogo}
             alt="BMW"
             style={{ width: '40px', height: '100%' }}
+            loading="lazy"
           />
         )
       case 'Peugeot':
@@ -96,6 +100,7 @@ const CardCarOfTheMonth = ({
             className={styles.imgLogo}
             alt="Peugeot"
             style={{ width: '40px', height: '100%' }}
+            loading="lazy"
           />
         )
       default:
@@ -104,11 +109,13 @@ const CardCarOfTheMonth = ({
   }
   return (
     <div className={styles.cardContainer}>
-      <img
+      <Image
         alt="seva-image"
         src={item.imageUrl}
         className={styles.imageCar}
-        style={{ width: '256px' }}
+        width={256}
+        height={144}
+        loading="lazy"
       />
       <div className={styles.cardCarOfTheMonth}>
         <div>

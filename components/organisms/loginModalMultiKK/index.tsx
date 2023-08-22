@@ -32,6 +32,7 @@ export const LoginModalMultiKK: React.FC<PropsLoginModalMultiKK> = ({
             width={135}
             height={135}
             className={styles.supergraphicSmall}
+            alt="illustration login modal"
           />
         </div>
         <h2 className={styles.textHeading}>

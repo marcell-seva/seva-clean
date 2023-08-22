@@ -38,7 +38,9 @@ const ArticleWidgetListCard = ({
             borderBottomLeftRadius: '8px',
             height: '108px',
             width: '143px',
+            objectFit: 'cover',
           }}
+          loading="lazy"
         />
         {article.category && (
           <div className={styles.categoryTextWrapper}>

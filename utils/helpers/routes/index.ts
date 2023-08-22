@@ -27,6 +27,11 @@ export const uploadKtpSpouseQueryParam = '?ktpType=spouse'
 export const successKtpUrl = '/akun/profil/ktp/success'
 export const successChangeKtpUrl = '/akun/profil/ktp/success-change-ktp'
 export const previewKtpUrl = '/akun/profil/ktp/preview'
+export const deleteAccountUrl = '/akun/profil/hapus-akun'
+export const deleteAccountReasonUrl = '/akun/profil/hapus-akun/alasan'
+export const deleteAccountSuccessUrl = '/akun/profil/hapus-akun/sukses'
+export const landingKtpUrl = '/akun/profil/landing-ktp'
+export const AccountSevaUrl = '/akun/profil'
 
 // instant approval
 export const leasingCompanyOption = '/instant-approval/perusahaan-pembiayaan'

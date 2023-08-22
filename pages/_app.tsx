@@ -36,27 +36,27 @@ import { client } from 'utils/helpers/const'
 import { IsSsrMobileContext } from 'services/context/isSsrMobileContext'
 
 const kanyon = localFont({
-  src: '../public/Kanyon-Regular.otf',
+  src: '../public/revamp/fonts/Kanyon/Kanyon-Regular.otf',
   style: 'normal',
   display: 'swap',
 })
 const kanyonMedium = localFont({
-  src: '../public/Kanyon-Medium.otf',
+  src: '../public/revamp/fonts/Kanyon/Kanyon-Medium.otf',
   style: 'normal',
   display: 'swap',
 })
 const kanyonBold = localFont({
-  src: '../public/Kanyon-Bold.otf',
+  src: '../public/revamp/fonts/Kanyon/Kanyon-Bold.otf',
   style: 'normal',
   display: 'swap',
 })
 const OpenSans = localFont({
-  src: '../public/OpenSans-Regular.woff2',
+  src: '../public/revamp/fonts/OpenSans/OpenSans-Regular.woff2',
   style: 'normal',
   display: 'swap',
 })
 const OpenSansSemiBold = localFont({
-  src: '../public/OpenSans-SemiBold.woff2',
+  src: '../public/revamp/fonts/OpenSans/OpenSans-SemiBold.woff2',
   style: 'normal',
   display: 'swap',
 })
@@ -75,8 +75,10 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [])
   return (
     <>
-      <script
+      <Script
         type="text/javascript"
+        strategy="afterInteractive"
+        async
         dangerouslySetInnerHTML={{
           __html: `
             !function(f,b,e,v,n,t,s)
@@ -97,6 +99,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <IsSsrMobileContext.Provider value={pageProps.isSsrMobile}>
         <GlobalContextProvider>
           <Script
+            async
             type="text/javascript"
             strategy="afterInteractive"
             dangerouslySetInnerHTML={{

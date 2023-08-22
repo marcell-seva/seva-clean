@@ -1,4 +1,9 @@
-import { CustomerKtpSeva, SendInstantApproval } from './../../utils/types/utils'
+import {
+  CustomerKtpSeva,
+  DeleteAccountRequestType,
+  SendInstantApproval,
+  UpdateProfileType,
+} from './../../utils/types/utils'
 import get from './get'
 import post from './post'
 import { collections } from './collections'
@@ -192,6 +197,14 @@ const postSaveKtpSpouse = (
   },
   config: AxiosRequestConfig,
 ) => post(collections.ktp.saveKtpSpouse, body, config)
+const postDeleteAccount = (
+  body: DeleteAccountRequestType,
+  config?: AxiosRequestConfig,
+) => post(collections.profile.deleteAccount, body, config)
+const postUpdateProfile = (
+  body: UpdateProfileType,
+  config: AxiosRequestConfig,
+) => post(collections.profile.updateProfile, body, config)
 
 export const api = {
   getMenu,
@@ -242,4 +255,6 @@ export const api = {
   postCheckReferralCode,
   postSaveKtp,
   postSaveKtpSpouse,
+  postDeleteAccount,
+  postUpdateProfile,
 }

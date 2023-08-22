@@ -760,7 +760,9 @@ export const SpecialRateResults = ({
                             currentLanguage,
                           )}
                     </StyledTextIsActiveBlueInstallment>
-                    {freeInsurance && <img src={PromoAsuransi} />}
+                    {freeInsurance && (
+                      <img src={PromoAsuransi} alt="promo asuransi" />
+                    )}
                   </LoanRankThirdColumn>
                   <LoanRankFourthColumn>
                     <FourthColumnWrapper1>
@@ -883,7 +885,9 @@ export const SpecialRateResults = ({
                             currentLanguage,
                           )}
                     </StyledTextIsActiveBlueInstallment>
-                    {freeInsurance && <img src={PromoAsuransi} />}
+                    {freeInsurance && (
+                      <img src={PromoAsuransi} alt="promo asuransi" />
+                    )}
                   </LoanRankThirdColumn>
                   <LoanRankFourthColumn>
                     <FourthColumnWrapper1>
@@ -986,7 +990,9 @@ export const SpecialRateResults = ({
                             currentLanguage,
                           )}
                     </StyledTextIsActiveBlueInstallment>
-                    {freeInsurance && <img src={PromoAsuransi} />}
+                    {freeInsurance && (
+                      <img src={PromoAsuransi} alt="promo asuransi" />
+                    )}
                   </LoanRankThirdColumn>
                   <LoanRankFourthColumn>
                     <FourthColumnWrapper1>

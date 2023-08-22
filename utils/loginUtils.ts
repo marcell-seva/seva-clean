@@ -1,4 +1,5 @@
 import { LocalStorageKey } from 'utils/enum'
+import { waitingCreditQualificationUrl } from './helpers/routes'
 
 export const getPageBeforeLogin = () => {
   return localStorage.getItem(LocalStorageKey.PageBeforeLogin)
@@ -14,4 +15,10 @@ export const getPageBeforeLoginExternal = () => {
 
 export const savePageBeforeLoginExternal = (page: string) => {
   localStorage.setItem(LocalStorageKey.PageBeforeLoginExternal, page)
+}
+
+export const restrictedAutoNavigationRoutes = [waitingCreditQualificationUrl]
+
+export const isGoingToRestrictedRoutes = (route: string) => {
+  return restrictedAutoNavigationRoutes.includes(route)
 }
