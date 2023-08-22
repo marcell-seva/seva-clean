@@ -594,23 +594,17 @@ const KtpForm = () => {
                 <DatePicker
                   title="Tanggal Lahir"
                   placeholder="DD/MM/YYYY"
-                  value={values.birthdate ? dayjs(values.birthdate) : null}
+                  value={new Date(values.birthdate)}
+                  min={dayjs().add(-100, 'year').toDate()}
+                  max={dayjs().add(-17, 'year').toDate()}
                   name="birthdate"
-                  onChange={(_date, dateString) => {
-                    setFieldValue('birthdate', dateString)
-                  }}
-                  disabledDate={(date) => {
-                    return (
-                      date.isAfter(dayjs().add(-1, 'day')) ||
-                      date.isBefore(dayjs('1900'))
-                    )
+                  data-testid={elementId.DatePicker.DOB}
+                  onConfirm={(val: Date) => {
+                    setFieldValue('birthdate', dayjs(val).format('YYYY-MM-DD'))
                   }}
                   isError={!!errors.birthdate && touched.birthdate}
                   errorMessage={errors.birthdate}
-                  onBlurInput={(e) => {
-                    handleBlur(e)
-                  }}
-                  data-testid={elementId.DatePicker.DOB}
+                  onBlurInput={(e) => handleBlur(e)}
                 />
               </div>
               <Button

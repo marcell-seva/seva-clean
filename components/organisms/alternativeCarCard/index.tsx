@@ -89,6 +89,7 @@ export const AlternativeCarCard = ({
           data-testid={elementId.CarRecommendation.Image}
           width={180}
           height={135}
+          loading="lazy"
         />
         {label ?? (
           <LabelPromo

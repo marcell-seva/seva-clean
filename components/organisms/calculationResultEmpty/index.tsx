@@ -11,6 +11,7 @@ export const CalculationResultEmpty = () => {
         width={500}
         height={500}
         className={styles.mainImage}
+        alt="loan calculator"
       />
       <span className={styles.text}>
         Isi data di atas untuk

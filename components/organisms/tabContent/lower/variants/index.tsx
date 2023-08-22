@@ -135,7 +135,7 @@ const TabContentLowerVariant = ({
             className={styles.rowWithGap}
             data-testid={elementId.Text + 'harga'}
           >
-            <img src={rpIcon} />
+            <img src={rpIcon} alt="rp icon" />
             <h2 className={styles.textTitleSection}>Harga</h2>
           </div>
           <div>

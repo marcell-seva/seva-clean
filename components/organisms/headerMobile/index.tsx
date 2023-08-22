@@ -119,6 +119,7 @@ export const HeaderMobile = ({
               <img
                 src={LogoPrimary}
                 height={30}
+                width="100%"
                 alt="seva"
                 data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
               />

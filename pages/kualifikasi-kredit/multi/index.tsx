@@ -692,18 +692,14 @@ const MultiKK = () => {
               <DatePicker
                 title="Tanggal Lahir"
                 placeholder="DD/MM/YYYY"
-                value={multiForm.dob ? dayjs(multiForm.dob) : null}
+                value={dayjs(multiForm.dob).toDate()}
+                min={dayjs().add(-100, 'year').toDate()}
+                max={dayjs().add(-17, 'year').toDate()}
                 name="dob"
-                onChange={(_date, dateString) => {
-                  onChoose('dob', dateString)
-                }}
-                disabledDate={(date) => {
-                  return (
-                    date.isAfter(dayjs().add(-1, 'day')) ||
-                    date.isBefore(dayjs('1900'))
-                  )
-                }}
                 data-testid={elementId.DatePicker.DOB}
+                onConfirm={(val: Date) => {
+                  onChoose('dob', dayjs(val).format('YYYY-MM-DD'))
+                }}
               />
             ) : (
               <></>

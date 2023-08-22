@@ -7,7 +7,11 @@ import { removeInformationWhenLogout } from 'utils/logoutUtils'
 import { saveSessionStorage } from 'utils/handler/sessionStorage'
 import { setAmplitudeUserId } from './amplitude'
 import { getToken } from 'utils/handler/auth'
-import { CustomerKtpSeva } from 'utils/types/utils'
+import {
+  CustomerKtpSeva,
+  DeleteAccountRequestType,
+  UpdateProfileType,
+} from 'utils/types/utils'
 
 export const getCustomerInfoSeva = () => {
   return api.getUserInfo()
@@ -95,4 +99,27 @@ export const saveKtpSpouse = (
     { spouseKtpObj: { ...data }, isSpouse: true },
     { ...config, headers: { Authorization: getToken()?.idToken } },
   )
+}
+
+export const deleteAccount = (
+  payload: DeleteAccountRequestType,
+  config?: AxiosRequestConfig,
+) => {
+  return api.postDeleteAccount(
+    {
+      phoneNumber: payload.phoneNumber,
+      createdBy: payload.reason,
+    },
+    { ...config, headers: { Authorization: getToken()?.idToken } },
+  )
+}
+
+export const updateProfile = (
+  data: UpdateProfileType,
+  config?: AxiosRequestConfig,
+) => {
+  return api.postUpdateProfile(data, {
+    ...config,
+    headers: { Authorization: getToken()?.idToken },
+  })
 }

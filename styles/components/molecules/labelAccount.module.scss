@@ -1,0 +1,23 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.badge {
+  width: fit-content;
+  background-color: #{$shades-sky-blue-5};
+  border-radius: 8px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  .badge__icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  span {
+    @include body(semiBold);
+    color: #{$secondary-blue};
+  }
+}

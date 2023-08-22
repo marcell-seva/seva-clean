@@ -257,7 +257,7 @@ export const CarBrandRecommendationCreditTab = ({
                   </StyledContainerCarNotAvailable>
                 ) : (
                   <StyledContainerCarNotAvailable>
-                    <img src={ImageCarNotExist} />
+                    <img src={ImageCarNotExist} alt="image car not exist" />
                     <StyledTextCarNotAvailableSubtitle>
                       Sesuaikan nilai DP dan tenormu untuk melihat mobil{' '}
                       {isCheckedGroups} dengan peluang kredit yang mudah

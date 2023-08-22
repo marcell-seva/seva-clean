@@ -58,6 +58,7 @@ const TestimonyWidget = () => {
                 alt={item.pictureName}
                 width={199}
                 height={149}
+                loading="lazy"
               />
               <CardShadow
                 ref={cardRef}

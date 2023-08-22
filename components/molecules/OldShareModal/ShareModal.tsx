@@ -60,7 +60,9 @@ export const useShareModal = () => {
 
     const shareModals: ShareButton[] = [
       {
-        icon: <img src={WhatsappLogo} width={56} height={56} />,
+        icon: (
+          <img src={WhatsappLogo} width={56} height={56} alt="whatsapp logo" />
+        ),
         name: 'Whatsapp',
         url: `https://api.whatsapp.com/send?text=Cek mobil yang ini deh. Siapa tahu cocok dan masuk budget ${urlOrigin}`,
       },
@@ -71,12 +73,14 @@ export const useShareModal = () => {
       //   url: `https://www.facebook.com/sharer/sharer.php?u=${urlOrigin}&quote=Saya lagi lihat-lihat mobil yang ini di SEVA. Gimana pendapat kamu? Cocok ga?`,
       // },
       {
-        icon: <img src={TwitterLogo} width={56} height={56} />,
+        icon: (
+          <img src={TwitterLogo} width={56} height={56} alt="twitter logo" />
+        ),
         name: 'Twitter',
         url: `https://twitter.com/intent/tweet?url=${urlOrigin}&text=Saya lagi lihat-lihat mobil yang ini di SEVA. Gimana pendapat kamu? Cocok ga? 👉🏻`,
       },
       {
-        icon: <img src={EmailLogo} width={56} height={56} />,
+        icon: <img src={EmailLogo} width={56} height={56} alt="email logo" />,
         name: 'Email',
         url: `mailto:user@example.com?subject=Cek mobil yang ini deh, oke ga?&body=Siapa tahu kamu juga ingin kasih pendapat atau tertarik ikut cek mobil yang lainnya.%0D%0AKalau saya, lagi lihat-lihat mobil yang ini 👉🏻 ${urlOrigin}`,
       },

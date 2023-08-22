@@ -12,7 +12,12 @@ export const ImageUnavailable = ({ type }: Props) => {
   return (
     <Container>
       {/* <img src={isMobile ? ImageNotAvailable : ImageNotAvailableDesktop} /> */}
-      <img src={ImageNotAvailableDesktop} width={217} height={168} />
+      <img
+        src={ImageNotAvailableDesktop}
+        width={217}
+        height={168}
+        alt="image not available"
+      />
       <Title>Gambar {type} untuk mobil ini belum tersedia</Title>
     </Container>
   )

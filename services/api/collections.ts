@@ -77,6 +77,11 @@ const ktp = {
   saveKtpSpouse: `${baseUrl}/customers/submit-ktp-spouse-only`,
 }
 
+const profile = {
+  deleteAccount: `${baseUrl}/api/v1/archive-customer`,
+  updateProfile: `${baseUrl}/customers/update-profile`,
+}
+
 export const collections = {
   utils,
   product,
@@ -87,4 +92,5 @@ export const collections = {
   upload,
   creditQualification,
   ktp,
+  profile,
 }

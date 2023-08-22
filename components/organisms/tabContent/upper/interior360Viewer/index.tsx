@@ -48,7 +48,11 @@ export const Interior360ViewerTab = ({ isShowAnnouncementBox }: Props) => {
   return (
     <div style={{ marginTop: isShowAnnouncementBox ? '24px' : '0px' }}>
       {getImage()?.includes('StaticImage') ? (
-        <img className={styles.staticImage} src={getImage()}></img>
+        <img
+          className={styles.staticImage}
+          src={getImage()}
+          alt="interior"
+        ></img>
       ) : (
         renderNonStatic()
       )}

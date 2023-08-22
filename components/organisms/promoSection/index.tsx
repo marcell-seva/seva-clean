@@ -24,6 +24,7 @@ import { CarVariantRecommendation } from 'utils/types/utils'
 import { variantListUrl } from 'utils/helpers/routes'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 type PromoSectionProps = {
   setPromoName?: (value: string) => void
@@ -178,10 +179,13 @@ const PromoSection = ({
                 : elementId.Homepage.Promo.DetailPromo
             }
           >
-            <img
+            <Image
               src={promoBannerCumaDiSEVA}
               className={styles.promoBannerSmall}
-              height="156"
+              height={156}
+              width={208}
+              alt="promo seva"
+              loading="lazy"
             />
             <div>
               <p className={styles.textPromoBanner}>
@@ -208,10 +212,13 @@ const PromoSection = ({
             }}
             data-testid={elementId.Homepage.Promo.DetailPromo}
           >
-            <img
+            <Image
               src={promoBannerTSO}
               className={styles.promoBannerSmall}
-              height="156"
+              height={156}
+              width={208}
+              alt="promo seva"
+              loading="lazy"
             />
 
             <div
@@ -243,10 +250,13 @@ const PromoSection = ({
             }}
             data-testid={elementId.Homepage.Promo.DetailPromo}
           >
-            <img
+            <Image
               src={promoTradeIn}
               className={styles.promoBannerSmall}
-              height="156"
+              height={156}
+              width={208}
+              alt="promo seva"
+              loading="lazy"
             />
 
             <div

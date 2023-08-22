@@ -68,11 +68,17 @@ const MainHeroLP = ({ onCityIconClick, onCtaClick }: MainHeroLPProps) => {
             </Button>
           </div>
         </div>
-        <Image className={styles.mainCar} src={MainHeroImage} alt="raize" />
+        <Image
+          className={styles.mainCar}
+          src={MainHeroImage}
+          alt="raize"
+          loading="lazy"
+        />
         <Image
           className={styles.supergraphicBg}
           src={SupergraphicImage}
           alt="supergraphic"
+          loading="lazy"
         />
       </div>
     </>
