@@ -14,8 +14,8 @@ export const sendSMSGeneration = (
   return api.postSendSMSGeneration(recaptchaToken, phoneNumber)
 }
 
-export const verifyOTPGeneration = (otpCode: string, phoneNumber: string) => {
-  return api.postVerifyOTPGeneration(otpCode, phoneNumber)
+export const verifyOTPGeneration = (code: string, phoneNumber: string) => {
+  return api.postVerifyOTPGeneration(code, phoneNumber)
 }
 
 export const getStoredContactFormData = () => {
