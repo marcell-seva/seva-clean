@@ -6,6 +6,7 @@ import {
 import {
   Article,
   CityOtrOption,
+  FinalLoan,
   LoanCalculatorIncludePromoPayloadType,
   LoanCalculatorInsuranceAndPromoType,
   SpecialRateListWithPromoType,
@@ -33,7 +34,13 @@ import {
   LeadsFormSecondary,
 } from 'components/organisms'
 import styles from 'styles/components/organisms/creditTab.module.scss'
-import { Button, Gap, IconCalculator, IconLoading } from 'components/atoms'
+import {
+  Button,
+  Gap,
+  IconCalculator,
+  IconLoading,
+  Toast,
+} from 'components/atoms'
 import {
   FormPromoCode,
   FormSelectCarVariant,
@@ -194,6 +201,20 @@ export const CreditTab = () => {
     LocalStorageKey.referralTemanSeva,
   )
   const [isUserHasReffcode, setIsUserHasReffcode] = useState(false)
+  const [isOpenToast, setIsOpenToast] = useState(false)
+  const [finalLoan, setFinalLoan] = useState<FinalLoan>({
+    selectedInsurance: {},
+    selectedPromoFinal: [],
+    tppFinal: 0,
+    tdpBeforePromo: 0,
+    installmentFinal: 0,
+    interestRateFinal: 0,
+    interestRateBeforePromo: 0,
+    installmentBeforePromo: 0,
+  })
+  const [toastMessage, setToastMessage] = useState(
+    'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+  )
 
   const getAutofilledCityData = () => {
     // related to logic inside component "FormSelectCity"
@@ -337,11 +358,6 @@ export const CreditTab = () => {
   }, [carModelDetails, carVariantDetails, recommendation])
 
   useEffect(() => {
-    if (router.query.selectedVariantId) {
-      autofillCarModelAndVariantData()
-    }
-  }, [router.query.selectedVariantId])
-  useEffect(() => {
     if (forms.model?.modelId && forms.city) {
       fetchCarVariant()
     }
@@ -431,7 +447,7 @@ export const CreditTab = () => {
         (item) => item.id === router.query?.selectedVariantId,
       ) || []
     )
-  }, [carModelDetails, router.query?.selectedVariantId])
+  }, [carModelDetails])
 
   useEffect(() => {
     if (carModelDetails && flag === TrackerFlag.Init) {
@@ -795,14 +811,14 @@ export const CreditTab = () => {
       const result: any = await checkPromoCodeGias(forms.promoCode)
       setIsLoadingPromoCode(false)
 
-      if (result.data.message === 'valid promo code') {
+      if (result.message === 'valid promo code') {
         trackVariantListPageCodeSuccess(forms.promoCode)
-        if (result.data.citySelector) {
+        if (result.citySelector) {
           const citygias = {
-            id: result.data.citySelector.id,
-            cityName: result.data.citySelector.cityName,
-            cityCode: result.data.citySelector.cityCode,
-            province: result.data.citySelector.province,
+            id: result.citySelector.id,
+            cityName: result.citySelector.cityName,
+            cityCode: result.citySelector.cityCode,
+            province: result.citySelector.province,
           }
           saveCity(citygias)
         }
@@ -848,66 +864,94 @@ export const CreditTab = () => {
       const isAppliedSDD01Promo = currentTenurePermutation[0]?.promoArr.some(
         (a) => a.promoId === 'SDD01',
       )
-      const responseInsurance = await getLoanCalculatorInsurance({
-        modelId: forms.model?.modelId ?? '',
-        cityCode: forms.city.cityCode,
-        tenure: allTenure[i],
-      })
-      // await get promo list API with best insurance
 
-      console.log('qwe responseInsurance', responseInsurance)
-      tempArr.push({
-        tenure: allTenure[i],
-        allInsuranceList: responseInsurance,
-        selectedInsurance: responseInsurance.filter(
-          (item: any) => item.value === 'FC',
-        )[0],
-        applied: currentTenurePermutation[0]?.applied,
-        allPromoList: generateAllBestPromoList(
-          isUserHasReffcode // check for reffcode to remove promo id CDS02
-            ? currentTenurePermutation[0]?.promoArr.filter(
-                (a) => a.promoId !== 'CDS01' && a.promoId !== 'CDS02',
-              )
-            : currentTenurePermutation[0]?.promoArr.filter(
-                (a) => a.promoId !== 'CDS01',
-              ),
-        ),
-        allPromoListOnlyFullComprehensive: generateAllBestPromoList(
-          currentTenurePermutation[0]?.promoArr,
-        ), // this API return promo list related to full comprehensive
-        selectedPromo: generateAllBestPromoList(
-          isUserHasReffcode
-            ? currentTenurePermutation[0]?.promoArr.filter(
-                (a) => a.promoId !== 'CDS02',
-              )
-            : currentTenurePermutation[0]?.promoArr,
-        ), // by default use all because it is FC insurance promo
-        tdpBeforePromo: currentTenurePermutation[0]?.totalFirstPayment,
-        tdpAfterPromo: getTdpAffectedByPromo(currentTenurePermutation[0]),
-        tdpWithPromo: getTdpAffectedByPromo(currentTenurePermutation[0]),
-        installmentBeforePromo: currentTenurePermutation[0]?.installment,
-        installmentAfterPromo: getInstallmentAffectedByPromo(
-          currentTenurePermutation[0],
-        ),
-        installmentWithPromo: getInstallmentAffectedByPromo(
-          currentTenurePermutation[0],
-        ),
-        interestRateBeforePromo: currentTenurePermutation[0].interestRate,
-        interestRateWithPromo: getInterestRateAffectedByPromo(
-          currentTenurePermutation[0],
-        ),
-        interestRateAfterPromo: getInterestRateAffectedByPromo(
-          currentTenurePermutation[0],
-        ),
-        subsidiDp: isAppliedSDD01Promo
-          ? currentTenurePermutation[0]?.subsidiDp
-          : 0,
-      })
+      try {
+        const responseInsurance = await getLoanCalculatorInsurance({
+          modelId: forms.model?.modelId ?? '',
+          cityCode: forms.city.cityCode,
+          tenure: allTenure[i],
+        })
+
+        tempArr.push({
+          tenure: allTenure[i],
+          allInsuranceList: responseInsurance,
+          selectedInsurance: responseInsurance.filter(
+            (item: any) => item.value === 'FC',
+          )[0],
+          applied: currentTenurePermutation[0]?.applied,
+          allPromoList: generateAllBestPromoList(
+            isUserHasReffcode // check for reffcode to remove promo id CDS02
+              ? currentTenurePermutation[0]?.promoArr.filter(
+                  (a) => a.promoId !== 'CDS01' && a.promoId !== 'CDS02',
+                )
+              : currentTenurePermutation[0]?.promoArr.filter(
+                  (a) => a.promoId !== 'CDS01',
+                ),
+          ),
+          allPromoListOnlyFullComprehensive: generateAllBestPromoList(
+            currentTenurePermutation[0]?.promoArr,
+          ), // this API return promo list related to full comprehensive
+          selectedPromo: generateAllBestPromoList(
+            isUserHasReffcode
+              ? currentTenurePermutation[0]?.promoArr.filter(
+                  (a) => a.promoId !== 'CDS02',
+                )
+              : currentTenurePermutation[0]?.promoArr,
+          ), // by default use all because it is FC insurance promo
+          tdpBeforePromo: currentTenurePermutation[0]?.totalFirstPayment,
+          tdpAfterPromo: getTdpAffectedByPromo(currentTenurePermutation[0]),
+          tdpWithPromo: getTdpAffectedByPromo(currentTenurePermutation[0]),
+          installmentBeforePromo: currentTenurePermutation[0]?.installment,
+          installmentAfterPromo: getInstallmentAffectedByPromo(
+            currentTenurePermutation[0],
+          ),
+          installmentWithPromo: getInstallmentAffectedByPromo(
+            currentTenurePermutation[0],
+          ),
+          interestRateBeforePromo: currentTenurePermutation[0].interestRate,
+          interestRateWithPromo: getInterestRateAffectedByPromo(
+            currentTenurePermutation[0],
+          ),
+          interestRateAfterPromo: getInterestRateAffectedByPromo(
+            currentTenurePermutation[0],
+          ),
+          subsidiDp: isAppliedSDD01Promo
+            ? currentTenurePermutation[0]?.subsidiDp
+            : 0,
+        })
+      } catch (e: any) {
+        if (e?.response?.data?.message) {
+          setToastMessage(`${e?.response?.data?.message}`)
+        } else {
+          setToastMessage(
+            'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+          )
+        }
+        setIsOpenToast(true)
+      }
     }
     setIsLoadingInsuranceAndPromo(false)
     scrollToResult()
 
-    console.log('qwe tempArr', tempArr)
+    const selectedData =
+      tempArr.sort(
+        (
+          a: LoanCalculatorInsuranceAndPromoType,
+          b: LoanCalculatorInsuranceAndPromoType,
+        ) => b.tenure - a.tenure,
+      )[0] ?? null
+
+    setFinalLoan({
+      selectedInsurance: selectedData.selectedInsurance,
+      selectedPromoFinal: selectedData.selectedPromo,
+      tppFinal: selectedData.tdpAfterPromo,
+      installmentFinal: selectedData.installmentAfterPromo,
+      interestRateFinal: selectedData.interestRateAfterPromo,
+      installmentBeforePromo: selectedData.installmentBeforePromo,
+      interestRateBeforePromo: selectedData.interestRateBeforePromo,
+      tdpBeforePromo: selectedData.tdpBeforePromo,
+    })
+
     setInsuranceAndPromoForAllTenure(tempArr)
   }
 
@@ -985,7 +1029,6 @@ export const CreditTab = () => {
           const result = response.data.reverse()
           const filteredResult = getFilteredCalculationResults(result)
           setCalculationResult(filteredResult)
-          console.log('qwe filteredResult', filteredResult)
           generateSelectedInsuranceAndPromo(filteredResult)
 
           // select loan with the longest tenure as default
@@ -1002,8 +1045,15 @@ export const CreditTab = () => {
           setCalculationApiPayload(payload)
           // scrollToResult()
         })
-        .catch(() => {
-          // TODO add error toast
+        .catch((error: any) => {
+          if (error?.response?.data?.message) {
+            setToastMessage(`${error?.response?.data?.message}`)
+          } else {
+            setToastMessage(
+              'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+            )
+          }
+          setIsOpenToast(true)
         })
         .finally(() => {
           setIsLoadingCalculation(false)
@@ -1085,28 +1135,46 @@ export const CreditTab = () => {
         : 'REGULAR'
 
     saveLocalStorage(LocalStorageKey.SelectedRateType, rateType)
-    saveLocalStorage(
-      LocalStorageKey.SelectablePromo,
-      JSON.stringify(selectedPromoTenure[0]),
-    )
+
+    const dataWithoutPromo = {
+      ...selectedPromoTenure[0],
+
+      selectedInsurance: finalLoan.selectedInsurance,
+      selectedPromo: finalLoan.selectedPromoFinal,
+      tdpAfterPromo: finalLoan.tppFinal,
+      installmentAfterPromo: finalLoan.installmentFinal,
+      interestRateAfterPromo: finalLoan.interestRateFinal,
+      installmentBeforePromo: finalLoan.installmentBeforePromo,
+      interestRateBeforePromo: finalLoan.interestRateBeforePromo,
+      tdpBeforePromo: finalLoan.tdpBeforePromo,
+    }
+    if (
+      finalLoan.tppFinal !== 0 &&
+      finalLoan.selectedInsurance.value.includes('FC')
+    ) {
+      saveLocalStorage(
+        LocalStorageKey.SelectablePromo,
+        JSON.stringify(selectedPromoTenure[0]),
+      )
+    } else {
+      saveLocalStorage(
+        LocalStorageKey.SelectablePromo,
+        JSON.stringify(dataWithoutPromo),
+      )
+    }
 
     const installment =
-      selectedPromoTenure[0].selectedPromo.length > 0
-        ? selectedPromoTenure[0].installmentAfterPromo ||
-          selectedPromoTenure[0].installmentBeforePromo
-        : selectedPromoTenure[0].installmentBeforePromo
+      finalLoan.installmentFinal !== 0
+        ? finalLoan.installmentFinal
+        : finalLoan.installmentBeforePromo
 
     const tpp =
-      selectedPromoTenure[0].selectedPromo.length > 0
-        ? selectedPromoTenure[0].tdpAfterPromo ||
-          selectedPromoTenure[0].tdpBeforePromo
-        : selectedPromoTenure[0].tdpBeforePromo
+      finalLoan.tppFinal !== 0 ? finalLoan.tppFinal : finalLoan.tdpBeforePromo
 
     const rate =
-      selectedPromoTenure[0].selectedPromo.length > 0
-        ? selectedPromoTenure[0].interestRateAfterPromo ||
-          selectedPromoTenure[0].interestRateBeforePromo
-        : selectedPromoTenure[0].interestRateBeforePromo
+      finalLoan.interestRateFinal !== 0
+        ? finalLoan.interestRateFinal
+        : finalLoan.interestRateBeforePromo
 
     const moengageAttribute = {
       brand: forms.model?.brandName,
@@ -1375,19 +1443,21 @@ export const CreditTab = () => {
               ? renderErrorMessageEmpty()
               : null}
           </div>
-          <div id="loan-calculator-form-promo-code">
-            <FormPromoCode
-              emitOnChange={handleOnChangePromoCode}
-              emitPromoCodeValidResult={handlePromoCodeValidResult}
-              isLoadingPromoCode={isLoadingPromoCode}
-              isErrorPromoCode={isErrorPromoCode}
-              isSuccessPromoCode={isSuccessPromoCode}
-              passedResetPromoCodeStatusFunc={resetPromoCodeStatus}
-              passedCheckPromoCodeFunc={checkPromoCode}
-              onClearInput={clearPromoCodeHandler}
-              value={forms.promoCode}
-            />
-          </div>
+          {false && (
+            <div id="loan-calculator-form-promo-code">
+              <FormPromoCode
+                emitOnChange={handleOnChangePromoCode}
+                emitPromoCodeValidResult={handlePromoCodeValidResult}
+                isLoadingPromoCode={isLoadingPromoCode}
+                isErrorPromoCode={isErrorPromoCode}
+                isSuccessPromoCode={isSuccessPromoCode}
+                passedResetPromoCodeStatusFunc={resetPromoCodeStatus}
+                passedCheckPromoCodeFunc={checkPromoCode}
+                onClearInput={clearPromoCodeHandler}
+                value={forms.promoCode}
+              />
+            </div>
+          )}
 
           <Button
             // not using "disabled" attrib because some func need to be run
@@ -1399,10 +1469,15 @@ export const CreditTab = () => {
             }
             size={ButtonSize.Big}
             onClick={onClickCalculate}
-            disabled={isDisableCtaCalculate}
+            disabled={
+              isDisableCtaCalculate ||
+              isLoadingCalculation ||
+              isLoadingInsuranceAndPromo
+            }
+            style={{ marginTop: 32 }}
             data-testid={elementId.PDP.Button.HitungKemampuan}
           >
-            {isLoadingCalculation ? (
+            {isLoadingCalculation || isLoadingInsuranceAndPromo ? (
               <div className={`${styles.iconWrapper} rotateAnimation`}>
                 <IconLoading width={14} height={14} color="#FFFFFF" />
               </div>
@@ -1419,6 +1494,7 @@ export const CreditTab = () => {
 
       {calculationResult.length > 0 &&
       !isLoadingCalculation &&
+      !isLoadingInsuranceAndPromo &&
       isDataSubmitted ? (
         <>
           <div className={styles.formCardCalculationResult}>
@@ -1435,6 +1511,7 @@ export const CreditTab = () => {
               formData={forms}
               insuranceAndPromoForAllTenure={insuranceAndPromoForAllTenure}
               calculationApiPayload={calculationApiPayload}
+              setFinalLoan={setFinalLoan}
             />
           </div>
           {carRecommendations.length > 0 && (
@@ -1449,12 +1526,7 @@ export const CreditTab = () => {
             />
           )}
 
-          <div
-            className={`${styles.benefitCard} ${
-              carRecommendations.length === 0 &&
-              styles.benefitCardAdditonalStyle
-            } `}
-          >
+          <div className={styles.benefitCard}>
             <CreditCualificationBenefit
               additionalContainerStyle={styles.benefitAdditionalStyle}
             />
@@ -1487,6 +1559,15 @@ export const CreditTab = () => {
         onClickCloseButton={onCloseQualificationPopUp}
         formData={forms}
         selectedLoan={selectedLoan}
+      />
+
+      <Toast
+        width={339}
+        open={isOpenToast}
+        text={toastMessage}
+        typeToast={'error'}
+        onCancel={() => setIsOpenToast(false)}
+        closeOnToastClick
       />
     </div>
   )

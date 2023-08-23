@@ -1037,3 +1037,14 @@ export interface UpdateProfileType {
   marital: string
   email: string | null
 }
+
+export interface FinalLoan {
+  selectedPromoFinal: PromoItemType[]
+  selectedInsurance: any
+  tppFinal: number | undefined
+  installmentFinal: number | undefined
+  interestRateFinal: number | undefined
+  installmentBeforePromo: number
+  tdpBeforePromo: number
+  interestRateBeforePromo: number
+}

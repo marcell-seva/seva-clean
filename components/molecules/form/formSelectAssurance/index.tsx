@@ -31,6 +31,9 @@ interface Props {
   calculationApiPayload?: LoanCalculatorIncludePromoPayloadType
   isLoadingApiPromoList: boolean
   setIsLoadingApiPromoList: (value: boolean) => void
+  promoInsuranceTemp: LoanCalculatorInsuranceAndPromoType[]
+  setPromoInsuranceTemp: (value: LoanCalculatorInsuranceAndPromoType[]) => void
+  onOpenInsuranceTooltip: () => void
 }
 
 const FormSelectAssurance = ({
@@ -39,20 +42,18 @@ const FormSelectAssurance = ({
   calculationApiPayload,
   isLoadingApiPromoList,
   setIsLoadingApiPromoList,
+  promoInsuranceTemp,
+  setPromoInsuranceTemp,
+  onOpenInsuranceTooltip,
 }: Props) => {
-  const {
-    insuranceAndPromo: promoInsurance,
-    setInsuranceAndPromo: setPromoInsurance,
-  } = useContextCalculator()
-
-  const indexForSelectedTenure = promoInsurance.findIndex(
+  const indexForSelectedTenure = promoInsuranceTemp.findIndex(
     (obj: LoanCalculatorInsuranceAndPromoType) => {
       return obj.tenure === selectedTenure
     },
   )
   const isLoading = false
   const isCarDontHavePromo =
-    promoInsurance[indexForSelectedTenure]?.allPromoListOnlyFullComprehensive
+    promoInsuranceTemp[indexForSelectedTenure].allPromoListOnlyFullComprehensive
       .length === 0
 
   const referralCodeLocalStorage = getLocalStorage<string>(
@@ -86,53 +87,57 @@ const FormSelectAssurance = ({
 
   const updateDataInsuranceAndPromo = (
     responseData: SpecialRateListWithPromoType,
+    chosenInsuranceItem: any,
   ) => {
     const isAppliedSDD01Promo = responseData.promoArr.some(
       (a) => a.promoId === 'SDD01',
     )
 
-    const newList = [...promoInsurance]
-    newList[indexForSelectedTenure].allPromoList = generateAllBestPromoList(
-      isUserHasReffcode
-        ? responseData.promoArr.filter(
-            (a: PromoItemType) =>
-              a.promoId !== 'CDS01' && a.promoId !== 'CDS02',
-          )
-        : responseData.promoArr.filter(
-            (a: PromoItemType) => a.promoId !== 'CDS01',
-          ),
+    const newState = promoInsuranceTemp.map(
+      (obj: LoanCalculatorInsuranceAndPromoType) => {
+        // 👇️ if tenure equals currently selected, update object property
+        if (obj.tenure === selectedTenure) {
+          return {
+            ...obj,
+            selectedInsurance: chosenInsuranceItem,
+            allPromoList: generateAllBestPromoList(
+              isUserHasReffcode
+                ? responseData.promoArr.filter(
+                    (a: PromoItemType) =>
+                      a.promoId !== 'CDS01' && a.promoId !== 'CDS02',
+                  )
+                : responseData.promoArr.filter(
+                    (a: PromoItemType) => a.promoId !== 'CDS01',
+                  ),
+            ),
+            selectedPromo: generateAllBestPromoList(
+              isUserHasReffcode
+                ? responseData.promoArr.filter(
+                    (a: PromoItemType) => a.promoId !== 'CDS02',
+                  )
+                : responseData.promoArr,
+            ),
+            applied: responseData.applied,
+            tdpBeforePromo: responseData.totalFirstPayment,
+            tdpAfterPromo: getTdpAffectedByPromo(responseData),
+            tdpWithPromo: getTdpAffectedByPromo(responseData),
+            installmentBeforePromo: responseData.installment,
+            installmentAfterPromo: getInstallmentAffectedByPromo(responseData),
+            installmentWithPromo: getInstallmentAffectedByPromo(responseData),
+            interestRateBeforePromo: responseData.interestRate,
+            interestRateWithPromo: getInterestRateAffectedByPromo(responseData),
+            interestRateAfterPromo:
+              getInterestRateAffectedByPromo(responseData),
+            subsidiDp: isAppliedSDD01Promo ? responseData.subsidiDp : 0,
+          }
+        }
+
+        // 👇️ otherwise return the object as is
+        return obj
+      },
     )
-    // apply all "best" promo everytime insurance change
-    newList[indexForSelectedTenure].selectedPromo = generateAllBestPromoList(
-      isUserHasReffcode
-        ? responseData.promoArr.filter(
-            (a: PromoItemType) => a.promoId !== 'CDS02',
-          )
-        : responseData.promoArr,
-    )
-    newList[indexForSelectedTenure].applied = responseData.applied
-    newList[indexForSelectedTenure].tdpBeforePromo =
-      responseData.totalFirstPayment
-    newList[indexForSelectedTenure].tdpAfterPromo =
-      getTdpAffectedByPromo(responseData)
-    newList[indexForSelectedTenure].tdpWithPromo =
-      getTdpAffectedByPromo(responseData)
-    newList[indexForSelectedTenure].installmentBeforePromo =
-      responseData.installment
-    newList[indexForSelectedTenure].installmentAfterPromo =
-      getInstallmentAffectedByPromo(responseData)
-    newList[indexForSelectedTenure].installmentWithPromo =
-      getInstallmentAffectedByPromo(responseData)
-    newList[indexForSelectedTenure].interestRateBeforePromo =
-      responseData.interestRate
-    newList[indexForSelectedTenure].interestRateWithPromo =
-      getInterestRateAffectedByPromo(responseData)
-    newList[indexForSelectedTenure].interestRateAfterPromo =
-      getInterestRateAffectedByPromo(responseData)
-    newList[indexForSelectedTenure].subsidiDp = isAppliedSDD01Promo
-      ? responseData.subsidiDp
-      : 0
-    setPromoInsurance(newList)
+
+    setPromoInsuranceTemp(newState)
   }
 
   const onClickItem = (item: any) => {
@@ -150,7 +155,7 @@ const FormSelectAssurance = ({
           )
 
           if (resultForCurrentTenure.length > 0) {
-            updateDataInsuranceAndPromo(resultForCurrentTenure[0])
+            updateDataInsuranceAndPromo(resultForCurrentTenure[0], item)
           } else {
             return
           }
@@ -176,7 +181,7 @@ const FormSelectAssurance = ({
           asuransiKombinasi: item.value,
         })
           .then((response) => {
-            updateDataInsuranceAndPromo(response.data[0])
+            updateDataInsuranceAndPromo(response.data[0], item)
           })
           .finally(() => {
             setIsLoadingApiPromoList(false)
@@ -184,14 +189,12 @@ const FormSelectAssurance = ({
       }
     }
 
-    setPromoInsurance((prev) => [
-      ...prev,
-      (promoInsurance[indexForSelectedTenure].selectedInsurance = item),
-    ])
     onChooseInsuranceItem()
   }
 
   const renderInsuranceItem = (item: any, index: number) => {
+    const selected =
+      promoInsuranceTemp[indexForSelectedTenure].selectedInsurance.value
     return (
       <div
         className={styles.selectFormWrapper}
@@ -202,7 +205,7 @@ const FormSelectAssurance = ({
         <span
           className={clsx({
             [styles.textForm]: true,
-            [styles.textFormBold]: item.value === 'FC',
+            [styles.textFormBold]: item.value === selected,
           })}
         >
           {item.label}{' '}
@@ -215,8 +218,8 @@ const FormSelectAssurance = ({
           )}
         </span>
         <div>
-          {promoInsurance[indexForSelectedTenure]?.selectedInsurance?.value ===
-          item.value ? (
+          {promoInsuranceTemp[indexForSelectedTenure].selectedInsurance
+            .value === item.value ? (
             <IconRadioButtonActive width={24} height={24} />
           ) : (
             <IconRadioButtonInactive width={24} height={24} />
@@ -242,7 +245,13 @@ const FormSelectAssurance = ({
       <div className={styles.container}>
         <div className={styles.wrapperHeader}>
           <div className={styles.textTitle}>
-            Pilih Asuransi <IconInfo width={16} height={16} color="#AFB3BA" />
+            Pilih Asuransi{' '}
+            <IconInfo
+              width={16}
+              height={16}
+              color="#AFB3BA"
+              onClick={onOpenInsuranceTooltip}
+            />
           </div>
         </div>
         {isCarDontHavePromo ? (
@@ -257,8 +266,8 @@ const FormSelectAssurance = ({
         <div className={styles.selectFormContainer}>
           {isLoading
             ? [...Array(4)].map((x, i) => renderShimmerItem(i))
-            : promoInsurance[indexForSelectedTenure]?.allInsuranceList?.map(
-                (item, index) => {
+            : promoInsuranceTemp[indexForSelectedTenure].allInsuranceList.map(
+                (item: any, index: any) => {
                   return renderInsuranceItem(item, index)
                 },
               )}

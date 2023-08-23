@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import styles from 'styles/components/organisms/calculationResult.module.scss'
 import {
+  FinalLoan,
   FormLCState,
   LoanCalculatorIncludePromoPayloadType,
   LoanCalculatorInsuranceAndPromoType,
@@ -22,6 +23,7 @@ import elementId from 'helpers/elementIds'
 import PromoBottomSheet from '../promoBottomSheet'
 import { LanguageCode } from 'utils/enum'
 import { useContextCalculator } from 'services/context/calculatorContext'
+import { InsuranceTooltip } from '../insuranceTooltip'
 
 const LogoAcc = '/revamp/icon/logo-acc.webp'
 const LogoTaf = '/revamp/icon/logo-taf.webp'
@@ -40,6 +42,7 @@ interface Props {
   insuranceAndPromoForAllTenure: LoanCalculatorInsuranceAndPromoType[]
   calculationApiPayload?: LoanCalculatorIncludePromoPayloadType
   children?: React.ReactNode
+  setFinalLoan: (value: FinalLoan) => void
 }
 
 export const CalculationResult = ({
@@ -54,19 +57,31 @@ export const CalculationResult = ({
   formData,
   insuranceAndPromoForAllTenure,
   calculationApiPayload,
+  setFinalLoan,
 }: Props) => {
-  const { setInsuranceAndPromo: setPromoInsurance } = useContextCalculator()
-
-  useEffect(() => {
-    setPromoInsurance(insuranceAndPromoForAllTenure)
-  }, [insuranceAndPromoForAllTenure])
-
+  const [state, setState] = useState<LoanCalculatorInsuranceAndPromoType[]>(
+    insuranceAndPromoForAllTenure,
+  ) // assume this state as Context, mind about re-render
   const [tenureForPopUp, setTenureForPopUp] = useState(data[0].tenure)
   const [openPromo, setOpenPromo] = useState(false)
+  const [openTooltipInsurance, setOpenTooltipInsurance] = useState(false)
   const [selectedCalculatePromo, setSelectedCalculatePromo] =
     useState<LoanCalculatorInsuranceAndPromoType | null>()
+
   const handleOnClickResultItem = (value: SpecialRateListWithPromoType) => {
     setSelectedLoan(value)
+    const selectedData = state.filter((item) => item.tenure === value.tenure)[0]
+
+    setFinalLoan({
+      selectedInsurance: selectedData.selectedInsurance,
+      selectedPromoFinal: selectedData.selectedPromo,
+      tppFinal: selectedData.tdpAfterPromo,
+      installmentFinal: selectedData.installmentAfterPromo,
+      interestRateFinal: selectedData.interestRateAfterPromo,
+      installmentBeforePromo: selectedData.installmentBeforePromo,
+      interestRateBeforePromo: selectedData.interestRateBeforePromo,
+      tdpBeforePromo: selectedData.tdpBeforePromo,
+    })
   }
 
   const getLoanRank = (rank: string) => {
@@ -159,10 +174,18 @@ export const CalculationResult = ({
   const handleOpenPopup = (tenure: number) => {
     setTenureForPopUp(tenure)
     setOpenPromo(true)
-    const selectPromo = insuranceAndPromoForAllTenure.filter(
-      (x) => x.tenure === tenure,
-    )
+    const selectPromo = state.filter((x) => x.tenure === tenure)
     setSelectedCalculatePromo(selectPromo[0])
+    setFinalLoan({
+      selectedInsurance: selectPromo[0].selectedInsurance,
+      selectedPromoFinal: selectPromo[0].selectedPromo,
+      tppFinal: selectPromo[0].tdpAfterPromo,
+      installmentFinal: selectPromo[0].installmentAfterPromo,
+      interestRateFinal: selectPromo[0].interestRateAfterPromo,
+      installmentBeforePromo: selectPromo[0].installmentBeforePromo,
+      interestRateBeforePromo: selectPromo[0].interestRateBeforePromo,
+      tdpBeforePromo: selectPromo[0].tdpBeforePromo,
+    })
   }
 
   const renderLogoFinco = () => {
@@ -211,7 +234,7 @@ export const CalculationResult = ({
   }
 
   const renderCtaAndDisclaimer = () => {
-    if (selectedLoan?.loanRank === LoanRank.Green) {
+    if (selectedLoan) {
       return (
         <>
           <div className={styles.ctaGroup}>
@@ -279,34 +302,6 @@ export const CalculationResult = ({
           {renderLogoFinco()}
         </>
       )
-    } else if (selectedLoan?.loanRank === LoanRank.Red) {
-      return (
-        <>
-          <div className={styles.ctaGroup}>
-            <Button
-              version={ButtonVersion.PrimaryDarkBlue}
-              size={ButtonSize.Big}
-              onClick={() => handleClickButtonQualification(selectedLoan)}
-              data-testid={elementId.LoanCalculator.Info.KualifikasiKredit}
-            >
-              Cek Kualifikasi Kredit
-            </Button>
-            <Button
-              version={ButtonVersion.Secondary}
-              size={ButtonSize.Big}
-              onClick={() => handleRedirectToWhatsapp(selectedLoan)}
-              disabled={!selectedLoan}
-            >
-              <div className={styles.whatsappCtaTextWrapper}>
-                <IconWhatsapp width={16} height={16} />
-                Hubungi Agen SEVA
-              </div>
-            </Button>
-          </div>
-          {renderDisclaimer()}
-          {renderLogoFinco()}
-        </>
-      )
     }
   }
 
@@ -336,9 +331,9 @@ export const CalculationResult = ({
               isActive={item.tenure === selectedLoan?.tenure}
               onClickBottomSection={handleOpenPopup}
               insuranceAndPromoData={
-                insuranceAndPromoForAllTenure.filter(
+                state.filter(
                   (selectedDataItem) => selectedDataItem.tenure === item.tenure,
-                )[0] || []
+                )[0]
               }
             />
           )
@@ -349,10 +344,28 @@ export const CalculationResult = ({
           open={openPromo}
           onClose={() => setOpenPromo(false)}
           selectedTenure={tenureForPopUp}
-          selectablePromo={selectedCalculatePromo}
+          selectedCalculatePromoInsurance={selectedCalculatePromo}
           calculationApiPayload={calculationApiPayload}
+          promoInsuranceReal={state}
+          setPromoInsuranceReal={setState}
+          setFinalLoan={setFinalLoan}
+          onOpenInsuranceTooltip={() => {
+            setOpenPromo(false)
+            setTimeout(() => {
+              setOpenTooltipInsurance(true)
+            }, 700)
+          }}
         />
       )}
+      <InsuranceTooltip
+        open={openTooltipInsurance}
+        onClose={() => {
+          setOpenTooltipInsurance(false)
+          setTimeout(() => {
+            setOpenPromo(true)
+          }, 700)
+        }}
+      />
 
       {renderCtaAndDisclaimer()}
     </div>
