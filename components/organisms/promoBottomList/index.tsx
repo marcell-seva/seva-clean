@@ -14,22 +14,21 @@ interface Props {
   selectedTenure: number
   selectablePromoList: PromoItemType[]
   isLoadingApiPromoList: boolean
+  promoInsuranceTemp: LoanCalculatorInsuranceAndPromoType[]
+  setPromoInsuranceTemp: (value: LoanCalculatorInsuranceAndPromoType[]) => void
 }
 
 export const PromoBottomList = ({
   selectedTenure,
   selectablePromoList,
   isLoadingApiPromoList,
+  promoInsuranceTemp,
+  setPromoInsuranceTemp,
 }: Props) => {
-  const {
-    insuranceAndPromo: promoInsurance,
-    setInsuranceAndPromo: setPromoInsurance,
-  } = useContextCalculator()
-
   const [groupPromo, setGroupPromo] = useState<
     'best-promo' | 'additional-promo' | ''
   >('')
-  const indexForSelectedTenure = promoInsurance.findIndex(
+  const indexForSelectedTenure = promoInsuranceTemp.findIndex(
     (obj: LoanCalculatorInsuranceAndPromoType) => {
       return obj.tenure === selectedTenure
     },
@@ -55,35 +54,53 @@ export const PromoBottomList = ({
 
   const handleSelect = (item: PromoItemType) => {
     if (
-      !promoInsurance[indexForSelectedTenure]?.selectedPromo?.some(
+      !promoInsuranceTemp[indexForSelectedTenure].selectedPromo.some(
         (x: any) => x.promoId === item.promoId,
       )
     ) {
-      const temp = [...promoInsurance]
-      temp[indexForSelectedTenure].selectedPromo = [
-        ...temp[indexForSelectedTenure].selectedPromo,
-        item,
-      ]
-      setPromoInsurance(temp)
+      const newState = promoInsuranceTemp.map(
+        (obj: LoanCalculatorInsuranceAndPromoType) => {
+          // 👇️ if tenure equals currently selected, update selectedPromo property
+          if (obj.tenure === selectedTenure) {
+            return { ...obj, selectedPromo: [...obj.selectedPromo, item] }
+          }
+
+          // 👇️ otherwise return the object as is
+          return obj
+        },
+      )
+
+      setPromoInsuranceTemp(newState)
     } else {
-      const temp = promoInsurance[
+      const temp = promoInsuranceTemp[
         indexForSelectedTenure
-      ]?.selectedPromo?.filter((x: any) => x.promoId !== item.promoId)
-      const newList = [...promoInsurance]
-      newList[indexForSelectedTenure].selectedPromo = temp
-      setPromoInsurance(newList)
+      ].selectedPromo.filter((x: any) => x.promoId !== item.promoId)
+
+      const newState = promoInsuranceTemp.map(
+        (obj: LoanCalculatorInsuranceAndPromoType) => {
+          // 👇️ if tenure equals currently selected, update selectedPromo property
+          if (obj.tenure === selectedTenure) {
+            return { ...obj, selectedPromo: temp }
+          }
+
+          // 👇️ otherwise return the object as is
+          return obj
+        },
+      )
+
+      setPromoInsuranceTemp(newState)
     }
   }
 
   useEffect(() => {
     if (
-      promoInsurance[indexForSelectedTenure]?.selectedPromo?.some(
+      promoInsuranceTemp[indexForSelectedTenure].selectedPromo.some(
         (x: any) => x.is_Best_Promo,
       )
     ) {
       setGroupPromo('best-promo')
     } else if (
-      promoInsurance[indexForSelectedTenure]?.selectedPromo?.some(
+      promoInsuranceTemp[indexForSelectedTenure].selectedPromo.some(
         (x: any) => !x.is_Best_Promo,
       )
     ) {
@@ -91,7 +108,7 @@ export const PromoBottomList = ({
     } else {
       setGroupPromo('')
     }
-  }, [promoInsurance[indexForSelectedTenure]?.selectedPromo])
+  }, [promoInsuranceTemp[indexForSelectedTenure].selectedPromo])
 
   return (
     <>
@@ -116,9 +133,9 @@ export const PromoBottomList = ({
                   <SelectablePromo
                     key={index}
                     item={promo}
-                    selected={promoInsurance[
+                    selected={promoInsuranceTemp[
                       indexForSelectedTenure
-                    ]?.selectedPromo?.some(
+                    ].selectedPromo.some(
                       (x: any) => x.promoId === promo.promoId,
                     )}
                     groupPromo={groupPromo}

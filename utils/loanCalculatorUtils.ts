@@ -23,7 +23,11 @@ export const getTdpAffectedByPromo = (
       currentPermutation?.totalFirstPaymentSpekta -
       currentPermutation?.subsidiDp
     )
-  } else if (currentPermutation?.subsidiDp !== 0) {
+  } else if (
+    currentPermutation?.subsidiDp !== 0 &&
+    currentPermutation.promoArr.length !== 0
+  ) {
+    // if promoArr empty nominal will use total first payment regular only
     return currentPermutation?.totalFirstPayment - currentPermutation?.subsidiDp
   } else {
     return 0

@@ -2,41 +2,50 @@ import React, { useContext, useEffect, useState } from 'react'
 import { BottomSheetProps } from 'react-spring-bottom-sheet'
 import clsx from 'clsx'
 import {
+  FinalLoan,
   LoanCalculatorIncludePromoPayloadType,
   LoanCalculatorInsuranceAndPromoType,
+  SimpleCarVariantDetail,
 } from 'utils/types/utils'
 import { useContextCalculator } from 'services/context/calculatorContext'
 import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
-import { SessionStorageKey } from 'utils/enum'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { BottomSheet, IconInfo } from 'components/atoms'
 import FormSelectAssurance from 'components/molecules/form/formSelectAssurance'
 import { PromoBottomList } from '../promoBottomList'
 import PromoBottomCalculation from '../promoBottomCalculation'
 import styles from 'styles/components/organisms/promoBottomSheet.module.scss'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { saveLocalStorage } from 'utils/handler/localStorage'
 
 interface PromoProps extends Omit<BottomSheetProps, 'children'> {
   onClose: () => void
   selectedTenure: number
-  selectablePromo: LoanCalculatorInsuranceAndPromoType
+  selectedCalculatePromoInsurance: LoanCalculatorInsuranceAndPromoType
   calculationApiPayload?: LoanCalculatorIncludePromoPayloadType
+  promoInsuranceReal: LoanCalculatorInsuranceAndPromoType[]
+  setPromoInsuranceReal: (value: LoanCalculatorInsuranceAndPromoType[]) => void
+  setFinalLoan: (value: FinalLoan) => void
+  onOpenInsuranceTooltip: () => void
 }
 
 const PromoBottomSheet = ({
   onClose,
   selectedTenure,
-  selectablePromo,
+  selectedCalculatePromoInsurance,
   calculationApiPayload,
+  promoInsuranceReal,
+  setPromoInsuranceReal,
+  setFinalLoan,
+  onOpenInsuranceTooltip,
   ...props
 }: PromoProps) => {
-  const {
-    insuranceAndPromo: promoInsurance,
-    setInsuranceAndPromo: setPromoInsurance,
-  } = useContextCalculator()
-
-  const indexForSelectedTenure = promoInsurance.findIndex(
+  const [promoInsuranceTemp, setPromoInsuranceTemp] =
+    useState(promoInsuranceReal)
+  const indexForSelectedTenure = promoInsuranceTemp.findIndex(
     (obj: LoanCalculatorInsuranceAndPromoType) => {
       return obj.tenure === selectedTenure
     },
@@ -44,8 +53,13 @@ const PromoBottomSheet = ({
   const [isOpenToast, setIsOpenToast] = useState(false)
   const [isLoadingApiPromoList, setIsLoadingApiPromoList] = useState(false)
   const isCarDontHavePromo =
-    promoInsurance[indexForSelectedTenure]?.allPromoListOnlyFullComprehensive
-      ?.length === 0
+    promoInsuranceTemp[indexForSelectedTenure].allPromoListOnlyFullComprehensive
+      .length === 0
+  const [simpleCarVariantDetails, setSimpleCarVariantDetails] =
+    useLocalStorage<SimpleCarVariantDetail | null>(
+      LocalStorageKey.SimpleCarVariantDetails,
+      null,
+    )
   // const [latestState, setLatestState] = useState(state)
   // const [isAllBestPromo, setIsAllBestPromo] = useState(false)
 
@@ -90,70 +104,136 @@ const PromoBottomSheet = ({
     }
   }, [isOpenToast])
   useEffect(() => {
+    let newState
     if (
-      !promoInsurance[indexForSelectedTenure]?.selectedPromo.some((e: any) =>
+      !promoInsuranceTemp[indexForSelectedTenure].selectedPromo.some((e: any) =>
         e.promoTitle.toLowerCase().includes('giias'),
       )
     ) {
-      const temp = [...promoInsurance]
       if (
-        promoInsurance[indexForSelectedTenure]?.selectedPromo.some(
+        promoInsuranceTemp[indexForSelectedTenure].selectedPromo.some(
           (a: any) => a.promoId === 'SDD01',
         )
       ) {
-        if (temp[indexForSelectedTenure]) {
-          temp[indexForSelectedTenure].tdpAfterPromo =
-            temp[indexForSelectedTenure].tdpBeforePromo -
-            temp[indexForSelectedTenure].subsidiDp
-        }
+        newState = promoInsuranceTemp.map(
+          (obj: LoanCalculatorInsuranceAndPromoType) => {
+            // 👇️ if tenure equals currently selected, update object property
+            if (obj.tenure === selectedTenure) {
+              return {
+                ...obj,
+                tdpAfterPromo: obj.tdpBeforePromo - obj.subsidiDp,
+              }
+            }
+
+            // 👇️ otherwise return the object as is
+            return obj
+          },
+        )
       } else {
         if (
-          promoInsurance[indexForSelectedTenure]?.applied
+          promoInsuranceTemp[indexForSelectedTenure].applied
             .toLowerCase()
             .includes('spekta') &&
-          promoInsurance[indexForSelectedTenure]?.selectedPromo.some(
+          promoInsuranceTemp[indexForSelectedTenure].selectedPromo.some(
             (a: any) => a.promoId === 'TS01',
           )
         ) {
-          if (temp[indexForSelectedTenure]) {
-            temp[indexForSelectedTenure].tdpAfterPromo =
-              temp[indexForSelectedTenure].tdpWithPromo
+          newState = promoInsuranceTemp.map(
+            (obj: LoanCalculatorInsuranceAndPromoType) => {
+              // 👇️ if tenure equals currently selected, update object property
+              if (obj.tenure === selectedTenure) {
+                return {
+                  ...obj,
+                  tdpAfterPromo: obj.tdpWithPromo,
+                  installmentAfterPromo: obj.installmentWithPromo,
+                  interestRateAfterPromo: obj.interestRateWithPromo,
+                }
+              }
 
-            temp[indexForSelectedTenure].installmentAfterPromo =
-              temp[indexForSelectedTenure].installmentWithPromo
-            temp[indexForSelectedTenure].interestRateAfterPromo =
-              temp[indexForSelectedTenure].interestRateWithPromo
-          }
+              // 👇️ otherwise return the object as is
+              return obj
+            },
+          )
         } else {
-          if (temp[indexForSelectedTenure]) {
-            temp[indexForSelectedTenure].tdpAfterPromo = 0
-            temp[indexForSelectedTenure].installmentAfterPromo = 0
-            temp[indexForSelectedTenure].interestRateAfterPromo = 0
-          }
+          newState = promoInsuranceTemp.map(
+            (obj: LoanCalculatorInsuranceAndPromoType) => {
+              // 👇️ if tenure equals currently selected, update object property
+              if (obj.tenure === selectedTenure) {
+                return {
+                  ...obj,
+                  tdpAfterPromo: 0,
+                  installmentAfterPromo: 0,
+                  interestRateAfterPromo: 0,
+                }
+              }
+
+              // 👇️ otherwise return the object as is
+              return obj
+            },
+          )
         }
       }
 
-      setPromoInsurance(temp)
+      setPromoInsuranceTemp(newState)
     } else {
-      const temp = [...promoInsurance]
       if (
-        promoInsurance[indexForSelectedTenure]?.selectedPromo.some(
+        promoInsuranceTemp[indexForSelectedTenure].selectedPromo.some(
           (a: any) => a.promoId === 'SDD01',
         )
       ) {
-        temp[indexForSelectedTenure].tdpAfterPromo =
-          selectablePromo.tdpWithPromo
+        newState = promoInsuranceTemp.map(
+          (obj: LoanCalculatorInsuranceAndPromoType) => {
+            // 👇️ if tenure equals currently selected, update object property
+            if (obj.tenure === selectedTenure) {
+              return {
+                ...obj,
+                tdpAfterPromo: selectedCalculatePromoInsurance.tdpWithPromo,
+              }
+            }
+
+            // 👇️ otherwise return the object as is
+            return obj
+          },
+        )
       } else {
-        temp[indexForSelectedTenure].tdpAfterPromo =
-          selectablePromo.tdpWithPromo + selectablePromo.subsidiDp
+        newState = promoInsuranceTemp.map(
+          (obj: LoanCalculatorInsuranceAndPromoType) => {
+            // 👇️ if tenure equals currently selected, update object property
+            if (obj.tenure === selectedTenure) {
+              return {
+                ...obj,
+                tdpAfterPromo:
+                  selectedCalculatePromoInsurance.tdpWithPromo +
+                  selectedCalculatePromoInsurance.subsidiDp,
+              }
+            }
+
+            // 👇️ otherwise return the object as is
+            return obj
+          },
+        )
       }
-      temp[indexForSelectedTenure].installmentAfterPromo =
-        selectablePromo.installmentWithPromo
-      temp[indexForSelectedTenure].interestRateAfterPromo =
-        selectablePromo.interestRateWithPromo
-      setPromoInsurance(temp)
+
+      newState = promoInsuranceTemp.map(
+        (obj: LoanCalculatorInsuranceAndPromoType) => {
+          // 👇️ if tenure equals currently selected, update object property
+          if (obj.tenure === selectedTenure) {
+            return {
+              ...obj,
+              tdpAfterPromo: obj.tdpWithPromo,
+              installmentAfterPromo: obj.installmentWithPromo,
+              interestRateAfterPromo: obj.interestRateWithPromo,
+            }
+          }
+
+          // 👇️ otherwise return the object as is
+          return obj
+        },
+      )
+
+      setPromoInsuranceTemp(newState)
     }
-  }, [promoInsurance[indexForSelectedTenure]?.selectedPromo])
+  }, [promoInsuranceTemp[indexForSelectedTenure].selectedPromo])
 
   return (
     <BottomSheet
@@ -163,7 +243,7 @@ const PromoBottomSheet = ({
           : `Promo Tenor ${selectedTenure} Tahun`
       }
       onDismiss={() => {
-        // setState(latestState)
+        setPromoInsuranceTemp(promoInsuranceReal)
         onClose()
       }}
       maxHeight={window.innerHeight * 0.93}
@@ -176,6 +256,9 @@ const PromoBottomSheet = ({
         calculationApiPayload={calculationApiPayload}
         isLoadingApiPromoList={isLoadingApiPromoList}
         setIsLoadingApiPromoList={setIsLoadingApiPromoList}
+        promoInsuranceTemp={promoInsuranceTemp}
+        setPromoInsuranceTemp={setPromoInsuranceTemp}
+        onOpenInsuranceTooltip={onOpenInsuranceTooltip}
       />
       {isCarDontHavePromo ? (
         <div className={styles.lineDividerWhenCarDontHavePromo} />
@@ -184,32 +267,100 @@ const PromoBottomSheet = ({
           <div className={styles.lineDivider} />
           <PromoBottomList
             selectedTenure={selectedTenure}
-            selectablePromoList={selectablePromo.allPromoList}
+            selectablePromoList={
+              promoInsuranceTemp[indexForSelectedTenure].allPromoList
+            }
             isLoadingApiPromoList={isLoadingApiPromoList}
+            promoInsuranceTemp={promoInsuranceTemp}
+            setPromoInsuranceTemp={setPromoInsuranceTemp}
           />
         </>
       )}
       <PromoBottomCalculation
         onClose={() => {
-          // setLatestState(state)
+          if (simpleCarVariantDetails) {
+            const tmpData = {
+              ...simpleCarVariantDetails,
+              loanDownPayment:
+                promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo !== 0
+                  ? promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo
+                  : promoInsuranceTemp[indexForSelectedTenure].tdpBeforePromo,
+              totalFirstPayment:
+                promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo !== 0
+                  ? promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo
+                  : promoInsuranceTemp[indexForSelectedTenure].tdpBeforePromo,
+              loanMonthlyInstallment:
+                promoInsuranceTemp[indexForSelectedTenure]
+                  .installmentAfterPromo !== 0
+                  ? promoInsuranceTemp[indexForSelectedTenure]
+                      .installmentAfterPromo
+                  : promoInsuranceTemp[indexForSelectedTenure]
+                      .installmentBeforePromo,
+              flatRate:
+                promoInsuranceTemp[indexForSelectedTenure]
+                  .interestRateAfterPromo !== 0
+                  ? promoInsuranceTemp[indexForSelectedTenure]
+                      .interestRateAfterPromo
+                  : promoInsuranceTemp[indexForSelectedTenure]
+                      .interestRateBeforePromo,
+            }
+            setFinalLoan({
+              selectedInsurance:
+                promoInsuranceTemp[indexForSelectedTenure].selectedInsurance,
+              selectedPromoFinal:
+                promoInsuranceTemp[indexForSelectedTenure].selectedPromo,
+              tppFinal:
+                promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo,
+              installmentFinal:
+                promoInsuranceTemp[indexForSelectedTenure]
+                  .installmentAfterPromo,
+              interestRateFinal:
+                promoInsuranceTemp[indexForSelectedTenure]
+                  .interestRateAfterPromo,
+              installmentBeforePromo:
+                promoInsuranceTemp[indexForSelectedTenure]
+                  .installmentBeforePromo,
+              interestRateBeforePromo:
+                promoInsuranceTemp[indexForSelectedTenure]
+                  .interestRateBeforePromo,
+              tdpBeforePromo:
+                promoInsuranceTemp[indexForSelectedTenure].tdpBeforePromo,
+            })
+            setSimpleCarVariantDetails(tmpData)
+          }
+          saveLocalStorage(
+            LocalStorageKey.SelectablePromo,
+            JSON.stringify(promoInsuranceTemp[indexForSelectedTenure]),
+          )
+          setPromoInsuranceReal(promoInsuranceTemp)
           onClose()
         }}
-        regularTDP={selectablePromo.tdpBeforePromo}
-        finalTDP={selectablePromo.tdpAfterPromo}
-        regularInstallment={selectablePromo.installmentBeforePromo}
-        finalInstallment={selectablePromo.installmentAfterPromo}
-        interestRate={selectablePromo.interestRateBeforePromo}
-        finalInterestRate={selectablePromo.interestRateAfterPromo}
-        promoAstraPay={promoInsurance[
+        regularTDP={promoInsuranceTemp[indexForSelectedTenure].tdpBeforePromo}
+        finalTDP={promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo}
+        regularInstallment={
+          promoInsuranceTemp[indexForSelectedTenure].installmentBeforePromo
+        }
+        finalInstallment={
+          promoInsuranceTemp[indexForSelectedTenure].installmentAfterPromo
+        }
+        interestRate={
+          promoInsuranceTemp[indexForSelectedTenure].interestRateBeforePromo
+        }
+        finalInterestRate={
+          promoInsuranceTemp[indexForSelectedTenure].interestRateAfterPromo
+        }
+        promoAstraPay={promoInsuranceTemp[
           indexForSelectedTenure
-        ]?.selectedPromo.some((e: any) => e.promoId === 'CDS02')}
-        promoInsurance={promoInsurance[
+        ].selectedPromo.some((e: any) => e.promoId === 'CDS02')}
+        promoInsurance={promoInsuranceTemp[
           indexForSelectedTenure
-        ]?.selectedPromo.some((e: any) => e.promoId === 'CDS04')}
-        promoCashBack={promoInsurance[
+        ].selectedPromo.some((e: any) => e.promoId === 'CDS04')}
+        promoCashBack={promoInsuranceTemp[
           indexForSelectedTenure
-        ]?.selectedPromo.some((e: any) => e.promoId === 'CDS01')}
-        totalSelectedPromo={selectablePromo?.selectedPromo.length}
+        ].selectedPromo.some((e: any) => e.promoId === 'CDS01')}
+        totalSelectedPromo={
+          promoInsuranceTemp[indexForSelectedTenure].selectedPromo.length
+        }
         isLoadingApiPromoList={isLoadingApiPromoList}
       />
 

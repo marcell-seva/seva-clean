@@ -48,6 +48,7 @@ import TestimonyWidget from './testimonyWidget'
 import LpCarRecommendations from './lpCarRecommendations'
 import CarOfTheMonth from './carOfTheMonth'
 import dynamic from 'next/dynamic'
+import { InsuranceTooltip } from './insuranceTooltip'
 
 const Exterior360ViewerTab = dynamic(
   () => import('./tabContent/upper/exterior360Viewer'),
@@ -106,4 +107,5 @@ export {
   TestimonyWidget,
   LpCarRecommendations,
   CarOfTheMonth,
+  InsuranceTooltip,
 }
