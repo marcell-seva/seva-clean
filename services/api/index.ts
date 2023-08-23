@@ -138,8 +138,8 @@ const postRefreshToken = (body: any, config?: AxiosRequestConfig) =>
   post(collections.auth.refresh, body, config)
 const postSendSMSGeneration = (recaptchaToken: string, phoneNumber: string) =>
   post(collections.auth.otp, { recaptchaToken, phoneNumber })
-const postVerifyOTPGeneration = (otpCode: string, phoneNumber: string) =>
-  post(collections.auth.otpVerification, { otpCode, phoneNumber })
+const postVerifyOTPGeneration = (code: string, phoneNumber: string) =>
+  post(collections.auth.otpVerification, { code, phoneNumber })
 const postNewFunnelLoanSpecialRate = (
   body: SpecialRateRequest,
   config: AxiosRequestConfig,
