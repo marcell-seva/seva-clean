@@ -24,6 +24,9 @@ import { Option } from 'utils/types'
 import { COMData, FunnelQueryKey } from 'utils/types/models'
 import { Line } from './Line'
 import { useToast } from './Toast'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { getPageName } from 'utils/pageName'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 interface HeaderVariantProps {
   overrideDisplay?: string
   isOnModal?: boolean
@@ -142,7 +145,13 @@ export default function HeaderVariant({
     localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
 
     hideModal()
-
+    trackEventCountly(CountlyEventNames.WEB_CAR_SEARCH_ICON_SUGGESTION_CLICK, {
+      PAGE_ORIGINATION: getPageName(),
+      SUGGESTION_CATEGORY: 'Keyword',
+      CAR_BRAND: item.label,
+      CAR_MODEL: item.value,
+      PAGE_DIRECTION_URL: window.location.origin + urlDestination,
+    })
     trackSearchBarSuggestionClick({
       Page_Origination_URL: window.location.href,
       Page_Direction_URL: window.location.origin + urlDestination,
@@ -335,6 +344,11 @@ export default function HeaderVariant({
                   enablePrefixIcon={false}
                   searchIconSuffix={true}
                   className={styles.styledSearchInput}
+                  onFocus={() =>
+                    trackEventCountly(
+                      CountlyEventNames.WEB_CAR_SEARCH_ICON_FIELD_CLICK,
+                    )
+                  }
                 />
               ) : (
                 <SearchInput

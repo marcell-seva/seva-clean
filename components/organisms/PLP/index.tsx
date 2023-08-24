@@ -65,6 +65,9 @@ import {
 import { MoengageViewCarSearch } from 'utils/types/moengage'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
 import styles from '../../../styles/pages/mobil-baru.module.scss'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getPageName } from 'utils/pageName'
 
 interface PLPProps {
   carRecommendation: CarRecommendationResponse
@@ -135,6 +138,7 @@ export const PLP = ({
         : SessionStorageKey.ShowWebAnnouncementNonLogin,
     ) ?? true,
   )
+  const [isLogin] = React.useState(!!getToken())
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
       getCities().then((res) => {
@@ -446,6 +450,15 @@ export const PLP = ({
     }
     return () => cleanEffect()
   }, [])
+  useEffect(() => {
+    if (isActive) {
+      trackEventCountly(CountlyEventNames.WEB_HAMBURGER_OPEN, {
+        PAGE_ORIGINATION: getPageName(),
+        LOGIN_STATUS: isLogin,
+        USER_TYPE: 'Returning', // will create func for this
+      })
+    }
+  }, [])
 
   const onCloseResultInfo = () => {
     setOpenLabelResultInfo(false)
@@ -540,7 +553,6 @@ export const PLP = ({
       Tenure: `${funnelQuery.tenure || 5}`,
     }
   }
-
   return (
     <>
       <div

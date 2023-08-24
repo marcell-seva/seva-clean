@@ -12,6 +12,8 @@ import { IconAccount, IconHistory, IconWishlist } from 'components/atoms/icon'
 import { MobileWebTopMenuType, CustomerInfoSeva } from 'utils/types/utils'
 import { trackBurgerMenuClick } from 'helpers/amplitude/seva20Tracking'
 import { LocalStorageKey } from 'utils/enum'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 type MenuListProps = {
   menuList?: MobileWebTopMenuType[]
@@ -108,9 +110,18 @@ export const MenuList: React.FC<MenuListProps> = ({
                       <div
                         key={key}
                         className={styles.parentMenu}
-                        onClick={() =>
+                        onClick={() => {
+                          if (sub.menuName === 'Akun Saya') {
+                            trackEventCountly(
+                              CountlyEventNames.WEB_HAMBURGER_ACCOUNT_CLICK,
+                              {
+                                PAGE_ORIGINATION: getPageName(),
+                                SOURCE_SECTION: 'Bottom',
+                              },
+                            )
+                          }
                           handleClickMenu(sub.menuUrl as string, sub.menuName)
-                        }
+                        }}
                       >
                         {icon && (
                           <div className={styles.iconContainer}>{icon}</div>
