@@ -10,6 +10,12 @@ export const initAmplitude = (): void => {
 export const setAmplitudeUserId = (id: string | null): void =>
   amplitude.getInstance().setUserId(id)
 
+export const setAmplitudeUserProperties = (
+  properties: Record<string, unknown>,
+): void => {
+  amplitude.getInstance().setUserProperties(properties)
+}
+
 export const setAmplitudeUserDevice = (installationToken: any): void => {
   amplitude.getInstance().setDeviceId(installationToken)
 }

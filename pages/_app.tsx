@@ -36,6 +36,7 @@ import { FBPixelStandardEvent, FB_PIXEL_ID } from 'helpers/facebookPixel'
 import { client } from 'utils/helpers/const'
 import { IsSsrMobileContext } from 'services/context/isSsrMobileContext'
 import { initCountly } from 'helpers/countly/countly'
+import { useAddUtmTagsToApiCall } from 'utils/hooks/useAddUtmTagsToApiCall/useAddUtmTagsToApiCall'
 
 const kanyon = localFont({
   src: '../public/revamp/fonts/Kanyon/Kanyon-Regular.otf',
@@ -79,6 +80,9 @@ export default function App({ Component, pageProps }: AppProps) {
       initCountly()
     }
   }, [])
+
+  useAddUtmTagsToApiCall()
+
   return (
     <>
       <Script
