@@ -65,6 +65,11 @@ import {
 import { MoengageViewCarSearch } from 'utils/types/moengage'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
 import styles from '../../../styles/pages/mobil-baru.module.scss'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { usePreviousRoute } from 'utils/hooks/usePreviousRoute'
+import { LoanRank } from 'utils/types/models'
+import { defineRouteName } from 'utils/navigate'
 
 interface PLPProps {
   carRecommendation: CarRecommendationResponse
@@ -79,6 +84,7 @@ export const PLP = ({
 }: PLPProps) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
+  const previousRoute = usePreviousRoute()
   const { recommendation, saveRecommendation } = useCar()
   const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>(
     alternativeRecommendation,
@@ -296,6 +302,54 @@ export const PLP = ({
         }
       })
   }
+
+  const trackPLPView = (creditBadge: string = 'Null') => {
+    const prevPage = getSessionStorage(SessionStorageKey.PreviousPage) as any
+    const userType = getSessionStorage(SessionStorageKey.UserType)
+    const filterUsage = brand || bodyType || priceRangeGroup ? 'Yes' : 'No'
+    const fincapUsage =
+      downPaymentAmount || tenure || age || monthlyIncome ? 'Yes' : 'No'
+    const temanSevaStatus =
+      brand && typeof brand === 'string' && brand.includes('SEVA')
+        ? 'Yes'
+        : 'No'
+    const initialPage = previousRoute !== null ? 'Yes' : 'No'
+    const track = {
+      CAR_FILTER_USAGE: filterUsage,
+      FINCAP_FILTER_USAGE: fincapUsage,
+      PELUANG_KREDIT_BADGE: fincapUsage === 'No' ? 'Null' : creditBadge,
+      INITIAL_PAGE: initialPage,
+      TEMAN_SEVA_STATUS: temanSevaStatus,
+      ...(Boolean(prevPage) && {
+        ...(prevPage.refer && { PAGE_REFERRER: prevPage.refer }),
+        ...(prevPage.source && { PREVIOUS_SOURCE_BUTTON: prevPage?.source }),
+      }),
+      ...(Boolean(userType) && { USER_TYPE: userType }),
+    }
+    console.log('track', track)
+
+    // trackEventCountly(CountlyEventNames.WEB_PLP_VIEW, track)
+    sessionStorage.removeItem(SessionStorageKey.PreviousPage)
+  }
+
+  const checkFincapBadge = (carRecommendations: CarRecommendation[]) => {
+    const checkMudah = carRecommendations.some(
+      (x) => x.loanRank === LoanRank.Green,
+    )
+    const checkSulit = carRecommendations.some(
+      (x) => x.loanRank === LoanRank.Red,
+    )
+
+    if (checkMudah && checkSulit) {
+      trackPLPView('Both')
+    } else if (checkMudah) {
+      trackPLPView('Mudah disetujui')
+    } else if (checkSulit) {
+      trackPLPView('Sulit disetujui')
+    } else {
+      trackPLPView()
+    }
+  }
   //handle scrolling
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -425,6 +479,7 @@ export const PLP = ({
                   })
                 }
                 setShowLoading(false)
+                checkFincapBadge(response.carRecommendations)
               })
               .catch(() => {
                 setShowLoading(false)
@@ -443,6 +498,7 @@ export const PLP = ({
         .catch()
     } else {
       saveRecommendation(carRecommendation.carRecommendations)
+      checkFincapBadge(carRecommendation.carRecommendations)
     }
     return () => cleanEffect()
   }, [])

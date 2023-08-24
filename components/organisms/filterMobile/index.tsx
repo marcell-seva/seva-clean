@@ -34,6 +34,7 @@ import { trackFilterCarResults } from 'helpers/amplitude/newFunnelEventTracking'
 import { useCar } from 'services/context/carContext'
 import { Currency } from 'utils/handler/calculation'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { PreviousButton, navigateToPLP } from 'utils/navigate'
 
 interface ParamsUrl {
   age?: string
@@ -342,10 +343,7 @@ const FilterMobile = ({
     patchFinancialQuery(dataFinancial)
     patchFunnelQuery(dataFunnelQuery)
 
-    router.replace({
-      pathname: carResultsUrl,
-      query: { ...paramUrl },
-    })
+    navigateToPLP(PreviousButton.SmartSearch, { query: { ...paramUrl } })
 
     saveRecommendation(response?.carRecommendations || [])
     trackPLPSubmitFilter(trackFilterAction())

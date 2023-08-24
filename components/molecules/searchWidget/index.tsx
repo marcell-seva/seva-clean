@@ -34,6 +34,7 @@ import { carResultsUrl } from 'utils/helpers/routes'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { useContextForm } from 'services/context/formContext'
 import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
+import { PreviousButton, navigateToPLP } from 'utils/navigate'
 
 export const SearchWidget = () => {
   const router = useRouter()
@@ -208,10 +209,10 @@ export const SearchWidget = () => {
       ).replaceAll('.', ''),
       tenure: funnelQuery.tenure,
     })
-    router.push({
-      pathname: carResultsUrl,
+    navigateToPLP(PreviousButton.SearchBar, {
       search: convertObjectQuery(tempQuery),
     })
+
     // getNewFunnelRecommendations(funnelQuery)
     //   .then((response: AxiosResponse<CarRecommendationResponse>) => {
     //     setRecommendations(response.data.carRecommendations || [])

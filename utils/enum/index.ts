@@ -134,6 +134,8 @@ export enum SessionStorageKey {
   MainKtpType = 'mainKtpType',
   KTPUploaded = 'KTPUploaded',
   HasOpenedInsuranceToast = 'hasOpenedInsuranceToast',
+  PreviousPage = 'PreviousPage',
+  UserType = 'UserType',
 }
 
 export enum HTTPResponseStatusCode {

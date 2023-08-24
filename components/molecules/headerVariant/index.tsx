@@ -24,6 +24,7 @@ import { Option } from 'utils/types'
 import { COMData, FunnelQueryKey } from 'utils/types/models'
 import { Line } from './Line'
 import { useToast } from './Toast'
+import { PreviousButton, navigateToPLP } from 'utils/navigate'
 interface HeaderVariantProps {
   overrideDisplay?: string
   isOnModal?: boolean
@@ -266,8 +267,8 @@ export default function HeaderVariant({
       const funnelQueryTemp = {
         brand: data.label,
       }
-      router.push({
-        pathname: carResultsUrl,
+
+      navigateToPLP(PreviousButton.SearchBar, {
         search: convertObjectQuery(funnelQueryTemp),
       })
     } else {

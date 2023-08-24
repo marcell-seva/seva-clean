@@ -12,6 +12,7 @@ import { IconAccount, IconHistory, IconWishlist } from 'components/atoms/icon'
 import { MobileWebTopMenuType, CustomerInfoSeva } from 'utils/types/utils'
 import { trackBurgerMenuClick } from 'helpers/amplitude/seva20Tracking'
 import { LocalStorageKey } from 'utils/enum'
+import { PreviousButton, navigateToPLP } from 'utils/navigate'
 
 type MenuListProps = {
   menuList?: MobileWebTopMenuType[]
@@ -108,9 +109,9 @@ export const MenuList: React.FC<MenuListProps> = ({
                       <div
                         key={key}
                         className={styles.parentMenu}
-                        onClick={() =>
+                        onClick={() => {
                           handleClickMenu(sub.menuUrl as string, sub.menuName)
-                        }
+                        }}
                       >
                         {icon && (
                           <div className={styles.iconContainer}>{icon}</div>

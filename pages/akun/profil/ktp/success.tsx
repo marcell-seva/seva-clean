@@ -7,6 +7,7 @@ import { PageLayout } from 'components/templates'
 import { Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { carResultsUrl } from 'utils/helpers/routes'
+import { PreviousButton, navigateToPLP } from 'utils/navigate'
 
 const SuccessVerif = '/revamp/illustration/success-verification.webp'
 const LogoAppStore = '/revamp/images/profile/app-store.webp'
@@ -58,7 +59,7 @@ const SuccessPage = () => {
               <Button
                 version={ButtonVersion.Outline}
                 size={ButtonSize.Big}
-                onClick={() => router.push(carResultsUrl)}
+                onClick={() => navigateToPLP(PreviousButton.undefined)}
                 data-testid={elementId.Profil.Button.CariMobilLain}
               >
                 Cari Mobil Lain
