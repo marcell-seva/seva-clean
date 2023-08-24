@@ -28,6 +28,7 @@
     "axios": "0.21.1",
     "axios-auth-refresh": "3.1.0",
     "clsx": "^1.2.1",
+    "countly-sdk-web": "^23.6.0",
     "crypto-js": "^4.1.1",
     "dompurify": "^2.3.6",
     "entities": "^4.3.1",
