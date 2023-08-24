@@ -11,7 +11,7 @@ import styled, { css } from 'styled-components'
 import { colors, transparent } from '../../../styles/colors'
 import { createPortal } from 'react-dom'
 import { FormControlValue, Option } from 'utils/types'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 
 interface SelectProps<T extends FormControlValue>
   extends SelectHTMLAttributes<HTMLSelectElement> {

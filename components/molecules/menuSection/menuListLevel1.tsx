@@ -12,19 +12,19 @@ import {
   ProfileWrapperDetail,
   ProfileGreetingHai,
 } from './sidebarItemStyle'
-import { useSideMenuListContext } from 'context/sideMenuListContext/sideMenuListContext'
+import { useSideMenuListContext } from 'services/context/sideMenuListContext'
 import {
   LoginSevaUrl,
   refinancingUrl,
   TemanSevaDashboardUrl,
   TemanSevaOnboardingUrl,
-} from 'routes/routes'
+} from 'utils/helpers/routes'
 import { savePageBeforeLogin } from 'utils/loginUtils'
 import { removeWhitespacesAndToLowerCase } from 'utils/stringUtils'
 import { fetchCustomerDetails } from 'utils/httpUtils/customerUtils'
-import { getToken } from 'utils/api'
-import { useSideMenuContext } from 'context/sideMenuContext/sideMenuContext'
-import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
+import { getToken } from 'utils/handler/auth'
+import { useSideMenuContext } from 'services/context/sideMenuContext'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
 import urls from 'helpers/urls'
 import { colors } from 'styles/colors'
@@ -41,7 +41,7 @@ import {
   trackProfileAccountClick,
 } from 'helpers/amplitude/seva20Tracking'
 import { trackBurgerMenuClickTemanSeva } from 'helpers/amplitude/temanSevaEventTracking'
-import { LocalStorageKey } from 'utils/models/models'
+import { LocalStorageKey } from 'utils/enum'
 import { temanSevaUrlPath } from 'services/temanseva'
 import { ThreeDots } from 'components/atoms/icon/ThreeDots'
 import { Forward } from 'components/atoms/icon/Forward'

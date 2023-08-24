@@ -29,3 +29,8 @@ export const MinAmountMessage = {
   downPayemntAmount: 'Minimum DP sebesar Rp20 jt.',
   monthlyIncome: 'Pendapatan yang kamu masukkan terlalu rendah',
 }
+
+export const overMaxWarning = 'Harga yang kamu masukkan terlalu tinggi.'
+export const underMinWarning = 'Harga yang kamu masukkan terlalu rendah.'
+export const overMaxTwoWarning = 'Harga harus lebih kecil dari harga maksimum.'
+export const underMinTwoWarning = 'Harga harus lebih besar dari harga minimum.'

@@ -1,8 +1,6 @@
 import { Shimmer } from 'components/atoms/shimmerOld'
 import { WebpPicture } from 'components/atoms/webpPicture'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
-import { useContextRecommendations } from 'context/recommendationsContext/recommendationsContext'
+import { useUtils } from 'services/context/utilsContext'
 import {
   trackCarBodyTypeRecomItemClick,
   trackCarBrandRecomItemClick,
@@ -10,7 +8,7 @@ import {
 import { useRouter } from 'next/router'
 import React from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-import { variantListUrl } from 'routes/routes'
+import { variantListUrl } from 'utils/helpers/routes'
 import { getNewFunnelAllRecommendations } from 'services/newFunnel'
 import {
   getCarModelDetailsById,
@@ -20,6 +18,7 @@ import styled from 'styled-components'
 import { transformToJtWithTargetTwoDecimal } from 'utils/numberUtils/numberUtils'
 import { CarRecommendation } from 'utils/types'
 import { isIphone } from 'utils/window'
+import { useCar } from 'services/context/carContext'
 
 interface CarTileProps {
   carModel: CarRecommendation
@@ -31,9 +30,8 @@ export const CarBrandItem = ({
   bodyTypeSelected = '',
 }: CarTileProps) => {
   const router = useRouter()
-  const { setRecommendations } = useContextRecommendations()
-  const { setCarModelDetails } = useContextCarModelDetails()
-  const { currentLanguage } = useCurrentLanguageFromContext()
+  const { saveCarModelDetails, saveRecommendation } = useCar()
+  const { currentLanguage } = useUtils()
   const onWrapperClick = () => {
     Promise.all([
       getNewFunnelAllRecommendations(),
@@ -41,8 +39,8 @@ export const CarBrandItem = ({
     ])
       .then(
         handleRecommendationsAndCarModelDetailsUpdate(
-          setRecommendations,
-          setCarModelDetails,
+          saveRecommendation,
+          saveCarModelDetails,
         ),
       )
       .then(() => {

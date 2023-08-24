@@ -1,0 +1,52 @@
+@import '../../../abstract/colors';
+@import '../../../abstract/mixins';
+@import '../../../abstract/animations';
+
+.container {
+  box-shadow: 0px 12px 40px 1px rgba(0, 0, 0, 0.08);
+  background-color: #{$primary-white};
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.bundleCard {
+  width: 100%;
+  padding: 16px 12px 16px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.content {
+  display: flex;
+  width: 100%;
+}
+
+.icon {
+  display: flex;
+  flex-wrap: nowrap;
+  margin-right: 8px;
+}
+
+.detail {
+  margin-right: 16px;
+}
+
+.titleText {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: start;
+}
+
+.descText {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: start;
+  color: #{$shades-grey-75};
+}

@@ -1,8 +1,8 @@
 import { DownOutlined } from 'components/atoms'
 import { NewSelect } from 'components/atoms/SelectOld/NewSelect'
 import { ageFormConfig } from 'config/ageFormConfig'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
 import React from 'react'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import styled from 'styled-components'
 import { FormControlValue } from 'utils/types'
 

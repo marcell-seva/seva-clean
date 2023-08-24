@@ -1,8 +1,3 @@
-export enum LanguageCode {
-  en = 'en',
-  id = 'id',
-}
-
 export enum ToastType {
   Error = 'Error',
   Success = 'Success',
@@ -223,20 +218,6 @@ export type COMDataTracking = {
   Car_Model: string
 }
 
-export enum ButtonVersion {
-  Secondary = 'Secondary',
-  SecondaryDark = 'SecondaryDark',
-  PrimaryDarkBlue = 'PrimaryDarkBlue',
-  Outline = 'Outline',
-  Disable = 'Disable',
-  Default = 'Default',
-}
-
-export enum ButtonSize {
-  Big = 'Big',
-  Small = 'Small',
-}
-
 export enum RoundingStrategy {
   Round,
   Ceil,
@@ -415,64 +396,6 @@ export enum Education {
 export enum Seats {
   LessThanOrEqualTo5Seater = '0',
   MoreThan5Seater = '1',
-}
-export enum LocalStorageKey {
-  TempLoginPhone = 'tempLoginPhone',
-  ColorNotificationModalShown = 'colorNotificationModalShown',
-  Language = 'language',
-  SurveyForm = 'surveyForm',
-  CurrentStep = 'currentStep',
-  ContactForm = 'contactForm',
-  SelectedLoan = 'selectedLoan',
-  LastOtpSent = 'lastOtpSent',
-  LastOtpSentPhoneNumber = 'lastOtpSentPhoneNumber',
-  LastLoginTime = 'lastLoginTime',
-  Token = 'token',
-  SimpleCarVariantDetails = 'simpleCarVariantDetails',
-  CustomerId = 'customerId',
-  UtmTags = 'utmTags',
-  ChunkLoadFailed = 'chunk_failed',
-  CityOtr = 'cityOtr',
-  SelectedLoanPermutation = 'SelectedLoanPermutation',
-  CarFilter = 'filter',
-  FinancialData = 'financialData',
-  PageBeforeLogin = 'pageBeforeLogin',
-  PageBeforeLoginExternal = 'pageBeforeLoginExternal',
-  OtpIsSent = 'OtpIsSent',
-  OtpTimerIsStart = 'OtpTimerIsStart',
-  CustomerName = 'customerName',
-  Model = 'model',
-  DpPercentage = 'dpPercentage',
-  Income = 'income',
-  PromoCodeGiiass = 'promoCodeGiias',
-  FromGiiasCalculator = 'fromGiiasCalculator',
-  referralCode = 'referralCode', // code of current user itself
-  SelectedLoanTmp = 'selectedLoanTmp',
-  referralTemanSeva = 'referralTemanSeva', // code of other user that current user use
-  FullNameRefi = 'fullNameRefi',
-  PhoneNumberRefi = 'phoneNumberRefi',
-  IdCustomerRefi = 'idCustomerRefi',
-  refinancingOpenForm = 'refinancingOpenForm',
-  baseConf = 'base-conf',
-  citySelector = 'city-selector',
-  menu = 'menu',
-  sevaCust = 'seva-cust',
-  ReferralCodePrelimQuestion = 'referralCodePrelimQuestion', // code when submit PA
-  CurrentCarOfTheMonthItem = 'currentCarOfTheMonthItem',
-  MoengageAttribute = 'moengageAttribute',
-  PAAmbassadorInfo = 'paAmbassadorInfo',
-  SelectedAngsuranType = 'selectedAngsuranType',
-  SelectedRateType = 'SelectedRateType',
-  LeadId = 'leadId',
-  SelectedLoanPtbc = 'SelectedLoanPtbc',
-  PtbcFormData = 'ptbcFormData',
-  CarCollection = 'carCollection',
-  CityOtrList = 'cityOtrList',
-  flagLeads = 'flag-leads',
-  onOtpVerification = 'onOtpVerification',
-  flagResultFilterInfoPLP = 'flagResultFilterInfoPLP',
-  LastTimeSelectCity = 'lastTimeSelectCity',
-  PageBeforeProfile = 'pageBeforeProfile',
 }
 
 export enum LoanRank {
@@ -851,11 +774,6 @@ export enum WebSocketTokenResult {
   failed = 'failed',
 }
 
-export enum ContactType {
-  phone = 'phone',
-  whatsApp = 'whatsApp',
-}
-
 export enum SizeType {
   Large = 'large',
   Small = 'small',
@@ -868,36 +786,6 @@ export enum AmplitudeRejectReason {
   COVADEX_Blacklisted = '005',
   Bank_Link_Result_Fail = '006',
   Unsupported_Province = '007',
-}
-
-export enum SessionStorageKey {
-  lastOtpSent = 'lastOtpSent',
-  PreviouslyViewed = 'previouslyViewed',
-  CustomerId = 'customerId',
-  RegisteredName = 'registeredName',
-  RegisteredPhoneNumber = 'registeredPhoneNumber',
-  ShowWebAnnouncementNonLogin = 'showWebAnnouncementNonLogin',
-  ShowWebAnnouncementLogin = 'showWebAnnouncementLogin',
-  PreapprovalData = 'preapprovalData',
-  CrmCustomerData = 'crmCustomerData',
-  CrmReferralCodeData = 'crmReferralCodeData',
-  CrmCheckincode = 'crmCheckinCode',
-  CrmRegisterForm = 'crmRegisterForm',
-  CrmCheckinReplacementForm = 'crmRegisterForm',
-  CrmPhoneNumber = 'crmPhoneNumber',
-  SalesRegisterForm = 'salesRegisterForm',
-  CrmCheckinBuChoice = 'crmCheckinBuChoice',
-  CrmNonSelfCheckin = 'crmNonSelfCheckin',
-  CrmSelfCheckin = 'crmSelfCheckin',
-  AttendedAs = 'attendedAs',
-  PromoCodeGiiass = 'promoCodeGiiass',
-  SPKFormGiias = 'spkFormGiias',
-  SpkVerifyBU = 'spkVerifyBU',
-  SpkSubmitResponse = 'spkSubmitResponse',
-  SalesInfo = 'salesInfo',
-  ExternalPreApprovalData = 'externalPreApprovalData',
-  PAAmbassadorUrlId = 'PAAmbassadorUrlId',
-  LoanRankFromPLP = 'LoanRankFromPLP',
 }
 
 export enum CrmBussinessUnits {

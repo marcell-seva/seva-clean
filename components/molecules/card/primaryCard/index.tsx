@@ -1,8 +1,8 @@
-import { LanguageCode } from 'utils/models/models'
+import { LanguageCode } from 'utils/enum'
 import React from 'react'
-import { articleDateFormat } from 'utils/dateUtils'
 import styles from 'styles/components/molecules/card/primaryCard.module.scss'
 import CommonLabel from '../../labelCard/common'
+import { articleDateFormat } from 'utils/handler/date'
 
 type TPrimaryCardProps = {
   title: string

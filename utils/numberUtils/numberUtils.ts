@@ -1,3 +1,5 @@
+import { LanguageCode } from 'utils/enum'
+import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import {
   comma,
   hundred,
@@ -7,14 +9,8 @@ import {
   Rp,
   ten,
   thousand,
-} from 'const/const'
-import { LanguageCode } from 'utils/enum'
-import {
-  addSeparator,
-  COMMA,
-  DOT,
-  filterNonDigitCharacters,
-} from '../stringUtils'
+} from 'utils/helpers/const'
+import { COMMA, DOT } from '../stringUtils'
 
 export enum RoundingStrategy {
   Round,
@@ -88,26 +84,6 @@ export const formatBillionPoint = (num: number | string) => {
   return num
 }
 
-//  PriceSeparator: if LanguageCode is "id" use DOT, if LanguageCode is "en"
-//  use  COMMA
-export const replacePriceSeparatorByLocalization = (
-  num: number | string,
-  languageId: LanguageCode,
-) => {
-  const separator = languageId === LanguageCode.en ? COMMA : DOT
-  return addSeparator(num?.toString(), separator)
-}
-
-export const formatNumberByLocalization = (
-  value: number,
-  languageId: LanguageCode,
-  divisor = thousand,
-  digits = hundred,
-  roundStrategy = RoundingStrategy.Round,
-) => {
-  const num = formatNumberByDivisor(value, divisor, digits, roundStrategy)
-  return replaceDecimalPointByLocalization(num, languageId)
-}
 // PriceSeparator from link header variant list
 const replaceDecimalPointByLocalizationHeaderVariantList = (
   num: number,
@@ -214,15 +190,6 @@ export const transformToJtByTargetDigits = (
 
 export const formatSortPrice = (price: number, languageId = LanguageCode.en) =>
   price ? formatNumberByLocalization(price, languageId, million, ten) : 0
-
-export const Currency = (value: string | number) => {
-  let currentValue = value
-  if (typeof currentValue === 'number') currentValue = String(currentValue)
-  return replacePriceSeparatorByLocalization(
-    filterNonDigitCharacters(currentValue),
-    LanguageCode.id,
-  )
-}
 
 export const isValidPhoneNumber = (value: string) => {
   return /^\d{6,24}$/.test(value.replace(/[+]/gi, ''))

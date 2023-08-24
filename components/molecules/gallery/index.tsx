@@ -21,9 +21,8 @@ import {
   trackPDPPhotoClick,
   trackPDPPhotoSwipe,
 } from 'helpers/amplitude/seva20Tracking'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { LocalStorageKey } from 'utils/models/models'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { LocalStorageKey } from 'utils/enum'
 import {
   TrackingEventName,
   TrackingEventWebPDPPhoto,
@@ -31,6 +30,7 @@ import {
 import { isIphone } from 'utils/window'
 import elementId from 'helpers/elementIds'
 import { CityOtrOption } from 'utils/types/utils'
+import { useCar } from 'services/context/carContext'
 
 interface PropsGallery {
   items: Array<string>
@@ -52,7 +52,7 @@ export const Gallery: React.FC<PropsGallery> = ({
 }): JSX.Element => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null)
   const [flagIndex, setFlagIndex] = useState<number>(activeIndex)
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,

@@ -1,18 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react'
-import styles from 'styles/components/organisms/mainHeroLp.module.scss'
-import SupergraphicImage from '/public/revamp/illustration/supergraphic-secondary-large.webp'
-import MainHeroImage from '/public/revamp/illustration/main-hero-raize-cencored.webp'
-import HeaderMobile from '../headerMobile'
-import { sendAmplitudeData } from 'services/amplitude'
-import { AmplitudeEventName } from 'services/amplitude/types'
-import elementId from 'utils/helpers/trackerId'
-import Image from 'next/image'
 import { Button } from 'components/atoms'
-import { ButtonSize, ButtonVersion } from 'utils/types/models'
-import { useRouter } from 'next/router'
-import { api } from 'services/api'
-import { CityOtrOption } from 'utils/types/props'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import Image from 'next/image'
 import { HomePageDataLocalContext } from 'pages'
+import { useContext, useEffect, useState } from 'react'
+import { api } from 'services/api'
+import styles from 'styles/components/organisms/mainHeroLp.module.scss'
+import elementId from 'utils/helpers/trackerId'
+import { CityOtrOption } from 'utils/types'
+import { HeaderMobile } from '../headerMobile'
+import MainHeroImage from '/public/revamp/illustration/main-hero-raize-cencored.webp'
+import SupergraphicImage from '/public/revamp/illustration/supergraphic-secondary-large.webp'
 
 type MainHeroLPProps = {
   onCityIconClick: () => void
@@ -21,18 +18,9 @@ type MainHeroLPProps = {
 
 const MainHeroLP = ({ onCityIconClick, onCtaClick }: MainHeroLPProps) => {
   const { dataCities } = useContext(HomePageDataLocalContext)
-  const history = useRouter()
   const [showSidebar, setShowSidebar] = useState(false)
   const [cityListApi, setCityListApi] =
     useState<Array<CityOtrOption>>(dataCities)
-
-  const gotoLoanCalculator = () => {
-    sendAmplitudeData(
-      AmplitudeEventName.WEB_LP_KUALIFIKASI_KREDIT_TOP_CTA_CLICK,
-      null,
-    )
-    history.push('/kalkulator-kredit')
-  }
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
@@ -80,11 +68,17 @@ const MainHeroLP = ({ onCityIconClick, onCtaClick }: MainHeroLPProps) => {
             </Button>
           </div>
         </div>
-        <Image className={styles.mainCar} src={MainHeroImage} alt="raize" />
+        <Image
+          className={styles.mainCar}
+          src={MainHeroImage}
+          alt="raize"
+          loading="lazy"
+        />
         <Image
           className={styles.supergraphicBg}
           src={SupergraphicImage}
           alt="supergraphic"
+          loading="lazy"
         />
       </div>
     </>

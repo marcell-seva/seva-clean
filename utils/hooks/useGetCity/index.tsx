@@ -1,6 +1,6 @@
+import { LocalStorageKey } from 'utils/enum'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
-import { LocalStorageKey } from 'utils/types/models'
-import { CityOtrOption } from 'utils/types/props'
+import { CityOtrOption } from 'utils/types'
 
 export const defaultCity = {
   cityName: 'Jakarta Pusat',

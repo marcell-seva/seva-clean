@@ -4,7 +4,6 @@ import styles from 'styles/components/organisms/testimonyWidget.module.scss'
 import { Pagination } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/pagination'
-import { PopupTestimony } from '..'
 import { differentDateStatus } from 'utils/handler/date'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
@@ -12,6 +11,7 @@ import Image from 'next/image'
 import { TestimonialData } from 'utils/types/props'
 import { CardShadow } from 'components/atoms'
 import { api } from 'services/api'
+import PopupTestimony from '../popupTestimony'
 
 const TestimonyWidget = () => {
   const [testimony, setTestimony] = useState<Array<TestimonialData>>([])
@@ -58,6 +58,7 @@ const TestimonyWidget = () => {
                 alt={item.pictureName}
                 width={199}
                 height={149}
+                loading="lazy"
               />
               <CardShadow
                 ref={cardRef}

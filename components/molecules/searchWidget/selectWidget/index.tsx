@@ -9,11 +9,11 @@ import React, {
   useState,
 } from 'react'
 import styles from 'styles/components/molecules/searchWidget/selectWidget.module.scss'
-import { FormControlValue, Option } from 'utils/types/props'
 import { colors } from 'utils/helpers/style/colors'
 import { BottomSheet, IconChevronDown } from 'components/atoms'
 import { BottomSheetList } from 'components/molecules'
 import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
+import { FormControlValue, Option } from 'utils/types'
 
 type ContentSheetProps = {
   onClose: () => void

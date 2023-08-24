@@ -1,12 +1,12 @@
 import { Button, IconClose } from 'components/atoms'
 import elementId from 'helpers/elementIds'
 import React, { memo } from 'react'
-import { LoginSevaUrl } from 'routes/routes'
+import { LoginSevaUrl } from 'utils/helpers/routes'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
 import { useModal } from 'components/atoms/ModalOld/Modal'
 import { useRouter } from 'next/router'
-import { ButtonSize, ButtonVersion } from 'utils/enum'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 const background = '/revamp/illustration/OldCitySelectorBackgroundMobile.webp'
 

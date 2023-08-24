@@ -11,4 +11,5 @@ interface Window {
   checkForDrag: any
   fbq: any
   Moengage: any
+  Countly: any
 }

@@ -1,25 +1,22 @@
+import elementId from 'helpers/elementIds'
 import React from 'react'
-import styles from '/styles/components/organisms/alternativeCarCard.module.scss'
-import Image from 'next/image'
-import elementId from 'utils/helpers/trackerId'
-import urls from 'utils/helpers/url'
-import { sendAmplitudeData } from 'services/amplitude'
-import { AmplitudeEventName } from 'services/amplitude/types'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import { CarRecommendation, CityOtrOption } from 'utils/types/props'
+import { loanCalculatorDefaultUrl, variantListUrl } from 'utils/helpers/routes'
+import { getLowestInstallment } from 'utils/carModelUtils/carModelUtils'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { Button, CardShadow } from 'components/atoms'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { LabelPromo } from 'components/molecules'
+import styles from '../../../styles/components/organisms/alternativeCarCard.module.scss'
+import {
+  trackCarBrandRecomItemClick,
+  trackLCCarRecommendationClick,
+} from 'helpers/amplitude/seva20Tracking'
+import { LanguageCode, LocalStorageKey } from 'utils/enum'
+import { Location } from 'utils/types'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useRouter } from 'next/router'
-import {
-  getLowestInstallment,
-  replacePriceSeparatorByLocalization,
-} from 'utils/handler/calculation'
-import {
-  ButtonSize,
-  ButtonVersion,
-  LanguageCode,
-  LocalStorageKey,
-} from 'utils/types/models'
+import { CarRecommendation } from 'utils/types/context'
+import Image from 'next/image'
 
 type AlternativeCarCardProps = {
   recommendation: CarRecommendation
@@ -28,18 +25,18 @@ type AlternativeCarCardProps = {
   label?: React.ReactNode
 }
 
-const AlternativeCarCard = ({
+export const AlternativeCarCard = ({
   recommendation,
   onClickLabel,
   children,
   label,
 }: AlternativeCarCardProps) => {
   const router = useRouter()
-  const [cityOtr] = useLocalStorage<CityOtrOption | null>(
+  const [cityOtr] = useLocalStorage<Location | null>(
     LocalStorageKey.CityOtr,
     null,
   )
-  const detailCarRoute = urls.internalUrls.variantListUrl
+  const detailCarRoute = variantListUrl
     .replace(
       ':brand/:model',
       (recommendation.brand + '/' + recommendation.model.replace(/ +/g, '-'))
@@ -49,17 +46,13 @@ const AlternativeCarCard = ({
     .replace(':tab', '')
 
   const trackCarRecommendation = () => {
-    if (
-      window.location.pathname.includes(
-        urls.internalUrls.loanCalculatorDefaultUrl,
-      )
-    ) {
+    if (location.pathname.includes(loanCalculatorDefaultUrl)) {
       const lowestInstallment = getLowestInstallment(recommendation.variants)
       const formatLowestInstallment = replacePriceSeparatorByLocalization(
         lowestInstallment,
         LanguageCode.id,
       )
-      sendAmplitudeData(AmplitudeEventName.WEB_LC_CAR_RECOMMENDATION_CLICK, {
+      trackLCCarRecommendationClick({
         Car_Brand: recommendation.brand,
         Car_Model: recommendation.model,
         City: cityOtr?.cityName,
@@ -67,13 +60,10 @@ const AlternativeCarCard = ({
         Page_Origination: window.location.href,
       })
     } else {
-      sendAmplitudeData(
-        AmplitudeEventName.WEB_LP_BRANDRECOMMENDATION_CAR_CLICK,
-        {
-          Car_Brand: recommendation.brand,
-          Car_Model: recommendation.model,
-        },
-      )
+      trackCarBrandRecomItemClick({
+        Car_Brand: recommendation.brand,
+        Car_Model: recommendation.model,
+      })
     }
   }
 
@@ -96,9 +86,10 @@ const AlternativeCarCard = ({
           className={styles.heroImg}
           alt={`${recommendation.brand} ${recommendation.model}`}
           onClick={navigateToPDP}
+          data-testid={elementId.CarRecommendation.Image}
           width={180}
           height={135}
-          data-testid={elementId.CarRecommendation.Image}
+          loading="lazy"
         />
         {label ?? (
           <LabelPromo
@@ -141,4 +132,3 @@ const AlternativeCarCard = ({
     </div>
   )
 }
-export default AlternativeCarCard

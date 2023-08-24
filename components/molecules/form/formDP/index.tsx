@@ -1,11 +1,12 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import styles from 'styles/components/molecules/form/formPrice.module.scss'
 import { Input } from 'antd'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
-import { replacePriceSeparatorByLocalization } from 'utils/numberUtils/numberUtils'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import elementId from 'helpers/elementIds'
 import { LanguageCode } from 'utils/enum'
+
 type FormDownPaymentProps = {
   setDownPaymentAmount?: any
   collapseTwo?: boolean
@@ -98,7 +99,6 @@ export const FormDP = ({
       //   Number(filterNonDigitCharacters(downPaymentAmountTmp.toString())),
       // )
     }
-    console.log('test1', downPaymentAmountTmp)
   }, [isResetFilter, isApplied, isButtonClick])
   useEffect(() => {
     setMinDp(Currency(Number(minPriceValidation / 100) * 20))

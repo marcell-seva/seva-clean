@@ -1,4 +1,4 @@
-import { Currency } from './numberUtils/numberUtils'
+import { Currency } from './handler/calculation'
 
 export const getConvertFilterIncome = (value: string) => {
   if (value.includes('-') || value.includes('<') || value.includes('>')) {

@@ -1,5 +1,5 @@
 import { NextParsedUrlQuery } from 'next/dist/server/request-meta'
-import { LoanRank } from 'utils/enum'
+import { LoanRank } from './models'
 
 export interface User {
   id: number

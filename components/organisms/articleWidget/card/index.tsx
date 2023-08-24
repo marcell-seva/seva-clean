@@ -1,11 +1,11 @@
 import React from 'react'
 import styles from 'styles/components/organisms/articleWidget.module.scss'
-import { LanguageCode } from 'utils/types/models'
 import { Article } from 'utils/types'
 import Image from 'next/image'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { articleDateFormat } from 'utils/handler/date'
+import { LanguageCode } from 'utils/enum'
 
 type ArticlesWidgetProps = {
   article: Article

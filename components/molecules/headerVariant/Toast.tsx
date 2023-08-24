@@ -5,9 +5,10 @@ import { createPortal } from 'react-dom'
 import { colors } from 'utils/helpers/style/colors'
 import urls from 'utils/helpers/url'
 import { useRouter } from 'next/router'
-import { IconCloseOutlined } from 'components/atoms/icons'
 import { useIsMobile } from 'utils'
 import { CloseSnackBar, OpenSnackBar } from './slide'
+import { ToastType } from 'utils/types/models'
+import { CloseOutlined } from 'components/atoms/icon/CloseOutlined'
 
 const TextLegalMediumStyle = css`
   font-family: var(--open-sans);
@@ -46,13 +47,6 @@ export const maxPageWidth = '100%'
 export const TextLegalMedium = styled.span`
   ${TextLegalMediumStyle}
 `
-
-export enum ToastType {
-  Error = 'Error',
-  Success = 'Success',
-  Info = 'Info',
-  ErrorPreApproval = 'ErrorPreApproval',
-}
 
 interface ToastProps extends HTMLAttributes<HTMLDivElement> {
   type: ToastType
@@ -122,7 +116,7 @@ const ToastComponent = ({
         {renderMessage()}
         {isDismissible && (
           <StyledCloseButton onClick={onClose}>
-            <IconCloseOutlined width={24} height={24} color={colors.offWhite} />
+            <CloseOutlined width={24} height={24} color={colors.offWhite} />
           </StyledCloseButton>
         )}
       </StyledToastWrapper>

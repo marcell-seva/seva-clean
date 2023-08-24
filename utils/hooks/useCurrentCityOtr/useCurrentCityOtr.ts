@@ -1,6 +1,6 @@
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 import { LocalStorageKey } from 'utils/enum'
-import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { CityOtrOption, Location } from 'utils/types'
 
 export const defaultCity = {

@@ -3,7 +3,6 @@ import elementId from 'helpers/elementIds'
 import React, { useEffect, useRef, useState } from 'react'
 import { getNewFunnelAllRecommendations } from 'services/newFunnel'
 import { FormControlValue, Option, OptionWithImage } from 'utils/types'
-import CarSillhouete from '/public/revamp/illustration/car-sillhouete.webp'
 import {
   ErrorMessage,
   IconChevronDown,
@@ -13,6 +12,8 @@ import {
 } from 'components/atoms'
 import styles from 'styles/components/molecules/form/formSelectModelCar.module.scss'
 import { CarModel } from 'utils/types/carModel'
+
+const CarSillhouete = '/revamp/illustration/car-sillhouete.webp'
 
 const searchOption = {
   keys: ['label'],
@@ -79,7 +80,7 @@ export const FormSelectModelCar = ({
       undefined,
       selectedCity,
     )
-    setModelCarList(response.data.carRecommendations)
+    setModelCarList(response.carRecommendations)
   }
 
   const sortedModelCarList = () => {

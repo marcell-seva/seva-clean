@@ -1,11 +1,11 @@
 import { ReactElement } from 'react'
-import { InstallmentTypeOptions } from 'utils/models/models'
+
+import { ContactType, UnverifiedLeadSubCategory, UTMTags } from 'utils/enum'
 import {
-  ContactType,
+  CustomerPreApprovalStatus,
+  InstallmentTypeOptions,
   LoanRank,
-  UnverifiedLeadSubCategory,
-  UTMTags,
-} from 'utils/enum'
+} from './models'
 
 export type FormControlValue = string | number | readonly string[] | undefined
 
@@ -200,6 +200,7 @@ export interface LoanDetail {
   tenure: number
   dpAmount: number
   monthlyInstallment: number
+  monthlyInstallmentSpekta?: number
 }
 
 export interface CarVariantLoan extends LoanDetail {
@@ -338,24 +339,6 @@ export interface MobileWebTopMenuType extends MobileWebTopMenuItemType {
   subMenu: MobileWebTopMenuItemType[]
 }
 
-export interface AnnouncementBoxDataType {
-  id: number
-  title: string
-  data: {
-    folder: string
-    icon: string
-    thumbnail: {
-      icon: string
-    }
-  }
-  url: string | null
-  description: string
-  textDisplay: string | null
-  backgroundColor: string
-  bannerDesign: string
-  userTarget: string
-}
-
 export interface CityOtrOption {
   cityName: string
   cityCode: string
@@ -387,13 +370,6 @@ export interface CarVariantRecommendation extends CarVariant {
   tenure: number
   dpAmount: number
   monthlyInstallment: number
-}
-
-export interface CityOtrOption {
-  cityName: string
-  cityCode: string
-  province: string
-  id?: string
 }
 
 export interface SpecialRateRequest {
@@ -830,4 +806,245 @@ export interface NavbarItemResponse {
   status: boolean
   toggleNew: boolean
   subMenu: NavbarItemResponse[]
+}
+
+export interface PromoItemType {
+  promo: string
+  promoId: string
+  promoTitle: string
+  promoDesc: string
+  is_Best_Promo: boolean
+  is_Available: boolean
+  promoFinishDate: string | null
+}
+
+export interface SpecialRateListWithPromoType {
+  tenure: number
+  interestRate: number
+  interestRateSpekta: number
+  interestRateGiias: number
+  insuranceRate: number
+  dp: number
+  dpAmount: number
+  installment: number
+  installmentSpekta: number
+  installmentGiias: number
+  saveAmount: number
+  totalFirstPayment: number
+  totalFirstPaymentSpekta: number
+  totalFirstPaymentGiias: number
+  totalBayarSpekta: number
+  totalBayarGiias: number
+  applied: string
+  promoArr: PromoItemType[]
+  loanRank: string
+  subsidiDp: number
+}
+
+export interface LoanCalculatorInsuranceAndPromoType {
+  tenure: number
+  allInsuranceList: Option<string>[]
+  selectedInsurance: Option<string>
+  applied: string
+  allPromoList: PromoItemType[] // filled with promo list based on selected insurance
+  allPromoListOnlyFullComprehensive: PromoItemType[] // only filled with promo list related to full comprehensive
+  selectedPromo: PromoItemType[]
+  tdpBeforePromo: number // same value as regular TDP
+  tdpAfterPromo: number
+  tdpWithPromo: number // temp value for TDP With promo before click submit(on pop up promo list)
+  installmentBeforePromo: number // same value as regular installment
+  installmentAfterPromo?: number
+  installmentWithPromo?: number // temp value for Installment With promo before click submit(on pop up promo list)
+  interestRateBeforePromo: number
+  interestRateWithPromo?: number // temp value for Interest Rate With promo before click submit(on pop up promo list)
+  interestRateAfterPromo?: number
+  subsidiDp: number //value subsidi dp
+}
+
+export interface LoanCalculatorIncludePromoPayloadType {
+  brand: string
+  model: string
+  age?: string
+  angsuranType: string
+  city: string
+  discount: number
+  dp: number
+  dpAmount: number
+  monthlyIncome: string
+  otr: number
+}
+
+export interface LoanCalculatorInsuranceParams {
+  modelId: string
+  cityCode: string
+  tenure: string | number
+}
+
+export interface LoanCalculatorAsuransiKombinasiPayloadType
+  extends LoanCalculatorIncludePromoPayloadType {
+  tenure: number
+  asuransiKombinasi: string
+}
+
+export interface CustomerPreApprovalResponse {
+  status: CustomerPreApprovalStatus
+  loanTenure: number
+  loanDownPayment: number
+  loanMonthlyInstallment: number
+  modelDetail: CarModelDetailsResponse
+  variantDetail: VariantDetail
+  finishedAt: number
+  finco: string // 'ACC' | 'TAF'
+  promoCode?: string
+  fullName?: string
+  customerName?: string
+  monthlyIncome?: number
+  spouseIncome?: number
+  city?: string
+  occupation?: string
+  temanSevaTrxCode?: string
+}
+
+export interface SendKualifikasiKreditRequest {
+  leadId?: string
+  cityId: number
+  variantId: string
+  modelId: string
+  priceOtr: number
+  monthlyIncome: number
+  loanDownPayment: number
+  loanDownPaymentVanilla?: number
+  totalFirstPayment: number
+  totalFirstPaymentVanilla?: number
+  angsuranType: InstallmentTypeOptions
+  ageRange?: string
+  promoCode: string
+  loanTenure: number
+  rateType: string
+  flatRate: number
+  flatRateVanilla?: number
+  loanMonthlyInstallment: number
+  loanMonthlyInstallmentVanilla?: number
+  occupation: string
+  insuranceType: string
+  temanSevaTrxCode: string
+  loanRank: string
+  platform: 'web'
+  selectablePromo?: string[]
+}
+
+export interface SendMultiKualifikasiKredit {
+  cityId: number
+  city: string
+  priceRangeGroup: string
+  recommendationType: string
+  dpType: string
+  maxDpAmount: string
+  monthlyIncome: number
+  tenure: number
+  sortBy: string
+  dob: string
+  occupation: string
+  transmission?: string
+  limit?: number
+  offset?: number
+}
+
+export type MultKKCarVariant = CarVariantLoan & {
+  dp: number
+  name: string
+  transmission: string
+  fuelType: string
+  engineCapacity: number
+  seat: number
+  interestSpekta?: number
+}
+
+export type MultKKCarRecommendation = CarRecommendation & {
+  rasioBahanBakar: string
+  numberOfPopulation: number
+  isPassengerCar: boolean
+  creditQualificationStatus: string
+  variants: MultKKCarVariant[]
+  promo: PromoItemType | null
+}
+
+export interface SendMultiKualifikasiKreditResponse {
+  leadId?: string
+  totalItems: number
+  totalItemsCurrentPage: number
+  currentPage: number
+  carRecommendations: MultKKCarRecommendation[]
+  lowestCarPrice: number
+  highestCarPrice: number
+}
+
+export interface SendInstantApproval {
+  leadId: string | undefined
+  leasing: string | undefined
+  // useKtpSpouseAsMain: boolean
+}
+
+export type PopupPromoDataItemType = {
+  title: string
+  body: {
+    title?: string
+    body: string
+  }[]
+  snk: string
+}
+
+export interface CustomerKtpSeva {
+  province: string
+  city: string
+  nik: string
+  name: string
+  birthdate: string
+  gender: string
+  address: string
+  rtrw: string
+  kel: string
+  kec: string
+  marriage: string
+}
+
+export interface GetCustomerKtpSeva {
+  province: string
+  city: string
+  nik: string
+  name: string
+  birthdate: string
+  gender: string
+  address: string
+  rtrw: string
+  keldesa: string
+  kecamatan: string
+  marriage: string
+  created: string
+  isSpouse?: boolean
+}
+
+export type DeleteAccountRequestType = {
+  phoneNumber: string
+  createdBy?: string
+  reason?: string
+}
+
+export interface UpdateProfileType {
+  fullName: string
+  dob: string
+  gender: string
+  marital: string
+  email: string | null
+}
+
+export interface FinalLoan {
+  selectedPromoFinal: PromoItemType[]
+  selectedInsurance: any
+  tppFinal: number | undefined
+  installmentFinal: number | undefined
+  interestRateFinal: number | undefined
+  installmentBeforePromo: number
+  tdpBeforePromo: number
+  interestRateBeforePromo: number
 }

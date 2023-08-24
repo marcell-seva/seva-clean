@@ -1,0 +1,63 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.container {
+  background: #{$primary-white};
+}
+
+.content {
+  max-width: 480px;
+  margin-top: 54px; // page header height is 54px
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 16px;
+}
+
+.contentWithSpace {
+  @extend .content;
+  margin-top: 114px !important; // page header with announcement box
+}
+
+.title {
+  padding: 24px 0;
+  font-family: 'Kanyon';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  color: #{$primary-black};
+}
+
+.inputLabel {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  mix-blend-mode: normal;
+}
+
+.floatingWrapper {
+  position: fixed;
+  width: 100%;
+  padding: 0 16px;
+  bottom: 33px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.toastMessage {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  color: #{$primary-white};
+}

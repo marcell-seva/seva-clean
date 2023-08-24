@@ -1,39 +1,27 @@
 import { Input } from 'components/atoms/OldInput/Input'
-import { ToastType, useToast } from 'components/atoms/OldToast/Toast'
+import { useToast } from 'components/atoms/OldToast/Toast'
 import { UncheckedSquareOutlined } from 'components/atoms'
-import {
-  useContextContactFormData,
-  useContextContactFormPatch,
-} from 'context/contactFormContext/contactFormContext'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useContextForm } from 'services/context/formContext'
 import { trackSelectHomeSendDetails } from 'helpers/amplitude/newHomePageEventTracking'
 import { FBPixelStandardEvent } from 'helpers/facebookPixel'
 import { trackGASubmitContactInfo } from 'services/googleAds'
 import { useEnableNewLogin } from 'utils/hooks/useEnableNewLogin'
-import {
-  ContactFormKey,
-  ContactType,
-  LocalStorageKey,
-} from 'utils/models/models'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 // import ReactPixel from 'react-facebook-pixel'
 import { useTranslation } from 'react-i18next'
-import { LoginSevaUrl } from 'routes/routes'
+import { LoginSevaUrl } from 'utils/helpers/routes'
 import { getCustomerInfoSeva } from 'services/customer'
 import {
   createUnverifiedLeadNew,
   UnverifiedLeadSubCategory,
 } from 'services/lead'
 import styled from 'styled-components'
-import { getToken } from 'utils/api'
 import { savePageBeforeLogin } from 'utils/loginUtils'
 import { Button, ButtonType } from 'components/atoms/ButtonOld/Button'
 import { colors } from 'styles/colors'
 import { createProbeTrack } from 'services/probe'
-import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
 import { CityOtrOption, UTMTagsData } from 'utils/types/utils'
 import elementId from 'helpers/elementIds'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
 import { TextLargeRegular } from 'components/atoms/typography/TextLargeRegular'
 import { CheckedSquareOutlined } from 'components/atoms/icon/CheckedSquareOutlined'
@@ -41,7 +29,13 @@ import { TextMediumRegular } from 'components/atoms/typography/TextMediumRegular
 import { useRouter } from 'next/router'
 import { FormPhoneNumber } from '../formPhoneNumber/FormPhoneNumber'
 import { isValidPhoneNumber } from 'utils/numberUtils/numberUtils'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { ContactType, LocalStorageKey } from 'utils/enum'
+import { ContactFormKey, ToastType } from 'utils/types/models'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { getToken } from 'utils/handler/auth'
 
 interface AdvisorSectionProps {
   onSubmitSuccess: (whatsappChecked?: boolean) => void
@@ -52,7 +46,7 @@ export const AdvisorSection = ({
   onSubmitSuccess,
   onCheckLogin,
 }: AdvisorSectionProps) => {
-  const contactFormData = useContextContactFormData()
+  const { formContactValue } = useContextForm()
   const router = useRouter()
 
   const [fullName, setFullName] = useState<string>('')
@@ -70,10 +64,10 @@ export const AdvisorSection = ({
   )
 
   const autofillName = () => {
-    if (contactFormData.nameTmp) {
-      return contactFormData.nameTmp ?? ''
+    if (formContactValue.nameTmp) {
+      return formContactValue.nameTmp ?? ''
     } else {
-      return contactFormData.name ?? ''
+      return formContactValue.name ?? ''
     }
   }
 
@@ -109,11 +103,11 @@ export const AdvisorSection = ({
 
   useEffect(() => {
     if (
-      contactFormData.phoneNumber &&
-      contactFormData.phoneNumber != 'undefined' &&
-      contactFormData.phoneNumber?.toString().length > 3
+      formContactValue.phoneNumber &&
+      formContactValue.phoneNumber != 'undefined' &&
+      formContactValue.phoneNumber?.toString().length > 3
     ) {
-      const phoneNumber = String(contactFormData.phoneNumber)
+      const phoneNumber = String(formContactValue.phoneNumber)
       patchContactFormValue({
         [ContactFormKey.PhoneNumber]: phoneNumber,
       })
@@ -125,7 +119,7 @@ export const AdvisorSection = ({
 
     getCustomerFullName()
   }, [])
-  const patchContactFormValue = useContextContactFormPatch()
+  const { patchFormContactValue: patchContactFormValue } = useContextForm()
 
   const onNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value[0] != ' ') {
@@ -137,15 +131,15 @@ export const AdvisorSection = ({
   useEffect(() => {
     setConfirmEnabled(
       fullName.trim().length > 0 &&
-        isValidPhoneNumber(contactFormData.phoneNumberValid?.toString() ?? ''),
+        isValidPhoneNumber(formContactValue.phoneNumberValid?.toString() ?? ''),
     )
-  }, [fullName, contactFormData.phoneNumberValid])
+  }, [fullName, formContactValue.phoneNumberValid])
 
   const onClickOK = (e: React.MouseEvent | React.KeyboardEvent) => {
     e.stopPropagation()
     setLoading(true)
 
-    const phoneNumber = String(contactFormData.phoneNumberValid)
+    const phoneNumber = String(formContactValue.phoneNumberValid)
     patchContactFormValue({
       [ContactFormKey.PhoneNumber]: phoneNumber,
       [ContactFormKey.Name]: fullName,

@@ -6,9 +6,9 @@ import {
   CarVariantFAQParam,
   trackFAQExpandClick,
 } from 'helpers/amplitude/seva20Tracking'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import elementId from 'helpers/elementIds'
+import { useCar } from 'services/context/carContext'
 
 type FaqProps = {
   question: string
@@ -26,7 +26,7 @@ export const Faq: React.FC<PropsInfo> = ({
   headingText,
   descText,
 }): JSX.Element => {
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
   const [collIndex, setCollIndex] = useState<number[]>([-1]) //collection index
   const [expandItem, setExpandItem] = useState<number[]>([-1]) //collection expand item
   const [expandList, setExpandList] = useState(false) //expand "lihat pertanyaan lainnya"

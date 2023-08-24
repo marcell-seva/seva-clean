@@ -1,0 +1,134 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.card {
+  width: 100%;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #{$shades-grey-10};
+  overflow: hidden;
+
+  &.active {
+    border-color: #{$secondary-sky-blue};
+  }
+}
+
+.titleWrapper {
+  background-color: #{$shades-sky-blue-5};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 18px;
+  gap: 13px;
+
+  &.disable {
+    background-color: #{$shades-grey-5};
+  }
+
+  &.unavailable {
+    background-color: #{$shades-grey-10};
+  }
+
+  .title {
+    color: #{$secondary-sky-blue};
+    font-family: $font-openSans;
+    font-size: 11px;
+    line-height: 16px;
+    &.disable {
+      color: #{$shades-grey-75};
+    }
+    &.unavailable {
+      color: #{$shades-grey-50};
+    }
+  }
+
+  .promoTerbaik {
+    color: #{$secondary-green};
+    font-family: $font-openSans;
+    font-size: 11px;
+    line-height: 16px;
+  }
+}
+
+.contentWrapper {
+  padding: 15px 18px 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  &.unavailable {
+    background-color: #{$shades-grey-5};
+  }
+
+  .contentInfoWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    .title {
+      font-family: $font-openSans-semiBold;
+      font-size: 14px;
+      line-height: 20px;
+      color: #{$primary-dark-blue};
+      &.disable {
+        color: #{$shades-grey-75};
+      }
+      &.unavailable {
+        color: #{$shades-grey-50};
+      }
+    }
+
+    .desc {
+      font-family: $font-openSans;
+      font-size: 11px;
+      line-height: 16px;
+      color: #{$shades-grey-75};
+      width: 90%;
+
+      &.unavailable {
+        color: #{$shades-grey-50};
+      }
+
+      .bold {
+        font-family: $font-openSans-bold;
+      }
+
+      .snk {
+        color: #{$secondary-blue};
+      }
+    }
+  }
+
+  .iconWrapper {
+    margin-top: 4px;
+  }
+}
+
+.additionalWrapper {
+  padding: 9px 10px 10px 17px;
+  gap: 6px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .info {
+    font-family: $font-openSans;
+    font-size: 11px;
+    line-height: 16px;
+    color: #{$shades-grey-50};
+  }
+
+  .expireSoon {
+    font-family: $font-openSans;
+    font-size: 11px;
+    line-height: 16px;
+    color: #{$primary-red};
+  }
+}
+
+.dashedLine {
+  height: 1px;
+  width: 100%;
+  border: 1px dashed #{$shades-grey-10};
+}

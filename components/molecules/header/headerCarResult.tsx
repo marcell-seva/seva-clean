@@ -2,8 +2,8 @@ import React, { useState, KeyboardEvent, useCallback, useEffect } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 import { colors } from 'styles/colors'
 import { useTranslation } from 'react-i18next'
-import { carResultsUrl, variantListUrl } from 'routes/routes'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { carResultsUrl, variantListUrl } from 'utils/helpers/routes'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import debounce from 'lodash.debounce'
 import { trackSearchBarSuggestionClick } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
@@ -12,7 +12,7 @@ import { getCarsSearchBar } from 'services/searchbar'
 import {
   useAmplitudePageView,
   useCarResultParameter,
-} from 'utils/hooks/useAmplitudePageView/useAmplitudePageView'
+} from 'utils/hooks/useAmplitudePageView'
 import { Option } from 'utils/types'
 import { useToast } from 'components/atoms/OldToast/Toast'
 import { useRouter } from 'next/router'
@@ -20,10 +20,10 @@ import {
   trackSearchCarResults,
   trackViewCarResult,
 } from 'helpers/amplitude/newFunnelEventTracking'
-import { FunnelQueryKey } from 'utils/models/models'
 import { Loading } from 'components/atoms/loading'
 import { SearchInput } from 'components/atoms/searchInput/oldSearchInput'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
+import { FunnelQueryKey } from 'utils/types/models'
 
 interface HeaderCarResultProps {
   overrideDisplay?: string
@@ -58,7 +58,7 @@ export default function HeaderCarResult({
   const handleDebounceFn = (inputValue: string) => {
     getCarsSearchBar(inputValue)
       .then((response) => {
-        const listedResult = response.data.map(
+        const listedResult = response.map(
           (item: { value: string; label: string }) => {
             const splitValue = item.value.split(' ')
             const carBrand = splitValue[0]

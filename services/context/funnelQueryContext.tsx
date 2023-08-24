@@ -1,7 +1,7 @@
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import { LocalStorageKey } from 'utils/types/models'
-import { FunnelQuery, MobileWebTopMenuType } from 'utils/types/props'
+import { LocalStorageKey } from 'utils/enum'
+import { FunnelQuery } from 'utils/types/context'
 
 enum PaymentType {
   MonthlyInstallment = 'monthlyInstallment',
@@ -40,7 +40,7 @@ export type FunnelQueryContextType = {
   funnelQuery: FunnelQuery
   setFunnelQueryValue: (data: FunnelQuery) => void
   patchFunnelQuery: (data: FunnelQuery) => void
-  clearQueryFilter: (data: FunnelQuery) => void
+  clearQueryFilter: () => void
 }
 
 export const FunnelQueryContext = createContext<FunnelQueryContextType | []>([])
@@ -138,3 +138,6 @@ export const FunnelQueryContextProvider = ({ children }: any) => {
     </FunnelQueryContext.Provider>
   )
 }
+
+export const useFunnelQueryData = () =>
+  useContext(FunnelQueryContext) as FunnelQueryContextType

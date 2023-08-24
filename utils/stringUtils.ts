@@ -149,3 +149,8 @@ export const getMaskingDob = (dob: string) => {
     )
   return convertedDobArray.join(' ')
 }
+
+export const removeFirstWordFromString = (value: string) => {
+  const trimmed = value.trim()
+  return trimmed.trim().substring(trimmed.indexOf(' ') + 1)
+}

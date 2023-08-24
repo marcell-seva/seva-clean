@@ -6,7 +6,7 @@ import Image from 'next/image'
 import elementId from 'utils/helpers/trackerId'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
-import { IconChevronRight } from 'components/atoms/icons'
+import { IconChevronRight } from 'components/atoms/icon'
 
 const SubProduct = () => {
   const title = ['Fasilitas Dana', 'Layanan Surat Kendaraan']
@@ -35,6 +35,7 @@ const SubProduct = () => {
               src={fasilitasDanaBanner}
               className={styles.promoBannerSmall}
               height="196"
+              loading="lazy"
             />
             <div>
               <p className={styles.textTitlePromoBanner}>{title[0]}</p>
@@ -68,6 +69,7 @@ const SubProduct = () => {
               src={layananSuratKendaraanBanner}
               className={styles.promoBannerSmall}
               height="196"
+              loading="lazy"
             />
             <div className={styles.wrapperDetail}>
               <p className={styles.textTitlePromoBanner}>{title[1]}</p>

@@ -1,6 +1,5 @@
-import endpoints from 'helpers/endpoints'
-import { API } from '../utils/api'
+import { api } from 'services/api'
 
 export const getTestimonials = () => {
-  return API.get(endpoints.testimonials)
+  return api.getTestimony()
 }

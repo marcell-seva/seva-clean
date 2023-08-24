@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react'
-import { PdpDesktop, PdpMobile } from 'components/organism'
+import { PdpDesktop, PdpMobile } from 'components/organisms'
 import { api } from 'services/api'
 import { CarRecommendation } from 'utils/types/utils'
 import { InferGetServerSidePropsType } from 'next'
@@ -7,9 +7,8 @@ import Head from 'next/head'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
-import { MenuContext } from 'context/menuContext'
 import Seo from 'components/atoms/seo'
-import { defaultSeoImage } from 'const/const'
+import { defaultSeoImage } from 'utils/helpers/const'
 interface PdpDataLocalContextType {
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.
@@ -77,24 +76,19 @@ export default function index({
         description={meta.description}
         image={carModelDetailsRes.images[0] || defaultSeoImage}
       />
-      <MenuContext.Provider
+
+      <PdpDataLocalContext.Provider
         value={{
-          dataMenu,
+          carRecommendationsResDefaultCity: carRecommendationsRes,
+          carModelDetailsResDefaultCity: carModelDetailsRes,
+          carVariantDetailsResDefaultCity: carVariantDetailsRes,
+          metaTagDataRes: metaTagDataRes,
+          carVideoReviewRes: carVideoReviewRes,
+          carArticleReviewRes: carArticleReviewRes,
         }}
       >
-        <PdpDataLocalContext.Provider
-          value={{
-            carRecommendationsResDefaultCity: carRecommendationsRes,
-            carModelDetailsResDefaultCity: carModelDetailsRes,
-            carVariantDetailsResDefaultCity: carVariantDetailsRes,
-            metaTagDataRes: metaTagDataRes,
-            carVideoReviewRes: carVideoReviewRes,
-            carArticleReviewRes: carArticleReviewRes,
-          }}
-        >
-          {isMobile ? <PdpMobile /> : <PdpDesktop />}
-        </PdpDataLocalContext.Provider>
-      </MenuContext.Provider>
+        {isMobile ? <PdpMobile /> : <PdpDesktop />}
+      </PdpDataLocalContext.Provider>
     </>
   )
 }

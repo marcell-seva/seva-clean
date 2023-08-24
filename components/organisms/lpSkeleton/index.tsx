@@ -1,9 +1,9 @@
 import React from 'react'
 import styles from 'styles/components/organisms/lpSkeleton.module.scss'
 import MainHeroSkeleton from '/public/revamp/illustration/car-main-hero-skeleton.webp'
-import HeaderMobile from '../headerMobile'
 import { CardShadow, Skeleton } from 'components/atoms'
 import Image from 'next/image'
+import { HeaderMobile } from '../headerMobile'
 
 const LpSkeleton = () => {
   return (

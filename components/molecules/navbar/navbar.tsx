@@ -5,16 +5,15 @@ import { removeWhitespacesAndToLowerCase } from 'utils/stringUtils'
 import urls from 'helpers/urls'
 import { useMediaQuery } from 'react-responsive'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
-import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { NavbarItemResponse } from 'utils/types/utils'
-import { LocalStorageKey } from 'utils/models/models'
+import { LocalStorageKey } from 'utils/enum'
 import { NavbarItem } from './navbarItem'
 import { BeliMobilMenu } from './beliMobilMenu'
-import { MenuContext } from 'context/menuContext'
+import { useUtils } from 'services/context/utilsContext'
 
 export const Navbar = () => {
-  const { dataMenu: menus } = useContext(MenuContext)
-
+  const { dataMenu: menus } = useUtils()
   const filterCategory = (
     data: Array<NavbarItemResponse>,
     category: string,
@@ -60,13 +59,15 @@ export const Navbar = () => {
     const data: string | null = getLocalStorage(LocalStorageKey.menu)
     if (data === null) {
       getMenus().then((res) => {
-        const result = res.data.data
+        const result = res.data
         setMenuCategory(result)
       })
     } else {
-      const decryptedValue: any = JSON.parse(decryptValue(data))
-      setMenusData(decryptedValue)
-      setMenuCategory(decryptedValue)
+      if (decryptValue(data)) {
+        const decryptedValue: any = JSON.parse(decryptValue(data))
+        setMenusData(decryptedValue)
+        setMenuCategory(decryptedValue)
+      }
     }
   }
 
