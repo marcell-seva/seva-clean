@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from '../../../../styles/components/molecules/form/formTenure.module.scss'
 import { Space } from 'antd'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
 
 export interface FilterMobileProps {

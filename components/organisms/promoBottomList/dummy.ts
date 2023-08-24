@@ -1,0 +1,68 @@
+export const selectablePromo = [
+  {
+    id: '1',
+    available: true,
+    is_Best_Promo: true,
+    is_Almost_Expired: false,
+    is_Expired: false,
+    disable: false,
+    parentPromoName: 'Promo Cuma di Seva',
+    promoTitle: 'Cashback Rp 1 Juta AstraPay',
+    promoDesc:
+      'Lorem ipsum dolor sit amet conscicteur ad esplicit. Lorem ipsum dolor',
+    expiredDate: '2023-09-30',
+    url: 'https://www.seva.id/info/promo/promo-trade-in-daihatsu/',
+  },
+  {
+    id: '2',
+    available: true,
+    is_Best_Promo: true,
+    is_Almost_Expired: true,
+    is_Expired: false,
+    parentPromoName: 'Promo Toyota SPEKTA',
+    promoTitle: 'Gratis Asuransi 2 Tahun',
+    promoDesc:
+      'Gratis upgrade asuransi menjadi comprehensive di tahun setelah komprehensif berakhir.',
+    expiredDate: '2023-01-30',
+    url: 'https://www.seva.id/info/promo/promo-trade-in-daihatsu/',
+  },
+  {
+    id: '3',
+    available: true,
+    is_Best_Promo: false,
+    is_Almost_Expired: false,
+    is_Expired: false,
+    parentPromoName: 'Promo Cuma di SEVA',
+    promoTitle: 'Gratis 1 Tahun Asuransi Comprehensive',
+    promoDesc:
+      'Cashback mak. Rp 4 Juta. Untuk asuransi comprehensive.  Lorem ipsum dolor sit.',
+    expiredDate: '2023-01-30',
+    url: 'https://www.seva.id/info/promo/promo-trade-in-daihatsu/',
+  },
+  {
+    id: '4',
+    available: false,
+    is_Best_Promo: false,
+    is_Almost_Expired: false,
+    is_Expired: false,
+    parentPromoName: 'Promo Cuma di SEVA',
+    promoTitle: 'Promo Bunga 0%',
+    promoDesc:
+      'Lorem ipsum dolor sit amet conscicteur ad esplicit. Lorem Ipsum.',
+    expiredDate: '',
+    url: '',
+  },
+  {
+    id: '5',
+    available: false,
+    is_Best_Promo: false,
+    is_Almost_Expired: false,
+    is_Expired: false,
+    parentPromoName: 'Promo Toyota SPEKTA',
+    promoTitle: 'Bunga 0%, Gratis Admin dan Asuransi 1 Tahun Comprehensive',
+    promoDesc:
+      'Lorem ipsum dolor sit amet conscicteur ad esplicit. Lorem Ipsum.',
+    expiredDate: '',
+    url: '',
+  },
+]

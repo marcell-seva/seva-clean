@@ -1,7 +1,8 @@
+import { useLocalStorageWithEncryption } from './../useLocalStorage/index'
 import { FormControlValue } from 'utils/types'
-import { useLocalStorageWithEncryption } from '../useLocalStorage/useLocalStorage'
-import { LocalStorageKey, SurveyFormKey } from '../../models/models'
-import { FormControl } from 'context/surveyFormContext/surveyFormContext'
+import { FormControl } from 'services/context/formContext'
+import { SurveyFormKey } from 'utils/types/models'
+import { LocalStorageKey } from 'utils/enum'
 
 export type FormItem = { [k in SurveyFormKey]?: FormControl<FormControlValue> }
 

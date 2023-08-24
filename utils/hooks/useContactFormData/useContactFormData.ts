@@ -1,5 +1,6 @@
-import { useLocalStorageWithEncryption } from '../useLocalStorage/useLocalStorage'
-import { ContactFormKey, LocalStorageKey } from '../../models/models'
+import { useLocalStorageWithEncryption } from './../useLocalStorage/index'
+import { ContactFormKey } from 'utils/types/models'
+import { LocalStorageKey } from 'utils/enum'
 
 export type FormItem = { [k in ContactFormKey]?: string }
 

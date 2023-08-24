@@ -3,9 +3,10 @@ import styles from 'styles/components/organisms/articleListCard.module.scss'
 import Image from 'next/image'
 import { Article } from 'utils/types'
 import { articleDateFormat } from 'utils/handler/date'
-import { LanguageCode } from 'utils/types/models'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
+import { LanguageCode } from 'utils/enum'
+
 type ArticlesWidgetProps = {
   article: Article
   currentTab: string
@@ -37,7 +38,9 @@ const ArticleWidgetListCard = ({
             borderBottomLeftRadius: '8px',
             height: '108px',
             width: '143px',
+            objectFit: 'cover',
           }}
+          loading="lazy"
         />
         {article.category && (
           <div className={styles.categoryTextWrapper}>

@@ -14,12 +14,12 @@ import {
   IconSUV,
   IconSedan,
   IconSport,
-} from 'components/atoms/icons'
+} from 'components/atoms/icon'
 import elementId from 'utils/helpers/trackerId'
 import { Button, Toast } from 'components/atoms'
-import { ButtonSize, ButtonVersion } from 'utils/types/models'
 import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
 import { initDataWidget } from 'components/organisms/searchWidget'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 interface CarButtonProps {
   key: string

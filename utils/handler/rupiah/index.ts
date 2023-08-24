@@ -1,5 +1,7 @@
-import { COMMA, DOT, hundred, thousand } from 'utils/helpers/const'
-import { LanguageCode, RoundingStrategy } from 'utils/types/models'
+import { LanguageCode } from 'utils/enum'
+import { hundred, thousand } from 'utils/helpers/const'
+import { COMMA, DOT } from 'utils/stringUtils'
+import { RoundingStrategy } from 'utils/types/models'
 import { addSeparator } from '../stringManipulation'
 
 export const rupiah = (num: number, isLargerThan?: boolean): string => {

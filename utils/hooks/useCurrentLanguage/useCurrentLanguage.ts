@@ -1,4 +1,4 @@
-import { LanguageCode, LocalStorageKey } from 'utils/types/models'
+import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { useLocalStorage } from '../useLocalStorage'
 
 export const useCurrentLanguage = () => {

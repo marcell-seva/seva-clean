@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import styles from 'styles/components/organisms/footerMobile.module.scss'
-import SevaLogo from '/public/revamp/icon/logo-on-dark.webp'
-import ISOIcon from '/public/revamp/icon/iso.webp'
-import FacebookLogo from '/public/revamp/icon/facebook-outline.png'
-import { IconInstagram, IconTwitterOutlined } from 'components/atoms/icons'
-import urls from 'utils/helpers/url'
-import elementId from 'utils/helpers/trackerId'
-import { sendAmplitudeData } from 'services/amplitude'
-import { AmplitudeEventName } from 'services/amplitude/types'
+import { colors } from 'styles/colors'
+import { IconInstagram, IconTwitterOutlined } from 'components/atoms/icon'
+import styles from '../../../styles/components/organisms/footerMobile.module.scss'
+import urls from 'helpers/urls'
+import elementId from 'helpers/elementIds'
 import Image from 'next/image'
-import { api } from 'services/api'
-import { getLocalStorage } from 'utils/localstorageUtils'
+import { trackFooterClick } from 'helpers/amplitude/seva20Tracking'
+import { getLocalStorage } from 'utils/handler/localStorage'
 import { UTMTagsData } from 'utils/types/utils'
 import { LocalStorageKey } from 'utils/enum'
+import { api } from 'services/api'
+
+const SevaLogo = '/revamp/icon/logo-on-dark.webp'
+const ISOIcon = '/revamp/icon/iso.webp'
+const FacebookLogo = '/revamp/icon/facebook-outline.png'
 
 export interface FooterMenu {
   menuName: string
@@ -26,14 +27,18 @@ export interface FooterMenu {
   menuType: string
 }
 
-const FooterMobile = () => {
+export const FooterMobile = () => {
   const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
   const [menu, setMenu] = useState<FooterMenu[]>([])
 
   useEffect(() => {
-    api.getMobileFooterMenu().then((result: any) => {
-      setMenu(result.data)
-    })
+    api
+      .getMobileFooterMenu()
+      .then(
+        (result: { data: { data: React.SetStateAction<FooterMenu[]> } }) => {
+          setMenu(result.data.data)
+        },
+      )
   }, [])
 
   const dataTestId = (code: string) => {
@@ -58,7 +63,7 @@ const FooterMobile = () => {
   }
 
   const handleClickMenu = (menuName: string) => {
-    sendAmplitudeData(AmplitudeEventName.WEB_FOOTER_CLICK, {
+    trackFooterClick({
       Page_Origination_URL: window.location.href,
       Menu: menuName,
     })
@@ -73,6 +78,7 @@ const FooterMobile = () => {
           height={31}
           alt="seva"
           className={styles.sevaLogo}
+          loading="lazy"
         />
         <span className={styles.footerText}>
           SEVA - Platform yang berada di bawah Astra Financial yang menyediakan
@@ -80,8 +86,8 @@ const FooterMobile = () => {
           pembiayaan dan dealer resmi dari Astra Group
         </span>
         <div className={styles.linkedTextWrapper}>
-          {menu.length > 0 &&
-            menu.map((item, index) => (
+          {menu?.length > 0 &&
+            menu?.map((item, index) => (
               <a
                 href={formatMenuUrl(item.menuUrl)}
                 key={index}
@@ -89,7 +95,6 @@ const FooterMobile = () => {
                 target="_blank"
                 onClick={() => handleClickMenu(item.menuName)}
                 data-testid={dataTestId(item.menuCode)}
-                className={styles.link}
               >
                 {item.menuName}
               </a>
@@ -97,31 +102,31 @@ const FooterMobile = () => {
         </div>
         <div className={styles.socialWrapper}>
           <a
-            href={urls.externalUrls.instagram}
+            href={urls.instagram}
             onClick={() => handleClickMenu('Instagram')}
             rel="noreferrer noopener"
             target="_blank"
             datatest-id={elementId.Footer.LogoInstagram}
           >
-            <IconInstagram width={32} height={32} color="#FFFFFF" />
+            <IconInstagram width={32} height={32} color={colors.white} />
           </a>
           <a
-            href={urls.externalUrls.twitter}
+            href={urls.twitter}
             onClick={() => handleClickMenu('Twitter')}
             rel="noreferrer noopener"
             target="_blank"
             datatest-id={elementId.Footer.LogoTwitter}
           >
-            <IconTwitterOutlined width={32} height={32} color="#FFFFFF" />
+            <IconTwitterOutlined width={32} height={32} color={colors.white} />
           </a>
           <a
-            href={urls.externalUrls.facebook}
+            href={urls.facebook}
             onClick={() => handleClickMenu('Facebook')}
             rel="noreferrer noopener"
             target="_blank"
             datatest-id={elementId.Footer.LogoFacebook}
           >
-            <Image src={FacebookLogo} width={25} alt="facebook outline" />
+            <img src={FacebookLogo} width={25} alt="facebook outline" />
           </a>
         </div>
         <div className={styles.isoWrapper}>
@@ -131,10 +136,12 @@ const FooterMobile = () => {
             height={29}
             alt="CBQA ISO 27001"
             datatest-id={elementId.Footer.LogoISO}
+            loading="lazy"
           />
           <span className={styles.footerText}>
-            Kami mengambil langkah-langkah untuk membantu memastikan data kamu
-            tetap aman dengan ISO 27001.
+            Kami mengambil langkah-langkah untuk membantu
+            <br />
+            memastikan data kamu tetap aman dengan ISO 27001.
           </span>
         </div>
         <div className={styles.divider} />
@@ -146,5 +153,3 @@ const FooterMobile = () => {
     </footer>
   )
 }
-
-export default FooterMobile

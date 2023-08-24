@@ -26,36 +26,39 @@ import 'styles/components/molecules/testimoni-tile.scss'
 import 'styles/components/molecules/advisor-section.scss'
 import 'styles/components/molecules/car-brand-item.scss'
 import 'styles/components/molecules/testimonial.scss'
-import 'styles/components/organism/funnel-background.scss'
+import 'styles/components/organisms/funnel-background.scss'
+import 'styles/components/organisms/landingIA.scss'
 import 'styles/CustomAnimationStyle.css'
+import 'styles/pages/multi-kk.scss'
+import 'styles/insuranceTooltip.scss'
 
-import { IsSsrMobileContext } from 'context/isSsrMobileContext'
 import { FBPixelStandardEvent, FB_PIXEL_ID } from 'helpers/facebookPixel'
-import { client } from 'const/const'
-import Head from 'next/head'
+import { client } from 'utils/helpers/const'
+import { IsSsrMobileContext } from 'services/context/isSsrMobileContext'
+import { initCountly } from 'helpers/countly/countly'
 
 const kanyon = localFont({
-  src: '../public/Kanyon-Regular.otf',
+  src: '../public/revamp/fonts/Kanyon/Kanyon-Regular.otf',
   style: 'normal',
   display: 'swap',
 })
 const kanyonMedium = localFont({
-  src: '../public/Kanyon-Medium.otf',
+  src: '../public/revamp/fonts/Kanyon/Kanyon-Medium.otf',
   style: 'normal',
   display: 'swap',
 })
 const kanyonBold = localFont({
-  src: '../public/Kanyon-Bold.otf',
+  src: '../public/revamp/fonts/Kanyon/Kanyon-Bold.otf',
   style: 'normal',
   display: 'swap',
 })
 const OpenSans = localFont({
-  src: '../public/OpenSans-Regular.woff2',
+  src: '../public/revamp/fonts/OpenSans/OpenSans-Regular.woff2',
   style: 'normal',
   display: 'swap',
 })
 const OpenSansSemiBold = localFont({
-  src: '../public/OpenSans-SemiBold.woff2',
+  src: '../public/revamp/fonts/OpenSans/OpenSans-SemiBold.woff2',
   style: 'normal',
   display: 'swap',
 })
@@ -71,11 +74,17 @@ export default function App({ Component, pageProps }: AppProps) {
     if (process.env.REACT_APP_ENVIRONMENT === 'production') {
       client && window.fbq('track', FBPixelStandardEvent.PageView)
     }
+
+    if (client) {
+      initCountly()
+    }
   }, [])
   return (
     <>
-      <script
+      <Script
         type="text/javascript"
+        strategy="afterInteractive"
+        async
         dangerouslySetInnerHTML={{
           __html: `
             !function(f,b,e,v,n,t,s)
@@ -96,6 +105,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <IsSsrMobileContext.Provider value={pageProps.isSsrMobile}>
         <GlobalContextProvider>
           <Script
+            async
             type="text/javascript"
             strategy="afterInteractive"
             dangerouslySetInnerHTML={{

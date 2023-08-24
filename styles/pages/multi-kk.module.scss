@@ -1,0 +1,124 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.textTitle {
+  font-family: $font-openSans;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+}
+
+.errorText {
+  font-size: 12px;
+  color: #{$secondary-brick-red};
+  display: block;
+  line-height: 18px;
+}
+
+.container {
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+
+  .titleWrapper {
+    margin-bottom: 40px;
+
+    .title {
+      font-family: $font-kanyon;
+      font-size: 20px;
+      line-height: 28px;
+    }
+
+    .info {
+      font-family: $font-openSans;
+      font-size: 14px;
+      line-height: 20px;
+      color: #{$shades-grey-75};
+    }
+  }
+
+  .cityWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 16px;
+
+    .kisaran {
+      font-family: $font-openSans;
+      font-size: 14px;
+      line-height: 20px;
+      margin-right: 8px;
+    }
+
+    .linkCity {
+      font-family: $font-openSans;
+      font-size: 12px;
+      line-height: 18px;
+      color: #{$secondary-blue};
+      margin-right: 4px;
+    }
+  }
+
+  .formRange {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+.slider {
+  padding: 8px 0 0;
+}
+
+.textWrapperSlider {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+}
+.right {
+  height: 18px;
+  font-family: $font-openSans;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  mix-blend-mode: normal;
+  flex: none;
+  order: 1;
+  flex-grow: 1;
+  text-align: right;
+}
+.left {
+  height: 18px;
+  font-family: $font-openSans;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  mix-blend-mode: normal;
+  flex: none;
+  order: 1;
+  flex-grow: 1;
+  text-align: left;
+}
+
+.announcementboxpadding {
+  padding-top: 45px;
+}
+
+.contentWithSpace {
+  @extend .container;
+  // margin-top: 114px !important; // page header with announcement box
+}

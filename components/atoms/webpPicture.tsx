@@ -1,6 +1,6 @@
 import React, { HTMLAttributes, ReactElement } from 'react'
-import { FileFormat } from 'utils/models/models'
 import { replaceSuffixWith } from 'utils/stringUtils'
+import { FileFormat } from 'utils/types/models'
 
 interface WebpPictureProps extends HTMLAttributes<HTMLPictureElement> {
   src: string

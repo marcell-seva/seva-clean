@@ -9,13 +9,7 @@ import elementId from 'utils/helpers/trackerId'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { COMData, COMDataTracking } from 'utils/types/models'
-
-interface CityOtrOption {
-  cityName: string
-  cityCode: string
-  province: string
-  id?: string
-}
+import { CityOtrOption } from 'utils/types'
 
 type CarOfTheMonthProps = {
   carOfTheMonthData: COMData[]

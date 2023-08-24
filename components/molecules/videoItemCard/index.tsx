@@ -2,24 +2,24 @@ import React, { useState } from 'react'
 import styles from 'styles/components/molecules/videoItemCard.module.scss'
 import { CityOtrOption, VideoDataType } from 'utils/types/utils'
 import { IconPlay } from 'components/atoms'
-import { useCurrentLanguageFromContext } from 'context/currentLanguageContext/currentLanguageContext'
-import { articleDateFormat } from 'utils/dateUtils'
+import { useUtils } from 'services/context/utilsContext'
+import { articleDateFormat } from 'utils/handler/date'
 import Youtube, { YouTubeEvent } from 'react-youtube'
 import elementId from 'helpers/elementIds'
 import { trackPDPGalleryVideo } from 'helpers/amplitude/seva20Tracking'
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
-import { useContextCarModelDetails } from 'context/carModelDetailsContext/carModelDetailsContext'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
-import { LocalStorageKey } from 'utils/models/models'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { LocalStorageKey } from 'utils/enum'
+import { useCar } from 'services/context/carContext'
 
 interface Props {
   data: VideoDataType
 }
 
 export const VideoItemCard = ({ data }: Props) => {
-  const { currentLanguage } = useCurrentLanguageFromContext()
+  const { currentLanguage } = useUtils()
   const [showVideo, setShowVideo] = useState(false)
-  const { carModelDetails } = useContextCarModelDetails()
+  const { carModelDetails } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,

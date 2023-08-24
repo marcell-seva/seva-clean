@@ -3,12 +3,7 @@ import { useMediaQuery } from 'react-responsive'
 import SupergraphicRight from '/public/revamp/illustration/supergraphic-secondary-small.webp'
 import styles from 'styles/components/organisms/leadsFormTertiary.module.scss'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import {
-  ButtonSize,
-  ButtonVersion,
-  LocalStorageKey,
-  UnverifiedLeadSubCategory,
-} from 'utils/types/models'
+import { UnverifiedLeadSubCategory } from 'utils/types/models'
 import {
   filterNonDigitCharacters,
   onlyLettersAndSpaces,
@@ -20,25 +15,21 @@ import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import elementId from 'utils/helpers/trackerId'
 import { Button, Input, InputPhone, Toast } from 'components/atoms'
 import Image from 'next/image'
-import { IconLoading } from 'components/atoms/icons'
-import { OTP } from 'components/organisms'
+import { IconLoading } from 'components/atoms/icon'
 import { PageOriginationName } from 'utils/types/tracker'
 import { api } from 'services/api'
 import { setTrackEventMoEngageWithoutValue } from 'services/moengage'
 import { FunnelQueryContext, FunnelQueryContextType } from 'services/context'
 import { useRouter } from 'next/router'
+import { OTP } from 'components/organisms/otp'
+import { LocalStorageKey } from 'utils/enum'
+import { CityOtrOption } from 'utils/types'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 interface PropsLeadsForm {
   otpStatus?: any
   onVerify?: (e: any) => void
   onFailed?: (e: any) => void
-}
-
-export interface CityOtrOption {
-  cityName: string
-  cityCode: string
-  province: string
-  id?: string
 }
 
 const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {

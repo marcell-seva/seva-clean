@@ -9,41 +9,35 @@ import {
   FormPhoneNumber,
   isValidPhoneNumber,
 } from 'components/atoms/FormPhoneNumber/FormPhoneNumber'
-import {
-  useContextContactFormData,
-  useContextContactFormPatch,
-} from 'context/contactFormContext/contactFormContext'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useContextForm } from 'services/context/formContext'
 import {
   createUnverifiedLeadNew,
   UnverifiedLeadSubCategory,
 } from 'services/lead'
-import { ToastType, useToast } from 'components/atoms/OldToast/Toast'
+import { useToast } from 'components/atoms/OldToast/Toast'
 import { Contact } from 'components/atoms/icon/Contact'
 import { FBPixelStandardEvent } from 'helpers/facebookPixel'
 // import ReactPixel from 'react-facebook-pixel'
 import { useMediaQuery } from 'react-responsive'
 import { savePageBeforeLogin } from 'utils/loginUtils'
-import { LoginSevaUrl } from 'routes/routes'
-import { getToken } from 'utils/api'
-import { useModalContext } from 'context/modalContext/modalContext'
-import { getLocalStorage, saveLocalStorage } from 'utils/localstorageUtils'
+import { LoginSevaUrl } from 'utils/helpers/routes'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { getCustomerInfoWrapperSeva } from 'services/customer'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
 import elementId from 'helpers/elementIds'
 import { useModal } from 'components/atoms/ModalOld/Modal'
 import { useRouter } from 'next/router'
-import {
-  ContactFormKey,
-  ContactType,
-  LocalStorageKey,
-} from 'utils/models/models'
+import { ContactType, LocalStorageKey } from 'utils/enum'
 import { trackGASubmitContactInfo } from 'services/googleAds'
 import { IconSquareCheckBox, IconSquareCheckedBox } from 'components/atoms/icon'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 import { CityOtrOption, UTMTagsData } from 'utils/types/utils'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage/useLocalStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useDialogModal } from 'components/molecules/dialogModal/DialogModal'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { useModalContext } from 'services/context/modalContext'
+import { getToken } from 'utils/handler/auth'
+import { ContactFormKey, ToastType } from 'utils/types/models'
 
 interface ContactUsFloatingComponentProps
   extends HTMLAttributes<HTMLDivElement> {
@@ -93,12 +87,11 @@ export const ContactUsFloatingComponent = ({
 export const useContactUsModal = () => {
   const { showModal, hideModal, RenderModal } = useModal()
   const router = useRouter()
-  const patchContactFormValue = useContextContactFormPatch()
-  const contactFormData = useContextContactFormData()
+  const { patchFormContactValue, formContactValue } = useContextForm()
   const token = getToken()
   const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
   const [phoneNumberInitialValue, setPhoneNumberInitialValue] = useState(
-    contactFormData.phoneNumberValid,
+    formContactValue.phoneNumberValid,
   )
 
   useEffect(() => {
@@ -110,15 +103,15 @@ export const useContactUsModal = () => {
             const customer = response.data[0]
             setPhoneNumberInitialValue(customer.phoneNumber)
             setCustomerDetail(customer)
-            patchContactFormValue({
+            patchFormContactValue({
               [ContactFormKey.Name]: customer.fullName,
               [ContactFormKey.NameTmp]: customer.fullName,
             })
             if (
-              !contactFormData.phoneNumber ||
-              contactFormData.phoneNumber.length < 4
+              !formContactValue.phoneNumber ||
+              formContactValue.phoneNumber.length < 4
             ) {
-              patchContactFormValue({
+              patchFormContactValue({
                 [ContactFormKey.PhoneNumber]: customer.phoneNumber,
               })
             }
@@ -127,15 +120,15 @@ export const useContactUsModal = () => {
       } else {
         const decryptedData = JSON.parse(decryptValue(data))
         setCustomerDetail(decryptedData)
-        patchContactFormValue({
+        patchFormContactValue({
           [ContactFormKey.Name]: decryptedData.fullName,
           [ContactFormKey.NameTmp]: decryptedData.fullName,
         })
         if (
-          !contactFormData.phoneNumber ||
-          contactFormData.phoneNumber.length < 4
+          !formContactValue.phoneNumber ||
+          formContactValue.phoneNumber.length < 4
         ) {
-          patchContactFormValue({
+          patchFormContactValue({
             [ContactFormKey.PhoneNumber]: decryptedData.phoneNumber,
           })
         }
@@ -166,15 +159,15 @@ export const useContactUsModal = () => {
       Car_Model: string
     }>(LocalStorageKey.CurrentCarOfTheMonthItem)
     const autofillName = () => {
-      if (contactFormData.nameTmp) {
-        return contactFormData.nameTmp ?? ''
+      if (formContactValue.nameTmp) {
+        return formContactValue.nameTmp ?? ''
       } else {
-        return contactFormData.name ?? ''
+        return formContactValue.name ?? ''
       }
     }
     const [fullName, setFullName] = useState<string>(autofillName())
     const [phoneNumber, setPhoneNumber] = useState(
-      contactFormData.phoneNumberValid,
+      formContactValue.phoneNumberValid,
     )
     const [confirmEnabled, setConfirmEnabled] = useState(false)
     const [isWhatsAppChecked, setIsWhatsAppChecked] = useState(false)
@@ -230,7 +223,7 @@ export const useContactUsModal = () => {
       e.stopPropagation()
       setLoading(true)
 
-      patchContactFormValue({
+      patchFormContactValue({
         [ContactFormKey.PhoneNumber]: phoneNumber,
         [ContactFormKey.PhoneNumberValid]: phoneNumber,
         [ContactFormKey.Name]: fullName,

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { SidebarItem } from './sidebarItem'
-import { useSideMenuListContext } from 'context/sideMenuListContext/sideMenuListContext'
+import { useSideMenuListContext } from 'services/context/sideMenuListContext'
 import { BackItem } from './backItem'
 import { removeWhitespacesAndToLowerCase } from 'utils/stringUtils'
 import { handleEventTrackingLainnya } from 'helpers/amplitude/trackNavigationMenu'

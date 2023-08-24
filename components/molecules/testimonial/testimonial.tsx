@@ -9,17 +9,16 @@ import {
 
 import { useMediaQuery } from 'react-responsive'
 import 'pure-react-carousel/dist/react-carousel.es.css'
-import { saveLocalStorage } from 'utils/localstorageUtils'
+import { saveLocalStorage } from 'utils/handler/localStorage'
 import { encryptValue } from 'utils/encryptionUtils'
 import { trackLPTestimonyNextPrevClick } from 'helpers/amplitude/seva20Tracking'
 import debounce from 'lodash.debounce'
-import { LazyLoadComponent } from 'react-lazy-load-image-component'
 import { TestimonialData } from 'utils/types/utils'
 import { getTestimonials } from 'services/testimonials'
-import { LocalStorageKey } from 'utils/models/models'
 import { LinkLabelLargeSemiBold } from 'components/atoms/typography/LinkLabelLargeSemiBold'
 import { TestimoniTile } from './testimoniTile'
 import { HomePageDataLocalContext } from 'pages'
+import { LocalStorageKey } from 'utils/enum'
 
 const leftArrow = '/revamp/icon/arrowLeftSmall.webp'
 const rightArrow = '/revamp/icon/arrowRightSmall.webp'
@@ -35,7 +34,7 @@ const Testimonial = () => {
   const constantDesktopSlideTrack = 3
 
   useEffect(() => {
-    getTestimonials().then((res) => setData(res.data.data))
+    getTestimonials().then((res) => setData(res.data))
     getDataBaseConfig()
 
     if (!isMobile) setTrackTotalViewed(3)

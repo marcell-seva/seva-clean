@@ -5,18 +5,15 @@ import endpoints, { shouldCheckAuth } from '../helpers/endpoints'
 import createAuthRefreshInterceptor, {
   AxiosAuthRefreshRequestConfig,
 } from 'axios-auth-refresh'
-import { getLocalStorage, saveLocalStorage } from './localstorageUtils'
 import environments from '../helpers/environments'
 import { Token } from './types'
 import { ErrorCode, HTTPResponseStatusCode, LocalStorageKey } from './enum'
 import { removeInformationWhenLogout } from './logoutUtils'
 import { UTMTagsData } from './types/utils'
+import { getToken } from './handler/auth'
+import { getLocalStorage, saveLocalStorage } from './handler/localStorage'
 
 const TIMEOUT_IN_MILLISECONDS = 20 * 1000
-
-export const getToken = (): Token | null => {
-  return getLocalStorage<Token>(LocalStorageKey.Token)
-}
 
 class APIService {
   constructor() {

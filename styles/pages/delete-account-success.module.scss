@@ -1,0 +1,70 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.container {
+  background: #{$primary-white};
+}
+
+.content {
+  max-width: 480px;
+  margin-top: 54px; // page header height is 54px
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contentWithSpace {
+  @extend .content;
+  margin-top: 114px !important; // page header with announcement box
+}
+
+.mainImage {
+  margin-top: 68px;
+}
+
+.title {
+  margin-top: 8px;
+  font-family: 'Kanyon';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  text-align: center;
+  color: #{$primary-black};
+}
+
+.subtitle {
+  display: inline-block;
+  margin-top: 19px;
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #{$shades-grey-75};
+}
+
+.countdown {
+  display: inline-block;
+  margin-top: 61px;
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #52627A;
+}
+
+.floatingWrapper {
+  position: fixed;
+  width: 100%;
+  padding: 0 16px;
+  bottom: 33px;
+}

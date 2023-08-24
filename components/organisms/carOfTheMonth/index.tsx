@@ -7,9 +7,10 @@ import clsx from 'clsx'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { COMData, COMDataTracking } from 'utils/types/models'
-import { CityOtrOption, PageOriginationName } from 'utils/types/props'
 import CardCarOfTheMonth from 'components/molecules/cardCarOfTheMonth'
 import elementId from 'utils/helpers/trackerId'
+import { CityOtrOption } from 'utils/types'
+import { PageOriginationName } from 'utils/types/props'
 
 type CarOfTheMonthProps = {
   carOfTheMonthData: COMData[]

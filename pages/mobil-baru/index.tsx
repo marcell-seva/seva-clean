@@ -1,4 +1,4 @@
-import { PLP } from 'components/organism'
+import { PLP } from 'components/organisms'
 import React from 'react'
 import axios from 'axios'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
@@ -9,12 +9,11 @@ import {
   FooterSEOAttributes,
   NavbarItemResponse,
 } from 'utils/types/utils'
-import PLPDesktop from 'components/organism/PLPDesktop'
+import PLPDesktop from 'components/organisms/PLPDesktop'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
-import { MenuContext } from 'context/menuContext'
 import { api } from 'services/api'
 import Seo from 'components/atoms/seo'
-import { defaultSeoImage } from 'const/const'
+import { defaultSeoImage } from 'utils/helpers/const'
 
 const NewCarResultPage = ({
   meta,
@@ -30,24 +29,18 @@ const NewCarResultPage = ({
         image={defaultSeoImage}
       />
 
-      <MenuContext.Provider
-        value={{
-          dataMenu,
-        }}
-      >
-        {isMobile ? (
-          <PLP
-            carRecommendation={meta.carRecommendations}
-            minmaxPrice={meta.MinMaxPrice}
-            alternativeRecommendation={meta.alternativeCarRecommendation}
-          />
-        ) : (
-          <PLPDesktop
-            carRecommendation={meta.carRecommendations}
-            footer={meta.footer}
-          />
-        )}
-      </MenuContext.Provider>
+      {isMobile ? (
+        <PLP
+          carRecommendation={meta.carRecommendations}
+          minmaxPrice={meta.MinMaxPrice}
+          alternativeRecommendation={meta.alternativeCarRecommendation}
+        />
+      ) : (
+        <PLPDesktop
+          carRecommendation={meta.carRecommendations}
+          footer={meta.footer}
+        />
+      )}
     </>
   )
 }
@@ -132,8 +125,8 @@ export const getServerSideProps: GetServerSideProps<{
     const footerData = fetchFooter.data.data
 
     if (!priceRangeGroup) {
-      const minmax = await getMinMaxPrice({})
-      const minmaxPriceData = minmax.data
+      const minmax = await getMinMaxPrice()
+      const minmaxPriceData = minmax
       meta.MinMaxPrice = {
         minPriceValue: minmaxPriceData.minPriceValue,
         maxPriceValue: minmaxPriceData.maxPriceValue,
@@ -161,8 +154,8 @@ export const getServerSideProps: GetServerSideProps<{
       getNewFunnelRecommendations({ ...queryParam, brand: [] }),
     ])
 
-    const recommendation = funnel.data
-    const alternativeData = alternative.data
+    const recommendation = funnel
+    const alternativeData = alternative
 
     if (metaData && metaData.length > 0) {
       meta.title = metaData[0].attributes.meta_title

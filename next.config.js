@@ -4,6 +4,7 @@ const nextConfig = {
   basePath: '',
   poweredByHeader: false,
   reactStrictMode: true,
+  transpilePackages: ['antd-mobile'],
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },

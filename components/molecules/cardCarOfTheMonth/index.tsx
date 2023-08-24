@@ -13,17 +13,14 @@ import {
   formatNumberByLocalization,
 } from 'utils/handler/rupiah'
 import Image from 'next/image'
-import {
-  ButtonSize,
-  ButtonVersion,
-  LanguageCode,
-  LocalStorageKey,
-} from 'utils/types/models'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { Button } from 'components/atoms'
 import { saveLocalStorage } from 'utils/handler/localStorage'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
+import { LanguageCode, LocalStorageKey } from 'utils/enum'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+
 type carOfTheMonthData = {
   name: string
   desc: string
@@ -63,6 +60,7 @@ const CardCarOfTheMonth = ({
             className={styles.imgLogo}
             alt="Toyota"
             style={{ width: '40px', height: '100%' }}
+            loading="lazy"
           />
         )
       case 'Daihatsu':
@@ -72,6 +70,7 @@ const CardCarOfTheMonth = ({
             className={styles.imgLogo}
             alt="Daihatsu"
             style={{ width: '40px', height: '100%' }}
+            loading="lazy"
           />
         )
       case 'Isuzu':
@@ -81,6 +80,7 @@ const CardCarOfTheMonth = ({
             className={styles.imgLogo}
             alt="Isuzu"
             style={{ width: '40px', height: '100%' }}
+            loading="lazy"
           />
         )
       case 'BMW':
@@ -90,6 +90,7 @@ const CardCarOfTheMonth = ({
             className={styles.imgLogo}
             alt="BMW"
             style={{ width: '40px', height: '100%' }}
+            loading="lazy"
           />
         )
       case 'Peugeot':
@@ -99,6 +100,7 @@ const CardCarOfTheMonth = ({
             className={styles.imgLogo}
             alt="Peugeot"
             style={{ width: '40px', height: '100%' }}
+            loading="lazy"
           />
         )
       default:
@@ -107,11 +109,13 @@ const CardCarOfTheMonth = ({
   }
   return (
     <div className={styles.cardContainer}>
-      <img
+      <Image
         alt="seva-image"
         src={item.imageUrl}
         className={styles.imageCar}
-        style={{ width: '256px' }}
+        width={256}
+        height={144}
+        loading="lazy"
       />
       <div className={styles.cardCarOfTheMonth}>
         <div>

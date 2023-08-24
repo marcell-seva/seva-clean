@@ -1,3 +1,4 @@
+import { api } from 'services/api'
 import { API } from '../utils/api'
 import endpoints from 'helpers/endpoints'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
@@ -9,5 +10,5 @@ export const getCarsSearchBar = (keyword: string) => {
   getCity().id && params.append('cityId', getCity().id as string)
   params.append('query', keyword as string)
 
-  return API.get(endpoints.carsSearchBar, { params })
+  return api.getSearchDataQuery('', { params })
 }

@@ -1,37 +1,37 @@
 import React, { useEffect, useState } from 'react'
-import styles from 'styles/components/organisms/leadsFormPrimary.module.scss'
-import SupergraphicSecondarySmall from '/public/revamp/illustration/supergraphic-secondary-small.webp'
-import SupergraphicSecondaryLarge from '/public/revamp/illustration/supergraphic-secondary-large.webp'
-import { useMediaQuery } from 'react-responsive'
-import Image from 'next/image'
-import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
-import {
-  ButtonSize,
-  ButtonVersion,
-  LocalStorageKey,
-  UnverifiedLeadSubCategory,
-} from 'utils/types/models'
-import { decryptValue, encryptValue } from 'utils/handler/encryption'
-import elementId from 'utils/helpers/trackerId'
-import {
-  filterNonDigitCharacters,
-  onlyLettersAndSpaces,
-} from 'utils/handler/stringManipulation'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import { LeadsActionParam } from 'utils/types/tracker'
-import { sendAmplitudeData } from 'services/amplitude'
-import { AmplitudeEventName } from 'services/amplitude/types'
+import styles from '../../../../styles/components/organisms/leadsFormPrimary.module.scss'
 import {
   Button,
-  CustomModal,
   Gap,
+  IconLoading,
   Input,
   InputPhone,
   Toast,
 } from 'components/atoms'
-import { IconLoading } from 'components/atoms/icons'
-import { OTP } from 'components/organisms'
-import { api } from 'services/api'
+import { LocalStorageKey, UnverifiedLeadSubCategory } from 'utils/enum'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
+import { decryptValue, encryptValue } from 'utils/encryptionUtils'
+import { filterNonDigitCharacters } from 'utils/stringUtils'
+import elementId from 'helpers/elementIds'
+import { Modal } from 'components/atoms'
+import {
+  LeadsActionParam,
+  trackLeadsFormAction,
+} from 'helpers/amplitude/seva20Tracking'
+import { TrackingEventName } from 'helpers/amplitude/eventTypes'
+import { useMediaQuery } from 'react-responsive'
+import { createUnverifiedLeadNew } from 'services/lead'
+import { onlyLettersAndSpaces } from 'utils/handler/regex'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { OTP } from 'components/organisms/otp'
+import Image from 'next/image'
+import { CityOtrOption } from 'utils/types'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+
+const SupergraphicSecondarySmall =
+  '/revamp/illustration/supergraphic-secondary-small.webp'
+const SupergraphicSecondaryLarge =
+  '/revamp/illustration/supergraphic-secondary-large.webp'
 
 interface PropsLeadsForm {
   otpStatus?: any
@@ -42,14 +42,7 @@ interface PropsLeadsForm {
   onPage?: string
 }
 
-export interface CityOtrOption {
-  cityName: string
-  cityCode: string
-  province: string
-  id?: string
-}
-
-const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
+export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
   onCancel,
   trackerProperties,
   onPage,
@@ -112,8 +105,8 @@ const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
   const sendOtpCode = async () => {
     setIsLoading(true)
     if (trackerProperties)
-      sendAmplitudeData(
-        AmplitudeEventName.WEB_LEADS_FORM_SUBMIT,
+      trackLeadsFormAction(
+        TrackingEventName.WEB_LEADS_FORM_SUBMIT,
         trackerProperties,
       )
     const dataLeads = checkDataFlagLeads()
@@ -147,8 +140,8 @@ const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
 
   const onClose = () => {
     if (trackerProperties)
-      sendAmplitudeData(
-        AmplitudeEventName.WEB_LEADS_FORM_CLOSE,
+      trackLeadsFormAction(
+        TrackingEventName.WEB_LEADS_FORM_CLOSE,
         trackerProperties,
       )
     onCancel && onCancel()
@@ -174,10 +167,10 @@ const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
       }
     }
     try {
-      await api.postUnverifiedLeadsNew(data)
+      await createUnverifiedLeadNew(data)
       if (trackerProperties)
-        sendAmplitudeData(
-          AmplitudeEventName.WEB_LEADS_FORM_SUCCESS,
+        trackLeadsFormAction(
+          TrackingEventName.WEB_LEADS_FORM_SUCCESS,
           trackerProperties,
         )
       setIsLoading(false)
@@ -226,7 +219,7 @@ const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
   return (
     <>
       {modalOpened === 'leads-form' && (
-        <CustomModal open onCancel={onClose} isFull>
+        <Modal open onCancel={onClose} isFull>
           <div className={styles.wrapper}>
             <div className={styles.background}>
               <div className={styles.wrapperSupergraphicSmall}>
@@ -295,7 +288,7 @@ const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
               </div>
             </div>
           </div>
-        </CustomModal>
+        </Modal>
       )}
       {modalOpened === 'otp' && (
         <OTP
@@ -314,4 +307,3 @@ const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
     </>
   )
 }
-export default LeadsFormPrimary

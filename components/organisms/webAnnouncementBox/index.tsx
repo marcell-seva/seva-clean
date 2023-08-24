@@ -7,8 +7,7 @@ import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
-import { SessionStorageKey, ZIndex } from 'utils/types/models'
-import { AnnouncementBoxDataType } from 'utils/types/props'
+import { ZIndex } from 'utils/types/models'
 import Image from 'next/image'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
@@ -17,6 +16,8 @@ import { Close } from './Close'
 import { getToken } from 'utils/handler/auth'
 import endpoints from 'utils/helpers/endpoints'
 import { api } from 'services/api'
+import { AnnouncementBoxDataType } from 'utils/types/utils'
+import { SessionStorageKey } from 'utils/enum'
 
 const CustomRight = '/revamp/images/announcementBox/custom-desktop-right.webp'
 const CustomLeft = '/revamp/images/announcementBox/custom-desktop-left.webp'
@@ -82,7 +83,11 @@ export const WebAnnouncementBox = ({
   useEffect(() => {
     setIsLoading(true)
     api
-      .getAnnouncementBox()
+      .getAnnouncementBox({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
+      })
       .then((res: any) => {
         setAnnouncement(res.data)
         setIsLoading(false)

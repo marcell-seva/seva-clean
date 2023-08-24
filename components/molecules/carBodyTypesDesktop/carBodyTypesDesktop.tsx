@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { useFunnelQueryData } from 'context/funnelQueryContext/funnelQueryContext'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import {
   ButtonBack,
   ButtonNext,
@@ -8,7 +8,7 @@ import {
   Slider,
 } from 'pure-react-carousel'
 import React, { useContext, useEffect, useState } from 'react'
-import { carResultsUrl } from 'routes/routes'
+import { carResultsUrl } from 'utils/helpers/routes'
 
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
@@ -50,7 +50,8 @@ export const CarBodyTypesDesktop = () => {
   const [bodyTypeSelected, setBodyTypeSelected] = useState('MPV')
   const [recommendationLists, setRecommendationLists] =
     useState<CarRecommendation[]>(dataRecToyota)
-  const { patchFunnelQuery, clearFunnelQuery } = useFunnelQueryData()
+  const { patchFunnelQuery, clearQueryFilter: clearFunnelQuery } =
+    useFunnelQueryData()
   const [loading, setLoading] = useState(false)
   useEffect(() => {
     if (bodyTypesList.length === 0) {
@@ -59,8 +60,8 @@ export const CarBodyTypesDesktop = () => {
       })
     }
     getNewFunnelRecommendations({ bodyType: [bodyTypeSelected] }).then(
-      (response: AxiosResponse<CarRecommendationResponse>) => {
-        const tmpData = response.data.carRecommendations.slice(0, 6) || []
+      (response) => {
+        const tmpData = response.carRecommendations.slice(0, 6) || []
         if (tmpData.length !== 0) {
           if (tmpData.length < 5) {
             const tmpData2 = tmpData
@@ -78,8 +79,8 @@ export const CarBodyTypesDesktop = () => {
     setBodyTypeSelected(bodyType)
     setRecommendationLists([])
     getNewFunnelRecommendations({ bodyType: [bodyType] })
-      .then((response: AxiosResponse<CarRecommendationResponse>) => {
-        const tmpData = response.data.carRecommendations.slice(0, 6) || []
+      .then((response) => {
+        const tmpData = response.carRecommendations.slice(0, 6) || []
         if (tmpData.length !== 0) {
           if (tmpData.length < 5) {
             const tmpData2 = tmpData

@@ -11,7 +11,7 @@ import {
 } from 'helpers/amplitude/seva20Tracking'
 import { TextLegalRegular } from 'utils/typography/TextLegalRegular'
 import { NavbarArrow } from 'components/atoms/icon/NavbarArrow'
-import { client } from 'const/const'
+import { client } from 'utils/helpers/const'
 
 export const CitySelector = () => {
   const { showModal: showCitySelectorModal, CitySelectorModal } =

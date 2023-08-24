@@ -1,13 +1,11 @@
 import { InferGetServerSidePropsType } from 'next'
-import Head from 'next/head'
 import { createContext, useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { api } from 'services/api'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
-import { HomepageDesktop, HomepageMobile } from 'components/organism'
+import { HomepageDesktop, HomepageMobile } from 'components/organisms'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { getCity } from 'utils/hooks/useGetCity'
-import { MenuContext } from 'context/menuContext'
 
 interface HomePageDataLocalContextType {
   dataBanner: any
@@ -60,34 +58,28 @@ export default function WithTracker({
   }, [isClientMobile])
 
   return (
-    <MenuContext.Provider
+    <HomePageDataLocalContext.Provider
       value={{
+        dataBanner,
         dataMenu,
+        dataCities,
+        dataTestimony,
+        dataRecToyota,
+        dataRecMVP,
+        dataUsage,
+        dataMainArticle,
+        dataTypeCar,
+        dataCarofTheMonth,
       }}
     >
-      <HomePageDataLocalContext.Provider
-        value={{
-          dataBanner,
-          dataMenu,
-          dataCities,
-          dataTestimony,
-          dataRecToyota,
-          dataRecMVP,
-          dataUsage,
-          dataMainArticle,
-          dataTypeCar,
-          dataCarofTheMonth,
-        }}
-      >
-        <>
-          {isMobile ? (
-            <HomepageMobile dataReccomendation={dataReccomendation} />
-          ) : (
-            <HomepageDesktop />
-          )}
-        </>
-      </HomePageDataLocalContext.Provider>
-    </MenuContext.Provider>
+      <>
+        {isMobile ? (
+          <HomepageMobile dataReccomendation={dataReccomendation} />
+        ) : (
+          <HomepageDesktop />
+        )}
+      </>
+    </HomePageDataLocalContext.Provider>
   )
 }
 

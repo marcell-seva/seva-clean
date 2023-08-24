@@ -1,4 +1,4 @@
-import { million } from 'const/const'
+import { million } from 'utils/helpers/const'
 export const parsedMonthlyIncome = (payload: number): string => {
   if (payload >= 200 * million) {
     return '>200M'
