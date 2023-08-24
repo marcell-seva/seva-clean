@@ -2869,6 +2869,11 @@ core-js@3.6.5:
   resolved "https://registry.npmjs.org/core-js/-/core-js-3.6.5.tgz"
   integrity sha512-vZVEEwZoIsI+vPEuoF9Iqf5H7/M3eeQqWlQnYa8FSKKePuYTf5MWnxb5SDAzCa60b3JBRS5g9b+Dq7b1y/RCrA==
 
+countly-sdk-web@^23.6.0:
+  version "23.6.0"
+  resolved "https://registry.yarnpkg.com/countly-sdk-web/-/countly-sdk-web-23.6.0.tgz#c10931e7bc72f43a6c8812e2db536115a2009172"
+  integrity sha512-YoNzhpEGvrmj69WgXBgsbHlofYPrQZddmbOnNsvUK9VYnzSmNA5VV+Lf95B/xg2FUa14v/2eTnMNEbfbsw3Skg==
+
 cross-spawn@^7.0.2, cross-spawn@^7.0.3:
   version "7.0.3"
   resolved "https://registry.npmjs.org/cross-spawn/-/cross-spawn-7.0.3.tgz"
