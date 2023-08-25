@@ -27,6 +27,8 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { LocalStorageKey } from 'utils/enum'
 import { useRouter } from 'next/router'
 import { useCar } from 'services/context/carContext'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 interface Props {
   emitActiveIndex: (e: number) => void
@@ -193,6 +195,9 @@ export const PdpUpperSection = ({
             },
           })
           trackEventPhoto(TrackingEventName.WEB_PDP_TAB_PHOTO_CLICK, value)
+          trackEventCountly(CountlyEventNames.WEB_PDP_VISUAL_TAB_CLICK, {
+            VISUAL_TAB_CATEGORY: value,
+          })
         }}
         isShowAnnouncementBox={isShowAnnouncementBox}
         onPage={'PDP'}

@@ -11,6 +11,10 @@ import {
 import { VideoDataType } from 'utils/types/utils'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { LoanRank } from 'utils/types/models'
+import { useCar } from 'services/context/carContext'
 
 type pdpLowerSectionProps = {
   onButtonClick: (value: boolean) => void
@@ -32,8 +36,31 @@ export const PdpLowerSection = ({
   const [selectedTabValue, setSelectedTabValue] = useState(
     lowerSectionNavigationTab[0].value,
   )
+  const { carModelDetails } = useCar()
+
+  const router = useRouter()
+  const loanRankcr = router.query.loanRankCVL ?? ''
+  const tab = router.query.tab as string
+
+  const trackClickLowerTabCountly = (value: string) => {
+    let creditBadge = 'Null'
+    if (loanRankcr && loanRankcr.includes(LoanRank.Green)) {
+      creditBadge = 'Mudah disetujui'
+    } else if (loanRankcr && loanRankcr.includes(LoanRank.Red)) {
+      creditBadge = 'Sulit disetujui'
+    }
+
+    trackEventCountly(CountlyEventNames.WEB_PDP_TAB_CONTENT_CLICK, {
+      MENU_TAB_CATEGORY: value,
+      PELUANG_KREDIT_BADGE: creditBadge,
+      CAR_BRAND: carModelDetails?.brand ?? '',
+      CAR_MODEL: carModelDetails?.model ?? '',
+      VISUAL_TAB_CATEGORY: tab ? tab : 'Warna',
+    })
+  }
 
   const onSelectLowerTab = (value: string) => {
+    trackClickLowerTabCountly(value)
     setSelectedTabValue(value)
     const destinationElm = document.getElementById('pdp-lower-content')
     const urlWithoutSlug = window.location.href
@@ -70,7 +97,6 @@ export const PdpLowerSection = ({
     setTabFromDirectUrl()
   }, [])
 
-  const router = useRouter()
   const setTabFromDirectUrl = () => {
     const slug = router.query.slug
 
