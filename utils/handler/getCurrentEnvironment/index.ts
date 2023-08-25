@@ -28,7 +28,7 @@ type EnvironmentConfig = {
   probe: string
 }
 
-const FirebaseAPIKey = process.env.REACT_APP_FIREBASE_API_KEY
+const FirebaseAPIKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY
 
 const environments = {
   localhost: {
@@ -47,7 +47,7 @@ const environments = {
     },
     bankLinkingUrl: 'https://cdn.onebrick.io/sandbox-widget/v1/',
     apiBaseUrl:
-      process.env.REACT_APP_SERVER_BASE_URL || 'https://api.sevaio.xyz',
+      process.env.NEXT_PUBLIC_SERVER_BASE_URL || 'https://api.sevaio.xyz',
     featureToggles: featureToggles[Environment.Localhost],
     isShowMobileConsole: true,
     deeplink: 'seva://',
@@ -130,7 +130,7 @@ type EnvironmentKey = keyof typeof environments
 
 function getCurrentEnvironment() {
   const key: EnvironmentKey =
-    (process.env.REACT_APP_ENVIRONMENT as EnvironmentKey) || 'localhost'
+    (process.env.NEXT_PUBLIC_ENVIRONMENT as EnvironmentKey) || 'localhost'
 
   return environments[key]
 }
