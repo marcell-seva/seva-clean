@@ -14,7 +14,7 @@ export const initCountly = () => {
     url: 'YOUR_SERVER_URL',
     // session_update: 10,
     use_session_cookie: true,
-    debug: false, // set true to show logged event
+    debug: true, // set true to show logged event
     // require_consent: true,
     namespace: 'seva-next',
     // inactivity_time: 1,
@@ -70,7 +70,7 @@ export const trackEventCountly = (
   eventName: CountlyEventNames,
   data?: Record<string, unknown>,
 ) => {
-  if (client && !!window.Countly.q) {
+  if (client) {
     const defaultSegmentationData = {
       USER_ID: userIdValueForCountly(),
       SOURCE_ENTRY: sourceEntryValueForCountly(),
@@ -79,7 +79,7 @@ export const trackEventCountly = (
       PAGE_ORIGINATION_URL: client ? window.location.href : '',
     }
 
-    window.Countly.q.push([
+    Countly.q.push([
       'add_event',
       {
         key: eventName,
@@ -87,5 +87,8 @@ export const trackEventCountly = (
         segmentation: { ...defaultSegmentationData, ...data },
       },
     ])
+    window.Countly = Countly
+  } else {
+    trackEventCountly(eventName, data)
   }
 }
