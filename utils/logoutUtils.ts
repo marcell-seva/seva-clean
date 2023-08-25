@@ -4,6 +4,7 @@ import { destroySessionMoEngage } from 'helpers/moengage'
 import { LocalStorageKey, SessionStorageKey } from './enum'
 import { isGoingToRestrictedRoutes } from './loginUtils'
 import { rootUrl } from './helpers/routes'
+import { setAmplitudeUserId } from 'services/amplitude'
 // import MoEngage from 'react-moengage'
 
 // export const showLogoutModal = () => {
@@ -29,7 +30,7 @@ export const removeInformationWhenLogout = () => {
   sessionStorage.removeItem(SessionStorageKey.CustomerId)
   // MoEngage.destroySession()
   destroySessionMoEngage()
-  // setAmplitudeUserId(null)
+  setAmplitudeUserId(null)
 }
 
 export const getPageBeforeProfile = () => {
