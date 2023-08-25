@@ -35,6 +35,8 @@ import { useCar } from 'services/context/carContext'
 import { Currency } from 'utils/handler/calculation'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { PreviousButton, navigateToPLP } from 'utils/navigate'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 interface ParamsUrl {
   age?: string
@@ -257,6 +259,7 @@ const FilterMobile = ({
       maxPrice: maxPriceFilter,
     }
     trackFilterCarResults(filterCarResult)
+
     setLoading(true)
     const paramUpdate = {
       ...paramQuery,
@@ -280,7 +283,28 @@ const FilterMobile = ({
         paramUpdate.priceRangeGroup = minPriceFilter + '-' + maxPriceFilter
       }
     }
-
+    // trackEventCountly(CountlyEventNames.WEB_PLP_CAR_DETAIL_CLICK, {
+    //   CAR_BRAND:
+    //     paramUpdate.brand.length > 0 ? paramUpdate.brand.join(',') : 'Null',
+    //   CAR_TYPE:
+    //     paramUpdate.bodyType.length > 0
+    //       ? paramUpdate.bodyType.join(',')
+    //       : 'Null',
+    //   MIN_PRICE: paramUpdate.priceRangeGroup
+    //     ? paramUpdate.priceRangeGroup.split('-')[0]
+    //     : 'Null',
+    //   MAX_PRICE: paramUpdate.priceRangeGroup
+    //     ? paramUpdate.priceRangeGroup.split('-')[1]
+    //     : 'Null',
+    //   FINCAP_DP: paramUpdate.downPaymentAmount
+    //     ? `Rp${Currency(paramUpdate.downPaymentAmount)}`
+    //     : 'Null',
+    //   FINCAP_TENOR: paramUpdate.tenure ? paramUpdate.tenure + ' tahun' : 'Null',
+    //   FINCAP_INCOME: paramUpdate.monthlyIncome
+    //     ? `Rp${Currency(paramUpdate.monthlyIncome)}`
+    //     : 'Null',
+    //   FINCAP_AGE: paramUpdate.age || 'Null',
+    // })
     getNewFunnelRecommendations(paramUpdate)
       .then((response) => {
         handleSuccess(response)
@@ -393,6 +417,7 @@ const FilterMobile = ({
     if (isApplied) {
       setIsFilter(false)
       trackPLPClearFilter(trackFilterAction())
+      // trackEventCountly(CountlyEventNames.WEB_PLP_FILTER_RESET_CLICK)
       setIsResetFilter && setIsResetFilter(true)
       setIsErrorMinMaxDP('0')
       setIsErrorAge(false)
