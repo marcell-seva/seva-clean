@@ -36,7 +36,7 @@ export const FooterMobile = () => {
       .getMobileFooterMenu()
       .then(
         (result: { data: { data: React.SetStateAction<FooterMenu[]> } }) => {
-          setMenu(result.data.data)
+          setMenu(result.data) // result.data.data undefined
         },
       )
   }, [])
