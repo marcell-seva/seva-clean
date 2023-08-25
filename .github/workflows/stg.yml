@@ -21,6 +21,10 @@ jobs:
           echo "CI=false" >> .env
           echo "PUBLIC_URL=${{ secrets.STG_PUBLIC_URL }}" >> .env
           echo "NODE_ENV=staging" >> .env
+          echo "NEXT_PUBLIC_LOCAL_STORAGE_ENCRYPTION_KEY=${{ secrets.LOCAL_STORAGE_ENCRYPTION_KEY }}" >> .env
+          echo "NEXT_PUBLIC_SERVER_BASE_URL=${{secrets.STG_PUBLIC_URL}}" >> .env
+          echo "NEXT_PUBLIC_FIREBASE_API_KEY=${{secrets.STG_REACT_FIREBASE_API_KEY}}" >> .env
+          echo "NEXT_PUBLIC_ENVIRONMENT=staging" >> .env
 
       - name: Auth Cloud SDK
         uses: 'google-github-actions/auth@v0'
