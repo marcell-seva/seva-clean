@@ -129,16 +129,6 @@ export const valueForInitialPageProperty = () => {
   }
 }
 
-export const valueForTemanSevaStatus = (refCodeFromApi: string) => {
-  const refCodeFromUrl = getLocalStorage(LocalStorageKey.referralTemanSeva)
-
-  if (refCodeFromUrl || refCodeFromApi.length > 0) {
-    return 'Yes'
-  } else {
-    return 'No'
-  }
-}
-
 export const valueMenuTabCategory = () => {
   if (client) {
     const url = window.location.href.toLocaleLowerCase()
