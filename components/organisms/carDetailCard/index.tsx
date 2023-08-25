@@ -164,14 +164,14 @@ export const CarDetailCard = ({
     }
 
     setLoanRankPLP(true)
-    // if (detailClick) {
-    //   trackEventCountly(CountlyEventNames.WEB_PLP_CAR_DETAIL_CLICK, datatrack)
-    // } else {
-    //   trackEventCountly(
-    //     CountlyEventNames.WEB_PLP_PRODUCT_CARD_CTA_CLICK,
-    //     datatrack,
-    //   )
-    // }
+    if (detailClick) {
+      trackEventCountly(CountlyEventNames.WEB_PLP_CAR_DETAIL_CLICK, datatrack)
+    } else {
+      trackEventCountly(
+        CountlyEventNames.WEB_PLP_PRODUCT_CARD_CTA_CLICK,
+        datatrack,
+      )
+    }
   }
 
   const navigateToPDP = (index: number) => () => {

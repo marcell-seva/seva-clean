@@ -288,7 +288,7 @@ export const PLP = ({
   const handleShowSort = (open: boolean) => () => {
     setOpenSorting(open)
     trackPLPSortShow(open)
-    // trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_SORT_CLICK)
+    trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_SORT_CLICK)
   }
   const getAnnouncementBox = () => {
     api
@@ -329,7 +329,7 @@ export const PLP = ({
     }
     console.log('track', track)
 
-    // trackEventCountly(CountlyEventNames.WEB_PLP_VIEW, track)
+    trackEventCountly(CountlyEventNames.WEB_PLP_VIEW, track)
     sessionStorage.removeItem(SessionStorageKey.PreviousPage)
   }
 
@@ -364,6 +364,8 @@ export const PLP = ({
       window.removeEventListener('scroll', handleScroll)
     }
   }, [])
+
+  console.log('funnel', funnelQuery)
 
   useEffect(() => {
     if (funnelQuery.age && funnelQuery.monthlyIncome) {
@@ -407,6 +409,7 @@ export const PLP = ({
       getLocalStorage(LocalStorageKey.flagResultFilterInfoPLP) !== true
     ) {
       setOpenLabelResultInfo(true)
+      trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BANNER_DESC_VIEW)
     }
   }, [isFilterFinancial])
 
@@ -500,6 +503,17 @@ export const PLP = ({
     } else {
       saveRecommendation(carRecommendation.carRecommendations)
       checkFincapBadge(carRecommendation.carRecommendations)
+      const queryParam: any = {
+        downPaymentAmount: downPaymentAmount || '',
+        brand: brand?.split(',') || '',
+        bodyType: bodyType?.split(',') || '',
+        priceRangeGroup: priceRangeGroup,
+        age: age || '',
+        tenure: Number(tenure) || 5,
+        monthlyIncome: monthlyIncome || '',
+        sortBy: sortBy || 'lowToHigh',
+      }
+      patchFunnelQuery(queryParam)
     }
     return () => cleanEffect()
   }, [])
@@ -508,10 +522,12 @@ export const PLP = ({
     setOpenLabelResultInfo(false)
     saveLocalStorage(LocalStorageKey.flagResultFilterInfoPLP, 'true')
     trackCekPeluangPopUpCtaClick(getDataForAmplitude())
+    trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BANNER_DESC_OK_CLICK)
   }
   const onCloseResultInfoClose = () => {
     setOpenLabelResultInfo(false)
     trackCekPeluangPopUpCloseClick(getDataForAmplitude())
+    trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BANNER_DESC_EXIT_CLICK)
   }
 
   const stickyFilter = () => {
@@ -674,26 +690,26 @@ export const PLP = ({
                     onClickResultMudah={() => {
                       setOpenLabelResultMudah(true)
                       trackPeluangMudahBadgeClick(getDataForAmplitude())
-                      // trackEventCountly(
-                      //   CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
-                      //   {
-                      //     PELUANG_KREDIT_BADGE: 'Mudah disetujui',
-                      //     CAR_BRAND: i.brand,
-                      //     CAR_MODEL: i.model,
-                      //   },
-                      // )
+                      trackEventCountly(
+                        CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
+                        {
+                          PELUANG_KREDIT_BADGE: 'Mudah disetujui',
+                          CAR_BRAND: i.brand,
+                          CAR_MODEL: i.model,
+                        },
+                      )
                     }}
                     onClickResultSulit={() => {
                       setOpenLabelResultSulit(true)
                       trackPeluangSulitBadgeClick(getDataForAmplitude())
-                      // trackEventCountly(
-                      //   CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
-                      //   {
-                      //     PELUANG_KREDIT_BADGE: 'Sulit disetujui',
-                      //     CAR_BRAND: i.brand,
-                      //     CAR_MODEL: i.model,
-                      //   },
-                      // )
+                      trackEventCountly(
+                        CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
+                        {
+                          PELUANG_KREDIT_BADGE: 'Sulit disetujui',
+                          CAR_BRAND: i.brand,
+                          CAR_MODEL: i.model,
+                        },
+                      )
                     }}
                     isFilterTrayOpened={isButtonClick} // fix background click on ios
                   />
@@ -717,9 +733,9 @@ export const PLP = ({
           onButtonClick={(
             value: boolean | ((prevState: boolean) => boolean),
           ) => {
-            // trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_FILTER_CLICK, {
-            //   CURRENT_FILTER_STATUS: isFilter ? 'On' : 'Off',
-            // })
+            trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_FILTER_CLICK, {
+              CURRENT_FILTER_STATUS: isFilter ? 'On' : 'Off',
+            })
             setIsButtonClick(value)
           }}
           isButtonClick={isButtonClick}

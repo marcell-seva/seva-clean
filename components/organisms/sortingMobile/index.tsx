@@ -29,9 +29,9 @@ const SortingMobile = ({
   const onChooseOption = (value: FormControlValue, label: FormControlValue) => {
     patchFunnelQuery({ sortBy: value as string })
     trackPLPSortClick(label as string)
-    // trackEventCountly(CountlyEventNames.WEB_PLP_SORT_OPTION_CLICK, {
-    //   SORT_VALUE: label,
-    // })
+    trackEventCountly(CountlyEventNames.WEB_PLP_SORT_OPTION_CLICK, {
+      SORT_VALUE: label,
+    })
     onPickClose(value)
   }
   return (
