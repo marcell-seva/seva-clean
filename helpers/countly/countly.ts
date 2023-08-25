@@ -2,9 +2,13 @@ import Countly from 'countly-sdk-web'
 import { client } from 'utils/helpers/const'
 import { CountlyEventNames } from './eventNames'
 import { getToken } from 'utils/handler/auth'
-import { LocalStorageKey } from 'utils/enum'
-import { getLocalStorage } from 'utils/handler/localStorage'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { UtmTagsMap } from 'utils/hooks/useAddUtmTagsToApiCall/useAddUtmTagsToApiCall'
+import {
+  getSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
 
 export const initCountly = () => {
   //Exposing Countly to the DOM as a global variable
@@ -70,7 +74,7 @@ export const trackEventCountly = (
   eventName: CountlyEventNames,
   data?: Record<string, unknown>,
 ) => {
-  if (client && !!window.Countly.q) {
+  if (client && !!window?.Countly?.q) {
     const defaultSegmentationData = {
       USER_ID: userIdValueForCountly(),
       SOURCE_ENTRY: sourceEntryValueForCountly(),
@@ -87,5 +91,67 @@ export const trackEventCountly = (
         segmentation: { ...defaultSegmentationData, ...data },
       },
     ])
+
+    saveLocalStorage(
+      LocalStorageKey.LastHitTracker,
+      new Date().getTime().toString(),
+    )
+  }
+}
+
+export const valueForUserTypeProperty = () => {
+  const lastHitTracker = getLocalStorage<string>(LocalStorageKey.LastHitTracker)
+
+  if (!!lastHitTracker) {
+    const currentDateTime = new Date().getTime()
+    const expiredDate = parseInt(lastHitTracker) + 30 * 24 * 60 * 60 * 1000 // 30 days
+    const isExceedOneMonth = currentDateTime > expiredDate
+    if (isExceedOneMonth) {
+      return 'New'
+    } else {
+      return 'Returning'
+    }
+  } else {
+    return 'New'
+  }
+}
+
+export const valueForInitialPageProperty = () => {
+  const hasOpenSevaBefore = getSessionStorage(
+    SessionStorageKey.HasOpenSevaBefore,
+  )
+
+  if (!hasOpenSevaBefore) {
+    saveSessionStorage(SessionStorageKey.HasOpenSevaBefore, 'true')
+    return 'Yes'
+  } else {
+    return 'No'
+  }
+}
+
+export const valueForTemanSevaStatus = (refCodeFromApi: string) => {
+  const refCodeFromUrl = getLocalStorage(LocalStorageKey.referralTemanSeva)
+
+  if (refCodeFromUrl || refCodeFromApi.length > 0) {
+    return 'Yes'
+  } else {
+    return 'No'
+  }
+}
+
+export const valueMenuTabCategory = () => {
+  if (client) {
+    const url = window.location.href.toLocaleLowerCase()
+    if (url.includes('spesifikasi')) {
+      return 'Spesifikasi'
+    } else if (url.includes('harga')) {
+      return 'Harga'
+    } else if (url.includes('kredit')) {
+      return 'Kredit'
+    } else {
+      return 'Ringkasan'
+    }
+  } else {
+    return ''
   }
 }
