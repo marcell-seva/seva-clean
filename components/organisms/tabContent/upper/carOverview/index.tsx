@@ -31,6 +31,8 @@ import {
   formatPriceNumberThousandDivisor,
   formatPriceNumber,
 } from 'utils/numberUtils/numberUtils'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 interface Props {
   onClickCityOtrCarOverview: () => void
@@ -79,6 +81,9 @@ export const CarOverview = ({
 
   const onClickToolTipIcon = () => {
     setIsShowTooltip(true)
+    trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_TOOLTIP_CLICK, {
+      PAGE_ORIGINATION: getPageName(),
+    })
   }
 
   const closeTooltip = () => {

@@ -35,6 +35,8 @@ import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import TooltipContentMultiKK from 'components/molecules/tooltipMultiKKContent'
 import { LabelMudah, LabelPromo } from 'components/molecules'
 import LabelSedang from 'components/molecules/labelCard/sedang'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 type CarDetailCardProps = {
   recommendation: MultKKCarRecommendation
@@ -139,6 +141,9 @@ const CarDetailCardMultiCredit = ({
 
   const onClickToolTipIcon = () => {
     setIsShowTooltip(true)
+    trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_TOOLTIP_CLICK, {
+      PAGE_ORIGINATION: getPageName(),
+    })
   }
 
   const closeTooltip = () => {

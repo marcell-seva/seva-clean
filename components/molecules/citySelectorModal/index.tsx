@@ -18,6 +18,9 @@ import { getCity, saveCity } from 'utils/hooks/useGetCity'
 import { CityOtrOption, FormControlValue, Option } from 'utils/types'
 import { LocalStorageKey } from 'utils/enum'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getPageName } from 'utils/pageName'
 
 const searchOption = {
   keys: ['label'],
@@ -83,6 +86,9 @@ const CitySelectorModal = ({
     sendAmplitudeData(AmplitudeEventName.WEB_CITYSELECTOR_CANCEL, {
       Page_Origination_URL: window.location.href,
     })
+    trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_BANNER_LATER_CLICK, {
+      PAGE_ORIGINATION: getPageName(),
+    })
     onClickCloseButton()
   }
 
@@ -116,7 +122,10 @@ const CitySelectorModal = ({
       Page_Origination_URL: window.location.href,
       City: inputValue,
     })
-
+    trackEventCountly(
+      CountlyEventNames.WEB_CITY_SELECTOR_BANNER_FIND_CAR_CLICK,
+      { CITY_LOCATION: temp.cityName },
+    )
     location.reload()
   }
 
@@ -137,11 +146,23 @@ const CitySelectorModal = ({
 
   const onChooseHandler = (item: Option<FormControlValue>) => {
     setLastChoosenValue(item.label)
+    trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_BANNER_CITY_CLICK)
   }
 
   const onResetHandler = () => {
     inputRef.current?.focus()
   }
+  useEffect(() => {
+    trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_BANNER_VIEW, {
+      PAGE_ORIGINATION: getPageName(),
+      USER_TYPE: 'Returning', // will create func for this
+      SOURCE_BUTTON: 'Location Icon', // will create func for this
+      INITIAL_PAGE: 'No',
+      CAR_BRAND: 'Null',
+      CAR_MODEL: 'Null',
+      PELUANG_KREDIT_BADGE: 'Null',
+    })
+  }, [])
 
   useEffect(() => {
     if (cityListFromApi) {
@@ -217,7 +238,11 @@ const CitySelectorModal = ({
       }
     })
   }
-
+  const onOpenHandler = () => {
+    trackEventCountly(
+      CountlyEventNames.WEB_CITY_SELECTOR_BANNER_CITY_FIELD_CLICK,
+    )
+  }
   return (
     <Modal
       closable={false}
@@ -248,6 +273,7 @@ const CitySelectorModal = ({
           onBlurInput={onBlurHandler}
           onChoose={onChooseHandler}
           onReset={onResetHandler}
+          onOpen={onOpenHandler}
           datatestid={elementId.Homepage.GlobalHeader.FieldInputCity}
         />
       </div>
