@@ -5,7 +5,7 @@ export const useEnableNewLogin = () => {
 
   useEffect(() => {
     // === not needed again for now ===
-    // if (process.env.REACT_APP_ENVIRONMENT === 'production') {
+    // if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'production') {
     //   fetch('https://api.sslpots.com/api/base-conf')
     //     .then((response) => response.json())
     //     .then((json) => {
