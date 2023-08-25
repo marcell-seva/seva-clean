@@ -304,7 +304,7 @@ export default function HeaderVariant({
                   onClick={() => onClickSearchHistory(searchTerm)}
                 >
                   <div className={styles.styledCarName}>
-                    <a>{searchTerm.label}</a>
+                    <a style={{ color: '#000' }}>{searchTerm.label}</a>
                   </div>
                   <Line width={'100%'} height={'1px'} background="#EBECEE" />
                 </div>
