@@ -369,12 +369,16 @@ const FilterMobile = ({
     patchFinancialQuery(dataFinancial)
     patchFunnelQuery(dataFunnelQuery)
 
-    navigateToPLP(PreviousButton.SmartSearch, { query: { ...paramUrl } })
-
     saveRecommendation(response?.carRecommendations || [])
     trackPLPSubmitFilter(trackFilterAction())
-    onClickClose()
     setResetTmp(false)
+    navigateToPLP(
+      PreviousButton.SmartSearch,
+      { query: { ...paramUrl } },
+      true,
+      true,
+    )
+    onClickClose()
   }
 
   // const handleError = (errorCode: number) => {
