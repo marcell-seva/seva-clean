@@ -29,6 +29,10 @@ import { LoanRank } from 'utils/types/models'
 import styles from '../../../styles/components/organisms/cardetailcard.module.scss'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewPDP,
+} from 'utils/navigate'
 
 type CarDetailCardProps = {
   order?: number
@@ -178,6 +182,7 @@ export const CarDetailCard = ({
     if (!isFilterTrayOpened) {
       trackCarClick(index, false)
 
+      saveDataForCountlyTrackerPageViewPDP(PreviousButton.ProductCard)
       router.push(detailCarRoute)
     }
   }

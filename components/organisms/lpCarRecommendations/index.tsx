@@ -26,7 +26,11 @@ import { AlternativeCarCard } from '../alternativeCarCard'
 import { PopupPromo } from '../popupPromo'
 import { LocalStorageKey } from 'utils/enum'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
-import { PreviousButton, navigateToPLP } from 'utils/navigate'
+import {
+  PreviousButton,
+  navigateToPLP,
+  saveDataForCountlyTrackerPageViewPDP,
+} from 'utils/navigate'
 
 type LPCarRecommendationsProps = {
   dataReccomendation: any
@@ -65,6 +69,7 @@ const LpCarRecommendations = ({
   }
 
   const handleClickDetailCar = (item: CarRecommendation) => {
+    saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
     const path = urls.internalUrls.variantListUrl
       .replace(
         ':brand/:model/:tab?',
