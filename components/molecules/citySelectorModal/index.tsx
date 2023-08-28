@@ -18,7 +18,10 @@ import { getCity, saveCity } from 'utils/hooks/useGetCity'
 import { CityOtrOption, FormControlValue, Option } from 'utils/types'
 import { LocalStorageKey } from 'utils/enum'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
-import { trackEventCountly } from 'helpers/countly/countly'
+import {
+  trackEventCountly,
+  valueForUserTypeProperty,
+} from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getPageName } from 'utils/pageName'
 
@@ -155,8 +158,8 @@ const CitySelectorModal = ({
   useEffect(() => {
     trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_BANNER_VIEW, {
       PAGE_ORIGINATION: getPageName(),
-      USER_TYPE: 'Returning', // will create func for this
-      SOURCE_BUTTON: 'Location Icon', // will create func for this
+      USER_TYPE: valueForUserTypeProperty(),
+      SOURCE_BUTTON: 'Location Icon',
       INITIAL_PAGE: 'No',
       CAR_BRAND: 'Null',
       CAR_MODEL: 'Null',
