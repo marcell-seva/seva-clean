@@ -65,7 +65,11 @@ import {
 import { MoengageViewCarSearch } from 'utils/types/moengage'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
 import styles from '../../../styles/pages/mobil-baru.module.scss'
-import { trackEventCountly } from 'helpers/countly/countly'
+import {
+  trackEventCountly,
+  valueForInitialPageProperty,
+  valueForUserTypeProperty,
+} from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { usePreviousRoute } from 'utils/hooks/usePreviousRoute'
 import { LoanRank } from 'utils/types/models'
@@ -314,20 +318,19 @@ export const PLP = ({
       brand && typeof brand === 'string' && brand.includes('SEVA')
         ? 'Yes'
         : 'No'
-    const initialPage = previousRoute !== null ? 'Yes' : 'No'
+    const initialPage = valueForInitialPageProperty()
     const track = {
       CAR_FILTER_USAGE: filterUsage,
       FINCAP_FILTER_USAGE: fincapUsage,
       PELUANG_KREDIT_BADGE: fincapUsage === 'No' ? 'Null' : creditBadge,
       INITIAL_PAGE: initialPage,
       TEMAN_SEVA_STATUS: temanSevaStatus,
+      USER_TYPE: valueForUserTypeProperty(),
       ...(Boolean(prevPage) && {
         ...(prevPage.refer && { PAGE_REFERRER: prevPage.refer }),
         ...(prevPage.source && { PREVIOUS_SOURCE_BUTTON: prevPage?.source }),
       }),
-      ...(Boolean(userType) && { USER_TYPE: userType }),
     }
-    console.log('track', track)
 
     trackEventCountly(CountlyEventNames.WEB_PLP_VIEW, track)
     sessionStorage.removeItem(SessionStorageKey.PreviousPage)
@@ -364,8 +367,6 @@ export const PLP = ({
       window.removeEventListener('scroll', handleScroll)
     }
   }, [])
-
-  console.log('funnel', funnelQuery)
 
   useEffect(() => {
     if (funnelQuery.age && funnelQuery.monthlyIncome) {
