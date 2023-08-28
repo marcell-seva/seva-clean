@@ -4,6 +4,7 @@ import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { MobileWebTopMenuType } from 'utils/types/props'
 import { IconChevronDown } from '../icon'
+import { navigateToPLP, PreviousButton } from 'utils/navigate'
 
 type MenuItemProps = {
   item?: MobileWebTopMenuType
@@ -13,6 +14,9 @@ const MenuItem: React.FC<MenuItemProps> = ({ item }): JSX.Element => {
   const [state, setState] = React.useState(false)
 
   const handleClickMenu = (menuUrl: string, menuName: string) => {
+    if (menuName === 'Mobil Baru') {
+      return navigateToPLP(PreviousButton.HamburgerMenu)
+    }
     sendAmplitudeData(AmplitudeEventName.WEB_BURGER_MENU_CLICK, {
       Page_Origination_URL: window.location.href,
       Menu: menuName,
