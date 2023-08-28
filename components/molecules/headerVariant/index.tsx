@@ -160,8 +160,9 @@ export default function HeaderVariant({
       Page_Origination_URL: window.location.href,
       Page_Direction_URL: window.location.origin + urlDestination,
     })
-    router.push(urlDestination)
-    // window.location.reload()
+
+    // use window location to reload page
+    window.location.href = urlDestination
     setIsNotFoundClicked(false)
   }
 
@@ -298,9 +299,8 @@ export default function HeaderVariant({
       })
     } else {
       saveDataForCountlyTrackerPDP()
-      router.push({
-        pathname: carResultsUrl + data.value,
-      })
+      // use window location to reload page
+      window.location.href = carResultsUrl + data.value
     }
     // use location reload so that content re-fetched
     // window.location.reload()
