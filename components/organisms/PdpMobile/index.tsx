@@ -235,6 +235,13 @@ export default function NewCarVariantList() {
       })
   }
 
+  useEffect(() => {
+    document.body.style.overflowY = isActive ? 'hidden' : 'auto'
+    return () => {
+      document.body.style.overflowY = 'auto'
+    }
+  }, [isActive])
+
   const getMonthlyInstallment = () => {
     return formatNumberByLocalization(
       sortedCarModelVariant[0].monthlyInstallment,

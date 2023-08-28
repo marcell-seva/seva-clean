@@ -24,6 +24,7 @@ import { Option } from 'utils/types'
 import { COMData, FunnelQueryKey } from 'utils/types/models'
 import { Line } from './Line'
 import { useToast } from './Toast'
+import { PreviousButton, navigateToPLP } from 'utils/navigate'
 import { saveSessionStorage } from 'utils/handler/sessionStorage'
 import { getPageName } from 'utils/pageName'
 import { defineRouteName } from 'utils/navigate'
@@ -291,8 +292,8 @@ export default function HeaderVariant({
       const funnelQueryTemp = {
         brand: data.label,
       }
-      router.push({
-        pathname: carResultsUrl,
+
+      navigateToPLP(PreviousButton.SearchBar, {
         search: convertObjectQuery(funnelQueryTemp),
       })
     } else {

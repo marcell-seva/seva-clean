@@ -49,6 +49,7 @@ import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { LocalStorageKey } from 'utils/enum'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { navigateToPLP, PreviousButton } from 'utils/navigate'
 
 export const initDataWidget = {
   downPaymentAmount: '',
@@ -283,10 +284,7 @@ const SearchWidget = () => {
       ...(expandFinancial && age && { Age: age }),
     })
 
-    router.push({
-      pathname: urls.internalUrls.carResultsUrl,
-      search: urlParam,
-    })
+    navigateToPLP(PreviousButton.SmartSearch, { search: urlParam })
   }
 
   useEffect(() => {

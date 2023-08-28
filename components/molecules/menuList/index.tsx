@@ -14,6 +14,7 @@ import { trackBurgerMenuClick } from 'helpers/amplitude/seva20Tracking'
 import { LocalStorageKey } from 'utils/enum'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { PreviousButton, navigateToPLP } from 'utils/navigate'
 
 type MenuListProps = {
   menuList?: MobileWebTopMenuType[]

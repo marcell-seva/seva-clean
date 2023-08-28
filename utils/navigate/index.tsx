@@ -1,3 +1,14 @@
+import { valueForUserTypeProperty } from 'helpers/countly/countly'
+import Router from 'next/router'
+import { use } from 'react'
+import { SessionStorageKey } from 'utils/enum'
+import {
+  getSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
+import { carResultsUrl } from 'utils/helpers/routes'
+import urls from 'utils/helpers/url'
+
 enum RouteName {
   Homepage = 'Homepage',
   PLP = 'PLP',
@@ -119,4 +130,21 @@ export const defineRouteName = (pathname: string) => {
   }
 
   return RouteName.Homepage
+}
+
+export const navigateToPLP = (
+  source: PreviousButton = PreviousButton.undefined,
+  option?: any,
+  navigate: boolean = true,
+) => {
+  let refer = defineRouteName(Router.pathname)
+
+  const dataPrevPage = { refer, source }
+  saveSessionStorage(
+    SessionStorageKey.PreviousPage,
+    JSON.stringify(dataPrevPage),
+  )
+
+  if (!navigate) return
+  return Router.push({ pathname: urls.internalUrls.carResultsUrl, ...option })
 }
