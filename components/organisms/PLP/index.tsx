@@ -297,6 +297,14 @@ export const PLP = ({
         }
       })
   }
+
+  useEffect(() => {
+    document.body.style.overflowY = isActive ? 'hidden' : 'auto'
+    return () => {
+      document.body.style.overflowY = 'auto'
+    }
+  }, [isActive])
+
   //handle scrolling
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -324,7 +332,8 @@ export const PLP = ({
         minMaxPrice.minPriceValue.toString() +
           '-' +
           minMaxPrice.maxPriceValue.toString() &&
-        funnelQuery.priceRangeGroup !== '') ||
+        funnelQuery.priceRangeGroup !== '' &&
+        funnelQuery.priceRangeGroup !== undefined) ||
       // funnelQuery.downPaymentAmount ||
       funnelQuery.monthlyIncome ||
       funnelQuery.age ||
