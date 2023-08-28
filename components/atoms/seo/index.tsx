@@ -17,7 +17,10 @@ const Seo: React.FC<SeoProps> = ({ title, description, image }) => {
       <title>{title}</title>
       <meta name="title" content={title} />
       <meta name="description" content={description} />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta
+        name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
+      />
       <link rel="icon" href="/favicon.png" />
 
       <meta property="og:type" content="website" />

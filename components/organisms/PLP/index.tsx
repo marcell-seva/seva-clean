@@ -308,6 +308,13 @@ export const PLP = ({
       })
   }
 
+  useEffect(() => {
+    document.body.style.overflowY = isActive ? 'hidden' : 'auto'
+    return () => {
+      document.body.style.overflowY = 'auto'
+    }
+  }, [isActive])
+
   const trackPLPView = (creditBadge: string = 'Null') => {
     const prevPage = getSessionStorage(SessionStorageKey.PreviousPage) as any
     const filterUsage = brand || bodyType || priceRangeGroup ? 'Yes' : 'No'
@@ -380,7 +387,8 @@ export const PLP = ({
         minMaxPrice.minPriceValue.toString() +
           '-' +
           minMaxPrice.maxPriceValue.toString() &&
-        funnelQuery.priceRangeGroup !== '') ||
+        funnelQuery.priceRangeGroup !== '' &&
+        funnelQuery.priceRangeGroup !== undefined) ||
       // funnelQuery.downPaymentAmount ||
       funnelQuery.monthlyIncome ||
       funnelQuery.age ||
