@@ -44,6 +44,10 @@ export enum PreviousButton {
   SearchBar = 'Search bar',
   IAWaitingForResult = 'Instant Approval - Waiting For Result',
   undefined = '',
+  SearchIcon = 'Search icon',
+  CarRecommendation = 'Car recommendation',
+  CarOfTheMonth = 'Car of the month',
+  ProductCard = 'Product card',
 }
 
 export const defineRouteName = (pathname: string) => {
@@ -147,4 +151,14 @@ export const navigateToPLP = (
 
   if (!navigate) return
   return Router.push({ pathname: urls.internalUrls.carResultsUrl, ...option })
+}
+
+export const saveDataForCountlyTrackerPageViewPDP = (
+  previousButton: PreviousButton,
+) => {
+  saveSessionStorage(
+    SessionStorageKey.PageReferrerPDP,
+    defineRouteName(window.location.pathname),
+  )
+  saveSessionStorage(SessionStorageKey.PreviousSourceButtonPDP, previousButton)
 }

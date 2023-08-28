@@ -387,7 +387,7 @@ export default function NewCarVariantList() {
   const trackCountlyPageView = async () => {
     const pageReferrer = getSessionStorage(SessionStorageKey.PageReferrerPDP)
     const previousSourceButton = getSessionStorage(
-      SessionStorageKey.PreviousSourceButton,
+      SessionStorageKey.PreviousSourceButtonPDP,
     )
     const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
 
@@ -432,6 +432,7 @@ export default function NewCarVariantList() {
 
       setIsSentCountlyPageView(true)
       removeSessionStorage(SessionStorageKey.PageReferrerPDP)
+      removeSessionStorage(SessionStorageKey.PreviousSourceButtonPDP)
     }
   }
 

@@ -19,6 +19,10 @@ import styles from 'styles/components/organisms/carRecomendations.module.scss'
 import { AlternativeCarCard } from '../alternativeCarCard'
 import { useRouter } from 'next/router'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewPDP,
+} from 'utils/navigate'
 
 type CarRecommendationsPropss = {
   title: string
@@ -104,6 +108,7 @@ export default function CarRecommendations({
       Monthly_Installment: `Rp${formatLowestInstallment}`,
       Page_Origination: window.location.href,
     })
+    saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
     router.push(path)
   }
 

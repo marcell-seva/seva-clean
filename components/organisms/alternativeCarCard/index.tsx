@@ -17,6 +17,10 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useRouter } from 'next/router'
 import { CarRecommendation } from 'utils/types/context'
 import Image from 'next/image'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewPDP,
+} from 'utils/navigate'
 
 type AlternativeCarCardProps = {
   recommendation: CarRecommendation
@@ -69,6 +73,7 @@ export const AlternativeCarCard = ({
 
   const navigateToPDP = () => {
     trackCarRecommendation()
+    saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
     router.push(detailCarRoute)
   }
 
