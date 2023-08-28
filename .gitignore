@@ -11,6 +11,9 @@
 # next.js
 /.next/
 /out/
+/public/sw.js
+/public/sw.js.map
+/public/workbox-*
 
 # production
 /build

@@ -292,7 +292,7 @@ export const PLP = ({
         },
       })
       .then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-        if (res.data.data === undefined) {
+        if (res.data === undefined) {
           setIsShowAnnouncementBox(false)
         }
       })
