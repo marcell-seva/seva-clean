@@ -139,7 +139,7 @@ export default function NewCarVariantList() {
       getToken()
         ? SessionStorageKey.ShowWebAnnouncementLogin
         : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ),
+    ) ?? true,
   )
   const [variantIdFuel, setVariantIdFuelRatio] = useState<string | undefined>()
   const [variantFuelRatio, setVariantFuelRatio] = useState<string | undefined>()
@@ -222,6 +222,13 @@ export default function NewCarVariantList() {
         }
       })
   }
+
+  useEffect(() => {
+    document.body.style.overflowY = isActive ? 'hidden' : 'auto'
+    return () => {
+      document.body.style.overflowY = 'auto'
+    }
+  }, [isActive])
 
   const getMonthlyInstallment = () => {
     return formatNumberByLocalization(
