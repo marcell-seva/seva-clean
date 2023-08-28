@@ -276,7 +276,7 @@ const CitySelectorModal = ({
           onBlurInput={onBlurHandler}
           onChoose={onChooseHandler}
           onReset={onResetHandler}
-          onOpen={onOpenHandler}
+          onShowDropdown={onOpenHandler}
           datatestid={elementId.Homepage.GlobalHeader.FieldInputCity}
         />
       </div>
