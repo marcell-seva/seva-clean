@@ -170,6 +170,7 @@ export const PLP = ({
     saveRecommendation([])
     setPage(1)
     setShowLoading(true)
+    setSampleArray({ items: [] })
   }
 
   useEffect(() => {
@@ -357,10 +358,8 @@ export const PLP = ({
 
   useEffect(() => {
     setPage(1)
-    if (recommendation.length > sampleArray.items.length) {
-      setHasMore(true)
-      setSampleArray({ items: recommendation.slice(0, 12) })
-    }
+    setHasMore(true)
+    setSampleArray({ items: recommendation.slice(0, 12) })
   }, [recommendation])
 
   useEffect(() => {
