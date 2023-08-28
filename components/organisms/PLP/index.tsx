@@ -71,9 +71,7 @@ import {
   valueForUserTypeProperty,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
-import { usePreviousRoute } from 'utils/hooks/usePreviousRoute'
 import { LoanRank } from 'utils/types/models'
-import { defineRouteName } from 'utils/navigate'
 
 interface PLPProps {
   carRecommendation: CarRecommendationResponse
@@ -88,7 +86,6 @@ export const PLP = ({
 }: PLPProps) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
-  const previousRoute = usePreviousRoute()
   const { recommendation, saveRecommendation } = useCar()
   const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>(
     alternativeRecommendation,
@@ -180,6 +177,7 @@ export const PLP = ({
     saveRecommendation([])
     setPage(1)
     setShowLoading(true)
+    setSampleArray({ items: [] })
   }
 
   useEffect(() => {
@@ -415,10 +413,8 @@ export const PLP = ({
 
   useEffect(() => {
     setPage(1)
-    if (recommendation.length > sampleArray.items.length) {
-      setHasMore(true)
-      setSampleArray({ items: recommendation.slice(0, 12) })
-    }
+    setHasMore(true)
+    setSampleArray({ items: recommendation.slice(0, 12) })
   }, [recommendation])
 
   useEffect(() => {
