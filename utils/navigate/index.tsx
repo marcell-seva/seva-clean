@@ -1,3 +1,4 @@
+import { valueForUserTypeProperty } from 'helpers/countly/countly'
 import Router from 'next/router'
 import { use } from 'react'
 import { SessionStorageKey } from 'utils/enum'
@@ -136,16 +137,13 @@ export const navigateToPLP = (
   option?: any,
   navigate: boolean = true,
 ) => {
-  const sessionPrevPage = getSessionStorage(SessionStorageKey.UserType)
   let refer = defineRouteName(Router.pathname)
-  const userType = Boolean(sessionPrevPage) ? 'Returning' : 'New'
 
   const dataPrevPage = { refer, source }
   saveSessionStorage(
     SessionStorageKey.PreviousPage,
     JSON.stringify(dataPrevPage),
   )
-  saveSessionStorage(SessionStorageKey.UserType, userType)
 
   if (!navigate) return
   return Router.push({ pathname: urls.internalUrls.carResultsUrl, ...option })

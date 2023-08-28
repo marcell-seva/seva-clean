@@ -310,7 +310,6 @@ export const PLP = ({
 
   const trackPLPView = (creditBadge: string = 'Null') => {
     const prevPage = getSessionStorage(SessionStorageKey.PreviousPage) as any
-    const userType = getSessionStorage(SessionStorageKey.UserType)
     const filterUsage = brand || bodyType || priceRangeGroup ? 'Yes' : 'No'
     const fincapUsage =
       downPaymentAmount || tenure || age || monthlyIncome ? 'Yes' : 'No'
