@@ -9,6 +9,8 @@ import {
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import elementId from 'helpers/elementIds'
 import { useCar } from 'services/context/carContext'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 type FaqProps = {
   question: string
@@ -62,6 +64,11 @@ export const Faq: React.FC<PropsInfo> = ({
     setCollIndex([...collIndex, index])
     trackExpandFaq(String(index + 1), true)
     setExpandItem([...expandItem, index])
+    trackEventCountly(CountlyEventNames.WEB_PDP_FAQ_CLICK, {
+      FAQ_ORDER: index + 1,
+      CAR_BRAND: carModelDetails?.brand,
+      CAR_MODEL: carModelDetails?.model,
+    })
   }
 
   // useEffect(() => {

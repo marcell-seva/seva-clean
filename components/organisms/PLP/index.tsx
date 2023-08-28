@@ -447,6 +447,17 @@ export const PLP = ({
         .catch()
     } else {
       saveRecommendation(carRecommendation.carRecommendations)
+      const queryParam: any = {
+        downPaymentAmount: downPaymentAmount || '',
+        brand: brand?.split(',') || '',
+        bodyType: bodyType?.split(',') || '',
+        priceRangeGroup: priceRangeGroup,
+        age: age || '',
+        tenure: Number(tenure) || 5,
+        monthlyIncome: monthlyIncome || '',
+        sortBy: sortBy || 'lowToHigh',
+      }
+      patchFunnelQuery(queryParam)
     }
     return () => cleanEffect()
   }, [])

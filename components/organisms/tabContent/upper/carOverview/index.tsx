@@ -31,8 +31,11 @@ import {
   formatPriceNumberThousandDivisor,
   formatPriceNumber,
 } from 'utils/numberUtils/numberUtils'
-import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import {
+  trackEventCountly,
+  valueMenuTabCategory,
+} from 'helpers/countly/countly'
 
 interface Props {
   onClickCityOtrCarOverview: () => void
@@ -180,6 +183,7 @@ export const CarOverview = ({
 
   const onClickShareButtonHandler = () => {
     trackAmplitudeShare()
+    trackClickShareCountly()
     onClickShareButton()
   }
 
@@ -211,8 +215,44 @@ export const CarOverview = ({
     trackPDPHitungKemampuan(properties)
   }
 
+  const trackClickCtaCountly = () => {
+    trackEventCountly(CountlyEventNames.WEB_PDP_LOAN_CALCULATOR_CTA_CLICK, {
+      SOURCE_SECTION: 'Main Top CTA',
+      MENU_TAB_CATEGORY: valueMenuTabCategory(),
+      VISUAL_TAB_CATEGORY: currentTabMenu,
+      CAR_BRAND: modelDetail?.brand ?? '',
+      CAR_MODEL: modelDetail?.model ?? '',
+      CAR_ORDER: 'Null',
+      CAR_VARIANT: 'Null',
+    })
+  }
+
+  const trackClickBrochureCountly = () => {
+    trackEventCountly(CountlyEventNames.WEB_PDP_BROCHURE_CLICK, {
+      CAR_BRAND: modelDetail?.brand ?? '',
+      CAR_MODEL: modelDetail?.model ?? '',
+      VISUAL_TAB_CATEGORY: currentTabMenu,
+      MENU_TAB_CATEGORY: valueMenuTabCategory(),
+    })
+  }
+
+  const trackClickShareCountly = () => {
+    trackEventCountly(CountlyEventNames.WEB_PDP_OPEN_SHARE_CLICK, {
+      CAR_BRAND: modelDetail?.brand ?? '',
+      CAR_MODEL: modelDetail?.model ?? '',
+      VISUAL_TAB_CATEGORY: currentTabMenu,
+      MENU_TAB_CATEGORY: valueMenuTabCategory(),
+    })
+  }
+
+  const onClickDownloadBrochure = () => {
+    trackAmplitudeBrochure()
+    trackClickBrochureCountly()
+  }
+
   const onClickCalculateCta = () => {
     trackHitungKemampuan()
+    trackClickCtaCountly()
     window.location.href =
       variantListUrl
         .replace(':brand', brand)
@@ -358,7 +398,7 @@ export const CarOverview = ({
           target="_blank"
           rel="noreferrer"
           data-testid={elementId.PDP.CarOverview.DownloadBrochure}
-          onClick={trackAmplitudeBrochure}
+          onClick={onClickDownloadBrochure}
         >
           <TextButton
             leftIcon={() => (

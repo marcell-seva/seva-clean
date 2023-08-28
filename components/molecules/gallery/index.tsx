@@ -31,6 +31,13 @@ import { isIphone } from 'utils/window'
 import elementId from 'helpers/elementIds'
 import { CityOtrOption } from 'utils/types/utils'
 import { useCar } from 'services/context/carContext'
+import {
+  trackEventCountly,
+  valueMenuTabCategory,
+} from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { useRouter } from 'next/router'
+import { LoanRank } from 'utils/types/models'
 
 interface PropsGallery {
   items: Array<string>
@@ -60,6 +67,42 @@ export const Gallery: React.FC<PropsGallery> = ({
   const [onClickSubPhoto, setOnClickSubPhoto] = useState(true)
   const [onClickMainArrowPhoto, setOnClickMainArrowPhoto] = useState(true)
 
+  const router = useRouter()
+  const tab = router.query.tab as string
+  const loanRankcr = router.query.loanRankCVL ?? ''
+
+  const getCreditBadgeForCountly = () => {
+    let creditBadge = 'Null'
+    if (loanRankcr && loanRankcr.includes(LoanRank.Green)) {
+      creditBadge = 'Mudah disetujui'
+    } else if (loanRankcr && loanRankcr.includes(LoanRank.Red)) {
+      creditBadge = 'Sulit disetujui'
+    }
+    return creditBadge
+  }
+
+  const trackCountlyMainImage = () => {
+    trackEventCountly(CountlyEventNames.WEB_PDP_MAIN_PHOTO_CLICK, {
+      CAR_BRAND: carModelDetails?.brand ?? '',
+      CAR_MODEL: carModelDetails?.model ?? '',
+      MENU_TAB_CATEGORY: valueMenuTabCategory(),
+      CAR_PHOTO_ORDER: flagIndex + 1,
+      VISUAL_TAB_CATEGORY: tab ? tab : '',
+      PELUANG_KREDIT_BADGE: getCreditBadgeForCountly(),
+    })
+  }
+
+  const trackCountlyCarouselImage = (index: number) => {
+    trackEventCountly(CountlyEventNames.WEB_PDP_CAROUSEL_PHOTO_CLICK, {
+      CAR_BRAND: carModelDetails?.brand ?? '',
+      CAR_MODEL: carModelDetails?.model ?? '',
+      PELUANG_KREDIT_BADGE: getCreditBadgeForCountly(),
+      CAR_PHOTO_ORDER: index + 1,
+      VISUAL_TAB_CATEGORY: tab ? tab : '',
+      MENU_TAB_CATEGORY: valueMenuTabCategory(),
+    })
+  }
+
   const MainImage: React.FC<PropsGalleryMainImage> = ({ url }): JSX.Element => (
     <img
       width={274}
@@ -76,6 +119,7 @@ export const Gallery: React.FC<PropsGallery> = ({
           url,
           TrackingEventName.WEB_PDP_GALLERY_MAIN_PHOTO_CLICK,
         )
+        trackCountlyMainImage()
       }}
       data-testid={elementId.MainPicture}
     />
@@ -283,6 +327,7 @@ export const Gallery: React.FC<PropsGallery> = ({
                     item,
                     TrackingEventName.WEB_PDP_CAROUSEL_PHOTO_CLICK,
                   )
+                  trackCountlyCarouselImage(key)
                 }}
               >
                 <CoverSubImage url={item} isActive={flagIndex === key} />

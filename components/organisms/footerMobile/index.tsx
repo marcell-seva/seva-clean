@@ -34,11 +34,9 @@ export const FooterMobile = () => {
   useEffect(() => {
     api
       .getMobileFooterMenu()
-      .then(
-        (result: { data: { data: React.SetStateAction<FooterMenu[]> } }) => {
-          setMenu(result.data.data)
-        },
-      )
+      .then((result: { data: React.SetStateAction<FooterMenu[]> }) => {
+        setMenu(result.data) // result.data.data undefined
+      })
   }, [])
 
   const dataTestId = (code: string) => {
