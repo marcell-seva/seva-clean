@@ -71,7 +71,7 @@ export const ProductDetailEmptyState: React.FC<PropsPDPEmptyState> = ({
         city: cityOtr?.cityCode || 'jakarta',
       }
       const data = await getNewFunnelCityRecommendations(payload)
-      setCityRecommendations(data.data)
+      setCityRecommendations(data)
     } catch (error) {}
   }
 
