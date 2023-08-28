@@ -7,6 +7,7 @@ import { IconChevronDown } from '../icon'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { navigateToPLP, PreviousButton } from 'utils/navigate'
+import { getPageName } from 'utils/pageName'
 
 type MenuItemProps = {
   item?: MobileWebTopMenuType
