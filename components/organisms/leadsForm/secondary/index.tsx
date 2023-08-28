@@ -10,7 +10,7 @@ import {
 } from 'components/atoms'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
-import { filterNonDigitCharacters } from 'utils/stringUtils'
+import { capitalizeWords, filterNonDigitCharacters } from 'utils/stringUtils'
 import { onlyLettersAndSpaces } from 'utils/handler/regex'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
@@ -38,6 +38,11 @@ import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { Currency } from 'utils/handler/calculation'
 import { CityOtrOption } from 'utils/types'
 import { LoanRank } from 'utils/types/models'
+import {
+  trackEventCountly,
+  valueMenuTabCategory,
+} from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 const SupergraphicLeft = '/revamp/illustration/supergraphic-small.webp'
 const SupergraphicRight = '/revamp/illustration/supergraphic-large.webp'
@@ -76,6 +81,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
 
   const model = router.query.model as string
   const brand = router.query.brand as string
+  const tab = router.query.tab as string
 
   const handleInputName = (payload: any): void => {
     if (payload !== ' ' && onlyLettersAndSpaces(payload)) {
@@ -270,6 +276,18 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
     }
   }
 
+  const trackClickCtaCountly = () => {
+    trackEventCountly(CountlyEventNames.WEB_PDP_LOAN_CALCULATOR_CTA_CLICK, {
+      SOURCE_SECTION: 'Leads form',
+      MENU_TAB_CATEGORY: valueMenuTabCategory(),
+      VISUAL_TAB_CATEGORY: tab ? tab : 'Warna',
+      CAR_BRAND: brand ? capitalizeWords(brand.replaceAll('-', ' ')) : '',
+      CAR_MODEL: model ? capitalizeWords(model.replaceAll('-', ' ')) : '',
+      CAR_ORDER: 'Null',
+      CAR_VARIANT: 'Null',
+    })
+  }
+
   const onClickCalculateCta = () => {
     let urlDirection = variantListUrl
       .replace(':brand', brand)
@@ -284,6 +302,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
       Page_Direction_URL:
         'https://' + window.location.host + urlDirection.replace('?', ''),
     })
+    trackClickCtaCountly()
     window.location.href = urlDirection
   }
 

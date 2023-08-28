@@ -14,3 +14,7 @@ export const getSessionStorage = <T>(key: SessionStorageKey): T | null => {
     }
   } else return null
 }
+
+export const removeSessionStorage = (key: SessionStorageKey) => {
+  if (window) sessionStorage.removeItem(key)
+}

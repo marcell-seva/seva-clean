@@ -13,6 +13,11 @@ import elementId from 'helpers/elementIds'
 import { CityOtrOption } from 'utils/types/utils'
 import { client } from 'utils/helpers/const'
 import { useCar } from 'services/context/carContext'
+import {
+  trackEventCountly,
+  valueMenuTabCategory,
+} from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 export interface PropsInfo {
   isWithIcon?: boolean
@@ -44,6 +49,34 @@ export const Info: React.FC<PropsInfo> = ({
     }
   }
 
+  const handleClickExpand = () => {
+    if (isWithIcon) {
+      trackCarVariantDescriptionExpandClick(getDataForAmplitude())
+      trackEventCountly(CountlyEventNames.WEB_PDP_SEO_TEXT_EXPAND_CLICK, {
+        MENU_TAB_CATEGORY: valueMenuTabCategory(),
+        CAR_BRAND: carModelDetails?.brand ?? '',
+        CAR_MODEL: carModelDetails?.model ?? '',
+        SOURCE_SECTION: 'Car Description',
+      })
+    } else {
+      trackSEOFooterExpandClick(TrackingEventName.WEB_SEO_FOOTER_CLICK_EXPAND)
+      trackEventCountly(CountlyEventNames.WEB_PDP_SEO_TEXT_EXPAND_CLICK, {
+        MENU_TAB_CATEGORY: valueMenuTabCategory(),
+        CAR_BRAND: carModelDetails?.brand ?? '',
+        CAR_MODEL: carModelDetails?.model ?? '',
+        SOURCE_SECTION: 'SEO Text',
+      })
+    }
+  }
+
+  const handleClickCollapse = () => {
+    if (isWithIcon) {
+      trackCarVariantDescriptionCollapseClick(getDataForAmplitude())
+    } else {
+      trackSEOFooterExpandClick(TrackingEventName.WEB_SEO_FOOTER_CLICK_CLOSE)
+    }
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.heading}>
@@ -68,17 +101,9 @@ export const Info: React.FC<PropsInfo> = ({
           className={styles.button}
           onClick={() => {
             if (!isExpanded) {
-              isWithIcon // I assume isWithIcon for Car Description
-                ? trackCarVariantDescriptionExpandClick(getDataForAmplitude())
-                : trackSEOFooterExpandClick(
-                    TrackingEventName.WEB_SEO_FOOTER_CLICK_EXPAND,
-                  )
+              handleClickExpand()
             } else {
-              isWithIcon // I assume isWithIcon for Car Description
-                ? trackCarVariantDescriptionCollapseClick(getDataForAmplitude())
-                : trackSEOFooterExpandClick(
-                    TrackingEventName.WEB_SEO_FOOTER_CLICK_CLOSE,
-                  )
+              handleClickCollapse()
             }
             setIsExpanded(!isExpanded)
           }}

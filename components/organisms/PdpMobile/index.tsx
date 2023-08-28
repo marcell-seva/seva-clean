@@ -47,9 +47,12 @@ import {
   trackCarVariantPageWaChatbot,
 } from 'helpers/amplitude/seva20Tracking'
 // import { usePreApprovalCarNotAvailable } from 'pages/component/PreApprovalCarNotAvalable/useModalCarNotAvalable'
-import { getSessionStorage } from 'utils/handler/sessionStorage'
+import {
+  getSessionStorage,
+  removeSessionStorage,
+} from 'utils/handler/sessionStorage'
 import { AxiosResponse } from 'axios'
-import { capitalizeFirstLetter } from 'utils/stringUtils'
+import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useQuery } from 'utils/hooks/useQuery'
@@ -61,6 +64,14 @@ import {
   replacePriceSeparatorByLocalization,
 } from 'utils/handler/rupiah'
 import { LoanRank } from 'utils/types/models'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import {
+  trackEventCountly,
+  valueForInitialPageProperty,
+  valueForUserTypeProperty,
+} from 'helpers/countly/countly'
+import { client } from 'utils/helpers/const'
+import { defineRouteName } from 'utils/navigate'
 
 export interface CarVariantListPageUrlParams {
   brand: string
@@ -75,6 +86,7 @@ export default function NewCarVariantList() {
   const [galleryIndexActive, setGalleryIndexActive] = useState<number>(0)
   const [dataPreviewImages, setDataPreviewImages] = useState<Array<string>>([])
   const { source }: { source: string } = useQuery(['source'])
+  const [isSentCountlyPageView, setIsSentCountlyPageView] = useState(false)
 
   const handlePreviewOpened = (payload: number) => {
     setGalleryIndexActive(payload)
@@ -364,6 +376,64 @@ export default function NewCarVariantList() {
         setVariantFuelRatio(result.variantDetail.rasioBahanBakar)
       })
   }
+
+  const trackCountlyPageView = async () => {
+    const pageReferrer = getSessionStorage(SessionStorageKey.PageReferrerPDP)
+    const previousSourceButton = getSessionStorage(
+      SessionStorageKey.PreviousSourceButton,
+    )
+    const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+
+    const isUsingFilterFinancial =
+      !!filterStorage?.age &&
+      !!filterStorage?.downPaymentAmount &&
+      !!filterStorage?.monthlyIncome &&
+      !!filterStorage?.tenure
+
+    let creditBadge = 'Null'
+    if (loanRankcr && loanRankcr.includes(LoanRank.Green)) {
+      creditBadge = 'Mudah disetujui'
+    } else if (loanRankcr && loanRankcr.includes(LoanRank.Red)) {
+      creditBadge = 'Sulit disetujui'
+    }
+
+    let temanSevaStatus = 'No'
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
+
+    if (client && !!window?.Countly?.q) {
+      trackEventCountly(CountlyEventNames.WEB_PDP_VIEW, {
+        PAGE_REFERRER: pageReferrer ?? 'Null',
+        PREVIOUS_SOURCE_BUTTON: previousSourceButton ?? 'Null',
+        FINCAP_FILTER_USAGE: isUsingFilterFinancial ? 'Yes' : 'No',
+        CAR_BRAND: brand ? capitalizeWords(brand) : 'Null',
+        CAR_MODEL: model ? capitalizeWords(model.replaceAll('-', ' ')) : 'Null',
+        PAGE_ORIGINATION: !!tab
+          ? defineRouteName(window.location.href)
+          : 'PDP - Ringkasan',
+        PELUANG_KREDIT_BADGE: creditBadge,
+        USER_TYPE: valueForUserTypeProperty(),
+        INITIAL_PAGE: valueForInitialPageProperty(),
+        TEMAN_SEVA_STATUS: temanSevaStatus,
+      })
+
+      setIsSentCountlyPageView(true)
+      removeSessionStorage(SessionStorageKey.PageReferrerPDP)
+    }
+  }
+
+  useEffect(() => {
+    if (!isSentCountlyPageView) {
+      trackCountlyPageView()
+    }
+  }, [])
+
   useEffect(() => {
     checkCitiesData()
     checkConnectedRefCode()

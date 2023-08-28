@@ -95,6 +95,7 @@ export enum LocalStorageKey {
   ChangeKtp = 'change_ktp',
   FormKtp = 'formKtp',
   PreApprovalResult = 'preApprovalResult',
+  LastHitTracker = 'lastHitTracker',
 }
 
 export enum SessionStorageKey {
@@ -136,6 +137,9 @@ export enum SessionStorageKey {
   HasOpenedInsuranceToast = 'hasOpenedInsuranceToast',
   PreviousPage = 'PreviousPage',
   UserType = 'UserType',
+  HasOpenSevaBefore = 'hasOpenSevaBefore',
+  PageReferrerPDP = 'pageReferrerPdp',
+  PreviousSourceButton = 'previousSourceButton',
 }
 
 export enum HTTPResponseStatusCode {

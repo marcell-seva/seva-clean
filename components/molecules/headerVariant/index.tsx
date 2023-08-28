@@ -16,7 +16,7 @@ import { api } from 'services/api'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { getCarsSearchBar } from 'services/searchbar'
 import styles from 'styles/components/molecules/headerSearch.module.scss'
-import { LocalStorageKey } from 'utils/enum'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { convertObjectQuery } from 'utils/handler/convertObjectQuery'
 import { carResultsUrl, variantListUrl } from 'utils/helpers/routes'
 import elementId from 'utils/helpers/trackerId'
@@ -25,6 +25,9 @@ import { COMData, FunnelQueryKey } from 'utils/types/models'
 import { Line } from './Line'
 import { useToast } from './Toast'
 import { PreviousButton, navigateToPLP } from 'utils/navigate'
+import { saveSessionStorage } from 'utils/handler/sessionStorage'
+import { getPageName } from 'utils/pageName'
+import { defineRouteName } from 'utils/navigate'
 interface HeaderVariantProps {
   overrideDisplay?: string
   isOnModal?: boolean
@@ -119,6 +122,7 @@ export default function HeaderVariant({
     }
     let urlDestination = ''
     if (item.value.length > 0) {
+      saveDataForCountlyTrackerPDP()
       urlDestination = variantListUrl
         .replace('/:brand/:model', item.value)
         .replace(':tab?', '')
@@ -199,6 +203,18 @@ export default function HeaderVariant({
     return temp
   }
 
+  const saveDataForCountlyTrackerPDP = () => {
+    saveSessionStorage(
+      SessionStorageKey.PageReferrerPDP,
+      defineRouteName(window.location.pathname),
+    )
+    saveSessionStorage(SessionStorageKey.PreviousSourceButton, 'Search icon')
+  }
+
+  const onClickRecommedationList = () => {
+    saveDataForCountlyTrackerPDP()
+  }
+
   const carData = useMemo(() => {
     const data = comDataNew?.slice(0, 5).map((item) => ({
       name: `${item.brand} ${item.model?.carModel.model ?? ''}`,
@@ -231,6 +247,7 @@ export default function HeaderVariant({
             <a
               className={styles.styledCarName}
               href={`/mobil-baru${car.link.toLowerCase()}`}
+              onClick={onClickRecommedationList}
             >
               <div
                 style={{
@@ -272,6 +289,7 @@ export default function HeaderVariant({
         search: convertObjectQuery(funnelQueryTemp),
       })
     } else {
+      saveDataForCountlyTrackerPDP()
       router.push({
         pathname: carResultsUrl + data.value,
       })
@@ -305,7 +323,7 @@ export default function HeaderVariant({
                   onClick={() => onClickSearchHistory(searchTerm)}
                 >
                   <div className={styles.styledCarName}>
-                    <a>{searchTerm.label}</a>
+                    <a style={{ color: '#000' }}>{searchTerm.label}</a>
                   </div>
                   <Line width={'100%'} height={'1px'} background="#EBECEE" />
                 </div>
