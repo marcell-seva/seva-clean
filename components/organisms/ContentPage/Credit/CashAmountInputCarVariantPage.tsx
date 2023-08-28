@@ -256,7 +256,7 @@ export const CashAmountInputCarVariantPage = ({
           : InstallmentTypeOptions.ADDB,
       })
         .then((response) => {
-          const dataTemp = response.data.data
+          const dataTemp = response.data
           setSpecialRateResults(dataTemp.reverse())
           setIsLoadingLoanRank && setIsLoadingLoanRank(false)
           patchSurveyFormValue({
