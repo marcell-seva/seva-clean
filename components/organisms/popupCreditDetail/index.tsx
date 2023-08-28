@@ -13,6 +13,7 @@ import { Currency } from 'utils/handler/calculation'
 import { useBadgePromo } from 'utils/hooks/usebadgePromo'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getPageName } from 'utils/pageName'
 
 type VariantsProps = {
   carVariant: any

@@ -37,6 +37,7 @@ import { LabelMudah, LabelPromo } from 'components/molecules'
 import LabelSedang from 'components/molecules/labelCard/sedang'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getPageName } from 'utils/pageName'
 
 type CarDetailCardProps = {
   recommendation: MultKKCarRecommendation

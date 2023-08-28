@@ -15,6 +15,7 @@ import { LocalStorageKey } from 'utils/enum'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { PreviousButton, navigateToPLP } from 'utils/navigate'
+import { getPageName } from 'utils/pageName'
 
 type MenuListProps = {
   menuList?: MobileWebTopMenuType[]
