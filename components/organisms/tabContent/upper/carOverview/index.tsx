@@ -84,6 +84,9 @@ export const CarOverview = ({
 
   const onClickToolTipIcon = () => {
     setIsShowTooltip(true)
+    trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_TOOLTIP_CLICK, {
+      PAGE_ORIGINATION: getPageName(),
+    })
   }
 
   const closeTooltip = () => {

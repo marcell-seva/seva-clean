@@ -22,6 +22,12 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { WebAnnouncementBox } from 'components/organisms'
 import { useSearchModal } from 'components/molecules'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import {
+  trackEventCountly,
+  valueForUserTypeProperty,
+} from 'helpers/countly/countly'
+import { getPageName } from 'utils/pageName'
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
@@ -64,6 +70,9 @@ export const HeaderMobile = ({
 
   const handleSearch = () => {
     if (!isActive) {
+      trackEventCountly(CountlyEventNames.WEB_CAR_SEARCH_ICON_CLICK, {
+        PAGE_ORIGINATION: getPageName(),
+      })
       showSearchModal()
       trackSearchbarOpen({
         Page_Origination_URL: window.location.href,
@@ -83,6 +92,10 @@ export const HeaderMobile = ({
   const handleLogoClick = () => {
     trackSevaLogoClick({
       Page_Origination_URL: window.location.href,
+    })
+    trackEventCountly(CountlyEventNames.WEB_HAMBURGER_ACCOUNT_CLICK, {
+      PAGE_ORIGINATION: getPageName(),
+      USER_TYPE: valueForUserTypeProperty(),
     })
   }
 
