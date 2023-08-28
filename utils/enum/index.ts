@@ -135,6 +135,8 @@ export enum SessionStorageKey {
   MainKtpType = 'mainKtpType',
   KTPUploaded = 'KTPUploaded',
   HasOpenedInsuranceToast = 'hasOpenedInsuranceToast',
+  PreviousPage = 'PreviousPage',
+  UserType = 'UserType',
   HasOpenSevaBefore = 'hasOpenSevaBefore',
   PageReferrerPDP = 'pageReferrerPdp',
   PreviousSourceButton = 'previousSourceButton',

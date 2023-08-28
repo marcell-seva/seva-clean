@@ -27,8 +27,11 @@ import { Location } from 'utils/types'
 import { CarRecommendation } from 'utils/types/context'
 import { LoanRank } from 'utils/types/models'
 import styles from '../../../styles/components/organisms/cardetailcard.module.scss'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 type CarDetailCardProps = {
+  order?: number
   recommendation: CarRecommendation
   onClickLabel: () => void
   onClickResultSulit: () => void
@@ -38,6 +41,7 @@ type CarDetailCardProps = {
 }
 
 export const CarDetailCard = ({
+  order = 0,
   recommendation,
   onClickLabel,
   isFilter,
@@ -140,7 +144,8 @@ export const CarDetailCard = ({
     }
   }
 
-  const trackCarClick = () => {
+  const trackCarClick = (index: number, detailClick = true) => {
+    const peluangKredit = getPeluangKredit(recommendation)
     trackPLPCarClick({
       Car_Brand: recommendation.brand,
       Car_Model: recommendation.model,
@@ -150,12 +155,29 @@ export const CarDetailCard = ({
       Cicilan: `Rp${lowestInstallment} jt/bln`,
       ...(cityOtr && { City: cityOtr?.cityName }),
     })
+    const datatrack = {
+      CAR_BRAND: recommendation.brand,
+      CAR_MODEL: recommendation.model,
+      CAR_ORDER: index,
+      PELUANG_KREDIT_BADGE:
+        peluangKredit === 'Null' ? peluangKredit : peluangKredit + ' disetujui',
+    }
+
     setLoanRankPLP(true)
+    if (detailClick) {
+      trackEventCountly(CountlyEventNames.WEB_PLP_CAR_DETAIL_CLICK, datatrack)
+    } else {
+      trackEventCountly(
+        CountlyEventNames.WEB_PLP_PRODUCT_CARD_CTA_CLICK,
+        datatrack,
+      )
+    }
   }
 
-  const navigateToPDP = () => {
+  const navigateToPDP = (index: number) => () => {
     if (!isFilterTrayOpened) {
-      trackCarClick()
+      trackCarClick(index, false)
+
       router.push(detailCarRoute)
     }
   }
@@ -167,7 +189,7 @@ export const CarDetailCard = ({
           src={recommendation.images[0]}
           className={styles.heroImg}
           alt={`${recommendation.brand} ${recommendation.model}`}
-          onClick={navigateToPDP}
+          onClick={navigateToPDP(order)}
           data-testid={elementId.CarImage}
           width={279}
           height={209}
@@ -186,7 +208,7 @@ export const CarDetailCard = ({
         <div
           className={styles.contentWrapper}
           role="button"
-          onClick={navigateToPDP}
+          onClick={navigateToPDP(order)}
         >
           <h3
             className={styles.brandModelText}
@@ -237,7 +259,7 @@ export const CarDetailCard = ({
           <Link
             href={detailCarRoute}
             className={styles.linkLihatDetail}
-            onClick={trackCarClick}
+            onClick={() => trackCarClick(order)}
             data-testid={elementId.PLP.Button.LihatDetail}
           >
             Lihat Detail

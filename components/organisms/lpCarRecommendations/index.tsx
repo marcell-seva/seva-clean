@@ -26,6 +26,7 @@ import { AlternativeCarCard } from '../alternativeCarCard'
 import { PopupPromo } from '../popupPromo'
 import { LocalStorageKey } from 'utils/enum'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { PreviousButton, navigateToPLP } from 'utils/navigate'
 
 type LPCarRecommendationsProps = {
   dataReccomendation: any
@@ -110,10 +111,9 @@ const LpCarRecommendations = ({
       AmplitudeEventName.WEB_LP_BRANDRECOMMENDATION_CAR_SEE_ALL_CLICK,
       { Car_Brand: selectedBrand || 'Semua' },
     )
-    if (!selectedBrand) return router.push(urls.internalUrls.carResultsUrl)
+    if (!selectedBrand) return navigateToPLP(PreviousButton.undefined)
 
-    router.push({
-      pathname: urls.internalUrls.carResultsUrl,
+    navigateToPLP(PreviousButton.undefined, {
       search: new URLSearchParams({ brand: selectedBrand }).toString(),
     })
   }

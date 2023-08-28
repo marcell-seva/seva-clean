@@ -11,6 +11,7 @@ import elementId from 'utils/helpers/trackerId'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { useRouter } from 'next/router'
+import { navigateToPLP, PreviousButton } from 'utils/navigate'
 
 const HowToUse = () => {
   const router = useRouter()
@@ -29,7 +30,7 @@ const HowToUse = () => {
                 window.location.host +
                 urls.internalUrls.carResultsUrl,
             })
-            router.push(urls.internalUrls.carResultsUrl)
+            navigateToPLP(PreviousButton.SevaSteps)
           }}
           data-testid={elementId.Homepage.PilihMobilImpian}
         >

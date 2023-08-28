@@ -20,6 +20,7 @@ import { LanguageCode } from 'utils/enum'
 import { useCar } from 'services/context/carContext'
 import { sortOptions } from 'utils/config/funnel.config'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { PreviousButton, navigateToPLP } from 'utils/navigate'
 
 type NavFilterMobileProps = {
   carlist?: any
@@ -146,8 +147,8 @@ export const NavigationFilterMobile = ({
         tenure: String(filter.tenure),
         sortBy: String(funnelQuery.sortBy) || 'lowToHigh',
       }
-      router.replace({
-        pathname: carResultsUrl,
+
+      navigateToPLP(PreviousButton.SmartSearch, {
         search: new URLSearchParams(
           Object.entries(paramUrl).filter(([, v]) => v !== ''),
         )

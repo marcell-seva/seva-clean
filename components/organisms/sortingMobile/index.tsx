@@ -7,6 +7,8 @@ import { trackPLPSortClick } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
 import { FormControlValue } from 'utils/types'
 import { sortOptions } from 'utils/config/funnel.config'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 interface SortingMobileProps extends Omit<BottomSheetProps, 'children'> {
   onClose: () => void
@@ -27,6 +29,9 @@ const SortingMobile = ({
   const onChooseOption = (value: FormControlValue, label: FormControlValue) => {
     patchFunnelQuery({ sortBy: value as string })
     trackPLPSortClick(label as string)
+    trackEventCountly(CountlyEventNames.WEB_PLP_SORT_OPTION_CLICK, {
+      SORT_VALUE: label,
+    })
     onPickClose(value)
   }
   return (
