@@ -1,7 +1,7 @@
 import { AES, enc } from 'crypto-js'
 
 const encryptionKey =
-  process.env.REACT_APP_LOCAL_STORAGE_ENCRYPT_KEY ??
+  process.env.NEXT_PUBLIC_LOCAL_STORAGE_ENCRYPTION_KEY ??
   'encryption-key-for-localhost'
 
 // use prefix to differentiate between encrypted or not

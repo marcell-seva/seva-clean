@@ -71,11 +71,11 @@ const Testimonial = () => {
   }
 
   const checkToogleData = (payload: any) => {
-    if (process.env.REACT_APP_ENVIRONMENT === 'development') {
+    if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'development') {
       setToggle(payload.attributes.enable_testimonial_dev)
-    } else if (process.env.REACT_APP_ENVIRONMENT === 'staging') {
+    } else if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'staging') {
       setToggle(payload.attributes.enable_testimonial_stg)
-    } else if (process.env.REACT_APP_ENVIRONMENT === 'production') {
+    } else if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'production') {
       setToggle(payload.attributes.enable_testimonial_prod)
     } else {
       setToggle(true)

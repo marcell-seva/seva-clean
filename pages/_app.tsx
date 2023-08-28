@@ -71,7 +71,7 @@ applyPolyfills().then(() => {
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     TagManager.initialize({ gtmId: 'GTM-TV9J5JM' })
-    if (process.env.REACT_APP_ENVIRONMENT === 'production') {
+    if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'production') {
       client && window.fbq('track', FBPixelStandardEvent.PageView)
     }
 
