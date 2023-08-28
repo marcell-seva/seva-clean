@@ -83,7 +83,7 @@ export const trackEventCountly = (
       PAGE_ORIGINATION_URL: client ? window.location.href : '',
     }
 
-    Countly.q.push([
+    window.Countly.q.push([
       'add_event',
       {
         key: eventName,
