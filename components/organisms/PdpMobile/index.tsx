@@ -151,7 +151,7 @@ export default function NewCarVariantList() {
       getToken()
         ? SessionStorageKey.ShowWebAnnouncementLogin
         : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ),
+    ) ?? true,
   )
   const [variantIdFuel, setVariantIdFuelRatio] = useState<string | undefined>()
   const [variantFuelRatio, setVariantFuelRatio] = useState<string | undefined>()
