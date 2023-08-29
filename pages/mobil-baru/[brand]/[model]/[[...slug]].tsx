@@ -69,7 +69,6 @@ export default function index({
     return { title, description }
   }, [metaTagDataRes])
 
-  console.log('datas', meta)
   return (
     <>
       <Seo

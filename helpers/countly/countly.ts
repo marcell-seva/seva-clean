@@ -1,23 +1,5 @@
-import Countly from 'countly-sdk-web'
 import { client } from 'utils/helpers/const'
 import { CountlyEventNames } from './eventNames'
-
-export const initCountly = () => {
-  //Exposing Countly to the DOM as a global variable
-  window.Countly = Countly
-  Countly.init({
-    app_key: 'YOUR_APP_KEY',
-    url: 'YOUR_SERVER_URL',
-    // session_update: 10,
-    use_session_cookie: true,
-    debug: false, // set true to show logged event
-    // require_consent: true,
-    namespace: 'seva-next',
-    // inactivity_time: 1,
-    offline_mode: false,
-    // device_id: "cly-device-demo-id" //Set only if you want dont want to use countly generated device_id
-  })
-}
 
 const defaultSegmentationData = {
   // USER_ID: 'test user id',
