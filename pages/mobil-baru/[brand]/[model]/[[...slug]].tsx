@@ -87,7 +87,7 @@ export default function index({
           carArticleReviewRes: carArticleReviewRes,
         }}
       >
-        {isMobile ? <PdpMobile /> : <PdpDesktop />}
+        {!isMobile ? <PdpDesktop /> : <PdpMobile />}
       </PdpDataLocalContext.Provider>
     </>
   )
