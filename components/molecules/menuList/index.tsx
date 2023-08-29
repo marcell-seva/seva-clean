@@ -94,7 +94,7 @@ export const MenuList: React.FC<MenuListProps> = ({
             <div className={styles.menuContainer} key={menuItem.menuName}>
               {menuItem.menuLevel === 1 && (
                 <div className={styles.menuWrapper}>
-                  <h2 className={styles.mainMenu}>{menuItem.menuName}</h2>
+                  <h2 className={styles.mainMenu}>{menuItem.menuName}</h2>ss
                 </div>
               )}
 

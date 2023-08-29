@@ -45,16 +45,16 @@ const NewCarResultPage = ({
         <meta name="description" content={meta.description} />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      {isMobile ? (
+      {!isMobile ? (
+        <PLPDesktop
+          carRecommendation={meta.carRecommendations}
+          footer={meta.footer}
+        />
+      ) : (
         <PLP
           carRecommendation={meta.carRecommendations}
           minmaxPrice={meta.MinMaxPrice}
           alternativeRecommendation={meta.alternativeCarRecommendation}
-        />
-      ) : (
-        <PLPDesktop
-          carRecommendation={meta.carRecommendations}
-          footer={meta.footer}
         />
       )}
     </>

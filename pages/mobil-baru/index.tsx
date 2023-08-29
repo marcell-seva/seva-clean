@@ -29,16 +29,16 @@ const NewCarResultPage = ({
         image={defaultSeoImage}
       />
 
-      {isMobile ? (
+      {!isMobile ? (
+        <PLPDesktop
+          carRecommendation={meta.carRecommendations}
+          footer={meta.footer}
+        />
+      ) : (
         <PLP
           carRecommendation={meta.carRecommendations}
           minmaxPrice={meta.MinMaxPrice}
           alternativeRecommendation={meta.alternativeCarRecommendation}
-        />
-      ) : (
-        <PLPDesktop
-          carRecommendation={meta.carRecommendations}
-          footer={meta.footer}
         />
       )}
     </>

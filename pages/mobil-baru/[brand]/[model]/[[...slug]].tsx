@@ -69,6 +69,7 @@ export default function index({
     return { title, description }
   }, [metaTagDataRes])
 
+  console.log('datas', meta)
   return (
     <>
       <Seo
@@ -87,7 +88,7 @@ export default function index({
           carArticleReviewRes: carArticleReviewRes,
         }}
       >
-        {isMobile ? <PdpMobile /> : <PdpDesktop />}
+        {!isMobile ? <PdpDesktop /> : <PdpMobile />}
       </PdpDataLocalContext.Provider>
     </>
   )
