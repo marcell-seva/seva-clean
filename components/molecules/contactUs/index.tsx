@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react'
-import styles from '../../../styles/ContactUs.module.css'
-import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
+import styles from 'styles/components/molecules/ContactUs.module.scss'
+import FlagIndonesia from '/public/revamp/images/flagIndonesia.png'
 import Image from 'next/image'
 import amplitude from 'amplitude-js'
-import { api } from '../../../services/api'
-import { setTrackEventMoEngageWithoutValue } from '../../../services/moengage'
+import { api } from 'services/api'
+import { setTrackEventMoEngageWithoutValue } from 'services/moengage'
 import {
   AuthContext,
   AuthContextType,
   ConfigContext,
   ConfigContextType,
-} from '../../../services/context'
+} from 'services/context'
 import TagManager from 'react-gtm-module'
-import { Form, PropsContactUs } from '../../../utils/types'
+import { Form, PropsContactUs } from 'utils/types'
 
 const ContactUs: React.FC<PropsContactUs> = ({
   openThankyouModal,
@@ -75,7 +75,7 @@ const ContactUs: React.FC<PropsContactUs> = ({
   const sendUnverifiedLeads = (payload: any): void => {
     const data = generateLeadsData(payload)
     try {
-      api.postUnverfiedLeads(data)
+      api.postUnverifiedLeadsNew(data)
       openThankyouModal()
       setTrackEventMoEngageWithoutValue('leads-created')
       amplitude.getInstance().logEvent('WEB_LANDING_PAGE_LEADS_FORM_SUBMIT')

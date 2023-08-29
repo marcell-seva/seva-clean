@@ -1,0 +1,191 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.container {
+  width: 100%;
+}
+
+.headerWrapper {
+  width: 100%;
+  box-shadow: 0px 6px 14px 1px rgba(76, 82, 95, 0.08);
+  position: fixed;
+}
+
+.progressBarWrapper {
+  padding: 16px;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px 24px;
+}
+
+.shimmerWrapper {
+  gap: 16px;
+}
+
+.header {
+  font-family: 'Kanyon';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+  color: #{$primary-black};
+}
+
+.ktpContent {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.ktpSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ktpHeaderSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.ktpHeaderTitle {
+  font-family: 'Kanyon';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  color: #{$primary-black};
+}
+
+.ktpAddedDate {
+  font-family: 'OpenSans';
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  color: #{$shades-grey-75};
+}
+
+.ktpMainOptionWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ktpMainOptionText {
+  font-family: 'OpenSans';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  color: #{$secondary-blue};
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.ktpDataWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.ktpDataRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.ktpDataRowLeft {
+  width: 136px;
+}
+
+.ktpDataRowRight {
+  flex: 1;
+}
+
+.ktpDataText {
+  font-family: 'OpenSans';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  color: #{$primary-black};
+}
+
+.checkboxOptionWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.domicileFieldWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.fieldLabel {
+  font-family: 'OpenSans';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+}
+
+.addSpouseKtpCard {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #{$shades-grey-10};
+  background: #{$primary-white};
+  padding: 10px 7px 16px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.addSpouseKtpCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.addSpouseKtpTitle {
+  font-family: 'OpenSans';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  color: #{$primary-dark-blue};
+}
+
+.addSpouseKtpSubtitle {
+  font-family: 'OpenSans';
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  color: #{$shades-grey-75};
+}
+
+.buttonWrapper {
+  margin-top: 24px;
+  width: 100%;
+}

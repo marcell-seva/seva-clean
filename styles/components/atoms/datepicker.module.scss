@@ -1,0 +1,92 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+@mixin borderColor($type) {
+  @if $type==default {
+    border: 1px solid #{$shades-grey-10};
+  } @else if $type==focus {
+    border: 1px solid #{$secondary-blue};
+  } @else if $type==error {
+    border: 1px solid #{$secondary-brick-red};
+  } @else {
+    border: 1px solid #{$shades-grey-10};
+  }
+}
+
+.datePickerContainer {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+
+  .btnContainer {
+    position: relative;
+  }
+}
+
+.datePicker {
+  visibility: hidden;
+  height: 0;
+  padding: 0;
+  width: 0;
+  position: absolute;
+  left: 0;
+  top: 48px;
+  &.isTitle {
+    top: calc(48px + 20px);
+  }
+}
+
+.input {
+  @include borderColor(default);
+  @include body;
+  padding: 12px 16px;
+  width: 100%;
+  color: #{$primary-black};
+  border-radius: 8px;
+  outline: none;
+  background-color: #{$primary-white};
+  height: 48px;
+  text-align: left;
+
+  &:focus {
+    @include borderColor(focus);
+  }
+
+  &[disabled] {
+    background-color: #{$shades-grey-5};
+    color: #{$shades-grey-25};
+    border: 1px solid #{$shades-grey-10};
+  }
+
+  &.placeholder {
+    color: #{$shades-grey-50};
+  }
+
+  &.error {
+    @include borderColor(error);
+  }
+}
+
+.iconCalendar {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.error {
+  @include borderColor(error);
+}
+
+.errorText {
+  font-size: 12px;
+  color: #{$secondary-brick-red};
+  margin-top: 8px;
+}
+
+.titleText {
+  font-size: 12px;
+  color: #{$shades-grey-75};
+  padding-bottom: 8px;
+  display: block;
+}

@@ -1,10 +1,9 @@
 import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react'
-import styles from '../../../../styles/Offering.module.css'
+import styles from '/styles/components/molecules/Offering.module.scss'
 import amplitude from 'amplitude-js'
-import FlagIndonesia from '../../../../assets/images/flagIndonesia.png'
-import {} from '../../../../services/context'
-import { IconCross } from '../../../atoms'
+import FlagIndonesia from '/public/revamp/images/flagIndonesia.png'
+import { IconCross } from 'components/atoms'
 import {
   CarContext,
   CarContextType,
@@ -12,9 +11,9 @@ import {
   ConfigContextType,
   AuthContext,
   AuthContextType,
-} from '../../../../services/context'
-import { api } from '../../../../services/api'
-import { PropsOffering, Form } from '../../../../utils/types'
+} from 'services/context'
+import { api } from 'services/api'
+import { PropsOffering, Form } from 'utils/types'
 
 const Offering: React.FC<PropsOffering> = ({
   openThankyouModal,
@@ -68,7 +67,7 @@ const Offering: React.FC<PropsOffering> = ({
   const sendUnverifiedLeads = (payload: any) => {
     const data = generateLeadsData(payload)
     try {
-      api.postUnverfiedLeads(data)
+      api.postUnverifiedLeadsNew(data)
       openThankyouModal()
       sendAmplitude(car)
     } catch (error) {

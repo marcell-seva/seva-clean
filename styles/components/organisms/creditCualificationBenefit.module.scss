@@ -1,0 +1,47 @@
+@import '../../abstract/colors';
+
+.container {
+  margin: 32px 16px;
+}
+
+.title {
+  font-family: 'Kanyon';
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  color: #{$primary-dark-blue};
+}
+
+.cardMainTitle {
+  font-family: 'KanyonBold';
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+  color: #{$primary-dark-blue};
+  display: flex;
+  align-items: center;
+}
+
+.cardSecondaryTitle {
+  font-family: 'Kanyon';
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  color: #{$primary-dark-blue};
+
+  &.separator {
+    display: inline-block;
+  }
+}
+
+.cardWrapper {
+  margin-top: 16px;
+  display: grid;
+  row-gap: 16px;
+}
+
+.icon {
+  margin-left: 6px;
+}

@@ -1,0 +1,93 @@
+@import '../../abstract/colors';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #{$primary-white};
+}
+
+.mainHero {
+  padding: 35px 16px 0;
+}
+
+.mainHeroWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+
+  img {
+    height: 146px;
+    width: 297px;
+    margin-top: 30px;
+  }
+}
+
+.cardWrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.cardShadow {
+  margin: 35px 16px 55px;
+  padding: 24px 24px 15px;
+}
+
+.line {
+  height: 1px;
+  width: 100%;
+  background-color: #{$shades-grey-5};
+  margin-bottom: 16px;
+}
+
+.buttonShadow {
+  position: absolute;
+  bottom: 20px;
+  border-radius: 8px;
+}
+
+.carRecommendationWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 41px 0 45px 16px;
+  max-width: 100vw;
+  width: 100%;
+  overflow: hidden;
+  background-color: #f5f6f6;
+
+  .tabPlaceholder {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    margin-bottom: 35px;
+  }
+
+  .carSkeletonContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+
+    .carSkeletonWrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .carImg {
+        position: absolute;
+        width: 189px;
+      }
+
+      .cardCarRecommendation {
+        margin-top: 68px;
+        padding-top: 61px;
+        min-width: 210px;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+    }
+  }
+}

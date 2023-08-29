@@ -1,0 +1,37 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.title {
+  font-family: var(--kanyon);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  text-align: center;
+  color: #{$primary-black};
+}
+
+.subtitle {
+  display: inline-block;
+  margin-top: 2px;
+  font-family: var(--open-sans);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  color: #{$shades-grey-75};
+}
+
+.inputSelectWrapper {
+  margin-top: 24px;
+  width: 100%;
+}
+
+.buttonGroup {
+  width: 100%;
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}

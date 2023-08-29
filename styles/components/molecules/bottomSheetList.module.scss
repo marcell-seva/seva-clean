@@ -1,0 +1,33 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.listWrapper {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 23px;
+}
+
+.listOption {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+  background-color: #{$primary-white};
+
+  font-size: 14px;
+  line-height: 20px;
+
+  &:active {
+    background-color: #{$shades-sky-blue-10};
+    font-family: var(--open-sans-semi-bold);
+  }
+}
+
+.activeOption {
+  background-color: #{$shades-sky-blue-10};
+  font-family: var(--open-sans-semi-bold);
+}
+
+.line {
+  border: 0.5px solid #{$shades-grey-10};
+}

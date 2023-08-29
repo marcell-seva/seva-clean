@@ -1,19 +1,19 @@
 import Image from 'next/image'
 import React from 'react'
-import styles from '../../../styles/atoms/Logo.module.css'
-import logoSeva from '../../../assets/images/logo/seva-header.svg'
+import styles from 'styles/components/atoms/Logo.module.scss'
+import logoSeva from '/public/revamp/images/logo/seva-header.svg'
 
 const Logo: React.FC = (): JSX.Element => {
   const rootUrl: string = 'https://seva.id'
   return (
-    <a href={rootUrl} className={styles.wrapperLogo}>
+    <a href={rootUrl} className={styles.logo}>
       <Image
         src={logoSeva}
         width={120}
         height={75}
         alt="seva-logo"
         priority
-        className={styles.logo}
+        className={styles.logoImages}
       />
     </a>
   )

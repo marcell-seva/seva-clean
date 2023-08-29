@@ -1,0 +1,55 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.wrapper {
+  position: fixed;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bgModal {
+  height: 100%;
+  background-color: #{$primary-black};
+  opacity: 0.5;
+}
+
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #{$primary-white};
+  border-radius: 8px;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 14px;
+  flex-wrap: nowrap;
+}
+
+.textToast {
+  margin-left: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$primary-black};
+  text-align: start;
+}
+
+.icon {
+  display: flex;
+  flex-wrap: nowrap;
+}
+@include lg {
+  .textToast {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .content {
+    padding: 16px 24px;
+  }
+}

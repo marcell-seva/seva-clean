@@ -1,0 +1,46 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.stickypadding {
+  padding-top: 57px;
+}
+.detailCardWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 47px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0 16px 32px;
+}
+
+.wrapper {
+  overflow: hidden;
+  background-color: #{$shades-grey-5};
+}
+
+.bottomFixedWrapper {
+  position: fixed;
+  bottom: 0;
+  z-index: 90;
+  width: 100%;
+}
+
+.bottomContent {
+  max-width: 360px;
+  height: 90px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.noOverflow {
+  overflow: hidden;
+}
+
+.spin {
+  margin: 20px 0;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  text-align: center;
+  border-radius: 4px;
+}

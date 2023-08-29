@@ -1,0 +1,48 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.bottomSheetHeader {
+  padding: 0 16px 31px;
+}
+
+.insurance {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .title {
+    font-family: $font-kanyon-medium;
+    font-size: 16px;
+    line-height: 24px;
+    color: #{$black};
+    padding: 0 16px;
+  }
+
+  .desc {
+    font-family: $font-openSans;
+    font-size: 14px;
+    line-height: 20px;
+    color: #{$shades-grey-75};
+    padding: 0 16px;
+  }
+}
+
+.line {
+  background-color: #{$shades-grey-5};
+  height: 4px;
+  width: 100%;
+  margin: 33px 0 49px;
+}
+
+.btnWrapper {
+  width: 100%;
+  padding: 32px 24px 24px;
+  position: absolute;
+  bottom: 0;
+}

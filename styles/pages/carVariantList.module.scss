@@ -1,0 +1,15 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.container {
+  position: relative;
+  background: #{$primary-white};
+}
+
+.content {
+  margin-top: 54px; // page header height is 54px
+}
+
+.pdpLowerSection {
+  background: #f5f6f6;
+}

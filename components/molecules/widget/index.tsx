@@ -1,24 +1,24 @@
 import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react'
-import { api } from '../../../services/api'
-import { trackGAContact, trackGALead } from '../../../services/googleAds'
-import styles from '../../../styles/Widget.module.css'
-import { rupiah, useComponentVisible } from '../../../utils'
-import { IconChevronDown, IconChevronUp } from '../../atoms'
-import FlagIndonesia from '../../../assets/images/flagIndonesia.png'
+import { api } from 'services/api'
+import { trackGAContact, trackGALead } from 'services/googleAds'
+import styles from 'styles/components/molecules/Widget.module.scss'
+import { rupiah, useComponentVisible } from 'utils'
+import { IconChevronDown, IconChevronUp } from 'components/atoms'
+import FlagIndonesia from '/public/revamp/images/flagIndonesia.png'
 import {
   AuthContext,
   ConfigContext,
   AuthContextType,
   ConfigContextType,
-} from '../../../services/context'
+} from 'services/context'
 import TagManager from 'react-gtm-module'
 import {
   FormWidget,
   PropsButtonTenure,
   PropsSelectorList,
   PropsDetailList,
-} from '../../../utils/types'
+} from 'utils/types'
 
 interface PropsWidget {
   expandForm: () => void
@@ -219,7 +219,7 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
 
   const sendUnverifiedLeads = (payload: any): void => {
     try {
-      api.postUnverfiedLeads(payload)
+      api.postUnverifiedLeadsNew(payload)
       window.location.href = carListUrl
     } catch (error) {
       throw error

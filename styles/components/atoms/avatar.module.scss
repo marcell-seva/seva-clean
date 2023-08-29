@@ -1,0 +1,16 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #{$primary-dark-blue};
+  color: #{$primary-white};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  @include h2;
+}

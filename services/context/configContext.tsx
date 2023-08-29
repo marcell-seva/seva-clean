@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react'
-import { UTM } from '../../utils/types'
+import { UTM } from 'utils/types'
 
 export type ConfigContextType = {
   utm: UTM | null

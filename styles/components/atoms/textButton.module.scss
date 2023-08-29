@@ -1,0 +1,44 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.primary {
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$secondary-blue};
+
+  &[disabled] {
+    color: #{$shades-grey-25};
+  }
+}
+
+@include lg {
+  .primary {
+    border: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+
+    font-family: 'OpenSans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #{$secondary-blue};
+
+    &[disabled] {
+      color: #{$shades-grey-25};
+    }
+  }
+}

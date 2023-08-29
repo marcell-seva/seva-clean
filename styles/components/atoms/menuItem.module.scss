@@ -1,0 +1,85 @@
+@import '../../abstract/colors';
+
+$slide-content-height: 20px;
+
+@keyframes slide-down {
+  0% {
+    visibility: hidden;
+    height: 0;
+  }
+
+  50% {
+    visibility: visible;
+    height: $slide-content-height;
+  }
+
+  /* Set height to 'auto' after animation for spacing showing form-invalid feedback message */
+  100% {
+    visibility: visible;
+    height: auto;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    visibility: visible;
+    height: $slide-content-height;
+  }
+
+  to {
+    visibility: hidden;
+    height: 0;
+  }
+}
+
+.parentMenu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  direction: ltr;
+}
+
+.submenuContainer {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+
+  &.slideDown {
+    animation: slide-down 0.3s ease-in-out both;
+  }
+
+  &.slideUp {
+    animation: slide-up 0.3s ease-in-out both;
+  }
+
+  & .submenu {
+    direction: ltr;
+    margin-top: 20px;
+    font-family: var(--open-sans);
+    font-size: 14px;
+    color: #{$secondary-blue};
+    display: block;
+  }
+}
+
+.menu {
+  font-size: 14px;
+  font-family: var(--open-sans);
+  color: #{$primary-black};
+  direction: ltr;
+
+  &.isActive {
+    font-family: var(--open-sans-semi-bold);
+  }
+}
+
+.rotateUp {
+  transform: rotate(-180deg);
+  transition: transform 0.3s ease-in-out;
+}
+
+.rotateDown {
+  transform: rotate(0deg);
+  transition: transform 0.3s ease-in-out;
+}

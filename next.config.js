@@ -1,8 +1,16 @@
+const path = require('path')
+
 const nextConfig = {
-  basePath: '/v3',
+  basePath: '',
   poweredByHeader: false,
   reactStrictMode: true,
-  // distDir: 'next-seva-dir',
+  transpilePackages: ['antd-mobile'],
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'styles')],
+  },
+  compiler: {
+    styledComponents: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -30,6 +38,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'images.prod.torq.id',
       },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com/www.images.dev.torqio.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'drive.google.com',
+      },
     ],
   },
 
@@ -51,9 +67,8 @@ const nextConfig = {
 
 const withPWA = require('next-pwa')({
   dest: 'public',
-  disable: process.env.NODE_ENV === 'development',
   register: true,
   skipWaiting: true,
-});
+})
 
-module.exports = withPWA(nextConfig);
+module.exports = withPWA(nextConfig)
