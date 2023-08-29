@@ -1,0 +1,138 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+@import '../../abstract/animations';
+
+.bundle {
+  width: 100%;
+}
+
+.container {
+  max-width: 480px;
+  margin-top: 54px; // page header height is 54px
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contentWithSpace {
+  @extend .content;
+  margin-top: 114px !important; // page header with announcement box
+}
+
+.announcementboxpadding {
+  padding-top: 45px;
+}
+
+.resultRejected {
+  padding: 0px 16px 30px 16px;
+  width: 100%;
+}
+
+.bundleImage {
+  display: flex;
+  justify-content: center;
+}
+
+.rejectedImage {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  margin: 12px;
+}
+
+.titleText {
+  font-family: 'Kanyon';
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.descText {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$shades-grey-75};
+}
+
+.redirect {
+  margin-top: 32px;
+  width: 100%;
+}
+
+.headerCardText {
+  font-family: 'KanyonMedium';
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.redirectCard {
+  box-shadow: 0px 12px 40px 1px rgba(0, 0, 0, 0.08);
+  background-color: #{$primary-white};
+  border-radius: 8px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.cardContainer {
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.iconCSA {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.card {
+  display: flex;
+  width: 100%;
+}
+
+.cardTitleText {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: start;
+}
+
+.cardDescText {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: start;
+}
+
+.content {
+  margin-left: 8px;
+  margin-right: 16px;
+}
+
+.slot {
+  display: flex;
+  padding: 0px 11px 16px 11px;
+  width: 100%;
+}
+
+.wrapperLogoGooglePlay {
+  display: flex;
+  width: calc(50% - 8px);
+  max-width: 152px;
+  margin-right: 16px;
+}
+
+.wrapperLogoAppStore {
+  display: flex;
+  width: calc(50% - 8px);
+  max-width: 152px;
+}
+
+.logoGooglePlay {
+  width: 100%;
+  height: auto;
+}
+
+.logoAppStore {
+  width: 100%;
+  height: auto;
+}

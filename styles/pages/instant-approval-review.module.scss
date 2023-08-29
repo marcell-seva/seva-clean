@@ -1,0 +1,474 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.progressBar {
+  padding: 16px;
+  height: 36px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 480px;
+}
+
+.antProgress {
+  height: 4px;
+}
+
+.titleText {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$secondary-sky-blue};
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  padding: 16px 16px 2px 16px;
+}
+
+.subTitleText {
+  font-family: 'Kanyon';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  color: #{$primary-black};
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  padding: 0px 16px 2px 16px;
+}
+.descTitle {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$shades-grey-75};
+  flex: none;
+  order: 2;
+  align-self: stretch;
+  flex-grow: 0;
+  padding: 0px 16px 16px 16px;
+}
+
+.titleTextForm {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  mix-blend-mode: normal;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+.titleTextTwoForm {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  mix-blend-mode: normal;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+.textForm {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$primary-black};
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin-top: 2px;
+}
+.imageCar {
+  background: #ffffff;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  padding-top: 47.56px;
+}
+.wrapperWithBorderBottom {
+  padding: 16px;
+}
+.titleSelectCar {
+  font-family: 'KanyonMedium';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #{$primary-black};
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+.textType {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin-top: 4px;
+}
+.textPrice {
+  font-family: 'Kanyon';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #{$primary-black};
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin-top: 2px;
+}
+.textCity {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  flex-grow: 0;
+  flex: none;
+  order: 2;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+.rowWithSpaceBottom {
+  @extend .row;
+  align-items: baseline;
+  margin-top: 16px;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+.columnFull {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.openSansLigtGrey {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px !important;
+  color: #878d98;
+}
+.openSansSemiblack {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #13131b;
+}
+.frameTextInfoCar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  width: 197px;
+  flex: none;
+  order: 1;
+  flex-grow: 1;
+}
+.frameIcon {
+  flex: none;
+  order: 2;
+  flex-grow: 0;
+}
+.paddingInfoCar {
+  padding: 16px;
+}
+.paddingFormJob {
+  padding: 0px 16px 0px 16px;
+}
+.paddingFormIncome {
+  padding: 16px 16px 0px 16px;
+}
+.paddingFormJoinIncome {
+  padding: 0px 16px 0px 16px;
+}
+.formIncomeJoin {
+  padding: 8px 0px 0px 0px;
+}
+.paddingFormReferral {
+  padding: 0px 16px 0px 16px;
+}
+.paddingButton {
+  position: sticky;
+  width: 100%;
+  background: white;
+  bottom: 0;
+  padding: 18px 16px 18px 16px;
+}
+.textIncome {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$primary-black};
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+.cardInfoCar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 16px;
+  gap: 8px;
+  width: 100%;
+  left: 16px;
+  top: 148px;
+  background: #ffffff;
+  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+}
+
+.titleTextCar {
+  font-family: 'OpenSansBold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 16px;
+  color: #{$shades-grey-75};
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  height: 16px;
+}
+
+.textType {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  margin-top: 4px;
+  color: #{$shades-grey-75};
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  height: 16px;
+}
+
+.textPrice {
+  font-family: 'Kanyon';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  margin-top: 4px;
+  line-height: 24px;
+  color: #{$primary-black};
+  flex: none;
+  order: 2;
+  flex-grow: 0;
+  height: 24px;
+}
+
+.hargaOtrWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  order: 3;
+  flex-grow: 0;
+  margin-bottom: 4px;
+}
+
+.smallSemibold {
+  font-family: 'OpenSansBold';
+  font-size: 11px;
+  line-height: 16px;
+  color: #{$shades-grey-75};
+}
+
+.smallRegular {
+  font-family: 'OpenSans';
+  font-size: 11px;
+  line-height: 16px;
+  color: #{$shades-grey-75};
+}
+
+.textPromo {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 11px;
+  color: #{$secondary-sky-blue};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-grow: 0;
+  flex: none;
+  order: 4;
+  flex-grow: 0;
+}
+
+.textPromoSelect {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  color: #{$shades-grey-75};
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.textPromoBold {
+  font-family: 'OpenSansBold';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  color: #{$shades-grey-75};
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin-left: 3px;
+}
+.wrapperButtonJoinIncome {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+  width: 100%;
+  height: 34px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  cursor: pointer;
+}
+.containerButtonJoinIncome {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  height: 34px;
+  border-radius: 8px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  color: #05256e;
+}
+.inputStyles {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 16px;
+  font-family: $font-openSans;
+  gap: 8px;
+  width: 100%;
+  height: 48px;
+  background: white;
+  border: 1px solid #{$shades-grey-10};
+  border-radius: 8px;
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+
+  input {
+    font-family: $font-openSans;
+  }
+}
+.promoWrapper {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  padding: 18px 50px 18px 16px;
+  gap: 16px;
+  border-radius: 6px;
+  border: 1px solid var(--shades-grey-grey-10, #ebecee);
+}
+
+.textPromoWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.badgePromoWrapper {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.priceStrike {
+  font-family: $font-openSans;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  text-decoration: line-through;
+}
+
+.textPromo {
+  font-family: 'OpenSansBold';
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1rem; /* 145.455% */
+  color: #{$primarySkyBlue};
+  height: 1.25rem;
+  align-self: stretch;
+}
+.textPromoBold {
+  font-family: 'OpenSans';
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  color: #{$shades-grey-75};
+}
+
+.textDetail {
+  font-family: 'OpenSans';
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$secondary-blue};
+}

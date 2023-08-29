@@ -1,45 +1,137 @@
-import React from 'react'
-import { PropsIcon } from '../../../utils/types'
+import { IconAccount } from './Account'
+import { IconAdd } from './Add'
+import { IconAgeRange } from './AgeRange'
+import { IconApplication } from './Application'
+import { IconBank } from './Bank'
+import { IconBrand } from './Brand'
+import { IconCSA } from './CSA'
+import { IconCalculator } from './Calculator'
+import { IconCalendar } from './Calendar'
+import { IconCamera } from './Camera'
+import { IconCameraFlip } from './CameraFlip'
+import { IconCar } from './Car'
+import { IconCar2 } from './Car2'
+import { IconChecked } from './Checked'
+import { IconChecklist } from './Checklist'
+import { IconChevronDown } from './ChevronDown'
+import { IconChevronLeft } from './ChevronLeft'
+import { IconChevronRight } from './ChevronRight'
+import { IconChevronUp } from './ChevronUp'
+import { IconClose } from './Close'
+import { IconCompare } from './Compare'
+import { IconDimension } from './Dimension'
+import { IconDownPayment } from './DownPayment'
+import { IconDownload } from './Download'
+import { IconEdit } from './Edit'
+import { IconEngine } from './Engine'
+import { IconExit } from './Exit'
+import { IconExpand } from './Expand'
+import { IconFacebook } from './Facebook'
+import { IconFast } from './Fast'
+import { IconFilter } from './Filter'
+import { IconFuel } from './Fuel'
+import { IconFuelTank } from './FuelTank'
+import { IconGalerry } from './Galerry'
+import { IconGrid } from './Grid'
+import { IconHamburger } from './Hamburger'
+import { IconHatchback } from './Hatchback'
+import { IconHistory } from './History'
+import { Icon360 } from './Icon360'
+import { IconImageRotate } from './ImageRotate'
+import { IconIncome } from './Income'
+import { IconInfo } from './Info'
+import { IconInstagram } from './Instagram'
+import { IconJob } from './Job'
+import { IconLink } from './Link'
+import { IconList } from './List'
+import { IconLocationLine } from './Location_Line'
+import { IconMPV } from './MPV'
+import { IconMoney } from './Money'
+import { IconPlay } from './Play'
+import { IconPlus } from './Plus'
+import { IconPromo } from './Promo'
+import { IconQuestion } from './Question'
+import { IconRemove } from './Remove'
+import { RotateLeft } from './RotateLeft'
+import { RotateRight } from './RotateRight'
+import { IconSUV } from './SUV'
+import { IconSearch } from './Search'
+import { IconSeat } from './Seat'
+import { IconSecure } from './Secure'
+import { IconSedan } from './Sedan'
+import { IconShare } from './Share'
+import { IconSpeed } from './Speed'
+import { IconSport } from './Sport'
+import { IconStrawberry } from './Strawberry'
+import { IconTenure } from './Tenure'
+import { IconThreeSixty } from './ThreeSixty'
+import { IconTime } from './Time'
+import { IconTorque } from './Torque'
+import { IconTransmission } from './Transmission'
+import { IconTrash } from './Trash'
+import { IconTwitter } from './Twitter'
+import { IconUpload } from './Upload'
+import { IconVoucher } from './Voucher'
+import { IconWallet } from './Wallet'
+import { IconWarning } from './Warning'
+import { IconWarningCircle } from './WarningCircle'
+import { IconWhatsapp } from './Whatsapp'
+import { IconToggleGridActive } from './ToggleGridActive'
+import { IconToggleGridInactive } from './ToggleGridInactive'
+import { IconToggleListInactive } from './ToggleListInactive'
+import { IconToggleListActive } from './ToggleListActive'
+import { IconTwitterOutlined } from './TwitterOutlined'
+import { IconWishlist } from './Wishlist'
+import { IconLoading } from './Loading'
+import { IconCheckedBox } from './CheckedBox'
+import { PropsIcon } from 'utils/types'
+import { BackIcon } from './BackIcon'
+import { DownOutlined } from './DownOutlined'
+import { CloseOutlined2 } from './CloseOutlined2'
+import { InfoCircleOutlined } from './InfoCircleOutlined'
+import { Contact } from './Contact'
+import { IconSquareCheckBox } from './SquareCheckBox'
+import { IconSquareCheckedBox } from './SquareCheckedBox'
 
-const IconChevronUp: React.FC<PropsIcon> = ({
-  width,
-  height,
-  color = '#9EA3AC',
-}): JSX.Element => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 512 512"
-      width={width}
-      height={height}
-    >
-      <path
-        fill={color}
-        d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"
-      />
-    </svg>
-  )
-}
+// const IconChevronUp: React.FC<PropsIcon> = ({
+//   width,
+//   height,
+//   color = '#9EA3AC',
+// }): JSX.Element => {
+//   return (
+//     <svg
+//       xmlns="http://www.w3.org/2000/svg"
+//       viewBox="0 0 512 512"
+//       width={width}
+//       height={height}
+//     >
+//       <path
+//         fill={color}
+//         d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"
+//       />
+//     </svg>
+//   )
+// }
 
-const IconChevronDown: React.FC<PropsIcon> = ({
-  width,
-  height,
-  color = '#9EA3AC',
-}): JSX.Element => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 512 512"
-      width={width}
-      height={height}
-    >
-      <path
-        fill={color}
-        d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
-      />
-    </svg>
-  )
-}
+// const IconChevronDown: React.FC<PropsIcon> = ({
+//   width,
+//   height,
+//   color = '#9EA3AC',
+// }): JSX.Element => {
+//   return (
+//     <svg
+//       xmlns="http://www.w3.org/2000/svg"
+//       viewBox="0 0 512 512"
+//       width={width}
+//       height={height}
+//     >
+//       <path
+//         fill={color}
+//         d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"
+//       />
+//     </svg>
+//   )
+// }
 
 const IconTriangleDown: React.FC<PropsIcon> = ({
   width,
@@ -57,36 +149,36 @@ const IconTriangleDown: React.FC<PropsIcon> = ({
     </svg>
   )
 }
-const IconSearch: React.FC<PropsIcon> = ({
-  width,
-  height,
-  color = '#9EA3AC',
-}): JSX.Element => {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
-    >
-      <path
-        d="M11 20C15.9706 20 20 15.9706 20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20Z"
-        stroke={color}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M22 22L18 18"
-        stroke={color}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
+// const IconSearch: React.FC<PropsIcon> = ({
+//   width,
+//   height,
+//   color = '#9EA3AC',
+// }): JSX.Element => {
+//   return (
+//     <svg
+//       viewBox="0 0 24 24"
+//       fill="none"
+//       xmlns="http://www.w3.org/2000/svg"
+//       width={width}
+//       height={height}
+//     >
+//       <path
+//         d="M11 20C15.9706 20 20 15.9706 20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20Z"
+//         stroke={color}
+//         strokeWidth="2"
+//         strokeLinecap="round"
+//         strokeLinejoin="round"
+//       />
+//       <path
+//         d="M22 22L18 18"
+//         stroke={color}
+//         strokeWidth="2"
+//         strokeLinecap="round"
+//         strokeLinejoin="round"
+//       />
+//     </svg>
+//   )
+// }
 
 const IconDots: React.FC<PropsIcon> = ({ width, height }): JSX.Element => {
   return (
@@ -361,54 +453,54 @@ const IconBurgerMenu: React.FC<PropsIcon> = ({
   )
 }
 
-const IconChevrongRight: React.FC<PropsIcon> = ({
-  width,
-  height,
-  color = '#14142B',
-}): JSX.Element => {
-  return (
-    <svg
-      width={width}
-      height={height}
-      viewBox="0 0 9 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      style={{ width: width, height: height }}
-    >
-      <path
-        d="M1 1L7.96317 7.96317L1 14.9263"
-        stroke={color}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
+// const IconChevronRight: React.FC<PropsIcon> = ({
+//   width,
+//   height,
+//   color = '#14142B',
+// }): JSX.Element => {
+//   return (
+//     <svg
+//       width={width}
+//       height={height}
+//       viewBox="0 0 9 16"
+//       fill="none"
+//       xmlns="http://www.w3.org/2000/svg"
+//       style={{ width: width, height: height }}
+//     >
+//       <path
+//         d="M1 1L7.96317 7.96317L1 14.9263"
+//         stroke={color}
+//         strokeWidth="2"
+//         strokeLinecap="round"
+//         strokeLinejoin="round"
+//       />
+//     </svg>
+//   )
+// }
 
-const IconChevronLeft: React.FC<PropsIcon> = ({
-  width,
-  height,
-  color = '#52627A',
-}): JSX.Element => {
-  return (
-    <svg
-      width={width}
-      height={height}
-      fill={color}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 384 512"
-    >
-      <path
-        stroke={color}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 278.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"
-      />
-    </svg>
-  )
-}
+// const IconChevronLeft: React.FC<PropsIcon> = ({
+//   width,
+//   height,
+//   color = '#52627A',
+// }): JSX.Element => {
+//   return (
+//     <svg
+//       width={width}
+//       height={height}
+//       fill={color}
+//       xmlns="http://www.w3.org/2000/svg"
+//       viewBox="0 0 384 512"
+//     >
+//       <path
+//         stroke={color}
+//         strokeWidth="2"
+//         strokeLinecap="round"
+//         strokeLinejoin="round"
+//         d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 278.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"
+//       />
+//     </svg>
+//   )
+// }
 
 const IconArrowRight: React.FC<PropsIcon> = ({
   width,
@@ -502,21 +594,109 @@ const IconLogout: React.FC<PropsIcon> = ({
 }
 
 export {
-  IconSearch,
-  IconChevronDown,
-  IconChevronUp,
-  IconChevrongRight,
-  IconChevronLeft,
-  IconTriangleDown,
-  IconDots,
-  IconCross,
-  IconLocation,
-  IconNextButton,
   IconBackButton,
+  IconNextButton,
+  IconTriangleDown,
+  IconLocation,
   IconStar,
-  IconUser,
-  IconBurgerMenu,
+  IconCross,
   IconArrowRight,
   IconForwardRight,
+  IconBurgerMenu,
+  IconUser,
   IconLogout,
+  IconDots,
+  IconAccount,
+  IconAdd,
+  IconAgeRange,
+  IconApplication,
+  IconBank,
+  IconBrand,
+  IconCalculator,
+  IconCalendar,
+  IconCamera,
+  IconCameraFlip,
+  IconCar,
+  IconCar2,
+  IconChecked,
+  IconChecklist,
+  IconChevronDown,
+  IconChevronRight,
+  IconChevronLeft,
+  IconChevronUp,
+  IconClose,
+  IconCompare,
+  IconCSA,
+  IconDimension,
+  IconDownload,
+  IconDownPayment,
+  IconEdit,
+  IconEngine,
+  IconExit,
+  IconExpand,
+  IconFacebook,
+  IconFast,
+  IconFilter,
+  IconFuelTank,
+  IconFuel,
+  IconGalerry,
+  IconGrid,
+  IconHamburger,
+  IconHatchback,
+  IconHistory,
+  IconImageRotate,
+  IconIncome,
+  IconInfo,
+  IconInstagram,
+  IconJob,
+  IconLink,
+  IconList,
+  IconLocationLine,
+  IconMoney,
+  IconMPV,
+  IconPlay,
+  IconPlus,
+  IconPromo,
+  IconQuestion,
+  IconRemove,
+  IconSearch,
+  IconSeat,
+  IconSecure,
+  IconSedan,
+  IconStrawberry,
+  IconSpeed,
+  IconSport,
+  IconSUV,
+  IconTenure,
+  IconThreeSixty,
+  IconTime,
+  IconTorque,
+  IconTransmission,
+  IconTrash,
+  IconTwitter,
+  IconTwitterOutlined,
+  IconUpload,
+  IconVoucher,
+  IconWallet,
+  IconWarning,
+  IconWarningCircle,
+  IconWhatsapp,
+  IconShare,
+  RotateLeft,
+  RotateRight,
+  Icon360,
+  IconToggleGridActive,
+  IconToggleGridInactive,
+  IconToggleListInactive,
+  IconToggleListActive,
+  IconWishlist,
+  IconLoading,
+  IconCheckedBox,
+  BackIcon,
+  DownOutlined,
+  CloseOutlined2,
+  InfoCircleOutlined,
+  Contact,
+  IconSquareCheckBox,
+  IconSquareCheckedBox,
 }

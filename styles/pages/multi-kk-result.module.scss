@@ -1,0 +1,192 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.container {
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+
+  .titleWrapper {
+    margin-bottom: 23px;
+    padding: 0 16px;
+
+    .title {
+      font-family: $font-kanyon;
+      font-size: 20px;
+      line-height: 28px;
+    }
+
+    .info {
+      font-family: $font-openSans;
+      font-size: 14px;
+      line-height: 20px;
+      color: #{$shades-grey-75};
+      span {
+        color: #246ed4;
+      }
+    }
+  }
+  .description {
+    font-family: $font-openSans;
+    font-size: 12px;
+    line-height: 18px;
+    color: #000000;
+    span {
+      font-size: 12px;
+      line-height: 18px;
+      font-family: $font-openSans-semiBold;
+      color: #000000;
+    }
+  }
+  .cityWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 16px;
+
+    .kisaran {
+      font-family: $font-openSans;
+      font-size: 14px;
+      line-height: 20px;
+      margin-right: 8px;
+    }
+
+    .linkCity {
+      font-family: $font-openSans;
+      font-size: 12px;
+      line-height: 18px;
+      color: #{$secondary-blue};
+      margin-right: 4px;
+    }
+  }
+
+  .formRange {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+.slider {
+  padding: 8px 0 0;
+}
+
+.textWrapperSlider {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+}
+.right {
+  height: 18px;
+  font-family: $font-openSans;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  mix-blend-mode: normal;
+  flex: none;
+  order: 1;
+  flex-grow: 1;
+  text-align: right;
+}
+.left {
+  height: 18px;
+  font-family: $font-openSans;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  mix-blend-mode: normal;
+  flex: none;
+  order: 1;
+  flex-grow: 1;
+  text-align: left;
+}
+
+.separator {
+  width: calc(100% - 32px);
+  margin: 0 auto;
+  height: 1px;
+  background: #{$shades-grey-10};
+}
+
+.sortAndCounterSection {
+  margin-top: 16px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.counterText {
+  font-family: 'OpenSansSemiBold';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px;
+  color: #{$primary-black};
+}
+.sortWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 4px;
+  height: 18px;
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: $primary-black;
+  p {
+    font-family: 'OpenSansSemiBold';
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+.carListWrapper > div > div {
+  width: 100%;
+  margin-top: 16px;
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #{$shades-grey-5};
+}
+
+.spin {
+  margin: 20px 0;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.popupPromoAutoHeight {
+  height: auto;
+}
+
+.announcementboxpadding {
+  padding-top: 45px;
+}
+
+.contentWithSpace {
+  @extend .container;
+  // margin-top: 114px !important; // page header with announcement box
+}

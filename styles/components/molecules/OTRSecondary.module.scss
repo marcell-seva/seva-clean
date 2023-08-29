@@ -1,0 +1,123 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.modalLocation {
+  position: fixed;
+  z-index: 5;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #{$white};
+  border-radius: 30px;
+  width: 632px;
+  height: 341px;
+  padding: 20px;
+}
+
+.closeModal {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 632px;
+  height: 100%;
+  z-index: 2;
+  padding: 0px 30px;
+}
+
+.headerText {
+  font-size: 24px;
+  font-family: var(--kanyon);
+  color: #{$black};
+  text-align: center;
+  margin-top: 20px;
+  padding: 0px 15%;
+}
+
+.descText {
+  margin-top: 12px;
+  font-size: 16px;
+  font-family: var(--kanyon);
+  color: #{$tertiaryGrey};
+}
+
+.wrapperInput {
+  width: 100%;
+  height: 50px;
+  margin-top: 25px;
+  padding: 10px;
+  border: 0.1px solid #{$tertiaryGrey};
+  outline: none;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  display: flex;
+  width: 100%;
+  background-color: #{$white};
+  font-family: var(--kanyon);
+  font-size: 16px;
+  line-height: 24px;
+  padding: 0px 5px;
+  outline: none;
+  border: none;
+}
+
+.wrapperIconCross {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cityList {
+  background-color: #{$white};
+  box-shadow: rgb(3 24 56 / 10%) 0px 1px 16px;
+  border-radius: 15px;
+  width: 535px;
+  margin: 10px;
+  height: min-content;
+  max-height: 250px;
+  position: absolute;
+  overflow-x: auto;
+  bottom: 0;
+  top: 87%;
+  padding: 5px;
+}
+
+.buttonCityList {
+  width: 100%;
+  outline: none;
+  border: none;
+  font-size: 16px;
+  font-family: var(--kanyon);
+  padding: 20px;
+  text-align: start;
+  background-color: #fff;
+}
+
+.buttonCityList:hover {
+  background-color: #{$primarySkyBlue};
+  border-radius: 10px;
+}

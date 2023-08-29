@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import React from 'react'
-import styles from '../../../styles/atoms/Card.module.css'
-import { rupiah } from '../../../utils'
-import { Car } from '../../../utils/types'
+import styles from '../../../styles/components/atoms/Card.module.scss'
+import { rupiah } from 'utils'
+import { Car } from 'utils/types'
 type TypesCar = {
   item: Car
 }
@@ -23,9 +23,9 @@ const Card: React.FC<TypesCar> = ({ item }): JSX.Element => {
           height={420}
           alt="seva-product"
           sizes="(min-width: 1024px) 21.5vw, 17vw"
-          className={styles.image}
+          className={styles.cardImages}
         />
-        <div className={styles.detail}>
+        <div className={styles.cardDetail}>
           <h1 className={styles.titleText}>
             {item.brand} {item.model}
           </h1>

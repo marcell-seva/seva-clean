@@ -1,0 +1,207 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.content {
+  margin-top: 54px; // page header height is 54px
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 480px;
+  padding: 28px 16px 23px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contentWithAnnouncementBox {
+  margin-top: 112px;
+}
+
+.chipAndIconWrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chipWrapper {
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.chipText {
+  font-family: 'OpenSans';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 0px;
+}
+
+.greenChip {
+  background: #{$shades-green-5};
+  color: #{$secondary-green};
+}
+
+.yellowChip {
+  background: #FFF5C0;
+  color: #D88E00;
+}
+
+.redChip {
+  background: #FDF0E4;
+  color: #D77400;
+}
+
+.headerIconLeft {
+  position: absolute;
+  top: 10px;
+  left: 43px;
+}
+
+.headerIconRight {
+  position: absolute;
+  top: 18px;
+  right: 27px;
+}
+
+.rotateHeaderIcon {
+  transform: rotate(135deg);
+}
+
+.headingSection {
+  margin-top: 21px;
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.heading2 {
+  font-family: 'Kanyon';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px;
+  color: #{$primary-dark-blue};
+  text-align: center;
+  letter-spacing: 0px;
+}
+
+.heading3 {
+  font-family: 'Kanyon';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  color: #{$primary-dark-blue};
+  text-align: center;
+  letter-spacing: 0px;
+}
+
+.learnMoreButton {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.smallButtonText {
+  font-family: 'OpenSans';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px;
+  color: #{$secondary-blue};
+  letter-spacing: 0px;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.mainImageWrapper {
+  position: relative;
+}
+
+.mainImageWrapperGreen {
+  margin-top: 2px;
+}
+
+.mainImageWrapperYellow {
+  margin-top: 3px;
+}
+
+.mainImageWrapperRed {
+  margin-top: 16px;
+}
+
+.mainImageIllustration {}
+
+.carImage {
+  position: absolute;
+  top: 80px;
+  left: 55px;
+  object-fit: contain;
+}
+
+.carImageRed {
+  position: absolute;
+  top: 67px;
+  left: 67px;
+  object-fit: contain;
+}
+
+.magnifierImage {
+  position: absolute;
+  top: 45px;
+  left: 109px;
+}
+
+.bodyText {
+  font-family: 'OpenSans';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  color: #000;
+  letter-spacing: 0px;
+}
+
+.subtitle {
+  display: inline-block;
+  margin-top: 21px;
+  max-width: 275px;
+  text-align: center;
+}
+
+.buttonSection {
+  margin-top: 29px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.whatsappButtonContent {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}

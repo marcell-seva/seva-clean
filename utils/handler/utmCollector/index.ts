@@ -1,4 +1,4 @@
-import { UTMCollector } from '../../types'
+import { UTMCollector } from 'utils/types'
 export const utmCollector = (): UTMCollector => {
   const queryString = window.location.search
   const urlParams = new URLSearchParams(queryString)

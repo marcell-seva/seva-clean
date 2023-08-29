@@ -1,9 +1,3 @@
-declare global {
-  interface Window {
-    gtag: any
-  }
-}
-
 const conversionLabelMap = {
   contact: '5_dGCIqC6uICEPHfrp4B',
   lead: 'ndhDCJXLweICEPHfrp4B',
@@ -13,7 +7,7 @@ const conversionLabelMap = {
 }
 
 const sendGAData = (conversionLabel: string) => {
-  if (process.env.REACT_APP_ENVIRONMENT === 'production') {
+  if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'production') {
     window.gtag('event', 'conversion', {
       send_to: `AW-332115953/${conversionLabel}`,
     })

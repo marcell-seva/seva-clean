@@ -1,0 +1,145 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.wrapperTitleSection {
+  padding: 0px 16px;
+  margin-top: 32px;
+}
+.wrapperDetail {
+  background-image: 'linear-gradient(to bottom, rgba(255,0,0,0), black);';
+}
+.cardInfoDetail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  // padding: 16px;
+  gap: 16px;
+  height: 136px;
+  background: #ffffff;
+  border-radius: 8px;
+  .bannerPromo {
+    &:first-child {
+      margin-left: 18px;
+    }
+    &:last-child {
+      position: relative;
+      // use pseudo element because last child margin will be ignored by overflow scroll
+      &::after {
+        position: absolute;
+        content: '';
+        right: -16px;
+        width: 16px;
+        height: 100%;
+      }
+    }
+  }
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+.rowWithGap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 50%;
+}
+.rowScrollHorizontal {
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  gap: 15px;
+  width: 100%;
+}
+.rowScrollHorizontal::-webkit-scrollbar {
+  display: none;
+}
+.wrapperTextBanner {
+  display: flex;
+  align-items: center;
+}
+.textHeaderSection {
+  font-family: var(--kanyon);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  color: #05256e;
+}
+.openSans {
+  font-family: var(--open-sans);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #000000;
+}
+.textTitlePromoBanner {
+  font-family: var(--kanyon-medium);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #ffffff;
+  position: absolute;
+  z-index: 99999;
+  top: 80px;
+  margin-left: 16px;
+  z-index: 2;
+}
+.textDescriptionBanner {
+  @extend .openSans;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  color: #ffffff !important;
+  position: absolute;
+  z-index: 99999;
+  top: 106px;
+  margin: 0px 16px;
+  z-index: 2;
+}
+.textPromoBanner {
+  @extend .openSans;
+  display: flex;
+  align-items: flex-end;
+  margin-top: -81px;
+  padding-left: 16px;
+  padding-bottom: 16px;
+  color: #ffffff !important;
+  background-image: linear-gradient(to bottom, rgba(255, 0, 0, 0), black);
+  height: 78px;
+  position: absolute;
+  width: 100%;
+  border-radius: 0px 0px 8px 8px;
+}
+
+.bannerPromo {
+  min-height: 165px;
+  position: relative;
+}
+.imagePromoSpacing {
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+.spacingChevronIcon {
+  margin-left: 9px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5px;
+}
+.promoBannerSmall {
+  border-radius: 8px;
+}
+.promoBanner {
+  object-fit: contain;
+  width: -webkit-fill-available;
+  border-radius: 8px;
+}
+@include lg {
+  .container {
+  }
+
+  .content {
+  }
+}

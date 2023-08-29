@@ -1,0 +1,208 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  padding-top: 32px;
+  padding-bottom: 18px;
+  background: #f5f6f6;
+  height: min-content;
+}
+.wrapper {
+  padding: 0px 16px;
+}
+.textHeaderSection {
+  font-family: var(--kanyon);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  color: #05256e;
+}
+.carousel img {
+  width: 256px;
+  height: 144px;
+  z-index: 999;
+  border-radius: 8px;
+}
+.containerCarousel {
+  margin-top: 16px;
+  // padding: 0px 40px 0;
+  padding-bottom: 19px;
+  @media (max-width: 1024px) {
+    max-height: 518px;
+    height: 100%;
+    // padding: 0px 0px 0;
+
+    .horizontalSlider___281Ls {
+      position: relative;
+      overflow-x: hidden;
+      background: transparent;
+
+      .slideHorizontal___1NzNV {
+        margin-right: 16px;
+      }
+    }
+  }
+}
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.descriptionAndCtaWrapper {
+  position: absolute;
+  bottom: 20px;
+  width: 88%;
+}
+.cardCarOfTheMonth {
+  height: 385px;
+  width: 288px;
+  padding: 0px 16px;
+  padding-top: 48px;
+  background: #ffffff;
+  box-shadow: 0px 6px 14px 1px rgba(76, 82, 95, 0.08);
+  border-radius: 8px;
+  position: relative;
+  top: -34px;
+  p {
+    font-family: var(--open-sans);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #878d98;
+  }
+}
+.carDetailWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 0px 8px;
+}
+.ctaWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 10px;
+  gap: 15px;
+  position: absolute;
+  width: 88%;
+  bottom: 20px;
+}
+.line {
+  align-self: stretch;
+  border: 1px solid #f2f5f9;
+  flex: none;
+  flex-grow: 0;
+  height: 0;
+  order: 1;
+  width: 100%;
+  margin-top: 17px;
+  margin-bottom: 16px;
+}
+.imgLogo {
+  width: 40px;
+  height: 40px;
+}
+.descriptionWrapper {
+  height: 140px;
+}
+.textModel {
+  font-family: var(--kanyon-medium);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #404040;
+}
+.textOtr {
+  font-family: var(--open-sans);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  span {
+    font-family: var(--kanyon);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #13131b;
+  }
+}
+.imageCar {
+  width: 256px;
+  height: 144px;
+  z-index: 999;
+  border-radius: 8px;
+}
+.textButton {
+  font-family: var(--open-sans);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  color: #05256e;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .btn-arrow {
+    border: none;
+    background: none;
+    padding: 11px 20px;
+  }
+
+  .reverse-arrow {
+    transform: rotateY(180deg);
+  }
+
+  .dot-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .carousel__dot {
+      width: 8px;
+      height: 8px;
+      border: none;
+      border-radius: 50%;
+      margin: 0 4px;
+      padding: 0;
+      background-color: #c3c4ca;
+    }
+
+    /* This class is found in DotGroup from pure-react-carousel */
+    /* We need to override it to add our styles */
+    .carousel__dot--selected {
+      width: 16px;
+      height: 8px;
+      border-radius: 10px;
+      background-color: #51a8db;
+      transition: background 0.4s ease;
+    }
+  }
+}
+.dotsCarouselWrapper {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.dotsCarouselActive {
+  width: 16px;
+  height: 6px;
+  background: #51a8db;
+  border-radius: 20px;
+}
+.dotsCarouselInactive {
+  width: 6px;
+  height: 6px;
+  background: #cdd0d4;
+  border-radius: 20px;
+}

@@ -1,0 +1,71 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.tab {
+  background-color: #{$shades-grey-5};
+}
+
+.tabBrand {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5.2px;
+  font-family: inherit;
+}
+
+.lihatSemuaWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  justify-content: center;
+  min-width: 100px;
+  max-width: 110px;
+  margin-right: 30px !important;
+  height: auto;
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 13.25px;
+    svg {
+      margin-left: -8px;
+    }
+    span {
+      font-family: var(--open-sans);
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+}
+
+.emptyCarRecommendation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  img {
+    width: 250px;
+    height: auto;
+  }
+
+  h2 {
+    font-family: $font-kanyon;
+    font-size: 20px;
+    line-height: 28px;
+    color: #{$primary-black};
+    margin-bottom: 8px;
+  }
+
+  span {
+    font-family: var(--open-sans);
+    font-size: 14px;
+    line-height: 20px;
+    color: #{$shades-grey-75};
+
+    .link {
+      font-family: inherit;
+      color: #{$secondary-blue};
+    }
+  }
+}

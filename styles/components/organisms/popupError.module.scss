@@ -1,0 +1,64 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.button__link {
+  border: none;
+  background-color: transparent;
+  @include body;
+  color: #{$secondary-blue};
+  cursor: pointer;
+}
+
+.modal__wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+
+  & > img {
+    width: 200px;
+    height: 200px;
+  }
+
+  .modal__wording {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    text-align: center;
+    color: #{$primary-black};
+
+    .title_section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      justify-content: center;
+      width: 100%;
+
+      & > div {
+        @include h2;
+      }
+
+      span {
+        @include small;
+        color: #{$shades-grey-75};
+      }
+    }
+
+    .btn_section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      justify-content: center;
+      width: 100%;
+    }
+  }
+}
+
+.content {
+  & > div {
+    padding: 24px 16px !important;
+  }
+}

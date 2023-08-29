@@ -1,0 +1,23 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+
+  &.noDisablePromo {
+    margin-bottom: 220px;
+  }
+
+  .listPromo {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 30px;
+  }
+}
+.containerUnavailablePromo {
+  @extend .container;
+  margin-bottom: 210px;
+}

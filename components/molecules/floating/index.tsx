@@ -1,9 +1,9 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
-import styles from '../../../styles/Floating.module.css'
-import selectorImage from '../../../assets/images/floating/selector.webp'
-import contentImage from '../../../assets/images/floating/content.png'
-import { PropsFloatingSection } from '../../../utils/types'
+import styles from 'styles/components/molecules/Floating.module.scss'
+import selectorImage from '/public/revamp/images/floating/selector.webp'
+import contentImage from '/public/revamp/images/floating/content.png'
+import { PropsFloatingSection } from 'utils/types'
 
 const Floating: React.FC<PropsFloatingSection> = ({
   onClickImage,

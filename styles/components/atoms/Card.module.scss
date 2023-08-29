@@ -1,0 +1,73 @@
+@import '../../abstract/colors';
+@import '../../abstract//mixins';
+
+.card {
+  width: 140px;
+  height: 210px;
+  background-color: #{$white};
+  border-radius: 5px;
+  margin: 13px 0px;
+  box-shadow: rgb(3 24 56 / 10%) 0px 1px 16px;
+
+  &Images {
+    width: 140px;
+    height: 90px;
+    border-radius: 5px 5px 0px 0px;
+    object-fit: cover;
+  }
+
+  &Detail {
+    display: flex;
+    height: 110px;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+
+    .titleText {
+      font-size: 12px;
+      font-family: var(--kanyon-bold);
+      color: #{$secondaryGrey};
+    }
+
+    .subTitleText {
+      font-size: 12px;
+      color: #{$black};
+    }
+
+    .price {
+      font-size: 14px;
+      margin-top: 5px;
+      color: #{$black};
+      font-family: var(--open-sans-semi-bold);
+    }
+  }
+}
+
+@include lg {
+  .card {
+    width: 265px;
+    height: 350px;
+    margin: 13px 10px;
+
+    &Images {
+      width: 264px;
+      height: 180px;
+    }
+    &Detail {
+      height: 170px;
+      padding: 24px;
+
+      .titleText {
+        font-size: 20px;
+      }
+
+      .subTitleText {
+        font-size: 16px;
+      }
+
+      .price {
+        font-size: 18px;
+      }
+    }
+  }
+}

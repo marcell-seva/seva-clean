@@ -1,0 +1,194 @@
+@import '../../abstract/colors';
+
+.styledWrapper {
+  background: #{white};
+  width: 632px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media only screen and (max-width: 1024px) {
+    width: 100%;
+  }
+}
+
+.styledContentWrapper {
+  display: flex;
+  padding-left: 4vw;
+  padding-right: 4vw;
+  justify-content: center;
+  @media only screen and (max-width: 1024px) {
+    max-width: 100%;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.styledDataSuggest {
+  margin-top: 7px;
+  width: 632px;
+  margin-left: 0vw;
+  border-radius: 16px;
+  height: auto;
+  max-height: 200px;
+  background-color: #{white};
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: absolute;
+  box-shadow: 0px 1px 16px rgba(3, 24, 56, 0.1);
+  z-index: 99;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  @media only screen and (max-width: 1024px) {
+    position: absolute;
+    z-index: 99;
+    border-radius: 16px;
+    max-height: 600px;
+    height: auto;
+    background-color: #{white};
+    box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+.styledDataResult {
+  margin-top: 7px;
+  width: 632px;
+  margin-left: 0vw;
+  border-radius: 16px;
+  height: auto;
+  max-height: 200px;
+  background-color: #{white};
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: absolute;
+  box-shadow: 0px 1px 16px rgba(3, 24, 56, 0.1);
+  z-index: 99;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  @media only screen and (max-width: 1024px) {
+    position: absolute;
+    z-index: 99;
+    width: 100%;
+    border-radius: 16px;
+    max-height: 600px;
+    height: auto;
+    background-color: #{white};
+    box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+.styledLink {
+  width: auto;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: black;
+  margin: 8px;
+  &:hover {
+    border-radius: 8px;
+    background-color: #{$shades-sky-blue-30};
+  }
+  @media only screen and (max-width: 1024px) {
+    display: flex;
+    height: auto;
+    width: auto;
+    align-items: flex-start;
+    line-height: 22px;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 1vh;
+    margin-top: 1vh;
+    padding: 8px;
+  }
+}
+
+.styledItem {
+  width: auto;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: black;
+  margin: 8px;
+  &:hover {
+    border-radius: 8px;
+  }
+  @media only screen and (max-width: 1024px) {
+    display: flex;
+    height: auto;
+    width: auto;
+    align-items: flex-start;
+    line-height: 22px;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 1vh;
+    margin-top: 1vh;
+    padding: 8px;
+  }
+}
+
+.styledCarContentName {
+  width: 100%;
+  &:hover {
+    border-radius: 8px;
+    background-color: #{$shades-sky-blue-30};
+    padding: 3px;
+  }
+}
+
+.styledCarName {
+  margin-left: 1vw;
+  text-align: start;
+  padding-top: 7px;
+  padding-bottom: 14px;
+  color: black;
+  @media only screen and (max-width: 1024px) {
+    margin-left: 0;
+    margin-right: 20px;
+  }
+}
+
+.styledSearchWrapper {
+  margin: 0;
+  width: 632px;
+  @media only screen and (max-width: 1024px) {
+    width: 100%;
+  }
+}
+
+.inputWrapper {
+  width: 100%;
+  @media only screen and (max-width: 1024px) {
+    width: 100%;
+  }
+}
+
+.styledSearchInput {
+  /* text-transform: capitalize; */
+  padding: 0px 10px;
+  width: 100%;
+  border: none;
+  font-family: var(--kanyon);
+  font-style: normal;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  &::placeholder {
+    color: #{$shades-grey-50};
+  }
+}
+
+.styledSearchInput:focus {
+  outline: none;
+}
+
+.disableClick {
+  pointer-events: none;
+}

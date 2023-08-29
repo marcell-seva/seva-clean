@@ -1,0 +1,70 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.bottomSheetHeader {
+  padding: 0 16px 16px;
+}
+
+.textTitle {
+  font-size: 1rem;
+  font-family: 'KanyonMedium';
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.5rem;
+  align-items: center;
+  display: flex;
+  gap: 5px;
+}
+
+.textSubtitle {
+  font-size: 11px;
+  font-family: 'OpenSans';
+  color: #{$shades-grey-50};
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.lineDivider {
+  width: 100%;
+  height: 4px;
+  background-color: #{$shades-grey-5};
+  margin: 30px 0;
+}
+
+.lineDividerWhenCarDontHavePromo {
+  width: 100%;
+  height: 4px;
+  background-color: #{$shades-grey-5};
+  margin: 30px 0 201px;
+}
+
+.toast {
+  position: absolute;
+  bottom: 211px;
+  background-color: #{$secondary-blue};
+  border-radius: 8px;
+  padding: 15px 16px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% - 36px);
+  box-shadow: 0px 6px 14px 1px rgba(76, 82, 95, 0.08);
+}
+
+.toastMessage {
+  margin-left: 6px;
+  color: #{$primary-white};
+  font-family: 'OpenSans';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.hideComponent {
+  display: none;
+}

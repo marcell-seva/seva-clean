@@ -1,0 +1,75 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  align-items: center;
+  padding-top: 45px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-right: 17px;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #{$shades-grey-25};
+    border-radius: 20px;
+    right: -20px;
+  }
+}
+
+.imageStyle {
+  width: 200px;
+  height: 105.2px;
+  left: 0%;
+  right: 0%;
+}
+
+.titleStyle {
+  font-family: 'Kanyon';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  padding-top: 21.8px;
+  color: #{$primary-black};
+}
+
+.contentText {
+  padding-top: 16px;
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #{$primary-black};
+}
+
+.paddingContent {
+  padding-top: 16px;
+}
+
+.contentTextMudah {
+  color: #{$secondary-green};
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.contentTextSulit {
+  color: #{$secondary-brick-red};
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.paddingButton {
+  padding-top: 30px;
+}

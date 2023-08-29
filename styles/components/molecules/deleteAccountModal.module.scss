@@ -1,0 +1,32 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.title {
+  font-family: 'Kanyon';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  text-align: center;
+  color: #{$primary-black};
+}
+
+.subtitle {
+  display: inline-block;
+  margin-top: 14.5px;
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #{$shades-grey-75};
+}
+
+.ctaCancel {
+  margin-top: 27.5px;
+}
+
+.ctaConfirm {
+  margin: 17.5px auto 0;
+}
