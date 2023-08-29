@@ -70,7 +70,11 @@ applyPolyfills().then(() => {
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    TagManager.initialize({ gtmId: 'GTM-TV9J5JM' })
+    if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'staging') {
+      TagManager.initialize({ gtmId: 'GTM-K2P73CT' })
+    } else {
+      TagManager.initialize({ gtmId: 'GTM-TV9J5JM' })
+    }
     if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'production') {
       client && window.fbq('track', FBPixelStandardEvent.PageView)
     }
@@ -99,6 +103,36 @@ export default function App({ Component, pageProps }: AppProps) {
             fbq('init', ${FB_PIXEL_ID});
             
           `,
+        }}
+      />
+      <Script
+        type="text/javascript"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            //some default pre init
+            var Countly = Countly || {};
+            Countly.q = Countly.q || [];
+
+            //provide countly initialization parameters
+            Countly.app_key = '7069fa6ddc5cfc1b456a4eff70bb1314839f8484';
+            Countly.url = 'https://push.meshtics.com';
+
+            Countly.q.push(['track_sessions']);
+            Countly.q.push(['track_pageview']);
+            Countly.q.push(['track_clicks']);
+            Countly.q.push(['track_links']);
+
+            //load countly script asynchronously
+            (function() {
+              var cly = document.createElement('script'); cly.type = 'text/javascript';
+              cly.async = true;
+              //enter url of script here
+              cly.src = 'https://cdnjs.cloudflare.com/ajax/libs/countly-sdk-web/20.4.0/countly.min.js';
+              cly.onload = function(){Countly.init()};
+              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
+            })();
+            `,
         }}
       />
       <IsSsrMobileContext.Provider value={pageProps.isSsrMobile}>

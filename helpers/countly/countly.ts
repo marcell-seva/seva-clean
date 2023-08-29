@@ -14,8 +14,8 @@ const userIdValueForCountly = () => {
     const tokenLocalStorage = getToken()
     if (!!tokenLocalStorage) {
       return tokenLocalStorage?.phoneNumber
-    } else if (!!window?.Countly?.get_device_id()) {
-      return window.Countly.get_device_id()
+    } else if (!!window?.Countly?.device_id) {
+      return window.Countly.device_id
     } else {
       return ''
     }
