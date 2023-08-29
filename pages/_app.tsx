@@ -35,7 +35,6 @@ import 'styles/insuranceTooltip.scss'
 import { FBPixelStandardEvent, FB_PIXEL_ID } from 'helpers/facebookPixel'
 import { client } from 'utils/helpers/const'
 import { IsSsrMobileContext } from 'services/context/isSsrMobileContext'
-import { initCountly } from 'helpers/countly/countly'
 import { useAddUtmTagsToApiCall } from 'utils/hooks/useAddUtmTagsToApiCall/useAddUtmTagsToApiCall'
 
 const kanyon = localFont({
@@ -74,10 +73,6 @@ export default function App({ Component, pageProps }: AppProps) {
     TagManager.initialize({ gtmId: 'GTM-TV9J5JM' })
     if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'production') {
       client && window.fbq('track', FBPixelStandardEvent.PageView)
-    }
-
-    if (client) {
-      initCountly()
     }
   }, [])
 
