@@ -22,11 +22,6 @@ const userIdValueForCountly = () => {
   }
 }
 
-const sourceEntryValueForCountly = () => {
-  // TODO @toni : use utm values as identifier (need confirmation)
-  return ''
-}
-
 const initialUtmValueForCountly = () => {
   const UtmTags = getLocalStorage<UtmTagsMap>(LocalStorageKey.UtmTags)
 
@@ -59,7 +54,6 @@ export const trackEventCountly = (
   if (client && !!window?.Countly?.q) {
     const defaultSegmentationData = {
       USER_ID: userIdValueForCountly(),
-      SOURCE_ENTRY: sourceEntryValueForCountly(),
       ...initialUtmValueForCountly(),
       PLATFORM: platformValueForCountly(),
       PAGE_ORIGINATION_URL: client ? window.location.href : '',
