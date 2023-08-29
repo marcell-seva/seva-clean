@@ -107,7 +107,8 @@ export default function App({ Component, pageProps }: AppProps) {
       />
       <Script
         type="text/javascript"
-        strategy="beforeInteractive"
+        strategy="afterInteractive"
+        async
         dangerouslySetInnerHTML={{
           __html: `
             //some default pre init
