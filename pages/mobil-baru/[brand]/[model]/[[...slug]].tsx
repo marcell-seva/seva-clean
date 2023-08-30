@@ -78,23 +78,23 @@ export default function index({
         image={carModelDetailsRes.images[0] || defaultSeoImage}
       />
 
-      <div className={styles.mobile}>
-        <PdpDataLocalContext.Provider
-          value={{
-            carRecommendationsResDefaultCity: carRecommendationsRes,
-            carModelDetailsResDefaultCity: carModelDetailsRes,
-            carVariantDetailsResDefaultCity: carVariantDetailsRes,
-            metaTagDataRes: metaTagDataRes,
-            carVideoReviewRes: carVideoReviewRes,
-            carArticleReviewRes: carArticleReviewRes,
-          }}
-        >
+      <PdpDataLocalContext.Provider
+        value={{
+          carRecommendationsResDefaultCity: carRecommendationsRes,
+          carModelDetailsResDefaultCity: carModelDetailsRes,
+          carVariantDetailsResDefaultCity: carVariantDetailsRes,
+          metaTagDataRes: metaTagDataRes,
+          carVideoReviewRes: carVideoReviewRes,
+          carArticleReviewRes: carArticleReviewRes,
+        }}
+      >
+        <div className={styles.mobile}>
           <PdpMobile />
-        </PdpDataLocalContext.Provider>
-      </div>
-      <div className={styles.desktop}>
-        <PdpDesktop />
-      </div>
+        </div>
+        <div className={styles.desktop}>
+          <PdpDesktop />
+        </div>
+      </PdpDataLocalContext.Provider>
     </>
   )
 }
