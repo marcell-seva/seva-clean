@@ -16,6 +16,7 @@ import elementId from 'helpers/elementIds'
 import { SessionStorageKey } from 'utils/enum'
 import { LoanRank } from 'utils/types/models'
 import { saveSessionStorage } from 'utils/handler/sessionStorage'
+import { navigateToKK } from 'utils/navigate'
 
 const MainImage = '/revamp/illustration/loan-calculator.webp'
 
@@ -75,7 +76,7 @@ export const QualificationCreditModal: React.FC<
       JSON.stringify(formData),
     )
     if (isLogin) {
-      window.location.href = creditQualificationUrl
+      navigateToKK()
     } else {
       savePageBeforeLogin(creditQualificationUrl)
       window.location.href = LoginSevaUrl
