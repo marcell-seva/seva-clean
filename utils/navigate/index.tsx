@@ -6,7 +6,7 @@ import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
-import { carResultsUrl } from 'utils/helpers/routes'
+import { carResultsUrl, creditQualificationUrl } from 'utils/helpers/routes'
 import urls from 'utils/helpers/url'
 
 enum RouteName {
@@ -151,6 +151,19 @@ export const navigateToPLP = (
 
   if (!navigate) return
   return Router.push({ pathname: urls.internalUrls.carResultsUrl, ...option })
+}
+
+export const navigateToKK = (option?: any) => {
+  const source = ''
+  const refer = defineRouteName(location.pathname)
+
+  const dataPrevPage = { refer, source }
+  saveSessionStorage(
+    SessionStorageKey.PreviousPage,
+    JSON.stringify(dataPrevPage),
+  )
+
+  return Router.push({ pathname: creditQualificationUrl, ...option })
 }
 
 export const saveDataForCountlyTrackerPageViewPDP = (
