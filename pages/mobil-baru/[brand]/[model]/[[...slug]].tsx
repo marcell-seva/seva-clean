@@ -116,7 +116,7 @@ export async function getServerSideProps(context: any) {
       menuRes,
     ]: any = await Promise.all([
       api.getRecommendation('?city=jakarta&cityId=118'),
-      api.getMetaTagData(context.query.model.replaceAll('-', '')),
+      api.getMetaTagData(context.query.model.replace('-', '')),
       api.getCarVideoReview(),
       api.getMenu(),
     ])

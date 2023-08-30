@@ -171,6 +171,7 @@ export const CarDetailCard = ({
           data-testid={elementId.CarImage}
           width={279}
           height={209}
+          loading={order === 0 ? 'eager' : 'lazy'}
         />
         <LabelPromo
           className={styles.labelCard}

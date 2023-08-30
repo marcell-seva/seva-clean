@@ -133,7 +133,7 @@ export const PLP = ({
       getToken()
         ? SessionStorageKey.ShowWebAnnouncementLogin
         : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ) ?? true,
+    ) ?? false,
   )
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
@@ -372,6 +372,13 @@ export const PLP = ({
   }, [recommendation])
 
   useEffect(() => {
+    if (isActive) {
+      trackEventCountly(CountlyEventNames.WEB_HAMBURGER_OPEN, {
+        PAGE_ORIGINATION: getPageName(),
+        LOGIN_STATUS: isLogin,
+        USER_TYPE: valueForUserTypeProperty(),
+      })
+    }
     if (
       getCity().cityName !== 'Jakarta Pusat' ||
       carRecommendation.carRecommendations.length === 0

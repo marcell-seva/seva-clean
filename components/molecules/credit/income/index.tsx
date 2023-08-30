@@ -36,7 +36,7 @@ const IncomeForm = ({
   })
 
   const formatIncome = (value: number | string) => {
-    const parsedInput = value?.toString().replaceAll(/\D/g, '')
+    const parsedInput = value?.toString().replace(/\D/g, '')
     const formattedInput = `Rp${Number(parsedInput).toLocaleString('id-ID', {
       minimumFractionDigits: 0,
     })}`

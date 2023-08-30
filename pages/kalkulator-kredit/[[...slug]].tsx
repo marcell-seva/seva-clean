@@ -256,13 +256,13 @@ export default function LoanCalculatorPage() {
   const getDataForAmplitude = () => {
     return {
       Car_Brand: brand ? capitalizeFirstLetter(brand) : '',
-      Car_Model: model ? capitalizeFirstLetter(model.replaceAll('-', ' ')) : '',
+      Car_Model: model ? capitalizeFirstLetter(model.replace('-', ' ')) : '',
       Car_Variant: variant
         ? variant
             .toUpperCase()
-            .replaceAll('-', ' ')
-            .replaceAll(' AT ', ' A/T ')
-            .replaceAll(' MT ', ' M/T ')
+            .replace('-', ' ')
+            .replace(' AT ', ' A/T ')
+            .replace(' MT ', ' M/T ')
         : '',
       DP:
         storedFilter && storedFilter?.downPaymentAmount?.length > 0
@@ -380,13 +380,13 @@ export default function LoanCalculatorPage() {
   const trackMoengage = () => {
     const objData = {
       brand: brand ? capitalizeFirstLetter(brand) : '',
-      model: model ? capitalizeFirstLetter(model.replaceAll('-', ' ')) : '',
+      model: model ? capitalizeFirstLetter(model.replace('-', ' ')) : '',
       variants: variant
         ? variant
             .toUpperCase()
-            .replaceAll('-', ' ')
-            .replaceAll(' AT ', ' A/T ')
-            .replaceAll(' MT ', ' M/T ')
+            .replace('-', ' ')
+            .replace(' AT ', ' A/T ')
+            .replace(' MT ', ' M/T ')
         : '',
       down_payment:
         storedFilter && storedFilter?.downPaymentAmount?.length > 0
@@ -430,7 +430,7 @@ export default function LoanCalculatorPage() {
   const autofillCarModelData = () => {
     if (allModelCarList.length > 0) {
       const modelData = allModelCarList.filter(
-        (item) => item.model.toLowerCase().replaceAll(/ +/g, '-') === model,
+        (item) => item.model.toLowerCase().replace(/ +/g, '-') === model,
       )
 
       if (modelData.length !== 0) {
@@ -475,7 +475,7 @@ export default function LoanCalculatorPage() {
     if (carVariantList.length > 0) {
       const variantData = carVariantList.filter(
         (item) =>
-          item.name.toLowerCase().replaceAll(/ +/g, '-').replaceAll('/', '') ===
+          item.name.toLowerCase().replace(/ +/g, '-').replace('/', '') ===
           variant,
       )
 
@@ -754,7 +754,7 @@ export default function LoanCalculatorPage() {
   }
 
   const getCarOtrNumber = () => {
-    return Number(forms.variant?.otr.replace('Rp', '').replaceAll('.', ''))
+    return Number(forms.variant?.otr.replace('Rp', '').replace('.', ''))
   }
 
   const getCarDiscountNumber = () => {
