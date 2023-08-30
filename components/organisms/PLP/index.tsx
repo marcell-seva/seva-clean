@@ -303,6 +303,59 @@ export const PLP = ({
         }
       })
   }
+
+  useEffect(() => {
+    document.body.style.overflowY = isActive ? 'hidden' : 'auto'
+    return () => {
+      document.body.style.overflowY = 'auto'
+    }
+  }, [isActive])
+
+  const trackPLPView = (creditBadge: string = 'Null') => {
+    const prevPage = getSessionStorage(SessionStorageKey.PreviousPage) as any
+    const filterUsage = brand || bodyType || priceRangeGroup ? 'Yes' : 'No'
+    const fincapUsage =
+      downPaymentAmount || tenure || age || monthlyIncome ? 'Yes' : 'No'
+    const temanSevaStatus =
+      brand && typeof brand === 'string' && brand.includes('SEVA')
+        ? 'Yes'
+        : 'No'
+    const initialPage = valueForInitialPageProperty()
+    const track = {
+      CAR_FILTER_USAGE: filterUsage,
+      FINCAP_FILTER_USAGE: fincapUsage,
+      PELUANG_KREDIT_BADGE: fincapUsage === 'No' ? 'Null' : creditBadge,
+      INITIAL_PAGE: initialPage,
+      TEMAN_SEVA_STATUS: temanSevaStatus,
+      USER_TYPE: valueForUserTypeProperty(),
+      ...(Boolean(prevPage) && {
+        ...(prevPage.refer && { PAGE_REFERRER: prevPage.refer }),
+        ...(prevPage.source && { PREVIOUS_SOURCE_BUTTON: prevPage?.source }),
+      }),
+    }
+
+    trackEventCountly(CountlyEventNames.WEB_PLP_VIEW, track)
+    sessionStorage.removeItem(SessionStorageKey.PreviousPage)
+  }
+
+  const checkFincapBadge = (carRecommendations: CarRecommendation[]) => {
+    const checkMudah = carRecommendations.some(
+      (x) => x.loanRank === LoanRank.Green,
+    )
+    const checkSulit = carRecommendations.some(
+      (x) => x.loanRank === LoanRank.Red,
+    )
+
+    if (checkMudah && checkSulit) {
+      trackPLPView('Both')
+    } else if (checkMudah) {
+      trackPLPView('Mudah disetujui')
+    } else if (checkSulit) {
+      trackPLPView('Sulit disetujui')
+    } else {
+      trackPLPView()
+    }
+  }
   //handle scrolling
   useEffect(() => {
     window.scrollTo(0, 0)
