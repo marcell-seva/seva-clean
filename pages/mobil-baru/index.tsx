@@ -166,7 +166,9 @@ export const getServerSideProps: GetServerSideProps<{
       meta.footer = footerData[0].attributes
     }
 
-    if (recommendation) meta.carRecommendations = recommendation
+    if (recommendation) {
+      meta.carRecommendations = recommendation
+    }
     meta.alternativeCarRecommendation = alternativeData.carRecommendations
 
     return {
