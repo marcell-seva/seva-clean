@@ -420,7 +420,7 @@ export default function NewCarVariantList() {
         PREVIOUS_SOURCE_BUTTON: previousSourceButton ?? 'Null',
         FINCAP_FILTER_USAGE: isUsingFilterFinancial ? 'Yes' : 'No',
         CAR_BRAND: brand ? capitalizeWords(brand) : 'Null',
-        CAR_MODEL: model ? capitalizeWords(model.replaceAll('-', ' ')) : 'Null',
+        CAR_MODEL: model ? capitalizeWords(model.replace('-', ' ')) : 'Null',
         PAGE_ORIGINATION: !!tab
           ? defineRouteName(window.location.href)
           : 'PDP - Ringkasan',

@@ -139,7 +139,7 @@ export const PLP = ({
       getToken()
         ? SessionStorageKey.ShowWebAnnouncementLogin
         : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ) ?? true,
+    ) ?? false,
   )
   const [isLogin] = React.useState(!!getToken())
   const checkCitiesData = () => {
@@ -365,13 +365,18 @@ export const PLP = ({
 
   useEffect(() => {
     setPage(1)
-    if (recommendation.length > sampleArray.items.length) {
-      setHasMore(true)
-      setSampleArray({ items: recommendation.slice(0, 12) })
-    }
+    setHasMore(true)
+    setSampleArray({ items: recommendation.slice(0, 12) })
   }, [recommendation])
 
   useEffect(() => {
+    if (isActive) {
+      trackEventCountly(CountlyEventNames.WEB_HAMBURGER_OPEN, {
+        PAGE_ORIGINATION: getPageName(),
+        LOGIN_STATUS: isLogin,
+        USER_TYPE: valueForUserTypeProperty(),
+      })
+    }
     if (
       getCity().cityName !== 'Jakarta Pusat' ||
       carRecommendation.carRecommendations.length === 0
@@ -464,15 +469,6 @@ export const PLP = ({
       patchFunnelQuery(queryParam)
     }
     return () => cleanEffect()
-  }, [])
-  useEffect(() => {
-    if (isActive) {
-      trackEventCountly(CountlyEventNames.WEB_HAMBURGER_OPEN, {
-        PAGE_ORIGINATION: getPageName(),
-        LOGIN_STATUS: isLogin,
-        USER_TYPE: valueForUserTypeProperty(),
-      })
-    }
   }, [])
 
   const onCloseResultInfo = () => {

@@ -281,8 +281,8 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
       SOURCE_SECTION: 'Leads form',
       MENU_TAB_CATEGORY: valueMenuTabCategory(),
       VISUAL_TAB_CATEGORY: tab ? tab : 'Warna',
-      CAR_BRAND: brand ? capitalizeWords(brand.replaceAll('-', ' ')) : '',
-      CAR_MODEL: model ? capitalizeWords(model.replaceAll('-', ' ')) : '',
+      CAR_BRAND: brand ? capitalizeWords(brand.replace('-', ' ')) : '',
+      CAR_MODEL: model ? capitalizeWords(model.replace('-', ' ')) : '',
       CAR_ORDER: 'Null',
       CAR_VARIANT: 'Null',
     })

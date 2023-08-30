@@ -285,11 +285,11 @@ export const NewFilterSideMenu = () => {
           : 'Terendah ke Tertinggi',
       Car_Brand:
         isCheckedBrand.length > 0
-          ? isCheckedBrand.toString().replaceAll(',', ', ')
+          ? isCheckedBrand.toString().replace(',', ', ')
           : null,
       Car_Body_Type:
         isCheckedType.length > 0
-          ? isCheckedType.toString().replaceAll(',', ', ')
+          ? isCheckedType.toString().replace(',', ', ')
           : null,
       DP: downPaymentAmount
         ? removeWhitespaces(

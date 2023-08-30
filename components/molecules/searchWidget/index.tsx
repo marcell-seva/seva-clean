@@ -206,7 +206,7 @@ export const SearchWidget = () => {
       downPaymentAmount: funnelQuery.downPaymentAmount,
       monthlyIncome: getConvertFilterIncome(
         String(funnelQuery.monthlyIncome),
-      ).replaceAll('.', ''),
+      ).replace('.', ''),
       tenure: funnelQuery.tenure,
     })
     navigateToPLP(PreviousButton.SearchBar, {
