@@ -289,6 +289,7 @@ export const PLP = ({
   const handleShowSort = (open: boolean) => () => {
     setOpenSorting(open)
     trackPLPSortShow(open)
+    trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_SORT_CLICK)
   }
   const getAnnouncementBox = () => {
     api
@@ -486,6 +487,7 @@ export const PLP = ({
                   })
                 }
                 setShowLoading(false)
+                checkFincapBadge(carRecommendation.carRecommendations)
               })
               .catch(() => {
                 setShowLoading(false)
@@ -504,6 +506,7 @@ export const PLP = ({
         .catch()
     } else {
       saveRecommendation(carRecommendation.carRecommendations)
+      checkFincapBadge(carRecommendation.carRecommendations)
       const queryParam: any = {
         downPaymentAmount: downPaymentAmount || '',
         brand: brand?.split(',') || '',
@@ -697,10 +700,26 @@ export const PLP = ({
                       onClickResultMudah={() => {
                         setOpenLabelResultMudah(true)
                         trackPeluangMudahBadgeClick(getDataForAmplitude())
+                        trackEventCountly(
+                          CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
+                          {
+                            PELUANG_KREDIT_BADGE: 'Mudah disetujui',
+                            CAR_BRAND: i.brand,
+                            CAR_MODEL: i.model,
+                          },
+                        )
                       }}
                       onClickResultSulit={() => {
                         setOpenLabelResultSulit(true)
                         trackPeluangSulitBadgeClick(getDataForAmplitude())
+                        trackEventCountly(
+                          CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
+                          {
+                            PELUANG_KREDIT_BADGE: 'Sulit disetujui',
+                            CAR_BRAND: i.brand,
+                            CAR_MODEL: i.model,
+                          },
+                        )
                       }}
                       isFilterTrayOpened={isButtonClick} // fix background click on ios
                     />
@@ -722,9 +741,14 @@ export const PLP = ({
           />
         )}
         <FilterMobile
-          onButtonClick={(value: boolean | ((prevState: boolean) => boolean)) =>
+          onButtonClick={(
+            value: boolean | ((prevState: boolean) => boolean),
+          ) => {
+            trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_FILTER_CLICK, {
+              CURRENT_FILTER_STATUS: isFilter ? 'On' : 'Off',
+            })
             setIsButtonClick(value)
-          }
+          }}
           isButtonClick={isButtonClick}
           isResetFilter={isResetFilter}
           setIsResetFilter={setIsResetFilter}
