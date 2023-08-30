@@ -25,6 +25,7 @@ import { CountlyEventNames } from 'helpers/countly/eventNames'
 import {
   trackEventCountly,
   valueForUserTypeProperty,
+  valueMenuTabCategory,
 } from 'helpers/countly/countly'
 import { getPageName } from 'utils/pageName'
 import { SearchModal } from 'components/molecules/searchModal'
@@ -64,6 +65,14 @@ export const HeaderMobile = ({
       trackCitySelectorOpen({
         Page_Origination_URL: window.location.href,
       })
+      trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_OPEN_CLICK, {
+        PAGE_ORIGINATION:
+          getPageName() === 'PLP'
+            ? getPageName()
+            : 'PDP - ' + valueMenuTabCategory(),
+        USER_TYPE: valueForUserTypeProperty(),
+        SOURCE_BUTTON: 'Location Icon',
+      })
       emitClickCityIcon()
     }
   }
@@ -93,7 +102,7 @@ export const HeaderMobile = ({
     trackSevaLogoClick({
       Page_Origination_URL: window.location.href,
     })
-    trackEventCountly(CountlyEventNames.WEB_HAMBURGER_ACCOUNT_CLICK, {
+    trackEventCountly(CountlyEventNames.WEB_SEVA_LOGO_CLICK, {
       PAGE_ORIGINATION: getPageName(),
       USER_TYPE: valueForUserTypeProperty(),
     })
