@@ -44,7 +44,7 @@ const Summary = memo(({ tab, isSticky }: tabProps) => {
   const recommendationsDetailData =
     recommendation.length !== 0
       ? recommendation
-      : carRecommendationsResDefaultCity.carRecommendations
+      : carRecommendationsResDefaultCity?.carRecommendations
   const { setSpecialRateResults } = useContextCalculator()
   const [openPromo, setOpenPromo] = useState(false)
   const { showModal: showPromoModal, CarVariantPromoModal } =

@@ -9,6 +9,7 @@ import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import styles from 'styles/pages/pdp.module.scss'
 interface PdpDataLocalContextType {
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.
@@ -77,18 +78,23 @@ export default function index({
         image={carModelDetailsRes.images[0] || defaultSeoImage}
       />
 
-      <PdpDataLocalContext.Provider
-        value={{
-          carRecommendationsResDefaultCity: carRecommendationsRes,
-          carModelDetailsResDefaultCity: carModelDetailsRes,
-          carVariantDetailsResDefaultCity: carVariantDetailsRes,
-          metaTagDataRes: metaTagDataRes,
-          carVideoReviewRes: carVideoReviewRes,
-          carArticleReviewRes: carArticleReviewRes,
-        }}
-      >
-        {!isMobile ? <PdpDesktop /> : <PdpMobile />}
-      </PdpDataLocalContext.Provider>
+      <div className={styles.mobile}>
+        <PdpDataLocalContext.Provider
+          value={{
+            carRecommendationsResDefaultCity: carRecommendationsRes,
+            carModelDetailsResDefaultCity: carModelDetailsRes,
+            carVariantDetailsResDefaultCity: carVariantDetailsRes,
+            metaTagDataRes: metaTagDataRes,
+            carVideoReviewRes: carVideoReviewRes,
+            carArticleReviewRes: carArticleReviewRes,
+          }}
+        >
+          <PdpMobile />
+        </PdpDataLocalContext.Provider>
+      </div>
+      <div className={styles.desktop}>
+        <PdpDesktop />
+      </div>
     </>
   )
 }
