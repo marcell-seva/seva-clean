@@ -57,6 +57,7 @@ import { sendInstantApproval } from 'services/KK'
 import HeaderCreditClasificationMobile from 'components/organisms/headerCreditClasificationMobile'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import { navigateToKK } from 'utils/navigate'
 
 const CreditQualificationReviewPage = () => {
   useProtectPage()
@@ -295,7 +296,7 @@ const CreditQualificationReviewPage = () => {
         return
       }
       if (simpleCarVariantDetails && !dataReview) {
-        router.push(creditQualificationUrl)
+        navigateToKK()
         return
       }
       if (simpleCarVariantDetails) {
