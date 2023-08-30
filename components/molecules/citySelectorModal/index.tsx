@@ -160,22 +160,27 @@ const CitySelectorModal = ({
     inputRef.current?.focus()
   }
   useEffect(() => {
-    if (pageOrigination?.includes('PDP') || pageOrigination?.includes('PLP')) {
-      let pageOriginationValue = 'PLP'
-      let sourceButtonValue = 'Location Icon'
-      if (pageOrigination?.includes('PDP')) {
-        pageOriginationValue = 'PDP - ' + valueMenuTabCategory()
-        sourceButtonValue = 'OTR Price'
+    if (isopen) {
+      if (
+        pageOrigination?.includes('PDP') ||
+        pageOrigination?.includes('PLP')
+      ) {
+        let pageOriginationValue = 'PLP'
+        let sourceButtonValue = 'Location Icon'
+        if (pageOrigination?.includes('PDP')) {
+          pageOriginationValue = 'PDP - ' + valueMenuTabCategory()
+          sourceButtonValue = 'OTR Price'
+        }
+        trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_BANNER_VIEW, {
+          PAGE_ORIGINATION: pageOriginationValue,
+          USER_TYPE: valueForUserTypeProperty(),
+          SOURCE_BUTTON: sourceButtonValue,
+          INITIAL_PAGE: valueForInitialPageProperty(),
+          CAR_BRAND: 'Null',
+          CAR_MODEL: 'Null',
+          PELUANG_KREDIT_BADGE: 'Null',
+        })
       }
-      trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_BANNER_VIEW, {
-        PAGE_ORIGINATION: pageOriginationValue,
-        USER_TYPE: valueForUserTypeProperty(),
-        SOURCE_BUTTON: sourceButtonValue,
-        INITIAL_PAGE: valueForInitialPageProperty(),
-        CAR_BRAND: 'Null',
-        CAR_MODEL: 'Null',
-        PELUANG_KREDIT_BADGE: 'Null',
-      })
     }
   }, [])
 
