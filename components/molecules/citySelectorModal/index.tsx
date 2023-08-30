@@ -160,7 +160,7 @@ const CitySelectorModal = ({
     inputRef.current?.focus()
   }
   useEffect(() => {
-    if (isopen) {
+    if (isOpen) {
       if (
         pageOrigination?.includes('PDP') ||
         pageOrigination?.includes('PLP')
