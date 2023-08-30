@@ -14,6 +14,7 @@ import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { api } from 'services/api'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import styles from 'styles/pages/plp.module.scss'
 
 const NewCarResultPage = ({
   meta,
@@ -28,19 +29,19 @@ const NewCarResultPage = ({
         description={meta.description}
         image={defaultSeoImage}
       />
-
-      {!isMobile ? (
-        <PLPDesktop
-          carRecommendation={meta.carRecommendations}
-          footer={meta.footer}
-        />
-      ) : (
+      <div className={styles.mobile}>
         <PLP
           carRecommendation={meta.carRecommendations}
           minmaxPrice={meta.MinMaxPrice}
           alternativeRecommendation={meta.alternativeCarRecommendation}
         />
-      )}
+      </div>
+      <div className={styles.desktop}>
+        <PLPDesktop
+          carRecommendation={meta.carRecommendations}
+          footer={meta.footer}
+        />
+      </div>
     </>
   )
 }

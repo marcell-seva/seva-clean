@@ -17,6 +17,7 @@ import { FooterSEOAttributes } from 'utils/types/utils'
 import PLPDesktop from 'components/organisms/PLPDesktop'
 import { useMediaQuery } from 'react-responsive'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
+import styles from 'styles/pages/plp.module.scss'
 
 const NewCarResultPage = ({
   meta,
@@ -45,18 +46,19 @@ const NewCarResultPage = ({
         <meta name="description" content={meta.description} />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      {!isMobile ? (
-        <PLPDesktop
-          carRecommendation={meta.carRecommendations}
-          footer={meta.footer}
-        />
-      ) : (
+      <div className={styles.mobile}>
         <PLP
           carRecommendation={meta.carRecommendations}
           minmaxPrice={meta.MinMaxPrice}
           alternativeRecommendation={meta.alternativeCarRecommendation}
         />
-      )}
+      </div>
+      <div className={styles.desktop}>
+        <PLPDesktop
+          carRecommendation={meta.carRecommendations}
+          footer={meta.footer}
+        />
+      </div>
     </>
   )
 }
