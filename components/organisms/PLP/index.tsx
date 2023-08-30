@@ -72,6 +72,7 @@ import {
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getPageName } from 'utils/pageName'
+import { LoanRank } from 'utils/types/models'
 
 interface PLPProps {
   carRecommendation: CarRecommendationResponse
