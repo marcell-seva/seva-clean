@@ -20,7 +20,9 @@ import { LocalStorageKey } from 'utils/enum'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import {
   trackEventCountly,
+  valueForInitialPageProperty,
   valueForUserTypeProperty,
+  valueMenuTabCategory,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getPageName } from 'utils/pageName'
@@ -36,12 +38,14 @@ interface Props {
   onClickCloseButton: () => void
   cityListFromApi: CityOtrOption[]
   isOpen: boolean
+  pageOrigination?: string
 }
 
 const CitySelectorModal = ({
   onClickCloseButton,
   cityListFromApi,
   isOpen,
+  pageOrigination,
 }: Props) => {
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
@@ -156,15 +160,28 @@ const CitySelectorModal = ({
     inputRef.current?.focus()
   }
   useEffect(() => {
-    trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_BANNER_VIEW, {
-      PAGE_ORIGINATION: getPageName(),
-      USER_TYPE: valueForUserTypeProperty(),
-      SOURCE_BUTTON: 'Location Icon',
-      INITIAL_PAGE: 'No',
-      CAR_BRAND: 'Null',
-      CAR_MODEL: 'Null',
-      PELUANG_KREDIT_BADGE: 'Null',
-    })
+    if (isopen) {
+      if (
+        pageOrigination?.includes('PDP') ||
+        pageOrigination?.includes('PLP')
+      ) {
+        let pageOriginationValue = 'PLP'
+        let sourceButtonValue = 'Location Icon'
+        if (pageOrigination?.includes('PDP')) {
+          pageOriginationValue = 'PDP - ' + valueMenuTabCategory()
+          sourceButtonValue = 'OTR Price'
+        }
+        trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_BANNER_VIEW, {
+          PAGE_ORIGINATION: pageOriginationValue,
+          USER_TYPE: valueForUserTypeProperty(),
+          SOURCE_BUTTON: sourceButtonValue,
+          INITIAL_PAGE: valueForInitialPageProperty(),
+          CAR_BRAND: 'Null',
+          CAR_MODEL: 'Null',
+          PELUANG_KREDIT_BADGE: 'Null',
+        })
+      }
+    }
   }, [])
 
   useEffect(() => {
