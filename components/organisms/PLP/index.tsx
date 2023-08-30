@@ -132,15 +132,7 @@ export const PLP = ({
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const [cityListApi, setCityListApi] = useState<Array<Location>>([])
-  const [showAnnouncementBox, setIsShowAnnouncementBox] = useState<
-    boolean | null
-  >(
-    getSessionStorage(
-      getToken()
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ) ?? false,
-  )
+  const [showAnnouncementBox, setIsShowAnnouncementBox] = useState(false)
   const [isLogin] = React.useState(!!getToken())
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
@@ -370,6 +362,12 @@ export const PLP = ({
   }, [recommendation])
 
   useEffect(() => {
+    const sessionAnnouncmentBox = getSessionStorage(
+      getToken()
+        ? SessionStorageKey.ShowWebAnnouncementLogin
+        : SessionStorageKey.ShowWebAnnouncementNonLogin,
+    )
+    setIsShowAnnouncementBox(Boolean(sessionAnnouncmentBox))
     if (isActive) {
       trackEventCountly(CountlyEventNames.WEB_HAMBURGER_OPEN, {
         PAGE_ORIGINATION: getPageName(),
