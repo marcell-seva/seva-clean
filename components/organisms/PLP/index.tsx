@@ -65,6 +65,7 @@ import {
 import { MoengageViewCarSearch } from 'utils/types/moengage'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
 import styles from '../../../styles/pages/mobil-baru.module.scss'
+import { LazyLoadComponent } from 'react-lazy-load-image-component'
 
 interface PLPProps {
   carRecommendation: CarRecommendationResponse
@@ -628,22 +629,23 @@ export const PLP = ({
               >
                 {sampleArray.items.map(
                   (i: any, index: React.Key | null | undefined) => (
-                    <CarDetailCard
-                      key={index}
-                      order={Number(index)}
-                      recommendation={i}
-                      isFilter={isFilterCredit}
-                      onClickLabel={() => setOpenLabelPromo(true)}
-                      onClickResultMudah={() => {
-                        setOpenLabelResultMudah(true)
-                        trackPeluangMudahBadgeClick(getDataForAmplitude())
-                      }}
-                      onClickResultSulit={() => {
-                        setOpenLabelResultSulit(true)
-                        trackPeluangSulitBadgeClick(getDataForAmplitude())
-                      }}
-                      isFilterTrayOpened={isButtonClick} // fix background click on ios
-                    />
+                    <LazyLoadComponent key={index}>
+                      <CarDetailCard
+                        order={Number(index)}
+                        recommendation={i}
+                        isFilter={isFilterCredit}
+                        onClickLabel={() => setOpenLabelPromo(true)}
+                        onClickResultMudah={() => {
+                          setOpenLabelResultMudah(true)
+                          trackPeluangMudahBadgeClick(getDataForAmplitude())
+                        }}
+                        onClickResultSulit={() => {
+                          setOpenLabelResultSulit(true)
+                          trackPeluangSulitBadgeClick(getDataForAmplitude())
+                        }}
+                        isFilterTrayOpened={isButtonClick} // fix background click on ios
+                      />
+                    </LazyLoadComponent>
                   ),
                 )}
               </InfiniteScroll>
