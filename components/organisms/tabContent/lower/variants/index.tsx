@@ -37,6 +37,10 @@ import {
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { LoanRank } from 'utils/types/models'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewLC,
+} from 'utils/navigate'
 
 const rpIcon = '/revamp/illustration/rp-icon.webp'
 
@@ -126,6 +130,7 @@ const TabContentLowerVariant = ({
     trackCarVariantPricelistClickCta(getDataForAmplitude(carVariant))
     trackClickCtaCountly(carVariant, index)
     setSelectedTabValue && setSelectedTabValue('Kredit')
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.VariantPriceList)
     router.replace(
       {
         pathname: variantListUrl

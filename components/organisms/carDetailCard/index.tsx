@@ -31,6 +31,7 @@ import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import {
   PreviousButton,
+  saveDataForCountlyTrackerPageViewLC,
   saveDataForCountlyTrackerPageViewPDP,
 } from 'utils/navigate'
 
@@ -111,6 +112,7 @@ export const CarDetailCard = ({
       : getCity()?.cityName || 'Jakarta Pusat'
 
   const navigateToLoanCalculator = () => {
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.ProductCardCalculate)
     const cityNameSlug = cityName.toLowerCase().trim().replace(/ +/g, '-')
     const brandSlug = recommendation.brand
       .toLowerCase()
@@ -120,11 +122,12 @@ export const CarDetailCard = ({
       .toLowerCase()
       .trim()
       .replace(/ +/g, '-')
-    const destinationUrl = loanCalculatorWithCityBrandModelVariantUrl
-      .replace(':cityName', cityNameSlug)
-      .replace(':brand', brandSlug)
-      .replace(':model', modelSlug)
-      .replace(':variant', '')
+    const destinationUrl =
+      loanCalculatorWithCityBrandModelVariantUrl
+        .replace(':cityName', cityNameSlug)
+        .replace(':brand', brandSlug)
+        .replace(':model', modelSlug)
+        .replace(':variant', '') + `?loanRankCVL=${recommendation.loanRank}`
 
     router.push(destinationUrl)
   }

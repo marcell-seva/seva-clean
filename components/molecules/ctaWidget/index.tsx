@@ -9,7 +9,11 @@ import { Button } from 'components/atoms'
 import urls from 'utils/helpers/url'
 import { useRouter } from 'next/router'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
-import { PreviousButton, navigateToPLP } from 'utils/navigate'
+import {
+  PreviousButton,
+  navigateToPLP,
+  saveDataForCountlyTrackerPageViewLC,
+} from 'utils/navigate'
 
 const CtaWidget = () => {
   const router = useRouter()
@@ -63,6 +67,9 @@ const CtaWidget = () => {
             version={ButtonVersion.SecondaryDark}
             size={ButtonSize.Big}
             onClick={() => {
+              saveDataForCountlyTrackerPageViewLC(
+                PreviousButton.SevaBelowSectionCalculate,
+              )
               sendAmplitudeData(
                 AmplitudeEventName.WEB_PAGE_DIRECTION_WIDGET_CTA_CLICK,
                 {

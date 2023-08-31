@@ -43,6 +43,10 @@ import { CitySelectorModal } from 'components/molecules'
 import { PopupCreditQualificationResult } from 'components/organisms/popoupCreditQualificationResult'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewLC,
+} from 'utils/navigate'
 
 const MainImageGreenMale = '/revamp/illustration/credit-result-green-male.webp'
 const MainImageGreenFemale =
@@ -590,6 +594,9 @@ export default function CreditQualificationResultPage() {
         onDismissPopup={onDismissPopup}
         loanCalculatorDestinationUrl={getLoanCalculatorDestinationUrl()}
         onClickContinueApproval={onClickContinueApproval}
+        onClickChangeCreditPlan={() => {
+          saveDataForCountlyTrackerPageViewLC(PreviousButton.PopUpUbahData)
+        }}
       />
     </>
   )

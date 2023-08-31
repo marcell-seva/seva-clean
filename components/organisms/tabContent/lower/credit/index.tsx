@@ -50,7 +50,7 @@ import {
 } from 'components/molecules'
 import { availableList, availableListColors } from 'config/AvailableListColors'
 import { getMinimumMonthlyInstallment } from 'utils/carModelUtils/carModelUtils'
-import { hundred, million } from 'utils/helpers/const'
+import { client, hundred, million } from 'utils/helpers/const'
 import {
   defaultCity,
   saveCity,
@@ -101,6 +101,16 @@ import {
   getTdpAffectedByPromo,
 } from 'utils/loanCalculatorUtils'
 import { removeFirstWordFromString } from 'utils/stringUtils'
+import {
+  getSessionStorage,
+  removeSessionStorage,
+} from 'utils/handler/sessionStorage'
+import {
+  trackEventCountly,
+  valueForInitialPageProperty,
+  valueForUserTypeProperty,
+} from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 const CarSillhouete = '/revamp/illustration/car-sillhouete.webp'
 
@@ -215,6 +225,8 @@ export const CreditTab = () => {
   const [toastMessage, setToastMessage] = useState(
     'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
   )
+  const [isSentCountlyPageView, setIsSentCountlyPageView] = useState(false)
+  const loanRankcr = router.query.loanRankCVL ?? ''
 
   const getAutofilledCityData = () => {
     // related to logic inside component "FormSelectCity"
@@ -327,9 +339,74 @@ export const CreditTab = () => {
       })
     }
   }
+
+  const getCreditBadgeForCountlyTracker = () => {
+    let creditBadge = 'Null'
+    if (loanRankcr && loanRankcr.includes(LoanRank.Green)) {
+      creditBadge = 'Mudah disetujui'
+    } else if (loanRankcr && loanRankcr.includes(LoanRank.Red)) {
+      creditBadge = 'Sulit disetujui'
+    }
+
+    return creditBadge
+  }
+
+  const trackCountlyViewCreditTab = async () => {
+    const pageReferrer = getSessionStorage(SessionStorageKey.PageReferrerLC)
+    const previousSourceSection = getSessionStorage(
+      SessionStorageKey.PreviousSourceSectionLC,
+    )
+    const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+    const referralCodeFromUrl: string | null = getLocalStorage(
+      LocalStorageKey.referralTemanSeva,
+    )
+
+    const isUsingFilterFinancial =
+      !!filterStorage?.age &&
+      !!filterStorage?.downPaymentAmount &&
+      !!filterStorage?.monthlyIncome &&
+      !!filterStorage?.tenure
+
+    let temanSevaStatus = 'No'
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
+
+    if (client && !!window?.Countly?.q) {
+      trackEventCountly(CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_VIEW, {
+        PAGE_ORIGINATION: 'PDP Credit Tab',
+        PAGE_REFERRER: pageReferrer ?? 'Null',
+        PREVIOUS_SOURCE_SECTION: previousSourceSection ?? 'Null',
+        FINCAP_FILTER_USAGE: isUsingFilterFinancial ? 'Yes' : 'No',
+        PELUANG_KREDIT_BADGE: isUsingFilterFinancial
+          ? getCreditBadgeForCountlyTracker()
+          : 'Null',
+        CAR_BRAND: carModelDetails?.brand,
+        CAR_MODEL: carModelDetails?.model,
+        USER_TYPE: valueForUserTypeProperty(),
+        INITIAL_PAGE: pageReferrer ? 'No' : valueForInitialPageProperty(),
+        TEMAN_SEVA_STATUS: temanSevaStatus,
+      })
+
+      setIsSentCountlyPageView(true)
+      removeSessionStorage(SessionStorageKey.PageReferrerLC)
+      removeSessionStorage(SessionStorageKey.PreviousSourceSectionLC)
+    }
+  }
+
   useEffect(() => {
     fetchAllCarModels()
     fetchArticles()
+    if (!isSentCountlyPageView) {
+      setTimeout(() => {
+        trackCountlyViewCreditTab()
+      }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
+    }
 
     const nextDisplay = localStorage.getItem('tooltipNextDisplay')
     if (nextDisplay) {
@@ -694,6 +771,13 @@ export const CreditTab = () => {
       setIsIncomeTooLow(false)
     }
 
+    if (name === 'paymentOption') {
+      trackEventCountly(
+        CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_ANGSURAN_TYPE_CLICK,
+        { ...dataForCountlyTrackerOnClick(), ANGSURAN_TYPE: value },
+      )
+    }
+
     setForms({
       ...forms,
       [name]: value,
@@ -1030,6 +1114,7 @@ export const CreditTab = () => {
           const filteredResult = getFilteredCalculationResults(result)
           setCalculationResult(filteredResult)
           generateSelectedInsuranceAndPromo(filteredResult)
+          trackCountlyResult(filteredResult)
 
           // select loan with the longest tenure as default
           const selectedLoanInitialValue =
@@ -1319,6 +1404,134 @@ export const CreditTab = () => {
     })
   }
 
+  const formatCurrency = (value: number): string => {
+    return `Rp${value.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`
+  }
+
+  const dataForCountlyTrackerOnClick = () => {
+    return {
+      PAGE_ORIGINATION: 'PDP Credit Tab',
+      CAR_BRAND: forms.model?.brandName ?? 'Null',
+      CAR_MODEL: forms.model?.modelName ?? 'Null',
+    }
+  }
+
+  const onOpenTooltipCityField = () => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CITY_TOOLTIP_CLICK,
+      dataForCountlyTrackerOnClick(),
+    )
+  }
+
+  const onShowDropdownCityField = () => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CITY_CLICK,
+      dataForCountlyTrackerOnClick(),
+    )
+  }
+
+  const onShowDropdownModelField = () => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_MODEL_CLICK,
+      dataForCountlyTrackerOnClick(),
+    )
+  }
+
+  const onShowDropdownVariantField = () => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_VARIANT_CLICK,
+      dataForCountlyTrackerOnClick(),
+    )
+  }
+
+  const onFocusIncomeField = () => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_INCOME_CLICK,
+      dataForCountlyTrackerOnClick(),
+    )
+  }
+
+  const onFocusDpAmountField = () => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_DP_AMOUNT_CLICK,
+      dataForCountlyTrackerOnClick(),
+    )
+  }
+
+  const onFocusDpPercentageField = () => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_DP_PERCENTAGE_CLICK,
+      dataForCountlyTrackerOnClick(),
+    )
+  }
+
+  const onAfterChangeDpSlider = () => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_DP_SLIDER_CLICK,
+      dataForCountlyTrackerOnClick(),
+    )
+  }
+
+  const onShowDropdownAgeField = () => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_AGE_CLICK,
+      dataForCountlyTrackerOnClick(),
+    )
+  }
+
+  const trackCountlyResult = (
+    calculationResult: SpecialRateListWithPromoType[],
+  ) => {
+    const resultSortAscByTenure = calculationResult.sort(
+      (a, b) => a.tenure - b.tenure,
+    )
+    const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+
+    const isUsingFilterFinancial =
+      !!filterStorage?.age &&
+      !!filterStorage?.downPaymentAmount &&
+      !!filterStorage?.monthlyIncome &&
+      !!filterStorage?.tenure
+
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CALCULATE_CLICK,
+      {
+        ...dataForCountlyTrackerOnClick(),
+        PELUANG_KREDIT_BADGE: isUsingFilterFinancial
+          ? getCreditBadgeForCountlyTracker()
+          : 'Null',
+        CAR_VARIANT: forms.variant?.variantName ?? 'Null',
+        OTR_LOCATION: forms.city.cityName,
+        INCOME_AMOUNT: formatCurrency(parseInt(forms.monthlyIncome.toString())),
+        DP_AMOUNT: formatCurrency(dpValue),
+        DP_PERCENTAGE: formatCurrency(dpPercentage),
+        ANGSURAN_TYPE: forms.paymentOption,
+        AGE_RANGE: forms.age,
+        '1_YEAR_TENOR_RESULT':
+          resultSortAscByTenure[0].loanRank === LoanRank.Green
+            ? 'Mudah disetujui'
+            : 'Sulit disetujui',
+        '2_YEAR_TENOR_RESULT':
+          resultSortAscByTenure[1].loanRank === LoanRank.Green
+            ? 'Mudah disetujui'
+            : 'Sulit disetujui',
+        '3_YEAR_TENOR_RESULT':
+          resultSortAscByTenure[2].loanRank === LoanRank.Green
+            ? 'Mudah disetujui'
+            : 'Sulit disetujui',
+        '4_YEAR_TENOR_RESULT':
+          resultSortAscByTenure[3].loanRank === LoanRank.Green
+            ? 'Mudah disetujui'
+            : 'Sulit disetujui',
+        '5_YEAR_TENOR_RESULT': !resultSortAscByTenure[4]
+          ? 'Null'
+          : resultSortAscByTenure[4]?.loanRank === LoanRank.Green
+          ? 'Mudah disetujui'
+          : 'Sulit disetujui',
+      },
+    )
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.formCard}>
@@ -1340,6 +1553,8 @@ export const CreditTab = () => {
               handleChange={handleChange}
               name="city"
               isError={forms?.city?.cityCode ? modelError : false}
+              onOpenTooltip={onOpenTooltipCityField}
+              onShowDropdown={onShowDropdownCityField}
             />
             {renderErrorMessageCity()}
           </div>
@@ -1358,6 +1573,7 @@ export const CreditTab = () => {
               overrideDisabled={true}
               isCheckForError={false}
               isShowArrow={false}
+              onShowDropdown={onShowDropdownModelField}
             />
             {isValidatingEmptyField &&
             (!forms.model?.modelId || !forms.model.modelName)
@@ -1372,6 +1588,7 @@ export const CreditTab = () => {
               carVariantList={carVariantList}
               value={forms.variant || variantEmptyValue}
               modelError={modelError}
+              onShowDropdown={onShowDropdownVariantField}
             />
             {isValidatingEmptyField &&
             (!forms.variant?.variantId || !forms.variant.variantName)
@@ -1387,6 +1604,7 @@ export const CreditTab = () => {
               handleChange={handleChange}
               isErrorTooLow={isIncomeTooLow}
               emitOnBlurInput={onBlurIncomeInput}
+              onFocus={onFocusIncomeField}
             />
             {renderIncomeErrorMessage()}
           </div>
@@ -1413,6 +1631,9 @@ export const CreditTab = () => {
               setIsDpTooLow={setIsDpTooLow}
               isDpExceedLimit={isDpExceedLimit}
               setIsDpExceedLimit={setIsDpExceedLimit}
+              emitOnFocusDpAmountField={onFocusDpAmountField}
+              emitOnFocusDpPercentageField={onFocusDpPercentageField}
+              emitOnAfterChangeDpSlider={onAfterChangeDpSlider}
             />
           </div>
           <div id="loan-calculator-form-installment-type">
@@ -1438,6 +1659,7 @@ export const CreditTab = () => {
               name="age"
               handleChange={handleChange}
               defaultValue={forms.age}
+              onShowDropdown={onShowDropdownAgeField}
             />
             {isValidatingEmptyField && !forms.age
               ? renderErrorMessageEmpty()
