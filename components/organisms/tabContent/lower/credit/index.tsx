@@ -767,7 +767,7 @@ export const CreditTab = () => {
   }
 
   const getCarOtrNumber = () => {
-    return Number(forms.variant?.otr.replace('Rp', '').replace('.', ''))
+    return Number(forms.variant?.otr.replace('Rp', '').replaceAll('.', ''))
   }
 
   const getCarDiscountNumber = () => {
