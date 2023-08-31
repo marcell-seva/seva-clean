@@ -72,7 +72,7 @@ const DpForm: React.FC<DpFormProps> = ({
         ? parseInt(kkForm?.downPaymentAmount)
         : 0
       const carOtrFromStorage = parseInt(
-        kkForm?.variant?.otr.replace('Rp', '').replace('.', '') ?? '0',
+        kkForm?.variant?.otr.replaceAll('Rp', '').replaceAll('.', '') ?? '0',
       )
       const carDiscountFromStorage = kkForm?.variant?.discount ?? 0
       const carPriceMinusDiscountFromStorage =

@@ -48,7 +48,7 @@ const CreditQualificationPageRejected = ({
 export default CreditQualificationPageRejected
 
 export const getServerSideProps = async (ctx: any) => {
-  const model = (ctx.query.model as string)?.replace('-', '')
+  const model = (ctx.query.model as string)?.replaceAll('-', '')
 
   try {
     const [meta]: any = await Promise.all([api.getMetaTagData(model as string)])
