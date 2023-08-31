@@ -35,9 +35,11 @@ type CarDetailCardProps = {
   onClickResultMudah: () => void
   isFilter?: boolean
   isFilterTrayOpened: boolean
+  order: number
 }
 
 export const CarDetailCard = ({
+  order = 0,
   recommendation,
   onClickLabel,
   isFilter,
@@ -171,6 +173,7 @@ export const CarDetailCard = ({
           data-testid={elementId.CarImage}
           width={279}
           height={209}
+          loading={order === 0 ? 'eager' : 'lazy'}
         />
         <LabelPromo
           className={styles.labelCard}
