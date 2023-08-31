@@ -27,6 +27,7 @@ import { Location } from 'utils/types'
 import { CarRecommendation } from 'utils/types/context'
 import { LoanRank } from 'utils/types/models'
 import styles from '../../../styles/components/organisms/cardetailcard.module.scss'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 type CarDetailCardProps = {
   recommendation: CarRecommendation
@@ -165,7 +166,7 @@ export const CarDetailCard = ({
   return (
     <div className={styles.container}>
       <CardShadow className={styles.cardWrapper}>
-        <Image
+        <LazyLoadImage
           src={recommendation.images[0]}
           className={styles.heroImg}
           alt={`${recommendation.brand} ${recommendation.model}`}

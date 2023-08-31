@@ -65,6 +65,7 @@ import {
 import { MoengageViewCarSearch } from 'utils/types/moengage'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
 import styles from '../../../styles/pages/mobil-baru.module.scss'
+import { LazyLoadComponent } from 'react-lazy-load-image-component'
 
 interface PLPProps {
   carRecommendation: CarRecommendationResponse
