@@ -67,7 +67,7 @@ export const CarOverview = ({
   const router = useRouter()
   const brand = router.query.brand as string
   const model = router.query.model as string
-  const tab = router.query.tab as string
+  const upperTab = router.query.tab as string
 
   const sortedCarModelVariant = useMemo(() => {
     return (
@@ -212,7 +212,7 @@ export const CarOverview = ({
       variantListUrl
         .replace(':brand', brand)
         .replace(':model', model)
-        .replace(':tab', 'kredit') + `${tab && `tab=${tab}`}`
+        .replace(':tab', 'kredit') + `${upperTab ? `tab=${upperTab}` : ''}`
   }
 
   if (!modelDetail || !variantDetail) return <></>
