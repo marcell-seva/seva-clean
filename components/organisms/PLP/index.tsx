@@ -629,23 +629,22 @@ export const PLP = ({
               >
                 {sampleArray.items.map(
                   (i: any, index: React.Key | null | undefined) => (
-                    <LazyLoadComponent key={index}>
-                      <CarDetailCard
-                        order={Number(index)}
-                        recommendation={i}
-                        isFilter={isFilterCredit}
-                        onClickLabel={() => setOpenLabelPromo(true)}
-                        onClickResultMudah={() => {
-                          setOpenLabelResultMudah(true)
-                          trackPeluangMudahBadgeClick(getDataForAmplitude())
-                        }}
-                        onClickResultSulit={() => {
-                          setOpenLabelResultSulit(true)
-                          trackPeluangSulitBadgeClick(getDataForAmplitude())
-                        }}
-                        isFilterTrayOpened={isButtonClick} // fix background click on ios
-                      />
-                    </LazyLoadComponent>
+                    <CarDetailCard
+                      key={index}
+                      order={Number(index)}
+                      recommendation={i}
+                      isFilter={isFilterCredit}
+                      onClickLabel={() => setOpenLabelPromo(true)}
+                      onClickResultMudah={() => {
+                        setOpenLabelResultMudah(true)
+                        trackPeluangMudahBadgeClick(getDataForAmplitude())
+                      }}
+                      onClickResultSulit={() => {
+                        setOpenLabelResultSulit(true)
+                        trackPeluangSulitBadgeClick(getDataForAmplitude())
+                      }}
+                      isFilterTrayOpened={isButtonClick} // fix background click on ios
+                    />
                   ),
                 )}
               </InfiniteScroll>
