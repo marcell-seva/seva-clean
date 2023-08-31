@@ -215,7 +215,7 @@ const TabContentLowerVariant = ({
             data-testid={elementId.Text + 'harga'}
           >
             <img src={rpIcon} alt="rp icon" />
-            <h2 className={styles.textTitleSection}>Harga</h2>
+            <h3 className={styles.textTitleSection}>Harga</h3>
           </div>
           <div>
             {toggleHorizontal ? (

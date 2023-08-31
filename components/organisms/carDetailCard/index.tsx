@@ -216,12 +216,12 @@ export const CarDetailCard = ({
           role="button"
           onClick={navigateToPDP(order)}
         >
-          <h3
+          <h2
             className={styles.brandModelText}
             data-testid={elementId.PLP.Text + 'brand-model-mobil'}
           >
             {recommendation.brand} {recommendation.model}
-          </h3>
+          </h2>
           <div
             className={styles.hargaOtrWrapper}
             data-testid={elementId.PLP.Text + 'harga-otr'}
