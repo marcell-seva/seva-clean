@@ -265,12 +265,12 @@ export const CarOverview = ({
 
   return (
     <div className={styles.container}>
-      <h2
+      <h1
         className={styles.carBrandModelText}
         data-testid={elementId.Text + 'car-brand-model'}
       >
         {modelDetail?.brand + ' ' + modelDetail?.model}
-      </h2>
+      </h1>
       <p
         className={styles.carDescriptionText}
         data-testid={elementId.Text + 'car-description'}
