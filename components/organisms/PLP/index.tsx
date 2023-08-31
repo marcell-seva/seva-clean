@@ -73,6 +73,7 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getPageName } from 'utils/pageName'
 import { LoanRank } from 'utils/types/models'
+import { LazyLoadComponent } from 'react-lazy-load-image-component'
 
 interface PLPProps {
   carRecommendation: CarRecommendationResponse
@@ -690,6 +691,7 @@ export const PLP = ({
                   (i: any, index: React.Key | null | undefined) => (
                     <CarDetailCard
                       key={index}
+                      order={Number(index)}
                       recommendation={i}
                       isFilter={isFilterCredit}
                       onClickLabel={() => setOpenLabelPromo(true)}
