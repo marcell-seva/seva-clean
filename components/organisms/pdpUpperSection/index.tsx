@@ -53,10 +53,10 @@ export const PdpUpperSection = ({
 }: Props) => {
   const router = useRouter()
 
-  const tab = router.query.tab as string
+  const upperTab = router.query.tab as string
 
   const [selectedTabValue, setSelectedTabValue] = useState(
-    tab || upperSectionNavigationTab[0].value,
+    upperTab || upperSectionNavigationTab[0].value,
   )
 
   const [tabItemList, setTabItemList] = useState(upperSectionNavigationTab)

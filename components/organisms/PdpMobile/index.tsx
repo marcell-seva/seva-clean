@@ -398,6 +398,13 @@ export default function NewCarVariantList() {
       !!filterStorage?.monthlyIncome &&
       !!filterStorage?.tenure
 
+    let pageOrigination = 'PDP - Ringkasan'
+    if (!!lowerTab && lowerTab.toLowerCase() === 'kredit') {
+      pageOrigination = 'Null'
+    } else if (!!lowerTab) {
+      pageOrigination = defineRouteName(window.location.href)
+    }
+
     let creditBadge = 'Null'
     if (loanRankcr && loanRankcr.includes(LoanRank.Green)) {
       creditBadge = 'Mudah disetujui'
@@ -422,12 +429,10 @@ export default function NewCarVariantList() {
         FINCAP_FILTER_USAGE: isUsingFilterFinancial ? 'Yes' : 'No',
         CAR_BRAND: brand ? capitalizeWords(brand) : 'Null',
         CAR_MODEL: model ? capitalizeWords(model.replaceAll('-', ' ')) : 'Null',
-        PAGE_ORIGINATION: !!lowerTab
-          ? defineRouteName(window.location.href)
-          : 'PDP - Ringkasan',
-        PELUANG_KREDIT_BADGE: creditBadge,
+        PAGE_ORIGINATION: pageOrigination,
+        PELUANG_KREDIT_BADGE: isUsingFilterFinancial ? creditBadge : 'Null',
         USER_TYPE: valueForUserTypeProperty(),
-        INITIAL_PAGE: valueForInitialPageProperty(),
+        INITIAL_PAGE: pageReferrer ? 'No' : valueForInitialPageProperty(),
         TEMAN_SEVA_STATUS: temanSevaStatus,
       })
 

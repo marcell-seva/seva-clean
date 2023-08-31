@@ -48,6 +48,15 @@ export enum PreviousButton {
   CarRecommendation = 'Car recommendation',
   CarOfTheMonth = 'Car of the month',
   ProductCard = 'Product card',
+  CarRecommendationCta = 'Rekomendasi - Hitung Kemampuan',
+  SevaStepsCalculate = 'SEVA steps - Hitung Kemampuan',
+  SevaStepsQualification = 'SEVA steps - Kualifikasi Kredit',
+  SevaBelowSectionCalculate = 'SEVA below section - Hitung Kemampuan',
+  ProductCardCalculate = 'Product card - Hitung Kemampuan',
+  MainTopCta = 'Main Top CTA',
+  VariantPriceList = 'Variant pricelist',
+  LeadsForm = 'Leads form',
+  PopUpUbahData = 'Pop Up Ubah Data',
 }
 
 export const defineRouteName = (pathname: string) => {
@@ -174,4 +183,14 @@ export const saveDataForCountlyTrackerPageViewPDP = (
     defineRouteName(window.location.pathname),
   )
   saveSessionStorage(SessionStorageKey.PreviousSourceButtonPDP, previousButton)
+}
+
+export const saveDataForCountlyTrackerPageViewLC = (
+  previousButton: PreviousButton,
+) => {
+  saveSessionStorage(
+    SessionStorageKey.PageReferrerLC,
+    defineRouteName(window.location.pathname),
+  )
+  saveSessionStorage(SessionStorageKey.PreviousSourceSectionLC, previousButton)
 }

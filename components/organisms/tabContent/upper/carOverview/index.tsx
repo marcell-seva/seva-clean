@@ -37,6 +37,10 @@ import {
   valueMenuTabCategory,
 } from 'helpers/countly/countly'
 import { getPageName } from 'utils/pageName'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewLC,
+} from 'utils/navigate'
 
 interface Props {
   onClickCityOtrCarOverview: () => void
@@ -254,6 +258,7 @@ export const CarOverview = ({
   const onClickCalculateCta = () => {
     trackHitungKemampuan()
     trackClickCtaCountly()
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.MainTopCta)
     window.location.href =
       variantListUrl
         .replace(':brand', brand)

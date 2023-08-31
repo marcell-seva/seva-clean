@@ -81,7 +81,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
 
   const model = router.query.model as string
   const brand = router.query.brand as string
-  const tab = router.query.tab as string
+  const upperTab = router.query.tab as string
 
   const handleInputName = (payload: any): void => {
     if (payload !== ' ' && onlyLettersAndSpaces(payload)) {
@@ -280,7 +280,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
     trackEventCountly(CountlyEventNames.WEB_PDP_LOAN_CALCULATOR_CTA_CLICK, {
       SOURCE_SECTION: 'Leads form',
       MENU_TAB_CATEGORY: valueMenuTabCategory(),
-      VISUAL_TAB_CATEGORY: tab ? tab : 'Warna',
+      VISUAL_TAB_CATEGORY: upperTab ? upperTab : 'Warna',
       CAR_BRAND: brand ? capitalizeWords(brand.replaceAll('-', ' ')) : '',
       CAR_MODEL: model ? capitalizeWords(model.replaceAll('-', ' ')) : '',
       CAR_ORDER: 'Null',

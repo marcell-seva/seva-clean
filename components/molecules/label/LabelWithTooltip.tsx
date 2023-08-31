@@ -7,6 +7,7 @@ interface Props {
   content: string
   name: string
   datatestid?: string
+  onOpenTooltip?: () => void
 }
 
 export const LabelWithTooltip: React.FC<Props> = ({
@@ -14,12 +15,13 @@ export const LabelWithTooltip: React.FC<Props> = ({
   content,
   name,
   datatestid,
+  onOpenTooltip,
 }) => {
   return (
     <div className={styles.wrapper} data-testid={datatestid}>
       <Label name={name}>{label}</Label>
       <div className={styles.tooltipWrapper}>
-        <Tooltip content={content} />
+        <Tooltip content={content} onOpenTooltip={onOpenTooltip} />
       </div>
     </div>
   )
