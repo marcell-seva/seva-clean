@@ -205,7 +205,7 @@ export const SearchWidget = () => {
       downPaymentAmount: funnelQuery.downPaymentAmount,
       monthlyIncome: getConvertFilterIncome(
         String(funnelQuery.monthlyIncome),
-      ).replace('.', ''),
+      ).replaceAll('.', ''),
       tenure: funnelQuery.tenure,
     })
     router.push({
