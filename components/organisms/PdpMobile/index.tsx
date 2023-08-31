@@ -90,7 +90,8 @@ export default function NewCarVariantList() {
 
   const brand = router.query.brand as string
   const model = router.query.model as string
-  const tab = router.query.tab as string
+  const slug = router.query.slug as string
+  const lowerTab = Array.isArray(slug) ? slug[0] : undefined
 
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
@@ -346,10 +347,10 @@ export default function NewCarVariantList() {
 
   const handleAutoscrollOnRender = () => {
     if (
-      tab?.toLowerCase() === 'ringkasan' ||
-      tab?.toLowerCase() === 'spesifikasi' ||
-      tab?.toLowerCase() === 'harga' ||
-      tab?.toLowerCase() === 'kredit'
+      lowerTab?.toLowerCase() === 'ringkasan' ||
+      lowerTab?.toLowerCase() === 'spesifikasi' ||
+      lowerTab?.toLowerCase() === 'harga' ||
+      lowerTab?.toLowerCase() === 'kredit'
     ) {
       const destinationElm = document.getElementById('pdp-lower-content')
       if (destinationElm) {
@@ -357,7 +358,7 @@ export default function NewCarVariantList() {
           destinationElm.scrollIntoView()
           // add more scroll because global page header is fixed position
           window.scrollBy({ top: -100, left: 0 })
-        }, 500) // use timeout because components take time to render
+        }, 250) // use timeout because components take time to render
       }
     } else {
       window.scrollTo(0, 0)
@@ -376,9 +377,6 @@ export default function NewCarVariantList() {
     checkConnectedRefCode()
     getAnnouncementBox()
 
-    if (tab && tab.includes('SEVA')) {
-      saveLocalStorage(LocalStorageKey.referralTemanSeva, tab)
-    }
     saveLocalStorage(LocalStorageKey.Model, model)
 
     getNewFunnelRecommendations(getQueryParamForApiRecommendation()).then(
@@ -429,7 +427,7 @@ export default function NewCarVariantList() {
           })
       },
     )
-  }, [brand, model, tab])
+  }, [brand, model, lowerTab])
 
   useEffect(() => {
     if (carModelDetails) {
