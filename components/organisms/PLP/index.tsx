@@ -65,6 +65,7 @@ import {
 import { MoengageViewCarSearch } from 'utils/types/moengage'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
 import styles from '../../../styles/pages/mobil-baru.module.scss'
+import { LazyLoadComponent } from 'react-lazy-load-image-component'
 
 interface PLPProps {
   carRecommendation: CarRecommendationResponse
@@ -126,15 +127,8 @@ export const PLP = ({
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const [cityListApi, setCityListApi] = useState<Array<Location>>([])
-  const [showAnnouncementBox, setIsShowAnnouncementBox] = useState<
-    boolean | null
-  >(
-    getSessionStorage(
-      getToken()
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ) ?? true,
-  )
+  const [showAnnouncementBox, setIsShowAnnouncementBox] = useState(false)
+  const [isLogin] = React.useState(!!getToken())
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
       getCities().then((res) => {
@@ -372,6 +366,13 @@ export const PLP = ({
   }, [recommendation])
 
   useEffect(() => {
+    const sessionAnnouncmentBox = getSessionStorage(
+      getToken()
+        ? SessionStorageKey.ShowWebAnnouncementLogin
+        : SessionStorageKey.ShowWebAnnouncementNonLogin,
+    )
+    setIsShowAnnouncementBox(Boolean(sessionAnnouncmentBox))
+
     if (
       getCity().cityName !== 'Jakarta Pusat' ||
       carRecommendation.carRecommendations.length === 0
@@ -630,6 +631,7 @@ export const PLP = ({
                   (i: any, index: React.Key | null | undefined) => (
                     <CarDetailCard
                       key={index}
+                      order={Number(index)}
                       recommendation={i}
                       isFilter={isFilterCredit}
                       onClickLabel={() => setOpenLabelPromo(true)}

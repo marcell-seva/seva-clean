@@ -177,7 +177,7 @@ export const PdpUpperSection = ({
     <div>
       <div
         className={`${styles.upperSpacing}  ${
-          isShowAnnouncementBox && styles.showAAnnouncementBox
+          isShowAnnouncementBox && styles.showAnnouncementBox
         }`}
       >
         {/* div used as spacing because it needs to be in different color than html */}
