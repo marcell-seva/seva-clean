@@ -104,6 +104,7 @@ import { removeFirstWordFromString } from 'utils/stringUtils'
 import {
   getSessionStorage,
   removeSessionStorage,
+  saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import {
   trackEventCountly,
@@ -1466,10 +1467,16 @@ export const CreditTab = () => {
   }
 
   const onAfterChangeDpSlider = () => {
-    trackEventCountly(
-      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_DP_SLIDER_CLICK,
-      dataForCountlyTrackerOnClick(),
+    const hasTrackedDpSliderLC = getSessionStorage(
+      SessionStorageKey.HasTrackedDpSliderLC,
     )
+    if (!hasTrackedDpSliderLC) {
+      trackEventCountly(
+        CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_DP_SLIDER_CLICK,
+        dataForCountlyTrackerOnClick(),
+      )
+      saveSessionStorage(SessionStorageKey.HasTrackedDpSliderLC, 'true')
+    }
   }
 
   const onShowDropdownAgeField = () => {

@@ -70,6 +70,7 @@ import { formatPriceNumberThousandDivisor } from 'utils/numberUtils/numberUtils'
 import {
   getSessionStorage,
   removeSessionStorage,
+  saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import {
   capitalizeFirstLetter,
@@ -1394,10 +1395,16 @@ export default function LoanCalculatorPage() {
   }
 
   const onAfterChangeDpSlider = () => {
-    trackEventCountly(
-      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_DP_SLIDER_CLICK,
-      dataForCountlyTrackerOnClick(),
+    const hasTrackedDpSliderLC = getSessionStorage(
+      SessionStorageKey.HasTrackedDpSliderLC,
     )
+    if (!hasTrackedDpSliderLC) {
+      trackEventCountly(
+        CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_DP_SLIDER_CLICK,
+        dataForCountlyTrackerOnClick(),
+      )
+      saveSessionStorage(SessionStorageKey.HasTrackedDpSliderLC, 'true')
+    }
   }
 
   const onShowDropdownAgeField = () => {

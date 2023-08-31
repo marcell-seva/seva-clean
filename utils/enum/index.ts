@@ -142,6 +142,7 @@ export enum SessionStorageKey {
   PreviousSourceButtonPDP = 'previousSourceButtonPDP',
   PageReferrerLC = 'pageReferrerLC',
   PreviousSourceSectionLC = 'previousSourceSectionLC',
+  HasTrackedDpSliderLC = 'hasTrackedDpSliderLC',
 }
 
 export enum HTTPResponseStatusCode {
