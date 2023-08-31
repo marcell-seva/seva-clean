@@ -33,6 +33,7 @@ import {
   PreviousButton,
   saveDataForCountlyTrackerPageViewPDP,
 } from 'utils/navigate'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 type CarDetailCardProps = {
   order?: number
@@ -190,7 +191,7 @@ export const CarDetailCard = ({
   return (
     <div className={styles.container}>
       <CardShadow className={styles.cardWrapper}>
-        <Image
+        <LazyLoadImage
           src={recommendation.images[0]}
           className={styles.heroImg}
           alt={`${recommendation.brand} ${recommendation.model}`}
