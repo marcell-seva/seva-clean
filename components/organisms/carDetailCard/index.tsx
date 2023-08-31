@@ -35,9 +35,11 @@ type CarDetailCardProps = {
   onClickResultMudah: () => void
   isFilter?: boolean
   isFilterTrayOpened: boolean
+  order: number
 }
 
 export const CarDetailCard = ({
+  order = 0,
   recommendation,
   onClickLabel,
   isFilter,
