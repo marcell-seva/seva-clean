@@ -36,6 +36,7 @@ import { WhatsAppIcon } from 'components/atoms/icon/WhatsAppIcon'
 import { BadgeLoanStatus } from './BadgeLoanStatus'
 import { EventFromType } from 'helpers/amplitude/newHomePageEventTracking'
 import { LoanRank, PageFrom } from 'utils/types/models'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 interface CarTileProps extends HTMLAttributes<HTMLDivElement> {
   carModel: CarRecommendation
@@ -298,7 +299,7 @@ const StyledCarousel = styled(Carousel)<{
 }
 `
 
-const CarImage = styled(Image)`
+const CarImage = styled(LazyLoadImage)`
   object-fit: contain;
   width: 100%;
 
