@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styles from '../../../styles/pages/navigationfiltermobile.module.scss'
 import {
   IconFilter,
@@ -12,10 +12,7 @@ import clsx from 'clsx'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
-import { AxiosResponse } from 'axios'
-import { carResultsUrl } from 'utils/helpers/routes'
 import elementId from 'helpers/elementIds'
-import { useRouter } from 'next/router'
 import { LanguageCode } from 'utils/enum'
 import { useCar } from 'services/context/carContext'
 import { sortOptions } from 'utils/config/funnel.config'
@@ -42,16 +39,15 @@ export const NavigationFilterMobile = ({
   startScroll,
   isFilter,
   isFilterFinancial,
-  // resultMinMaxPrice,
   setRecommendations,
   isShowAnnouncementBox,
 }: NavFilterMobileProps) => {
-  const router = useRouter()
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
   const { recommendation } = useCar()
   const { sortBy } = funnelQuery
   const filterSortOption = sortOptions.filter((x) => x.value === sortBy)[0]
   const sortFilter = filterSortOption?.label || ''
+  const [showInformDaihatsu, setShowInformDaihatsu] = useState(true)
   const summaryCar = carlist?.length || 0
   const onClickOK = () => {
     onButtonClick && onButtonClick(true)
@@ -62,11 +58,11 @@ export const NavigationFilterMobile = ({
       LanguageCode.id,
     )
   }
-  const showInformDaihatsu = useMemo(() => {
+  useEffect(() => {
     const collectDaihatsu = recommendation.some(
       (item) => item.brand === 'Daihatsu',
     )
-    return collectDaihatsu
+    setShowInformDaihatsu(collectDaihatsu)
   }, [recommendation])
 
   const removeFinancialFilter = () => {

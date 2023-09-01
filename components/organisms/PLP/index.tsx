@@ -73,25 +73,17 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getPageName } from 'utils/pageName'
 import { LoanRank } from 'utils/types/models'
-import { LazyLoadComponent } from 'react-lazy-load-image-component'
 
 interface PLPProps {
   carRecommendation: CarRecommendationResponse
   minmaxPrice: MinMaxPrice
-  alternativeRecommendation: CarRecommendation[]
 }
 
-export const PLP = ({
-  carRecommendation,
-  minmaxPrice,
-  alternativeRecommendation,
-}: PLPProps) => {
+export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
   const { recommendation, saveRecommendation } = useCar()
-  const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>(
-    alternativeRecommendation,
-  )
+  const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>([])
   const {
     bodyType,
     brand,
@@ -136,7 +128,8 @@ export const PLP = ({
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const [cityListApi, setCityListApi] = useState<Array<Location>>([])
   const [showAnnouncementBox, setIsShowAnnouncementBox] = useState(false)
-  const [isLogin] = React.useState(!!getToken())
+  const [isLogin] = useState(!!getToken())
+
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
       getCities().then((res) => {
