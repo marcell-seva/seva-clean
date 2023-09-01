@@ -14,7 +14,6 @@ import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
 import elementId from 'helpers/elementIds'
 import { LanguageCode } from 'utils/enum'
-import { useCar } from 'services/context/carContext'
 import { sortOptions } from 'utils/config/funnel.config'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { PreviousButton, navigateToPLP } from 'utils/navigate'
@@ -30,6 +29,7 @@ type NavFilterMobileProps = {
   resultMinMaxPrice?: any
   setRecommendations: any
   isShowAnnouncementBox?: boolean | null
+  showInformationDaihatsu: boolean
 }
 export const NavigationFilterMobile = ({
   carlist,
@@ -41,13 +41,12 @@ export const NavigationFilterMobile = ({
   isFilterFinancial,
   setRecommendations,
   isShowAnnouncementBox,
+  showInformationDaihatsu,
 }: NavFilterMobileProps) => {
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
-  const { recommendation } = useCar()
   const { sortBy } = funnelQuery
   const filterSortOption = sortOptions.filter((x) => x.value === sortBy)[0]
   const sortFilter = filterSortOption?.label || ''
-  const [showInformDaihatsu, setShowInformDaihatsu] = useState(true)
   const summaryCar = carlist?.length || 0
   const onClickOK = () => {
     onButtonClick && onButtonClick(true)
@@ -58,12 +57,6 @@ export const NavigationFilterMobile = ({
       LanguageCode.id,
     )
   }
-  useEffect(() => {
-    const collectDaihatsu = recommendation.some(
-      (item) => item.brand === 'Daihatsu',
-    )
-    setShowInformDaihatsu(collectDaihatsu)
-  }, [recommendation])
 
   const removeFinancialFilter = () => {
     patchFunnelQuery({
@@ -292,7 +285,7 @@ export const NavigationFilterMobile = ({
           {/*</div>*/}
         </>
       )}
-      {showInformDaihatsu && !sticky && (
+      {showInformationDaihatsu && !sticky && (
         <>
           <div className={styles.line} />
           <div className={styles.informWrapper}>
