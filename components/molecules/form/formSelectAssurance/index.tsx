@@ -24,6 +24,8 @@ import {
 } from 'services/newFunnel'
 import { IconRadioButtonActive } from 'components/atoms/icon/RadioButtonActive'
 import { IconRadioButtonInactive } from 'components/atoms/icon/RadioButtonInactive'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 interface Props {
   selectedTenure: number
@@ -34,6 +36,7 @@ interface Props {
   promoInsuranceTemp: LoanCalculatorInsuranceAndPromoType[]
   setPromoInsuranceTemp: (value: LoanCalculatorInsuranceAndPromoType[]) => void
   onOpenInsuranceTooltip: () => void
+  pageOrigination?: string
 }
 
 const FormSelectAssurance = ({
@@ -45,6 +48,7 @@ const FormSelectAssurance = ({
   promoInsuranceTemp,
   setPromoInsuranceTemp,
   onOpenInsuranceTooltip,
+  pageOrigination,
 }: Props) => {
   const indexForSelectedTenure = promoInsuranceTemp.findIndex(
     (obj: LoanCalculatorInsuranceAndPromoType) => {
@@ -145,6 +149,8 @@ const FormSelectAssurance = ({
       return
     }
 
+    trackCountlyOptionClick(item)
+
     if (item.value === 'FC') {
       setIsLoadingApiPromoList(true)
       postLoanPermutationIncludePromo(calculationApiPayload)
@@ -240,6 +246,27 @@ const FormSelectAssurance = ({
     )
   }
 
+  const trackCountlyTooltipClick = () => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_PROMO_BOTTOMSHEET_INSURANCE_TOOLTIP_CLICK,
+      {
+        TENOR_OPTION: `${selectedTenure} tahun`,
+        PAGE_ORIGINATION: pageOrigination,
+      },
+    )
+  }
+
+  const trackCountlyOptionClick = (item: any) => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_PROMO_BOTTOMSHEET_INSURANCE_OPTION_CLICK,
+      {
+        TENOR_OPTION: `${selectedTenure} tahun`,
+        PAGE_ORIGINATION: pageOrigination,
+        INSURANCE: item.label,
+      },
+    )
+  }
+
   return (
     <>
       <div className={styles.container}>
@@ -250,7 +277,10 @@ const FormSelectAssurance = ({
               width={16}
               height={16}
               color="#AFB3BA"
-              onClick={onOpenInsuranceTooltip}
+              onClick={() => {
+                trackCountlyTooltipClick()
+                onOpenInsuranceTooltip()
+              }}
             />
           </div>
         </div>

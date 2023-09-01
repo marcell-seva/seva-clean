@@ -20,6 +20,8 @@ import PromoBottomCalculation from '../promoBottomCalculation'
 import styles from 'styles/components/organisms/promoBottomSheet.module.scss'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { saveLocalStorage } from 'utils/handler/localStorage'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 interface PromoProps extends Omit<BottomSheetProps, 'children'> {
   onClose: () => void
@@ -30,6 +32,7 @@ interface PromoProps extends Omit<BottomSheetProps, 'children'> {
   setPromoInsuranceReal: (value: LoanCalculatorInsuranceAndPromoType[]) => void
   setFinalLoan: (value: FinalLoan) => void
   onOpenInsuranceTooltip: () => void
+  pageOrigination?: string
 }
 
 const PromoBottomSheet = ({
@@ -41,6 +44,7 @@ const PromoBottomSheet = ({
   setPromoInsuranceReal,
   setFinalLoan,
   onOpenInsuranceTooltip,
+  pageOrigination,
   ...props
 }: PromoProps) => {
   const [promoInsuranceTemp, setPromoInsuranceTemp] =
@@ -235,6 +239,76 @@ const PromoBottomSheet = ({
     }
   }, [promoInsuranceTemp[indexForSelectedTenure].selectedPromo])
 
+  const trackCountlyClickSubmit = () => {
+    const allSelectedPromoTitle = promoInsuranceTemp[
+      indexForSelectedTenure
+    ].selectedPromo.map((item) => item.promoTitle)
+
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_PROMO_BOTTOMSHEET_APPLY_CLICK,
+      {
+        PAGE_ORIGINATION: pageOrigination,
+        TENOR_OPTION: `${selectedTenure} tahun`,
+        INSURANCE_TYPE:
+          promoInsuranceTemp[indexForSelectedTenure].selectedInsurance.label,
+        PROMO_AMOUNT:
+          promoInsuranceTemp[indexForSelectedTenure].selectedPromo?.length,
+        PROMO_TITLE: allSelectedPromoTitle.join(', '),
+      },
+    )
+  }
+
+  const onClickSubmit = () => {
+    if (simpleCarVariantDetails) {
+      const tmpData = {
+        ...simpleCarVariantDetails,
+        loanDownPayment:
+          promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo !== 0
+            ? promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo
+            : promoInsuranceTemp[indexForSelectedTenure].tdpBeforePromo,
+        totalFirstPayment:
+          promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo !== 0
+            ? promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo
+            : promoInsuranceTemp[indexForSelectedTenure].tdpBeforePromo,
+        loanMonthlyInstallment:
+          promoInsuranceTemp[indexForSelectedTenure].installmentAfterPromo !== 0
+            ? promoInsuranceTemp[indexForSelectedTenure].installmentAfterPromo
+            : promoInsuranceTemp[indexForSelectedTenure].installmentBeforePromo,
+        flatRate:
+          promoInsuranceTemp[indexForSelectedTenure].interestRateAfterPromo !==
+          0
+            ? promoInsuranceTemp[indexForSelectedTenure].interestRateAfterPromo
+            : promoInsuranceTemp[indexForSelectedTenure]
+                .interestRateBeforePromo,
+      }
+      setFinalLoan({
+        selectedInsurance:
+          promoInsuranceTemp[indexForSelectedTenure].selectedInsurance,
+        selectedPromoFinal:
+          promoInsuranceTemp[indexForSelectedTenure].selectedPromo,
+        tppFinal: promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo,
+        installmentFinal:
+          promoInsuranceTemp[indexForSelectedTenure].installmentAfterPromo,
+        interestRateFinal:
+          promoInsuranceTemp[indexForSelectedTenure].interestRateAfterPromo,
+        installmentBeforePromo:
+          promoInsuranceTemp[indexForSelectedTenure].installmentBeforePromo,
+        interestRateBeforePromo:
+          promoInsuranceTemp[indexForSelectedTenure].interestRateBeforePromo,
+        tdpBeforePromo:
+          promoInsuranceTemp[indexForSelectedTenure].tdpBeforePromo,
+      })
+      setSimpleCarVariantDetails(tmpData)
+    }
+    trackCountlyClickSubmit()
+    saveLocalStorage(
+      LocalStorageKey.SelectablePromo,
+      JSON.stringify(promoInsuranceTemp[indexForSelectedTenure]),
+    )
+    setPromoInsuranceReal(promoInsuranceTemp)
+    onClose()
+  }
+
   return (
     <BottomSheet
       title={
@@ -259,6 +333,7 @@ const PromoBottomSheet = ({
         promoInsuranceTemp={promoInsuranceTemp}
         setPromoInsuranceTemp={setPromoInsuranceTemp}
         onOpenInsuranceTooltip={onOpenInsuranceTooltip}
+        pageOrigination={pageOrigination}
       />
       {isCarDontHavePromo ? (
         <div className={styles.lineDividerWhenCarDontHavePromo} />
@@ -273,67 +348,13 @@ const PromoBottomSheet = ({
             isLoadingApiPromoList={isLoadingApiPromoList}
             promoInsuranceTemp={promoInsuranceTemp}
             setPromoInsuranceTemp={setPromoInsuranceTemp}
+            pageOrigination={pageOrigination}
           />
         </>
       )}
       <PromoBottomCalculation
         onClose={() => {
-          if (simpleCarVariantDetails) {
-            const tmpData = {
-              ...simpleCarVariantDetails,
-              loanDownPayment:
-                promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo !== 0
-                  ? promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo
-                  : promoInsuranceTemp[indexForSelectedTenure].tdpBeforePromo,
-              totalFirstPayment:
-                promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo !== 0
-                  ? promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo
-                  : promoInsuranceTemp[indexForSelectedTenure].tdpBeforePromo,
-              loanMonthlyInstallment:
-                promoInsuranceTemp[indexForSelectedTenure]
-                  .installmentAfterPromo !== 0
-                  ? promoInsuranceTemp[indexForSelectedTenure]
-                      .installmentAfterPromo
-                  : promoInsuranceTemp[indexForSelectedTenure]
-                      .installmentBeforePromo,
-              flatRate:
-                promoInsuranceTemp[indexForSelectedTenure]
-                  .interestRateAfterPromo !== 0
-                  ? promoInsuranceTemp[indexForSelectedTenure]
-                      .interestRateAfterPromo
-                  : promoInsuranceTemp[indexForSelectedTenure]
-                      .interestRateBeforePromo,
-            }
-            setFinalLoan({
-              selectedInsurance:
-                promoInsuranceTemp[indexForSelectedTenure].selectedInsurance,
-              selectedPromoFinal:
-                promoInsuranceTemp[indexForSelectedTenure].selectedPromo,
-              tppFinal:
-                promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo,
-              installmentFinal:
-                promoInsuranceTemp[indexForSelectedTenure]
-                  .installmentAfterPromo,
-              interestRateFinal:
-                promoInsuranceTemp[indexForSelectedTenure]
-                  .interestRateAfterPromo,
-              installmentBeforePromo:
-                promoInsuranceTemp[indexForSelectedTenure]
-                  .installmentBeforePromo,
-              interestRateBeforePromo:
-                promoInsuranceTemp[indexForSelectedTenure]
-                  .interestRateBeforePromo,
-              tdpBeforePromo:
-                promoInsuranceTemp[indexForSelectedTenure].tdpBeforePromo,
-            })
-            setSimpleCarVariantDetails(tmpData)
-          }
-          saveLocalStorage(
-            LocalStorageKey.SelectablePromo,
-            JSON.stringify(promoInsuranceTemp[indexForSelectedTenure]),
-          )
-          setPromoInsuranceReal(promoInsuranceTemp)
-          onClose()
+          onClickSubmit()
         }}
         regularTDP={promoInsuranceTemp[indexForSelectedTenure].tdpBeforePromo}
         finalTDP={promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo}

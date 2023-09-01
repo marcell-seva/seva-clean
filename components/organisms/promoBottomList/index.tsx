@@ -9,6 +9,8 @@ import {
 import { useContextCalculator } from 'services/context/calculatorContext'
 import { ShimmerPromoCard } from 'components/molecules/shimmerPromoCard'
 import { SelectablePromo } from 'components/molecules/selectablePromo'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 interface Props {
   selectedTenure: number
@@ -16,6 +18,7 @@ interface Props {
   isLoadingApiPromoList: boolean
   promoInsuranceTemp: LoanCalculatorInsuranceAndPromoType[]
   setPromoInsuranceTemp: (value: LoanCalculatorInsuranceAndPromoType[]) => void
+  pageOrigination?: string
 }
 
 export const PromoBottomList = ({
@@ -24,6 +27,7 @@ export const PromoBottomList = ({
   isLoadingApiPromoList,
   promoInsuranceTemp,
   setPromoInsuranceTemp,
+  pageOrigination,
 }: Props) => {
   const [groupPromo, setGroupPromo] = useState<
     'best-promo' | 'additional-promo' | ''
@@ -52,12 +56,45 @@ export const PromoBottomList = ({
     unavailablePromoFilter,
   )
 
+  const dataForCountlyOnClick = (item: PromoItemType) => {
+    return {
+      TENOR_OPTION: `${selectedTenure} tahun`,
+      PAGE_ORIGINATION: pageOrigination,
+      PROMO_TITLE: item.promoTitle,
+      PROMO_TERBAIK_BADGE: item.is_Best_Promo ? 'Yes' : 'No',
+    }
+  }
+
+  const trackCountlySelectPromoItem = (item: PromoItemType) => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_PROMO_BOTTOMSHEET_PROMO_SELECT,
+      dataForCountlyOnClick(item),
+    )
+  }
+
+  const trackCountlyUnselectPromoItem = (item: PromoItemType) => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_PROMO_BOTTOMSHEET_PROMO_UNSELECT,
+      dataForCountlyOnClick(item),
+    )
+  }
+
+  const trackCountlyClickSnK = (item: PromoItemType) => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_PROMO_BOTTOMSHEET_PROMO_SNK_CLICK,
+      dataForCountlyOnClick(item),
+    )
+  }
+
   const handleSelect = (item: PromoItemType) => {
     if (
       !promoInsuranceTemp[indexForSelectedTenure].selectedPromo.some(
         (x: any) => x.promoId === item.promoId,
       )
     ) {
+      setTimeout(() => {
+        trackCountlySelectPromoItem(item)
+      }, 500)
       const newState = promoInsuranceTemp.map(
         (obj: LoanCalculatorInsuranceAndPromoType) => {
           // 👇️ if tenure equals currently selected, update selectedPromo property
@@ -72,6 +109,9 @@ export const PromoBottomList = ({
 
       setPromoInsuranceTemp(newState)
     } else {
+      setTimeout(() => {
+        trackCountlyUnselectPromoItem(item)
+      }, 500)
       const temp = promoInsuranceTemp[
         indexForSelectedTenure
       ].selectedPromo.filter((x: any) => x.promoId !== item.promoId)
@@ -140,6 +180,9 @@ export const PromoBottomList = ({
                     )}
                     groupPromo={groupPromo}
                     onSelect={handleSelect}
+                    onClickSnK={() => {
+                      trackCountlyClickSnK(promo)
+                    }}
                   />
                 ))}
         </div>
@@ -162,6 +205,9 @@ export const PromoBottomList = ({
                       item={item}
                       selected={false}
                       groupPromo={''}
+                      onClickSnK={() => {
+                        trackCountlyClickSnK(item)
+                      }}
                     />
                   ))}
             </div>

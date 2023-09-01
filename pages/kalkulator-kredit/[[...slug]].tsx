@@ -218,6 +218,13 @@ export default function LoanCalculatorPage() {
     interestRateBeforePromo: 0,
     installmentBeforePromo: 0,
   })
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
 
   const getAutofilledCityData = () => {
     // related to logic inside component "FormSelectCity"
@@ -520,6 +527,14 @@ export default function LoanCalculatorPage() {
     }
   }
 
+  const getPageOriginationForCountlyTracker = () => {
+    if (router.query.from === 'homepageKualifikasi') {
+      return 'Loan Calculator (KK)'
+    } else {
+      return 'Loan Calculator (Reg)'
+    }
+  }
+
   const getCreditBadgeForCountlyTracker = () => {
     let creditBadge = 'Null'
     if (loanRankcr && loanRankcr.includes(LoanRank.Green)) {
@@ -536,16 +551,9 @@ export default function LoanCalculatorPage() {
     const previousSourceSection = getSessionStorage(
       SessionStorageKey.PreviousSourceSectionLC,
     )
-    const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
     const referralCodeFromUrl: string | null = getLocalStorage(
       LocalStorageKey.referralTemanSeva,
     )
-
-    const isUsingFilterFinancial =
-      !!filterStorage?.age &&
-      !!filterStorage?.downPaymentAmount &&
-      !!filterStorage?.monthlyIncome &&
-      !!filterStorage?.tenure
 
     let temanSevaStatus = 'No'
     if (referralCodeFromUrl) {
@@ -559,10 +567,7 @@ export default function LoanCalculatorPage() {
 
     if (client && !!window?.Countly?.q) {
       trackEventCountly(CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_VIEW, {
-        PAGE_ORIGINATION:
-          router.query.from === 'homepageKualifikasi'
-            ? 'Loan Calculator (KK)'
-            : 'Loan Calculator (Reg)',
+        PAGE_ORIGINATION: getPageOriginationForCountlyTracker(),
         PAGE_REFERRER: pageReferrer ?? 'Null',
         PREVIOUS_SOURCE_SECTION: previousSourceSection ?? 'Null',
         FINCAP_FILTER_USAGE: isUsingFilterFinancial ? 'Yes' : 'No',
@@ -589,11 +594,11 @@ export default function LoanCalculatorPage() {
     fetchAllCarModels()
     fetchArticles()
     getAnnouncementBox()
-    if (!isSentCountlyPageView) {
-      setTimeout(() => {
+    const timeoutCountlyTracker = setTimeout(() => {
+      if (!isSentCountlyPageView) {
         trackCountlyPageView()
-      }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
-    }
+      }
+    }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
 
     // mock validation
     // TODO : replace with the real one later
@@ -602,6 +607,8 @@ export default function LoanCalculatorPage() {
       // use replace, so that user cant go back to error page
       router.replace(loanCalculatorDefaultUrl)
     }
+
+    return () => clearTimeout(timeoutCountlyTracker)
   }, [])
 
   useEffect(() => {
@@ -948,6 +955,9 @@ export default function LoanCalculatorPage() {
     setIsLoadingInsuranceAndPromo(false)
     scrollToResult()
     setInsuranceAndPromoForAllTenure(tempArr)
+    setTimeout(() => {
+      trackCountlyResultView()
+    }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
 
     const selectedData =
       tempArr.sort(
@@ -1156,6 +1166,7 @@ export default function LoanCalculatorPage() {
   const handleClickButtonQualification = (
     loan: SpecialRateListWithPromoType,
   ) => {
+    trackCountlyClickCheckQualification(loan)
     trackLCKualifikasiKreditClick(getDataForAmplitudeQualification(loan))
     setIsQualificationModalOpen(true)
 
@@ -1316,6 +1327,7 @@ export default function LoanCalculatorPage() {
   }
 
   const onCloseQualificationPopUp = () => {
+    trackCountlyOnCloseQualificationModal()
     trackLCKualifikasiKreditPopUpClose(
       getDataForAmplitudeQualification(selectedLoan),
     )
@@ -1336,10 +1348,7 @@ export default function LoanCalculatorPage() {
 
   const dataForCountlyTrackerOnClick = () => {
     return {
-      PAGE_ORIGINATION:
-        router.query.from === 'homepageKualifikasi'
-          ? 'Loan Calculator (KK)'
-          : 'Loan Calculator (Reg)',
+      PAGE_ORIGINATION: getPageOriginationForCountlyTracker(),
       CAR_BRAND: forms.model?.brandName ?? 'Null',
       CAR_MODEL: forms.model?.modelName ?? 'Null',
     }
@@ -1420,13 +1429,6 @@ export default function LoanCalculatorPage() {
     const resultSortAscByTenure = calculationResult.sort(
       (a, b) => a.tenure - b.tenure,
     )
-    const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
-
-    const isUsingFilterFinancial =
-      !!filterStorage?.age &&
-      !!filterStorage?.downPaymentAmount &&
-      !!filterStorage?.monthlyIncome &&
-      !!filterStorage?.tenure
 
     trackEventCountly(
       CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CALCULATE_CLICK,
@@ -1465,6 +1467,97 @@ export default function LoanCalculatorPage() {
           : 'Sulit disetujui',
       },
     )
+  }
+
+  const trackCountlyResultView = () => {
+    trackEventCountly(CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_RESULT_VIEW, {
+      ...dataForCountlyTrackerOnClick(),
+      CAR_VARIANT: forms.variant?.variantName ?? 'Null',
+    })
+  }
+
+  const trackCountlyClickCheckQualification = (
+    loan: SpecialRateListWithPromoType,
+  ) => {
+    const selectedInsurancePromo = insuranceAndPromoForAllTenure.filter(
+      (x) => x.tenure === loan.tenure,
+    )[0]
+
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CHECK_QUALIFICATION_CLICK,
+      {
+        ...dataForCountlyTrackerOnClick(),
+        PELUANG_KREDIT_BADGE: isUsingFilterFinancial
+          ? getCreditBadgeForCountlyTracker()
+          : 'Null',
+        CAR_VARIANT: forms.variant?.variantName ?? 'Null',
+        TENOR_OPTION: `${loan.tenure} tahun`,
+        TENOR_RESULT:
+          loan.loanRank === LoanRank.Green
+            ? 'Mudah disetujui'
+            : 'Sulit disetujui',
+        INSURANCE_TYPE: !!selectedInsurancePromo
+          ? selectedInsurancePromo.selectedInsurance.label
+          : 'Null',
+        PROMO_AMOUNT: !!selectedInsurancePromo
+          ? selectedInsurancePromo.selectedPromo?.length
+          : 'Null',
+      },
+    )
+  }
+
+  const trackCountlyOnClickCtaModal = () => {
+    const selectedLoanDataStorage: any = getLocalStorage(
+      LocalStorageKey.SelectablePromo,
+    )
+    if (selectedLoanDataStorage) {
+      trackEventCountly(
+        CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CHECK_QUALIFICATION_BANNER_CHECK_CLICK,
+        {
+          ...dataForCountlyTrackerOnClick(),
+          PELUANG_KREDIT_BADGE: isUsingFilterFinancial
+            ? getCreditBadgeForCountlyTracker()
+            : 'Null',
+          CAR_VARIANT: forms.variant?.variantName ?? 'Null',
+          TENOR_OPTION: `${selectedLoan?.tenure} tahun`,
+          TENOR_RESULT:
+            selectedLoan?.loanRank === LoanRank.Green
+              ? 'Mudah disetujui'
+              : 'Sulit disetujui',
+          INSURANCE_TYPE: !!selectedLoanDataStorage
+            ? selectedLoanDataStorage?.selectedInsurance.label
+            : 'Null',
+          PROMO_AMOUNT: !!selectedLoanDataStorage
+            ? selectedLoanDataStorage?.selectedPromo?.length
+            : 'Null',
+          LOGIN_STATUS: !!getToken() ? 'Yes' : 'No',
+        },
+      )
+    }
+  }
+
+  const trackCountlyOnCloseQualificationModal = () => {
+    const selectedLoanDataStorage: any = getLocalStorage(
+      LocalStorageKey.SelectablePromo,
+    )
+    if (selectedLoanDataStorage) {
+      trackEventCountly(
+        CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CHECK_QUALIFICATION_BANNER_CLOSE_CLICK,
+        {
+          ...dataForCountlyTrackerOnClick(),
+          CAR_VARIANT: forms.variant?.variantName ?? 'Null',
+          TENOR_OPTION: `${selectedLoan?.tenure} tahun`,
+          TENOR_RESULT:
+            selectedLoan?.loanRank === LoanRank.Green
+              ? 'Mudah disetujui'
+              : 'Sulit disetujui',
+        },
+      )
+    }
+  }
+
+  const onClickCtaQualificationModal = () => {
+    trackCountlyOnClickCtaModal()
   }
 
   return (
@@ -1694,8 +1787,12 @@ export default function LoanCalculatorPage() {
                 handleClickButtonQualification={handleClickButtonQualification}
                 formData={forms}
                 insuranceAndPromoForAllTenure={insuranceAndPromoForAllTenure}
+                setInsuranceAndPromoForAllTenure={
+                  setInsuranceAndPromoForAllTenure
+                }
                 calculationApiPayload={calculationApiPayload}
                 setFinalLoan={setFinalLoan}
+                pageOrigination={getPageOriginationForCountlyTracker()}
               />
               <CarRecommendations
                 carRecommendationList={carRecommendations}
@@ -1732,6 +1829,7 @@ Kemampuan Finansialmu"
           onClickCloseButton={onCloseQualificationPopUp}
           formData={forms}
           selectedLoan={selectedLoan}
+          onClickCta={onClickCtaQualificationModal}
         />
 
         <Toast
