@@ -25,11 +25,12 @@ interface QualificationCreditModalProps {
   isOpen: boolean
   formData: FormLCState
   selectedLoan: SpecialRateList | null
+  onClickCta?: () => void
 }
 
 export const QualificationCreditModal: React.FC<
   QualificationCreditModalProps
-> = ({ onClickCloseButton, isOpen, formData, selectedLoan }) => {
+> = ({ onClickCloseButton, isOpen, formData, selectedLoan, onClickCta }) => {
   const [isLogin] = React.useState(!!getToken())
 
   const getLoanRank = (rank: string) => {
@@ -75,6 +76,7 @@ export const QualificationCreditModal: React.FC<
       SessionStorageKey.KalkulatorKreditForm,
       JSON.stringify(formData),
     )
+    onClickCta && onClickCta()
     if (isLogin) {
       navigateToKK()
     } else {
