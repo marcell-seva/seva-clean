@@ -34,6 +34,7 @@ type FormSelectModelCarProps = {
   overrideDisabled?: boolean
   isCheckForError?: boolean
   isShowArrow?: boolean
+  onShowDropdown?: () => void
 }
 
 export const FormSelectModelCar = ({
@@ -48,6 +49,7 @@ export const FormSelectModelCar = ({
   overrideDisabled = false,
   isCheckForError = true,
   isShowArrow = true,
+  onShowDropdown,
 }: FormSelectModelCarProps) => {
   const [modelCarList, setModelCarList] = useState<CarModel[]>([])
   const [carImage, setCarImage] = React.useState(
@@ -277,6 +279,7 @@ export const FormSelectModelCar = ({
         isError={isError && !!selectedCity && isCheckForError}
         disabled={!selectedCity || overrideDisabled}
         datatestid={elementId.Field.CarMobil}
+        onShowDropdown={onShowDropdown}
       />
       {isError && selectedCity && isCheckForError && (
         <ErrorMessage>

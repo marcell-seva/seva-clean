@@ -15,6 +15,10 @@ import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { LoanRank } from 'utils/types/models'
 import { useCar } from 'services/context/carContext'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewLC,
+} from 'utils/navigate'
 
 type pdpLowerSectionProps = {
   onButtonClick: (value: boolean) => void
@@ -40,7 +44,7 @@ export const PdpLowerSection = ({
 
   const router = useRouter()
   const loanRankcr = router.query.loanRankCVL ?? ''
-  const tab = router.query.tab as string
+  const upperTab = router.query.tab as string
 
   const trackClickLowerTabCountly = (value: string) => {
     let creditBadge = 'Null'
@@ -55,11 +59,14 @@ export const PdpLowerSection = ({
       PELUANG_KREDIT_BADGE: creditBadge,
       CAR_BRAND: carModelDetails?.brand ?? '',
       CAR_MODEL: carModelDetails?.model ?? '',
-      VISUAL_TAB_CATEGORY: tab ? tab : 'Warna',
+      VISUAL_TAB_CATEGORY: upperTab ? upperTab : 'Warna',
     })
   }
 
   const onSelectLowerTab = (value: string) => {
+    if (value.toLowerCase() === 'kredit') {
+      saveDataForCountlyTrackerPageViewLC(PreviousButton.undefined)
+    }
     trackClickLowerTabCountly(value)
     setSelectedTabValue(value)
     const destinationElm = document.getElementById('pdp-lower-content')

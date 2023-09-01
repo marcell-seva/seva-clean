@@ -66,7 +66,7 @@ const PromoSection = ({
           <div className={styles.row}>
             <div className={styles.rowWithGap}>
               <IconCar width={24} height={24} color={'#B4231E'} />
-              <p className={styles.kanyonMedium}>Detail</p>
+              <h3 className={styles.kanyonMedium}>Detail</h3>
             </div>
             <div
               className={styles.rowWithGap}
@@ -121,7 +121,7 @@ const PromoSection = ({
             {onPage === 'VariantListPage' ? (
               <div className={styles.headerWrapper}>
                 <IconPromo width={19} height={19} color={'#B4231E'} />
-                <h2 className={styles.kanyonMedium}>Promo</h2>
+                <h3 className={styles.kanyonMedium}>Promo</h3>
               </div>
             ) : (
               <p

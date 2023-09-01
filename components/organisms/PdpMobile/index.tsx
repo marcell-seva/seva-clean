@@ -102,7 +102,8 @@ export default function NewCarVariantList() {
 
   const brand = router.query.brand as string
   const model = router.query.model as string
-  const tab = router.query.tab as string
+  const slug = router.query.slug as string
+  const lowerTab = Array.isArray(slug) ? slug[0] : undefined
 
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
@@ -358,10 +359,10 @@ export default function NewCarVariantList() {
 
   const handleAutoscrollOnRender = () => {
     if (
-      tab?.toLowerCase() === 'ringkasan' ||
-      tab?.toLowerCase() === 'spesifikasi' ||
-      tab?.toLowerCase() === 'harga' ||
-      tab?.toLowerCase() === 'kredit'
+      lowerTab?.toLowerCase() === 'ringkasan' ||
+      lowerTab?.toLowerCase() === 'spesifikasi' ||
+      lowerTab?.toLowerCase() === 'harga' ||
+      lowerTab?.toLowerCase() === 'kredit'
     ) {
       const destinationElm = document.getElementById('pdp-lower-content')
       if (destinationElm) {
@@ -369,7 +370,7 @@ export default function NewCarVariantList() {
           destinationElm.scrollIntoView()
           // add more scroll because global page header is fixed position
           window.scrollBy({ top: -100, left: 0 })
-        }, 500) // use timeout because components take time to render
+        }, 250) // use timeout because components take time to render
       }
     } else {
       window.scrollTo(0, 0)
@@ -397,6 +398,13 @@ export default function NewCarVariantList() {
       !!filterStorage?.monthlyIncome &&
       !!filterStorage?.tenure
 
+    let pageOrigination = 'PDP - Ringkasan'
+    if (!!lowerTab && lowerTab.toLowerCase() === 'kredit') {
+      pageOrigination = 'Null'
+    } else if (!!lowerTab) {
+      pageOrigination = defineRouteName(window.location.href)
+    }
+
     let creditBadge = 'Null'
     if (loanRankcr && loanRankcr.includes(LoanRank.Green)) {
       creditBadge = 'Mudah disetujui'
@@ -421,12 +429,10 @@ export default function NewCarVariantList() {
         FINCAP_FILTER_USAGE: isUsingFilterFinancial ? 'Yes' : 'No',
         CAR_BRAND: brand ? capitalizeWords(brand) : 'Null',
         CAR_MODEL: model ? capitalizeWords(model.replaceAll('-', ' ')) : 'Null',
-        PAGE_ORIGINATION: !!tab
-          ? defineRouteName(window.location.href)
-          : 'PDP - Ringkasan',
-        PELUANG_KREDIT_BADGE: creditBadge,
+        PAGE_ORIGINATION: pageOrigination,
+        PELUANG_KREDIT_BADGE: isUsingFilterFinancial ? creditBadge : 'Null',
         USER_TYPE: valueForUserTypeProperty(),
-        INITIAL_PAGE: valueForInitialPageProperty(),
+        INITIAL_PAGE: pageReferrer ? 'No' : valueForInitialPageProperty(),
         TEMAN_SEVA_STATUS: temanSevaStatus,
       })
 
@@ -449,9 +455,6 @@ export default function NewCarVariantList() {
     checkConnectedRefCode()
     getAnnouncementBox()
 
-    if (tab && tab.includes('SEVA')) {
-      saveLocalStorage(LocalStorageKey.referralTemanSeva, tab)
-    }
     saveLocalStorage(LocalStorageKey.Model, model)
 
     getNewFunnelRecommendations(getQueryParamForApiRecommendation()).then(
@@ -502,7 +505,7 @@ export default function NewCarVariantList() {
           })
       },
     )
-  }, [brand, model, tab])
+  }, [brand, model, lowerTab])
 
   useEffect(() => {
     if (carModelDetails) {

@@ -29,6 +29,7 @@ import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import {
   PreviousButton,
   navigateToPLP,
+  saveDataForCountlyTrackerPageViewLC,
   saveDataForCountlyTrackerPageViewPDP,
 } from 'utils/navigate'
 
@@ -53,6 +54,7 @@ const LpCarRecommendations = ({
   const [load, setLoad] = useState(false)
 
   const handleCalculateAbility = (item: CarRecommendation) => {
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.CarRecommendationCta)
     const selectedCity = city ? city.cityName : 'Jakarta Pusat'
     const path = urls.internalUrls.loanCalculatorWithCityBrandModelUrl
       .replace(

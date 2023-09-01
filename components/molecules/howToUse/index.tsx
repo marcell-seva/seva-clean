@@ -11,7 +11,11 @@ import elementId from 'utils/helpers/trackerId'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { useRouter } from 'next/router'
-import { navigateToPLP, PreviousButton } from 'utils/navigate'
+import {
+  navigateToPLP,
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewLC,
+} from 'utils/navigate'
 
 const HowToUse = () => {
   const router = useRouter()
@@ -60,6 +64,9 @@ const HowToUse = () => {
                 window.location.host +
                 urls.internalUrls.loanCalculatorDefaultUrl,
             })
+            saveDataForCountlyTrackerPageViewLC(
+              PreviousButton.SevaStepsCalculate,
+            )
             router.push({
               pathname: urls.internalUrls.loanCalculatorDefaultUrl,
               query: {
@@ -95,6 +102,9 @@ const HowToUse = () => {
                 window.location.host +
                 urls.internalUrls.loanCalculatorDefaultUrl,
             })
+            saveDataForCountlyTrackerPageViewLC(
+              PreviousButton.SevaStepsQualification,
+            )
             router.push({
               pathname: urls.internalUrls.loanCalculatorDefaultUrl,
               query: {
