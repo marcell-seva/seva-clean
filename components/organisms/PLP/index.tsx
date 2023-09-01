@@ -75,7 +75,12 @@ interface PLPProps {
 export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
-  const { recommendation, saveRecommendation } = useCar()
+  const { saveRecommendation } = useCar()
+  const [recommendation, setRecommendations] = useState(
+    carRecommendation.carRecommendations,
+  )
+
+  const [showInformDaihatsu, setShowInformDaihatsu] = useState(true)
   const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>([])
   const {
     bodyType,
@@ -132,7 +137,12 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
   }
 
   const fetchMoreData = () => {
-    if (sampleArray.items.length >= recommendation.length) {
+    const currentRecommendation =
+      getCity().cityName !== 'Jakarta Pusat' ||
+      carRecommendation.carRecommendations.length === 0
+        ? carRecommendation.carRecommendations
+        : recommendation
+    if (sampleArray.items.length >= currentRecommendation.length) {
       return setHasMore(false)
     }
     const timeout = setTimeout(() => {
@@ -141,10 +151,10 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
         setPage(pagePlus)
         setSampleArray({
           items: sampleArray.items.concat(
-            recommendation.slice(
+            currentRecommendation.slice(
               12 * page,
               sampleArray.items.length > 12 * page + 12
-                ? recommendation.length
+                ? currentRecommendation.length
                 : 12 * page + 12,
             ),
           ),
@@ -155,7 +165,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
   }
 
   const cleanEffect = () => {
-    saveRecommendation([])
+    setRecommendations([])
     setPage(1)
     setShowLoading(true)
     setSampleArray({ items: [] })
@@ -282,16 +292,18 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
       .then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
         if (res.data === undefined) {
           setIsShowAnnouncementBox(false)
+        } else {
+          const sessionAnnouncmentBox = getSessionStorage(
+            getToken()
+              ? SessionStorageKey.ShowWebAnnouncementLogin
+              : SessionStorageKey.ShowWebAnnouncementNonLogin,
+          )
+          setIsShowAnnouncementBox(Boolean(sessionAnnouncmentBox))
         }
       })
   }
 
-  useEffect(() => {
-    document.body.style.overflowY = isActive ? 'hidden' : 'auto'
-    return () => {
-      document.body.style.overflowY = 'auto'
-    }
-  }, [isActive])
+  console.log('announcment', showAnnouncementBox)
 
   //handle scrolling
   useEffect(() => {
@@ -354,9 +366,15 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
   }, [isFilterFinancial])
 
   useEffect(() => {
-    setPage(1)
-    setHasMore(true)
-    setSampleArray({ items: recommendation.slice(0, 12) })
+    if (
+      getCity().cityName !== 'Jakarta Pusat' ||
+      carRecommendation.carRecommendations.length === 0
+    ) {
+      setPage(1)
+      setHasMore(true)
+      setSampleArray({ items: recommendation.slice(0, 12) })
+    }
+    saveRecommendation(recommendation)
   }, [recommendation])
 
   useEffect(() => {
@@ -417,7 +435,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
               .then((response) => {
                 if (response) {
                   patchFunnelQuery(queryParam)
-                  saveRecommendation(response.carRecommendations)
+                  setRecommendations(response.carRecommendations)
                   setResultMinMaxPrice({
                     resultMinPrice: response.lowestCarPrice || 0,
                     resultMaxPrice: response.highestCarPrice || 0,
@@ -426,6 +444,10 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
                   setSampleArray({
                     items: response.carRecommendations.slice(0, 12),
                   })
+                  const collectDaihatsu = response.carRecommendations.some(
+                    (item: { brand: string }) => item.brand === 'Daihatsu',
+                  )
+                  setShowInformDaihatsu(collectDaihatsu)
                 }
                 setShowLoading(false)
               })
@@ -445,7 +467,11 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
         })
         .catch()
     } else {
-      saveRecommendation(carRecommendation.carRecommendations)
+      setRecommendations(carRecommendation.carRecommendations)
+      const collectDaihatsu = carRecommendation.carRecommendations.some(
+        (item) => item.brand === 'Daihatsu',
+      )
+      setShowInformDaihatsu(collectDaihatsu)
       const queryParam: any = {
         downPaymentAmount: downPaymentAmount || '',
         brand: brand?.split(',') || '',
@@ -475,7 +501,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
     if (sticky && !isActive)
       return (
         <NavigationFilterMobile
-          setRecommendations={saveRecommendation}
+          setRecommendations={setRecommendations}
           onButtonClick={handleShowFilter}
           onSortClick={handleShowSort(true)}
           carlist={recommendation || []}
@@ -485,6 +511,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
           sticky={sticky}
           resultMinMaxPrice={resultMinMaxPrice}
           isShowAnnouncementBox={showAnnouncementBox}
+          showInformationDaihatsu={showInformDaihatsu}
         />
       )
 
@@ -500,7 +527,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
     getNewFunnelRecommendations(queryParam).then((response) => {
       if (response) {
         patchFunnelQuery(queryParam)
-        saveRecommendation(response.carRecommendations)
+        setRecommendations(response.carRecommendations)
         setResultMinMaxPrice({
           resultMinPrice: response.lowestCarPrice || 0,
           resultMaxPrice: response.highestCarPrice || 0,
@@ -576,7 +603,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
         {!showLoading && sampleArray.items.length === 0 ? (
           <>
             <NavigationFilterMobile
-              setRecommendations={saveRecommendation}
+              setRecommendations={setRecommendations}
               onButtonClick={handleShowFilter}
               onSortClick={handleShowSort(true)}
               carlist={recommendation || []}
@@ -584,6 +611,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
               isFilterFinancial={isFilterFinancial}
               resultMinMaxPrice={resultMinMaxPrice}
               isShowAnnouncementBox={showAnnouncementBox}
+              showInformationDaihatsu={showInformDaihatsu}
             />
             {stickyFilter()}
             <PLPEmpty
@@ -594,7 +622,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
         ) : (
           <>
             <NavigationFilterMobile
-              setRecommendations={saveRecommendation}
+              setRecommendations={setRecommendations}
               onButtonClick={handleShowFilter}
               onSortClick={handleShowSort(true)}
               carlist={recommendation || []}
@@ -602,6 +630,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
               isFilterFinancial={isFilterFinancial}
               resultMinMaxPrice={resultMinMaxPrice}
               isShowAnnouncementBox={showAnnouncementBox}
+              showInformationDaihatsu={showInformDaihatsu}
             />
             {stickyFilter()}
             <div

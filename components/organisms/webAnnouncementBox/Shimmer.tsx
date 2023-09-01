@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import ShimmerLoader from './placeholder.gif'
+
+const ShimmerLoader = '/revamp/illustration/placeholder.gif'
 
 export const Shimmer = styled.div<{ radius?: number }>`
   background-image: url(${ShimmerLoader as any});

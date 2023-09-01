@@ -1,7 +1,8 @@
 import React, { HTMLAttributes } from 'react'
 import styles from 'styles/components/atoms/skeleton.module.scss'
-import Shimmer from '/public/revamp/illustration/placeholder.gif'
 import Image from 'next/image'
+
+const Shimmer = '/revamp/illustration/placeholder.gif'
 
 type SkeletonProps = {
   width?: any
