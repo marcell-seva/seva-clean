@@ -144,12 +144,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
   }
 
   const fetchMoreData = () => {
-    const currentRecommendation =
-      getCity().cityName !== 'Jakarta Pusat' ||
-      carRecommendation.carRecommendations.length === 0
-        ? carRecommendation.carRecommendations
-        : recommendation
-    if (sampleArray.items.length >= currentRecommendation.length) {
+    if (sampleArray.items.length >= recommendation.length) {
       return setHasMore(false)
     }
     const timeout = setTimeout(() => {
@@ -158,10 +153,10 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
         setPage(pagePlus)
         setSampleArray({
           items: sampleArray.items.concat(
-            currentRecommendation.slice(
+            recommendation.slice(
               12 * page,
               sampleArray.items.length > 12 * page + 12
-                ? currentRecommendation.length
+                ? recommendation.length
                 : 12 * page + 12,
             ),
           ),
@@ -176,13 +171,6 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
     setPage(1)
     setShowLoading(true)
   }
-
-  useEffect(() => {
-    document.body.style.overflowY = isActive ? 'hidden' : 'auto'
-    return () => {
-      document.body.style.overflowY = 'auto'
-    }
-  }, [isActive])
 
   const handelSticky = (position: number) => {
     if (position > 50) return setSticky(true)
@@ -310,8 +298,6 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
       })
   }
 
-  console.log('announcment', showAnnouncementBox)
-
   const trackPLPView = (creditBadge: string = 'Null') => {
     const prevPage = getSessionStorage(SessionStorageKey.PreviousPage) as any
     const filterUsage = brand || bodyType || priceRangeGroup ? 'Yes' : 'No'
@@ -418,14 +404,9 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
   }, [isFilterFinancial])
 
   useEffect(() => {
-    if (
-      getCity().cityName !== 'Jakarta Pusat' ||
-      carRecommendation.carRecommendations.length === 0
-    ) {
-      setPage(1)
-      setHasMore(true)
-      setSampleArray({ items: recommendation.slice(0, 12) })
-    }
+    setPage(1)
+    setHasMore(true)
+    setSampleArray({ items: recommendation.slice(0, 12) })
     saveRecommendation(recommendation)
   }, [recommendation])
 
