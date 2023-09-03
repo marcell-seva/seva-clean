@@ -9,6 +9,7 @@ interface Props {
   name: string
   handleChange: (name: string, value: any) => void
   defaultValue: string
+  onShowDropdown?: () => void
 }
 
 export const FormAgeCredit: React.FC<Props> = ({
@@ -16,6 +17,7 @@ export const FormAgeCredit: React.FC<Props> = ({
   name,
   handleChange,
   defaultValue,
+  onShowDropdown,
 }) => {
   const [selectedAge, setSelectedAge] = useState<string>(defaultValue)
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
@@ -80,6 +82,7 @@ export const FormAgeCredit: React.FC<Props> = ({
         isClearable={false}
         datatestid={elementId.LoanCalculator.Button.Age}
         optionTestid={elementId.Field.Age}
+        onShowDropdown={onShowDropdown}
       />
     </>
   )

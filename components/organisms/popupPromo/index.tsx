@@ -13,20 +13,20 @@ import elementId from 'helpers/elementIds'
 import { PopupPromoDataItemType } from 'utils/types/utils'
 
 const initPromoList: PopupPromoDataItemType[] = [
-  {
-    title: 'Promo Cuma di SEVA',
-    body: [
-      {
-        title: 'Cashback 1 Angsuran',
-        body: 'Dapatkan max. cashback 4 juta rupiah setelah melakukan pembayaran Angsuran Pertama. Khusus pembelian mobil secara kredit dengan tenor 1 - 5 tahun melalui ACC dan TAF.',
-      },
-      {
-        title: 'Bebas 1 Tahun Asuransi Comprehensive Garda Oto',
-        body: 'Berlaku untuk pembelian mobil baru Toyota dan Daihatsu dengan tipe mobil passenger car. Khusus pembelian mobil secara kredit dengan tenor 3 - 5 tahun.',
-      },
-    ],
-    snk: 'https://www.seva.id/info/promo/cuma-di-seva/',
-  },
+  // {
+  //   title: 'Promo Cuma di SEVA',
+  //   body: [
+  //     {
+  //       title: 'Cashback 1 Angsuran',
+  //       body: 'Dapatkan max. cashback 4 juta rupiah setelah melakukan pembayaran Angsuran Pertama. Khusus pembelian mobil secara kredit dengan tenor 1 - 5 tahun melalui ACC dan TAF.',
+  //     },
+  //     {
+  //       title: 'Bebas 1 Tahun Asuransi Comprehensive Garda Oto',
+  //       body: 'Berlaku untuk pembelian mobil baru Toyota dan Daihatsu dengan tipe mobil passenger car. Khusus pembelian mobil secara kredit dengan tenor 3 - 5 tahun.',
+  //     },
+  //   ],
+  //   snk: 'https://www.seva.id/info/promo/cuma-di-seva/',
+  // },
   {
     title: 'Paket Toyota Spektakuler',
     body: [

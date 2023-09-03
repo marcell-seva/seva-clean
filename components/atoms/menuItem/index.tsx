@@ -33,7 +33,6 @@ const MenuItem: React.FC<MenuItemProps> = ({ item }): JSX.Element => {
         className={styles.parentMenu}
         onClick={() => {
           setState(() => !state)
-          console.log('asdf', item)
           if (state) {
             trackEventCountly(CountlyEventNames.WEB_HAMBURGER_MENU_EXPAND, {
               MENU: item?.menuName,

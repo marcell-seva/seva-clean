@@ -16,12 +16,14 @@ type SelectablePromoProps = {
   selected?: boolean
   groupPromo: 'best-promo' | 'additional-promo' | ''
   onSelect?: (item: PromoItemType) => void
+  onClickSnK?: () => void
 }
 
 export const SelectablePromo = ({
   item,
   selected,
   onSelect,
+  onClickSnK,
 }: // groupPromo,
 SelectablePromoProps) => {
   const {
@@ -59,6 +61,8 @@ SelectablePromoProps) => {
   // const disable =
   //   (groupPromo === 'best-promo' && !is_Best_Promo) ||
   //   (groupPromo === 'additional-promo' && is_Best_Promo)
+
+  const enableSnK = false
 
   return (
     <div
@@ -114,14 +118,21 @@ SelectablePromoProps) => {
             })}
           >
             {promoDesc}{' '}
-            {/* <a
-              // href={url}
-              className={styles.snk}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Lihat S&K
-            </a> */}
+            {enableSnK ? (
+              <a
+                // href={url}
+                className={styles.snk}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => {
+                  onClickSnK && onClickSnK()
+                }}
+              >
+                Lihat S&K
+              </a>
+            ) : (
+              <></>
+            )}
           </span>
         </div>
         {is_Available && (

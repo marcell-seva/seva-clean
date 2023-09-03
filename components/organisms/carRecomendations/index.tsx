@@ -21,6 +21,7 @@ import { useRouter } from 'next/router'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import {
   PreviousButton,
+  saveDataForCountlyTrackerPageViewLC,
   saveDataForCountlyTrackerPageViewPDP,
 } from 'utils/navigate'
 
@@ -81,6 +82,7 @@ export default function CarRecommendations({
       Page_Origination: window.location.href,
     })
 
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.CarRecommendation)
     window.location.replace(getDestinationUrl(item))
   }
 

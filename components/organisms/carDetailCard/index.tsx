@@ -31,6 +31,7 @@ import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import {
   PreviousButton,
+  saveDataForCountlyTrackerPageViewLC,
   saveDataForCountlyTrackerPageViewPDP,
 } from 'utils/navigate'
 
@@ -111,6 +112,7 @@ export const CarDetailCard = ({
       : getCity()?.cityName || 'Jakarta Pusat'
 
   const navigateToLoanCalculator = () => {
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.ProductCardCalculate)
     const cityNameSlug = cityName.toLowerCase().trim().replace(/ +/g, '-')
     const brandSlug = recommendation.brand
       .toLowerCase()
@@ -120,11 +122,12 @@ export const CarDetailCard = ({
       .toLowerCase()
       .trim()
       .replace(/ +/g, '-')
-    const destinationUrl = loanCalculatorWithCityBrandModelVariantUrl
-      .replace(':cityName', cityNameSlug)
-      .replace(':brand', brandSlug)
-      .replace(':model', modelSlug)
-      .replace(':variant', '')
+    const destinationUrl =
+      loanCalculatorWithCityBrandModelVariantUrl
+        .replace(':cityName', cityNameSlug)
+        .replace(':brand', brandSlug)
+        .replace(':model', modelSlug)
+        .replace(':variant', '') + `?loanRankCVL=${recommendation.loanRank}`
 
     router.push(destinationUrl)
   }
@@ -198,6 +201,7 @@ export const CarDetailCard = ({
           data-testid={elementId.CarImage}
           width={279}
           height={209}
+          loading={order === 0 ? 'eager' : 'lazy'}
         />
         <LabelPromo
           className={styles.labelCard}
@@ -215,12 +219,12 @@ export const CarDetailCard = ({
           role="button"
           onClick={navigateToPDP(order)}
         >
-          <h3
+          <h2
             className={styles.brandModelText}
             data-testid={elementId.PLP.Text + 'brand-model-mobil'}
           >
             {recommendation.brand} {recommendation.model}
-          </h3>
+          </h2>
           <div
             className={styles.hargaOtrWrapper}
             data-testid={elementId.PLP.Text + 'harga-otr'}

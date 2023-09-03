@@ -134,15 +134,7 @@ export const PLP = ({
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const [cityListApi, setCityListApi] = useState<Array<Location>>([])
-  const [showAnnouncementBox, setIsShowAnnouncementBox] = useState<
-    boolean | null
-  >(
-    getSessionStorage(
-      getToken()
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ) ?? true,
-  )
+  const [showAnnouncementBox, setIsShowAnnouncementBox] = useState(false)
   const [isLogin] = React.useState(!!getToken())
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
@@ -421,13 +413,24 @@ export const PLP = ({
 
   useEffect(() => {
     setPage(1)
-    if (recommendation.length > sampleArray.items.length) {
-      setHasMore(true)
-      setSampleArray({ items: recommendation.slice(0, 12) })
-    }
+    setHasMore(true)
+    setSampleArray({ items: recommendation.slice(0, 12) })
   }, [recommendation])
 
   useEffect(() => {
+    const sessionAnnouncmentBox = getSessionStorage(
+      getToken()
+        ? SessionStorageKey.ShowWebAnnouncementLogin
+        : SessionStorageKey.ShowWebAnnouncementNonLogin,
+    )
+    setIsShowAnnouncementBox(Boolean(sessionAnnouncmentBox))
+    if (isActive) {
+      trackEventCountly(CountlyEventNames.WEB_HAMBURGER_OPEN, {
+        PAGE_ORIGINATION: getPageName(),
+        LOGIN_STATUS: isLogin,
+        USER_TYPE: valueForUserTypeProperty(),
+      })
+    }
     if (
       getCity().cityName !== 'Jakarta Pusat' ||
       carRecommendation.carRecommendations.length === 0
@@ -522,15 +525,6 @@ export const PLP = ({
       patchFunnelQuery(queryParam)
     }
     return () => cleanEffect()
-  }, [])
-  useEffect(() => {
-    if (isActive) {
-      trackEventCountly(CountlyEventNames.WEB_HAMBURGER_OPEN, {
-        PAGE_ORIGINATION: getPageName(),
-        LOGIN_STATUS: isLogin,
-        USER_TYPE: valueForUserTypeProperty(),
-      })
-    }
   }, [])
 
   const onCloseResultInfo = () => {

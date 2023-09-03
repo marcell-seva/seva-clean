@@ -46,9 +46,9 @@ const PromoSection = ({
   setSelectedTabValue,
 }: PromoSectionProps) => {
   const router = useRouter()
-
   const brand = router.query.brand as string
   const model = router.query.model as string
+  const enablePromoCumaDiSeva = false
 
   const navigateToSpecificationTab = () => {
     setSelectedTabValue && setSelectedTabValue('Spesifikasi')
@@ -66,7 +66,7 @@ const PromoSection = ({
           <div className={styles.row}>
             <div className={styles.rowWithGap}>
               <IconCar width={24} height={24} color={'#B4231E'} />
-              <p className={styles.kanyonMedium}>Detail</p>
+              <h3 className={styles.kanyonMedium}>Detail</h3>
             </div>
             <div
               className={styles.rowWithGap}
@@ -121,7 +121,7 @@ const PromoSection = ({
             {onPage === 'VariantListPage' ? (
               <div className={styles.headerWrapper}>
                 <IconPromo width={19} height={19} color={'#B4231E'} />
-                <h2 className={styles.kanyonMedium}>Promo</h2>
+                <h3 className={styles.kanyonMedium}>Promo</h3>
               </div>
             ) : (
               <p
@@ -159,43 +159,47 @@ const PromoSection = ({
           )}
         </div>
         <div className={styles.rowScrollHorizontal}>
-          <div
-            className={styles.bannerPromo}
-            onClick={() => {
-              if (onPage === 'VariantListPage') {
-                onButtonClick && onButtonClick(true)
-                setPromoName && setPromoName('promo1')
-                trackCarVariantBannerPromoClick(dataForAmplitude)
-              } else {
-                const Page_Direction_URL =
-                  'https://www.seva.id/info/promo/cuma-di-seva/'
-                trackPromoBannerClick({ Page_Direction_URL })
-                window.open(Page_Direction_URL, '_blank')
+          {enablePromoCumaDiSeva ? (
+            <div
+              className={styles.bannerPromo}
+              onClick={() => {
+                if (onPage === 'VariantListPage') {
+                  onButtonClick && onButtonClick(true)
+                  setPromoName && setPromoName('promo1')
+                  trackCarVariantBannerPromoClick(dataForAmplitude)
+                } else {
+                  const Page_Direction_URL =
+                    'https://www.seva.id/info/promo/cuma-di-seva/'
+                  trackPromoBannerClick({ Page_Direction_URL })
+                  window.open(Page_Direction_URL, '_blank')
+                }
+              }}
+              data-testid={
+                onPage === 'VariantListPage'
+                  ? elementId.PDP.CTA.LihatDetail
+                  : elementId.Homepage.Promo.DetailPromo
               }
-            }}
-            data-testid={
-              onPage === 'VariantListPage'
-                ? elementId.PDP.CTA.LihatDetail
-                : elementId.Homepage.Promo.DetailPromo
-            }
-          >
-            <Image
-              src={promoBannerCumaDiSEVA}
-              className={styles.promoBannerSmall}
-              height={156}
-              width={208}
-              alt="promo seva"
-              loading="lazy"
-            />
-            <div>
-              <p className={styles.textPromoBanner}>
-                Lihat detail{' '}
-                <div className={styles.spacingChevronIcon}>
-                  <IconChevronRight width={16} height={16} color="#FFFFFF" />
-                </div>
-              </p>
+            >
+              <Image
+                src={promoBannerCumaDiSEVA}
+                className={styles.promoBannerSmall}
+                height={156}
+                width={208}
+                alt="promo seva"
+                loading="lazy"
+              />
+              <div>
+                <p className={styles.textPromoBanner}>
+                  Lihat detail{' '}
+                  <div className={styles.spacingChevronIcon}>
+                    <IconChevronRight width={16} height={16} color="#FFFFFF" />
+                  </div>
+                </p>
+              </div>
             </div>
-          </div>
+          ) : (
+            <></>
+          )}
           <div
             className={styles.bannerPromo}
             onClick={() => {

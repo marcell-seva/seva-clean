@@ -53,10 +53,10 @@ export const PdpUpperSection = ({
 }: Props) => {
   const router = useRouter()
 
-  const tab = router.query.tab as string
+  const upperTab = router.query.tab as string
 
   const [selectedTabValue, setSelectedTabValue] = useState(
-    tab || upperSectionNavigationTab[0].value,
+    upperTab || upperSectionNavigationTab[0].value,
   )
 
   const [tabItemList, setTabItemList] = useState(upperSectionNavigationTab)
@@ -179,7 +179,7 @@ export const PdpUpperSection = ({
     <div>
       <div
         className={`${styles.upperSpacing}  ${
-          isShowAnnouncementBox && styles.showAAnnouncementBox
+          isShowAnnouncementBox && styles.showAnnouncementBox
         }`}
       >
         {/* div used as spacing because it needs to be in different color than html */}

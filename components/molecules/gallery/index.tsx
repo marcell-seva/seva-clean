@@ -68,7 +68,7 @@ export const Gallery: React.FC<PropsGallery> = ({
   const [onClickMainArrowPhoto, setOnClickMainArrowPhoto] = useState(true)
 
   const router = useRouter()
-  const tab = router.query.tab as string
+  const upperTab = router.query.tab as string
   const loanRankcr = router.query.loanRankCVL ?? ''
 
   const getCreditBadgeForCountly = () => {
@@ -87,7 +87,7 @@ export const Gallery: React.FC<PropsGallery> = ({
       CAR_MODEL: carModelDetails?.model ?? '',
       MENU_TAB_CATEGORY: valueMenuTabCategory(),
       CAR_PHOTO_ORDER: flagIndex + 1,
-      VISUAL_TAB_CATEGORY: tab ? tab : '',
+      VISUAL_TAB_CATEGORY: upperTab ? upperTab : 'Warna',
       PELUANG_KREDIT_BADGE: getCreditBadgeForCountly(),
     })
   }
@@ -98,7 +98,7 @@ export const Gallery: React.FC<PropsGallery> = ({
       CAR_MODEL: carModelDetails?.model ?? '',
       PELUANG_KREDIT_BADGE: getCreditBadgeForCountly(),
       CAR_PHOTO_ORDER: index + 1,
-      VISUAL_TAB_CATEGORY: tab ? tab : '',
+      VISUAL_TAB_CATEGORY: upperTab ? upperTab : 'Warna',
       MENU_TAB_CATEGORY: valueMenuTabCategory(),
     })
   }
