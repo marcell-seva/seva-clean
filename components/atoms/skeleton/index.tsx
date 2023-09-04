@@ -1,6 +1,6 @@
 import React, { HTMLAttributes } from 'react'
 import styles from 'styles/components/atoms/skeleton.module.scss'
-import Image from 'next/image'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 const Shimmer = '/revamp/illustration/placeholder.gif'
 
@@ -12,7 +12,7 @@ type SkeletonProps = {
 
 const Skeleton = ({ width, height, className = '', style }: SkeletonProps) => {
   return (
-    <Image
+    <LazyLoadImage
       src={Shimmer}
       className={`${className} ${styles.skeleton}`}
       width={width}

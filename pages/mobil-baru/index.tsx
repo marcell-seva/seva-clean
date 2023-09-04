@@ -10,6 +10,7 @@ import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { api } from 'services/api'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import { CarProvider } from 'services/context'
 
 const NewCarResultPage = ({
   meta,
@@ -24,17 +25,24 @@ const NewCarResultPage = ({
         image={defaultSeoImage}
       />
 
-      {isMobile ? (
-        <PLP
-          carRecommendation={meta.carRecommendations}
-          minmaxPrice={meta.MinMaxPrice}
-        />
-      ) : (
-        <PLPDesktop
-          carRecommendation={meta.carRecommendations}
-          footer={meta.footer}
-        />
-      )}
+      <CarProvider
+        car={null}
+        carModel={null}
+        carModelDetails={null}
+        carVariantDetails={null}
+        recommendation={meta.carRecommendations.carRecommendations}
+      >
+        <>
+          {isMobile ? (
+            <PLP minmaxPrice={meta.MinMaxPrice} />
+          ) : (
+            <PLPDesktop
+              carRecommendation={meta.carRecommendations}
+              footer={meta.footer}
+            />
+          )}
+        </>
+      </CarProvider>
     </>
   )
 }

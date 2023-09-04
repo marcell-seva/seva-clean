@@ -37,6 +37,7 @@ import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { PreviousButton, navigateToPLP } from 'utils/navigate'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { CarModelResponse } from 'utils/types'
 
 interface ParamsUrl {
   age?: string
@@ -368,13 +369,12 @@ const FilterMobile = ({
     }
     patchFinancialQuery(dataFinancial)
     patchFunnelQuery(dataFunnelQuery)
-
-    navigateToPLP(PreviousButton.SmartSearch, { query: { ...paramUrl } })
-
     saveRecommendation(response?.carRecommendations || [])
-    trackPLPSubmitFilter(trackFilterAction())
-    onClickClose()
     setResetTmp(false)
+
+    trackPLPSubmitFilter(trackFilterAction())
+    navigateToPLP(PreviousButton.SmartSearch, { query: { ...paramUrl } })
+    onClickClose()
   }
 
   // const handleError = (errorCode: number) => {

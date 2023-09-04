@@ -75,19 +75,17 @@ import { getPageName } from 'utils/pageName'
 import { LoanRank } from 'utils/types/models'
 
 interface PLPProps {
-  carRecommendation: CarRecommendationResponse
   minmaxPrice: MinMaxPrice
 }
 
-export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
+export const PLP = ({ minmaxPrice }: PLPProps) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
-  const { saveRecommendation } = useCar()
-  const [recommendation, setRecommendations] = useState(
-    carRecommendation.carRecommendations,
+  const { recommendation, saveRecommendation } = useCar()
+  const collectDaihatsu = recommendation.some(
+    (item) => item.brand === 'Daihatsu',
   )
-
-  const [showInformDaihatsu, setShowInformDaihatsu] = useState(true)
+  const [showInformDaihatsu, setShowInformDaihatsu] = useState(collectDaihatsu)
   const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>([])
   const {
     bodyType,
@@ -112,9 +110,23 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
   const [isButtonClick, setIsButtonClick] = useState(false)
   const [isResetFilter, setIsResetFilter] = useState(false)
-  const [isFilter, setIsFilter] = useState(false)
+  const showFilter =
+    bodyType ||
+    brand ||
+    priceRangeGroup ||
+    tenure ||
+    age ||
+    downPaymentAmount ||
+    monthlyIncome
+      ? true
+      : false
+
+  const showFilterFinancial =
+    age || downPaymentAmount || monthlyIncome ? true : false
+  const [isFilter, setIsFilter] = useState(showFilter)
   const [isFilterCredit, setIsFilterCredit] = useState(false)
-  const [isFilterFinancial, setIsFilterFinancial] = useState(false)
+  const [isFilterFinancial, setIsFilterFinancial] =
+    useState(showFilterFinancial)
   const [openLabelPromo, setOpenLabelPromo] = useState(false)
   const [openLabelResultMudah, setOpenLabelResultMudah] = useState(false)
   const [openLabelResultSulit, setOpenLabelResultSulit] = useState(false)
@@ -128,7 +140,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
   const [page, setPage] = useState<any>(1)
   const [sampleArray, setSampleArray] = useState({
-    items: carRecommendation.carRecommendations.slice(0, 12),
+    items: recommendation.slice(0, 12),
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const [cityListApi, setCityListApi] = useState<Array<Location>>([])
@@ -167,7 +179,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
   }
 
   const cleanEffect = () => {
-    setRecommendations([])
+    saveRecommendation([])
     setPage(1)
     setShowLoading(true)
   }
@@ -418,10 +430,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
         USER_TYPE: valueForUserTypeProperty(),
       })
     }
-    if (
-      getCity().cityName !== 'Jakarta Pusat' ||
-      carRecommendation.carRecommendations.length === 0
-    ) {
+    if (getCity().cityName !== 'Jakarta Pusat' || recommendation.length === 0) {
       getMinMaxPrice()
         .then((response) => {
           if (response) {
@@ -466,9 +475,10 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
 
             getNewFunnelRecommendations(queryParam)
               .then((response) => {
+                checkFincapBadge(recommendation)
                 if (response) {
                   patchFunnelQuery(queryParam)
-                  setRecommendations(response.carRecommendations)
+                  saveRecommendation(response.carRecommendations)
                   setResultMinMaxPrice({
                     resultMinPrice: response.lowestCarPrice || 0,
                     resultMaxPrice: response.highestCarPrice || 0,
@@ -483,7 +493,6 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
                   setShowInformDaihatsu(collectDaihatsu)
                 }
                 setShowLoading(false)
-                checkFincapBadge(carRecommendation.carRecommendations)
               })
               .catch(() => {
                 setShowLoading(false)
@@ -501,12 +510,8 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
         })
         .catch()
     } else {
-      checkFincapBadge(carRecommendation.carRecommendations)
-      setRecommendations(carRecommendation.carRecommendations)
-      const collectDaihatsu = carRecommendation.carRecommendations.some(
-        (item) => item.brand === 'Daihatsu',
-      )
-      setShowInformDaihatsu(collectDaihatsu)
+      checkFincapBadge(recommendation)
+      saveRecommendation(recommendation)
       const queryParam: any = {
         downPaymentAmount: downPaymentAmount || '',
         brand: brand?.split(',') || '',
@@ -536,7 +541,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
     if (sticky && !isActive)
       return (
         <NavigationFilterMobile
-          setRecommendations={setRecommendations}
+          setRecommendations={saveRecommendation}
           onButtonClick={handleShowFilter}
           onSortClick={handleShowSort(true)}
           carlist={recommendation || []}
@@ -562,7 +567,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
     getNewFunnelRecommendations(queryParam).then((response) => {
       if (response) {
         patchFunnelQuery(queryParam)
-        setRecommendations(response.carRecommendations)
+        saveRecommendation(response.carRecommendations)
         setResultMinMaxPrice({
           resultMinPrice: response.lowestCarPrice || 0,
           resultMaxPrice: response.highestCarPrice || 0,
@@ -637,7 +642,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
         {!showLoading && sampleArray.items.length === 0 ? (
           <>
             <NavigationFilterMobile
-              setRecommendations={setRecommendations}
+              setRecommendations={saveRecommendation}
               onButtonClick={handleShowFilter}
               onSortClick={handleShowSort(true)}
               carlist={recommendation || []}
@@ -656,7 +661,7 @@ export const PLP = ({ carRecommendation, minmaxPrice }: PLPProps) => {
         ) : (
           <>
             <NavigationFilterMobile
-              setRecommendations={setRecommendations}
+              setRecommendations={saveRecommendation}
               onButtonClick={handleShowFilter}
               onSortClick={handleShowSort(true)}
               carlist={recommendation || []}
