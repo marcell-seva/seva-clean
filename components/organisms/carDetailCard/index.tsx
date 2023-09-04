@@ -34,6 +34,7 @@ import {
   saveDataForCountlyTrackerPageViewLC,
   saveDataForCountlyTrackerPageViewPDP,
 } from 'utils/navigate'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 type CarDetailCardProps = {
   order?: number
@@ -193,16 +194,28 @@ export const CarDetailCard = ({
   return (
     <div className={styles.container}>
       <CardShadow className={styles.cardWrapper}>
-        <Image
-          src={recommendation.images[0]}
-          className={styles.heroImg}
-          alt={`${recommendation.brand} ${recommendation.model}`}
-          onClick={navigateToPDP(order)}
-          data-testid={elementId.CarImage}
-          width={279}
-          height={209}
-          loading={order === 0 ? 'eager' : 'lazy'}
-        />
+        {order === 0 ? (
+          <Image
+            src={recommendation.images[0]}
+            className={styles.heroImg}
+            alt={`${recommendation.brand} ${recommendation.model}`}
+            onClick={navigateToPDP(order)}
+            data-testid={elementId.CarImage}
+            width={279}
+            height={209}
+          />
+        ) : (
+          <LazyLoadImage
+            src={recommendation.images[0]}
+            className={styles.heroImg}
+            alt={`${recommendation.brand} ${recommendation.model}`}
+            onClick={navigateToPDP(order)}
+            data-testid={elementId.CarImage}
+            width={279}
+            height={209}
+          />
+        )}
+
         <LabelPromo
           className={styles.labelCard}
           onClick={onClickLabel}

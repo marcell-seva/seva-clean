@@ -77,11 +77,9 @@ export const WebAnnouncementBox = ({
   )
 
   const [announcement, setAnnouncement] = useState<AnnouncementBoxDataType>()
-  const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
 
   useEffect(() => {
-    setIsLoading(true)
     api
       .getAnnouncementBox({
         headers: {
@@ -90,11 +88,9 @@ export const WebAnnouncementBox = ({
       })
       .then((res: any) => {
         setAnnouncement(res.data)
-        setIsLoading(false)
       })
       .catch(() => {
         setIsError(true)
-        setIsLoading(false)
       })
   }, [])
 
@@ -169,7 +165,6 @@ export const WebAnnouncementBox = ({
   }
 
   if (isError) return <></>
-  if (isLoading) return <SkeletonLoading />
 
   return (
     <>

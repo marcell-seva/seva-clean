@@ -37,6 +37,7 @@ import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { PreviousButton, navigateToPLP } from 'utils/navigate'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { CarModelResponse } from 'utils/types'
 
 interface ParamsUrl {
   age?: string
