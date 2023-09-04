@@ -354,13 +354,6 @@ const FilterMobile = ({
     onClickClose()
   }
 
-  // const handleError = (errorCode: number) => {
-  //   if (errorCode === 500) {
-  //     setRecommendations([])
-  //   } else {
-  //     setRecommendations([])
-  //   }
-  // }
   const paramQuery = funnelQuery
 
   const resultRef = useRef<null | HTMLDivElement>(null)

@@ -643,7 +643,6 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
                   (i: any, index: React.Key | null | undefined) => (
                     <CarDetailCard
                       key={index}
-                      order={Number(index)}
                       recommendation={i}
                       isFilter={isFilterCredit}
                       onClickLabel={() => setOpenLabelPromo(true)}
