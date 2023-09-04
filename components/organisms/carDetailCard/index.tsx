@@ -175,6 +175,7 @@ export const CarDetailCard = ({
             data-testid={elementId.CarImage}
             width={279}
             height={209}
+            loading="eager"
           />
         ) : (
           <LazyLoadImage
