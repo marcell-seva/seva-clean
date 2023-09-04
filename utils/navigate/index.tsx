@@ -149,6 +149,7 @@ export const navigateToPLP = (
   source: PreviousButton = PreviousButton.undefined,
   option?: any,
   navigate: boolean = true,
+  replace = false,
 ) => {
   let refer = defineRouteName(Router.pathname)
 
@@ -159,6 +160,11 @@ export const navigateToPLP = (
   )
 
   if (!navigate) return
+  if (replace)
+    return Router.replace({
+      pathname: urls.internalUrls.carResultsUrl,
+      ...option,
+    })
   return Router.push({ pathname: urls.internalUrls.carResultsUrl, ...option })
 }
 

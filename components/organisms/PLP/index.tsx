@@ -692,6 +692,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
                 {sampleArray.items.map(
                   (i: any, index: React.Key | null | undefined) => (
                     <CarDetailCard
+                      order={Number(index)}
                       key={index}
                       order={Number(index)}
                       recommendation={i}
@@ -760,7 +761,12 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
         <SortingMobile
           open={openSorting}
           onClose={handleShowSort(false)}
-          onPickClose={(value: any) => onFilterSort(value)}
+          onPickClose={(value: any, label) => {
+            onFilterSort(value)
+            trackEventCountly(CountlyEventNames.WEB_PLP_SORT_OPTION_CLICK, {
+              SORT_VALUE: label,
+            })
+          }}
         />
         <PopupPromo
           open={openLabelPromo}

@@ -166,7 +166,7 @@ export const CarDetailCard = ({
     const datatrack = {
       CAR_BRAND: recommendation.brand,
       CAR_MODEL: recommendation.model,
-      CAR_ORDER: index,
+      CAR_ORDER: index + 1,
       PELUANG_KREDIT_BADGE:
         peluangKredit === 'Null' ? peluangKredit : peluangKredit + ' disetujui',
     }
@@ -184,7 +184,7 @@ export const CarDetailCard = ({
 
   const navigateToPDP = (index: number) => () => {
     if (!isFilterTrayOpened) {
-      trackCarClick(index, false)
+      trackCarClick(index + 1, false)
 
       saveDataForCountlyTrackerPageViewPDP(PreviousButton.ProductCard)
       router.push(detailCarRoute)
