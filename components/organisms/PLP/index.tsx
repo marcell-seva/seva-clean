@@ -171,7 +171,6 @@ export const PLP = ({
     saveRecommendation([])
     setPage(1)
     setShowLoading(true)
-    setSampleArray({ items: [] })
   }
 
   useEffect(() => {
