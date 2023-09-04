@@ -228,6 +228,13 @@ export const CreditTab = () => {
   )
   const [isSentCountlyPageView, setIsSentCountlyPageView] = useState(false)
   const loanRankcr = router.query.loanRankCVL ?? ''
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
 
   const getAutofilledCityData = () => {
     // related to logic inside component "FormSelectCity"
@@ -357,16 +364,9 @@ export const CreditTab = () => {
     const previousSourceSection = getSessionStorage(
       SessionStorageKey.PreviousSourceSectionLC,
     )
-    const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
     const referralCodeFromUrl: string | null = getLocalStorage(
       LocalStorageKey.referralTemanSeva,
     )
-
-    const isUsingFilterFinancial =
-      !!filterStorage?.age &&
-      !!filterStorage?.downPaymentAmount &&
-      !!filterStorage?.monthlyIncome &&
-      !!filterStorage?.tenure
 
     let temanSevaStatus = 'No'
     if (referralCodeFromUrl) {
@@ -403,16 +403,18 @@ export const CreditTab = () => {
   useEffect(() => {
     fetchAllCarModels()
     fetchArticles()
-    if (!isSentCountlyPageView) {
-      setTimeout(() => {
+    const timeoutCountlyTracker = setTimeout(() => {
+      if (!isSentCountlyPageView) {
         trackCountlyViewCreditTab()
-      }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
-    }
+      }
+    }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
 
     const nextDisplay = localStorage.getItem('tooltipNextDisplay')
     if (nextDisplay) {
       setTooltipNextDisplay(nextDisplay)
     }
+
+    return () => clearTimeout(timeoutCountlyTracker)
   }, [])
 
   React.useEffect(() => {
@@ -1017,6 +1019,9 @@ export const CreditTab = () => {
     }
     setIsLoadingInsuranceAndPromo(false)
     scrollToResult()
+    setTimeout(() => {
+      trackCountlyResultView()
+    }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
 
     const selectedData =
       tempArr.sort(
@@ -1204,6 +1209,7 @@ export const CreditTab = () => {
   const handleClickButtonQualification = (
     loan: SpecialRateListWithPromoType,
   ) => {
+    trackCountlyClickCheckQualification(loan)
     trackLCKualifikasiKreditClick(getDataForAmplitudeQualification(loan))
     setIsQualificationModalOpen(true)
 
@@ -1391,6 +1397,7 @@ export const CreditTab = () => {
   }
 
   const onCloseQualificationPopUp = () => {
+    trackCountlyOnCloseQualificationModal()
     trackLCKualifikasiKreditPopUpClose(
       getDataForAmplitudeQualification(selectedLoan),
     )
@@ -1492,13 +1499,6 @@ export const CreditTab = () => {
     const resultSortAscByTenure = calculationResult.sort(
       (a, b) => a.tenure - b.tenure,
     )
-    const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
-
-    const isUsingFilterFinancial =
-      !!filterStorage?.age &&
-      !!filterStorage?.downPaymentAmount &&
-      !!filterStorage?.monthlyIncome &&
-      !!filterStorage?.tenure
 
     trackEventCountly(
       CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CALCULATE_CLICK,
@@ -1537,6 +1537,97 @@ export const CreditTab = () => {
           : 'Sulit disetujui',
       },
     )
+  }
+
+  const trackCountlyResultView = () => {
+    trackEventCountly(CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_RESULT_VIEW, {
+      ...dataForCountlyTrackerOnClick(),
+      CAR_VARIANT: forms.variant?.variantName ?? 'Null',
+    })
+  }
+
+  const trackCountlyClickCheckQualification = (
+    loan: SpecialRateListWithPromoType,
+  ) => {
+    const selectedInsurancePromo = insuranceAndPromoForAllTenure.filter(
+      (x) => x.tenure === loan.tenure,
+    )[0]
+
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CHECK_QUALIFICATION_CLICK,
+      {
+        ...dataForCountlyTrackerOnClick(),
+        PELUANG_KREDIT_BADGE: isUsingFilterFinancial
+          ? getCreditBadgeForCountlyTracker()
+          : 'Null',
+        CAR_VARIANT: forms.variant?.variantName ?? 'Null',
+        TENOR_OPTION: `${loan.tenure} tahun`,
+        TENOR_RESULT:
+          loan.loanRank === LoanRank.Green
+            ? 'Mudah disetujui'
+            : 'Sulit disetujui',
+        INSURANCE_TYPE: !!selectedInsurancePromo
+          ? selectedInsurancePromo.selectedInsurance.label
+          : 'Null',
+        PROMO_AMOUNT: !!selectedInsurancePromo
+          ? selectedInsurancePromo.selectedPromo?.length
+          : 'Null',
+      },
+    )
+  }
+
+  const trackCountlyOnClickCtaModal = () => {
+    const selectedLoanDataStorage: any = getLocalStorage(
+      LocalStorageKey.SelectablePromo,
+    )
+    if (selectedLoanDataStorage) {
+      trackEventCountly(
+        CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CHECK_QUALIFICATION_BANNER_CHECK_CLICK,
+        {
+          ...dataForCountlyTrackerOnClick(),
+          PELUANG_KREDIT_BADGE: isUsingFilterFinancial
+            ? getCreditBadgeForCountlyTracker()
+            : 'Null',
+          CAR_VARIANT: forms.variant?.variantName ?? 'Null',
+          TENOR_OPTION: `${selectedLoan?.tenure} tahun`,
+          TENOR_RESULT:
+            selectedLoan?.loanRank === LoanRank.Green
+              ? 'Mudah disetujui'
+              : 'Sulit disetujui',
+          INSURANCE_TYPE: !!selectedLoanDataStorage
+            ? selectedLoanDataStorage?.selectedInsurance.label
+            : 'Null',
+          PROMO_AMOUNT: !!selectedLoanDataStorage
+            ? selectedLoanDataStorage?.selectedPromo?.length
+            : 'Null',
+          LOGIN_STATUS: !!getToken() ? 'Yes' : 'No',
+        },
+      )
+    }
+  }
+
+  const trackCountlyOnCloseQualificationModal = () => {
+    const selectedLoanDataStorage: any = getLocalStorage(
+      LocalStorageKey.SelectablePromo,
+    )
+    if (selectedLoanDataStorage) {
+      trackEventCountly(
+        CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CHECK_QUALIFICATION_BANNER_CLOSE_CLICK,
+        {
+          ...dataForCountlyTrackerOnClick(),
+          CAR_VARIANT: forms.variant?.variantName ?? 'Null',
+          TENOR_OPTION: `${selectedLoan?.tenure} tahun`,
+          TENOR_RESULT:
+            selectedLoan?.loanRank === LoanRank.Green
+              ? 'Mudah disetujui'
+              : 'Sulit disetujui',
+        },
+      )
+    }
+  }
+
+  const onClickCtaQualificationModal = () => {
+    trackCountlyOnClickCtaModal()
   }
 
   return (
@@ -1739,8 +1830,12 @@ export const CreditTab = () => {
               handleClickButtonQualification={handleClickButtonQualification}
               formData={forms}
               insuranceAndPromoForAllTenure={insuranceAndPromoForAllTenure}
+              setInsuranceAndPromoForAllTenure={
+                setInsuranceAndPromoForAllTenure
+              }
               calculationApiPayload={calculationApiPayload}
               setFinalLoan={setFinalLoan}
+              pageOrigination={'PDP Credit Tab'}
             />
           </div>
           {carRecommendations.length > 0 && (
@@ -1788,6 +1883,7 @@ export const CreditTab = () => {
         onClickCloseButton={onCloseQualificationPopUp}
         formData={forms}
         selectedLoan={selectedLoan}
+        onClickCta={onClickCtaQualificationModal}
       />
 
       <Toast

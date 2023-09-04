@@ -20,7 +20,7 @@ interface Props {
   data: SpecialRateListWithPromoType
   emitOnClick: (value: SpecialRateListWithPromoType) => void
   isActive: boolean
-  onClickBottomSection: (tenure: number) => void
+  onClickBottomSection: (selectedData: SpecialRateListWithPromoType) => void
   insuranceAndPromoData: LoanCalculatorInsuranceAndPromoType
 }
 
@@ -268,7 +268,7 @@ export const CalculationResultItem = ({
           [styles.bottomInfoGreen]: data.loanRank === LoanRank.Green,
           [styles.bottomInfoRed]: data.loanRank === LoanRank.Red,
         })}
-        onClick={() => onClickBottomSection(data.tenure)}
+        onClick={() => onClickBottomSection(data)}
       >
         {renderBottomSectionContent()}
       </div>

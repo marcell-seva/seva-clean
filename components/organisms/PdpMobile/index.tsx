@@ -443,11 +443,13 @@ export default function NewCarVariantList() {
   }
 
   useEffect(() => {
-    if (!isSentCountlyPageView) {
-      setTimeout(() => {
+    const timeoutCountlyTracker = setTimeout(() => {
+      if (!isSentCountlyPageView) {
         trackCountlyPageView()
-      }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
-    }
+      }
+    }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
+
+    return () => clearTimeout(timeoutCountlyTracker)
   }, [])
 
   useEffect(() => {
