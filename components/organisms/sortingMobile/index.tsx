@@ -12,7 +12,7 @@ import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 interface SortingMobileProps extends Omit<BottomSheetProps, 'children'> {
   onClose: () => void
-  onPickClose: (value: any) => any
+  onPickClose: (value: any, label: string) => any
   sortOptionMultiKK?: boolean
   selectedSortMultiKK?: string
 }
@@ -29,10 +29,7 @@ const SortingMobile = ({
   const onChooseOption = (value: FormControlValue, label: FormControlValue) => {
     patchFunnelQuery({ sortBy: value as string })
     trackPLPSortClick(label as string)
-    trackEventCountly(CountlyEventNames.WEB_PLP_SORT_OPTION_CLICK, {
-      SORT_VALUE: label,
-    })
-    onPickClose(value)
+    onPickClose(value, label as string)
   }
   return (
     <BottomSheet
