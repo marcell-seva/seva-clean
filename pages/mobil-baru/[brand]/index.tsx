@@ -37,10 +37,7 @@ const NewCarResultPage = ({
         <link rel="icon" href="/favicon.png" />
       </Head>
       {isMobile ? (
-        <PLP
-          carRecommendation={meta.carRecommendations}
-          minmaxPrice={meta.MinMaxPrice}
-        />
+        <PLP minmaxPrice={meta.MinMaxPrice} />
       ) : (
         <PLPDesktop
           carRecommendation={meta.carRecommendations}
