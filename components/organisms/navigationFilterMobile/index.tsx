@@ -16,6 +16,8 @@ import elementId from 'helpers/elementIds'
 import { LanguageCode } from 'utils/enum'
 import { sortOptions } from 'utils/config/funnel.config'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { carResultsUrl } from 'utils/helpers/routes'
+import { useRouter } from 'next/router'
 
 type NavFilterMobileProps = {
   carlist?: any
@@ -44,6 +46,7 @@ export const NavigationFilterMobile = ({
 }: NavFilterMobileProps) => {
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
   const { sortBy } = funnelQuery
+  const router = useRouter()
   const filterSortOption = sortOptions.filter((x) => x.value === sortBy)[0]
   const sortFilter = filterSortOption?.label || ''
   const summaryCar = carlist?.length || 0

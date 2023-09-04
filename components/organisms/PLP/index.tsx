@@ -298,6 +298,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
               ? SessionStorageKey.ShowWebAnnouncementLogin
               : SessionStorageKey.ShowWebAnnouncementNonLogin,
           )
+
           setIsShowAnnouncementBox(Boolean(sessionAnnouncmentBox))
         }
       })
@@ -371,13 +372,6 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
   }, [recommendation])
 
   useEffect(() => {
-    const sessionAnnouncmentBox = getSessionStorage(
-      getToken()
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    )
-    setIsShowAnnouncementBox(Boolean(sessionAnnouncmentBox))
-
     if (getCity().cityName !== 'Jakarta Pusat' || recommendation.length === 0) {
       getMinMaxPrice()
         .then((response) => {
@@ -457,10 +451,6 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
         })
         .catch()
     } else {
-      const collectDaihatsu = recommendation.some(
-        (item) => item.brand === 'Daihatsu',
-      )
-      setShowInformDaihatsu(collectDaihatsu)
       const queryParam: any = {
         downPaymentAmount: downPaymentAmount || '',
         brand: brand?.split(',') || '',
@@ -643,6 +633,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
                   (i: any, index: React.Key | null | undefined) => (
                     <CarDetailCard
                       key={index}
+                      order={Number(index)}
                       recommendation={i}
                       isFilter={isFilterCredit}
                       onClickLabel={() => setOpenLabelPromo(true)}
