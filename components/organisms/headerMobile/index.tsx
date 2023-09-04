@@ -30,6 +30,10 @@ import {
 import { getPageName } from 'utils/pageName'
 import { SearchModal } from 'components/molecules/searchModal'
 import Image from 'next/image'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewHomepage,
+} from 'utils/navigate'
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
@@ -107,6 +111,7 @@ export const HeaderMobile = ({
       PAGE_ORIGINATION: getPageName(),
       USER_TYPE: valueForUserTypeProperty(),
     })
+    saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
   }
 
   return (

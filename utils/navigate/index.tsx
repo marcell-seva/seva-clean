@@ -57,6 +57,8 @@ export enum PreviousButton {
   VariantPriceList = 'Variant pricelist',
   LeadsForm = 'Leads form',
   PopUpUbahData = 'Pop Up Ubah Data',
+  SevaLogo = 'SEVA logo',
+  ButtonBackToHomepage = 'Button Back to Homepage',
 }
 
 export const defineRouteName = (pathname: string) => {
@@ -95,6 +97,9 @@ export const defineRouteName = (pathname: string) => {
       return RouteName.IAAPProved
     }
     if (pathname.includes('rejected')) {
+      return RouteName.IARejected
+    }
+    if (pathname.includes('result')) {
       return RouteName.IARejected
     }
   }
@@ -199,4 +204,17 @@ export const saveDataForCountlyTrackerPageViewLC = (
     defineRouteName(window.location.pathname),
   )
   saveSessionStorage(SessionStorageKey.PreviousSourceSectionLC, previousButton)
+}
+
+export const saveDataForCountlyTrackerPageViewHomepage = (
+  previousButton: PreviousButton,
+) => {
+  saveSessionStorage(
+    SessionStorageKey.PageReferrerHomepage,
+    defineRouteName(window.location.pathname),
+  )
+  saveSessionStorage(
+    SessionStorageKey.PreviousSourceButtonHomepage,
+    previousButton,
+  )
 }
