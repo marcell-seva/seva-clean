@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from 'react'
 import { CarDetail, CarModelResponse, CarVariantDetails } from 'utils/types'
 import { CarModelDetailsResponse, CarRecommendation } from 'utils/types/props'
 
-export type CarContextType = {
+export interface CarContextType {
   car: CarDetail | null
   saveCar: (data: CarDetail) => void
   carModel: CarModelResponse | null
@@ -13,6 +13,18 @@ export type CarContextType = {
   saveCarVariantDetails: (data: CarVariantDetails) => void
   recommendation: CarRecommendation[] | []
   saveRecommendation: (data: CarRecommendation[] | []) => void
+}
+
+export interface CarContextProps
+  extends Pick<
+    CarContextType,
+    | 'car'
+    | 'carModel'
+    | 'carModelDetails'
+    | 'carVariantDetails'
+    | 'recommendation'
+  > {
+  children: React.ReactNode
 }
 
 export const CarContext = createContext<CarContextType>({
@@ -28,16 +40,25 @@ export const CarContext = createContext<CarContextType>({
   saveRecommendation: () => {},
 })
 
-export const CarProvider = ({ children }: any) => {
-  const [car, setCar] = useState<CarDetail | null>(null)
-  const [carModel, setCarModel] = useState<CarModelResponse | null>(null)
-  const [carModelDetails, setCarModelDetails] =
-    useState<CarModelDetailsResponse | null>(null)
-  const [carVariantDetails, setCarVariantDetails] =
-    useState<CarVariantDetails | null>(null)
-  const [recommendation, setRecommendation] = useState<
+export const CarProvider = ({
+  children,
+  car = null,
+  carModel = null,
+  carModelDetails = null,
+  carVariantDetails = null,
+  recommendation = [],
+}: CarContextProps) => {
+  const [currentCar, setCar] = useState<CarDetail | null>(car)
+  const [currentCarModel, setCarModel] = useState<CarModelResponse | null>(
+    carModel,
+  )
+  const [currentCarModelDetails, setCarModelDetails] =
+    useState<CarModelDetailsResponse | null>(carModelDetails)
+  const [currentCarVariantDetails, setCarVariantDetails] =
+    useState<CarVariantDetails | null>(carVariantDetails)
+  const [currentRecommendation, setRecommendation] = useState<
     CarRecommendation[] | []
-  >([])
+  >(recommendation)
 
   const saveCar = (car: CarDetail) => {
     setCar(car)
@@ -60,15 +81,15 @@ export const CarProvider = ({ children }: any) => {
   return (
     <CarContext.Provider
       value={{
-        car,
+        car: currentCar,
         saveCar,
-        carModel,
+        carModel: currentCarModel,
         saveCarModel,
-        carModelDetails,
+        carModelDetails: currentCarModelDetails,
         saveCarModelDetails,
-        carVariantDetails,
+        carVariantDetails: currentCarVariantDetails,
         saveCarVariantDetails,
-        recommendation,
+        recommendation: currentRecommendation,
         saveRecommendation,
       }}
     >

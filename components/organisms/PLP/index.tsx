@@ -75,22 +75,18 @@ import { getPageName } from 'utils/pageName'
 import { LoanRank } from 'utils/types/models'
 
 interface PLPProps {
-  carRecommendation: CarRecommendationResponse
   minmaxPrice: MinMaxPrice
-  alternativeRecommendation: CarRecommendation[]
 }
 
-export const PLP = ({
-  carRecommendation,
-  minmaxPrice,
-  alternativeRecommendation,
-}: PLPProps) => {
+export const PLP = ({ minmaxPrice }: PLPProps) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
   const { recommendation, saveRecommendation } = useCar()
-  const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>(
-    alternativeRecommendation,
+  const collectDaihatsu = recommendation.some(
+    (item) => item.brand === 'Daihatsu',
   )
+  const [showInformDaihatsu, setShowInformDaihatsu] = useState(collectDaihatsu)
+  const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>([])
   const {
     bodyType,
     brand,
@@ -114,9 +110,23 @@ export const PLP = ({
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
   const [isButtonClick, setIsButtonClick] = useState(false)
   const [isResetFilter, setIsResetFilter] = useState(false)
-  const [isFilter, setIsFilter] = useState(false)
+  const showFilter =
+    bodyType ||
+    brand ||
+    priceRangeGroup ||
+    tenure ||
+    age ||
+    downPaymentAmount ||
+    monthlyIncome
+      ? true
+      : false
+
+  const showFilterFinancial =
+    age || downPaymentAmount || monthlyIncome ? true : false
+  const [isFilter, setIsFilter] = useState(showFilter)
   const [isFilterCredit, setIsFilterCredit] = useState(false)
-  const [isFilterFinancial, setIsFilterFinancial] = useState(false)
+  const [isFilterFinancial, setIsFilterFinancial] =
+    useState(showFilterFinancial)
   const [openLabelPromo, setOpenLabelPromo] = useState(false)
   const [openLabelResultMudah, setOpenLabelResultMudah] = useState(false)
   const [openLabelResultSulit, setOpenLabelResultSulit] = useState(false)
@@ -130,12 +140,13 @@ export const PLP = ({
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
   const [page, setPage] = useState<any>(1)
   const [sampleArray, setSampleArray] = useState({
-    items: carRecommendation.carRecommendations.slice(0, 12),
+    items: recommendation.slice(0, 12),
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const [cityListApi, setCityListApi] = useState<Array<Location>>([])
   const [showAnnouncementBox, setIsShowAnnouncementBox] = useState(false)
-  const [isLogin] = React.useState(!!getToken())
+  const [isLogin] = useState(!!getToken())
+
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
       getCities().then((res) => {
@@ -172,13 +183,6 @@ export const PLP = ({
     setPage(1)
     setShowLoading(true)
   }
-
-  useEffect(() => {
-    document.body.style.overflowY = isActive ? 'hidden' : 'auto'
-    return () => {
-      document.body.style.overflowY = 'auto'
-    }
-  }, [isActive])
 
   const handelSticky = (position: number) => {
     if (position > 50) return setSticky(true)
@@ -295,16 +299,16 @@ export const PLP = ({
       .then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
         if (res.data === undefined) {
           setIsShowAnnouncementBox(false)
+        } else {
+          const sessionAnnouncmentBox = getSessionStorage(
+            getToken()
+              ? SessionStorageKey.ShowWebAnnouncementLogin
+              : SessionStorageKey.ShowWebAnnouncementNonLogin,
+          )
+          setIsShowAnnouncementBox(Boolean(sessionAnnouncmentBox))
         }
       })
   }
-
-  useEffect(() => {
-    document.body.style.overflowY = isActive ? 'hidden' : 'auto'
-    return () => {
-      document.body.style.overflowY = 'auto'
-    }
-  }, [isActive])
 
   const trackPLPView = (creditBadge: string = 'Null') => {
     const prevPage = getSessionStorage(SessionStorageKey.PreviousPage) as any
@@ -415,15 +419,10 @@ export const PLP = ({
     setPage(1)
     setHasMore(true)
     setSampleArray({ items: recommendation.slice(0, 12) })
+    saveRecommendation(recommendation)
   }, [recommendation])
 
   useEffect(() => {
-    const sessionAnnouncmentBox = getSessionStorage(
-      getToken()
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    )
-    setIsShowAnnouncementBox(Boolean(sessionAnnouncmentBox))
     if (isActive) {
       trackEventCountly(CountlyEventNames.WEB_HAMBURGER_OPEN, {
         PAGE_ORIGINATION: getPageName(),
@@ -431,10 +430,7 @@ export const PLP = ({
         USER_TYPE: valueForUserTypeProperty(),
       })
     }
-    if (
-      getCity().cityName !== 'Jakarta Pusat' ||
-      carRecommendation.carRecommendations.length === 0
-    ) {
+    if (getCity().cityName !== 'Jakarta Pusat' || recommendation.length === 0) {
       getMinMaxPrice()
         .then((response) => {
           if (response) {
@@ -479,6 +475,7 @@ export const PLP = ({
 
             getNewFunnelRecommendations(queryParam)
               .then((response) => {
+                checkFincapBadge(recommendation)
                 if (response) {
                   patchFunnelQuery(queryParam)
                   saveRecommendation(response.carRecommendations)
@@ -490,9 +487,12 @@ export const PLP = ({
                   setSampleArray({
                     items: response.carRecommendations.slice(0, 12),
                   })
+                  const collectDaihatsu = response.carRecommendations.some(
+                    (item: { brand: string }) => item.brand === 'Daihatsu',
+                  )
+                  setShowInformDaihatsu(collectDaihatsu)
                 }
                 setShowLoading(false)
-                checkFincapBadge(carRecommendation.carRecommendations)
               })
               .catch(() => {
                 setShowLoading(false)
@@ -510,8 +510,8 @@ export const PLP = ({
         })
         .catch()
     } else {
-      saveRecommendation(carRecommendation.carRecommendations)
-      checkFincapBadge(carRecommendation.carRecommendations)
+      checkFincapBadge(recommendation)
+      saveRecommendation(recommendation)
       const queryParam: any = {
         downPaymentAmount: downPaymentAmount || '',
         brand: brand?.split(',') || '',
@@ -551,6 +551,7 @@ export const PLP = ({
           sticky={sticky}
           resultMinMaxPrice={resultMinMaxPrice}
           isShowAnnouncementBox={showAnnouncementBox}
+          showInformationDaihatsu={showInformDaihatsu}
         />
       )
 
@@ -649,6 +650,7 @@ export const PLP = ({
               isFilterFinancial={isFilterFinancial}
               resultMinMaxPrice={resultMinMaxPrice}
               isShowAnnouncementBox={showAnnouncementBox}
+              showInformationDaihatsu={showInformDaihatsu}
             />
             {stickyFilter()}
             <PLPEmpty
@@ -667,6 +669,7 @@ export const PLP = ({
               isFilterFinancial={isFilterFinancial}
               resultMinMaxPrice={resultMinMaxPrice}
               isShowAnnouncementBox={showAnnouncementBox}
+              showInformationDaihatsu={showInformDaihatsu}
             />
             {stickyFilter()}
             <div
