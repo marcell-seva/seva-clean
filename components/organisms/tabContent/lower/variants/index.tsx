@@ -41,6 +41,7 @@ import {
   PreviousButton,
   saveDataForCountlyTrackerPageViewLC,
 } from 'utils/navigate'
+import { getLocalStorage } from 'utils/handler/localStorage'
 
 const rpIcon = '/revamp/illustration/rp-icon.webp'
 
@@ -66,8 +67,15 @@ const TabContentLowerVariant = ({
     LocalStorageKey.CityOtr,
     null,
   )
-  const router = useRouter()
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
 
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
+
+  const router = useRouter()
   const brand = router.query.brand as string
   const model = router.query.model as string
   const tab = router.query.tab as string
@@ -176,7 +184,7 @@ const TabContentLowerVariant = ({
       CAR_MODEL: carModelDetails.model ?? '',
       CAR_VARIANT: carVariant.name,
       CAR_ORDER: index + 1,
-      PELUANG_KREDIT_BADGE: creditBadge,
+      PELUANG_KREDIT_BADGE: isUsingFilterFinancial ? creditBadge : 'Null',
     })
   }
 
