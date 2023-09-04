@@ -298,8 +298,11 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
               ? SessionStorageKey.ShowWebAnnouncementLogin
               : SessionStorageKey.ShowWebAnnouncementNonLogin,
           )
-
-          setIsShowAnnouncementBox(Boolean(sessionAnnouncmentBox))
+          if (sessionAnnouncmentBox) {
+            setIsShowAnnouncementBox(sessionAnnouncmentBox as boolean)
+          } else {
+            setIsShowAnnouncementBox(true)
+          }
         }
       })
   }
