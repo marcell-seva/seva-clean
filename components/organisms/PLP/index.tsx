@@ -694,7 +694,6 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
                     <CarDetailCard
                       order={Number(index)}
                       key={index}
-                      order={Number(index)}
                       recommendation={i}
                       isFilter={isFilterCredit}
                       onClickLabel={() => setOpenLabelPromo(true)}
