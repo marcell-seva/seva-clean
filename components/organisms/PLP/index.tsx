@@ -71,6 +71,7 @@ import {
   valueForUserTypeProperty,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getPageName } from 'utils/pageName'
 import { LoanRank } from 'utils/types/models'
 
 interface PLPProps {
@@ -133,15 +134,8 @@ export const PLP = ({
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const [cityListApi, setCityListApi] = useState<Array<Location>>([])
-  const [showAnnouncementBox, setIsShowAnnouncementBox] = useState<
-    boolean | null
-  >(
-    getSessionStorage(
-      getToken()
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ) ?? true,
-  )
+  const [showAnnouncementBox, setIsShowAnnouncementBox] = useState(false)
+  const [isLogin] = React.useState(!!getToken())
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
       getCities().then((res) => {
@@ -300,11 +294,18 @@ export const PLP = ({
         },
       })
       .then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-        if (res.data.data === undefined) {
+        if (res.data === undefined) {
           setIsShowAnnouncementBox(false)
         }
       })
   }
+
+  useEffect(() => {
+    document.body.style.overflowY = isActive ? 'hidden' : 'auto'
+    return () => {
+      document.body.style.overflowY = 'auto'
+    }
+  }, [isActive])
 
   const trackPLPView = (creditBadge: string = 'Null') => {
     const prevPage = getSessionStorage(SessionStorageKey.PreviousPage) as any
@@ -378,7 +379,8 @@ export const PLP = ({
         minMaxPrice.minPriceValue.toString() +
           '-' +
           minMaxPrice.maxPriceValue.toString() &&
-        funnelQuery.priceRangeGroup !== '') ||
+        funnelQuery.priceRangeGroup !== '' &&
+        funnelQuery.priceRangeGroup !== undefined) ||
       // funnelQuery.downPaymentAmount ||
       funnelQuery.monthlyIncome ||
       funnelQuery.age ||
@@ -407,7 +409,6 @@ export const PLP = ({
       getLocalStorage(LocalStorageKey.flagResultFilterInfoPLP) !== true
     ) {
       setOpenLabelResultInfo(true)
-      trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BANNER_DESC_VIEW)
     }
   }, [isFilterFinancial])
 
@@ -418,6 +419,19 @@ export const PLP = ({
   }, [recommendation])
 
   useEffect(() => {
+    const sessionAnnouncmentBox = getSessionStorage(
+      getToken()
+        ? SessionStorageKey.ShowWebAnnouncementLogin
+        : SessionStorageKey.ShowWebAnnouncementNonLogin,
+    )
+    setIsShowAnnouncementBox(Boolean(sessionAnnouncmentBox))
+    if (isActive) {
+      trackEventCountly(CountlyEventNames.WEB_HAMBURGER_OPEN, {
+        PAGE_ORIGINATION: getPageName(),
+        LOGIN_STATUS: isLogin,
+        USER_TYPE: valueForUserTypeProperty(),
+      })
+    }
     if (
       getCity().cityName !== 'Jakarta Pusat' ||
       carRecommendation.carRecommendations.length === 0
@@ -479,7 +493,7 @@ export const PLP = ({
                   })
                 }
                 setShowLoading(false)
-                checkFincapBadge(response.carRecommendations)
+                checkFincapBadge(carRecommendation.carRecommendations)
               })
               .catch(() => {
                 setShowLoading(false)
@@ -518,12 +532,10 @@ export const PLP = ({
     setOpenLabelResultInfo(false)
     saveLocalStorage(LocalStorageKey.flagResultFilterInfoPLP, 'true')
     trackCekPeluangPopUpCtaClick(getDataForAmplitude())
-    trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BANNER_DESC_OK_CLICK)
   }
   const onCloseResultInfoClose = () => {
     setOpenLabelResultInfo(false)
     trackCekPeluangPopUpCloseClick(getDataForAmplitude())
-    trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BANNER_DESC_EXIT_CLICK)
   }
 
   const stickyFilter = () => {
@@ -609,7 +621,6 @@ export const PLP = ({
       Tenure: `${funnelQuery.tenure || 5}`,
     }
   }
-
   return (
     <>
       <div
@@ -676,40 +687,41 @@ export const PLP = ({
                   </div>
                 }
               >
-                {sampleArray.items.map((i: any, index) => (
-                  <CarDetailCard
-                    key={index}
-                    order={index}
-                    recommendation={i}
-                    isFilter={isFilterCredit}
-                    onClickLabel={() => setOpenLabelPromo(true)}
-                    onClickResultMudah={() => {
-                      setOpenLabelResultMudah(true)
-                      trackPeluangMudahBadgeClick(getDataForAmplitude())
-                      trackEventCountly(
-                        CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
-                        {
-                          PELUANG_KREDIT_BADGE: 'Mudah disetujui',
-                          CAR_BRAND: i.brand,
-                          CAR_MODEL: i.model,
-                        },
-                      )
-                    }}
-                    onClickResultSulit={() => {
-                      setOpenLabelResultSulit(true)
-                      trackPeluangSulitBadgeClick(getDataForAmplitude())
-                      trackEventCountly(
-                        CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
-                        {
-                          PELUANG_KREDIT_BADGE: 'Sulit disetujui',
-                          CAR_BRAND: i.brand,
-                          CAR_MODEL: i.model,
-                        },
-                      )
-                    }}
-                    isFilterTrayOpened={isButtonClick} // fix background click on ios
-                  />
-                ))}
+                {sampleArray.items.map(
+                  (i: any, index: React.Key | null | undefined) => (
+                    <CarDetailCard
+                      key={index}
+                      recommendation={i}
+                      isFilter={isFilterCredit}
+                      onClickLabel={() => setOpenLabelPromo(true)}
+                      onClickResultMudah={() => {
+                        setOpenLabelResultMudah(true)
+                        trackPeluangMudahBadgeClick(getDataForAmplitude())
+                        trackEventCountly(
+                          CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
+                          {
+                            PELUANG_KREDIT_BADGE: 'Mudah disetujui',
+                            CAR_BRAND: i.brand,
+                            CAR_MODEL: i.model,
+                          },
+                        )
+                      }}
+                      onClickResultSulit={() => {
+                        setOpenLabelResultSulit(true)
+                        trackPeluangSulitBadgeClick(getDataForAmplitude())
+                        trackEventCountly(
+                          CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
+                          {
+                            PELUANG_KREDIT_BADGE: 'Sulit disetujui',
+                            CAR_BRAND: i.brand,
+                            CAR_MODEL: i.model,
+                          },
+                        )
+                      }}
+                      isFilterTrayOpened={isButtonClick} // fix background click on ios
+                    />
+                  ),
+                )}
               </InfiniteScroll>
             </div>
           </>

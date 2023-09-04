@@ -84,7 +84,7 @@ export const PageHeaderSevaCarResults = (props: PageHeaderSevaProps) => {
       fetchDataName()
     }
     getMenus().then((res) => {
-      setData(res.data.data)
+      setData(res.data)
     })
   }, [])
 

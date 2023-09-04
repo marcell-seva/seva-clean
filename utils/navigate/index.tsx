@@ -6,7 +6,7 @@ import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
-import { carResultsUrl } from 'utils/helpers/routes'
+import { carResultsUrl, creditQualificationUrl } from 'utils/helpers/routes'
 import urls from 'utils/helpers/url'
 
 enum RouteName {
@@ -44,6 +44,19 @@ export enum PreviousButton {
   SearchBar = 'Search bar',
   IAWaitingForResult = 'Instant Approval - Waiting For Result',
   undefined = '',
+  SearchIcon = 'Search icon',
+  CarRecommendation = 'Car recommendation',
+  CarOfTheMonth = 'Car of the month',
+  ProductCard = 'Product card',
+  CarRecommendationCta = 'Rekomendasi - Hitung Kemampuan',
+  SevaStepsCalculate = 'SEVA steps - Hitung Kemampuan',
+  SevaStepsQualification = 'SEVA steps - Kualifikasi Kredit',
+  SevaBelowSectionCalculate = 'SEVA below section - Hitung Kemampuan',
+  ProductCardCalculate = 'Product card - Hitung Kemampuan',
+  MainTopCta = 'Main Top CTA',
+  VariantPriceList = 'Variant pricelist',
+  LeadsForm = 'Leads form',
+  PopUpUbahData = 'Pop Up Ubah Data',
 }
 
 export const defineRouteName = (pathname: string) => {
@@ -153,4 +166,37 @@ export const navigateToPLP = (
       ...option,
     })
   return Router.push({ pathname: urls.internalUrls.carResultsUrl, ...option })
+}
+
+export const navigateToKK = (option?: any) => {
+  const source = ''
+  const refer = defineRouteName(location.pathname)
+
+  const dataPrevPage = { refer, source }
+  saveSessionStorage(
+    SessionStorageKey.PreviousPage,
+    JSON.stringify(dataPrevPage),
+  )
+
+  return Router.push({ pathname: creditQualificationUrl, ...option })
+}
+
+export const saveDataForCountlyTrackerPageViewPDP = (
+  previousButton: PreviousButton,
+) => {
+  saveSessionStorage(
+    SessionStorageKey.PageReferrerPDP,
+    defineRouteName(window.location.pathname),
+  )
+  saveSessionStorage(SessionStorageKey.PreviousSourceButtonPDP, previousButton)
+}
+
+export const saveDataForCountlyTrackerPageViewLC = (
+  previousButton: PreviousButton,
+) => {
+  saveSessionStorage(
+    SessionStorageKey.PageReferrerLC,
+    defineRouteName(window.location.pathname),
+  )
+  saveSessionStorage(SessionStorageKey.PreviousSourceSectionLC, previousButton)
 }

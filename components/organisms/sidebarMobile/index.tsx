@@ -19,6 +19,9 @@ import { fetchCustomerDetails } from 'utils/httpUtils/customerUtils'
 import { CustomerInfoSeva } from 'utils/types/utils'
 import { useUtils } from 'services/context/utilsContext'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getPageName } from 'utils/pageName'
 
 type sidebarMobileProps = {
   showSidebar?: boolean
@@ -86,6 +89,9 @@ const sidebarMobile = ({
     trackLoginButtonClick({
       Page_Origination_URL: window.location.href,
     })
+    trackEventCountly(CountlyEventNames.WEB_HAMBURGER_LOGIN_REGISTER_CLICK, {
+      PAGE_ORIGINATION: getPageName(),
+    })
     savePageBeforeLogin(window.location.pathname)
     router.push(LoginSevaUrl)
   }
@@ -114,6 +120,10 @@ const sidebarMobile = ({
                 LocalStorageKey.PageBeforeProfile,
                 window.location.pathname,
               )
+              trackEventCountly(CountlyEventNames.WEB_HAMBURGER_ACCOUNT_CLICK, {
+                PAGE_ORIGINATION: getPageName(),
+                SOURCE_SECTION: 'Top',
+              })
               handleClickMyAccount('/akun/profil')
             }}
             className={styles.profileWrapper}

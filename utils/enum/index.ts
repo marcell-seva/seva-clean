@@ -139,7 +139,10 @@ export enum SessionStorageKey {
   UserType = 'UserType',
   HasOpenSevaBefore = 'hasOpenSevaBefore',
   PageReferrerPDP = 'pageReferrerPdp',
-  PreviousSourceButton = 'previousSourceButton',
+  PreviousSourceButtonPDP = 'previousSourceButtonPDP',
+  PageReferrerLC = 'pageReferrerLC',
+  PreviousSourceSectionLC = 'previousSourceSectionLC',
+  HasTrackedDpSliderLC = 'hasTrackedDpSliderLC',
 }
 
 export enum HTTPResponseStatusCode {

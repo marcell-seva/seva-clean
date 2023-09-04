@@ -43,7 +43,6 @@ import CitySelectorModal from './citySelectorModal'
 import { FooterMobile } from '../organisms/footerMobile'
 import CarOfTheMonthCard from './cardCarOfTheMonth'
 import SidebarMobile from '../organisms/sidebarMobile'
-import useSearchModal from './searchModal'
 import CommonLabel from './labelCard/common'
 import LabelMudah from './labelCard/mudah'
 import LabelSulit from './labelCard/sulit'
@@ -54,6 +53,7 @@ import InputWidget from './searchWidget/inputWidget'
 import GridOptionWidget from './searchWidget/option/gridOptionWidget'
 import PriceRangeWidget from './searchWidget/option/priceRangeWidget'
 import TenureOptionWidget from './searchWidget/option/tenureOptionWidget'
+import { SearchModal } from './searchModal'
 export {
   Footer,
   HowToUseSection,
@@ -98,7 +98,7 @@ export {
   FooterMobile,
   CarOfTheMonthCard,
   SidebarMobile,
-  useSearchModal,
+  SearchModal,
   CommonLabel,
   LabelMudah,
   LabelPromo,

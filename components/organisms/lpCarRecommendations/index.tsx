@@ -26,7 +26,12 @@ import { AlternativeCarCard } from '../alternativeCarCard'
 import { PopupPromo } from '../popupPromo'
 import { LocalStorageKey } from 'utils/enum'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
-import { PreviousButton, navigateToPLP } from 'utils/navigate'
+import {
+  PreviousButton,
+  navigateToPLP,
+  saveDataForCountlyTrackerPageViewLC,
+  saveDataForCountlyTrackerPageViewPDP,
+} from 'utils/navigate'
 
 type LPCarRecommendationsProps = {
   dataReccomendation: any
@@ -49,6 +54,7 @@ const LpCarRecommendations = ({
   const [load, setLoad] = useState(false)
 
   const handleCalculateAbility = (item: CarRecommendation) => {
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.CarRecommendationCta)
     const selectedCity = city ? city.cityName : 'Jakarta Pusat'
     const path = urls.internalUrls.loanCalculatorWithCityBrandModelUrl
       .replace(
@@ -65,6 +71,7 @@ const LpCarRecommendations = ({
   }
 
   const handleClickDetailCar = (item: CarRecommendation) => {
+    saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
     const path = urls.internalUrls.variantListUrl
       .replace(
         ':brand/:model/:tab?',

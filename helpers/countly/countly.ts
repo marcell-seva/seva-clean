@@ -1,4 +1,3 @@
-import Countly from 'countly-sdk-web'
 import { client } from 'utils/helpers/const'
 import { CountlyEventNames } from './eventNames'
 import { getToken } from 'utils/handler/auth'
@@ -10,39 +9,17 @@ import {
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 
-export const initCountly = () => {
-  //Exposing Countly to the DOM as a global variable
-  window.Countly = Countly
-  Countly.init({
-    app_key: 'YOUR_APP_KEY',
-    url: 'YOUR_SERVER_URL',
-    // session_update: 10,
-    use_session_cookie: true,
-    debug: true, // set true to show logged event
-    // require_consent: true,
-    namespace: 'seva-next',
-    // inactivity_time: 1,
-    offline_mode: false,
-    // device_id: 'cly-device-demo-id', //Set only if you want dont want to use countly generated device_id
-  })
-}
-
 const userIdValueForCountly = () => {
   if (client) {
     const tokenLocalStorage = getToken()
     if (!!tokenLocalStorage) {
       return tokenLocalStorage?.phoneNumber
-    } else if (!!window?.Countly?.get_device_id()) {
-      return window.Countly.get_device_id()
+    } else if (!!window?.Countly?.device_id) {
+      return window.Countly.device_id
     } else {
       return ''
     }
   }
-}
-
-const sourceEntryValueForCountly = () => {
-  // TODO @toni : use utm values as identifier (need confirmation)
-  return ''
 }
 
 const initialUtmValueForCountly = () => {
@@ -77,7 +54,6 @@ export const trackEventCountly = (
   if (client && !!window?.Countly?.q) {
     const defaultSegmentationData = {
       USER_ID: userIdValueForCountly(),
-      SOURCE_ENTRY: sourceEntryValueForCountly(),
       ...initialUtmValueForCountly(),
       PLATFORM: platformValueForCountly(),
       PAGE_ORIGINATION_URL: client ? window.location.href : '',

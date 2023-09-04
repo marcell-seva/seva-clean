@@ -293,3 +293,18 @@ button {
   transition: inset-inline-start 0.2s, inset-block-start 0.2s, width 0.2s,
     height 0.2s, box-shadow 0.2s;
 }
+
+.search-custom-modal {
+  width: 100vw !important;
+  max-width: unset;
+  top: 0;
+}
+
+.search-custom-modal .ant-modal-content {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  top: 0;
+  border-radius: 0;
+  padding: 0;
+}

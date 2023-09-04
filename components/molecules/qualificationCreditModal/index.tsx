@@ -16,6 +16,7 @@ import elementId from 'helpers/elementIds'
 import { SessionStorageKey } from 'utils/enum'
 import { LoanRank } from 'utils/types/models'
 import { saveSessionStorage } from 'utils/handler/sessionStorage'
+import { navigateToKK } from 'utils/navigate'
 
 const MainImage = '/revamp/illustration/loan-calculator.webp'
 
@@ -24,11 +25,12 @@ interface QualificationCreditModalProps {
   isOpen: boolean
   formData: FormLCState
   selectedLoan: SpecialRateList | null
+  onClickCta?: () => void
 }
 
 export const QualificationCreditModal: React.FC<
   QualificationCreditModalProps
-> = ({ onClickCloseButton, isOpen, formData, selectedLoan }) => {
+> = ({ onClickCloseButton, isOpen, formData, selectedLoan, onClickCta }) => {
   const [isLogin] = React.useState(!!getToken())
 
   const getLoanRank = (rank: string) => {
@@ -74,8 +76,9 @@ export const QualificationCreditModal: React.FC<
       SessionStorageKey.KalkulatorKreditForm,
       JSON.stringify(formData),
     )
+    onClickCta && onClickCta()
     if (isLogin) {
-      window.location.href = creditQualificationUrl
+      navigateToKK()
     } else {
       savePageBeforeLogin(creditQualificationUrl)
       window.location.href = LoginSevaUrl

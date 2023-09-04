@@ -1,5 +1,5 @@
 import { PLP } from 'components/organisms'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Head from 'next/head'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
@@ -15,20 +15,27 @@ import {
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { FooterSEOAttributes } from 'utils/types/utils'
 import PLPDesktop from 'components/organisms/PLPDesktop'
+import { useMediaQuery } from 'react-responsive'
+import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 
 const NewCarResultPage = ({
   meta,
   isSsrMobile,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const isMobile = isSsrMobile
   const router = useRouter()
   const id = router.query.brand
+  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
+  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
   useEffect(() => {
     if (id && typeof id === 'string' && id.includes('SEVA')) {
       saveLocalStorage(LocalStorageKey.referralTemanSeva, id)
     }
   }, [])
+
+  useEffect(() => {
+    setIsMobile(isClientMobile)
+  }, [isClientMobile])
 
   return (
     <>

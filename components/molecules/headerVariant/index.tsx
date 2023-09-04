@@ -16,7 +16,7 @@ import { api } from 'services/api'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { getCarsSearchBar } from 'services/searchbar'
 import styles from 'styles/components/molecules/headerSearch.module.scss'
-import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { LocalStorageKey } from 'utils/enum'
 import { convertObjectQuery } from 'utils/handler/convertObjectQuery'
 import { carResultsUrl, variantListUrl } from 'utils/helpers/routes'
 import elementId from 'utils/helpers/trackerId'
@@ -24,10 +24,14 @@ import { Option } from 'utils/types'
 import { COMData, FunnelQueryKey } from 'utils/types/models'
 import { Line } from './Line'
 import { useToast } from './Toast'
-import { PreviousButton, navigateToPLP } from 'utils/navigate'
-import { saveSessionStorage } from 'utils/handler/sessionStorage'
+import {
+  PreviousButton,
+  navigateToPLP,
+  saveDataForCountlyTrackerPageViewPDP,
+} from 'utils/navigate'
 import { getPageName } from 'utils/pageName'
-import { defineRouteName } from 'utils/navigate'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 interface HeaderVariantProps {
   overrideDisplay?: string
   isOnModal?: boolean
@@ -122,7 +126,7 @@ export default function HeaderVariant({
     }
     let urlDestination = ''
     if (item.value.length > 0) {
-      saveDataForCountlyTrackerPDP()
+      saveDataForCountlyTrackerPageViewPDP(PreviousButton.SearchIcon)
       urlDestination = variantListUrl
         .replace('/:brand/:model', item.value)
         .replace(':tab?', '')
@@ -147,13 +151,20 @@ export default function HeaderVariant({
     localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
 
     hideModal()
-
+    trackEventCountly(CountlyEventNames.WEB_CAR_SEARCH_ICON_SUGGESTION_CLICK, {
+      PAGE_ORIGINATION: getPageName(),
+      SUGGESTION_CATEGORY: 'Keyword',
+      CAR_BRAND: item.label,
+      CAR_MODEL: item.value,
+      PAGE_DIRECTION_URL: window.location.origin + urlDestination,
+    })
     trackSearchBarSuggestionClick({
       Page_Origination_URL: window.location.href,
       Page_Direction_URL: window.location.origin + urlDestination,
     })
-    router.push(urlDestination)
-    // window.location.reload()
+
+    // use window location to reload page
+    window.location.href = urlDestination
     setIsNotFoundClicked(false)
   }
 
@@ -203,16 +214,8 @@ export default function HeaderVariant({
     return temp
   }
 
-  const saveDataForCountlyTrackerPDP = () => {
-    saveSessionStorage(
-      SessionStorageKey.PageReferrerPDP,
-      defineRouteName(window.location.pathname),
-    )
-    saveSessionStorage(SessionStorageKey.PreviousSourceButton, 'Search icon')
-  }
-
   const onClickRecommedationList = () => {
-    saveDataForCountlyTrackerPDP()
+    saveDataForCountlyTrackerPageViewPDP(PreviousButton.SearchIcon)
   }
 
   const carData = useMemo(() => {
@@ -289,10 +292,9 @@ export default function HeaderVariant({
         search: convertObjectQuery(funnelQueryTemp),
       })
     } else {
-      saveDataForCountlyTrackerPDP()
-      router.push({
-        pathname: carResultsUrl + data.value,
-      })
+      saveDataForCountlyTrackerPageViewPDP(PreviousButton.SearchIcon)
+      // use window location to reload page
+      window.location.href = carResultsUrl + data.value
     }
     // use location reload so that content re-fetched
     // window.location.reload()
@@ -354,6 +356,11 @@ export default function HeaderVariant({
                   enablePrefixIcon={false}
                   searchIconSuffix={true}
                   className={styles.styledSearchInput}
+                  onFocus={() =>
+                    trackEventCountly(
+                      CountlyEventNames.WEB_CAR_SEARCH_ICON_FIELD_CLICK,
+                    )
+                  }
                 />
               ) : (
                 <SearchInput

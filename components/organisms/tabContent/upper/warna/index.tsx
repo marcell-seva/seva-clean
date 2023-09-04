@@ -6,6 +6,7 @@ import elementId from 'helpers/elementIds'
 import { PDPCarOverviewSkeleton } from 'components/organisms'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 export const WarnaTab = ({ isShowAnnouncementBox }: any) => {
   const { carModelDetailsResDefaultCity: carModelDetails } =
@@ -37,7 +38,7 @@ export const WarnaTab = ({ isShowAnnouncementBox }: any) => {
       {carModelDetails && carModelDetails?.images.length > 0 ? (
         <div className={styles.container}>
           <div className={styles.carImageWrapper}>
-            <img
+            <Image
               src={carModelDetails?.images[0]}
               width="252"
               height="146"

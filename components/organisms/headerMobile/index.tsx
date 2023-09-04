@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from '../../../styles/components/organisms/headerMobile.module.scss'
 import {
   IconHamburger,
@@ -21,7 +21,14 @@ import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { WebAnnouncementBox } from 'components/organisms'
-import { useSearchModal } from 'components/molecules'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import {
+  trackEventCountly,
+  valueForUserTypeProperty,
+  valueMenuTabCategory,
+} from 'helpers/countly/countly'
+import { getPageName } from 'utils/pageName'
+import { SearchModal } from 'components/molecules/searchModal'
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
@@ -47,9 +54,9 @@ export const HeaderMobile = ({
   isShowAnnouncementBox = false,
   style,
 }: HeaderMobileProps): JSX.Element => {
-  const { showModal: showSearchModal, SearchModal } = useSearchModal()
   const enableAnnouncementBoxAleph =
     getCurrentEnvironment.featureToggles.enableAnnouncementBoxAleph
+  const [isOpenSearchModal, setIsOpenSearchModal] = useState(false)
 
   const router = useRouter()
 
@@ -58,13 +65,24 @@ export const HeaderMobile = ({
       trackCitySelectorOpen({
         Page_Origination_URL: window.location.href,
       })
+      trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_OPEN_CLICK, {
+        PAGE_ORIGINATION:
+          getPageName() === 'PLP'
+            ? getPageName()
+            : 'PDP - ' + valueMenuTabCategory(),
+        USER_TYPE: valueForUserTypeProperty(),
+        SOURCE_BUTTON: 'Location Icon',
+      })
       emitClickCityIcon()
     }
   }
 
   const handleSearch = () => {
     if (!isActive) {
-      showSearchModal()
+      trackEventCountly(CountlyEventNames.WEB_CAR_SEARCH_ICON_CLICK, {
+        PAGE_ORIGINATION: getPageName(),
+      })
+      setIsOpenSearchModal(true)
       trackSearchbarOpen({
         Page_Origination_URL: window.location.href,
       })
@@ -83,6 +101,10 @@ export const HeaderMobile = ({
   const handleLogoClick = () => {
     trackSevaLogoClick({
       Page_Origination_URL: window.location.href,
+    })
+    trackEventCountly(CountlyEventNames.WEB_SEVA_LOGO_CLICK, {
+      PAGE_ORIGINATION: getPageName(),
+      USER_TYPE: valueForUserTypeProperty(),
     })
   }
 
@@ -143,7 +165,10 @@ export const HeaderMobile = ({
             </div>
           </div>
         </div>
-        <SearchModal />
+        <SearchModal
+          isOpen={isOpenSearchModal}
+          handleCloseModal={() => setIsOpenSearchModal(false)}
+        />
       </header>
       <Overlay isShow={isActive} onClick={() => setIsActive(false)} />
     </>

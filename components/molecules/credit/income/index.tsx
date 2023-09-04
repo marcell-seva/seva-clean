@@ -4,7 +4,7 @@ import styles from 'styles/components/molecules/dp/dpform.module.scss'
 import clsx from 'clsx'
 import elementId from 'helpers/elementIds'
 
-interface PropsIncomeInput {
+interface PropsIncomeInput extends React.ComponentProps<'input'> {
   defaultValue?: number
   value?: number
   title?: string

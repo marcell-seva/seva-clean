@@ -40,6 +40,7 @@ interface Props<T extends FormControlValue> {
   datatestid?: string
   optionTestid?: string
   prefix?: string
+  onShowDropdown?: () => void
 }
 
 const forwardedInputSelect = <T extends FormControlValue>(
@@ -72,6 +73,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
     datatestid,
     optionTestid,
     prefix,
+    onShowDropdown,
   }: Props<T>,
   ref?: ForwardedRef<HTMLInputElement>,
 ) => {
@@ -178,6 +180,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
           onFocus={() => {
             setIsFocused(true)
             openDropdown().onOpen(true)
+            onShowDropdown && onShowDropdown()
           }}
           onBlur={onBlurHandler}
           autoFocus={isAutoFocus}

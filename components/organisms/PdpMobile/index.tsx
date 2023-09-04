@@ -102,7 +102,8 @@ export default function NewCarVariantList() {
 
   const brand = router.query.brand as string
   const model = router.query.model as string
-  const tab = router.query.tab as string
+  const slug = router.query.slug as string
+  const lowerTab = Array.isArray(slug) ? slug[0] : undefined
 
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
@@ -151,7 +152,7 @@ export default function NewCarVariantList() {
       getToken()
         ? SessionStorageKey.ShowWebAnnouncementLogin
         : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ),
+    ) ?? true,
   )
   const [variantIdFuel, setVariantIdFuelRatio] = useState<string | undefined>()
   const [variantFuelRatio, setVariantFuelRatio] = useState<string | undefined>()
@@ -234,6 +235,13 @@ export default function NewCarVariantList() {
         }
       })
   }
+
+  useEffect(() => {
+    document.body.style.overflowY = isActive ? 'hidden' : 'auto'
+    return () => {
+      document.body.style.overflowY = 'auto'
+    }
+  }, [isActive])
 
   const getMonthlyInstallment = () => {
     return formatNumberByLocalization(
@@ -351,10 +359,10 @@ export default function NewCarVariantList() {
 
   const handleAutoscrollOnRender = () => {
     if (
-      tab?.toLowerCase() === 'ringkasan' ||
-      tab?.toLowerCase() === 'spesifikasi' ||
-      tab?.toLowerCase() === 'harga' ||
-      tab?.toLowerCase() === 'kredit'
+      lowerTab?.toLowerCase() === 'ringkasan' ||
+      lowerTab?.toLowerCase() === 'spesifikasi' ||
+      lowerTab?.toLowerCase() === 'harga' ||
+      lowerTab?.toLowerCase() === 'kredit'
     ) {
       const destinationElm = document.getElementById('pdp-lower-content')
       if (destinationElm) {
@@ -362,7 +370,7 @@ export default function NewCarVariantList() {
           destinationElm.scrollIntoView()
           // add more scroll because global page header is fixed position
           window.scrollBy({ top: -100, left: 0 })
-        }, 500) // use timeout because components take time to render
+        }, 250) // use timeout because components take time to render
       }
     } else {
       window.scrollTo(0, 0)
@@ -380,7 +388,7 @@ export default function NewCarVariantList() {
   const trackCountlyPageView = async () => {
     const pageReferrer = getSessionStorage(SessionStorageKey.PageReferrerPDP)
     const previousSourceButton = getSessionStorage(
-      SessionStorageKey.PreviousSourceButton,
+      SessionStorageKey.PreviousSourceButtonPDP,
     )
     const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
 
@@ -389,6 +397,13 @@ export default function NewCarVariantList() {
       !!filterStorage?.downPaymentAmount &&
       !!filterStorage?.monthlyIncome &&
       !!filterStorage?.tenure
+
+    let pageOrigination = 'PDP - Ringkasan'
+    if (!!lowerTab && lowerTab.toLowerCase() === 'kredit') {
+      pageOrigination = 'Null'
+    } else if (!!lowerTab) {
+      pageOrigination = defineRouteName(window.location.href)
+    }
 
     let creditBadge = 'Null'
     if (loanRankcr && loanRankcr.includes(LoanRank.Green)) {
@@ -414,24 +429,27 @@ export default function NewCarVariantList() {
         FINCAP_FILTER_USAGE: isUsingFilterFinancial ? 'Yes' : 'No',
         CAR_BRAND: brand ? capitalizeWords(brand) : 'Null',
         CAR_MODEL: model ? capitalizeWords(model.replaceAll('-', ' ')) : 'Null',
-        PAGE_ORIGINATION: !!tab
-          ? defineRouteName(window.location.href)
-          : 'PDP - Ringkasan',
-        PELUANG_KREDIT_BADGE: creditBadge,
+        PAGE_ORIGINATION: pageOrigination,
+        PELUANG_KREDIT_BADGE: isUsingFilterFinancial ? creditBadge : 'Null',
         USER_TYPE: valueForUserTypeProperty(),
-        INITIAL_PAGE: valueForInitialPageProperty(),
+        INITIAL_PAGE: pageReferrer ? 'No' : valueForInitialPageProperty(),
         TEMAN_SEVA_STATUS: temanSevaStatus,
       })
 
       setIsSentCountlyPageView(true)
       removeSessionStorage(SessionStorageKey.PageReferrerPDP)
+      removeSessionStorage(SessionStorageKey.PreviousSourceButtonPDP)
     }
   }
 
   useEffect(() => {
-    if (!isSentCountlyPageView) {
-      trackCountlyPageView()
-    }
+    const timeoutCountlyTracker = setTimeout(() => {
+      if (!isSentCountlyPageView) {
+        trackCountlyPageView()
+      }
+    }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
+
+    return () => clearTimeout(timeoutCountlyTracker)
   }, [])
 
   useEffect(() => {
@@ -439,9 +457,6 @@ export default function NewCarVariantList() {
     checkConnectedRefCode()
     getAnnouncementBox()
 
-    if (tab && tab.includes('SEVA')) {
-      saveLocalStorage(LocalStorageKey.referralTemanSeva, tab)
-    }
     saveLocalStorage(LocalStorageKey.Model, model)
 
     getNewFunnelRecommendations(getQueryParamForApiRecommendation()).then(
@@ -492,7 +507,7 @@ export default function NewCarVariantList() {
           })
       },
     )
-  }, [brand, model, tab])
+  }, [brand, model, lowerTab])
 
   useEffect(() => {
     if (carModelDetails) {
