@@ -9,24 +9,56 @@ import { LocalStorageKey } from 'utils/enum'
 import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
 import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
-import { FooterSEOAttributes } from 'utils/types/utils'
+import {
+  CityOtrOption,
+  FooterSEOAttributes,
+  MobileWebTopMenuType,
+} from 'utils/types/utils'
 import PLPDesktop from 'components/organisms/PLPDesktop'
 import { useMediaQuery } from 'react-responsive'
+import styles from 'styles/pages/plp.module.scss'
+import { useUtils } from 'services/context/utilsContext'
+import { MobileWebFooterMenuType } from 'utils/types/props'
+import { api } from 'services/api'
+import { getToken } from 'utils/handler/auth'
 
 const NewCarResultPage = ({
   meta,
   isSsrMobile,
+  dataHeader,
+  dataFooter,
+  dataCities,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const id = router.query.brand
-  const isMobile = isSsrMobile
-  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
+  const {
+    saveMobileWebTopMenus,
+    saveDataAnnouncementBox,
+    saveMobileWebFooterMenus,
+    saveCities,
+  } = useUtils()
 
   useEffect(() => {
+    saveMobileWebTopMenus(dataHeader)
+    saveMobileWebFooterMenus(dataFooter)
+    saveCities(dataCities)
+    getAnnouncementBox()
+
     if (id && typeof id === 'string' && id.includes('SEVA')) {
       saveLocalStorage(LocalStorageKey.referralTemanSeva, id)
     }
   }, [])
+
+  const getAnnouncementBox = () => {
+    try {
+      const res: any = api.getAnnouncementBox({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
+      })
+      saveDataAnnouncementBox(res.data)
+    } catch (error) {}
+  }
 
   return (
     <>
@@ -36,14 +68,15 @@ const NewCarResultPage = ({
         <meta name="description" content={meta.description} />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      {isMobile ? (
+      <div className={styles.mobile}>
         <PLP minmaxPrice={meta.MinMaxPrice} />
-      ) : (
+      </div>
+      <div className={styles.desktop}>
         <PLPDesktop
           carRecommendation={meta.carRecommendations}
           footer={meta.footer}
         />
-      )}
+      </div>
     </>
   )
 }
@@ -73,6 +106,9 @@ const getBrand = (brand: string | string[] | undefined) => {
 export const getServerSideProps: GetServerSideProps<{
   meta: PLPProps
   isSsrMobile: boolean
+  dataHeader: MobileWebTopMenuType[]
+  dataFooter: MobileWebFooterMenuType[]
+  dataCities: CityOtrOption[]
 }> = async (ctx) => {
   ctx.res.setHeader(
     'Cache-Control',
@@ -119,10 +155,14 @@ export const getServerSideProps: GetServerSideProps<{
   } = ctx.query
 
   try {
-    const [fetchMeta, fetchFooter] = await Promise.all([
-      axios.get(metaTagBaseApi + metabrand),
-      axios.get(footerTagBaseApi + metabrand),
-    ])
+    const [fetchMeta, fetchFooter, menuRes, footerRes, cityRes] =
+      await Promise.all([
+        axios.get(metaTagBaseApi + metabrand),
+        axios.get(footerTagBaseApi + metabrand),
+        api.getMobileHeaderMenu(),
+        api.getMobileFooterMenu(),
+        api.getCities(),
+      ])
 
     const metaData = fetchMeta.data.data
     const footerData = fetchFooter.data.data
@@ -168,8 +208,24 @@ export const getServerSideProps: GetServerSideProps<{
 
     if (recommendation) meta.carRecommendations = recommendation
 
-    return { props: { meta, isSsrMobile: getIsSsrMobile(ctx) } }
+    return {
+      props: {
+        meta,
+        isSsrMobile: getIsSsrMobile(ctx),
+        dataHeader: menuRes.data,
+        dataFooter: footerRes.data,
+        dataCities: cityRes,
+      },
+    }
   } catch (e) {
-    return { props: { meta, isSsrMobile: getIsSsrMobile(ctx) } }
+    return {
+      props: {
+        meta,
+        isSsrMobile: getIsSsrMobile(ctx),
+        dataHeader: [],
+        dataFooter: [],
+        dataCities: [],
+      },
+    }
   }
 }
