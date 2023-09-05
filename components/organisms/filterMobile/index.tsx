@@ -286,7 +286,7 @@ const FilterMobile = ({
         paramUpdate.priceRangeGroup = minPriceFilter + '-' + maxPriceFilter
       }
     }
-    trackEventCountly(CountlyEventNames.WEB_PLP_CAR_DETAIL_CLICK, {
+    trackEventCountly(CountlyEventNames.WEB_PLP_FILTER_APPLY_CLICK, {
       CAR_BRAND:
         paramUpdate.brand.length > 0 ? paramUpdate.brand.join(',') : 'Null',
       CAR_TYPE:
@@ -417,11 +417,11 @@ const FilterMobile = ({
     if (isApplied) {
       setIsFilter(false)
       trackPLPClearFilter(trackFilterAction())
-      trackEventCountly(CountlyEventNames.WEB_PLP_FILTER_RESET_CLICK)
       setIsResetFilter && setIsResetFilter(true)
       setIsErrorMinMaxDP('0')
       setIsErrorAge(false)
     }
+    trackEventCountly(CountlyEventNames.WEB_PLP_FILTER_RESET_CLICK)
   }
   return (
     <div>
