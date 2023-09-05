@@ -531,10 +531,12 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
     setOpenLabelResultInfo(false)
     saveLocalStorage(LocalStorageKey.flagResultFilterInfoPLP, 'true')
     trackCekPeluangPopUpCtaClick(getDataForAmplitude())
+    trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BANNER_DESC_OK_CLICK)
   }
   const onCloseResultInfoClose = () => {
     setOpenLabelResultInfo(false)
     trackCekPeluangPopUpCloseClick(getDataForAmplitude())
+    trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BANNER_DESC_EXIT_CLICK)
   }
 
   const stickyFilter = () => {
