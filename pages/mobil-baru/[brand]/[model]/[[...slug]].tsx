@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react'
 import { PdpDesktop, PdpMobile } from 'components/organisms'
 import { api } from 'services/api'
-import { CarRecommendation } from 'utils/types/utils'
+import { AnnouncementBoxDataType, CarRecommendation } from 'utils/types/utils'
 import { InferGetServerSidePropsType } from 'next'
 import Head from 'next/head'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
@@ -9,7 +9,14 @@ import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
-import styles from 'styles/pages/pdp.module.scss'
+import { encryptValue } from 'utils/encryptionUtils'
+import { LocalStorageKey } from 'utils/enum'
+import { saveLocalStorage } from 'utils/handler/localStorage'
+import { useUtils } from 'services/context/utilsContext'
+import styles from 'styles/pages/plp.module.scss'
+import { getToken } from 'utils/handler/auth'
+import { AxiosResponse } from 'axios'
+
 interface PdpDataLocalContextType {
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.
@@ -48,15 +55,40 @@ export default function index({
   metaTagDataRes,
   carVideoReviewRes,
   carArticleReviewRes,
-  dataMenu,
+  dataHeader,
+  dataFooter,
+  dataCities,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isMobile, setIsMobile] = useState(useIsMobileSSr())
-
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
+  const {
+    saveDataAnnouncementBox,
+    saveMobileWebTopMenus,
+    saveMobileWebFooterMenus,
+    saveCities,
+  } = useUtils()
 
   useEffect(() => {
     setIsMobile(isClientMobile)
   }, [isClientMobile])
+
+  useEffect(() => {
+    saveMobileWebTopMenus(dataHeader)
+    saveMobileWebFooterMenus(dataFooter)
+    saveCities(dataCities)
+    getAnnouncementBox()
+  }, [])
+
+  const getAnnouncementBox = () => {
+    try {
+      const res: any = api.getAnnouncementBox({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
+      })
+      saveDataAnnouncementBox(res.data)
+    } catch (error) {}
+  }
 
   const meta = useMemo(() => {
     const title =
@@ -114,11 +146,15 @@ export async function getServerSideProps(context: any) {
       metaTagDataRes,
       carVideoReviewRes,
       menuRes,
+      footerRes,
+      cityRes,
     ]: any = await Promise.all([
       api.getRecommendation('?city=jakarta&cityId=118'),
       api.getMetaTagData(context.query.model.replaceAll('-', '')),
       api.getCarVideoReview(),
-      api.getMenu(),
+      api.getMobileHeaderMenu(),
+      api.getMobileFooterMenu(),
+      api.getCities(),
     ])
     let id = ''
     const carList = carRecommendationsRes.carRecommendations
@@ -153,7 +189,6 @@ export async function getServerSideProps(context: any) {
 
     return {
       props: {
-        dataMenu: menuRes.data,
         carRecommendationsRes,
         carModelDetailsRes,
         carVariantDetailsRes,
@@ -161,12 +196,20 @@ export async function getServerSideProps(context: any) {
         carVideoReviewRes,
         carArticleReviewRes,
         isSsrMobile: getIsSsrMobile(context),
+        dataHeader: menuRes.data,
+        dataFooter: footerRes.data,
+        dataCities: cityRes,
       },
     }
   } catch (error) {
     console.log('qwe error', error)
     return {
-      notFound: true,
+      props: {
+        notFound: true,
+        dataHeader: [],
+        dataFooter: [],
+        dataCities: [],
+      },
     }
   }
 }

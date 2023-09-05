@@ -19,6 +19,7 @@ import { Shimmer } from 'components/atoms/shimmerOld'
 import { api } from 'services/api'
 import { SessionStorageKey } from 'utils/enum'
 import { getToken } from 'utils/handler/auth'
+import { useUtils } from 'services/context/utilsContext'
 
 const CustomRight = '/revamp/images/announcementBox/custom-desktop-right.webp'
 const CustomLeft = '/revamp/images/announcementBox/custom-desktop-left.webp'
@@ -75,23 +76,17 @@ export const WebAnnouncementBox = ({
   const [announcement, setAnnouncement] = useState<AnnouncementBoxDataType>()
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
+  const { dataAnnouncementBox } = useUtils()
 
   useEffect(() => {
     setIsLoading(true)
-    api
-      .getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      .then((res) => {
-        setAnnouncement(res.data)
-        setIsLoading(false)
-      })
-      .catch(() => {
-        setIsError(true)
-        setIsLoading(false)
-      })
+    if (dataAnnouncementBox !== undefined) {
+      setAnnouncement(dataAnnouncementBox)
+      setIsLoading(false)
+    } else {
+      setIsError(true)
+      setIsLoading(false)
+    }
   }, [])
 
   useEffect(() => {

@@ -18,6 +18,7 @@ import endpoints from 'utils/helpers/endpoints'
 import { api } from 'services/api'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
 import { SessionStorageKey } from 'utils/enum'
+import { useUtils } from 'services/context/utilsContext'
 
 const CustomRight = '/revamp/images/announcementBox/custom-desktop-right.webp'
 const CustomLeft = '/revamp/images/announcementBox/custom-desktop-left.webp'
@@ -78,20 +79,18 @@ export const WebAnnouncementBox = ({
 
   const [announcement, setAnnouncement] = useState<AnnouncementBoxDataType>()
   const [isError, setIsError] = useState(false)
+  const { dataAnnouncementBox } = useUtils()
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    api
-      .getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      .then((res: any) => {
-        setAnnouncement(res.data)
-      })
-      .catch(() => {
-        setIsError(true)
-      })
+    setIsLoading(true)
+    if (dataAnnouncementBox !== undefined) {
+      setAnnouncement(dataAnnouncementBox)
+      setIsLoading(false)
+    } else {
+      setIsError(true)
+      setIsLoading(false)
+    }
   }, [])
 
   useEffect(() => {
