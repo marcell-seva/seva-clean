@@ -866,6 +866,7 @@ export default function LoanCalculatorPage() {
     }
     if (!tooltipNextDisplay || isTooltipExpired()) {
       setIsTooltipOpen(true)
+      trackCountlyOnShowTooltip()
       const nextDisplay = calculateNextDisplayDate().toString()
       setTooltipNextDisplay(nextDisplay)
       localStorage.setItem('tooltipNextDisplay', nextDisplay)
@@ -1559,6 +1560,16 @@ export default function LoanCalculatorPage() {
 
   const onClickCtaQualificationModal = () => {
     trackCountlyOnClickCtaModal()
+  }
+
+  const trackCountlyOnShowTooltip = () => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_KUALIFIKASI_KREDIT_COACHMARK_VIEW,
+      {
+        ...dataForCountlyTrackerOnClick(),
+        CAR_VARIANT: forms.variant?.variantName ?? 'Null',
+      },
+    )
   }
 
   return (
