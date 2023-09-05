@@ -112,6 +112,7 @@ import {
   valueForUserTypeProperty,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { removeCarBrand } from 'utils/handler/removeCarBrand'
 
 const CarSillhouete = '/revamp/illustration/car-sillhouete.webp'
 
@@ -1189,6 +1190,7 @@ export const CreditTab = () => {
     }
     if (!tooltipNextDisplay || isTooltipExpired()) {
       setIsTooltipOpen(true)
+      trackCountlyOnShowTooltip()
       const nextDisplay = calculateNextDisplayDate().toString()
       setTooltipNextDisplay(nextDisplay)
       localStorage.setItem('tooltipNextDisplay', nextDisplay)
@@ -1420,7 +1422,7 @@ export const CreditTab = () => {
     return {
       PAGE_ORIGINATION: 'PDP Credit Tab',
       CAR_BRAND: forms.model?.brandName ?? 'Null',
-      CAR_MODEL: forms.model?.modelName ?? 'Null',
+      CAR_MODEL: removeCarBrand(forms.model?.modelName ?? 'Null'),
     }
   }
 
@@ -1628,6 +1630,16 @@ export const CreditTab = () => {
 
   const onClickCtaQualificationModal = () => {
     trackCountlyOnClickCtaModal()
+  }
+
+  const trackCountlyOnShowTooltip = () => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_KUALIFIKASI_KREDIT_COACHMARK_VIEW,
+      {
+        ...dataForCountlyTrackerOnClick(),
+        CAR_VARIANT: forms.variant?.variantName ?? 'Null',
+      },
+    )
   }
 
   return (

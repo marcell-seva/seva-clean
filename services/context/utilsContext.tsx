@@ -8,7 +8,7 @@ import {
   MobileWebTopMenuType,
 } from 'utils/types/props'
 import { CityOtrOption } from 'utils/types'
-import { AnnouncementBoxDataType } from 'utils/types/utils'
+import { AnnouncementBoxDataType, NavbarItemResponse } from 'utils/types/utils'
 
 export type UtilsContextType = {
   dataAnnouncementBox: AnnouncementBoxDataType | undefined
@@ -24,6 +24,7 @@ export type UtilsContextType = {
   currentLanguage: LanguageCode
   setCurrentLanguage: (value: LanguageCode) => void
   isSsrMobile: boolean
+  dataMenu: NavbarItemResponse[]
 }
 
 export const UtilsContext = createContext<UtilsContextType | []>([])
@@ -84,6 +85,7 @@ export const UtilsContextProvider = ({ children }: any) => {
         currentLanguage,
         setCurrentLanguage,
         isSsrMobile: false,
+        dataMenu: [],
       }}
     >
       {children}

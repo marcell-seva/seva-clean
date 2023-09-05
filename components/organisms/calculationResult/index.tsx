@@ -24,6 +24,7 @@ import { LanguageCode } from 'utils/enum'
 import { InsuranceTooltip } from '../insuranceTooltip'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { removeCarBrand } from 'utils/handler/removeCarBrand'
 
 const LogoAcc = '/revamp/icon/logo-acc.webp'
 const LogoTaf = '/revamp/icon/logo-taf.webp'
@@ -150,8 +151,21 @@ export const CalculationResult = ({
     })
   }
 
+  const trackCountlyOnClickUnderstandTooltip = () => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_KUALIFIKASI_KREDIT_COACHMARK_CLICK,
+      {
+        PAGE_ORIGINATION: pageOrigination,
+        CAR_BRAND: formData.model?.brandName ?? 'Null',
+        CAR_MODEL: removeCarBrand(formData.model?.modelName ?? 'Null'),
+        CAR_VARIANT: formData.variant?.variantName ?? 'Null',
+      },
+    )
+  }
+
   const handleUnderstandTooltip = () => {
     if (selectedLoan) {
+      trackCountlyOnClickUnderstandTooltip()
       trackLCKualifikasiKreditTooltipCTAClick({
         Age: `${formData.age} Tahun`,
         Angsuran_Type: formData.paymentOption,
