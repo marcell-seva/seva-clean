@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styles from '../../../styles/pages/navigationfiltermobile.module.scss'
 import {
   IconFilter,
@@ -12,12 +12,8 @@ import clsx from 'clsx'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
-import { AxiosResponse } from 'axios'
-import { carResultsUrl } from 'utils/helpers/routes'
 import elementId from 'helpers/elementIds'
-import { useRouter } from 'next/router'
 import { LanguageCode } from 'utils/enum'
-import { useCar } from 'services/context/carContext'
 import { sortOptions } from 'utils/config/funnel.config'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { PreviousButton, navigateToPLP } from 'utils/navigate'
@@ -33,6 +29,7 @@ type NavFilterMobileProps = {
   resultMinMaxPrice?: any
   setRecommendations: any
   isShowAnnouncementBox?: boolean | null
+  showInformationDaihatsu: boolean
 }
 export const NavigationFilterMobile = ({
   carlist,
@@ -42,13 +39,11 @@ export const NavigationFilterMobile = ({
   startScroll,
   isFilter,
   isFilterFinancial,
-  // resultMinMaxPrice,
   setRecommendations,
   isShowAnnouncementBox,
+  showInformationDaihatsu,
 }: NavFilterMobileProps) => {
-  const router = useRouter()
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
-  const { recommendation } = useCar()
   const { sortBy } = funnelQuery
   const filterSortOption = sortOptions.filter((x) => x.value === sortBy)[0]
   const sortFilter = filterSortOption?.label || ''
@@ -62,12 +57,6 @@ export const NavigationFilterMobile = ({
       LanguageCode.id,
     )
   }
-  const showInformDaihatsu = useMemo(() => {
-    const collectDaihatsu = recommendation.some(
-      (item) => item.brand === 'Daihatsu',
-    )
-    return collectDaihatsu
-  }, [recommendation])
 
   const removeFinancialFilter = () => {
     patchFunnelQuery({
@@ -296,7 +285,7 @@ export const NavigationFilterMobile = ({
           {/*</div>*/}
         </>
       )}
-      {showInformDaihatsu && !sticky && (
+      {showInformationDaihatsu && !sticky && (
         <>
           <div className={styles.line} />
           <div className={styles.informWrapper}>

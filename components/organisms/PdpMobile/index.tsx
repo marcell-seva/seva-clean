@@ -425,9 +425,13 @@ export default function NewCarVariantList() {
   useEffect(() => {
     getAnnouncementBox()
     if (!isSentCountlyPageView) {
-      setTimeout(() => {
-        trackCountlyPageView()
+      const timeoutCountlyTracker = setTimeout(() => {
+        if (!isSentCountlyPageView) {
+          trackCountlyPageView()
+        }
       }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
+
+      return () => clearTimeout(timeoutCountlyTracker)
     }
   }, [])
 

@@ -78,19 +78,13 @@ export const WebAnnouncementBox = ({
   )
 
   const [announcement, setAnnouncement] = useState<AnnouncementBoxDataType>()
-  const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
   const { dataAnnouncementBox } = useUtils()
 
   useEffect(() => {
-    setIsLoading(true)
     if (dataAnnouncementBox !== undefined) {
       setAnnouncement(dataAnnouncementBox)
-      setIsLoading(false)
-    } else {
-      setIsError(true)
-      setIsLoading(false)
-    }
+    } else setIsError(true)
   }, [])
 
   useEffect(() => {
@@ -164,7 +158,6 @@ export const WebAnnouncementBox = ({
   }
 
   if (isError) return <></>
-  if (isLoading) return <SkeletonLoading />
 
   return (
     <>

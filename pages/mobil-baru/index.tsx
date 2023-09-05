@@ -5,7 +5,6 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
 import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
 import {
-  CarRecommendation,
   CityOtrOption,
   FooterSEOAttributes,
   MobileWebTopMenuType,
@@ -19,6 +18,7 @@ import { defaultSeoImage } from 'utils/helpers/const'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import styles from 'styles/pages/plp.module.scss'
+import { CarProvider } from 'services/context'
 
 const NewCarResultPage = ({
   meta,
@@ -45,19 +45,28 @@ const NewCarResultPage = ({
         image={defaultSeoImage}
       />
 
-      <div className={styles.mobile}>
-        <PLP
-          carRecommendation={meta.carRecommendations}
-          minmaxPrice={meta.MinMaxPrice}
-          alternativeRecommendation={meta.alternativeCarRecommendation}
-        />
-      </div>
-      <div className={styles.desktop}>
-        <PLPDesktop
-          carRecommendation={meta.carRecommendations}
-          footer={meta.footer}
-        />
-      </div>
+      <CarProvider
+        car={null}
+        carModel={null}
+        carModelDetails={null}
+        carVariantDetails={null}
+        recommendation={meta.carRecommendations.carRecommendations}
+      >
+        <>
+          {isMobile ? (
+            <div className={styles.mobile}>
+              <PLP minmaxPrice={meta.MinMaxPrice} />
+            </div>
+          ) : (
+            <div className={styles.desktop}>
+              <PLPDesktop
+                carRecommendation={meta.carRecommendations}
+                footer={meta.footer}
+              />
+            </div>
+          )}
+        </>
+      </CarProvider>
     </>
   )
 }
@@ -70,7 +79,6 @@ type PLPProps = {
   footer: FooterSEOAttributes
   MinMaxPrice: MinMaxPrice
   carRecommendations: CarRecommendationResponse
-  alternativeCarRecommendation: CarRecommendation[]
 }
 
 const getBrand = (brand: string | string[] | undefined) => {
@@ -92,6 +100,10 @@ export const getServerSideProps: GetServerSideProps<{
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
 }> = async (ctx) => {
+  ctx.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=59',
+  )
   const metabrand = getBrand(ctx.query.brand)
   const metaTagBaseApi =
     'https://api.sslpots.com/api/meta-seos/?filters[location_page3][$eq]=CarSearchResult'
@@ -119,7 +131,6 @@ export const getServerSideProps: GetServerSideProps<{
       lowestCarPrice: 0,
       highestCarPrice: 0,
     },
-    alternativeCarRecommendation: [],
   }
 
   const {
@@ -171,13 +182,11 @@ export const getServerSideProps: GetServerSideProps<{
       ...(sortBy && { sortBy }),
     }
 
-    const [funnel, alternative] = await Promise.all([
+    const [funnel] = await Promise.all([
       getNewFunnelRecommendations({ ...queryParam }),
-      getNewFunnelRecommendations({ ...queryParam, brand: [] }),
     ])
 
     const recommendation = funnel
-    const alternativeData = alternative
 
     if (metaData && metaData.length > 0) {
       meta.title = metaData[0].attributes.meta_title
@@ -191,7 +200,6 @@ export const getServerSideProps: GetServerSideProps<{
     if (recommendation) {
       meta.carRecommendations = recommendation
     }
-    meta.alternativeCarRecommendation = alternativeData.carRecommendations
 
     return {
       props: {
