@@ -186,7 +186,7 @@ export const CarDetailCard = ({
 
   const navigateToPDP = (index: number) => () => {
     if (!isFilterTrayOpened) {
-      trackCarClick(index + 1, false)
+      trackCarClick(index + 1)
 
       saveDataForCountlyTrackerPageViewPDP(PreviousButton.ProductCard)
       router.push(detailCarRoute)
