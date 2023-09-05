@@ -145,6 +145,7 @@ export enum SessionStorageKey {
   HasTrackedDpSliderLC = 'hasTrackedDpSliderLC',
   PageReferrerHomepage = 'pageReferrerHomepage',
   PreviousSourceButtonHomepage = 'previousSourceButtonHomepage',
+  HasTracked360Exterior = 'hasTracked360Exterior',
 }
 
 export enum HTTPResponseStatusCode {
