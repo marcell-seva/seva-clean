@@ -52,20 +52,15 @@ const NewCarResultPage = ({
         carVariantDetails={null}
         recommendation={meta.carRecommendations.carRecommendations}
       >
-        <>
-          {isMobile ? (
-            <div className={styles.mobile}>
-              <PLP minmaxPrice={meta.MinMaxPrice} />
-            </div>
-          ) : (
-            <div className={styles.desktop}>
-              <PLPDesktop
-                carRecommendation={meta.carRecommendations}
-                footer={meta.footer}
-              />
-            </div>
-          )}
-        </>
+        <div className={styles.mobile}>
+          <PLP minmaxPrice={meta.MinMaxPrice} />
+        </div>
+        <div className={styles.desktop}>
+          <PLPDesktop
+            carRecommendation={meta.carRecommendations}
+            footer={meta.footer}
+          />
+        </div>
       </CarProvider>
     </>
   )

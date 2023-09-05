@@ -20,6 +20,7 @@ import styles from 'styles/pages/plp.module.scss'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import { api } from 'services/api'
+import { getToken } from 'utils/handler/auth'
 
 const NewCarResultPage = ({
   meta,
@@ -30,19 +31,34 @@ const NewCarResultPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const id = router.query.brand
-  const isMobile = isSsrMobile
-  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
-  const { saveMobileWebTopMenus, saveMobileWebFooterMenus, saveCities } =
-    useUtils()
+  const {
+    saveMobileWebTopMenus,
+    saveDataAnnouncementBox,
+    saveMobileWebFooterMenus,
+    saveCities,
+  } = useUtils()
 
   useEffect(() => {
     saveMobileWebTopMenus(dataHeader)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
+    getAnnouncementBox()
+
     if (id && typeof id === 'string' && id.includes('SEVA')) {
       saveLocalStorage(LocalStorageKey.referralTemanSeva, id)
     }
   }, [])
+
+  const getAnnouncementBox = () => {
+    try {
+      const res: any = api.getAnnouncementBox({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
+      })
+      saveDataAnnouncementBox(res.data)
+    } catch (error) {}
+  }
 
   return (
     <>
@@ -52,18 +68,15 @@ const NewCarResultPage = ({
         <meta name="description" content={meta.description} />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      {isMobile ? (
-        <div className={styles.mobile}>
-          <PLP minmaxPrice={meta.MinMaxPrice} />
-        </div>
-      ) : (
-        <div className={styles.desktop}>
-          <PLPDesktop
-            carRecommendation={meta.carRecommendations}
-            footer={meta.footer}
-          />
-        </div>
-      )}
+      <div className={styles.mobile}>
+        <PLP minmaxPrice={meta.MinMaxPrice} />
+      </div>
+      <div className={styles.desktop}>
+        <PLPDesktop
+          carRecommendation={meta.carRecommendations}
+          footer={meta.footer}
+        />
+      </div>
     </>
   )
 }
