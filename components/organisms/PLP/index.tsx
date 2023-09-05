@@ -275,6 +275,9 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
   const handleShowFilter = () => {
     setIsButtonClick(true)
     trackPLPFilterShow(true)
+    trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_FILTER_CLICK, {
+      CURRENT_FILTER_STATUS: isFilter ? 'On' : 'Off',
+    })
   }
 
   const handleShowSort = (open: boolean) => () => {
@@ -738,9 +741,6 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
           onButtonClick={(
             value: boolean | ((prevState: boolean) => boolean),
           ) => {
-            trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_FILTER_CLICK, {
-              CURRENT_FILTER_STATUS: isFilter ? 'On' : 'Off',
-            })
             setIsButtonClick(value)
           }}
           isButtonClick={isButtonClick}
