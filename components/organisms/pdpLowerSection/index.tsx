@@ -19,6 +19,8 @@ import {
   PreviousButton,
   saveDataForCountlyTrackerPageViewLC,
 } from 'utils/navigate'
+import { getLocalStorage } from 'utils/handler/localStorage'
+import { LocalStorageKey } from 'utils/enum'
 
 type pdpLowerSectionProps = {
   onButtonClick: (value: boolean) => void
@@ -41,6 +43,13 @@ export const PdpLowerSection = ({
     lowerSectionNavigationTab[0].value,
   )
   const { carModelDetails } = useCar()
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
 
   const router = useRouter()
   const loanRankcr = router.query.loanRankCVL ?? ''
@@ -56,7 +65,7 @@ export const PdpLowerSection = ({
 
     trackEventCountly(CountlyEventNames.WEB_PDP_TAB_CONTENT_CLICK, {
       MENU_TAB_CATEGORY: value,
-      PELUANG_KREDIT_BADGE: creditBadge,
+      PELUANG_KREDIT_BADGE: isUsingFilterFinancial ? creditBadge : 'Null',
       CAR_BRAND: carModelDetails?.brand ?? '',
       CAR_MODEL: carModelDetails?.model ?? '',
       VISUAL_TAB_CATEGORY: upperTab ? upperTab : 'Warna',
