@@ -112,6 +112,7 @@ import {
   valueForUserTypeProperty,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { removeCarBrand } from 'utils/handler/removeCarBrand'
 
 const CarSillhouete = '/revamp/illustration/car-sillhouete.webp'
 
@@ -1420,7 +1421,7 @@ export const CreditTab = () => {
     return {
       PAGE_ORIGINATION: 'PDP Credit Tab',
       CAR_BRAND: forms.model?.brandName ?? 'Null',
-      CAR_MODEL: forms.model?.modelName ?? 'Null',
+      CAR_MODEL: removeCarBrand(forms.model?.modelName ?? 'Null'),
     }
   }
 

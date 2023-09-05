@@ -99,6 +99,7 @@ import {
   valueForUserTypeProperty,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { removeCarBrand } from 'utils/handler/removeCarBrand'
 
 const CarSillhouete = '/revamp/illustration/car-sillhouete.webp'
 
@@ -1350,7 +1351,7 @@ export default function LoanCalculatorPage() {
     return {
       PAGE_ORIGINATION: getPageOriginationForCountlyTracker(),
       CAR_BRAND: forms.model?.brandName ?? 'Null',
-      CAR_MODEL: forms.model?.modelName ?? 'Null',
+      CAR_MODEL: removeCarBrand(forms.model?.modelName ?? 'Null'),
     }
   }
 
