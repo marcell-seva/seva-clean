@@ -108,7 +108,6 @@ export const Navbar = () => {
     status: true,
     subMenu: [],
   }
-
   return (
     <nav>
       <StyledList isMobile={isMobile}>

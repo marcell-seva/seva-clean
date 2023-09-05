@@ -72,6 +72,7 @@ import {
 } from 'helpers/countly/countly'
 import { client } from 'utils/helpers/const'
 import { defineRouteName } from 'utils/navigate'
+import { useUtils } from 'services/context/utilsContext'
 
 export interface CarVariantListPageUrlParams {
   brand: string
@@ -132,7 +133,7 @@ export default function NewCarVariantList() {
   const [isButtonClick, setIsButtonClick] = useState(false)
   const [promoName, setPromoName] = useState('promo1')
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
-  const [cityListApi, setCityListApi] = useState<Array<CityOtrOption>>([])
+  const { cities, dataAnnouncementBox, saveDataAnnouncementBox } = useUtils()
   const [isOpenShareModal, setIsOpenShareModal] = useState(false)
   const [connectedRefCode, setConnectedRefCode] = useState('')
   const { funnelQuery } = useFunnelQueryData()
@@ -190,7 +191,8 @@ export default function NewCarVariantList() {
   }, [modelDetail])
 
   const getVideoReview = async () => {
-    const dataVideoReview = await getCarVideoReview()
+    const { carVideoReviewRes: dataVideoReview } =
+      useContext(PdpDataLocalContext)
     const filterVideoReview = dataVideoReview.data.filter(
       (video: MainVideoResponseType) => video.modelId === modelDetail?.id,
     )[0]
@@ -212,28 +214,6 @@ export default function NewCarVariantList() {
       }
       setVideoData(temp)
     }
-  }
-
-  const checkCitiesData = () => {
-    if (cityListApi.length === 0) {
-      getCities().then((res) => {
-        setCityListApi(res)
-      })
-    }
-  }
-
-  const getAnnouncementBox = () => {
-    api
-      .getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      .then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-        if (res.data === undefined) {
-          setShowAnnouncementBox(false)
-        }
-      })
   }
 
   useEffect(() => {
@@ -443,6 +423,7 @@ export default function NewCarVariantList() {
   }
 
   useEffect(() => {
+    getAnnouncementBox()
     if (!isSentCountlyPageView) {
       setTimeout(() => {
         trackCountlyPageView()
@@ -450,10 +431,20 @@ export default function NewCarVariantList() {
     }
   }, [])
 
+  const getAnnouncementBox = () => {
+    try {
+      const res: any = api.getAnnouncementBox({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
+      })
+      saveDataAnnouncementBox(res.data)
+      setShowAnnouncementBox(res.data !== undefined)
+    } catch (error) {}
+  }
+
   useEffect(() => {
-    checkCitiesData()
     checkConnectedRefCode()
-    getAnnouncementBox()
 
     saveLocalStorage(LocalStorageKey.Model, model)
 
@@ -624,7 +615,7 @@ export default function NewCarVariantList() {
       <CitySelectorModal
         isOpen={isOpenCitySelectorModal}
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
-        cityListFromApi={cityListApi || []}
+        cityListFromApi={cities}
       />
 
       <ShareModal

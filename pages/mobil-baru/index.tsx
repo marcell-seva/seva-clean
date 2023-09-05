@@ -1,12 +1,14 @@
 import { PLP } from 'components/organisms'
-import React from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
 import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
 import {
   CarRecommendation,
+  CityOtrOption,
   FooterSEOAttributes,
+  MobileWebTopMenuType,
   NavbarItemResponse,
 } from 'utils/types/utils'
 import PLPDesktop from 'components/organisms/PLPDesktop'
@@ -14,13 +16,27 @@ import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { api } from 'services/api'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import { useUtils } from 'services/context/utilsContext'
+import { MobileWebFooterMenuType } from 'utils/types/props'
+import styles from 'styles/pages/plp.module.scss'
 
 const NewCarResultPage = ({
   meta,
   isSsrMobile,
-  dataMenu,
+  dataHeader,
+  dataFooter,
+  dataCities,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { saveMobileWebTopMenus, saveMobileWebFooterMenus, saveCities } =
+    useUtils()
   const isMobile = isSsrMobile
+
+  useEffect(() => {
+    saveMobileWebTopMenus(dataHeader)
+    saveMobileWebFooterMenus(dataFooter)
+    saveCities(dataCities)
+  }, [])
+
   return (
     <>
       <Seo
@@ -29,18 +45,19 @@ const NewCarResultPage = ({
         image={defaultSeoImage}
       />
 
-      {isMobile ? (
+      <div className={styles.mobile}>
         <PLP
           carRecommendation={meta.carRecommendations}
           minmaxPrice={meta.MinMaxPrice}
           alternativeRecommendation={meta.alternativeCarRecommendation}
         />
-      ) : (
+      </div>
+      <div className={styles.desktop}>
         <PLPDesktop
           carRecommendation={meta.carRecommendations}
           footer={meta.footer}
         />
-      )}
+      </div>
     </>
   )
 }
@@ -71,7 +88,9 @@ const getBrand = (brand: string | string[] | undefined) => {
 export const getServerSideProps: GetServerSideProps<{
   meta: PLPProps
   isSsrMobile: boolean
-  dataMenu: NavbarItemResponse[]
+  dataHeader: MobileWebTopMenuType[]
+  dataFooter: MobileWebFooterMenuType[]
+  dataCities: CityOtrOption[]
 }> = async (ctx) => {
   const metabrand = getBrand(ctx.query.brand)
   const metaTagBaseApi =
@@ -115,11 +134,14 @@ export const getServerSideProps: GetServerSideProps<{
   } = ctx.query
 
   try {
-    const [fetchMeta, fetchFooter, menuRes]: any = await Promise.all([
-      axios.get(metaTagBaseApi + metabrand),
-      axios.get(footerTagBaseApi + metabrand),
-      api.getMenu(),
-    ])
+    const [fetchMeta, fetchFooter, menuRes, footerRes, cityRes]: any =
+      await Promise.all([
+        axios.get(metaTagBaseApi + metabrand),
+        axios.get(footerTagBaseApi + metabrand),
+        api.getMobileHeaderMenu(),
+        api.getMobileFooterMenu(),
+        api.getCities(),
+      ])
 
     const metaData = fetchMeta.data.data
     const footerData = fetchFooter.data.data
@@ -172,9 +194,23 @@ export const getServerSideProps: GetServerSideProps<{
     meta.alternativeCarRecommendation = alternativeData.carRecommendations
 
     return {
-      props: { meta, isSsrMobile: getIsSsrMobile(ctx), dataMenu: menuRes.data },
+      props: {
+        meta,
+        isSsrMobile: getIsSsrMobile(ctx),
+        dataHeader: menuRes.data,
+        dataFooter: footerRes.data,
+        dataCities: cityRes,
+      },
     }
   } catch (e) {
-    return { props: { meta, isSsrMobile: getIsSsrMobile(ctx), dataMenu: [] } }
+    return {
+      props: {
+        meta,
+        isSsrMobile: getIsSsrMobile(ctx),
+        dataHeader: [],
+        dataFooter: [],
+        dataCities: [],
+      },
+    }
   }
 }

@@ -37,7 +37,7 @@ const sidebarMobile = ({
   const [customerDetail, setCustomerDetail] = React.useState<CustomerInfoSeva>()
   const router = useRouter()
 
-  const { mobileWebTopMenus, saveMobileWebTopMenus } = useUtils()
+  const { mobileWebTopMenus } = useUtils()
 
   const setIconNameCustomer = (payload: string) => {
     if (payload.indexOf(' ') > 0) {
@@ -51,13 +51,6 @@ const sidebarMobile = ({
     }
   }
 
-  const fetchMobileWebTopMenu = async () => {
-    const response = await getMobileWebTopMenu()
-    if (response.data) {
-      saveMobileWebTopMenus(response.data)
-    }
-  }
-
   const getCustomerInfoData = async () => {
     try {
       const response = await fetchCustomerDetails()
@@ -68,10 +61,6 @@ const sidebarMobile = ({
       throw error
     }
   }
-
-  useEffect(() => {
-    fetchMobileWebTopMenu()
-  }, [])
 
   useEffect(() => {
     if (isLogin) {

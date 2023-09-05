@@ -16,6 +16,18 @@ export interface MobileWebTopMenuItemType {
   menuType: string
   subMenu: MobileWebTopMenuItemType[]
 }
+export interface MobileWebFooterMenuType {
+  menuCode: string
+  menuDesc: string
+  menuLevel: number
+  menuName: string
+  menuOrder: number
+  menuType: string
+  menuUrl: string
+  status: boolean
+  toggleNew: boolean
+}
+
 export interface MobileWebTopMenuType extends MobileWebTopMenuItemType {
   subMenu: MobileWebTopMenuItemType[]
 }

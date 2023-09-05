@@ -73,6 +73,7 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getPageName } from 'utils/pageName'
 import { LoanRank } from 'utils/types/models'
+import { useUtils } from 'services/context/utilsContext'
 
 interface PLPProps {
   carRecommendation: CarRecommendationResponse
@@ -133,16 +134,9 @@ export const PLP = ({
     items: carRecommendation.carRecommendations.slice(0, 12),
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
-  const [cityListApi, setCityListApi] = useState<Array<Location>>([])
+  const { cities } = useUtils()
   const [showAnnouncementBox, setIsShowAnnouncementBox] = useState(false)
   const [isLogin] = React.useState(!!getToken())
-  const checkCitiesData = () => {
-    if (cityListApi.length === 0) {
-      getCities().then((res) => {
-        setCityListApi(res)
-      })
-    }
-  }
 
   const fetchMoreData = () => {
     if (sampleArray.items.length >= recommendation.length) {
@@ -355,7 +349,6 @@ export const PLP = ({
   useEffect(() => {
     window.scrollTo(0, 0)
     moengageViewPLP()
-    checkCitiesData()
     getAnnouncementBox()
 
     window.addEventListener('scroll', handleScroll)
@@ -784,7 +777,7 @@ export const PLP = ({
         <CitySelectorModal
           isOpen={isOpenCitySelectorModal}
           onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
-          cityListFromApi={cityListApi}
+          cityListFromApi={cities}
         />
       </div>
     </>
