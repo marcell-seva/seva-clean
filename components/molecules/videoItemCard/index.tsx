@@ -11,6 +11,11 @@ import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { LocalStorageKey } from 'utils/enum'
 import { useCar } from 'services/context/carContext'
+import { useRouter } from 'next/router'
+import { getLocalStorage } from 'utils/handler/localStorage'
+import { LoanRank } from 'utils/types/models'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 interface Props {
   data: VideoDataType
@@ -24,6 +29,15 @@ export const VideoItemCard = ({ data }: Props) => {
     LocalStorageKey.CityOtr,
     null,
   )
+  const router = useRouter()
+  const loanRankcr = router.query.loanRankCVL ?? ''
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
 
   const clickThumbnailHandler = () => {
     setShowVideo(true)
@@ -37,6 +51,23 @@ export const VideoItemCard = ({ data }: Props) => {
     setShowVideo(false)
   }
 
+  const trackCountlyOnPlay = () => {
+    let creditBadge = 'Null'
+    if (loanRankcr && loanRankcr.includes(LoanRank.Green)) {
+      creditBadge = 'Mudah disetujui'
+    } else if (loanRankcr && loanRankcr.includes(LoanRank.Red)) {
+      creditBadge = 'Sulit disetujui'
+    }
+
+    trackEventCountly(CountlyEventNames.WEB_PDP_VIDEO_CLICK, {
+      CAR_BRAND: carModelDetails?.brand ?? 'Null',
+      CAR_MODEL: carModelDetails?.model ?? 'Null',
+      PELUANG_KREDIT_BADGE: isUsingFilterFinancial ? creditBadge : 'Null',
+      SOURCE_SECTION: 'Menu tab',
+      VIDEO_URL: data.videoSrc,
+    })
+  }
+
   const onPlayYoutubeHandler = () => {
     if (!carModelDetails) return
 
@@ -48,6 +79,7 @@ export const VideoItemCard = ({ data }: Props) => {
       Page_Origination_URL: originationUrl,
     }
     trackPDPGalleryVideo(TrackingEventName.WEB_PDP_PLAY_VIDEO, trackProperties)
+    trackCountlyOnPlay()
   }
 
   return (
