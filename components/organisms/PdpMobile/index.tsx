@@ -61,6 +61,7 @@ import {
   replacePriceSeparatorByLocalization,
 } from 'utils/handler/rupiah'
 import { LoanRank } from 'utils/types/models'
+import { useUtils } from 'services/context/utilsContext'
 
 export interface CarVariantListPageUrlParams {
   brand: string
@@ -119,7 +120,7 @@ export default function NewCarVariantList() {
   const [isButtonClick, setIsButtonClick] = useState(false)
   const [promoName, setPromoName] = useState('promo1')
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
-  const [cityListApi, setCityListApi] = useState<Array<CityOtrOption>>([])
+  const { cities, dataAnnouncementBox, saveDataAnnouncementBox } = useUtils()
   const [isOpenShareModal, setIsOpenShareModal] = useState(false)
   const [connectedRefCode, setConnectedRefCode] = useState('')
   const { funnelQuery } = useFunnelQueryData()
@@ -177,7 +178,8 @@ export default function NewCarVariantList() {
   }, [modelDetail])
 
   const getVideoReview = async () => {
-    const dataVideoReview = await getCarVideoReview()
+    const { carVideoReviewRes: dataVideoReview } =
+      useContext(PdpDataLocalContext)
     const filterVideoReview = dataVideoReview.data.filter(
       (video: MainVideoResponseType) => video.modelId === modelDetail?.id,
     )[0]
@@ -199,28 +201,6 @@ export default function NewCarVariantList() {
       }
       setVideoData(temp)
     }
-  }
-
-  const checkCitiesData = () => {
-    if (cityListApi.length === 0) {
-      getCities().then((res) => {
-        setCityListApi(res)
-      })
-    }
-  }
-
-  const getAnnouncementBox = () => {
-    api
-      .getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      .then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-        if (res.data === undefined) {
-          setShowAnnouncementBox(false)
-        }
-      })
   }
 
   useEffect(() => {
@@ -371,10 +351,25 @@ export default function NewCarVariantList() {
         setVariantFuelRatio(result.variantDetail.rasioBahanBakar)
       })
   }
+
   useEffect(() => {
-    checkCitiesData()
-    checkConnectedRefCode()
     getAnnouncementBox()
+  }, [])
+
+  const getAnnouncementBox = () => {
+    try {
+      const res: any = api.getAnnouncementBox({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
+      })
+      saveDataAnnouncementBox(res.data)
+      setShowAnnouncementBox(res.data !== undefined)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    checkConnectedRefCode()
 
     if (tab && tab.includes('SEVA')) {
       saveLocalStorage(LocalStorageKey.referralTemanSeva, tab)
@@ -548,7 +543,7 @@ export default function NewCarVariantList() {
       <CitySelectorModal
         isOpen={isOpenCitySelectorModal}
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
-        cityListFromApi={cityListApi || []}
+        cityListFromApi={cities}
       />
 
       <ShareModal
