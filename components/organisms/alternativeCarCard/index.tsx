@@ -21,6 +21,8 @@ import {
   PreviousButton,
   saveDataForCountlyTrackerPageViewPDP,
 } from 'utils/navigate'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 type AlternativeCarCardProps = {
   recommendation: CarRecommendation
@@ -49,6 +51,15 @@ export const AlternativeCarCard = ({
     )
     .replace(':tab', '')
 
+  const trackCountlyCarRecommendation = () => {
+    trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CLICK, {
+      PAGE_ORIGINATION: 'PLP - Empty Page',
+      PELUANG_KREDIT_BADGE: recommendation.loanRank,
+      CAR_BRAND_RECOMMENDATION: recommendation.brand,
+      CAR_MODEL_RECOMMENDATION: recommendation.model,
+      PAGE_DIRECTION_URL: window.location.hostname + detailCarRoute,
+    })
+  }
   const trackCarRecommendation = () => {
     if (location.pathname.includes(loanCalculatorDefaultUrl)) {
       const lowestInstallment = getLowestInstallment(recommendation.variants)
@@ -74,6 +85,9 @@ export const AlternativeCarCard = ({
   const navigateToPDP = () => {
     trackCarRecommendation()
     saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
+    if (!label) {
+      trackCountlyCarRecommendation()
+    }
     router.push(detailCarRoute)
   }
 
@@ -127,7 +141,22 @@ export const AlternativeCarCard = ({
           <Button
             version={ButtonVersion.Secondary}
             size={ButtonSize.Big}
-            onClick={() => router.push(detailCarRoute)}
+            onClick={() => {
+              trackEventCountly(
+                CountlyEventNames.WEB_CAR_RECOMMENDATION_CTA_CLICK,
+                {
+                  PAGE_ORIGINATION: 'PLP - Empty Page',
+                  CAR_BRAND: item.brand,
+                  CAR_MODEL: item.model,
+                  CAR_BRAND_RECOMMENDATION: item.brand,
+                  CAR_MODEL_RECOMMENDATION: item.model,
+                  CTA_BUTTON: 'Lihat Detail',
+                  PAGE_DIRECTION_URL:
+                    window.location.hostname + getDestinationUrl(item),
+                },
+              )
+              router.push(detailCarRoute)
+            }}
             data-testid={elementId.CarRecommendation.Button.LihatDetail}
           >
             Lihat Detail

@@ -1200,7 +1200,27 @@ export const CreditTab = () => {
   const handleRedirectToWhatsapp = async (
     loan: SpecialRateListWithPromoType,
   ) => {
+    const [carModelLoanRankPLP] = useLocalStorage(
+      LocalStorageKey.carModelLoanRank,
+      null,
+    )
     trackLCCtaWaDirectClick(getDataForAmplitudeQualification(loan))
+    trackEventCountly(CountlyEventNames.WEB_WA_DIRECT_CLICK, {
+      PAGE_ORIGINATION: 'PDP - Kredit',
+      SOURCE_BUTTON: 'CTA button Hubungi Agen SEVA',
+      CAR_BRAND: carModelDetails?.brand,
+      CAR_MODEL: carModelDetails?.model,
+      CAR_VARIANT: forms.variant?.variantName
+        ? forms.variant?.variantName
+        : 'Null',
+      PELUANG_KREDIT_BADGE:
+        carModelLoanRankPLP && carModelLoanRankPLP === 'Green'
+          ? 'Mudah disetujui'
+          : carModelLoanRankPLP && carModelLoanRankPLP === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      TENOR_OPTION: loan?.tenure ? loan?.tenure + ' Tahun' : 'Null',
+    })
     const { model, variant, downPaymentAmount } = forms
     const message = `Halo, saya tertarik dengan ${model?.modelName} ${variant?.variantName} dengan DP sebesar Rp ${downPaymentAmount}, cicilan per bulannya Rp ${loan?.installment}, dan tenor ${loan?.tenure} tahun.`
 
@@ -1872,6 +1892,8 @@ export const CreditTab = () => {
             cityName={forms?.city?.cityName || ''}
             carModel={forms?.model?.modelName || ''}
             carBrand={forms?.model?.brandName || ''}
+            selectedTenure={selectedLoan?.tenure}
+            selectedLoanRank={selectedLoan?.loanRank}
           />
         </>
       ) : (

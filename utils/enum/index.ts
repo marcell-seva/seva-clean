@@ -96,6 +96,7 @@ export enum LocalStorageKey {
   FormKtp = 'formKtp',
   PreApprovalResult = 'preApprovalResult',
   LastHitTracker = 'lastHitTracker',
+  carModelLoanRank = 'carModelLoanRank', // loan rank on plp
 }
 
 export enum SessionStorageKey {

@@ -66,6 +66,10 @@ export const CarDetailCard = ({
     false,
   )
 
+  const [, setCarModelLoanRankPLP] = useLocalStorage(
+    LocalStorageKey.carModelLoanRank,
+    null,
+  )
   const singleVariantPrice = formatNumberByLocalization(
     recommendation.variants[0].priceValue,
     LanguageCode.id,
@@ -163,6 +167,7 @@ export const CarDetailCard = ({
       Cicilan: `Rp${lowestInstallment} jt/bln`,
       ...(cityOtr && { City: cityOtr?.cityName }),
     })
+    setCarModelLoanRankPLP(recommendation.loanRank)
     const datatrack = {
       CAR_BRAND: recommendation.brand,
       CAR_MODEL: recommendation.model,

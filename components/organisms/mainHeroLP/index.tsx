@@ -42,6 +42,7 @@ const MainHeroLP = ({ onCityIconClick, onCtaClick }: MainHeroLPProps) => {
             isActive={showSidebar}
             setIsActive={setShowSidebar}
             emitClickCityIcon={onCityIconClick}
+            pageOrigination="Homepage"
           />
           <div className={styles.mainWrapper}>
             <h1 className={`${styles.mainTitle} ${styles.bold}`}>

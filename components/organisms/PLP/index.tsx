@@ -147,6 +147,12 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
   const { cities } = useUtils()
   const [showAnnouncementBox, setIsShowAnnouncementBox] = useState(false)
   const [isLogin] = useState(!!getToken())
+  const [dataCarForPromo, setDataCarForPromo] = useState({
+    brand: '',
+    model: '',
+    carOrder: '',
+    loanRank: 'Null',
+  })
 
   const fetchMoreData = () => {
     if (sampleArray.items.length >= recommendation.length) {
@@ -266,6 +272,9 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
   const showLeadsForm = () => {
     setIsModalOpened(true)
     trackLeadsFormAction(TrackingEventName.WEB_LEADS_FORM_OPEN, trackLeads())
+    trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_BUTTON_CLICK, {
+      PAGE_ORIGINATION: 'PLP',
+    })
   }
 
   const closeLeadsForm = () => {
@@ -618,6 +627,23 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
       Tenure: `${funnelQuery.tenure || 5}`,
     }
   }
+  const trackCountlyPromoBadgeClick = (
+    car: CarRecommendation,
+    index: number,
+  ) => {
+    trackEventCountly(CountlyEventNames.WEB_PROMO_CLICK, {
+      CAR_BRAND: car.brand,
+      CAR_MODEL: car.model,
+      CAR_ORDER: index + 1,
+      PELUANG_KREDIT_BADGE:
+        car.loanRank === 'Green'
+          ? 'Mudah disetujui'
+          : car.loanRank === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      PAGE_ORIGINATION: 'PLP',
+    })
+  }
   return (
     <>
       <div
@@ -634,6 +660,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
           emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
           setShowAnnouncementBox={setIsShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
+          pageOrigination={'PLP'}
         />
 
         {!showLoading && sampleArray.items.length === 0 ? (
@@ -693,7 +720,16 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
                       key={index}
                       recommendation={i}
                       isFilter={isFilterCredit}
-                      onClickLabel={() => setOpenLabelPromo(true)}
+                      onClickLabel={() => {
+                        setOpenLabelPromo(true)
+                        trackCountlyPromoBadgeClick(i, index)
+                        setDataCarForPromo({
+                          brand: i.brand,
+                          model: i.model,
+                          carOrder: index + 1,
+                          loanRank: i.loanRank,
+                        })
+                      }}
                       onClickResultMudah={() => {
                         setOpenLabelResultMudah(true)
                         trackPeluangMudahBadgeClick(getDataForAmplitude())
@@ -726,7 +762,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
             </div>
           </>
         )}
-        <FooterMobile />
+        <FooterMobile pageOrigination="PLP" />
         <CSAButton
           onClick={showLeadsForm}
           data-testid={elementId.PLP.Button.LeadsFormIcon}
@@ -735,6 +771,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
           <LeadsFormPrimary
             onCancel={closeLeadsForm}
             trackerProperties={trackLeads()}
+            onPage="LP"
           />
         )}
         <FilterMobile
@@ -764,6 +801,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
         <PopupPromo
           open={openLabelPromo}
           onCancel={() => setOpenLabelPromo(false)}
+          carData={dataCarForPromo}
         />
         <PopupResultSulit
           open={openLabelResultSulit}

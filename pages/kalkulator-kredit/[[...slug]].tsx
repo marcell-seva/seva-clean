@@ -97,6 +97,7 @@ import {
   trackEventCountly,
   valueForInitialPageProperty,
   valueForUserTypeProperty,
+  valueMenuTabCategory,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
@@ -1828,7 +1829,7 @@ Kemampuan Finansialmu"
           )}
         </div>
 
-        <FooterMobile />
+        <FooterMobile pageOrigination={'PDP - ' + valueMenuTabCategory()} />
 
         <CitySelectorModal
           isOpen={isOpenCitySelectorModal}

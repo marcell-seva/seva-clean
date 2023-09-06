@@ -28,7 +28,10 @@ export interface FooterMenu {
   menuType: string
 }
 
-export const FooterMobile = () => {
+export interface FooterProps {
+  pageOrigination?: string
+}
+export const FooterMobile = ({ pageOrigination }: FooterProps) => {
   const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
   const { mobileWebFooterMenus } = useUtils()
 
