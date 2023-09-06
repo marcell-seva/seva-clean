@@ -147,6 +147,7 @@ export enum SessionStorageKey {
   PageReferrerHomepage = 'pageReferrerHomepage',
   PreviousSourceButtonHomepage = 'previousSourceButtonHomepage',
   HasTracked360Exterior = 'hasTracked360Exterior',
+  PreviousCarDataBeforeLogin = 'previousCarDataBeforeLogin',
 }
 
 export enum HTTPResponseStatusCode {

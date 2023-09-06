@@ -10,6 +10,7 @@ import {
   LoanCalculatorIncludePromoPayloadType,
   LoanCalculatorInsuranceAndPromoType,
   SpecialRateListWithPromoType,
+  trackDataCarType,
 } from 'utils/types/utils'
 import {
   trackLCCTAHitungKemampuanClick,
@@ -230,6 +231,10 @@ export const CreditTab = () => {
   const [isSentCountlyPageView, setIsSentCountlyPageView] = useState(false)
   const loanRankcr = router.query.loanRankCVL ?? ''
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+  const [carModelLoanRankPLP] = useLocalStorage(
+    LocalStorageKey.carModelLoanRank,
+    null,
+  )
 
   const isUsingFilterFinancial =
     !!filterStorage?.age &&
@@ -733,9 +738,24 @@ export const CreditTab = () => {
     setIsSelectPassengerCar(response.isPassengerCar)
   }
 
+  const saveDataCarForLoginPageView = (variantName: string) => {
+    const dataCar: trackDataCarType | null = getSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+    )
+    const dataCarTemp = {
+      ...dataCar,
+      CAR_VARIANT: variantName,
+    }
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarTemp),
+    )
+  }
   const handleChange = (name: string, value: any) => {
     setIsDataSubmitted(false)
-
+    if (name === 'variant') {
+      saveDataCarForLoginPageView(value.variantName)
+    }
     if (name === 'city') {
       if (!value) {
         return setForms({
@@ -1200,10 +1220,6 @@ export const CreditTab = () => {
   const handleRedirectToWhatsapp = async (
     loan: SpecialRateListWithPromoType,
   ) => {
-    const [carModelLoanRankPLP] = useLocalStorage(
-      LocalStorageKey.carModelLoanRank,
-      null,
-    )
     trackLCCtaWaDirectClick(getDataForAmplitudeQualification(loan))
     trackEventCountly(CountlyEventNames.WEB_WA_DIRECT_CLICK, {
       PAGE_ORIGINATION: 'PDP - Kredit',
@@ -1220,6 +1236,19 @@ export const CreditTab = () => {
           ? 'Sulit disetujui'
           : 'Null',
       TENOR_OPTION: loan?.tenure ? loan?.tenure + ' Tahun' : 'Null',
+      TENOR_RESULT:
+        dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Green'
+          ? 'Mudah disetujui'
+          : dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      KK_RESULT: 'Null',
+      IA_RESULT: 'Null',
+      TEMAN_SEVA_STATUS: temanSevaStatus,
+      INCOME_LOAN_CALCULATOR: filterStorage?.monthlyIncome,
+      INCOME_KUALIFIKASI_KREDIT: 'Null',
+      INCOME_CHANGE: 'Null',
+      OCCUPATION: 'Null',
     })
     const { model, variant, downPaymentAmount } = forms
     const message = `Halo, saya tertarik dengan ${model?.modelName} ${variant?.variantName} dengan DP sebesar Rp ${downPaymentAmount}, cicilan per bulannya Rp ${loan?.installment}, dan tenor ${loan?.tenure} tahun.`
