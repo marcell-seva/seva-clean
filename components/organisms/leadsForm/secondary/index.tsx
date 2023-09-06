@@ -43,6 +43,8 @@ import {
   valueMenuTabCategory,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getToken } from 'utils/handler/auth'
+import { getCustomerInfoSeva } from 'services/customer'
 
 const SupergraphicLeft = '/revamp/illustration/supergraphic-small.webp'
 const SupergraphicRight = '/revamp/illustration/supergraphic-large.webp'
@@ -217,7 +219,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
       } else {
         trackCountlySendLeads('No')
         trackEventCountly(CountlyEventNames.WEB_OTP_VIEW, {
-          PAGE_ORIGINATION: pageOrigination,
+          PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
         })
         setModalOpened('otp')
       }
@@ -227,7 +229,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
     } else {
       trackCountlySendLeads('No')
       trackEventCountly(CountlyEventNames.WEB_OTP_VIEW, {
-        PAGE_ORIGINATION: pageOrigination,
+        PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
       })
       setModalOpened('otp')
     }
@@ -250,6 +252,16 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
   }
 
   const sendUnverifiedLeads = async () => {
+    let temanSevaStatus = 'No'
+
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response.data[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
     const data = {
       platform,
       name,
@@ -427,9 +439,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
             setModalOpened('none')
           }}
           isOtpVerified={() => verified()}
-          pageOrigination={
-            onPage === 'LP' ? 'PLP' : 'PDP - ' + valueMenuTabCategory()
-          }
+          pageOrigination={'PDP - ' + valueMenuTabCategory()}
         />
       )}
       <Toast

@@ -150,7 +150,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
   const [dataCarForPromo, setDataCarForPromo] = useState({
     brand: '',
     model: '',
-    carOrder: '',
+    carOrder: 0,
     loanRank: 'Null',
   })
 
@@ -627,14 +627,11 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
       Tenure: `${funnelQuery.tenure || 5}`,
     }
   }
-  const trackCountlyPromoBadgeClick = (
-    car: CarRecommendation,
-    index: number,
-  ) => {
+  const trackCountlyPromoBadgeClick = (car: CarRecommendation, index: any) => {
     trackEventCountly(CountlyEventNames.WEB_PROMO_CLICK, {
       CAR_BRAND: car.brand,
       CAR_MODEL: car.model,
-      CAR_ORDER: index + 1,
+      CAR_ORDER: parseInt(index) + 1,
       PELUANG_KREDIT_BADGE:
         car.loanRank === 'Green'
           ? 'Mudah disetujui'
@@ -723,12 +720,14 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
                       onClickLabel={() => {
                         setOpenLabelPromo(true)
                         trackCountlyPromoBadgeClick(i, index)
-                        setDataCarForPromo({
-                          brand: i.brand,
-                          model: i.model,
-                          carOrder: index + 1,
-                          loanRank: i.loanRank,
-                        })
+                        if (index) {
+                          setDataCarForPromo({
+                            brand: i.brand,
+                            model: i.model,
+                            carOrder: Number(index) + 1,
+                            loanRank: i.loanRank,
+                          })
+                        }
                       }}
                       onClickResultMudah={() => {
                         setOpenLabelResultMudah(true)

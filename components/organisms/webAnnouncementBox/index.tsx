@@ -67,9 +67,11 @@ declare global {
 
 type WebAnnouncementBoxProps = {
   onCloseAnnouncementBox?: (value: boolean) => void
+  pageOrigination?: string
 }
 export const WebAnnouncementBox = ({
   onCloseAnnouncementBox,
+  pageOrigination,
 }: WebAnnouncementBoxProps) => {
   const [isOpen, setIsOpen] = useState<boolean | null>(
     getSessionStorage(
