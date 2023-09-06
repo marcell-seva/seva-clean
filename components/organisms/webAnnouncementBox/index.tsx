@@ -83,8 +83,8 @@ export const WebAnnouncementBox = ({
 
   useEffect(() => {
     if (dataAnnouncementBox !== undefined) {
-      setAnnouncement(dataAnnouncementBox)
       setIsError(false)
+      setAnnouncement(dataAnnouncementBox)
     } else {
       setIsError(true)
     }

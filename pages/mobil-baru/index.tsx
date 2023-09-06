@@ -20,6 +20,7 @@ import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import styles from 'styles/pages/plp.module.scss'
 import { CarProvider } from 'services/context'
+import { generateBlurRecommendations } from 'utils/generateBlur'
 
 const NewCarResultPage = ({
   meta,
@@ -182,7 +183,16 @@ export const getServerSideProps: GetServerSideProps<{
       getNewFunnelRecommendations({ ...queryParam }),
     ])
 
-    const recommendation = funnel
+    const generateRecommendation = await generateBlurRecommendations(
+      funnel.carRecommendations,
+    )
+    const recommendation = {
+      carRecommendations: generateRecommendation
+        ? [...generateRecommendation]
+        : funnel.carRecommendations,
+      lowestCarPrice: funnel.lowestCarPrice,
+      highestCarPrice: funnel.highestCarPrice,
+    }
 
     if (metaData && metaData.length > 0) {
       meta.title = metaData[0].attributes.meta_title
