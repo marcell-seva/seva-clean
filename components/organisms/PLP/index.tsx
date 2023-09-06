@@ -137,7 +137,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
     items: recommendation.slice(0, 12),
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
-  const { cities } = useUtils()
+  const { cities, saveDataAnnouncementBox } = useUtils()
   const [showAnnouncementBox, setIsShowAnnouncementBox] = useState(false)
   const [isLogin] = React.useState(!!getToken())
 
@@ -282,10 +282,11 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
           'is-login': getToken() ? 'true' : 'false',
         },
       })
-      .then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
+      .then((res: { data: AnnouncementBoxDataType }) => {
         if (res.data === undefined) {
           setIsShowAnnouncementBox(false)
         } else {
+          saveDataAnnouncementBox(res.data)
           const sessionAnnouncmentBox = getSessionStorage(
             getToken()
               ? SessionStorageKey.ShowWebAnnouncementLogin
