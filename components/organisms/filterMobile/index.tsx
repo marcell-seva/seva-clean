@@ -348,18 +348,12 @@ const FilterMobile = ({
     })
 
     saveRecommendation(response?.carRecommendations || [])
+    setResetTmp(false)
+
     trackPLPSubmitFilter(trackFilterAction())
     onClickClose()
-    setResetTmp(false)
   }
 
-  // const handleError = (errorCode: number) => {
-  //   if (errorCode === 500) {
-  //     setRecommendations([])
-  //   } else {
-  //     setRecommendations([])
-  //   }
-  // }
   const paramQuery = funnelQuery
 
   const resultRef = useRef<null | HTMLDivElement>(null)

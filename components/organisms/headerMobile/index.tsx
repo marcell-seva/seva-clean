@@ -22,6 +22,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { WebAnnouncementBox } from 'components/organisms'
 import { SearchModal } from 'components/molecules/searchModal'
+import Image from 'next/image'
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
@@ -96,7 +97,8 @@ export const HeaderMobile = ({
           [styles.hideHeader]: startScroll && !isActive,
           [styles.showHeader]: !startScroll,
           [styles.isActive]: isActive,
-          [styles.showAAnnouncementBox]: isShowAnnouncementBox,
+          [styles.showAAnnouncementBox]:
+            isShowAnnouncementBox && enableAnnouncementBoxAleph,
           [styles.shadow]: style?.withBoxShadow,
           [styles.homepage]: router.pathname === '/' && !isActive,
         })}
@@ -116,10 +118,10 @@ export const HeaderMobile = ({
               />
             </div>
             <Link href={rootUrl} onClick={handleLogoClick}>
-              <img
+              <Image
                 src={LogoPrimary}
                 height={30}
-                width="100%"
+                width={50}
                 alt="seva"
                 className={styles.logoImg}
                 data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
