@@ -1515,7 +1515,7 @@ export const CreditTab = () => {
         DP_AMOUNT: formatCurrency(dpValue),
         DP_PERCENTAGE: formatCurrency(dpPercentage),
         ANGSURAN_TYPE: forms.paymentOption,
-        AGE_RANGE: forms.age,
+        AGE_RANGE: forms.age.replace('>', 'Above '),
         '1_YEAR_TENOR_RESULT':
           resultSortAscByTenure[0].loanRank === LoanRank.Green
             ? 'Mudah disetujui'
