@@ -91,7 +91,7 @@ export const WebAnnouncementBox = ({
       setIsError(true)
       setIsLoading(false)
     }
-  }, [])
+  }, [dataAnnouncementBox])
 
   useEffect(() => {
     if (getToken() !== null) {
