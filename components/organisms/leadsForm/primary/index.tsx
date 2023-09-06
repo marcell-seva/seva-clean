@@ -29,9 +29,12 @@ import { CityOtrOption } from 'utils/types'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import {
   trackEventCountly,
+  valueForUserTypeProperty,
   valueMenuTabCategory,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getToken } from 'utils/handler/auth'
+import { getCustomerInfoSeva } from 'services/customer'
 
 const SupergraphicSecondarySmall =
   '/revamp/illustration/supergraphic-secondary-small.webp'
@@ -126,7 +129,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
       } else {
         trackCountlySendLeads('No')
         trackEventCountly(CountlyEventNames.WEB_OTP_VIEW, {
-          PAGE_ORIGINATION: pageOrigination,
+          PAGE_ORIGINATION: 'PLP',
         })
         setModalOpened('otp')
       }
@@ -135,7 +138,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
     } else {
       trackCountlySendLeads('No')
       trackEventCountly(CountlyEventNames.WEB_OTP_VIEW, {
-        PAGE_ORIGINATION: pageOrigination,
+        PAGE_ORIGINATION: 'PLP',
       })
       setModalOpened('otp')
     }
@@ -159,21 +162,13 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
 
   const trackCountlySendLeads = async (verifiedPhone: string) => {
     let temanSevaStatus = 'No'
-    let pageOrigination = 'Homepage - Car of The Month'
+    let pageOrigination = 'PLP'
 
     if (onPage === 'LP') {
-      pageOrigination = 'Homepage - Car of The Month'
-    }
-    if (referralCodeFromUrl) {
-      temanSevaStatus = 'Yes'
-    } else if (!!getToken()) {
-      const response = await getCustomerInfoSeva()
-      if (response.data[0].temanSevaTrxCode) {
-        temanSevaStatus = 'Yes'
-      }
+      pageOrigination = 'PLP'
     }
     trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SEND_CLICK, {
-      PAGE_ORIGINATION: pageOrigination,
+      PAGE_ORIGINATION: 'PLP',
       LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
       TEMAN_SEVA_STATUS: temanSevaStatus,
       PHONE_VERIFICATION_STATUS: verifiedPhone,
@@ -190,6 +185,23 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
 
   const sendUnverifiedLeads = async () => {
     let data
+    let temanSevaStatus = 'No'
+    let pageOrigination = 'PLP'
+    const referralCodeFromUrl: string | null = getLocalStorage(
+      LocalStorageKey.referralTemanSeva,
+    )
+
+    if (onPage === 'LP') {
+      pageOrigination = 'PLP'
+    }
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response.data[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
     if (onPage === 'LP') {
       data = {
         origination: UnverifiedLeadSubCategory.SEVA_NEW_CAR_CAR_OF_THE_MONTH,
@@ -215,7 +227,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
           trackerProperties,
         )
       trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SUCCESS_VIEW, {
-        PAGE_ORIGINATION: 'Homepage - Bottom Section',
+        PAGE_ORIGINATION: 'PLP',
         LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
         TEMAN_SEVA_STATUS: temanSevaStatus,
         PHONE_NUMBER: phone,
@@ -266,7 +278,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
   const onClickNameField = () => {
     if (onPage === 'LP') {
       trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_NAME_CLICK, {
-        PAGE_ORIGINATION: 'Homepage - Car of The Month',
+        PAGE_ORIGINATION: 'PLP',
         USER_TYPE: valueForUserTypeProperty(),
       })
     }
@@ -275,7 +287,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
   const onClickPhoneField = () => {
     if (onPage === 'LP') {
       trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_PHONE_NUMBER_CLICK, {
-        PAGE_ORIGINATION: 'Homepage - Car of The Month',
+        PAGE_ORIGINATION: 'PLP',
         USER_TYPE: valueForUserTypeProperty(),
       })
     }

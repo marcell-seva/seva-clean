@@ -15,6 +15,7 @@ import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { LocalStorageKey } from 'utils/enum'
+import { LoanRank } from 'utils/types/models'
 
 const initPromoList: PopupPromoDataItemType[] = [
   // {
@@ -57,7 +58,7 @@ const initPromoList: PopupPromoDataItemType[] = [
 type PopupPromo = Omit<ModalProps, 'children'> & {
   data?: PopupPromoDataItemType[]
   additionalContainerClassname?: string
-  carData: any
+  carData?: any
 }
 
 export const PopupPromo = (props: PopupPromo) => {

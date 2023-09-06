@@ -146,13 +146,12 @@ export const AlternativeCarCard = ({
                 CountlyEventNames.WEB_CAR_RECOMMENDATION_CTA_CLICK,
                 {
                   PAGE_ORIGINATION: 'PLP - Empty Page',
-                  CAR_BRAND: item.brand,
-                  CAR_MODEL: item.model,
-                  CAR_BRAND_RECOMMENDATION: item.brand,
-                  CAR_MODEL_RECOMMENDATION: item.model,
+                  CAR_BRAND: recommendation.brand,
+                  CAR_MODEL: recommendation.model,
+                  CAR_BRAND_RECOMMENDATION: recommendation.brand,
+                  CAR_MODEL_RECOMMENDATION: recommendation.model,
                   CTA_BUTTON: 'Lihat Detail',
-                  PAGE_DIRECTION_URL:
-                    window.location.hostname + getDestinationUrl(item),
+                  PAGE_DIRECTION_URL: window.location.hostname + detailCarRoute,
                 },
               )
               router.push(detailCarRoute)

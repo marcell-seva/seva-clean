@@ -51,7 +51,7 @@ export default function Articles({
       Article: url,
     })
     trackEventCountly(CountlyEventNames.WEB_ARTICLE_CLICK, {
-      PAGE_ORIGINATION: pageOrigination,
+      PAGE_ORIGINATION: 'PDP - Kredit',
       TENOR_OPTION: selectedTenure,
       TENOR_RESULT: selectedLoanRank,
       PAGE_DIRECTION_URL: url,

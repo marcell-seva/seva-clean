@@ -29,6 +29,7 @@ import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { LocalStorageKey } from 'utils/enum'
+import { LoanRank } from 'utils/types/models'
 
 type PromoSectionProps = {
   setPromoName?: (value: string) => void
