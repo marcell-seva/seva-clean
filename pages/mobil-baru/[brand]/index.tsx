@@ -31,34 +31,18 @@ const NewCarResultPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const id = router.query.brand
-  const {
-    saveMobileWebTopMenus,
-    saveDataAnnouncementBox,
-    saveMobileWebFooterMenus,
-    saveCities,
-  } = useUtils()
+  const { saveMobileWebTopMenus, saveMobileWebFooterMenus, saveCities } =
+    useUtils()
 
   useEffect(() => {
     saveMobileWebTopMenus(dataHeader)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
-    getAnnouncementBox()
 
     if (id && typeof id === 'string' && id.includes('SEVA')) {
       saveLocalStorage(LocalStorageKey.referralTemanSeva, id)
     }
   }, [])
-
-  const getAnnouncementBox = () => {
-    try {
-      const res: any = api.getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      saveDataAnnouncementBox(res.data)
-    } catch (error) {}
-  }
 
   return (
     <>
