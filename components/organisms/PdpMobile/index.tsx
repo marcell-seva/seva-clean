@@ -69,6 +69,7 @@ import {
   trackEventCountly,
   valueForInitialPageProperty,
   valueForUserTypeProperty,
+  valueMenuTabCategory,
 } from 'helpers/countly/countly'
 import { client } from 'utils/helpers/const'
 import { defineRouteName } from 'utils/navigate'
@@ -604,6 +605,7 @@ export default function NewCarVariantList() {
           emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
           setShowAnnouncementBox={setShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
+          pageOrigination={'PDP - ' + valueMenuTabCategory()}
         />
         <div className={styles.content}>{renderContent()}</div>
         {status !== 'loading' && <FooterMobile />}

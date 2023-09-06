@@ -27,6 +27,11 @@ import { OTP } from 'components/organisms/otp'
 import Image from 'next/image'
 import { CityOtrOption } from 'utils/types'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import {
+  trackEventCountly,
+  valueMenuTabCategory,
+} from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 const SupergraphicSecondarySmall =
   '/revamp/illustration/supergraphic-secondary-small.webp'
@@ -112,14 +117,28 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
     const dataLeads = checkDataFlagLeads()
     if (dataLeads) {
       if (phone === dataLeads.phone && name === dataLeads.name) {
+        trackCountlySendLeads('Yes')
         sendUnverifiedLeads()
       } else if (phone === dataLeads.phone && name !== dataLeads.name) {
+        trackCountlySendLeads('Yes')
         sendUnverifiedLeads()
         updateFlagLeadsName(name)
-      } else setModalOpened('otp')
+      } else {
+        trackCountlySendLeads('No')
+        trackEventCountly(CountlyEventNames.WEB_OTP_VIEW, {
+          PAGE_ORIGINATION: pageOrigination,
+        })
+        setModalOpened('otp')
+      }
     } else if (isUserLoggedIn) {
       sendUnverifiedLeads()
-    } else setModalOpened('otp')
+    } else {
+      trackCountlySendLeads('No')
+      trackEventCountly(CountlyEventNames.WEB_OTP_VIEW, {
+        PAGE_ORIGINATION: pageOrigination,
+      })
+      setModalOpened('otp')
+    }
   }
 
   const saveFlagLeads = (payload: any) => {
@@ -138,6 +157,28 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
     saveLocalStorage(LocalStorageKey.flagLeads, encryptedData)
   }
 
+  const trackCountlySendLeads = async (verifiedPhone: string) => {
+    let temanSevaStatus = 'No'
+    let pageOrigination = 'Homepage - Car of The Month'
+
+    if (onPage === 'LP') {
+      pageOrigination = 'Homepage - Car of The Month'
+    }
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response.data[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
+    trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SEND_CLICK, {
+      PAGE_ORIGINATION: pageOrigination,
+      LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
+      TEMAN_SEVA_STATUS: temanSevaStatus,
+      PHONE_VERIFICATION_STATUS: verifiedPhone,
+    })
+  }
   const onClose = () => {
     if (trackerProperties)
       trackLeadsFormAction(
@@ -173,6 +214,12 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
           TrackingEventName.WEB_LEADS_FORM_SUCCESS,
           trackerProperties,
         )
+      trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SUCCESS_VIEW, {
+        PAGE_ORIGINATION: 'Homepage - Bottom Section',
+        LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
+        TEMAN_SEVA_STATUS: temanSevaStatus,
+        PHONE_NUMBER: phone,
+      })
       setIsLoading(false)
       setModalOpened('success-toast')
       setTimeout(() => {
@@ -216,6 +263,23 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
     }
   }
 
+  const onClickNameField = () => {
+    if (onPage === 'LP') {
+      trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_NAME_CLICK, {
+        PAGE_ORIGINATION: 'Homepage - Car of The Month',
+        USER_TYPE: valueForUserTypeProperty(),
+      })
+    }
+  }
+
+  const onClickPhoneField = () => {
+    if (onPage === 'LP') {
+      trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_PHONE_NUMBER_CLICK, {
+        PAGE_ORIGINATION: 'Homepage - Car of The Month',
+        USER_TYPE: valueForUserTypeProperty(),
+      })
+    }
+  }
   return (
     <>
       {modalOpened === 'leads-form' && (
@@ -255,6 +319,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
                   title="Nama Lengkap"
                   value={name}
                   onChange={(e: any) => handleInputName(e.target.value)}
+                  onFocus={onClickNameField}
                 />
                 <Gap height={24} />
                 <InputPhone
@@ -264,6 +329,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
                   title="Nomor Handphone"
                   value={phone}
                   onChange={(e: any) => handleInputPhone(e.target.value)}
+                  onFocus={onClickPhoneField}
                 />
                 <Gap height={32} />
                 <Button
@@ -296,6 +362,9 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
           phoneNumber={phone}
           closeModal={onCancel}
           isOtpVerified={() => verified()}
+          pageOrigination={
+            onPage === 'LP' ? 'PLP' : 'PDP - ' + valueMenuTabCategory()
+          }
         />
       )}
       <Toast

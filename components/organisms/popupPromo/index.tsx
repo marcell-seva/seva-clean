@@ -11,6 +11,10 @@ import { IconClose } from 'components/atoms'
 import styles from '../../../styles/components/organisms/popupPromo.module.scss'
 import elementId from 'helpers/elementIds'
 import { PopupPromoDataItemType } from 'utils/types/utils'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getLocalStorage } from 'utils/handler/localStorage'
+import { LocalStorageKey } from 'utils/enum'
 
 const initPromoList: PopupPromoDataItemType[] = [
   // {
@@ -53,11 +57,47 @@ const initPromoList: PopupPromoDataItemType[] = [
 type PopupPromo = Omit<ModalProps, 'children'> & {
   data?: PopupPromoDataItemType[]
   additionalContainerClassname?: string
+  carData: any
 }
 
 export const PopupPromo = (props: PopupPromo) => {
   const [promoList, setPromoList] = useState(initPromoList)
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
 
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
+
+  const trackClickPromoSK = (promoDetail: string, promoOrder: number) => {
+    const getCreditBadgeForCountly = () => {
+      let creditBadge = 'Null'
+      if (
+        props.carData.loanRank &&
+        props.carData.loanRank.includes(LoanRank.Green)
+      ) {
+        creditBadge = 'Mudah disetujui'
+      } else if (
+        props.carData.loanRank &&
+        props.carData.loanRank.includes(LoanRank.Red)
+      ) {
+        creditBadge = 'Sulit disetujui'
+      }
+      return creditBadge
+    }
+    trackEventCountly(CountlyEventNames.WEB_PROMO_SK_CLICK, {
+      CAR_BRAND: props.carData.brand,
+      CAR_MODEL: props.carData.model,
+      CAR_ORDER: props.carData.carOder,
+      PROMO_DETAILS: promoDetail,
+      PROMO_ORDER: promoOrder + 1,
+      PELUANG_KREDIT_BADGE: isUsingFilterFinancial
+        ? getCreditBadgeForCountly()
+        : 'Null',
+      PAGE_ORIGINATION: 'PDP',
+    })
+  }
   useEffect(() => {
     if (props.data) {
       setPromoList(props.data)
@@ -109,6 +149,7 @@ export const PopupPromo = (props: PopupPromo) => {
               href={item.snk}
               rel="noreferrer noopener"
               data-testid={elementId.PLP.Button.LihatSNK}
+              onClick={() => trackClickPromoSK(item.title, index)}
             >
               Lihat S&K
             </a>

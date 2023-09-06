@@ -6,6 +6,8 @@ import React from 'react'
 import PrimaryCard from 'components/molecules/card/primaryCard'
 import styles from 'styles/components/organisms/articles.module.scss'
 import { Article } from 'utils/types'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 type TArticlesProps = {
   articles: Article[]
@@ -14,6 +16,8 @@ type TArticlesProps = {
   carBrand: string
   additionalContainerStyle?: string
   additionalLinkStyle?: string
+  selectedTenure?: number
+  selectedLoanRank?: string
 }
 
 export default function Articles({
@@ -23,6 +27,8 @@ export default function Articles({
   cityName,
   additionalContainerStyle,
   additionalLinkStyle,
+  selectedTenure,
+  selectedLoanRank,
 }: TArticlesProps) {
   const [showAllArticlesUrl, setShowAllArticlesUrl] = React.useState('')
 
@@ -44,7 +50,12 @@ export default function Articles({
       City: cityName,
       Article: url,
     })
-
+    trackEventCountly(CountlyEventNames.WEB_ARTICLE_CLICK, {
+      PAGE_ORIGINATION: pageOrigination,
+      TENOR_OPTION: selectedTenure,
+      TENOR_RESULT: selectedLoanRank,
+      PAGE_DIRECTION_URL: url,
+    })
     window.location.href = url
   }
 
@@ -54,6 +65,12 @@ export default function Articles({
       Car_Brand: carBrand,
       Car_Model: carModel,
       City: cityName,
+    })
+
+    trackEventCountly(CountlyEventNames.WEB_ARTICLE_ALL_CLICK, {
+      PAGE_ORIGINATION: 'PDP - Kredit',
+      TENOR_OPTION: selectedTenure,
+      TENOR_RESULT: selectedLoanRank,
     })
     window.location.href = showAllArticlesUrl
   }

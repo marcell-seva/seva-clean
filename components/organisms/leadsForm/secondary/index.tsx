@@ -76,6 +76,9 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
     SessionStorageKey.LoanRankFromPLP,
     false,
   )
+  const referralCodeFromUrl: string | null = getLocalStorage(
+    LocalStorageKey.referralTemanSeva,
+  )
 
   const router = useRouter()
 
@@ -181,22 +184,51 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
     sendUnverifiedLeads()
   }
 
+  const trackCountlySendLeads = async (verifiedPhone: string) => {
+    let temanSevaStatus = 'No'
+
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response.data[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
+    trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SEND_CLICK, {
+      PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
+      LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
+      TEMAN_SEVA_STATUS: temanSevaStatus,
+      PHONE_VERIFICATION_STATUS: verifiedPhone,
+    })
+  }
   const sendOtpCode = async () => {
     setIsLoading(true)
     trackLeadsFormAction(TrackingEventName.WEB_LEADS_FORM_SUBMIT, trackLeads())
     const dataLeads = checkDataFlagLeads()
     if (dataLeads) {
       if (phone === dataLeads.phone && name === dataLeads.name) {
+        trackCountlySendLeads('Yes')
         sendUnverifiedLeads()
       } else if (phone === dataLeads.phone && name !== dataLeads.name) {
+        trackCountlySendLeads('Yes')
         sendUnverifiedLeads()
         updateFlagLeadsName(name)
       } else {
+        trackCountlySendLeads('No')
+        trackEventCountly(CountlyEventNames.WEB_OTP_VIEW, {
+          PAGE_ORIGINATION: pageOrigination,
+        })
         setModalOpened('otp')
       }
     } else if (isUserLoggedIn) {
+      trackCountlySendLeads('Yes')
       sendUnverifiedLeads()
     } else {
+      trackCountlySendLeads('No')
+      trackEventCountly(CountlyEventNames.WEB_OTP_VIEW, {
+        PAGE_ORIGINATION: pageOrigination,
+      })
       setModalOpened('otp')
     }
   }
@@ -237,6 +269,13 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
         TrackingEventName.WEB_LEADS_FORM_SUCCESS,
         trackLeads(),
       )
+
+      trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SUCCESS_VIEW, {
+        PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
+        LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
+        TEMAN_SEVA_STATUS: temanSevaStatus,
+        PHONE_NUMBER: phone,
+      })
       setIsLoading(false)
       setTimeout(() => setModalOpened('none'), 3000)
     } catch (error) {
@@ -388,6 +427,9 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
             setModalOpened('none')
           }}
           isOtpVerified={() => verified()}
+          pageOrigination={
+            onPage === 'LP' ? 'PLP' : 'PDP - ' + valueMenuTabCategory()
+          }
         />
       )}
       <Toast

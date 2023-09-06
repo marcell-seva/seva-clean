@@ -24,6 +24,8 @@ import {
   saveDataForCountlyTrackerPageViewLC,
   saveDataForCountlyTrackerPageViewPDP,
 } from 'utils/navigate'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 type CarRecommendationsPropss = {
   title: string
@@ -82,6 +84,15 @@ export default function CarRecommendations({
       Page_Origination: window.location.href,
     })
 
+    trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CTA_CLICK, {
+      PAGE_ORIGINATION: 'PDP - Kredit',
+      CAR_BRAND: item.brand,
+      CAR_MODEL: item.model,
+      CAR_BRAND_RECOMMENDATION: item.brand,
+      CAR_MODEL_RECOMMENDATION: item.model,
+      CTA_BUTTON: 'Hitung Kemampuan',
+      PAGE_DIRECTION_URL: window.location.hostname + getDestinationUrl(item),
+    })
     saveDataForCountlyTrackerPageViewLC(PreviousButton.CarRecommendation)
     window.location.replace(getDestinationUrl(item))
   }
@@ -109,6 +120,15 @@ export default function CarRecommendations({
       City: selectedCity,
       Monthly_Installment: `Rp${formatLowestInstallment}`,
       Page_Origination: window.location.href,
+    })
+    trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CLICK, {
+      PAGE_ORIGINATION: 'PDP - Kredit',
+      PELUANG_KREDIT_BADGE: item.loanRank,
+      CAR_BRAND: item.brand,
+      CAR_MODEL: item.model,
+      CAR_BRAND_RECOMMENDATION: item.brand,
+      CAR_MODEL_RECOMMENDATION: item.model,
+      PAGE_DIRECTION_URL: window.location.hostname + path,
     })
     saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
     router.push(path)
