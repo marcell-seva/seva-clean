@@ -225,6 +225,7 @@ export type CarRecommendation = {
   variants: CarVariantLoan[]
   brandAndModel?: string
   modelAndBrand?: string
+  base64?: string
 }
 
 export interface CarRecommendationResponse {

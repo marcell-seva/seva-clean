@@ -360,12 +360,13 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
   useEffect(() => {
     window.scrollTo(0, 0)
     moengageViewPLP()
-    getAnnouncementBox()
 
+    window.addEventListener('touchstart', getAnnouncementBox)
     window.addEventListener('scroll', handleScroll)
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('touchstart', getAnnouncementBox)
     }
   }, [])
 
