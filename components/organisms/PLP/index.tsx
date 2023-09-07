@@ -146,6 +146,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const { cities, saveDataAnnouncementBox } = useUtils()
   const [showAnnouncementBox, setIsShowAnnouncementBox] = useState(false)
+  const [interactive, setInteractive] = useState(false)
   const [isLogin] = useState(!!getToken())
   const [dataCarForPromo, setDataCarForPromo] = useState({
     brand: '',
@@ -295,29 +296,32 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
     trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_SORT_CLICK)
   }
   const getAnnouncementBox = () => {
-    api
-      .getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      .then((res: { data: AnnouncementBoxDataType }) => {
-        if (res.data === undefined) {
-          setIsShowAnnouncementBox(false)
-        } else {
-          saveDataAnnouncementBox(res.data)
-          const sessionAnnouncmentBox = getSessionStorage(
-            getToken()
-              ? SessionStorageKey.ShowWebAnnouncementLogin
-              : SessionStorageKey.ShowWebAnnouncementNonLogin,
-          )
-          if (typeof sessionAnnouncmentBox !== 'undefined') {
-            setIsShowAnnouncementBox(sessionAnnouncmentBox as boolean)
+    if (!interactive) {
+      setInteractive(true)
+      api
+        .getAnnouncementBox({
+          headers: {
+            'is-login': getToken() ? 'true' : 'false',
+          },
+        })
+        .then((res: { data: AnnouncementBoxDataType }) => {
+          if (res.data === undefined) {
+            setIsShowAnnouncementBox(false)
           } else {
-            setIsShowAnnouncementBox(true)
+            saveDataAnnouncementBox(res.data)
+            const sessionAnnouncmentBox = getSessionStorage(
+              getToken()
+                ? SessionStorageKey.ShowWebAnnouncementLogin
+                : SessionStorageKey.ShowWebAnnouncementNonLogin,
+            )
+            if (typeof sessionAnnouncmentBox !== 'undefined') {
+              setIsShowAnnouncementBox(sessionAnnouncmentBox as boolean)
+            } else {
+              setIsShowAnnouncementBox(true)
+            }
           }
-        }
-      })
+        })
+    }
   }
 
   const trackPLPView = (creditBadge: string = 'Null') => {
@@ -370,14 +374,24 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
     window.scrollTo(0, 0)
     moengageViewPLP()
 
-    window.addEventListener('touchstart', getAnnouncementBox)
     window.addEventListener('scroll', handleScroll)
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('touchstart', getAnnouncementBox)
     }
   }, [])
+
+  useEffect(() => {
+    ;['scroll', 'touchstart'].forEach((ev) =>
+      window.addEventListener(ev, getAnnouncementBox),
+    )
+
+    return () => {
+      ;['scroll', 'touchstart'].forEach((ev) =>
+        window.removeEventListener(ev, getAnnouncementBox),
+      )
+    }
+  }, [interactive])
 
   useEffect(() => {
     if (funnelQuery.age && funnelQuery.monthlyIncome) {
