@@ -31,6 +31,7 @@ import 'styles/components/organisms/landingIA.scss'
 import 'styles/CustomAnimationStyle.css'
 import 'styles/pages/multi-kk.scss'
 import 'styles/insuranceTooltip.scss'
+import 'react-lazy-load-image-component/src/effects/blur.css'
 
 import { FBPixelStandardEvent, FB_PIXEL_ID } from 'helpers/facebookPixel'
 import { client } from 'utils/helpers/const'

@@ -35,6 +35,7 @@ import {
   saveDataForCountlyTrackerPageViewPDP,
 } from 'utils/navigate'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
+import clsx from 'clsx'
 import { trackDataCarType } from 'utils/types/utils'
 import {
   getSessionStorage,
@@ -233,6 +234,7 @@ export const CarDetailCard = ({
             data-testid={elementId.CarImage}
             width={279}
             height={209}
+            priority
           />
         ) : (
           <LazyLoadImage
@@ -242,7 +244,8 @@ export const CarDetailCard = ({
             onClick={navigateToPDP(order)}
             data-testid={elementId.CarImage}
             width={279}
-            height={209}
+            effect="blur"
+            placeholderSrc={recommendation.base64}
           />
         )}
 

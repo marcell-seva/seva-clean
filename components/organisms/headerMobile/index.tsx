@@ -126,7 +126,8 @@ export const HeaderMobile = ({
           [styles.hideHeader]: startScroll && !isActive,
           [styles.showHeader]: !startScroll,
           [styles.isActive]: isActive,
-          [styles.showAAnnouncementBox]: isShowAnnouncementBox,
+          [styles.showAAnnouncementBox]:
+            isShowAnnouncementBox && enableAnnouncementBoxAleph,
           [styles.shadow]: style?.withBoxShadow,
           [styles.homepage]: router.pathname === '/' && !isActive,
         })}
@@ -154,6 +155,7 @@ export const HeaderMobile = ({
                 alt="seva"
                 className={styles.logoImg}
                 data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+                priority={true}
               />
             </Link>
             <SidebarMobile

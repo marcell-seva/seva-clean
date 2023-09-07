@@ -15,59 +15,41 @@ import {
   MobileWebTopMenuType,
 } from 'utils/types/utils'
 import PLPDesktop from 'components/organisms/PLPDesktop'
-import { useMediaQuery } from 'react-responsive'
+import { defaultSeoImage } from 'utils/helpers/const'
 import styles from 'styles/pages/plp.module.scss'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import { api } from 'services/api'
-import { getToken } from 'utils/handler/auth'
+import Seo from 'components/atoms/seo'
 
 const NewCarResultPage = ({
   meta,
-  isSsrMobile,
   dataHeader,
   dataFooter,
   dataCities,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const id = router.query.brand
-  const {
-    saveMobileWebTopMenus,
-    saveDataAnnouncementBox,
-    saveMobileWebFooterMenus,
-    saveCities,
-  } = useUtils()
+  const { saveMobileWebTopMenus, saveMobileWebFooterMenus, saveCities } =
+    useUtils()
 
   useEffect(() => {
     saveMobileWebTopMenus(dataHeader)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
-    getAnnouncementBox()
 
     if (id && typeof id === 'string' && id.includes('SEVA')) {
       saveLocalStorage(LocalStorageKey.referralTemanSeva, id)
     }
   }, [])
 
-  const getAnnouncementBox = () => {
-    try {
-      const res: any = api.getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      saveDataAnnouncementBox(res.data)
-    } catch (error) {}
-  }
-
   return (
     <>
-      <Head>
-        <title>{meta.title}</title>
-        <meta name="title" content={meta.title} />
-        <meta name="description" content={meta.description} />
-        <link rel="icon" href="/favicon.png" />
-      </Head>
+      <Seo
+        title={meta.title}
+        description={meta.description}
+        image={defaultSeoImage}
+      />
       <div className={styles.mobile}>
         <PLP minmaxPrice={meta.MinMaxPrice} />
       </div>
@@ -105,7 +87,6 @@ const getBrand = (brand: string | string[] | undefined) => {
 
 export const getServerSideProps: GetServerSideProps<{
   meta: PLPProps
-  isSsrMobile: boolean
   dataHeader: MobileWebTopMenuType[]
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
@@ -211,7 +192,6 @@ export const getServerSideProps: GetServerSideProps<{
     return {
       props: {
         meta,
-        isSsrMobile: getIsSsrMobile(ctx),
         dataHeader: menuRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
@@ -221,7 +201,6 @@ export const getServerSideProps: GetServerSideProps<{
     return {
       props: {
         meta,
-        isSsrMobile: getIsSsrMobile(ctx),
         dataHeader: [],
         dataFooter: [],
         dataCities: [],
