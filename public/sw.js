@@ -91,8 +91,8 @@ define(['./workbox-588899ac'], function (e) {
           revision: 'c0000e02d7caca03',
         },
         {
-          url: '/_next/static/chunks/5331-0b00bdc3c9527034.js',
-          revision: '0b00bdc3c9527034',
+          url: '/_next/static/chunks/5331-9128b78fbeb0da8a.js',
+          revision: '9128b78fbeb0da8a',
         },
         {
           url: '/_next/static/chunks/5463.ec478ba211262815.js',
@@ -151,8 +151,8 @@ define(['./workbox-588899ac'], function (e) {
           revision: '9fa20fa7f5492044',
         },
         {
-          url: '/_next/static/chunks/7650-5caf449e440b5180.js',
-          revision: '5caf449e440b5180',
+          url: '/_next/static/chunks/7650-f51f821dc87dfdcf.js',
+          revision: 'f51f821dc87dfdcf',
         },
         {
           url: '/_next/static/chunks/777cf710-cb713bf98502fdbb.js',
@@ -199,8 +199,8 @@ define(['./workbox-588899ac'], function (e) {
           revision: '29fd45e9a1fb2892',
         },
         {
-          url: '/_next/static/chunks/pages/_app-51e4db6062b4cd16.js',
-          revision: '51e4db6062b4cd16',
+          url: '/_next/static/chunks/pages/_app-4924bc8a572b0902.js',
+          revision: '4924bc8a572b0902',
         },
         {
           url: '/_next/static/chunks/pages/_error-02cc11fd74b4e5ff.js',
@@ -263,8 +263,8 @@ define(['./workbox-588899ac'], function (e) {
           revision: '0bd27d4f9e1e5429',
         },
         {
-          url: '/_next/static/chunks/pages/kalkulator-kredit/%5B%5B...slug%5D%5D-d78b693cad0e19cf.js',
-          revision: 'd78b693cad0e19cf',
+          url: '/_next/static/chunks/pages/kalkulator-kredit/%5B%5B...slug%5D%5D-2e580ead57f4d2b5.js',
+          revision: '2e580ead57f4d2b5',
         },
         {
           url: '/_next/static/chunks/pages/ktp/edit-42cb9cb27cc681ce.js',
@@ -447,6 +447,14 @@ define(['./workbox-588899ac'], function (e) {
           revision: 'eec6cf0391ba640f',
         },
         {
+          url: '/_next/static/goPwlK1bKOb49CXI9HPP2/_buildManifest.js',
+          revision: '7efb9f9d3cc32fa165514f96ac89c9aa',
+        },
+        {
+          url: '/_next/static/goPwlK1bKOb49CXI9HPP2/_ssgManifest.js',
+          revision: 'b6652df95db52feb4daf4eca35380933',
+        },
+        {
           url: '/_next/static/media/1783a73d1694d38f.p.woff2',
           revision: 'a8168efe03f831b205165cf3b2e5fb6d',
         },
@@ -482,14 +490,6 @@ define(['./workbox-588899ac'], function (e) {
         {
           url: '/_next/static/media/sprites.ef90573e.svg',
           revision: 'ef90573e',
-        },
-        {
-          url: '/_next/static/s7EylV5Kvf2-UuWOmYk6P/_buildManifest.js',
-          revision: 'a4eb3d9260c7f3520b44025667fececa',
-        },
-        {
-          url: '/_next/static/s7EylV5Kvf2-UuWOmYk6P/_ssgManifest.js',
-          revision: 'b6652df95db52feb4daf4eca35380933',
         },
         { url: '/favicon.ico', revision: 'c30c7d42707a47a3f4591831641e50dc' },
         { url: '/favicon.png', revision: '15737d95fb1cfe4a27e894d62f4e97e3' },

@@ -24,14 +24,12 @@ import { generateBlurRecommendations } from 'utils/generateBlur'
 
 const NewCarResultPage = ({
   meta,
-  isSsrMobile,
   dataHeader,
   dataFooter,
   dataCities,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { saveMobileWebTopMenus, saveMobileWebFooterMenus, saveCities } =
     useUtils()
-  const isMobile = isSsrMobile
 
   useEffect(() => {
     saveMobileWebTopMenus(dataHeader)
@@ -92,7 +90,6 @@ const getBrand = (brand: string | string[] | undefined) => {
 
 export const getServerSideProps: GetServerSideProps<{
   meta: PLPProps
-  isSsrMobile: boolean
   dataHeader: MobileWebTopMenuType[]
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
@@ -210,7 +207,6 @@ export const getServerSideProps: GetServerSideProps<{
     return {
       props: {
         meta,
-        isSsrMobile: getIsSsrMobile(ctx),
         dataHeader: menuRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
@@ -220,7 +216,6 @@ export const getServerSideProps: GetServerSideProps<{
     return {
       props: {
         meta,
-        isSsrMobile: getIsSsrMobile(ctx),
         dataHeader: [],
         dataFooter: [],
         dataCities: [],
