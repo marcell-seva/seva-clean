@@ -76,10 +76,15 @@ export const QualificationCreditModal: React.FC<
       SessionStorageKey.KalkulatorKreditForm,
       JSON.stringify(formData),
     )
+    saveSessionStorage(SessionStorageKey.PreviousSourceSectionLogin, 'Null')
     onClickCta && onClickCta()
     if (isLogin) {
       navigateToKK()
     } else {
+      saveSessionStorage(
+        SessionStorageKey.PageReferrerLoginPage,
+        'PDP - Kredit',
+      )
       savePageBeforeLogin(creditQualificationUrl)
       window.location.href = LoginSevaUrl
     }

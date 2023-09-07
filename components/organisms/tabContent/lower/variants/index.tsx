@@ -3,6 +3,7 @@ import styles from 'styles/components/organisms/variantsOptions.module.scss'
 import {
   CarModelDetailsResponse,
   CarVariantRecommendation,
+  trackDataCarType,
 } from 'utils/types/utils'
 import { IconFuel, IconTransmission } from 'components/atoms'
 
@@ -26,7 +27,7 @@ import { variantListUrl } from 'utils/helpers/routes'
 import elementId from 'helpers/elementIds'
 import { CityOtrOption } from 'utils/types/utils'
 import { useRouter } from 'next/router'
-import { LanguageCode, LocalStorageKey } from 'utils/enum'
+import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import {
   replacePriceSeparatorByLocalization,
   formatNumberByLocalization,
@@ -42,6 +43,10 @@ import {
   saveDataForCountlyTrackerPageViewLC,
 } from 'utils/navigate'
 import { getLocalStorage } from 'utils/handler/localStorage'
+import {
+  getSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
 
 const rpIcon = '/revamp/illustration/rp-icon.webp'
 
@@ -131,12 +136,26 @@ const TabContentLowerVariant = ({
     }
   }
 
+  const saveDataCarForLoginPageView = (carVariant: string) => {
+    const dataCar: trackDataCarType | null = getSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+    )
+    const dataCarTemp = {
+      ...dataCar,
+      CAR_VARIANT: carVariant,
+    }
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarTemp),
+    )
+  }
   const navigateToCreditTab = (
     carVariant: CarVariantRecommendation,
     index: number,
   ) => {
     trackCarVariantPricelistClickCta(getDataForAmplitude(carVariant))
     trackClickCtaCountly(carVariant, index)
+    saveDataCarForLoginPageView(carVariant.name)
     setSelectedTabValue && setSelectedTabValue('Kredit')
     saveDataForCountlyTrackerPageViewLC(PreviousButton.VariantPriceList)
     router.replace(
