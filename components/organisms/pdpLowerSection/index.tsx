@@ -72,8 +72,11 @@ export const PdpLowerSection = ({
     })
   }
 
-  const onSelectLowerTab = (value: string) => {
-    if (value.toLowerCase() === 'kredit') {
+  const onSelectLowerTab = (
+    value: string,
+    isExecuteFromClickingTab?: boolean,
+  ) => {
+    if (value.toLowerCase() === 'kredit' && isExecuteFromClickingTab) {
       saveDataForCountlyTrackerPageViewLC(PreviousButton.undefined)
     }
     trackClickLowerTabCountly(value)
@@ -165,7 +168,7 @@ export const PdpLowerSection = ({
     <div>
       <NavigationTabV1
         itemList={lowerSectionNavigationTab}
-        onSelectTab={onSelectLowerTab}
+        onSelectTab={(value) => onSelectLowerTab(value, true)}
         selectedTabValueProps={selectedTabValue}
         showAnnouncementBox={showAnnouncementBox}
       />
