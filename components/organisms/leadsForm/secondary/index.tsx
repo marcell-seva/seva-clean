@@ -188,21 +188,11 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
   }
 
   const trackCountlySendLeads = async (verifiedPhone: string) => {
-    let temanSevaStatus = 'No'
-
-    if (referralCodeFromUrl) {
-      temanSevaStatus = 'Yes'
-    } else if (!!getToken()) {
-      const response = await getCustomerInfoSeva()
-      if (response.data[0].temanSevaTrxCode) {
-        temanSevaStatus = 'Yes'
-      }
-    }
     trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SEND_CLICK, {
       PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
       LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
-      TEMAN_SEVA_STATUS: temanSevaStatus,
       PHONE_VERIFICATION_STATUS: verifiedPhone,
+      PHONE_NUMBER: '+62' + phone,
     })
   }
   const sendOtpCode = async () => {
