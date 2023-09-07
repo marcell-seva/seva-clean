@@ -63,6 +63,9 @@ export enum PreviousButton {
 
 export const defineRouteName = (pathname: string) => {
   if (pathname.includes('mobil-baru')) {
+    if (pathname.toLowerCase().includes('/seva')) {
+      return RouteName.PLP
+    }
     if (pathname.length > 12) {
       if (pathname.includes('spesifikasi')) {
         return RouteName.PDPSpesifikasi
