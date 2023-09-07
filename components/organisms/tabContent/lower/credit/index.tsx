@@ -235,6 +235,12 @@ export const CreditTab = () => {
     LocalStorageKey.carModelLoanRank,
     null,
   )
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
+  const referralCodeFromUrl: string | null = getLocalStorage(
+    LocalStorageKey.referralTemanSeva,
+  )
 
   const isUsingFilterFinancial =
     !!filterStorage?.age &&
@@ -369,9 +375,6 @@ export const CreditTab = () => {
     const pageReferrer = getSessionStorage(SessionStorageKey.PageReferrerLC)
     const previousSourceSection = getSessionStorage(
       SessionStorageKey.PreviousSourceSectionLC,
-    )
-    const referralCodeFromUrl: string | null = getLocalStorage(
-      LocalStorageKey.referralTemanSeva,
     )
 
     let temanSevaStatus = 'No'
@@ -739,9 +742,6 @@ export const CreditTab = () => {
   }
 
   const saveDataCarForLoginPageView = (variantName: string) => {
-    const dataCar: trackDataCarType | null = getSessionStorage(
-      SessionStorageKey.PreviousCarDataBeforeLogin,
-    )
     const dataCarTemp = {
       ...dataCar,
       CAR_VARIANT: variantName,
@@ -1220,6 +1220,15 @@ export const CreditTab = () => {
   const handleRedirectToWhatsapp = async (
     loan: SpecialRateListWithPromoType,
   ) => {
+    let temanSevaStatus = 'No'
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
     trackLCCtaWaDirectClick(getDataForAmplitudeQualification(loan))
     trackEventCountly(CountlyEventNames.WEB_WA_DIRECT_CLICK, {
       PAGE_ORIGINATION: 'PDP - Kredit',
