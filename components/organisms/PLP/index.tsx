@@ -53,7 +53,10 @@ import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { hundred, million } from 'utils/helpers/const'
 import { carResultsUrl } from 'utils/helpers/routes'
 import { useAmplitudePageView } from 'utils/hooks/useAmplitudePageView'
-import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
+import {
+  defaultCity,
+  getCity,
+} from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { Location } from 'utils/types'
 import {
@@ -154,6 +157,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
     carOrder: 0,
     loanRank: 'Null',
   })
+  const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
 
   const fetchMoreData = () => {
     if (sampleArray.items.length >= recommendation.length) {
@@ -454,7 +458,8 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
         USER_TYPE: valueForUserTypeProperty(),
       })
     }
-    if (getCity().cityName !== 'Jakarta Pusat' || recommendation.length === 0) {
+
+    if (!isCurrentCitySameWithSSR || recommendation.length === 0) {
       getMinMaxPrice()
         .then((response) => {
           if (response) {
