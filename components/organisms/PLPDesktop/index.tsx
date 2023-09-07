@@ -55,7 +55,10 @@ import FloatingIcon from 'components/molecules/FloatingIcon/FloatingIcon'
 import { SeoParagraphSection } from '../SeoParagraphSection/SeoParagraphSection'
 import { NewFilterSideMenu } from './Filter/FilterSideMenu/NewFilterSideMenu'
 import { t } from 'config/localization/locales/id'
-import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
+import {
+  defaultCity,
+  getCity,
+} from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import HeaderCarResult from 'components/molecules/header/headerCarResult'
 import { PageHeaderSevaCarResults } from '../PageHeaderSeva/PageHeaderSevaCarResults'
 import { setTrackEventMoEngage } from 'helpers/moengage'
@@ -134,6 +137,7 @@ export default function PLPDesktop({
       inline: 'nearest',
     })
   }
+  const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
 
   useEffect(() => {
     scrollToSectionContent()
@@ -351,42 +355,35 @@ export default function PLPDesktop({
 
   const getDataFunnel = () => {
     getNewFunnelRecommendations(funnelQuery).then((response) => {
-      setRecommendationLists(response.carRecommendations || [])
+      saveRecommendation(response.carRecommendations || [])
       timeoutShimmer()
     })
   }
 
   useEffect(() => {
-    if (
-      getCity().cityName !== 'Jakarta Pusat' ||
-      carRecommendation.carRecommendations.length === 0
-    ) {
-      if (brand) {
-        if (!brand.includes('SEVA')) {
-          setBrandName(
-            brand === 'bmw'
-              ? brand.toUpperCase()
-              : capitalizeFirstLetter(brand),
-          )
-          const forFilterRecommendations = recommendation.map((item: any) => {
-            item.brandAndModel = `${item.brand} ${item.model}`
-            item.modelAndBrand = `${item.model} ${item.brand}`
-            return item
-          })
-          const filterRecommendations = brand
-            ? forFilterRecommendations.filter((item: { brandAndModel: any }) =>
-                String(item.brandAndModel)
-                  .toLowerCase()
-                  .includes(brand.toLowerCase()),
-              )
-            : recommendation
-          setRecommendationLists(filterRecommendations)
-          timeoutShimmer()
-        }
-      } else {
-        setRecommendationLists(recommendation)
+    if (brand) {
+      if (!brand.includes('SEVA')) {
+        setBrandName(
+          brand === 'bmw' ? brand.toUpperCase() : capitalizeFirstLetter(brand),
+        )
+        const forFilterRecommendations = recommendation.map((item: any) => {
+          item.brandAndModel = `${item.brand} ${item.model}`
+          item.modelAndBrand = `${item.model} ${item.brand}`
+          return item
+        })
+        const filterRecommendations = brand
+          ? forFilterRecommendations.filter((item: { brandAndModel: any }) =>
+              String(item.brandAndModel)
+                .toLowerCase()
+                .includes(brand.toLowerCase()),
+            )
+          : recommendation
+        setRecommendationLists(filterRecommendations)
         timeoutShimmer()
       }
+    } else {
+      setRecommendationLists(recommendation)
+      timeoutShimmer()
     }
   }, [recommendation])
 
@@ -401,7 +398,7 @@ export default function PLPDesktop({
         funnelQuery.carModel ||
         funnelQuery.downPaymentAmount ||
         funnelQuery.monthlyInstallment ||
-        Array(funnelQuery.brand).length > 0
+        (!!funnelQuery.brand && funnelQuery.brand.length > 0)
       ) {
         setSearchInputValue(String(funnelQuery.carModel))
         getDataFunnel()

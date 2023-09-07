@@ -320,6 +320,15 @@ export const NewFilterSideMenu = () => {
     setIsOptionMandatory(false)
     setSortBy('highToLow')
     clearFunnelQuery()
+    getNewFunnelRecommendations({})
+      .then((response) => {
+        saveRecommendation(response.carRecommendations || [])
+        setLoading(false)
+      })
+      .catch((e) => {
+        setLoading(false)
+        handleError(e.response.status)
+      })
     router.replace({ pathname: carResultsUrl, search: '' })
   }
 
