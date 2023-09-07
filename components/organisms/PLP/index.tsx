@@ -296,7 +296,6 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
     trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_SORT_CLICK)
   }
   const getAnnouncementBox = () => {
-    console.log('int', interactive)
     if (!interactive) {
       setInteractive(true)
       api
