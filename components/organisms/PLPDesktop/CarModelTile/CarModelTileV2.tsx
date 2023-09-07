@@ -161,31 +161,26 @@ export const CarModelTileV2 = ({
             isMobile={isMobile}
           >
             {carModel.images.map((item: any, index: number) => {
-              // this conditional will only render before-first 5-after child (custom lazy load)
-              if (
-                index === currentSlide || // render current slide
-                index < currentSlide + 5 || // render first 5 slide
-                index === currentSlide - 1 // render slide before current
-              ) {
-                return (
-                  <CarImage
+              return (
+                <CarImage key={index}>
+                  <LazyLoadImage
                     data-testid={
                       elementId.CarResultPage.CarImage +
                       carModel.brand +
                       ' ' +
                       carModel.model
                     }
-                    key={index}
                     src={item}
                     alt={
                       carModel.brandAndModel ||
                       `${carModel.brand} ${carModel.model}`
                     }
-                    width={366}
-                    height={274}
+                    style={{ objectFit: 'contain' }}
+                    width={360}
+                    height={270}
                   />
-                )
-              } else return <></>
+                </CarImage>
+              )
             })}
           </StyledCarousel>
           {carouselIndicator()}
@@ -257,11 +252,8 @@ const StyledCarousel = styled(Carousel)<{
     background: none;
     align-items: center;
     justify-content: center;
-    display: ${({ isMobile }) => (isMobile ? 'block' : 'flex')};
+    display: flex;
 
-    @media (min-width: 1025px) {
-      aspect-ratio: 4 / 3;
-    }
   }
   && .control-dots {
     bottom: 12px;
@@ -299,11 +291,9 @@ const StyledCarousel = styled(Carousel)<{
 }
 `
 
-const CarImage = styled(LazyLoadImage)`
-  object-fit: contain;
-  width: 100%;
-
-  aspect-ratio: 4 / 3;
+const CarImage = styled.div`
+  width: 360px;
+  height: 270px;
 `
 
 // const ShimmerBox = styled(Shimmer)<{
