@@ -230,7 +230,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
         PAGE_ORIGINATION: 'PLP',
         LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
         TEMAN_SEVA_STATUS: temanSevaStatus,
-        PHONE_NUMBER: phone,
+        PHONE_NUMBER: '+62' + phone,
       })
       setIsLoading(false)
       setModalOpened('success-toast')

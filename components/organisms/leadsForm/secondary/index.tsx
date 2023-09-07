@@ -40,6 +40,7 @@ import { CityOtrOption } from 'utils/types'
 import { LoanRank } from 'utils/types/models'
 import {
   trackEventCountly,
+  valueForUserTypeProperty,
   valueMenuTabCategory,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
@@ -286,7 +287,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
         PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
         LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
         TEMAN_SEVA_STATUS: temanSevaStatus,
-        PHONE_NUMBER: phone,
+        PHONE_NUMBER: '+62' + phone,
       })
       setIsLoading(false)
       setTimeout(() => setModalOpened('none'), 3000)
@@ -356,7 +357,19 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
     trackClickCtaCountly()
     window.location.href = urlDirection
   }
+  const onClickNameField = () => {
+    trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_NAME_CLICK, {
+      PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
+      USER_TYPE: valueForUserTypeProperty(),
+    })
+  }
 
+  const onClickPhoneField = () => {
+    trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_PHONE_NUMBER_CLICK, {
+      PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
+      USER_TYPE: valueForUserTypeProperty(),
+    })
+  }
   return (
     <div>
       <div className={styles.wrapper}>
@@ -392,6 +405,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
               title="Nama Lengkap"
               value={name}
               onChange={(e: any) => handleInputName(e.target.value)}
+              onFocus={onClickNameField}
             />
             <Gap height={24} />
             <InputPhone
@@ -401,6 +415,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
               title="Nomor Handphone"
               value={phone}
               onChange={(e: any) => handleInputPhone(e.target.value)}
+              onFocus={onClickPhoneField}
             />
             <Gap height={32} />
             <Button
