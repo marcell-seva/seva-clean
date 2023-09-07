@@ -36,6 +36,11 @@ import {
 } from 'utils/navigate'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import clsx from 'clsx'
+import { trackDataCarType } from 'utils/types/utils'
+import {
+  getSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
 
 type CarDetailCardProps = {
   order?: number
@@ -67,6 +72,10 @@ export const CarDetailCard = ({
     false,
   )
 
+  const [, setCarModelLoanRankPLP] = useLocalStorage(
+    LocalStorageKey.carModelLoanRank,
+    null,
+  )
   const singleVariantPrice = formatNumberByLocalization(
     recommendation.variants[0].priceValue,
     LanguageCode.id,
@@ -152,7 +161,25 @@ export const CarDetailCard = ({
       return 'Null'
     }
   }
+  const saveDataCarForLoginPageView = () => {
+    const dataCar: trackDataCarType | null = getSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+    )
 
+    const dataCarTemp = {
+      ...dataCar,
+      PELUANG_KREDIT_BADGE:
+        recommendation.loanRank === LoanRank.Green
+          ? 'Mudah disetujui'
+          : recommendation.loanRank === LoanRank.Red
+          ? 'Sulit disetujui'
+          : 'Null',
+    }
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarTemp),
+    )
+  }
   const trackCarClick = (index: number, detailClick = true) => {
     const peluangKredit = getPeluangKredit(recommendation)
     trackPLPCarClick({
@@ -164,6 +191,7 @@ export const CarDetailCard = ({
       Cicilan: `Rp${lowestInstallment} jt/bln`,
       ...(cityOtr && { City: cityOtr?.cityName }),
     })
+    setCarModelLoanRankPLP(recommendation.loanRank)
     const datatrack = {
       CAR_BRAND: recommendation.brand,
       CAR_MODEL: recommendation.model,
@@ -188,7 +216,7 @@ export const CarDetailCard = ({
   const navigateToPDP = (index: number) => () => {
     if (!isFilterTrayOpened) {
       trackCarClick(index + 1)
-
+      saveDataCarForLoginPageView()
       saveDataForCountlyTrackerPageViewPDP(PreviousButton.ProductCard)
       router.push(detailCarRoute)
     }

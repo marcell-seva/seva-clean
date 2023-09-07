@@ -97,6 +97,7 @@ import {
   trackEventCountly,
   valueForInitialPageProperty,
   valueForUserTypeProperty,
+  valueMenuTabCategory,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
@@ -1445,7 +1446,7 @@ export default function LoanCalculatorPage() {
         DP_AMOUNT: formatCurrency(dpValue),
         DP_PERCENTAGE: formatCurrency(dpPercentage),
         ANGSURAN_TYPE: forms.paymentOption,
-        AGE_RANGE: forms.age,
+        AGE_RANGE: forms.age.replace('>', 'Above '),
         '1_YEAR_TENOR_RESULT':
           resultSortAscByTenure[0].loanRank === LoanRank.Green
             ? 'Mudah disetujui'
@@ -1828,7 +1829,7 @@ Kemampuan Finansialmu"
           )}
         </div>
 
-        <FooterMobile />
+        <FooterMobile pageOrigination={'PDP - ' + valueMenuTabCategory()} />
 
         <CitySelectorModal
           isOpen={isOpenCitySelectorModal}

@@ -10,6 +10,7 @@ import {
   LoanCalculatorIncludePromoPayloadType,
   LoanCalculatorInsuranceAndPromoType,
   SpecialRateListWithPromoType,
+  trackDataCarType,
 } from 'utils/types/utils'
 import {
   trackLCCTAHitungKemampuanClick,
@@ -230,6 +231,16 @@ export const CreditTab = () => {
   const [isSentCountlyPageView, setIsSentCountlyPageView] = useState(false)
   const loanRankcr = router.query.loanRankCVL ?? ''
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+  const [carModelLoanRankPLP] = useLocalStorage(
+    LocalStorageKey.carModelLoanRank,
+    null,
+  )
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
+  const referralCodeFromUrl: string | null = getLocalStorage(
+    LocalStorageKey.referralTemanSeva,
+  )
 
   const isUsingFilterFinancial =
     !!filterStorage?.age &&
@@ -364,9 +375,6 @@ export const CreditTab = () => {
     const pageReferrer = getSessionStorage(SessionStorageKey.PageReferrerLC)
     const previousSourceSection = getSessionStorage(
       SessionStorageKey.PreviousSourceSectionLC,
-    )
-    const referralCodeFromUrl: string | null = getLocalStorage(
-      LocalStorageKey.referralTemanSeva,
     )
 
     let temanSevaStatus = 'No'
@@ -733,9 +741,21 @@ export const CreditTab = () => {
     setIsSelectPassengerCar(response.isPassengerCar)
   }
 
+  const saveDataCarForLoginPageView = (variantName: string) => {
+    const dataCarTemp = {
+      ...dataCar,
+      CAR_VARIANT: variantName,
+    }
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarTemp),
+    )
+  }
   const handleChange = (name: string, value: any) => {
     setIsDataSubmitted(false)
-
+    if (name === 'variant') {
+      saveDataCarForLoginPageView(value.variantName)
+    }
     if (name === 'city') {
       if (!value) {
         return setForms({
@@ -1200,7 +1220,45 @@ export const CreditTab = () => {
   const handleRedirectToWhatsapp = async (
     loan: SpecialRateListWithPromoType,
   ) => {
+    let temanSevaStatus = 'No'
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
     trackLCCtaWaDirectClick(getDataForAmplitudeQualification(loan))
+    trackEventCountly(CountlyEventNames.WEB_WA_DIRECT_CLICK, {
+      PAGE_ORIGINATION: 'PDP - Kredit',
+      SOURCE_BUTTON: 'CTA button Hubungi Agen SEVA',
+      CAR_BRAND: carModelDetails?.brand,
+      CAR_MODEL: carModelDetails?.model,
+      CAR_VARIANT: forms.variant?.variantName
+        ? forms.variant?.variantName
+        : 'Null',
+      PELUANG_KREDIT_BADGE:
+        carModelLoanRankPLP && carModelLoanRankPLP === 'Green'
+          ? 'Mudah disetujui'
+          : carModelLoanRankPLP && carModelLoanRankPLP === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      TENOR_OPTION: loan?.tenure ? loan?.tenure + ' Tahun' : 'Null',
+      TENOR_RESULT:
+        dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Green'
+          ? 'Mudah disetujui'
+          : dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      KK_RESULT: 'Null',
+      IA_RESULT: 'Null',
+      TEMAN_SEVA_STATUS: temanSevaStatus,
+      INCOME_LOAN_CALCULATOR: filterStorage?.monthlyIncome,
+      INCOME_KUALIFIKASI_KREDIT: 'Null',
+      INCOME_CHANGE: 'Null',
+      OCCUPATION: 'Null',
+    })
     const { model, variant, downPaymentAmount } = forms
     const message = `Halo, saya tertarik dengan ${model?.modelName} ${variant?.variantName} dengan DP sebesar Rp ${downPaymentAmount}, cicilan per bulannya Rp ${loan?.installment}, dan tenor ${loan?.tenure} tahun.`
 
@@ -1515,7 +1573,7 @@ export const CreditTab = () => {
         DP_AMOUNT: formatCurrency(dpValue),
         DP_PERCENTAGE: formatCurrency(dpPercentage),
         ANGSURAN_TYPE: forms.paymentOption,
-        AGE_RANGE: forms.age,
+        AGE_RANGE: forms.age.replace('>', 'Above '),
         '1_YEAR_TENOR_RESULT':
           resultSortAscByTenure[0].loanRank === LoanRank.Green
             ? 'Mudah disetujui'
@@ -1872,6 +1930,8 @@ export const CreditTab = () => {
             cityName={forms?.city?.cityName || ''}
             carModel={forms?.model?.modelName || ''}
             carBrand={forms?.model?.brandName || ''}
+            selectedTenure={selectedLoan?.tenure}
+            selectedLoanRank={selectedLoan?.loanRank}
           />
         </>
       ) : (

@@ -96,6 +96,7 @@ export enum LocalStorageKey {
   FormKtp = 'formKtp',
   PreApprovalResult = 'preApprovalResult',
   LastHitTracker = 'lastHitTracker',
+  carModelLoanRank = 'carModelLoanRank', // loan rank on plp
 }
 
 export enum SessionStorageKey {
@@ -146,6 +147,7 @@ export enum SessionStorageKey {
   PageReferrerHomepage = 'pageReferrerHomepage',
   PreviousSourceButtonHomepage = 'previousSourceButtonHomepage',
   HasTracked360Exterior = 'hasTracked360Exterior',
+  PreviousCarDataBeforeLogin = 'previousCarDataBeforeLogin',
 }
 
 export enum HTTPResponseStatusCode {

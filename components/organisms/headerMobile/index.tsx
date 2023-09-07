@@ -48,6 +48,7 @@ type HeaderMobileProps = {
     withBoxShadow?: boolean
     position?: 'fixed' | 'sticky'
   }
+  pageOrigination?: string
 }
 
 export const HeaderMobile = ({
@@ -58,6 +59,7 @@ export const HeaderMobile = ({
   setShowAnnouncementBox,
   isShowAnnouncementBox = false,
   style,
+  pageOrigination,
 }: HeaderMobileProps): JSX.Element => {
   const enableAnnouncementBoxAleph =
     getCurrentEnvironment.featureToggles.enableAnnouncementBoxAleph
@@ -134,6 +136,7 @@ export const HeaderMobile = ({
           {router.pathname !== '/' && enableAnnouncementBoxAleph && (
             <WebAnnouncementBox
               onCloseAnnouncementBox={setShowAnnouncementBox}
+              pageOrigination={pageOrigination}
             />
           )}
           <div className={styles.container}>

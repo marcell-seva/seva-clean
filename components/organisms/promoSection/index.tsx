@@ -25,6 +25,11 @@ import { variantListUrl } from 'utils/helpers/routes'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getLocalStorage } from 'utils/handler/localStorage'
+import { LocalStorageKey } from 'utils/enum'
+import { LoanRank } from 'utils/types/models'
 
 type PromoSectionProps = {
   setPromoName?: (value: string) => void
@@ -50,6 +55,26 @@ const PromoSection = ({
   const model = router.query.model as string
   const enablePromoCumaDiSeva = false
 
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
+
+  const loanRankcr = router.query.loanRankCVL ?? ''
+
+  const getCreditBadgeForCountly = () => {
+    let creditBadge = 'Null'
+    if (loanRankcr && loanRankcr.includes(LoanRank.Green)) {
+      creditBadge = 'Mudah disetujui'
+    } else if (loanRankcr && loanRankcr.includes(LoanRank.Red)) {
+      creditBadge = 'Sulit disetujui'
+    }
+    return creditBadge
+  }
+
   const navigateToSpecificationTab = () => {
     setSelectedTabValue && setSelectedTabValue('Spesifikasi')
     router.push(
@@ -58,6 +83,18 @@ const PromoSection = ({
         .replace(':model', model)
         .replace(':tab?', 'spesifikasi'),
     )
+  }
+  const trackCountlePromoCLick = (promoDetail: string, promoOrder: number) => {
+    trackEventCountly(CountlyEventNames.WEB_PROMO_CLICK, {
+      CAR_BRAND: brand,
+      CAR_MODEL: model,
+      PROMO_DETAILS: promoDetail,
+      PROMO_ORDER: promoOrder,
+      PELUANG_KREDIT_BADGE: isUsingFilterFinancial
+        ? getCreditBadgeForCountly()
+        : 'Null',
+      PAGE_ORIGINATION: 'PDP',
+    })
   }
   return (
     <div>
@@ -167,6 +204,7 @@ const PromoSection = ({
                   onButtonClick && onButtonClick(true)
                   setPromoName && setPromoName('promo1')
                   trackCarVariantBannerPromoClick(dataForAmplitude)
+                  trackCountlePromoCLick('Promo Cuma di SEVA', 1)
                 } else {
                   const Page_Direction_URL =
                     'https://www.seva.id/info/promo/cuma-di-seva/'
@@ -206,6 +244,7 @@ const PromoSection = ({
               if (onPage === 'VariantListPage') {
                 onButtonClick && onButtonClick(true)
                 setPromoName && setPromoName('promo2')
+                trackCountlePromoCLick('Toyota Spektakuler', 2)
                 trackCarVariantBannerPromoClick(dataForAmplitude)
               } else {
                 const Page_Direction_URL =
@@ -244,6 +283,7 @@ const PromoSection = ({
               if (onPage === 'VariantListPage') {
                 onButtonClick && onButtonClick(true)
                 setPromoName && setPromoName('promo3')
+                trackCountlePromoCLick('Promo Trade-In Daihatsu', 3)
                 trackCarVariantBannerPromoClick(dataForAmplitude)
               } else {
                 const Page_Direction_URL =

@@ -16,6 +16,7 @@ import {
   MainVideoResponseType,
   VariantDetail,
   VideoDataType,
+  trackDataCarType,
 } from 'utils/types/utils'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
@@ -69,6 +70,7 @@ import {
   trackEventCountly,
   valueForInitialPageProperty,
   valueForUserTypeProperty,
+  valueMenuTabCategory,
 } from 'helpers/countly/countly'
 import { client } from 'utils/helpers/const'
 import { defineRouteName } from 'utils/navigate'
@@ -88,6 +90,7 @@ export default function NewCarVariantList() {
   const [dataPreviewImages, setDataPreviewImages] = useState<Array<string>>([])
   const { source }: { source: string } = useQuery(['source'])
   const [isSentCountlyPageView, setIsSentCountlyPageView] = useState(false)
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
 
   const handlePreviewOpened = (payload: number) => {
     setGalleryIndexActive(payload)
@@ -286,10 +289,54 @@ export default function NewCarVariantList() {
     }
     trackCarVariantPageWaChatbot(trackerProperty)
   }
-
+  const trackCountlyFloatingWhatsapp = async () => {
+    let temanSevaStatus = 'No'
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
+    const dataCar: trackDataCarType | null = getSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+    )
+    trackEventCountly(CountlyEventNames.WEB_WA_DIRECT_CLICK, {
+      PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
+      SOURCE_BUTTON: 'Floating Button',
+      CAR_BRAND: carModelDetails?.brand,
+      CAR_MODEL: carModelDetails?.model,
+      CAR_VARIANT: dataCar?.CAR_VARIANT ? dataCar?.CAR_VARIANT : 'Null',
+      PELUANG_KREDIT_BADGE:
+        dataCar?.PELUANG_KREDIT_BADGE &&
+        dataCar?.PELUANG_KREDIT_BADGE === 'Green'
+          ? 'Mudah disetujui'
+          : dataCar?.PELUANG_KREDIT_BADGE &&
+            dataCar?.PELUANG_KREDIT_BADGE === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      TENOR_OPTION: dataCar?.PELUANG_KREDIT_BADGE
+        ? dataCar?.TENOR_OPTION + ' Tahun'
+        : 'Null',
+      TENOR_RESULT:
+        dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Green'
+          ? 'Mudah disetujui'
+          : dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      KK_RESULT: 'Null',
+      IA_RESULT: 'Null',
+      TEMAN_SEVA_STATUS: temanSevaStatus,
+      INCOME_LOAN_CALCULATOR: filterStorage?.monthlyIncome,
+      INCOME_KUALIFIKASI_KREDIT: 'Null',
+      INCOME_CHANGE: 'Null',
+      OCCUPATION: 'Null',
+    })
+  }
   const onClickFloatingWhatsapp = async () => {
     let message = ''
-
+    trackCountlyFloatingWhatsapp()
     trackFloatingWhatsapp()
     const parsedModel = capitalizeFirstLetter(model.replace(/-/g, ' '))
     const brandModel =
@@ -370,7 +417,6 @@ export default function NewCarVariantList() {
     const previousSourceButton = getSessionStorage(
       SessionStorageKey.PreviousSourceButtonPDP,
     )
-    const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
 
     const isUsingFilterFinancial =
       !!filterStorage?.age &&
@@ -604,6 +650,7 @@ export default function NewCarVariantList() {
           emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
           setShowAnnouncementBox={setShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
+          pageOrigination={'PDP - ' + valueMenuTabCategory()}
         />
         <div className={styles.content}>{renderContent()}</div>
         {status !== 'loading' && <FooterMobile />}

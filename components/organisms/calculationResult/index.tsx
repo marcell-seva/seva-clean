@@ -6,6 +6,7 @@ import {
   LoanCalculatorIncludePromoPayloadType,
   LoanCalculatorInsuranceAndPromoType,
   SpecialRateListWithPromoType,
+  trackDataCarType,
 } from 'utils/types/utils'
 import { CalculationResultItem } from 'components/molecules'
 import { Button, IconWhatsapp, Overlay } from 'components/atoms'
@@ -20,11 +21,15 @@ import {
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import elementId from 'helpers/elementIds'
 import PromoBottomSheet from '../promoBottomSheet'
-import { LanguageCode } from 'utils/enum'
+import { LanguageCode, SessionStorageKey } from 'utils/enum'
 import { InsuranceTooltip } from '../insuranceTooltip'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
+import {
+  getSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
 
 const LogoAcc = '/revamp/icon/logo-acc.webp'
 const LogoTaf = '/revamp/icon/logo-taf.webp'
@@ -109,8 +114,26 @@ export const CalculationResult = ({
     )
   }
 
+  const saveDataCarForLoginPageView = (
+    tenure: string,
+    resultLoanRank: string,
+  ) => {
+    const dataCar: trackDataCarType | null = getSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+    )
+    const dataCarTemp = {
+      ...dataCar,
+      TENOR_OPTION: tenure,
+      TENOR_RESULT: resultLoanRank,
+    }
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarTemp),
+    )
+  }
   const handleOnClickResultItem = (value: SpecialRateListWithPromoType) => {
     trackCountlyClickResultItem(value)
+    saveDataCarForLoginPageView(value.tenure.toString(), value.loanRank)
     setSelectedLoan(value)
     const selectedData = state.filter((item) => item.tenure === value.tenure)[0]
 

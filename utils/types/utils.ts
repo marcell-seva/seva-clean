@@ -1049,3 +1049,12 @@ export interface FinalLoan {
   tdpBeforePromo: number
   interestRateBeforePromo: number
 }
+
+export interface trackDataCarType {
+  CAR_BRAND: string
+  CAR_MODEL: string
+  CAR_VARIANT: string
+  PELUANG_KREDIT_BADGE: string
+  TENOR_OPTION: string
+  TENOR_RESULT: string
+}
