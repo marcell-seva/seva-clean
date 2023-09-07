@@ -339,10 +339,14 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
   }, [])
 
   useEffect(() => {
-    window.addEventListener('touchstart', getAnnouncementBox)
+    ;['scroll', 'touchstart'].forEach((ev) =>
+      window.addEventListener(ev, getAnnouncementBox),
+    )
 
     return () => {
-      window.removeEventListener('touchstart', getAnnouncementBox)
+      ;['scroll', 'touchstart'].forEach((ev) =>
+        window.removeEventListener(ev, getAnnouncementBox),
+      )
     }
   }, [interactive])
 
