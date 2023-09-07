@@ -121,7 +121,7 @@ export const CalculationResult = ({
     const dataCar: trackDataCarType | null = getSessionStorage(
       SessionStorageKey.PreviousCarDataBeforeLogin,
     )
-    const dataCarTemp: trackDataCarType = {
+    const dataCarTemp = {
       ...dataCar,
       TENOR_OPTION: tenure,
       TENOR_RESULT: resultLoanRank,
