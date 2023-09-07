@@ -722,7 +722,7 @@ const StyledContent = styled.div`
 
 const StyledCarModelTileV2 = styled(CarModelTileV2)`
   @media (min-width: 1025px) {
-    max-width: 511px;
+    max-width: 360px;
   }
 `
 
