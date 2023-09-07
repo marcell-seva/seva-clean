@@ -46,6 +46,10 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getToken } from 'utils/handler/auth'
 import { getCustomerInfoSeva } from 'services/customer'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewLC,
+} from 'utils/navigate'
 
 const SupergraphicLeft = '/revamp/illustration/supergraphic-small.webp'
 const SupergraphicRight = '/revamp/illustration/supergraphic-large.webp'
@@ -345,6 +349,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
         'https://' + window.location.host + urlDirection.replace('?', ''),
     })
     trackClickCtaCountly()
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.LeadsForm)
     window.location.href = urlDirection
   }
   const onClickNameField = () => {
