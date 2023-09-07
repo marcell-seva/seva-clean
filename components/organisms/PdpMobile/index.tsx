@@ -75,6 +75,7 @@ import {
 import { client } from 'utils/helpers/const'
 import { defineRouteName } from 'utils/navigate'
 import { useUtils } from 'services/context/utilsContext'
+import { defaultCity, getCity } from 'utils/hooks/useGetCity'
 
 export interface CarVariantListPageUrlParams {
   brand: string
@@ -91,6 +92,7 @@ export default function NewCarVariantList() {
   const { source }: { source: string } = useQuery(['source'])
   const [isSentCountlyPageView, setIsSentCountlyPageView] = useState(false)
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+  const { carVideoReviewRes: dataVideoReview } = useContext(PdpDataLocalContext)
 
   const handlePreviewOpened = (payload: number) => {
     setGalleryIndexActive(payload)
@@ -121,7 +123,11 @@ export default function NewCarVariantList() {
     saveRecommendation,
     saveCarModelDetails,
   } = useCar()
-  const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
+  const {
+    carRecommendationsResDefaultCity,
+    carModelDetailsResDefaultCity,
+    carVariantDetailsResDefaultCity,
+  } = useContext(PdpDataLocalContext)
 
   const modelDetail = carModelDetails || carModelDetailsResDefaultCity
 
@@ -161,6 +167,7 @@ export default function NewCarVariantList() {
   const [variantIdFuel, setVariantIdFuelRatio] = useState<string | undefined>()
   const [variantFuelRatio, setVariantFuelRatio] = useState<string | undefined>()
   // for disable promo popup after change route
+  const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
 
   const getQueryParamForApiRecommendation = () => {
     if (source && source.toLowerCase() === 'plp') {
@@ -194,8 +201,6 @@ export default function NewCarVariantList() {
   }, [modelDetail])
 
   const getVideoReview = async () => {
-    const { carVideoReviewRes: dataVideoReview } =
-      useContext(PdpDataLocalContext)
     const filterVideoReview = dataVideoReview.data.filter(
       (video: MainVideoResponseType) => video.modelId === modelDetail?.id,
     )[0]
@@ -218,13 +223,6 @@ export default function NewCarVariantList() {
       setVideoData(temp)
     }
   }
-
-  useEffect(() => {
-    document.body.style.overflowY = isActive ? 'hidden' : 'auto'
-    return () => {
-      document.body.style.overflowY = 'auto'
-    }
-  }, [isActive])
 
   const getMonthlyInstallment = () => {
     return formatNumberByLocalization(
@@ -498,54 +496,67 @@ export default function NewCarVariantList() {
 
     saveLocalStorage(LocalStorageKey.Model, model)
 
-    getNewFunnelRecommendations(getQueryParamForApiRecommendation()).then(
-      (result) => {
-        let id = ''
-        const carList = result.carRecommendations
-        const currentCar = carList.filter(
-          (value: CarRecommendation) =>
-            value.model.replace(/ +/g, '-').toLowerCase() === model,
-        )
-        if (currentCar.length > 0) {
-          id = currentCar[0].id
-          setStatus('exist')
-        } else {
-          setStatus('empty')
-          return
-        }
-        savePreviouslyViewed(currentCar[0])
-
-        Promise.all([
-          getNewFunnelRecommendations(getQueryParamForApiRecommendation()),
-          getCarModelDetailsById(id),
-        ])
-          .then((response) => {
-            const runRecommendation =
-              handleRecommendationsAndCarModelDetailsUpdate(
-                saveRecommendation,
-                saveCarModelDetails,
-              )
-
-            runRecommendation(response)
-            const sortedVariantsOfCurrentModel = response[1].variants
-              .map((item: any) => item)
-              .sort((a: any, b: any) => a.priceValue - b.priceValue)
-            getCarVariantDetailsById(
-              sortedVariantsOfCurrentModel[0].id, // get cheapest variant
-            ).then((result3) => {
-              if (result3.variantDetail.priceValue == null) {
-                setStatus('empty')
-              } else {
-                saveCarVariantDetails(result3)
-                setStatus('exist')
-              }
-            })
-          })
-          .catch(() => {
+    if (!isCurrentCitySameWithSSR) {
+      getNewFunnelRecommendations(getQueryParamForApiRecommendation()).then(
+        (result) => {
+          let id = ''
+          const carList = result.carRecommendations
+          const currentCar = carList.filter(
+            (value: CarRecommendation) =>
+              value.model.replace(/ +/g, '-').toLowerCase() === model,
+          )
+          if (currentCar.length > 0) {
+            id = currentCar[0].id
+            setStatus('exist')
+          } else {
             setStatus('empty')
-          })
-      },
-    )
+            return
+          }
+          savePreviouslyViewed(currentCar[0])
+
+          Promise.all([
+            getNewFunnelRecommendations(getQueryParamForApiRecommendation()),
+            getCarModelDetailsById(id),
+          ])
+            .then((response) => {
+              const runRecommendation =
+                handleRecommendationsAndCarModelDetailsUpdate(
+                  saveRecommendation,
+                  saveCarModelDetails,
+                )
+
+              runRecommendation(response)
+              const sortedVariantsOfCurrentModel = response[1].variants
+                .map((item: any) => item)
+                .sort((a: any, b: any) => a.priceValue - b.priceValue)
+              getCarVariantDetailsById(
+                sortedVariantsOfCurrentModel[0].id, // get cheapest variant
+              ).then((result3) => {
+                if (result3.variantDetail.priceValue == null) {
+                  setStatus('empty')
+                } else {
+                  saveCarVariantDetails(result3)
+                  setStatus('exist')
+                }
+              })
+            })
+            .catch(() => {
+              setStatus('empty')
+            })
+        },
+      )
+    } else {
+      const runRecommendation = handleRecommendationsAndCarModelDetailsUpdate(
+        saveRecommendation,
+        saveCarModelDetails,
+      )
+
+      runRecommendation([
+        carRecommendationsResDefaultCity,
+        carModelDetailsResDefaultCity,
+      ])
+      saveCarVariantDetails(carVariantDetailsResDefaultCity)
+    }
   }, [brand, model, lowerTab])
 
   useEffect(() => {
