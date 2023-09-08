@@ -42,21 +42,28 @@ export default function Articles({
     fetchBaseConfig()
   }, [])
 
-  const handleClickArticle = (url: string) => {
+  const handleClickArticle = (article: any) => {
     trackLCArticleClick({
       Page_Origination: window.location.href,
       Car_Brand: carBrand,
       Car_Model: carModel,
       City: cityName,
-      Article: url,
+      Article: article.url,
     })
     trackEventCountly(CountlyEventNames.WEB_ARTICLE_CLICK, {
       PAGE_ORIGINATION: 'PDP - Kredit',
       TENOR_OPTION: selectedTenure,
-      TENOR_RESULT: selectedLoanRank,
-      PAGE_DIRECTION_URL: url,
+      TENOR_RESULT:
+        selectedLoanRank === 'Green'
+          ? 'Mudah disetujui'
+          : selectedLoanRank === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      ARTICLE_ORDER: article.articleOrder,
+      ARTICLE_CATEGORY: article.articleCategory,
+      PAGE_DIRECTION_URL: article.url,
     })
-    window.location.href = url
+    window.location.href = article.url
   }
 
   const handleClickAllArticle = () => {
@@ -70,7 +77,12 @@ export default function Articles({
     trackEventCountly(CountlyEventNames.WEB_ARTICLE_ALL_CLICK, {
       PAGE_ORIGINATION: 'PDP - Kredit',
       TENOR_OPTION: selectedTenure,
-      TENOR_RESULT: selectedLoanRank,
+      TENOR_RESULT:
+        selectedLoanRank === 'Green'
+          ? 'Mudah disetujui'
+          : selectedLoanRank === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
     })
     window.location.href = showAllArticlesUrl
   }
@@ -89,7 +101,7 @@ export default function Articles({
       </div>
 
       <div className={styles.articlesContainer}>
-        {articles?.map((article) => (
+        {articles?.map((article, index: number) => (
           <PrimaryCard
             key={article.title}
             date={new Date(article.publish_date)}
@@ -97,6 +109,7 @@ export default function Articles({
             title={article.title}
             url={article.url}
             label={article.category}
+            articleOrder={index + 1}
             handleClick={handleClickArticle}
           />
         ))}
