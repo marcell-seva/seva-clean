@@ -71,11 +71,7 @@ export const PriceTab = ({
   }
 
   useEffect(() => {
-    if (
-      carModelDetails !== undefined &&
-      carVariantDetails !== undefined &&
-      recommendation !== undefined
-    ) {
+    if (carModelDetails && carVariantDetails && recommendation) {
       trackEventMoengage()
       getSummaryInfo()
     }
