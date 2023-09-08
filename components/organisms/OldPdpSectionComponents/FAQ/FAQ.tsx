@@ -240,7 +240,7 @@ const QuestionRow = styled.div`
   align-items: flex-start;
 
   span {
-    font-family: 'OpenSans';
+    font-family: var(--open-sans);
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
@@ -259,7 +259,7 @@ const QuestionRow = styled.div`
 const AnswerBox = styled.div`
   padding: 7px 28px 0 31px;
   p {
-    font-family: 'OpenSans';
+    font-family: var(--open-sans);
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
@@ -277,7 +277,7 @@ const AnswerBox = styled.div`
 
 const ExpandAction = styled.div`
   span {
-    font-family: 'KanyonBold';
+    font-family: var(--kanyon-bold);
     font-size: 14px;
     line-height: 20px;
     color: ${colors.primaryBlue};

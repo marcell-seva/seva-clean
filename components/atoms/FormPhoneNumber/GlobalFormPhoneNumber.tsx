@@ -171,7 +171,7 @@ export const GlobalFormPhoneNumber = ({
 }
 
 const FormLabel = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0px;
@@ -208,14 +208,14 @@ const StyledCodeCountry = styled.span<{ v2Style?: boolean }>`
   }
   ${({ v2Style }) =>
     v2Style
-      ? `font-family: 'OpenSansSemiBold';
+      ? `font-family: var(--open-sans-semi-bold);
 font-style: normal;
 font-weight: 600;
 font-size: 12px !important;
 line-height: 20px;
 color: ${colors.body2};
 `
-      : `font-family: 'KanyonBold';
+      : `font-family: var(--kanyon-bold);
       font-style: normal;
       font-size: 16px;
       line-height: 24px;

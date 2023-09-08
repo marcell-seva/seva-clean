@@ -412,7 +412,7 @@ export const MenuListLevel1 = ({ isShow, data }: Props) => {
 
 // const LogoutText = styled(TextLegalMedium)`
 //   margin-left: 18px;
-//   font-family: 'Kanyon';
+//   font-family: var(--kanyon);
 //   font-style: normal;
 //   font-weight: 400;
 //   font-size: 16px;
@@ -487,7 +487,7 @@ const IconBaruWrapper = styled.div`
   height: 18px;
   width: 45px;
 
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 10px;
   line-height: 14px;
   color: ${colors.white};

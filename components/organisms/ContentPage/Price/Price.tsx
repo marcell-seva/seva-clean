@@ -229,7 +229,7 @@ const StyledDescription = styled(Description)`
 `
 
 const Title = styled.h2`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 14px;
   line-height: 24px;
   margin-bottom: 8px;

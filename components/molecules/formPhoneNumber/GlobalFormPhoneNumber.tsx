@@ -199,7 +199,7 @@ const StyledCodeCountry = styled.span<{ v2Style?: boolean }>`
   }
   ${({ v2Style }) =>
     v2Style
-      ? `font-family: 'OpenSansSemiBold';
+      ? `font-family: var(--open-sans-semi-bold);
 font-style: normal;
 font-weight: 600;
 font-size: 12px !important;

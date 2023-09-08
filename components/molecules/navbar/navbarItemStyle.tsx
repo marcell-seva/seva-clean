@@ -32,7 +32,7 @@ export const StyledLabel = styled(LinkLabelMediumSemiBold)<{
   font-size: 12px;
   line-height: 18px;
   font-weight: 700;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   color: ${({ newMenu }) => newMenu && colors.primaryBlue};
 `
 
@@ -54,7 +54,7 @@ const textWrapperStyles = css`
   &:hover {
     background-color: ${colors.primarySky};
     .item-text {
-      font-family: 'OpenSansBold';
+      font-family: var(--open-sans-bold);
       font-weight: 700 !important;
     }
   }
@@ -71,5 +71,5 @@ export const StyledItemText = styled(LinkLabelMediumSemiBold)`
   font-size: 14px;
   line-height: 20px;
   font-weight: 400;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
 `

@@ -251,7 +251,7 @@ const Header = styled.div`
 `
 
 const Title = styled.h2`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
@@ -261,7 +261,7 @@ const Title = styled.h2`
 `
 
 const SeeAll = styled.a`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
@@ -313,7 +313,7 @@ const CategoryBox = styled.button<{
     isSelected ? colors.primarySky2 : colors.white};
   border: 1px solid ${colors.primarySky2};
   padding: 14px 16px;
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
