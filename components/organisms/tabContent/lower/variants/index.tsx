@@ -156,8 +156,9 @@ const TabContentLowerVariant = ({
     trackCarVariantPricelistClickCta(getDataForAmplitude(carVariant))
     trackClickCtaCountly(carVariant, index)
     saveDataCarForLoginPageView(carVariant.name)
-    setSelectedTabValue && setSelectedTabValue('Kredit')
     saveDataForCountlyTrackerPageViewLC(PreviousButton.VariantPriceList)
+
+    setSelectedTabValue && setSelectedTabValue('Kredit')
     router.replace(
       {
         pathname: variantListUrl
