@@ -52,6 +52,7 @@ export const OTP = ({
     LocalStorageKey.LastOtpSentPhoneNumber,
     '',
   )
+  const [isFieldClicked, setIsFieldClicked] = useState(false)
 
   const { countDownTime, startCountDownTime, setCountDownTimeInMilliseconds } =
     useCountDownTimer({
@@ -170,9 +171,11 @@ export const OTP = ({
     }
 
     target.setSelectionRange(0, target.value.length)
-    trackEventCountly(CountlyEventNames.WEB_OTP_CLICK, {
-      PAGE_ORIGINATION: pageOrigination,
-    })
+    if (!isFieldClicked)
+      trackEventCountly(CountlyEventNames.WEB_OTP_CLICK, {
+        PAGE_ORIGINATION: pageOrigination,
+      })
+    setIsFieldClicked(true)
   }
 
   const focusToNextInput = (target: HTMLElement) => {
