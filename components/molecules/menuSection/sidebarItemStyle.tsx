@@ -73,11 +73,11 @@ export const IconWrapperName = styled.div`
 export const IconName = styled(TextLegalMedium)`
   font-weight: 600;
   font-size: 14px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   color: white;
 `
 export const ProfileInfoHeader = styled(TextLegalMedium)`
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -108,7 +108,7 @@ export const ProfileGreetingHai = styled(TextLegalSemiBold)`
 `
 
 export const ProfileInfoFullName = styled(TextLegalMedium)`
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
@@ -122,7 +122,7 @@ export const WrapperPhoneNumber = styled.div`
   padding: 0px;
 `
 export const ProfileInfoPhoneNumber = styled(TextLegalMedium)`
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;

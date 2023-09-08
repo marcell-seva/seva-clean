@@ -119,7 +119,7 @@ const CloseIconWrapper = styled.div`
 `
 
 const Title = styled.span`
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -134,7 +134,7 @@ const Title = styled.span`
 
 const Subtitle = styled.span`
   margin-top: 36px;
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -165,7 +165,7 @@ const StyledButton = styled.button`
 `
 
 const ButtonText = styled.span`
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 12px;

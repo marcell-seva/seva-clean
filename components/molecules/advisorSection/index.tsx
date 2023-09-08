@@ -278,7 +278,7 @@ const StyledButton = styled(Button)`
 
 const StyledButtonText = styled(TextMediumRegular)`
   color: ${colors.white};
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
 
   @media (min-width: 1025px) {
     line-height: 20px;

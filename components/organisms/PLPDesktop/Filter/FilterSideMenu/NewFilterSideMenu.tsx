@@ -826,7 +826,7 @@ const StyledHeader = styled.div`
 `
 
 const StyledTitle = styled.h2`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   margin-top: 30px;
   font-size: 20px;
   font-weight: 700;
@@ -841,7 +841,7 @@ const StyledResetWrapper = styled.div`
   cursor: pointer;
 `
 const StyledReset = styled.div`
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -851,7 +851,7 @@ const StyledReset = styled.div`
 `
 const StyledSubTitle = styled.div`
   margin-top: 16px;
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -861,7 +861,7 @@ const StyledSubTitle = styled.div`
 `
 
 const StyledSubTitleDownpayment = styled.div`
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -904,7 +904,7 @@ const RadioBox = styled.div<{ isSelected?: boolean; disable?: boolean }>`
   ${({ isSelected }) => isSelected && `background-color: ${colors.white};`}
 `
 const RadioBoxText = styled(TextLegalMedium)`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -947,7 +947,7 @@ const StyledIcon = styled.div`
   /* margin: 20px 16px; */
 `
 const StyledTextType = styled(TextLegalMedium)`
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -956,7 +956,7 @@ const StyledTextType = styled(TextLegalMedium)`
   color: #404040;
 `
 const StyledTitleBrand = styled(LinkLabelSmallSemiBold)`
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   letter-spacing: 0px;
   color: ${colors.title};
   font-size: 14px;
@@ -1107,7 +1107,7 @@ const StyledButtonHover = styled.button`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 12px;
@@ -1116,7 +1116,7 @@ const StyledButtonHover = styled.button`
   color: #246ed4;
 `
 const StyledTextHoverFooterText = styled.button`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 12px;
@@ -1126,7 +1126,7 @@ const StyledTextHoverFooterText = styled.button`
   cursor: pointer;
 `
 const StyledTextHoverTitle = styled(TextLegalRegular)`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   width: 70%;
@@ -1139,7 +1139,7 @@ const StyledTextHoverWrapper = styled.div`
   margin-top: 10px;
 `
 const StyledTextHoverTitleNumber = styled(TextLegalRegular)`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -1148,7 +1148,7 @@ const StyledTextHoverTitleNumber = styled(TextLegalRegular)`
   color: #404040;
 `
 const StyledTextHoverDescription = styled(TextLegalRegular)`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -1196,14 +1196,14 @@ const TenureTextFilterCarResults = styled.span`
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
-    font-family: 'OpenSans';
+    font-family: var(--open-sans);
     color: #000000;
   }
 `
 
 const MandatoryText = styled.span`
   margin-top: 4px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 8px;

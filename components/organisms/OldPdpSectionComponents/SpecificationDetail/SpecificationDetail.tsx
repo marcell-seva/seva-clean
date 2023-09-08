@@ -59,7 +59,7 @@ const SpecificationDetailItem = styled.div<{ blueBg?: boolean }>`
 `
 
 const SpecificationDetailName = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-weight: 400;
   font-style: normal;
   font-size: 12px;
@@ -74,7 +74,7 @@ const SpecificationDetailName = styled.span`
 `
 
 const SpecificationDetailValue = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-weight: 400;
   font-style: normal;
   font-size: 12px;

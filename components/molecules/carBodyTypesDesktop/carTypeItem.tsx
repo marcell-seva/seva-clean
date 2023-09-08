@@ -158,7 +158,7 @@ const CarImage = styled(LazyLoadImage)`
   }
 `
 const TextCarBrandAndName = styled(TextLegalMedium)`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 12px;
@@ -166,13 +166,13 @@ const TextCarBrandAndName = styled(TextLegalMedium)`
   color: #404040;
 
   @media (min-width: 1025px) {
-    font-family: 'KanyonBold';
+    font-family: var(--kanyon-bold);
     font-size: 20px;
     line-height: 24px;
   }
 `
 const TextInstallmentText = styled(TextLegalMedium)`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -186,7 +186,7 @@ const TextInstallmentText = styled(TextLegalMedium)`
 `
 
 const TextInstallmentPrice = styled(TextLegalMedium)`
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 14px;

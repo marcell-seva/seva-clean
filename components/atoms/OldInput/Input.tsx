@@ -129,14 +129,14 @@ const StyledInputArea = styled.div<{
     theme === InputTheme.profilePage ? ProfileTheme : DefaultTheme}
 
   input {
-    font-family: 'Kanyon';
+    font-family: var(--kanyon);
     font-style: normal;
     font-size: 16px;
     line-height: 24px;
     letter-spacing: 0px;
 
     ::placeholder {
-      font-family: 'Kanyon';
+      font-family: var(--kanyon);
       font-style: normal;
       font-size: 16px;
       line-height: 24px;
