@@ -98,7 +98,7 @@ const StyledBodyInfo = styled.div`
 `
 
 const StyledTitleText = styled.h2`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
@@ -112,7 +112,7 @@ const StyledTitleText = styled.h2`
   }
 `
 const StyledTitleTextDetail = styled.a`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 10px;
@@ -127,7 +127,7 @@ const StyledTitleTextDetail = styled.a`
 `
 
 const StyledTextDetailSeats = styled.h2`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;

@@ -70,7 +70,7 @@ const Content = styled.div`
 `
 
 const Title = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 20px;
   line-height: 24px;
   text-align: center;
