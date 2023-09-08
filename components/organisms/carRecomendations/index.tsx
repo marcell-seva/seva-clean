@@ -3,14 +3,14 @@ import {
   trackLCCarRecommendationCTAClick,
 } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
-import { LanguageCode } from 'utils/enum'
+import { LanguageCode, SessionStorageKey } from 'utils/enum'
 import React from 'react'
 import {
   carResultsUrl,
   loanCalculatorWithCityBrandModelUrl,
   variantListUrl,
 } from 'utils/helpers/routes'
-import { CarRecommendation } from 'utils/types/utils'
+import { CarRecommendation, trackDataCarType } from 'utils/types/utils'
 import { getLowestInstallment } from 'utils/carModelUtils/carModelUtils'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { Button } from 'components/atoms'
@@ -26,6 +26,7 @@ import {
 } from 'utils/navigate'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getSessionStorage } from 'utils/handler/sessionStorage'
 
 type CarRecommendationsPropss = {
   title: string
@@ -43,6 +44,9 @@ export default function CarRecommendations({
   additionalContainerStyle,
 }: CarRecommendationsPropss) {
   const router = useRouter()
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
 
   const getDestinationUrl = (carDetail: CarRecommendation) => {
     if (window.location.pathname.includes('/mobil-baru')) {
@@ -123,12 +127,24 @@ export default function CarRecommendations({
     })
     trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CLICK, {
       PAGE_ORIGINATION: 'PDP - Kredit',
-      PELUANG_KREDIT_BADGE: item.loanRank,
+      PELUANG_KREDIT_BADGE:
+        item.loanRank === 'Green'
+          ? 'Mudah disetujui'
+          : item.loanRank === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
       CAR_BRAND: item.brand,
       CAR_MODEL: item.model,
       CAR_BRAND_RECOMMENDATION: item.brand,
       CAR_MODEL_RECOMMENDATION: item.model,
       PAGE_DIRECTION_URL: window.location.hostname + path,
+      TENOR_OPTION: dataCar?.TENOR_OPTION,
+      TENOR_RESULT:
+        dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Green'
+          ? 'Mudah disetujui'
+          : dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
     })
     saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
     router.push(path)
