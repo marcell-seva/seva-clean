@@ -1,5 +1,5 @@
 import { Spin } from 'antd'
-import { AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import clsx from 'clsx'
 import { CSAButton } from 'components/atoms'
 import { CitySelectorModal } from 'components/molecules'
@@ -77,6 +77,8 @@ import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getPageName } from 'utils/pageName'
 import { LoanRank } from 'utils/types/models'
 import { useUtils } from 'services/context/utilsContext'
+import { temanSevaUrlPath } from 'services/temanseva'
+import { decryptValue } from 'utils/encryptionUtils'
 
 interface PLPProps {
   minmaxPrice: MinMaxPrice
@@ -157,6 +159,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
     carOrder: 0,
     loanRank: 'Null',
   })
+  const user: string | null = getLocalStorage(LocalStorageKey.sevaCust)
   const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
 
   const fetchMoreData = () => {
@@ -328,27 +331,42 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
     }
   }
 
-  const trackPLPView = (creditBadge: string = 'Null') => {
+  const temanSevaStatus = async () => {
+    const tsLink = brand && typeof brand === 'string' && brand.includes('SEVA')
+    if (tsLink) return 'Yes'
+    if (user) {
+      const decryptUser = JSON.parse(decryptValue(user))
+      if (decryptUser.temanSevaTrxCode) {
+        return 'Yes'
+      }
+
+      try {
+        const temanSeva = await axios.post(temanSevaUrlPath.isTemanSeva, {
+          phoneNumber: decryptUser.phoneNumber,
+        })
+        if (temanSeva.data.isTemanSeva) return 'Yes'
+        return 'No'
+      } catch (e) {
+        return 'No'
+      }
+    }
+  }
+
+  const trackPLPView = async (creditBadge = 'Null') => {
     const prevPage = getSessionStorage(SessionStorageKey.PreviousPage) as any
     const filterUsage = brand || bodyType || priceRangeGroup ? 'Yes' : 'No'
     const fincapUsage =
-      downPaymentAmount || tenure || age || monthlyIncome ? 'Yes' : 'No'
-    const temanSevaStatus =
-      brand && typeof brand === 'string' && brand.includes('SEVA')
-        ? 'Yes'
-        : 'No'
+      downPaymentAmount && tenure && age && monthlyIncome ? 'Yes' : 'No'
     const initialPage = valueForInitialPageProperty()
     const track = {
       CAR_FILTER_USAGE: filterUsage,
       FINCAP_FILTER_USAGE: fincapUsage,
       PELUANG_KREDIT_BADGE: fincapUsage === 'No' ? 'Null' : creditBadge,
       INITIAL_PAGE: initialPage,
-      TEMAN_SEVA_STATUS: temanSevaStatus,
+      TEMAN_SEVA_STATUS: await temanSevaStatus(),
       USER_TYPE: valueForUserTypeProperty(),
-      ...(Boolean(prevPage) && {
-        ...(prevPage.refer && { PAGE_REFERRER: prevPage.refer }),
-        ...(prevPage.source && { PREVIOUS_SOURCE_BUTTON: prevPage?.source }),
-      }),
+      PAGE_REFERRER: prevPage?.refer || 'Null',
+      PREVIOUS_SOURCE_BUTTON: prevPage?.source || 'Null',
     }
 
     trackEventCountly(CountlyEventNames.WEB_PLP_VIEW, track)
@@ -504,7 +522,6 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
 
             getNewFunnelRecommendations(queryParam)
               .then((response) => {
-                checkFincapBadge(recommendation)
                 if (response) {
                   patchFunnelQuery(queryParam)
                   saveRecommendation(response.carRecommendations)
@@ -520,6 +537,9 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
                     (item: { brand: string }) => item.brand === 'Daihatsu',
                   )
                   setShowInformDaihatsu(collectDaihatsu)
+                  setTimeout(() => {
+                    checkFincapBadge(response.carRecommendations.slice(0, 12))
+                  }, 1000)
                 }
                 setShowLoading(false)
               })
@@ -529,7 +549,6 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
                   pathname: carResultsUrl,
                 })
               })
-
             getNewFunnelRecommendations({ ...queryParam, brand: [] }).then(
               (response: any) => {
                 if (response) setAlternativeCar(response.carRecommendations)
@@ -539,7 +558,6 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
         })
         .catch()
     } else {
-      checkFincapBadge(recommendation)
       saveRecommendation(recommendation)
       const queryParam: any = {
         downPaymentAmount: downPaymentAmount || '',
@@ -552,6 +570,9 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
         sortBy: sortBy || 'lowToHigh',
       }
       patchFunnelQuery(queryParam)
+      setTimeout(() => {
+        checkFincapBadge(recommendation.slice(0, 12))
+      }, 1000)
     }
     return () => cleanEffect()
   }, [])
