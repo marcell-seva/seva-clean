@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 
 export const TextLegalMediumStyle = css`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 500;
   font-size: 12px;

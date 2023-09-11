@@ -383,7 +383,7 @@ const StyledInput = styled(Input)<{
       : isTabCreditDesktop
       ? '#E4E9F1'
       : colors.placeholder};
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   border-radius: 8px;
   input {
     color: ${colors.primaryDarkBlue};
@@ -450,8 +450,8 @@ const StyledPrefixText = styled.h2<{
       : !isNewRegularPage && isTabCreditDesktop
       ? '18px'
       : '16px'};
-  font-family: 'Kanyon';
-  font-family: 'OpenSans';
+  font-family: var(--kanyon);
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   line-height: 120%;
@@ -471,7 +471,7 @@ const StyledErrorText = styled.span`
   letter-spacing: 0px;
   color: ${colors.error};
   margin-top: 4px;
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
 `
 
 const ErrorWrapperEmpty = styled.div`
@@ -490,7 +490,7 @@ const ErrorWrapperEmptyCreditV2 = styled.div`
 `
 
 const ErrorMessageEmpty = styled.p`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 10px;
@@ -505,7 +505,7 @@ const ErrorMessageEmpty = styled.p`
 `
 
 const ErrorMessageEmptySemiBold = styled.p`
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 10px;

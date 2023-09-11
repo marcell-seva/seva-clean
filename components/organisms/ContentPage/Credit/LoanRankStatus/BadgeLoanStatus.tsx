@@ -113,7 +113,7 @@ const IconWrapper = styled.div`
 `
 
 const Wording = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 700;
   font-size: 10px;

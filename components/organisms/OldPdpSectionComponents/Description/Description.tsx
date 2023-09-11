@@ -387,7 +387,7 @@ const ClosedStyle = css`
 `
 
 const DescriptionContent = styled.div<{ open: boolean }>`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-weight: 400;
   font-style: normal;
   font-size: 12px;
@@ -416,7 +416,7 @@ const TitleAndSubtitleSection = styled.div`
 `
 
 const DescriptionTitle = styled.span`
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
@@ -434,7 +434,7 @@ const BacaSelengkapnyaWrapper = styled.div`
   gap: 5px;
 
   label {
-    font-family: 'KanyonBold';
+    font-family: var(--kanyon-bold);
     font-size: 12px;
     line-height: 16px;
     color: ${colors.primaryBlue};

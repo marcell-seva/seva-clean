@@ -132,7 +132,7 @@ const TanyaSevaWrapper = styled.div`
 `
 
 const TanyaSevaText = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-size: 12px;
   line-height: 16px;
@@ -162,7 +162,7 @@ const TanyaSevaMobileWrapper = styled.div`
 `
 
 const TanyaSevaMobileText = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-size: 12px;
   line-height: 16px;

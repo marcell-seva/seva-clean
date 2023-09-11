@@ -85,12 +85,12 @@ const StyledUpperText = styled(TextLegalRegular)`
   font-weight: 400;
   display: flex;
   align-items: center;
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
 `
 
 const StyledCityText = styled(TextLegalRegular)`
   font-size: 12px;
   line-height: 18px;
   font-weight: 700;
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
 `

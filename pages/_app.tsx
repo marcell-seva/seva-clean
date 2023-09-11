@@ -38,6 +38,11 @@ import { client } from 'utils/helpers/const'
 import { IsSsrMobileContext } from 'services/context/isSsrMobileContext'
 import { useAddUtmTagsToApiCall } from 'utils/hooks/useAddUtmTagsToApiCall/useAddUtmTagsToApiCall'
 
+const kanyonLight = localFont({
+  src: '../public/revamp/fonts/Kanyon/Kanyon-Light.otf',
+  style: 'normal',
+  display: 'swap',
+})
 const kanyon = localFont({
   src: '../public/revamp/fonts/Kanyon/Kanyon-Regular.otf',
   style: 'normal',
@@ -60,6 +65,16 @@ const OpenSans = localFont({
 })
 const OpenSansSemiBold = localFont({
   src: '../public/revamp/fonts/OpenSans/OpenSans-SemiBold.woff2',
+  style: 'normal',
+  display: 'swap',
+})
+const OpenSansBold = localFont({
+  src: '../public/revamp/fonts/OpenSans/OpenSans-Bold.woff2',
+  style: 'normal',
+  display: 'swap',
+})
+const OpenSansExtraBold = localFont({
+  src: '../public/revamp/fonts/OpenSans/OpenSans-ExtraBold.woff2',
   style: 'normal',
   display: 'swap',
 })
@@ -154,11 +169,14 @@ export default function App({ Component, pageProps }: AppProps) {
           ></Script>
           <style jsx global>{`
             :root {
+              --kanyon-light: ${kanyonLight.style.fontFamily};
               --kanyon: ${kanyon.style.fontFamily};
               --kanyon-medium: ${kanyonMedium.style.fontFamily};
               --kanyon-bold: ${kanyonBold.style.fontFamily};
               --open-sans: ${OpenSans.style.fontFamily};
               --open-sans-semi-bold: ${OpenSansSemiBold.style.fontFamily};
+              --open-sans-bold: ${OpenSansBold.style.fontFamily};
+              --open-sans-extra-bold: ${OpenSansExtraBold.style.fontFamily};
             }
           `}</style>
           <Component {...pageProps} />

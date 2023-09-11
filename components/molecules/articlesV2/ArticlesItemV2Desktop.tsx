@@ -190,7 +190,7 @@ const Category = styled.div`
   justify-content: center;
   width: fit-content;
   padding: 4px 10px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -199,14 +199,14 @@ const Category = styled.div`
 `
 
 const TitlePrimaryStyle = css`
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-weight: 600;
   font-size: 20px;
   line-height: 26px;
 `
 
 const TitleSecondaryStyle = css`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-weight: 400;
   font-size: 14px;
   line-height: 18px;
@@ -249,7 +249,7 @@ const Excerpt = styled.span<{
   articleType: ArticleItemType
 }>`
   margin-top: 8px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -264,7 +264,7 @@ const Excerpt = styled.span<{
 `
 
 const DateText = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -282,7 +282,7 @@ const StyledButton = styled.button`
 `
 
 const ButtonText = styled.div`
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 12px;

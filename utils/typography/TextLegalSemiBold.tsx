@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 
 export const TextLegalSemiBoldStyle = css`
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-size: 12px;
   line-height: 16px;

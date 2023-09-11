@@ -170,7 +170,7 @@
 // `
 // const StyledSubtitle = styled(TextMediumRegular)`
 //   color: #252525;
-//   font-family: 'KanyonBold';
+//   font-family: var(--kanyon-bold);
 //   margin-top: 8px;
 //   font-size: 24px;
 //   line-height: 32px;
@@ -240,7 +240,7 @@
 //   }
 // `
 // const StyledDesc = styled(TextLegalSmallRegular)`
-//   font-family: 'Kanyon';
+//   font-family: var(--kanyon);
 //   font-size: 16px;
 //   line-height: 24px;
 //   @media (max-width: 1024) {

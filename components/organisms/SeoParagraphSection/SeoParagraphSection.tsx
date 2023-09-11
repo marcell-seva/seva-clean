@@ -79,7 +79,7 @@ const CollapsibleButton = styled.button`
   margin: 0 auto;
   cursor: pointer;
 
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 18px;

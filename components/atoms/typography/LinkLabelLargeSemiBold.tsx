@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 
 export const LinkLabelLargeSemiBoldStyle = css`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 20px;

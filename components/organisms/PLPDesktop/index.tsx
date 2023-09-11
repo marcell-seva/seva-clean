@@ -619,7 +619,7 @@ const ResultAndFilterWrapper = styled.div`
 `
 
 const StyledTextNotFound = styled.div`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-weight: 700;
   font-size: 24px;
   line-height: 28px;
@@ -661,7 +661,7 @@ const StyledWebHeader = styled.div`
 const StyledTitleRegular = styled.h1`
   display: flex;
   align-items: baseline;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -676,14 +676,14 @@ const StyledTitleRegular = styled.h1`
 `
 const StyledTitle = styled.div`
   color: ${colors.title};
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-weight: 700;
   font-size: 16px;
   line-height: 16px;
   letter-spacing: 0px;
 
   @media (max-width: 1024px) {
-    font-family: 'OpenSansBold';
+    font-family: var(--open-sans-bold);
     font-size: 14px;
     line-height: 16px;
     font-weight: 700;
@@ -770,7 +770,7 @@ const StyledNotFound = styled.div`
 `
 
 const StyledNotFoundDesc = styled(TextSmallRegular)`
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -806,7 +806,7 @@ const StyledFloatinFilterButton = styled.div`
 `
 
 const StyledFloatingFilterText = styled(TextSmallRegular)`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 12px;

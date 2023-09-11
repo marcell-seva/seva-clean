@@ -227,7 +227,7 @@ const ContainerVideoReview = styled.div`
 
 const StyledText = styled.span`
   letter-spacing: 0px;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
@@ -269,7 +269,7 @@ const MainVideoImageWrapper = styled.div`
 `
 const StyledTextTitleVideo = styled.span`
   letter-spacing: 0px;
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -286,7 +286,7 @@ const StyledTextTitleVideo = styled.span`
 
 const StyledTextChannelVideo = styled.span`
   letter-spacing: 0px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 10px;
