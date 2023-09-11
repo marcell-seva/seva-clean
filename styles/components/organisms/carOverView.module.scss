@@ -7,7 +7,7 @@
 }
 
 .carBrandModelText {
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -17,7 +17,7 @@
 
 .carDescriptionText {
   margin-top: 2px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -39,7 +39,7 @@
 }
 
 .otrCityInfo {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -91,7 +91,7 @@
 }
 
 .tooltipDesc {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 11px;
@@ -102,7 +102,7 @@
 .tooltipCloseButton {
   border: none;
   background: none;
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 11px;
@@ -121,7 +121,7 @@
 }
 
 .carOtrPriceText {
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -144,7 +144,7 @@
 }
 
 .packageLabel {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -153,7 +153,7 @@
 }
 
 .packageValue {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;

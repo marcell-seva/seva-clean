@@ -27,7 +27,7 @@
 }
 
 .titleStyle {
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -39,7 +39,7 @@
 
 .contentText {
   padding-top: 16px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -54,7 +54,7 @@
 
 .contentTextMudah {
   color: #{$secondary-green};
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -63,7 +63,7 @@
 
 .contentTextSulit {
   color: #{$secondary-brick-red};
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 600;
   font-size: 14px;

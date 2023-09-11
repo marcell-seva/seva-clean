@@ -15,7 +15,7 @@
 
 .textTitle {
   font-size: 1rem;
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   line-height: 1.5rem;
@@ -25,7 +25,7 @@
 }
 .textSubtitle {
   font-size: 11px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   color: #{$shades-grey-50};
   font-style: normal;
   font-weight: 400;
@@ -49,7 +49,7 @@
 .textForm {
   color: #{$primary-black};
   font-size: 14px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
@@ -57,14 +57,14 @@
 }
 .textFormBold {
   color: #{$primary-dark-blue};
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-weight: 600;
 }
 .textBestAssurance {
   margin-left: 3px;
   color: #{$secondary-green};
   font-size: 11px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   line-height: 16px;
