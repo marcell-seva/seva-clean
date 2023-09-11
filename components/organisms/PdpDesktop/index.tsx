@@ -269,13 +269,23 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
     )
   }
 
-  const getMetaDescription = `Beli mobil ${carMetaTitleName} 2023 terbaru secara kredit dengan Instant Approval. Harga mulai ${carOTR}, cari tau spesifikasi, harga, kredit di SEVA`
+  const getMetaDescription = () => {
+    switch (tab) {
+      case 'kredit':
+        return `Hitung simulasi cicilan ${carMetaTitleName} ${currentYear}. Beli mobil Toyota secara kredit dengan Instant Approval* di SEVA.`
+      case 'spesifikasi':
+        return `Dapatkan informasi lengkap mengenai spesifikasi ${carMetaTitleName} ${currentYear} terbaru di SEVA`
+      case 'harga':
+        return `Daftar harga ${carMetaTitleName} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carMetaTitleName} ${currentYear} terbaru di SEVA.`
+    }
+    return `Beli mobil ${carMetaTitleName} 2023 terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, kredit di SEVA`
+  }
 
   return (
     <>
       <Seo
         title={getMetaTitle()}
-        description={getMetaDescription}
+        description={getMetaDescription()}
         image={modelDetailData?.images[0] || defaultSeoImage}
       />
       <div className={styles.pageHeaderWrapper}>
