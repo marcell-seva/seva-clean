@@ -91,33 +91,8 @@ export default function index({
     } catch (error) {}
   }
 
-  const meta = useMemo(() => {
-    const title =
-      metaTagDataRes.data && metaTagDataRes.data.length > 0
-        ? metaTagDataRes.data[0].attributes.meta_title
-        : 'SEVA'
-    const description =
-      metaTagDataRes.data && metaTagDataRes.data.length > 0
-        ? metaTagDataRes.data[0].attributes.meta_description
-        : ''
-    return { title, description }
-  }, [metaTagDataRes])
-
-  const metaTitle =
-    `Ringkasan Produk ` +
-    meta.title.split('20')[0] +
-    ` ${moment().format('YYYY')} - Harga OTR Promo Bulan ${moment().format(
-      'MMMM',
-    )} | SEVA`
-
   return (
     <>
-      <Seo
-        title={metaTitle}
-        description={meta.description}
-        image={carModelDetailsRes.images[0] || defaultSeoImage}
-      />
-
       <PdpDataLocalContext.Provider
         value={{
           carRecommendationsResDefaultCity: carRecommendationsRes,
