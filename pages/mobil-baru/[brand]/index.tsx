@@ -21,6 +21,7 @@ import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import { api } from 'services/api'
 import Seo from 'components/atoms/seo'
+import moment from 'moment'
 
 const NewCarResultPage = ({
   meta,
@@ -43,10 +44,17 @@ const NewCarResultPage = ({
     }
   }, [])
 
+  const metaTitle =
+    `Harga OTR ` +
+    meta.title.split('20')[0] +
+    ` ${moment().format('YYYY')} - Promo Cicilan bulan ${moment().format(
+      'MMMM',
+    )} | SEVA`
+
   return (
     <>
       <Seo
-        title={meta.title}
+        title={metaTitle}
         description={meta.description}
         image={defaultSeoImage}
       />
