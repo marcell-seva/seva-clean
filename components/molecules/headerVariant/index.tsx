@@ -134,10 +134,7 @@ export default function HeaderVariant({
       patchFunnelQuery({
         [FunnelQueryKey.Brand]: [item.label],
       })
-      const funnelQueryTemp = {
-        brand: [item.label],
-      }
-      urlDestination = carResultsUrl + '?' + convertObjectQuery(funnelQueryTemp)
+      urlDestination = carResultsUrl
     }
 
     // simpan pencarian ke dalam local storage
@@ -164,7 +161,20 @@ export default function HeaderVariant({
     })
 
     // use window location to reload page
-    window.location.href = urlDestination
+    if (item.value.length === 0) {
+      const funnelQueryTemp = {
+        brand: [item.label],
+      }
+      navigateToPLP(
+        PreviousButton.SearchBar,
+        { search: convertObjectQuery(funnelQueryTemp) },
+        true,
+        false,
+        urlDestination,
+      )
+    } else {
+      window.location.href = urlDestination
+    }
     setIsNotFoundClicked(false)
   }
 

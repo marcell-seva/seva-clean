@@ -139,7 +139,7 @@ export const CarDetailCard = ({
         .replace(':brand', brandSlug)
         .replace(':model', modelSlug)
         .replace(':variant', '') + `?loanRankCVL=${recommendation.loanRank}`
-
+    trackCarClick(order + 1, false)
     router.push(destinationUrl)
   }
 
@@ -195,7 +195,7 @@ export const CarDetailCard = ({
     const datatrack = {
       CAR_BRAND: recommendation.brand,
       CAR_MODEL: recommendation.model,
-      CAR_ORDER: index + 1,
+      CAR_ORDER: index,
       PELUANG_KREDIT_BADGE:
         peluangKredit === 'Null' ? peluangKredit : peluangKredit + ' disetujui',
     }
@@ -314,7 +314,6 @@ export const CarDetailCard = ({
           <Link
             href={detailCarRoute}
             className={styles.linkLihatDetail}
-            onClick={() => trackCarClick(order)}
             data-testid={elementId.PLP.Button.LihatDetail}
           >
             Lihat Detail
