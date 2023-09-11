@@ -47,7 +47,7 @@
 }
 
 .formCardTitle {
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -57,7 +57,7 @@
 
 .formCardSubtitle {
   margin-top: 8px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -70,7 +70,7 @@
 }
 
 .errorMessage {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
