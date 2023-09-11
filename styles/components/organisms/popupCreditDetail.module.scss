@@ -37,7 +37,7 @@
 }
 
 .textPromo {
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-size: 0.6875rem;
   font-style: normal;
   font-weight: 700;
@@ -47,7 +47,7 @@
   align-self: stretch;
 }
 .textPromoBold {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 11px;
   font-style: normal;
   font-weight: 400;
@@ -132,7 +132,7 @@
 }
 
 .kanyonMedium {
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
@@ -140,14 +140,14 @@
 }
 
 .openSansSemiBold {
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
   color: #000000;
 }
 .openSans {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -160,7 +160,7 @@
   color: #246ed4 !important;
 }
 .openSansBoldGrey {
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-weight: 700;
   font-size: 11px;
   line-height: 16px;
@@ -233,7 +233,7 @@
 }
 .titleSelectCar {
   padding: 0px 16px 0px 16px;
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -245,7 +245,7 @@
 }
 .textCar {
   padding: 0px 16px 0px 16px;
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -258,7 +258,7 @@
 }
 .textType {
   padding: 0px 16px 0px 16px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -271,7 +271,7 @@
 }
 .textPrice {
   padding: 0px 16px 0px 16px;
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -284,7 +284,7 @@
 }
 .textCity {
   padding: 0px 16px 0px 16px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -333,7 +333,7 @@
   gap: 8px;
 }
 .videoSectionHeaderText {
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -381,7 +381,7 @@
   height: 24px;
 }
 .kanyonMediumBlue {
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: 400;
   font-size: 20px;

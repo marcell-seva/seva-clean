@@ -31,7 +31,7 @@
 
 .textTitle {
   height: 18px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -107,7 +107,7 @@
 }
 .right {
   height: 18px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -121,7 +121,7 @@
 }
 .left {
   height: 18px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -144,7 +144,7 @@
 
 .adjustText {
   font-size: 12px;
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   color: #{$secondary-blue};
   padding-left: 24px;
   line-height: 18px;

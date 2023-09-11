@@ -24,7 +24,7 @@
 }
 
 .errorMessage {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -35,7 +35,7 @@
 }
 
 .titleText {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -48,7 +48,7 @@
 }
 
 .subTitleText {
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -61,7 +61,7 @@
 }
 
 .titleTextForm {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -73,7 +73,7 @@
   flex-grow: 0;
 }
 .titleTextTwoForm {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -135,7 +135,7 @@
   padding: 18px 16px 18px 16px;
 }
 .textIncome {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -160,7 +160,7 @@
 }
 
 .titleTextCar {
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 11px;
@@ -173,7 +173,7 @@
 }
 
 .textType {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 11px;
@@ -187,7 +187,7 @@
 }
 
 .textPrice {
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -211,21 +211,21 @@
 }
 
 .smallSemibold {
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-size: 11px;
   line-height: 16px;
   color: #{$shades-grey-75};
 }
 
 .smallRegular {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 11px;
   line-height: 16px;
   color: #{$shades-grey-75};
 }
 
 .textPromo {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 700;
   font-size: 11px;
@@ -241,7 +241,7 @@
 }
 
 .textPromoSelect {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 11px;
@@ -253,7 +253,7 @@
 }
 
 .textPromoBold {
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-style: normal;
   font-weight: 400;
   font-size: 11px;
@@ -288,7 +288,7 @@
   flex: none;
   order: 0;
   flex-grow: 0;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;

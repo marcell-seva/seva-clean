@@ -44,7 +44,7 @@
   height: 28px;
   left: 0px;
   top: 0px;
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -56,7 +56,7 @@
 .textCopy {
   width: 100%;
   height: 60px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -78,7 +78,7 @@
 
 .alternativeCarTitle {
   color: #{$primary-dark-blue};
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-weight: 400;
   font-size: 20px;
   line-height: 28px;

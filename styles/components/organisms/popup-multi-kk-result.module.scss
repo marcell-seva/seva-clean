@@ -33,7 +33,7 @@
 }
 
 .popupTitle {
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   color: #05256e;
   font-size: 20px;
   font-weight: 400;
@@ -41,7 +41,7 @@
 }
 
 .smallButtonText {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
@@ -58,7 +58,7 @@
 }
 
 .bodyText {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -77,8 +77,8 @@
   margin-top: 19px;
   font-size: 12px;
   line-height: 18px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   span {
-    font-family: 'OpenSansSemiBold';
+    font-family: var(--open-sans-semi-bold);
   }
 }

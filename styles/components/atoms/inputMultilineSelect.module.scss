@@ -47,7 +47,7 @@
   border: none;
   background: #{$primary-white};
 
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -63,7 +63,7 @@
 }
 
 .typedText {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -72,7 +72,7 @@
 }
 
 .placeholder {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -80,7 +80,7 @@
 }
 
 .selectedText {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
@@ -88,7 +88,7 @@
 }
 
 .selectedLabel {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -152,7 +152,7 @@
 }
 
 .dropdownItemAdditionalText {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -161,7 +161,7 @@
 }
 
 .dropdownItemText {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -174,7 +174,7 @@
 }
 
 .dropdownNoOptionText {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;

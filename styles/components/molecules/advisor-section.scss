@@ -33,7 +33,7 @@
 
 .title-as {
   float: left;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 28px;
@@ -100,7 +100,7 @@
   color: #52627a;
   margin-left: 8px;
   text-align: left;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-size: 16px;
   line-height: 22.4px;
