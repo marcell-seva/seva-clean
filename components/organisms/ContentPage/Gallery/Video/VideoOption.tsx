@@ -90,7 +90,7 @@ const VideoImage = styled(LazyLoadImage)`
 `
 
 const TitleVideo = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -99,7 +99,7 @@ const TitleVideo = styled.span`
 `
 
 const ChannelVideo = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 10px;

@@ -362,21 +362,21 @@ const HeaderWrapper = styled.div`
 `
 const HeaderText = styled.span`
   letter-spacing: 0px;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-weight: 700;
   font-size: 14px;
   line-height: 20px;
   color: #252525;
 
   @media (min-width: 1025px) {
-    font-family: 'KanyonBold';
+    font-family: var(--kanyon-bold);
     font-style: normal;
     font-size: 20px;
     line-height: 28px;
   }
 `
 const HeaderTextSmall = styled.a`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 10px;
@@ -386,7 +386,7 @@ const HeaderTextSmall = styled.a`
   color: #246ed4;
 
   @media (min-width: 1025px) {
-    font-family: 'KanyonBold';
+    font-family: var(--kanyon-bold);
     font-size: 14px;
     line-height: 16px;
     display: flex;
@@ -485,7 +485,7 @@ const StyledContainerCarNotAvailable = styled.div`
   }
 `
 const StyledTextCarNotAvailableSubtitle = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -500,7 +500,7 @@ const StyledTextCarNotAvailableSubtitle = styled.span`
 `
 
 const StyledTextCarNotAvailableTitle = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 24px;

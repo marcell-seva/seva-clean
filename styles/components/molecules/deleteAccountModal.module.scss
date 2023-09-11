@@ -2,7 +2,7 @@
 @import '../../abstract/mixins';
 
 .title {
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -14,7 +14,7 @@
 .subtitle {
   display: inline-block;
   margin-top: 14.5px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;

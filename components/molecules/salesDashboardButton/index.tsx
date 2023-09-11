@@ -66,7 +66,7 @@ const StyledImage = styled.img`
 `
 
 const Title = styled.p<{ isEvent: boolean }>`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: ${({ isEvent }) => (isEvent ? '14px' : '16px')};

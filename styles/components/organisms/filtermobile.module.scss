@@ -28,7 +28,7 @@
   justify-content: space-between;
   p {
     font-size: 20px;
-    font-family: 'Kanyon';
+    font-family: var(--kanyon);
     font-style: normal;
     font-weight: 400;
     color: #13131b;
@@ -67,7 +67,7 @@
 
 .textCollapse {
   height: 20px;
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -97,7 +97,7 @@
 
 .labelForm {
   height: 20px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;

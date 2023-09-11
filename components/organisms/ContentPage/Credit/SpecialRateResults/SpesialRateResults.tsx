@@ -1497,7 +1497,7 @@ const TextSmall = styled.span`
   line-height: 20px;
   letter-spacing: 0px;
   font-weight: 600;
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
 `
 const LoanRankList = styled.div`
   background: #ffffff;
@@ -1781,7 +1781,7 @@ const CircleButton6 = styled.div<{ isActive: boolean }>`
   height: 24px;
 `
 const StyeldTextSmallRegular = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -1791,24 +1791,24 @@ const StyeldTextSmallRegular = styled.span`
   }
 `
 const StyeldTextSmallRegularHeader = styled.span`
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
 
   @media (max-width: 1024px) {
-    font-family: 'Kanyon';
+    font-family: var(--kanyon);
     font-size: 12px;
   }
 `
 const StyeldTextSmallRegularHeaderInstallment = styled.span`
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
 
   @media (max-width: 1024px) {
-    font-family: 'Kanyon';
+    font-family: var(--kanyon);
     font-size: 12px;
   }
 `
@@ -1820,7 +1820,7 @@ const StyledHeaderCalculatorSectionMedium = styled.h3`
   color: #031838;
 
   line-height: 36px;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-weight: 700;
   color: ${colors.title};
   font-size: 20px;
@@ -1876,7 +1876,7 @@ const StyledTextIsActive = styled(StyeldTextSmallRegular)<{
 const StyledTextIsActiveBlueSmall = styled(StyeldTextSmallRegular)<{
   isRowSelected: boolean
 }>`
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-weight: 500;
   font-size: 12px;
   width: 92px;
@@ -1972,7 +1972,7 @@ const TextSmallLoanRank = styled(TextSmall)<{
       ? `#EC0A23`
       : ''};
 
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-weight: 700;
   font-size: ${({ onCarVariantPage }) => (onCarVariantPage ? `16px` : `14px`)};
   line-height: 16px;
@@ -1985,7 +1985,7 @@ const StyledButtonNewRegularRateText = styled.span<{
   onCarVariant: boolean
 }>`
   font-style: normal;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-weight: 700;
   font-size: ${({ onCarVariant }) => (onCarVariant ? `16px` : `24px`)};
   line-height: 16px;
@@ -2004,7 +2004,7 @@ const StyledButtonNewRegularRateText = styled.span<{
 const StyledButtonNewRegularRateButton = styled.button<{
   onCarVariant: boolean
 }>`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   width: ${({ onCarVariant }) => (onCarVariant ? `100%` : `524px`)};
   margin: auto;
   height: ${({ onCarVariant }) => (onCarVariant ? `48px` : `72px`)};
@@ -2022,7 +2022,7 @@ const StyledButtonNewRegularRateButton = styled.button<{
 `
 
 const DisclaimerText = styled.p`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -2099,7 +2099,7 @@ const TooltipBox = styled.div`
 `
 const StyledTextHoverGreen1 = styled.span`
   font-style: normal;
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-style: normal;
   color: white;
   font-weight: 700;
@@ -2111,7 +2111,7 @@ const StyledTextHoverWrapper = styled.div`
   margin-top: 10px;
 `
 const StyledTextHoverGreen2 = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   color: white;
   font-weight: 400;
@@ -2120,7 +2120,7 @@ const StyledTextHoverGreen2 = styled.span`
   letter-spacing: 0px;
 `
 const StyledTextHoverRed = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   color: white;
   font-weight: 400;
@@ -2177,7 +2177,7 @@ const StyledWrapperTextInsurance = styled.div`
   }
 `
 const StyledTextInsurance = styled.h2`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   color: ${colors.label};
   font-weight: 400;
   font-size: 20px;

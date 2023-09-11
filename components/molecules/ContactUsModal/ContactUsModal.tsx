@@ -418,7 +418,7 @@ const StyledContent = styled.div`
 `
 
 const StyledTitle = styled.h2`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
@@ -433,7 +433,7 @@ const StyledTitle = styled.h2`
 `
 
 const StyledDesc = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -476,7 +476,7 @@ const StyledCheckbox = styled.div`
 `
 
 const StyledCheckboxText = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;

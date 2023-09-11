@@ -7,12 +7,12 @@
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box; /* Firefox, other Gecko */
   box-sizing: border-box; /* Opera/IE 8+ */
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
 }
 
 body {
   color: #{$primary-black};
-  font-family: var(--openSans-regular);
+  font-family: var(--open-sans);
   font-size: 16px;
 }
 

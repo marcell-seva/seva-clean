@@ -26,12 +26,12 @@ $card-height: 445px;
 }
 
 .brandModelText {
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-weight: 500;
 }
 
 .variantName {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -82,14 +82,14 @@ $card-height: 445px;
 }
 
 .smallSemibold {
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-size: 12px;
   line-height: 18px;
   color: #{$shades-grey-75};
 }
 
 .smallRegular {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 12px;
   line-height: 18px;
   color: #{$shades-grey-75};
@@ -103,14 +103,14 @@ $card-height: 445px;
 }
 
 .carPriceNew {
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-size: 16px;
   line-height: 24px;
   color: #{$primary-black};
 }
 
 .carPriceOld {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -135,7 +135,7 @@ $card-height: 445px;
 }
 
 .bodyPriceText {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -144,7 +144,7 @@ $card-height: 445px;
 }
 
 .bodyPriceTextCrossed {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -158,7 +158,7 @@ $card-height: 445px;
 }
 
 .linkLihatDetail {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 14px;
   line-height: 20px;
   color: #{$secondary-blue};
@@ -208,7 +208,7 @@ $card-height: 445px;
 }
 
 .tooltipDesc {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 11px;
@@ -217,14 +217,14 @@ $card-height: 445px;
 }
 
 .tooltipDescBold {
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-weight: 700;
 }
 
 .tooltipCloseButton {
   border: none;
   background: none;
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 11px;

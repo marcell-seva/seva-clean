@@ -62,6 +62,29 @@ export enum PreviousButton {
 }
 
 export const defineRouteName = (pathname: string) => {
+  if (pathname.includes('teman-seva')) {
+    if (pathname.includes('aktivitas-akun')) {
+      return RouteName.TSAcitivity
+    }
+    if (pathname.includes('dashboard')) {
+      if (pathname.includes('skema-1')) {
+        return RouteName.TSSkema1
+      }
+      if (pathname.includes('skema-2')) {
+        return RouteName.TSSkema2
+      }
+      if (pathname.includes('skema-3')) {
+        return RouteName.TSSkema3
+      }
+      if (pathname.includes('skema-4')) {
+        return RouteName.TSSkema4
+      }
+      return RouteName.TSDashboard
+    }
+    if (pathname.includes('referral-code')) {
+      return RouteName.TSReferralCode
+    }
+  }
   if (pathname.includes('mobil-baru')) {
     if (pathname.toLowerCase().includes('/seva')) {
       return RouteName.PLP
@@ -126,30 +149,6 @@ export const defineRouteName = (pathname: string) => {
     return RouteName.SalesDashboard
   }
 
-  if (pathname.includes('teman-seva')) {
-    if (pathname.includes('dashboard')) {
-      if (pathname.includes('skema-1')) {
-        return RouteName.TSSkema1
-      }
-      if (pathname.includes('skema-2')) {
-        return RouteName.TSSkema2
-      }
-      if (pathname.includes('skema-3')) {
-        return RouteName.TSSkema3
-      }
-      if (pathname.includes('skema-4')) {
-        return RouteName.TSSkema4
-      }
-      return RouteName.TSDashboard
-    }
-    if (pathname.includes('aktivitas-akun')) {
-      return RouteName.TSAcitivity
-    }
-    if (pathname.includes('referral-code')) {
-      return RouteName.TSReferralCode
-    }
-  }
-
   return RouteName.Homepage
 }
 
@@ -158,6 +157,7 @@ export const navigateToPLP = (
   option?: any,
   navigate: boolean = true,
   replace = false,
+  customUrl?: string,
 ) => {
   let refer = defineRouteName(Router.pathname)
 
@@ -173,7 +173,10 @@ export const navigateToPLP = (
       pathname: urls.internalUrls.carResultsUrl,
       ...option,
     })
-  return Router.push({ pathname: urls.internalUrls.carResultsUrl, ...option })
+  return Router.push({
+    pathname: customUrl || urls.internalUrls.carResultsUrl,
+    ...option,
+  })
 }
 
 export const navigateToKK = (option?: any) => {

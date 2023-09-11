@@ -90,7 +90,7 @@ const StyledInputArea = styled.div<{
 `
 
 const StyledText = css`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 10px;

@@ -360,7 +360,7 @@ const StyledButtonContactUs = styled.div`
 `
 
 const StyledButtonTextContactUs = styled.div`
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 12px;

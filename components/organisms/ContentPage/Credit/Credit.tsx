@@ -632,7 +632,7 @@ const ResulstCalculationSection = styled.div`
 
 const TextInfoField = styled.h2`
   letter-spacing: 0px;
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -698,7 +698,7 @@ const PromoInput = styled.div`
   width: 100%;
 `
 export const StyledErrorText = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -716,7 +716,7 @@ export const StyledInputPromo = styled(Input)<{
   border-color: ${({ isError }) => (isError ? colors.error : colors.line)};
   border-radius: 8px;
   input {
-    font-family: 'OpenSans';
+    font-family: var(--open-sans);
     color: ${colors.primaryDarkBlue};
     font-size: 16px;
   }
@@ -730,7 +730,7 @@ export const StyledInputPromo = styled(Input)<{
   }
   width: 100%;
   font-size: 16px;
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-weight: 400;
   height: 48px;
   @media (max-width: 1920px) {
@@ -770,7 +770,7 @@ const ContainerDisclaimerLogo = styled.div`
   margin-left: 16px;
 `
 const TextDisclaimer = styled.p`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -795,7 +795,7 @@ const ImageWrapper = styled.div`
   margin-top: 45%;
 `
 const StyledTextEmptyCalculation = styled.p`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;
@@ -805,7 +805,7 @@ const StyledTextEmptyCalculation = styled.p`
   margin-top: 56px;
 `
 const StyledTitleSection = styled.p`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
@@ -815,7 +815,7 @@ const StyledTitleSection = styled.p`
 `
 
 const DisclaimerTextInfo = styled.p`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;

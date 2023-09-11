@@ -361,7 +361,7 @@ export const NewSelect = <T extends FormControlValue>({
 const screenHeight = client ? document.documentElement.clientHeight : 0
 
 const SelectFont = css`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -426,7 +426,7 @@ const NoOptionText = styled.div`
   border-radius: 4px;
   padding: 5px 8px 6px 0;
 
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-size: 12px;
   line-height: 22px;

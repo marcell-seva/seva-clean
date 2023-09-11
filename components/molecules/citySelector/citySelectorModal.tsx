@@ -331,21 +331,21 @@ const StyledTitleMobile = styled(TextLegalRegular)`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
 `
 
 const StyledSubtitleMobile = styled(TextLegalRegular)`
   color: ${colors.label};
   font-size: 12px;
   line-height: 16px;
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
 `
 
 const StyledTitle = styled(H2MediumBold)`
   font-weight: 700;
   text-align: center;
   margin-top: 20px;
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
 
   // 0 margin cause logo is not shown start from 1366
   @media (max-width: 1365px) {
@@ -356,7 +356,7 @@ const StyledTitle = styled(H2MediumBold)`
 const StyledSubtitle = styled(TextMediumRegular)`
   margin-top: 12px;
   color: ${colors.label};
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
 `
 
 const InputWrapper = styled.div`
@@ -419,7 +419,7 @@ const StyledLink = styled.a`
 const StyledItem = styled.div`
   ${TextMediumRegularStyle};
   margin-left: 1vw;
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   @media (max-width: 1024px) {
     margin-left: 0;
   }

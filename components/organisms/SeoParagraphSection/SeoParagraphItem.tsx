@@ -38,7 +38,7 @@ const Wrapper = styled.div`
 `
 
 const StyledTitle = styled.h2`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-size: 16px;
   line-height: 24px;
@@ -72,7 +72,7 @@ export const OpenedStyle = css`
 const ContentText = styled.div<{
   isOpen: boolean
 }>`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 14px;
   line-height: 20px;
   ${({ isOpen }) => (isOpen ? OpenedStyle : ClosedStyle)};

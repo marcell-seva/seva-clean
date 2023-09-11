@@ -409,7 +409,7 @@ const IconWrapperName = styled.div`
 const IconName = styled(TextLegalMedium)`
   font-weight: 600;
   font-size: 14px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   color: white;
 `
 const WrapperInfoProfile = styled.div`
@@ -437,7 +437,7 @@ const WrapperInfoProfile = styled.div`
 
 const LogoutText = styled(TextLegalMedium)`
   margin-left: 20px;
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
