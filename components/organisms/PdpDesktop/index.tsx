@@ -30,7 +30,7 @@ import {
   getMinimumMonthlyInstallment,
 } from 'utils/carModelUtils/carModelUtils'
 import { savePreviouslyViewed } from 'utils/carUtils'
-import { hundred, million, ten } from 'utils/helpers/const'
+import { defaultSeoImage, hundred, million, ten } from 'utils/helpers/const'
 import { variantListUrl } from 'utils/helpers/routes'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { saveLocalStorage } from 'utils/handler/localStorage'
@@ -42,8 +42,10 @@ import { HeaderAndContent } from '../HeaderAndContent/HeaderAndContent'
 import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
+import Seo from 'components/atoms/seo'
+import moment from 'moment'
 
-export default function index() {
+export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const router = useRouter()
   const {
     carRecommendationsResDefaultCity,
@@ -229,9 +231,45 @@ export default function index() {
       showContactUsModal()
     }
   }, [])
+  const meta = useMemo(() => {
+    const title =
+      metaTagDataRes.data && metaTagDataRes.data.length > 0
+        ? metaTagDataRes.data[0].attributes.meta_title
+        : 'SEVA'
+    const description =
+      metaTagDataRes.data && metaTagDataRes.data.length > 0
+        ? metaTagDataRes.data[0].attributes.meta_description
+        : ''
+    return { title, description }
+  }, [metaTagDataRes])
+
+  const getMetaTitle = () => {
+    switch (tab) {
+      case 'kredit':
+        return `Kredit ${meta.title.split('20')[0]} ${moment().format(
+          'YYYY',
+        )}. Simulasi Cicilan OTR ${
+          getCity().cityName
+        } dengan Loan Calculator | SEVA`
+      case 'spesifikasi':
+        return `Spesifikasi ${meta.title.split('20')[0]} ${moment().format(
+          'YYYY',
+        )} | SEVA`
+      case 'harga':
+        return `Harga ${meta.title.split('20')[0]} ${moment().format('YYYY')} ${
+          getCity().cityName
+        } Terbaru | SEVA`
+    }
+    return meta.title
+  }
 
   return (
     <>
+      <Seo
+        title={getMetaTitle()}
+        description={meta.description}
+        image={modelDetailData?.image || defaultSeoImage}
+      />
       <div className={styles.pageHeaderWrapper}>
         <PageHeaderSeva>{!isMobile ? <HeaderVariant /> : <></>}</PageHeaderSeva>
       </div>
