@@ -127,7 +127,7 @@ const StyledPaginationItem = styled.button<StylePaginationItemProps>`
   border-radius: 16px;
   margin: 0 10px;
   display: flex;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 16px;
   align-items: center;
   justify-content: center;

@@ -90,7 +90,7 @@ const Spacer2 = styled.div`
 `
 
 const StyledCodeCountry = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-size: 16px;
   line-height: 24px;

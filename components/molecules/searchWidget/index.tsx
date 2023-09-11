@@ -318,7 +318,7 @@ const SearchWdigetBox = styled.div`
 `
 
 const SearchWidgetTitle = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 14px;
   line-height: 14px;
   color: ${colors.body2};
@@ -326,7 +326,7 @@ const SearchWidgetTitle = styled.span`
 `
 
 export const Title = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -336,7 +336,7 @@ export const Title = styled.span`
   text-align: left;
 
   label {
-    font-family: 'OpenSans';
+    font-family: var(--open-sans);
     font-style: normal;
     font-weight: 400;
     font-size: 10px;
@@ -346,7 +346,7 @@ export const Title = styled.span`
 
 export const MandatoryText = styled.span`
   margin-top: 4px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 8px;
@@ -396,7 +396,7 @@ const StyledButton = styled.span<{
 `
 
 const ButtonText = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 14px;

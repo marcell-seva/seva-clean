@@ -241,7 +241,7 @@ const CarPriceWrapper = styled.div<{ open?: boolean }>`
 `
 
 const CarVariantName = styled.span`
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-size: 16px;
   line-height: 20px;
   color: ${colors.body2};
@@ -275,7 +275,7 @@ const CarModelVariantText = styled.span<{ bold?: boolean }>`
 `
 
 const CarPrice = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
 
   @media (max-width: 1024px) {
     width: 110px;
@@ -302,7 +302,7 @@ const CarInfoVariant = styled.div`
 `
 
 const InfoVariantText = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -320,7 +320,7 @@ const HitungCicilanButton = styled.div`
 `
 
 const HitungCicilanText = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 16px;
   line-height: 24px;
   color: ${colors.white};
@@ -339,6 +339,6 @@ const HitungCicilanMobileButton = styled.div`
   align-items: center;
 
   color: ${colors.white};
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 12px;
 `

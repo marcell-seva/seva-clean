@@ -282,7 +282,7 @@ const TabContentWrapper = styled.div<{ sticky: boolean }>`
 `
 
 const TabText = styled.h2`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 12px;
   line-height: 16px;
   color: ${colors.white};

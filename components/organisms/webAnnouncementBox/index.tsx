@@ -427,7 +427,7 @@ const StyledText = styled.div`
   p {
     margin: 0;
     color: white;
-    font-family: 'OpenSansSemiBold';
+    font-family: var(--open-sans-semi-bold);
     font-weight: 600;
     font-size: 13px;
     line-height: 17.7px;
@@ -441,7 +441,7 @@ const StyledText = styled.div`
     }
     strong {
       font-weight: 800;
-      font-family: 'OpenSansExtraBold';
+      font-family: var(--open-sans-extra-bold);
     }
   }
   @media (max-width: 1024px) {
@@ -473,7 +473,7 @@ const WrapperClose = styled.div`
 `
 const StyledCTA = styled.div<{ isUrl?: boolean }>`
   color: white;
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-weight: 700;
   font-size: 14px;
   line-height: 20px;

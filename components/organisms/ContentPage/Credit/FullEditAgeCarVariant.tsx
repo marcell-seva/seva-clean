@@ -216,7 +216,7 @@ const StyledWrapper = styled.div<{
 `
 
 const FullEditFormLabel = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -243,7 +243,7 @@ const StyledFormLabel = styled(FullEditFormLabel)<{
       : !isNewRegularPage && isTabCreditDesktop
       ? '16px'
       : '14px'};
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   line-height: ${({ isNewRegularPage }) =>
     isNewRegularPage ? '32px' : '20px'};
   @media (max-width: 1279px) {
@@ -262,7 +262,7 @@ const StyledFormLabel = styled(FullEditFormLabel)<{
   color: #52627a;
   ${({ isNewRegularPage }) =>
     isNewRegularPage &&
-    `font-family: 'OpenSansSemiBold';
+    `font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   line-height: 20px;`};
@@ -276,7 +276,7 @@ const ErrorWrapper = styled.div`
 `
 
 const ErrorMessage = styled.p`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 10px;
@@ -299,7 +299,7 @@ const ErrorWrapperEmptyCreditV2 = styled.div`
 `
 
 const ErrorMessageEmptySemiBold = styled.p`
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 10px;
