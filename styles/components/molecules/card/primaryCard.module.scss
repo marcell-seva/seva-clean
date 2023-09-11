@@ -22,7 +22,7 @@
   padding: 16px;
 
   .date {
-    font-family: 'OpenSans';
+    font-family: var(--open-sans);
     font-size: 11px;
     line-height: 16px;
     color: #{$shades-grey-75};
@@ -30,7 +30,7 @@
   }
 
   .title {
-    font-family: 'OpenSansSemiBold';
+    font-family: var(--open-sans-semi-bold);
     font-weight: 600;
     font-size: 14px;
     line-height: 20px;

@@ -7,7 +7,7 @@
 
 .textTitle {
   font-size: 1rem;
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   line-height: 1.5rem;
@@ -18,7 +18,7 @@
 
 .textSubtitle {
   font-size: 11px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   color: #{$shades-grey-50};
   font-style: normal;
   font-weight: 400;
@@ -58,7 +58,7 @@
 .toastMessage {
   margin-left: 6px;
   color: #{$primary-white};
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 12px;
   font-style: normal;
   font-weight: 400;

@@ -64,14 +64,14 @@
   gap: 4px;
   position: absolute;
   height: 18px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
   color: $primary-black;
   p {
-    font-family: 'OpenSansSemiBold';
+    font-family: var(--open-sans-semi-bold);
     font-weight: 600;
     font-size: 12px;
     line-height: 18px;
@@ -83,7 +83,7 @@
   width: 81px;
   height: 18px;
   right: 16px;
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -102,7 +102,7 @@
 }
 
 .informDaihatsuText {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -142,7 +142,7 @@
 
 .filterResultText {
   width: 90%;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -155,7 +155,7 @@
 
 .filterResultPrice {
   width: 90%;
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -197,7 +197,7 @@
   flex: none;
   order: 0;
   flex-grow: 0;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -253,7 +253,7 @@
 
 .text {
   height: 18px;
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 12px;

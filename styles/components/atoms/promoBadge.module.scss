@@ -21,13 +21,13 @@
   background: #e1af3d;
   color: #ffd749;
   font-size: 3px;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
 }
 .badgeText {
   font-size: 9px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   line-height: 16px;
