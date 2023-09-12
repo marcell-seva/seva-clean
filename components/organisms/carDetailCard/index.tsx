@@ -139,7 +139,7 @@ export const CarDetailCard = ({
         .replace(':brand', brandSlug)
         .replace(':model', modelSlug)
         .replace(':variant', '') + `?loanRankCVL=${recommendation.loanRank}`
-    trackCarClick(order + 1, false)
+    trackCarClick(order + 1, false, destinationUrl)
     router.push(destinationUrl)
   }
 
@@ -180,7 +180,7 @@ export const CarDetailCard = ({
       JSON.stringify(dataCarTemp),
     )
   }
-  const trackCarClick = (index: number, detailClick = true) => {
+  const trackCarClick = (index: number, detailClick = true, url?: string) => {
     const peluangKredit = getPeluangKredit(recommendation)
     trackPLPCarClick({
       Car_Brand: recommendation.brand,
@@ -196,6 +196,7 @@ export const CarDetailCard = ({
       CAR_BRAND: recommendation.brand,
       CAR_MODEL: recommendation.model,
       CAR_ORDER: index,
+      PAGE_DIRECTION_URL: window.location.origin + (url || detailCarRoute),
       PELUANG_KREDIT_BADGE:
         peluangKredit === 'Null' ? peluangKredit : peluangKredit + ' disetujui',
     }
