@@ -161,19 +161,19 @@ export default function HeaderVariant({
     })
 
     // use window location to reload page
-    if (item.value.length === 0) {
+    if (item.value.length > 0) {
+      window.location.href = urlDestination
+    } else {
       const funnelQueryTemp = {
         brand: [item.label],
       }
       navigateToPLP(
-        PreviousButton.SearchBar,
+        PreviousButton.SmartSearch,
         { search: convertObjectQuery(funnelQueryTemp) },
         true,
         false,
         urlDestination,
       )
-    } else {
-      window.location.href = urlDestination
     }
     setIsNotFoundClicked(false)
   }

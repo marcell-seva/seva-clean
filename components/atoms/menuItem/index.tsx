@@ -18,7 +18,13 @@ const MenuItem: React.FC<MenuItemProps> = ({ item }): JSX.Element => {
 
   const handleClickMenu = (menuUrl: string, menuName: string) => {
     if (menuName === 'Mobil Baru') {
-      return navigateToPLP(PreviousButton.HamburgerMenu)
+      return navigateToPLP(
+        PreviousButton.HamburgerMenu,
+        {},
+        true,
+        false,
+        menuUrl,
+      )
     }
     sendAmplitudeData(AmplitudeEventName.WEB_BURGER_MENU_CLICK, {
       Page_Origination_URL: window.location.href,

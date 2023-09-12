@@ -159,7 +159,8 @@ export const navigateToPLP = (
   replace = false,
   customUrl?: string,
 ) => {
-  let refer = defineRouteName(Router.pathname)
+  const origin = window.location.origin
+  const refer = defineRouteName(window.location.href.replace(origin, ''))
 
   const dataPrevPage = { refer, source }
   saveSessionStorage(
