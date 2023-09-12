@@ -587,7 +587,7 @@ export const SpecialRateResults = ({
           <a href={urls.promoPageGiias + '#terms-and-conditions'}>
             <span
               style={{
-                fontFamily: 'OpenSansBold',
+                fontFamily: 'var(--open-sans-bold)',
                 fontWeight: '700',
                 textDecoration: 'underline',
               }}
@@ -1887,13 +1887,15 @@ const StyledTextIsActiveBlueSmall = styled(StyeldTextSmallRegular)<{
   justify-content: center;
   color: ${({ isRowSelected }) => (isRowSelected ? `#26C649` : `}`)};
   font-weight: ${({ isRowSelected }) => (isRowSelected ? `600` : `}`)};
-  font-family: ${({ isRowSelected }) => (isRowSelected ? 'KanyonBold' : `}`)};
+  font-family: ${({ isRowSelected }) =>
+    isRowSelected ? 'var(--kanyon-bold)' : `}`};
   background: ${({ isRowSelected }) => (isRowSelected ? '#DDF5EF' : `#F2F5F9`)};
   border-radius: 6px;
 
   @media (max-width: 1024px) {
     font-weight: ${({ isRowSelected }) => (isRowSelected ? `400` : `}`)};
-    font-family: ${({ isRowSelected }) => (isRowSelected ? 'KanyonBold' : `}`)};
+    font-family: ${({ isRowSelected }) =>
+      isRowSelected ? 'var(--kanyon-bold)' : `}`};
     font-size: 8px;
     width: auto;
     margin-left: 0px;
@@ -2206,7 +2208,7 @@ const StyledTextInterestText = styled.span<{
   onCreditTab: boolean
 }>`
   font-family: ${({ isRowSelected }) =>
-    isRowSelected ? 'OpenSansBold' : 'OpenSansSemiBold'};
+    isRowSelected ? 'var(--open-sans-bold)' : 'var(--open-sans-semi-bold)'};
   font-style: normal;
   font-weight: ${({ isRowSelected }) => (isRowSelected ? `700` : `600`)};
   font-size: ${({ onCreditTab }) => (onCreditTab ? '12px' : '14px')};
