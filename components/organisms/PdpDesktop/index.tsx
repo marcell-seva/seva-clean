@@ -243,32 +243,40 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
     return { title, description }
   }, [metaTagDataRes])
 
+  const carMetaTitleName = meta.title.split('20')[0]
+  const currentYear = moment().format('YYYY')
+  const currentMonth = moment().format('MMMM')
+  const carOTR = `Rp ${
+    (modelDetailData?.variants[0].priceValue as number) / 1000000
+  } Juta`
   const getMetaTitle = () => {
     switch (tab) {
       case 'kredit':
-        return `Kredit ${meta.title.split('20')[0]} ${moment().format(
-          'YYYY',
-        )}. Simulasi Cicilan OTR ${
+        return `Kredit ${carMetaTitleName} ${currentYear}. Simulasi Cicilan OTR ${
           getCity().cityName
         } dengan Loan Calculator | SEVA`
       case 'spesifikasi':
-        return `Spesifikasi ${meta.title.split('20')[0]} ${moment().format(
-          'YYYY',
-        )} | SEVA`
+        return `Spesifikasi ${carMetaTitleName} ${currentYear} | SEVA`
       case 'harga':
-        return `Harga ${meta.title.split('20')[0]} ${moment().format('YYYY')} ${
+        return `Harga ${carMetaTitleName} ${currentYear} ${
           getCity().cityName
         } Terbaru | SEVA`
     }
-    return meta.title
+    return (
+      `Ringkasan Produk ` +
+      carMetaTitleName +
+      ` ${currentYear} - Harga OTR Promo Bulan ${currentMonth} | SEVA`
+    )
   }
+
+  const getMetaDescription = `Beli mobil ${carMetaTitleName} 2023 terbaru secara kredit dengan Instant Approval. Harga mulai ${carOTR}, cari tau spesifikasi, harga, kredit di SEVA`
 
   return (
     <>
       <Seo
         title={getMetaTitle()}
-        description={meta.description}
-        image={modelDetailData?.image || defaultSeoImage}
+        description={getMetaDescription}
+        image={modelDetailData?.images[0] || defaultSeoImage}
       />
       <div className={styles.pageHeaderWrapper}>
         <PageHeaderSeva>{!isMobile ? <HeaderVariant /> : <></>}</PageHeaderSeva>
