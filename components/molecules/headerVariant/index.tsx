@@ -63,6 +63,8 @@ export default function HeaderVariant({
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const [isNotFoundClicked, setIsNotFoundClicked] = useState(false)
 
+  const isInLoanCalcKK = router.query.from === 'homepageKualifikasi'
+
   const handleDebounceFn = (inputValue: string) => {
     getCarsSearchBar(inputValue)
       .then((response) => {
@@ -126,7 +128,10 @@ export default function HeaderVariant({
     }
     let urlDestination = ''
     if (item.value.length > 0) {
-      saveDataForCountlyTrackerPageViewPDP(PreviousButton.SearchIcon)
+      saveDataForCountlyTrackerPageViewPDP(
+        PreviousButton.SearchIcon,
+        isInLoanCalcKK ? 'Loan Calculator - Kualifikasi Kredit' : undefined,
+      )
       urlDestination = variantListUrl
         .replace('/:brand/:model', item.value)
         .replace(':tab?', '')
@@ -225,7 +230,10 @@ export default function HeaderVariant({
   }
 
   const onClickRecommedationList = () => {
-    saveDataForCountlyTrackerPageViewPDP(PreviousButton.SearchIcon)
+    saveDataForCountlyTrackerPageViewPDP(
+      PreviousButton.SearchIcon,
+      isInLoanCalcKK ? 'Loan Calculator - Kualifikasi Kredit' : undefined,
+    )
   }
 
   const carData = useMemo(() => {
@@ -302,7 +310,10 @@ export default function HeaderVariant({
         search: convertObjectQuery(funnelQueryTemp),
       })
     } else {
-      saveDataForCountlyTrackerPageViewPDP(PreviousButton.SearchIcon)
+      saveDataForCountlyTrackerPageViewPDP(
+        PreviousButton.SearchIcon,
+        isInLoanCalcKK ? 'Loan Calculator - Kualifikasi Kredit' : undefined,
+      )
       // use window location to reload page
       window.location.href = carResultsUrl + data.value
     }

@@ -223,6 +223,10 @@ export const CarDetailCard = ({
     }
   }
 
+  const onClickSeeDetail = () => {
+    saveDataForCountlyTrackerPageViewPDP(PreviousButton.ProductCard, 'PLP')
+  }
+
   return (
     <div className={styles.container}>
       <CardShadow className={styles.cardWrapper}>
@@ -312,13 +316,14 @@ export const CarDetailCard = ({
               </span>
             </div>
           </div>
-          <Link
-            href={detailCarRoute}
+          <span
+            role="link"
+            onClick={onClickSeeDetail}
             className={styles.linkLihatDetail}
             data-testid={elementId.PLP.Button.LihatDetail}
           >
             Lihat Detail
-          </Link>
+          </span>
         </div>
         <Button
           version={ButtonVersion.Secondary}

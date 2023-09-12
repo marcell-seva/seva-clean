@@ -195,11 +195,13 @@ export const navigateToKK = (option?: any) => {
 
 export const saveDataForCountlyTrackerPageViewPDP = (
   previousButton: PreviousButton,
+  pageReferrer?: string,
 ) => {
-  saveSessionStorage(
-    SessionStorageKey.PageReferrerPDP,
-    defineRouteName(window.location.pathname),
-  )
+  const referrer = pageReferrer
+    ? pageReferrer
+    : defineRouteName(window.location.pathname)
+
+  saveSessionStorage(SessionStorageKey.PageReferrerPDP, referrer)
   saveSessionStorage(SessionStorageKey.PreviousSourceButtonPDP, previousButton)
 }
 
