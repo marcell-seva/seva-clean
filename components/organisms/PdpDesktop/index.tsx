@@ -30,7 +30,7 @@ import {
   getMinimumMonthlyInstallment,
 } from 'utils/carModelUtils/carModelUtils'
 import { savePreviouslyViewed } from 'utils/carUtils'
-import { hundred, million, ten } from 'utils/helpers/const'
+import { defaultSeoImage, hundred, million, ten } from 'utils/helpers/const'
 import { variantListUrl } from 'utils/helpers/routes'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { saveLocalStorage } from 'utils/handler/localStorage'
@@ -42,8 +42,10 @@ import { HeaderAndContent } from '../HeaderAndContent/HeaderAndContent'
 import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
+import Seo from 'components/atoms/seo'
+import moment from 'moment'
 
-export default function index() {
+export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const router = useRouter()
   const {
     carRecommendationsResDefaultCity,
@@ -229,9 +231,63 @@ export default function index() {
       showContactUsModal()
     }
   }, [])
+  const meta = useMemo(() => {
+    const title =
+      metaTagDataRes.data && metaTagDataRes.data.length > 0
+        ? metaTagDataRes.data[0].attributes.meta_title
+        : 'SEVA'
+    const description =
+      metaTagDataRes.data && metaTagDataRes.data.length > 0
+        ? metaTagDataRes.data[0].attributes.meta_description
+        : ''
+    return { title, description }
+  }, [metaTagDataRes])
+
+  const carMetaTitleName = meta.title.split('20')[0]
+  const currentYear = moment().format('YYYY')
+  const currentMonth = moment().format('MMMM')
+  const carOTR = `Rp ${
+    (modelDetailData?.variants[0].priceValue as number) / 1000000
+  } Juta`
+  const getMetaTitle = () => {
+    switch (tab) {
+      case 'kredit':
+        return `Kredit ${carMetaTitleName} ${currentYear}. Simulasi Cicilan OTR ${
+          getCity().cityName
+        } dengan Loan Calculator | SEVA`
+      case 'spesifikasi':
+        return `Spesifikasi ${carMetaTitleName} ${currentYear} | SEVA`
+      case 'harga':
+        return `Harga ${carMetaTitleName} ${currentYear} ${
+          getCity().cityName
+        } Terbaru | SEVA`
+    }
+    return (
+      `Ringkasan Produk ` +
+      carMetaTitleName +
+      ` ${currentYear} - Harga OTR Promo Bulan ${currentMonth} | SEVA`
+    )
+  }
+
+  const getMetaDescription = () => {
+    switch (tab) {
+      case 'kredit':
+        return `Hitung simulasi cicilan ${carMetaTitleName} ${currentYear}. Beli mobil Toyota secara kredit dengan Instant Approval* di SEVA.`
+      case 'spesifikasi':
+        return `Dapatkan informasi lengkap mengenai spesifikasi ${carMetaTitleName} ${currentYear} terbaru di SEVA`
+      case 'harga':
+        return `Daftar harga ${carMetaTitleName} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carMetaTitleName} ${currentYear} terbaru di SEVA.`
+    }
+    return `Beli mobil ${carMetaTitleName} 2023 terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, kredit di SEVA`
+  }
 
   return (
     <>
+      <Seo
+        title={getMetaTitle()}
+        description={getMetaDescription()}
+        image={modelDetailData?.images[0] || defaultSeoImage}
+      />
       <div className={styles.pageHeaderWrapper}>
         <PageHeaderSeva>{!isMobile ? <HeaderVariant /> : <></>}</PageHeaderSeva>
       </div>

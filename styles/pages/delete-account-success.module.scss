@@ -27,7 +27,7 @@
 
 .title {
   margin-top: 8px;
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -39,7 +39,7 @@
 .subtitle {
   display: inline-block;
   margin-top: 19px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -51,7 +51,7 @@
 .countdown {
   display: inline-block;
   margin-top: 61px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;

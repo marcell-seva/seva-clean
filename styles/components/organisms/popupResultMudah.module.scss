@@ -23,7 +23,7 @@
 }
 
 .titlePromo {
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-size: 14px;
   line-height: 20px;
   color: #{$primary-dark-blue};
@@ -43,7 +43,7 @@
 }
 
 .bodyTitle {
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-size: 12px;
   line-height: 18px;
   color: #{$primary-black};
@@ -51,14 +51,14 @@
 }
 
 .bodyPromo {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 12px;
   line-height: 18px;
   color: #{$primary-black};
 }
 
 .snk {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 12px;
   line-height: 18px;
   color: #{$secondary-blue};
@@ -96,7 +96,7 @@
 }
 
 .title {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;

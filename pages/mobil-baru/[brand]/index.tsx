@@ -21,6 +21,7 @@ import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import { api } from 'services/api'
 import Seo from 'components/atoms/seo'
+import moment from 'moment'
 
 const NewCarResultPage = ({
   meta,
@@ -43,13 +44,19 @@ const NewCarResultPage = ({
     }
   }, [])
 
+  const metaTitle =
+    `Harga OTR ` +
+    meta.title.split('20')[0] +
+    ` ${moment().format('YYYY')} - Promo Cicilan bulan ${moment().format(
+      'MMMM',
+    )} | SEVA`
+  const metaDesc = `Beli mobil Toyota ${moment().format(
+    'YYYY',
+  )} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
+
   return (
     <>
-      <Seo
-        title={meta.title}
-        description={meta.description}
-        image={defaultSeoImage}
-      />
+      <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
       <div className={styles.mobile}>
         <PLP minmaxPrice={meta.MinMaxPrice} />
       </div>

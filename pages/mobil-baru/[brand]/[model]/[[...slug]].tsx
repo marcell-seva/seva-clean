@@ -16,6 +16,7 @@ import { useUtils } from 'services/context/utilsContext'
 import styles from 'styles/pages/plp.module.scss'
 import { getToken } from 'utils/handler/auth'
 import { AxiosResponse } from 'axios'
+import moment from 'moment'
 
 interface PdpDataLocalContextType {
   /**
@@ -90,26 +91,8 @@ export default function index({
     } catch (error) {}
   }
 
-  const meta = useMemo(() => {
-    const title =
-      metaTagDataRes.data && metaTagDataRes.data.length > 0
-        ? metaTagDataRes.data[0].attributes.meta_title
-        : 'SEVA'
-    const description =
-      metaTagDataRes.data && metaTagDataRes.data.length > 0
-        ? metaTagDataRes.data[0].attributes.meta_description
-        : ''
-    return { title, description }
-  }, [metaTagDataRes])
-
   return (
     <>
-      <Seo
-        title={meta.title}
-        description={meta.description}
-        image={carModelDetailsRes.images[0] || defaultSeoImage}
-      />
-
       <PdpDataLocalContext.Provider
         value={{
           carRecommendationsResDefaultCity: carRecommendationsRes,
@@ -124,7 +107,7 @@ export default function index({
           <PdpMobile />
         </div>
         <div className={styles.desktop}>
-          <PdpDesktop />
+          <PdpDesktop metaTagDataRes={metaTagDataRes} />
         </div>
       </PdpDataLocalContext.Provider>
     </>

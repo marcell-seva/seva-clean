@@ -20,6 +20,7 @@ import { MobileWebFooterMenuType } from 'utils/types/props'
 import styles from 'styles/pages/plp.module.scss'
 import { CarProvider } from 'services/context'
 import { generateBlurRecommendations } from 'utils/generateBlur'
+import moment from 'moment'
 
 const NewCarResultPage = ({
   meta,
@@ -36,13 +37,16 @@ const NewCarResultPage = ({
     saveCities(dataCities)
   }, [])
 
+  const metaTitle =
+    meta.title.slice(0, 23) +
+    ` - Harga OTR dengan Promo Cicilan bulan ${moment().format('MMMM')} | SEVA`
+  const metaDesc = `Temukan beragam mobil ${moment().format(
+    'YYYY',
+  )} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
+
   return (
     <>
-      <Seo
-        title={meta.title}
-        description={meta.description}
-        image={defaultSeoImage}
-      />
+      <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
 
       <CarProvider
         car={null}

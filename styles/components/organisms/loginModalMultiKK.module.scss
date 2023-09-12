@@ -21,7 +21,7 @@
 }
 
 .textHeading {
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   color: #{$primary-black};
   font-size: 16px;
   font-weight: 400;
