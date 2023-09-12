@@ -26,7 +26,9 @@ export const LoanRankStatus = ({ loanRank, carName, onModelClick }: Props) => {
       return (
         <Wording>
           {!isMobile && `Peluang Kreditmu: `}
-          <span style={{ fontFamily: 'OpenSansBold', fontWeight: 700 }}>
+          <span
+            style={{ fontFamily: 'var(--open-sans-bold)', fontWeight: 700 }}
+          >
             MUDAH
           </span>
         </Wording>
@@ -35,7 +37,9 @@ export const LoanRankStatus = ({ loanRank, carName, onModelClick }: Props) => {
       return (
         <Wording>
           Peluang Kreditmu:&nbsp;
-          <span style={{ fontFamily: 'OpenSansBold', fontWeight: 700 }}>
+          <span
+            style={{ fontFamily: 'var(--open-sans-bold)', fontWeight: 700 }}
+          >
             SULIT
           </span>
         </Wording>
@@ -44,7 +48,9 @@ export const LoanRankStatus = ({ loanRank, carName, onModelClick }: Props) => {
       return (
         <Wording>
           Lihat&nbsp;
-          <span style={{ fontFamily: 'OpenSansBold', fontWeight: 700 }}>
+          <span
+            style={{ fontFamily: 'var(--open-sans-bold)', fontWeight: 700 }}
+          >
             Peluang Kreditmu
           </span>
         </Wording>

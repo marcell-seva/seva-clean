@@ -17,7 +17,7 @@ const TooltipContentMultiKK = ({ onClick }: Props) => {
           <p
             style={{
               fontSize: '11px',
-              fontFamily: 'OpenSans',
+              fontFamily: 'var(--open-sans)',
               color: 'white',
               lineHeight: '16px',
             }}
@@ -28,7 +28,7 @@ const TooltipContentMultiKK = ({ onClick }: Props) => {
                 fontWeight: '700',
                 color: 'white',
                 fontSize: '11px',
-                fontFamily: 'OpenSansBold',
+                fontFamily: 'var(--open-sans-bold)',
                 lineHeight: '16px',
               }}
             >
@@ -40,7 +40,7 @@ const TooltipContentMultiKK = ({ onClick }: Props) => {
             style={{
               fontSize: '11px',
               fontWeight: '700',
-              fontFamily: 'OpenSansBold',
+              fontFamily: 'var(--open-sans-bold)',
               color: 'white',
               marginTop: '12px',
               lineHeight: '16px',

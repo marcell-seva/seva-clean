@@ -250,7 +250,7 @@ const StyledSelect = styled.input<InputProps>`
   font-size: ${({ isNewRegularPage, isTabCreditDesktop }) =>
     isNewRegularPage ? '24px' : isTabCreditDesktop ? '16px' : '18px'};
   font-family: ${({ isTabCreditDesktop }) =>
-    isTabCreditDesktop ? 'OpenSans' : 'Kanyon'};
+    isTabCreditDesktop ? 'var(--open-sans)' : 'var(--kanyon)'};
   color: #05256e;
   &::placeholder {
     color: ${colors.placeholder};
