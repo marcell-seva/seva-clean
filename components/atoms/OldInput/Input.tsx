@@ -168,7 +168,7 @@ const StyledInput = styled.input<{
     -moz-appearance: textfield;
   }
   font-family: ${({ citySelectorMobile }) =>
-    citySelectorMobile ? 'OpenSans' : 'Kanyon'};
+    citySelectorMobile ? 'var(--open-sans)' : 'var(--kanyon)'};
   font-size: ${({ citySelectorMobile }) =>
     citySelectorMobile ? '14px' : '16px'};
   line-height: ${({ citySelectorMobile }) =>

@@ -73,7 +73,9 @@ export const CarInfo = ({ carModel }: Props) => {
               hundred,
             )}{' '}
             jt
-            <span style={{ fontFamily: 'KanyonMedium', fontWeight: 500 }}>
+            <span
+              style={{ fontFamily: 'var(--kanyon-medium)', fontWeight: 500 }}
+            >
               /bln
             </span>
           </LoanValue>
