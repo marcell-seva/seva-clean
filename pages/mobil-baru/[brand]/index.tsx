@@ -50,14 +50,13 @@ const NewCarResultPage = ({
     ` ${moment().format('YYYY')} - Promo Cicilan bulan ${moment().format(
       'MMMM',
     )} | SEVA`
+  const metaDesc = `Beli mobil Toyota ${moment().format(
+    'YYYY',
+  )} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
 
   return (
     <>
-      <Seo
-        title={metaTitle}
-        description={meta.description}
-        image={defaultSeoImage}
-      />
+      <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
       <div className={styles.mobile}>
         <PLP minmaxPrice={meta.MinMaxPrice} />
       </div>
