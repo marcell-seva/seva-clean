@@ -268,7 +268,8 @@ const CarModelVariant = styled.div`
 `
 
 const CarModelVariantText = styled.span<{ bold?: boolean }>`
-  font-family: ${({ bold }) => (bold ? 'KanyonBold' : 'KanyonMedium')};
+  font-family: ${({ bold }) =>
+    bold ? 'var(--kanyon-bold)' : 'var(--kanyon-medium)'};
   font-size: 12px;
   line-height: 14px;
   color: ${colors.primaryDarkBlue};

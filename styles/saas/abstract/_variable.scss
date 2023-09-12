@@ -3,9 +3,9 @@ $screen-md: 980px;
 $screen-lg: 1024px;
 
 // Typography
-$font-openSans: 'OpenSans', sans-serif;
-$font-openSans-semiBold: 'OpenSansSemiBold', sans-serif;
-$font-openSans-bold: 'OpenSansBold', sans-serif;
-$font-kanyon: 'Kanyon', sans-serif;
-$font-kanyon-medium: 'KanyonMedium', sans-serif;
-$font-kanyon-bold: 'KanyonBold', sans-serif;
+$font-openSans: var(--open-sans);
+$font-openSans-semiBold: var(--open-sans-semi-bold);
+$font-openSans-bold: var(--open-sans-bold);
+$font-kanyon: var(--kanyon);
+$font-kanyon-medium: var(--kanyon-medium);
+$font-kanyon-bold: var(--kanyon-bold);

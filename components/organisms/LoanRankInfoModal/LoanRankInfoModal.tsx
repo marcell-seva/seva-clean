@@ -62,7 +62,12 @@ export const useLoanRankInfoModal = () => {
               </CloseIconWrapper>
               <Title>
                 Mau Tahu Soal{' '}
-                <span style={{ fontFamily: 'OpenSansBold', fontWeight: 700 }}>
+                <span
+                  style={{
+                    fontFamily: 'var(--open-sans-bold)',
+                    fontWeight: 700,
+                  }}
+                >
                   Peluang Kredit?
                 </span>
               </Title>
