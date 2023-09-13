@@ -50,6 +50,7 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const {
     carRecommendationsResDefaultCity,
     carModelDetailsResDefaultCity,
+    dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
   } = useContext(PdpDataLocalContext)
 
@@ -71,7 +72,8 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
     carModelDetails,
     saveCarModelDetails,
   } = useCar()
-  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const modelDetailData =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const { showModal: showCitySelectorModal, CitySelectorModal } =
     useCitySelectorModal()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
