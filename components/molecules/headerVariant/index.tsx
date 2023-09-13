@@ -173,7 +173,7 @@ export default function HeaderVariant({
         brand: [item.label],
       }
       navigateToPLP(
-        PreviousButton.SmartSearch,
+        PreviousButton.SearchBar,
         { search: convertObjectQuery(funnelQueryTemp) },
         true,
         false,

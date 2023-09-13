@@ -9,7 +9,7 @@ import {
 import { carResultsUrl, creditQualificationUrl } from 'utils/helpers/routes'
 import urls from 'utils/helpers/url'
 
-enum RouteName {
+export enum RouteName {
   Homepage = 'Homepage',
   PLP = 'PLP',
   PDPRingkasan = 'PDP - Ringkasan',
@@ -19,13 +19,17 @@ enum RouteName {
   LoanCalculator = 'Loan Calculator',
   KualifikasiKredit = 'Loan Calculator - Kualifikasi Kredit',
   KKResult = 'Kualifikasi Kredit - Result',
+  KKForm = 'Kualifikasi Kredit - Form Page',
+  KKReview = 'Kualifikasi Kredit - Review Page',
+  IAReview = 'Instant Approval - Review Page',
   IAWaitingForResult = 'Instant Approval - Waiting For Result',
   IAAPProved = 'Instant Approval - Approved',
   IARejected = 'Instant Approval - Rejected',
-  MultiUnitForm = 'Multi unit - Form',
-  MultiUnitResult = 'Multi unit - Result',
+  MultiUnitForm = 'Multi Unit - Form',
+  MultiUnitResult = 'Multi Unit - Result',
   ProfilePage = 'Profile Page',
   FasilitasDanaLanding = 'Fasilitas Dana - Landing',
+  FasilitasDanaForm = 'Fasilitas Dana - Form',
   SalesDashboard = 'Sales Dashboard',
   TSDashboard = 'Teman SEVA - Dashboard',
   TSAcitivity = 'Teman SEVA - Activity',
@@ -105,12 +109,25 @@ export const defineRouteName = (pathname: string) => {
   }
 
   if (pathname.includes('kalkulator-kredit')) {
+    if (pathname.includes('homepageKualifikasi')) {
+      return RouteName.KualifikasiKredit
+    }
     return RouteName.LoanCalculator
+  }
+
+  if (pathname.includes('kualifikasi-kredit/multi')) {
+    if (pathname.includes('result')) {
+      return RouteName.MultiUnitResult
+    }
+    return RouteName.MultiUnitForm
   }
 
   if (pathname.includes('kualifikasi-kredit')) {
     if (pathname.includes('result')) {
       return RouteName.KKResult
+    }
+    if (pathname.includes('review')) {
+      return RouteName.KKReview
     }
     return RouteName.KualifikasiKredit
   }
@@ -125,16 +142,12 @@ export const defineRouteName = (pathname: string) => {
     if (pathname.includes('rejected')) {
       return RouteName.IARejected
     }
+    if (pathname.includes('review')) {
+      return RouteName.IAReview
+    }
     if (pathname.includes('result')) {
       return RouteName.IARejected
     }
-  }
-
-  if (pathname.includes('multi-unit')) {
-    if ('result') {
-      return RouteName.MultiUnitResult
-    }
-    return RouteName.MultiUnitForm
   }
 
   if (pathname.includes('akun/profil')) {
@@ -142,10 +155,13 @@ export const defineRouteName = (pathname: string) => {
   }
 
   if (pathname.includes('fasilitas-dana')) {
+    if (pathname.includes('form')) {
+      return RouteName.FasilitasDanaForm
+    }
     return RouteName.FasilitasDanaLanding
   }
 
-  if (pathname.includes('sales-dahsboard')) {
+  if (pathname.includes('sales-dashboard')) {
     return RouteName.SalesDashboard
   }
 
