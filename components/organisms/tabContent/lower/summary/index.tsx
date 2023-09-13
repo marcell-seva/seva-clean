@@ -59,14 +59,15 @@ export const SummaryTab = ({
   const { carModelDetails, carVariantDetails, recommendation } = useCar()
 
   const {
-    carModelDetailsResDefaultCity,
+    dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
     carRecommendationsResDefaultCity,
   } = useContext(PdpDataLocalContext)
 
   const router = useRouter()
 
-  const modelDetail = carModelDetails || carModelDetailsResDefaultCity
+  const modelDetail =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const variantDetail = carVariantDetails || carVariantDetailsResDefaultCity
   const carRecommendations =
     recommendation.length > 0
