@@ -1860,14 +1860,14 @@ const StyledTextIsActive = styled(StyeldTextSmallRegular)<{
   color: ${({ isRowSelected }) => (isRowSelected ? `#2CAA30` : ``)};
   font-weight: ${({ isRowSelected }) => (isRowSelected ? `600` : ``)};
   font-family: ${({ isRowSelected }) =>
-    isRowSelected ? `OpenSansBold` : `OpenSans`};
+    isRowSelected ? `var(--open-sans-bold)` : `var(--open-sans)`};
   font-size: 12px;
 
   @media (max-width: 1024px) {
     color: ${({ isRowSelected }) => (isRowSelected ? `#2CAA30` : ``)};
     font-weight: ${({ isRowSelected }) => (isRowSelected ? `600` : ``)};
     font-family: ${({ isRowSelected }) =>
-      isRowSelected ? `OpenSansBold` : `OpenSans`};
+      isRowSelected ? `var(--open-sans-bold)` : `var(--open-sans)`};
     font-size: 9.5px;
     width: 84px;
   }
@@ -1909,7 +1909,7 @@ const StyledTextIsActiveBlue = styled(StyeldTextSmallRegular)<{
 }>`
   font-size: 16px;
   font-family: ${({ isRowSelected }) =>
-    isRowSelected ? `KanyonBold` : `KanyonMedium`};
+    isRowSelected ? `var(--kanyon-bold)` : `var(--kanyon-medium)`};
   color: ${({ isRowSelected, onCarVariant }) =>
     isRowSelected && !onCarVariant
       ? `#002373`
@@ -1948,7 +1948,7 @@ const StyledTextIsActiveBlueInstallment = styled(StyeldTextSmallRegular)<{
 }>`
   font-size: 16px;
   font-family: ${({ isRowSelected }) =>
-    isRowSelected ? `KanyonBold` : `KanyonMedium`};
+    isRowSelected ? `var(--kanyon-bold)` : `var(--kanyon-medium)`};
   color: ${({ isRowSelected }) => (isRowSelected ? `#05256E` : `#52627A`)};
   font-weight: ${({ isRowSelected }) => (isRowSelected ? `700` : `500`)};
 
@@ -2226,7 +2226,7 @@ const StyledWhatsAppButtonText = styled.div`
   display: flex;
   align-items: center;
   gap: 30px;
-  font-family: KanyonBold;
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-size: 16px;
   line-height: 24px;
