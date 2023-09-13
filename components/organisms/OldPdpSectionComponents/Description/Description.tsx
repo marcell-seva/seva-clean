@@ -63,9 +63,12 @@ export const Description = ({
   const [carHeight, setCarHeight] = useState(0)
   const [carLength, setCarLength] = useState(0)
   const { carModelDetails, recommendation } = useCar()
-  const { carModelDetailsResDefaultCity, carRecommendationsResDefaultCity } =
-    useContext(PdpDataLocalContext)
-  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const {
+    dataCombinationOfCarRecomAndModelDetailDefaultCity,
+    carRecommendationsResDefaultCity,
+  } = useContext(PdpDataLocalContext)
+  const modelDetailData =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const recommendationsDetailData =
     recommendation.length !== 0
       ? recommendation

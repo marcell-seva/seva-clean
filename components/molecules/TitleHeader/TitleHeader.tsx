@@ -14,8 +14,10 @@ import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 
 export function TitleHeader(props: StickyButtonProps) {
   const { carModelDetails } = useCar()
-  const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
-  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const { dataCombinationOfCarRecomAndModelDetailDefaultCity } =
+    useContext(PdpDataLocalContext)
+  const modelDetailData =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,

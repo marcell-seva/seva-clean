@@ -111,10 +111,12 @@ export default function NewCarVariantList() {
   const {
     carRecommendationsResDefaultCity,
     carModelDetailsResDefaultCity,
+    dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
   } = useContext(PdpDataLocalContext)
 
-  const modelDetail = carModelDetails || carModelDetailsResDefaultCity
+  const modelDetail =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
 
   const [videoData, setVideoData] = useState<VideoDataType>({
     thumbnailVideo: '',
