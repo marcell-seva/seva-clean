@@ -20,6 +20,7 @@ import { AlternativeCarCard } from '../alternativeCarCard'
 import { useRouter } from 'next/router'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import {
+  defineRouteName,
   PreviousButton,
   saveDataForCountlyTrackerPageViewLC,
   saveDataForCountlyTrackerPageViewPDP,
@@ -146,7 +147,16 @@ export default function CarRecommendations({
           ? 'Sulit disetujui'
           : 'Null',
     })
-    saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
+
+    if (window.location.pathname.includes('kalkulator-kredit')) {
+      saveDataForCountlyTrackerPageViewPDP(
+        PreviousButton.CarRecommendation,
+        defineRouteName(window.location.pathname + window.location.search),
+      )
+    } else {
+      saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
+    }
+
     router.push(path)
   }
 

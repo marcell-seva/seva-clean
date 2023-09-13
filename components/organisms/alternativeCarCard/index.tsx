@@ -19,6 +19,7 @@ import { CarRecommendation } from 'utils/types/context'
 import Image from 'next/image'
 import {
   PreviousButton,
+  defineRouteName,
   saveDataForCountlyTrackerPageViewPDP,
 } from 'utils/navigate'
 import { trackEventCountly } from 'helpers/countly/countly'
@@ -103,7 +104,14 @@ export const AlternativeCarCard = ({
 
   const navigateToPDP = () => {
     trackCarRecommendation()
-    saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
+    if (window.location.pathname.includes('kalkulator-kredit')) {
+      saveDataForCountlyTrackerPageViewPDP(
+        PreviousButton.CarRecommendation,
+        defineRouteName(window.location.pathname + window.location.search),
+      )
+    } else {
+      saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
+    }
     if (!label) {
       trackCountlyCarRecommendation()
     }
@@ -115,6 +123,29 @@ export const AlternativeCarCard = ({
     lowestInstallment,
     LanguageCode.id,
   )
+
+  const onClickSeeDetail = () => {
+    trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CTA_CLICK, {
+      PAGE_ORIGINATION: 'PLP - Empty Page',
+      CAR_BRAND: recommendation.brand,
+      CAR_MODEL: recommendation.model,
+      CAR_BRAND_RECOMMENDATION: recommendation.brand,
+      CAR_MODEL_RECOMMENDATION: recommendation.model,
+      CTA_BUTTON: 'Lihat Detail',
+      PAGE_DIRECTION_URL: window.location.hostname + detailCarRoute,
+    })
+
+    if (window.location.pathname.includes('kalkulator-kredit')) {
+      saveDataForCountlyTrackerPageViewPDP(
+        PreviousButton.CarRecommendation,
+        defineRouteName(window.location.pathname + window.location.search),
+      )
+    } else {
+      saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
+    }
+
+    router.push(detailCarRoute)
+  }
 
   return (
     <div className={styles.container}>
@@ -160,21 +191,7 @@ export const AlternativeCarCard = ({
           <Button
             version={ButtonVersion.Secondary}
             size={ButtonSize.Big}
-            onClick={() => {
-              trackEventCountly(
-                CountlyEventNames.WEB_CAR_RECOMMENDATION_CTA_CLICK,
-                {
-                  PAGE_ORIGINATION: 'PLP - Empty Page',
-                  CAR_BRAND: recommendation.brand,
-                  CAR_MODEL: recommendation.model,
-                  CAR_BRAND_RECOMMENDATION: recommendation.brand,
-                  CAR_MODEL_RECOMMENDATION: recommendation.model,
-                  CTA_BUTTON: 'Lihat Detail',
-                  PAGE_DIRECTION_URL: window.location.hostname + detailCarRoute,
-                },
-              )
-              router.push(detailCarRoute)
-            }}
+            onClick={onClickSeeDetail}
             data-testid={elementId.CarRecommendation.Button.LihatDetail}
           >
             Lihat Detail
