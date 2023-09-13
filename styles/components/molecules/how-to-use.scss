@@ -146,18 +146,18 @@
 }
 
 .htu-item-title {
-    font-family: "KanyonBold";
+    font-family: var(--kanyon-bold);
     font-size: 18px;
     line-height: 20px;
 
     @media (max-width: 1024px) {
-        font-family: "KanyonMedium";
+        font-family: var(--kanyon-medium);
         font-size: 14px;
         line-height: 20px;
     }
 }
 .htu-item-desc {
-    font-family: "OpenSans";
+    font-family: var(--open-sans);
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
