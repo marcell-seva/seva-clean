@@ -394,7 +394,7 @@ const StyledInput = styled(Input)<{
         ? '18px'
         : '16px'};
     font-family: ${({ isTabCreditDesktop }) =>
-      isTabCreditDesktop && 'OpenSans !important'};
+      isTabCreditDesktop && 'var(--open-sans) !important'};
     ::placeholder {
       font-size: ${({ isNewRegularPage, onCreditTabV2 }) =>
         isNewRegularPage && !onCreditTabV2
@@ -403,7 +403,7 @@ const StyledInput = styled(Input)<{
           ? '14px'
           : '16px'};
       font-family: ${({ onCreditTabV2 }) =>
-        onCreditTabV2 && 'OpenSans !important'};
+        onCreditTabV2 && 'var(--open-sans) !important'};
       @media (max-width: 1024px) {
         font-size: 16px;
       }

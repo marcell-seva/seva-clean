@@ -252,7 +252,7 @@ export const useCitySelectorModal = () => {
                                   dangerouslySetInnerHTML={{
                                     __html: item.label?.replace(
                                       searchInputValue,
-                                      '<strong style="font-weight: 700; font-family: Kanyon;">' +
+                                      '<strong style="font-weight: 700; font-family: var(--kanyon);">' +
                                         searchInputValue +
                                         '</strong>',
                                     ),

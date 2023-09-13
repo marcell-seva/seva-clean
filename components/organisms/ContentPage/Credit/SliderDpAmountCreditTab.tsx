@@ -1415,7 +1415,7 @@ const StyledButtonOption = styled.button<{ isClicked: boolean }>`
 `
 const StyledButtonOptionText = styled.span<{ isClicked: boolean }>`
   font-family: ${({ isClicked }) =>
-    isClicked ? `OpenSansSemiBold` : `OpenSans`};
+    isClicked ? `var(--open-sans-semi-bold)` : `var(--open-sans)`};
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
