@@ -27,9 +27,10 @@ interface Props {
 
 const GallerySectionV2 = ({ title }: Props) => {
   const { carModelDetails } = useCar()
-  const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
+  const { dataCombinationOfCarRecomAndModelDetailDefaultCity } =
+    useContext(PdpDataLocalContext)
   const modelDetailData: CarModelDetailsResponse | undefined =
-    carModelDetails || carModelDetailsResDefaultCity
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const { images: carModelImages } = { ...modelDetailData }
   const [isSelectedExterior, setIsSelectedExterior] = useState(true)
   const [isSelected360, setIsSelected360] = useState(false)

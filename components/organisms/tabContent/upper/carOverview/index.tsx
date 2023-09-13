@@ -53,8 +53,10 @@ export const CarOverview = ({
   onClickShareButton,
   currentTabMenu,
 }: Props) => {
-  const { carModelDetailsResDefaultCity, carVariantDetailsResDefaultCity } =
-    useContext(PdpDataLocalContext)
+  const {
+    dataCombinationOfCarRecomAndModelDetailDefaultCity,
+    carVariantDetailsResDefaultCity,
+  } = useContext(PdpDataLocalContext)
 
   const { carModelDetails, carVariantDetails } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
@@ -62,7 +64,8 @@ export const CarOverview = ({
     null,
   )
 
-  const modelDetail = carModelDetails || carModelDetailsResDefaultCity
+  const modelDetail =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const variantDetail = carVariantDetails || carVariantDetailsResDefaultCity
 
   const [isShowTooltip, setIsShowTooltip] = useState(false)

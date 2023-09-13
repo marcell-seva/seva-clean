@@ -17,6 +17,7 @@ import styles from 'styles/pages/plp.module.scss'
 import { getToken } from 'utils/handler/auth'
 import { AxiosResponse } from 'axios'
 import moment from 'moment'
+import { mergeModelDetailsWithLoanRecommendations } from 'services/recommendations'
 
 interface PdpDataLocalContextType {
   /**
@@ -29,6 +30,7 @@ interface PdpDataLocalContextType {
    * need to re-fetch API in client with city from localStorage
    */
   carModelDetailsResDefaultCity: any
+  dataCombinationOfCarRecomAndModelDetailDefaultCity: any
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.
    * need to re-fetch API in client with city from localStorage
@@ -44,6 +46,7 @@ interface PdpDataLocalContextType {
 export const PdpDataLocalContext = createContext<PdpDataLocalContextType>({
   carRecommendationsResDefaultCity: null,
   carModelDetailsResDefaultCity: null,
+  dataCombinationOfCarRecomAndModelDetailDefaultCity: null,
   carVariantDetailsResDefaultCity: null,
   metaTagDataRes: null,
   carVideoReviewRes: null,
@@ -52,6 +55,7 @@ export const PdpDataLocalContext = createContext<PdpDataLocalContextType>({
 export default function index({
   carRecommendationsRes,
   carModelDetailsRes,
+  dataCombinationOfCarRecomAndModelDetail,
   carVariantDetailsRes,
   metaTagDataRes,
   carVideoReviewRes,
@@ -97,6 +101,8 @@ export default function index({
         value={{
           carRecommendationsResDefaultCity: carRecommendationsRes,
           carModelDetailsResDefaultCity: carModelDetailsRes,
+          dataCombinationOfCarRecomAndModelDetailDefaultCity:
+            dataCombinationOfCarRecomAndModelDetail,
           carVariantDetailsResDefaultCity: carVariantDetailsRes,
           metaTagDataRes: metaTagDataRes,
           carVideoReviewRes: carVideoReviewRes,
@@ -170,10 +176,17 @@ export async function getServerSideProps(context: any) {
       ),
     ])
 
+    const dataCombinationOfCarRecomAndModelDetail =
+      mergeModelDetailsWithLoanRecommendations(
+        carRecommendationsRes.carRecommendations,
+        carModelDetailsRes,
+      )
+
     return {
       props: {
         carRecommendationsRes,
         carModelDetailsRes,
+        dataCombinationOfCarRecomAndModelDetail,
         carVariantDetailsRes,
         metaTagDataRes,
         carVideoReviewRes,

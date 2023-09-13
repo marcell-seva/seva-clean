@@ -31,12 +31,13 @@ type tabProps = {
 const GalleryTab = memo(({ tab, isSticky }: tabProps) => {
   const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const {
-    carModelDetailsResDefaultCity,
+    dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
     carRecommendationsResDefaultCity,
     carArticleReviewRes,
   } = useContext(PdpDataLocalContext)
-  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const modelDetailData =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const variantDetailData = carVariantDetails || carVariantDetailsResDefaultCity
   const recommendationsDetailData =
     recommendation.length !== 0
