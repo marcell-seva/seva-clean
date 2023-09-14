@@ -50,10 +50,13 @@ const NewCarResultPage = ({
 
       <CarProvider
         car={null}
+        carOfTheMonth={[]}
+        typeCar={null}
         carModel={null}
         carModelDetails={null}
         carVariantDetails={null}
         recommendation={meta.carRecommendations.carRecommendations}
+        recommendationToyota={[]}
       >
         <div className={styles.mobile}>
           <PLP minmaxPrice={meta.MinMaxPrice} />
