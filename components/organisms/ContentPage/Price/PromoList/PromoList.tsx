@@ -58,7 +58,7 @@ const PromoListWrapper = styled.div<{ showScrollbar?: boolean }>`
 `
 
 const PromoListTitle = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 14px;
   line-height: 20px;
   color: ${colors.primaryBlue};
@@ -70,7 +70,7 @@ const PromoListTitle = styled.span`
 `
 
 const PromoListDescription = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;

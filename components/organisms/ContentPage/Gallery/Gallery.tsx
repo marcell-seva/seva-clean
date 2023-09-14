@@ -31,12 +31,13 @@ type tabProps = {
 const GalleryTab = memo(({ tab, isSticky }: tabProps) => {
   const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const {
-    carModelDetailsResDefaultCity,
+    dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
     carRecommendationsResDefaultCity,
     carArticleReviewRes,
   } = useContext(PdpDataLocalContext)
-  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const modelDetailData =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const variantDetailData = carVariantDetails || carVariantDetailsResDefaultCity
   const recommendationsDetailData =
     recommendation.length !== 0
@@ -251,7 +252,7 @@ const ContainerArticle = styled.div`
 `
 const StyledText = styled.span`
   letter-spacing: 0px;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
@@ -268,7 +269,7 @@ const StyledText = styled.span`
   }
 `
 const StyledTextSeeAll = styled.a`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 10px;
@@ -292,7 +293,7 @@ const ArticleItemContent = styled.div`
 
 const StyledTextTitleArticle = styled.span`
   letter-spacing: 0px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -302,7 +303,7 @@ const StyledTextTitleArticle = styled.span`
 
 const StyledTextDateArticle = styled.span`
   letter-spacing: 0px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;

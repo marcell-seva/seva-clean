@@ -30,11 +30,12 @@ const Price = memo(({ tab, isSticky }: tabProps) => {
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const {
-    carModelDetailsResDefaultCity,
+    dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
     carRecommendationsResDefaultCity,
   } = useContext(PdpDataLocalContext)
-  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const modelDetailData =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const variantDetailData = carVariantDetails || carVariantDetailsResDefaultCity
   const recommendationsDetailData =
     recommendation.length !== 0
@@ -229,7 +230,7 @@ const StyledDescription = styled(Description)`
 `
 
 const Title = styled.h2`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 14px;
   line-height: 24px;
   margin-bottom: 8px;

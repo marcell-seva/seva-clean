@@ -27,9 +27,10 @@ interface Props {
 
 const GallerySectionV2 = ({ title }: Props) => {
   const { carModelDetails } = useCar()
-  const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
+  const { dataCombinationOfCarRecomAndModelDetailDefaultCity } =
+    useContext(PdpDataLocalContext)
   const modelDetailData: CarModelDetailsResponse | undefined =
-    carModelDetails || carModelDetailsResDefaultCity
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const { images: carModelImages } = { ...modelDetailData }
   const [isSelectedExterior, setIsSelectedExterior] = useState(true)
   const [isSelected360, setIsSelected360] = useState(false)
@@ -309,7 +310,7 @@ const HeaderSection = styled.div`
 `
 
 const Title = styled.h2`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
@@ -374,7 +375,7 @@ const StyledButton = styled.button<{
   ${({ isSelected, disabled }) => getButtonStyle(isSelected, disabled)};
   border-radius: 8px;
   padding: 8px 20px;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 12px;
@@ -388,7 +389,7 @@ const StyledButton = styled.button<{
 const SelectedTabStyle = css`
   border-bottom: 4px solid ${colors.primaryDarkBlue};
   color: ${colors.primaryDarkBlue};
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   cursor: pointer;
@@ -397,7 +398,7 @@ const SelectedTabStyle = css`
 const UnselectedTabStyle = css`
   border-bottom: 2px solid ${colors.line};
   color: ${colors.label};
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   cursor: pointer;
@@ -406,7 +407,7 @@ const UnselectedTabStyle = css`
 const DisabledTabStyle = css`
   border-bottom: 1.5px solid ${colors.line};
   color: ${colors.line};
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   cursor: default;
@@ -452,7 +453,7 @@ const Button360Label = styled.span`
   color: ${colors.primaryDarkBlue};
 
   @media (min-width: 1025px) {
-    font-family: 'KanyonBold';
+    font-family: var(--kanyon-bold);
     font-style: normal;
     font-weight: 700;
     font-size: 16px;

@@ -9,8 +9,9 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 
 export const WarnaTab = ({ isShowAnnouncementBox }: any) => {
-  const { carModelDetailsResDefaultCity: carModelDetails } =
-    useContext(PdpDataLocalContext)
+  const {
+    dataCombinationOfCarRecomAndModelDetailDefaultCity: carModelDetails,
+  } = useContext(PdpDataLocalContext)
 
   const [colorsList, setColorList] = useState<(string | string[])[]>([])
 

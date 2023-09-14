@@ -43,8 +43,10 @@ export const CarOverview = ({
   onClickShareButton,
   currentTabMenu,
 }: Props) => {
-  const { carModelDetailsResDefaultCity, carVariantDetailsResDefaultCity } =
-    useContext(PdpDataLocalContext)
+  const {
+    dataCombinationOfCarRecomAndModelDetailDefaultCity,
+    carVariantDetailsResDefaultCity,
+  } = useContext(PdpDataLocalContext)
 
   const { carModelDetails, carVariantDetails } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
@@ -52,7 +54,8 @@ export const CarOverview = ({
     null,
   )
 
-  const modelDetail = carModelDetails || carModelDetailsResDefaultCity
+  const modelDetail =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const variantDetail = carVariantDetails || carVariantDetailsResDefaultCity
 
   const [isShowTooltip, setIsShowTooltip] = useState(false)
@@ -67,7 +70,7 @@ export const CarOverview = ({
   const router = useRouter()
   const brand = router.query.brand as string
   const model = router.query.model as string
-  const tab = router.query.tab as string
+  const upperTab = router.query.tab as string
 
   const sortedCarModelVariant = useMemo(() => {
     return (
@@ -212,7 +215,7 @@ export const CarOverview = ({
       variantListUrl
         .replace(':brand', brand)
         .replace(':model', model)
-        .replace(':tab', 'kredit') + `${tab && `tab=${tab}`}`
+        .replace(':tab', 'kredit') + `${upperTab ? `tab=${upperTab}` : ''}`
   }
 
   if (!modelDetail || !variantDetail) return <></>

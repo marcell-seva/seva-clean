@@ -67,7 +67,7 @@ const StyledTitleImg = styled.img`
   }
 `
 const StyledSubtitle = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -75,7 +75,7 @@ const StyledSubtitle = styled.span`
   letter-spacing: 0px;
 
   color: #252525;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   margin-top: 8px;
   font-size: 24px;
   line-height: 32px;
@@ -123,7 +123,7 @@ const StyledSecureTextWrapper = styled.div`
 `
 
 const StyledPositiveButtonWrapper = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0px;
@@ -168,7 +168,7 @@ const StyledDesc = styled.span`
   line-height: 16px;
   letter-spacing: 0px;
 
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-size: 16px;
   line-height: 24px;
   @media (max-width: 1024px) {

@@ -1,7 +1,3 @@
-body {
-  font-family: 'OpenSans';
-}
-
 @font-face {
   font-family: 'OpenSans';
   src: url('/revamp/fonts/OpenSans/OpenSans-Regular.woff2') format('woff2');

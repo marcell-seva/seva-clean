@@ -1211,7 +1211,7 @@ const Content = styled.div`
   }
 `
 const StyledText = styled.span`
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -1233,7 +1233,7 @@ const StyledValueWrapper = styled.div`
 
 const StyledTextValue = styled.span`
   letter-spacing: 0px;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
@@ -1249,7 +1249,7 @@ const StyledValueLimitWrapper = styled.div`
   }
 `
 const StyledTextValueLimit = styled.span`
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -1292,7 +1292,7 @@ const StyledTextSmall = styled.span`
   letter-spacing: 0px;
   margin-left: 5px;
   margin-right: 5px;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-weight: 700;
   font-size: 12px;
   color: #52627a;
@@ -1305,7 +1305,7 @@ const StyledInput = styled(Input)<{ value: string; isError: boolean }>`
   border-radius: 8px;
   padding-left: 23px;
   input {
-    font-family: 'OpenSans';
+    font-family: var(--open-sans);
     color: ${colors.primaryDarkBlue};
     font-size: 16px;
 
@@ -1362,7 +1362,7 @@ const HelperTextSpacing = styled.div`
 const StyledPrefixText = styled.h2`
   letter-spacing: 0px;
   margin-right: 4px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -1397,7 +1397,7 @@ const StyledButtonOption = styled.button<{ isClicked: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   margin: 5px 0;
   width: 50%;
   height: 50px;
@@ -1415,7 +1415,7 @@ const StyledButtonOption = styled.button<{ isClicked: boolean }>`
 `
 const StyledButtonOptionText = styled.span<{ isClicked: boolean }>`
   font-family: ${({ isClicked }) =>
-    isClicked ? `OpenSansSemiBold` : `OpenSans`};
+    isClicked ? `var(--open-sans-semi-bold)` : `var(--open-sans)`};
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -1463,7 +1463,7 @@ const StyledInfoResetInfo = styled.div`
   height: 39px;
 `
 const StyledResetText = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
@@ -1476,7 +1476,7 @@ const StyledResetText = styled.span`
   color: #05256e;
 `
 const StyledTextLabel = styled.span`
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -1493,7 +1493,7 @@ const ErrorWrapper = styled.div`
 `
 
 const ErrorMessage = styled.p`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 10px;
@@ -1507,7 +1507,7 @@ const ErrorMessage = styled.p`
   }
 `
 const TextSmall = styled.span`
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -1517,7 +1517,7 @@ const TextSmall = styled.span`
 `
 const TextCarVariantName = styled.h2`
   letter-spacing: 0px;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
@@ -1533,7 +1533,7 @@ const ErrorWrapperEmpty = styled.div`
 `
 
 const ErrorMessageEmpty = styled.p`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 10px;
@@ -1569,7 +1569,7 @@ const StyledLabel = styled.span<{
   font-size: 12px;
   line-height: 18px;
   font-weight: 700;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   color: ${({ newMenu }) => newMenu && colors.primaryBlue};
 `
 

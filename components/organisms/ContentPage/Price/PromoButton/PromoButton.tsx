@@ -127,7 +127,7 @@ const BlueCircle = styled.div`
 `
 
 const Percent = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 30px;
   line-height: 20px;
   color: ${colors.primarySkyBlue};
@@ -173,7 +173,7 @@ const PromoButtonTextWrapper = styled.div`
 `
 
 const PromoButtonText = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 14px;
   line-height: 20px;
 
@@ -183,7 +183,7 @@ const PromoButtonText = styled.span`
 `
 
 const PromoButtonSubText = styled.span`
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-size: 10px;
   line-height: 16px;
   opacity: 0.7;

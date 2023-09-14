@@ -73,7 +73,9 @@ export const CarInfo = ({ carModel }: Props) => {
               hundred,
             )}{' '}
             jt
-            <span style={{ fontFamily: 'KanyonMedium', fontWeight: 500 }}>
+            <span
+              style={{ fontFamily: 'var(--kanyon-medium)', fontWeight: 500 }}
+            >
               /bln
             </span>
           </LoanValue>
@@ -115,7 +117,7 @@ const Container = styled.div`
 `
 
 const CarName = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
@@ -136,7 +138,7 @@ const CarName = styled.span`
 
 const StartsFrom = styled.span`
   margin-top: 10px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 10px;
@@ -151,7 +153,7 @@ const StartsFrom = styled.span`
 `
 
 const InfoLabel = css`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -175,7 +177,7 @@ const OtrLabel = styled.span`
 
 const CarPrice = styled.span`
   margin-left: 5px;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
@@ -190,7 +192,7 @@ const CarPrice = styled.span`
 
 const CityInfo = styled.span`
   margin-left: 7px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 10px;
@@ -223,7 +225,7 @@ const LoanLabel = styled.span`
 `
 
 const LoanValue = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 12px;

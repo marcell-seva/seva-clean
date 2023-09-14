@@ -41,10 +41,16 @@ import { CarRecommendation } from 'utils/types/utils'
 import { HeaderAndContent } from '../HeaderAndContent/HeaderAndContent'
 import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
+import { defaultCity, getCity } from 'utils/hooks/useGetCity'
 
 export default function index() {
   const router = useRouter()
-  const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
+  const {
+    carRecommendationsResDefaultCity,
+    carModelDetailsResDefaultCity,
+    dataCombinationOfCarRecomAndModelDetailDefaultCity,
+    carVariantDetailsResDefaultCity,
+  } = useContext(PdpDataLocalContext)
 
   const { model, brand, slug } = router.query
   const tab = Array.isArray(slug) ? slug[0] : undefined
@@ -64,13 +70,15 @@ export default function index() {
     carModelDetails,
     saveCarModelDetails,
   } = useCar()
-  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const modelDetailData =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const { showModal: showCitySelectorModal, CitySelectorModal } =
     useCitySelectorModal()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
   )
+  const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
 
   const { modal } = useModalContext()
 
@@ -154,56 +162,71 @@ export default function index() {
     saveLocalStorage(LocalStorageKey.Model, (model as string) ?? '')
     cityHandler()
     mediaCTAArea()
-    api.getRecommendation(getCityParam()).then((result: any) => {
-      let id = ''
-      const carList = result.carRecommendations
-      const currentCar = carList.filter(
-        (value: CarRecommendation) =>
-          value.model.replace(/ +/g, '-').toLowerCase() === model,
+
+    if (!isCurrentCitySameWithSSR) {
+      api.getRecommendation(getCityParam()).then((result: any) => {
+        let id = ''
+        const carList = result.carRecommendations
+        const currentCar = carList.filter(
+          (value: CarRecommendation) =>
+            value.model.replace(/ +/g, '-').toLowerCase() === model,
+        )
+
+        if (currentCar.length > 0) {
+          id = currentCar[0].id
+        } else {
+          setShowLoading(false)
+          showCarNotExistModal()
+          return
+        }
+        savePreviouslyViewed(currentCar[0])
+
+        Promise.all([
+          api.getRecommendation(getCityParam()),
+          api.getCarModelDetails(id, getCityParam()),
+        ])
+          .then((response: any) => {
+            const runRecommendation =
+              handleRecommendationsAndCarModelDetailsUpdate(
+                saveRecommendation,
+                saveCarModelDetails,
+              )
+
+            runRecommendation(response)
+            const sortedVariantsOfCurrentModel = response[1].variants
+              .map((item: any) => item)
+              .sort((a: any, b: any) => a.priceValue - b.priceValue)
+
+            api
+              .getCarVariantDetails(
+                sortedVariantsOfCurrentModel[0].id, // get cheapest variant
+                getCityParam(),
+              )
+              .then((result3: any) => {
+                if (result3.variantDetail.priceValue == null) {
+                  showCarNotExistModal()
+                }
+                saveCarVariantDetails(result3)
+                setShowLoading(false)
+              })
+          })
+          .catch(() => {
+            showCarNotExistModal()
+          })
+      })
+    } else {
+      const runRecommendation = handleRecommendationsAndCarModelDetailsUpdate(
+        saveRecommendation,
+        saveCarModelDetails,
       )
 
-      if (currentCar.length > 0) {
-        id = currentCar[0].id
-      } else {
-        setShowLoading(false)
-        showCarNotExistModal()
-        return
-      }
-      savePreviouslyViewed(currentCar[0])
-
-      Promise.all([
-        api.getRecommendation(getCityParam()),
-        api.getCarModelDetails(id, getCityParam()),
+      runRecommendation([
+        carRecommendationsResDefaultCity,
+        carModelDetailsResDefaultCity,
       ])
-        .then((response: any) => {
-          const runRecommendation =
-            handleRecommendationsAndCarModelDetailsUpdate(
-              saveRecommendation,
-              saveCarModelDetails,
-            )
+      saveCarVariantDetails(carVariantDetailsResDefaultCity)
+    }
 
-          runRecommendation(response)
-          const sortedVariantsOfCurrentModel = response[1].variants
-            .map((item: any) => item)
-            .sort((a: any, b: any) => a.priceValue - b.priceValue)
-
-          api
-            .getCarVariantDetails(
-              sortedVariantsOfCurrentModel[0].id, // get cheapest variant
-              getCityParam(),
-            )
-            .then((result3: any) => {
-              if (result3.variantDetail.priceValue == null) {
-                showCarNotExistModal()
-              }
-              saveCarVariantDetails(result3)
-              setShowLoading(false)
-            })
-        })
-        .catch(() => {
-          showCarNotExistModal()
-        })
-    })
     if (modal.isOpenContactUsModal) {
       showContactUsModal()
     }

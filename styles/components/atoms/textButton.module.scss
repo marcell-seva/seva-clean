@@ -9,7 +9,7 @@
   gap: 4px;
   cursor: pointer;
 
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -30,7 +30,7 @@
     gap: 4px;
     cursor: pointer;
 
-    font-family: 'OpenSans';
+    font-family: var(--open-sans);
     font-style: normal;
     font-weight: 400;
     font-size: 16px;

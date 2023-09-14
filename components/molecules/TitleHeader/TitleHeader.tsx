@@ -14,8 +14,10 @@ import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 
 export function TitleHeader(props: StickyButtonProps) {
   const { carModelDetails } = useCar()
-  const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
-  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const { dataCombinationOfCarRecomAndModelDetailDefaultCity } =
+    useContext(PdpDataLocalContext)
+  const modelDetailData =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -134,14 +136,14 @@ const BrandModelWrapper = styled.div`
 `
 
 const StyledBrand = styled.h1`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 16px;
   line-height: 28px;
   color: ${colors.body2};
 `
 
 const StyledModel = styled.h1`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 22px;
   line-height: 28px;
   color: ${colors.body2};
@@ -156,7 +158,7 @@ const HeaderPriceWrapper = styled.div`
 `
 
 const GrayedText = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -173,7 +175,7 @@ const OTRWrapper = styled.div`
 `
 
 const StyledOTR = css`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   color: ${colors.body2};
@@ -186,7 +188,7 @@ const OTR = styled.span`
 `
 
 const OTRPrice = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 20px;
   line-height: 16px;
   color: ${colors.body2};
@@ -221,12 +223,12 @@ const InfoTitle = styled.span`
 `
 
 const InfoData = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 14px;
   line-height: 18px;
 
   label {
-    font-family: 'KanyonMedium';
+    font-family: var(--kanyon-medium);
     font-size: 14px;
     line-height: 18px;
   }

@@ -39,7 +39,7 @@
 }
 
 .titleText {
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-size: 20px;
   line-height: 28px;
 }
@@ -57,7 +57,7 @@
 }
 
 .headerCardText {
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;

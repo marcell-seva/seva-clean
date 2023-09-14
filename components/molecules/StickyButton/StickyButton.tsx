@@ -148,7 +148,7 @@ const BrandModelWrapper = styled.div`
 `
 
 const BrandModelName = styled.h3`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 16px;
   line-height: 28px;
   color: ${colors.primaryDarkBlue};
@@ -161,7 +161,7 @@ const PriceOTRWrapper = styled.div`
   align-items: baseline;
 `
 const InfoText = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 10px;
@@ -170,7 +170,7 @@ const InfoText = styled.span`
 `
 
 const OTR = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 10px;
@@ -180,7 +180,7 @@ const OTR = styled.span`
 `
 
 const PriceText = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 14px;
   line-height: 16px;
   color: ${colors.body2};

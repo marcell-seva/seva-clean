@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 
 export const LinkLabelSmallMediumStyle = css`
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-size: 14px;
   line-height: 20px;

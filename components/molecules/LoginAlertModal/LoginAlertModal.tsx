@@ -70,7 +70,7 @@ const Content = styled.div`
 `
 
 const Title = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 20px;
   line-height: 24px;
   text-align: center;
@@ -83,7 +83,7 @@ const StyledButton = styled(Button)`
   border-radius: 8px;
   background: rgb(255, 255, 255);
   color: rgb(5, 37, 110);
-  font-family: KanyonBold;
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-size: 16px;
   line-height: 24px;

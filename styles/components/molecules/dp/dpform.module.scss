@@ -37,7 +37,7 @@
   outline: none;
   background-color: #{$primary-white};
   margin-top: 8px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   &::placeholder {
     color: #{$shades-grey-50};
   }
@@ -115,7 +115,7 @@
 }
 
 .errorMessage {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;

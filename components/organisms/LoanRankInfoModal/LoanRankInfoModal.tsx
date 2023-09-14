@@ -62,7 +62,12 @@ export const useLoanRankInfoModal = () => {
               </CloseIconWrapper>
               <Title>
                 Mau Tahu Soal{' '}
-                <span style={{ fontFamily: 'OpenSansBold', fontWeight: 700 }}>
+                <span
+                  style={{
+                    fontFamily: 'var(--open-sans-bold)',
+                    fontWeight: 700,
+                  }}
+                >
                   Peluang Kredit?
                 </span>
               </Title>
@@ -119,7 +124,7 @@ const CloseIconWrapper = styled.div`
 `
 
 const Title = styled.span`
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -134,7 +139,7 @@ const Title = styled.span`
 
 const Subtitle = styled.span`
   margin-top: 36px;
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -165,7 +170,7 @@ const StyledButton = styled.button`
 `
 
 const ButtonText = styled.span`
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 12px;

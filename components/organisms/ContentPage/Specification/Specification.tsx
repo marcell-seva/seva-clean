@@ -35,11 +35,12 @@ type tabProps = {
 const Specification = memo(({ tab, isSticky }: tabProps) => {
   const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const {
-    carModelDetailsResDefaultCity,
+    dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
     carRecommendationsResDefaultCity,
   } = useContext(PdpDataLocalContext)
-  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const modelDetailData =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const variantDetailData = carVariantDetails || carVariantDetailsResDefaultCity
   const recommendationsDetailData =
     recommendation.length !== 0
@@ -272,7 +273,7 @@ const DownloadBrochureWrapper = styled.div`
 `
 
 const DownloadUpperText = styled.span`
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-size: 12px;
   line-height: 16px;
@@ -282,7 +283,7 @@ const DownloadUpperText = styled.span`
   padding: 12px 0;
 
   @media (min-width: 1025px) {
-    font-family: 'KanyonMedium';
+    font-family: var(--kanyon-medium);
     padding: 40px 0 12px;
   }
 `
@@ -302,7 +303,7 @@ const StyledDownloadButton = styled(Button)`
     margin: 0 auto;
     gap: 30px;
     font-size: 16px;
-    font-family: 'KanyonBold';
+    font-family: var(--kanyon-bold);
     border-radius: 8px;
     height: 48px;
     background: #05256e;

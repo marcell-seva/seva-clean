@@ -208,7 +208,7 @@ const StyledCloseButton = styled.div`
 `
 
 const TextRetry = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-size: 12px;
   line-height: 18px;
@@ -221,7 +221,7 @@ const TextRetry = styled.span`
 `
 
 const StyledText = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 500;
   font-size: 12px;

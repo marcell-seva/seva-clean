@@ -27,8 +27,10 @@ export const PriceList = () => {
   const { model, brand, slug } = router.query
   const tab = Array.isArray(slug) ? slug[0] : undefined
   const { carModelDetails, saveCarVariantDetails } = useCar()
-  const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
-  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const { dataCombinationOfCarRecomAndModelDetailDefaultCity } =
+    useContext(PdpDataLocalContext)
+  const modelDetailData =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const [indexOpen, setIndexOpen] = useState<number | null>()
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
@@ -241,7 +243,7 @@ const CarPriceWrapper = styled.div<{ open?: boolean }>`
 `
 
 const CarVariantName = styled.span`
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-size: 16px;
   line-height: 20px;
   color: ${colors.body2};
@@ -268,14 +270,15 @@ const CarModelVariant = styled.div`
 `
 
 const CarModelVariantText = styled.span<{ bold?: boolean }>`
-  font-family: ${({ bold }) => (bold ? 'KanyonBold' : 'KanyonMedium')};
+  font-family: ${({ bold }) =>
+    bold ? 'var(--kanyon-bold)' : 'var(--kanyon-medium)'};
   font-size: 12px;
   line-height: 14px;
   color: ${colors.primaryDarkBlue};
 `
 
 const CarPrice = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
 
   @media (max-width: 1024px) {
     width: 110px;
@@ -302,7 +305,7 @@ const CarInfoVariant = styled.div`
 `
 
 const InfoVariantText = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
@@ -320,7 +323,7 @@ const HitungCicilanButton = styled.div`
 `
 
 const HitungCicilanText = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 16px;
   line-height: 24px;
   color: ${colors.white};
@@ -339,6 +342,6 @@ const HitungCicilanMobileButton = styled.div`
   align-items: center;
 
   color: ${colors.white};
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 12px;
 `

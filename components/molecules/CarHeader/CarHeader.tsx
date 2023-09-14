@@ -22,8 +22,10 @@ export function CarHeader({
 }: CarHeaderProps) {
   const router = useRouter()
   const { carModelDetails } = useCar()
-  const { carModelDetailsResDefaultCity } = useContext(PdpDataLocalContext)
-  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const { dataCombinationOfCarRecomAndModelDetailDefaultCity } =
+    useContext(PdpDataLocalContext)
+  const modelDetailData =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
 
   const handleGoBack = () => {
     router.push(carResultsUrl)

@@ -174,7 +174,7 @@ const IconBaruWrapper = styled.div`
   width: 32px;
   padding: 1px 4px 0px;
 
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 8px;
   line-height: 14px;
   color: ${colors.white};
