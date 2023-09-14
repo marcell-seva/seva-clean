@@ -21,7 +21,6 @@ import { ProductDetailEmptyState } from './emptyState/pdp/index'
 import { WarnaTab } from './tabContent/upper/warna'
 import { ExteriorTab } from './tabContent/upper/exterior'
 import { InteriorTab } from './tabContent/upper/interior'
-
 import { Interior360ViewerTab } from './tabContent/upper/interior360Viewer'
 import { SummaryTab } from './tabContent/lower/summary'
 import { SpecificationTab } from './tabContent/lower/spesification'
@@ -48,8 +47,10 @@ import TestimonyWidget from './testimonyWidget'
 import LpCarRecommendations from './lpCarRecommendations'
 import CarOfTheMonth from './carOfTheMonth'
 import dynamic from 'next/dynamic'
+import HomepageAdaOTOdiSEVA from './homepageAdaOTOdiSEVA'
 import { InsuranceTooltip } from './insuranceTooltip'
-
+import LeadsFormAdaOTOdiSEVA from './leadsForm/adaOTOdiSEVA'
+import { AdaOTOdiSEVALeadsForm } from './leadsForm/adaOTOdiSEVA/popUp'
 const Exterior360ViewerTab = dynamic(
   () => import('./tabContent/upper/exterior360Viewer'),
 )
@@ -108,4 +109,7 @@ export {
   LpCarRecommendations,
   CarOfTheMonth,
   InsuranceTooltip,
+  HomepageAdaOTOdiSEVA,
+  LeadsFormAdaOTOdiSEVA,
+  AdaOTOdiSEVALeadsForm,
 }

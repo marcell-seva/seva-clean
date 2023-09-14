@@ -115,7 +115,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
     setIsFocused(false)
     if (
       !options.some(
-        (x) => x.label.toLowerCase() === currentValue.toLowerCase(),
+        (x) => x.label?.toLowerCase() === currentValue.toLowerCase(),
       ) ||
       !options.some((x) =>
         typeof x.value === 'string'

@@ -81,7 +81,7 @@ const ArticleWidget = ({
         <div>
           <div className={styles.wrapperCardList}>
             {articlesTabList
-              .map((article: Article, index: number) => {
+              ?.map((article: Article, index: number) => {
                 return (
                   <ArticleWidgetListCard
                     article={article}

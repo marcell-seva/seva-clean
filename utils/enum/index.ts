@@ -19,6 +19,11 @@ export enum InputVersion {
   Mobile = 'Mobile',
 }
 
+export enum InputVersionType {
+  Primary = 'Primary',
+  Secondary = 'Secondary',
+}
+
 export enum PaymentType {
   MonthlyInstallment = 'monthlyInstallment',
   DownPayment = 'downPayment',

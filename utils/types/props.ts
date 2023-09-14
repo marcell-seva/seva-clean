@@ -2,6 +2,7 @@ import { FormControlValue, Location } from './utils'
 import { HTMLAttributes } from 'react'
 import { LoanRank, ToastType } from './models'
 import type { ModalProps } from 'antd'
+import { InputVersionType } from 'utils/enum'
 
 export interface MobileWebTopMenuItemType {
   menuName: string
@@ -135,6 +136,7 @@ export interface PropsInput extends React.ComponentProps<'input'> {
   dataTestId?: string
   isWithIcon?: boolean
   icon?: any
+  version?: InputVersionType
 }
 
 export interface PropsToast extends Omit<ModalProps, 'closable'> {

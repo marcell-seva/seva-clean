@@ -3,12 +3,16 @@ import { createContext, useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { api } from 'services/api'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
-import { HomepageDesktop, HomepageMobile } from 'components/organisms'
+import {
+  HomepageAdaOTOdiSEVA,
+  HomepageDesktop,
+  HomepageMobile,
+} from 'components/organisms'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { getCity } from 'utils/hooks/useGetCity'
-import styles from 'styles/pages/homepage.module.scss'
-import { useCar } from 'services/context/carContext'
+import styles from 'styles/pages/adaOTOdiSEVA.module.scss'
 import { useUtils } from 'services/context/utilsContext'
+import { useCar } from 'services/context/carContext'
 
 interface HomePageDataLocalContextType {
   dataBanner: any
@@ -22,10 +26,8 @@ interface HomePageDataLocalContextType {
   dataTypeCar: any
   dataCarofTheMonth: any
 }
-/**
- * used to pass props without drilling through components
- */
-export const HomePageDataLocalContext =
+
+export const HomePageDataLocalContext2 =
   createContext<HomePageDataLocalContextType>({
     dataBanner: null,
     dataMenu: null,
@@ -54,7 +56,7 @@ export default function WithTracker({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isMobile, setIsMobile] = useState(useIsMobileSSr())
   const { saveTypeCar, saveCarOfTheMonth, saveRecommendationToyota } = useCar()
-  const { saveArticles } = useUtils()
+  const { saveArticles, saveCities, saveMobileWebTopMenus } = useUtils()
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
   useEffect(() => {
@@ -62,14 +64,16 @@ export default function WithTracker({
   }, [isClientMobile])
 
   useEffect(() => {
+    saveMobileWebTopMenus(dataMenu)
     saveArticles(dataMainArticle)
     saveCarOfTheMonth(dataCarofTheMonth)
     saveTypeCar(dataTypeCar)
+    saveCities(dataCities)
     saveRecommendationToyota(dataRecToyota)
   }, [])
 
   return (
-    <HomePageDataLocalContext.Provider
+    <HomePageDataLocalContext2.Provider
       value={{
         dataBanner,
         dataMenu,
@@ -84,12 +88,9 @@ export default function WithTracker({
       }}
     >
       <div className={styles.mobile}>
-        <HomepageMobile dataReccomendation={dataReccomendation} />
+        <HomepageAdaOTOdiSEVA dataReccomendation={dataReccomendation} />
       </div>
-      <div className={styles.desktop}>
-        <HomepageDesktop />
-      </div>
-    </HomePageDataLocalContext.Provider>
+    </HomePageDataLocalContext2.Provider>
   )
 }
 
@@ -115,7 +116,7 @@ export async function getServerSideProps(context: any) {
     ]: any = await Promise.all([
       api.getRecommendation(params),
       api.getBanner(),
-      api.getMenu(),
+      api.getMobileHeaderMenu(),
       api.getCities(),
       api.getTestimony(),
       api.getRecommendation('?brand=Toyota&city=jakarta&cityId=118'),

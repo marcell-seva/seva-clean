@@ -12,9 +12,15 @@
   }
 }
 
-.titleText {
+.titlePrimaryText {
   font-size: 12px;
   color: #{$shades-grey-75};
+  padding: 8px 0px;
+}
+
+.titleSecondaryText {
+  font-size: 12px;
+  color: #{$primary-white};
   padding: 8px 0px;
 }
 
