@@ -1,7 +1,7 @@
 @import '../../abstract/colors';
 
 .label {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 12px;
   color: #{$shades-grey-75};
 }

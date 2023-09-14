@@ -12,7 +12,7 @@
 }
 
 .text-name-tmt {
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -27,7 +27,7 @@
 }
 
 .text-detail-tmt {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;
@@ -44,7 +44,7 @@
 }
 
 .text-city-tmt {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;

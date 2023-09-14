@@ -160,7 +160,7 @@ const SelectorTextWrapper = styled.div`
 `
 
 const ModelVariantText = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-size: 20px;
   line-height: 28px;
@@ -176,7 +176,7 @@ const ModelVariantText = styled.span`
 `
 
 const PriceText = styled.span<{ isTabCreditV2: boolean }>`
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-size: 14px;
   line-height: 28px;
   color: ${({ isTabCreditV2 }) =>
@@ -224,13 +224,13 @@ const selectedStyle = css`
 `
 
 const StyledOption = styled.div<{ isSelected: boolean }>`
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0px;
 
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   height: 43px;
   width: 100%;
   :hover {

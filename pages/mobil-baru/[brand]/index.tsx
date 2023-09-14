@@ -7,36 +7,44 @@ import { useRouter } from 'next/router'
 import { saveLocalStorage } from 'utils/handler/localStorage'
 import { LocalStorageKey } from 'utils/enum'
 import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
-import {
-  CarRecommendation,
-  CarRecommendationResponse,
-  MinMaxPrice,
-} from 'utils/types/context'
+import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
-import { FooterSEOAttributes } from 'utils/types/utils'
+import {
+  CityOtrOption,
+  FooterSEOAttributes,
+  MobileWebTopMenuType,
+} from 'utils/types/utils'
 import PLPDesktop from 'components/organisms/PLPDesktop'
 import { useMediaQuery } from 'react-responsive'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import styles from 'styles/pages/plp.module.scss'
+import { useUtils } from 'services/context/utilsContext'
+import { MobileWebFooterMenuType } from 'utils/types/props'
+import { api } from 'services/api'
+import { CarProvider } from 'services/context'
+import { getToken } from 'utils/handler/auth'
 
 const NewCarResultPage = ({
   meta,
   isSsrMobile,
+  dataHeader,
+  dataFooter,
+  dataCities,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const id = router.query.brand
-  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
-  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
+  const { saveMobileWebTopMenus, saveMobileWebFooterMenus, saveCities } =
+    useUtils()
 
   useEffect(() => {
+    saveMobileWebTopMenus(dataHeader)
+    saveMobileWebFooterMenus(dataFooter)
+    saveCities(dataCities)
+
     if (id && typeof id === 'string' && id.includes('SEVA')) {
       saveLocalStorage(LocalStorageKey.referralTemanSeva, id)
     }
   }, [])
-
-  useEffect(() => {
-    setIsMobile(isClientMobile)
-  }, [isClientMobile])
 
   return (
     <>
@@ -46,19 +54,23 @@ const NewCarResultPage = ({
         <meta name="description" content={meta.description} />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <div className={styles.mobile}>
-        <PLP
-          carRecommendation={meta.carRecommendations}
-          minmaxPrice={meta.MinMaxPrice}
-          alternativeRecommendation={meta.alternativeCarRecommendation}
-        />
-      </div>
-      <div className={styles.desktop}>
-        <PLPDesktop
-          carRecommendation={meta.carRecommendations}
-          footer={meta.footer}
-        />
-      </div>
+      <CarProvider
+        car={null}
+        carModel={null}
+        carModelDetails={null}
+        carVariantDetails={null}
+        recommendation={meta.carRecommendations.carRecommendations}
+      >
+        <div className={styles.mobile}>
+          <PLP minmaxPrice={meta.MinMaxPrice} />
+        </div>
+        <div className={styles.desktop}>
+          <PLPDesktop
+            carRecommendation={meta.carRecommendations}
+            footer={meta.footer}
+          />
+        </div>
+      </CarProvider>
     </>
   )
 }
@@ -71,7 +83,6 @@ type PLPProps = {
   footer: FooterSEOAttributes
   MinMaxPrice: MinMaxPrice
   carRecommendations: CarRecommendationResponse
-  alternativeCarRecommendation: CarRecommendation[]
 }
 
 const getBrand = (brand: string | string[] | undefined) => {
@@ -89,7 +100,14 @@ const getBrand = (brand: string | string[] | undefined) => {
 export const getServerSideProps: GetServerSideProps<{
   meta: PLPProps
   isSsrMobile: boolean
+  dataHeader: MobileWebTopMenuType[]
+  dataFooter: MobileWebFooterMenuType[]
+  dataCities: CityOtrOption[]
 }> = async (ctx) => {
+  ctx.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=59',
+  )
   const metabrand = getBrand(ctx.query.brand)
   const metaTagBaseApi =
     'https://api.sslpots.com/api/meta-seos/?filters[location_page3][$eq]=CarSearchResult'
@@ -117,7 +135,6 @@ export const getServerSideProps: GetServerSideProps<{
       lowestCarPrice: 0,
       highestCarPrice: 0,
     },
-    alternativeCarRecommendation: [],
   }
 
   const {
@@ -132,10 +149,14 @@ export const getServerSideProps: GetServerSideProps<{
   } = ctx.query
 
   try {
-    const [fetchMeta, fetchFooter] = await Promise.all([
-      axios.get(metaTagBaseApi + metabrand),
-      axios.get(footerTagBaseApi + metabrand),
-    ])
+    const [fetchMeta, fetchFooter, menuRes, footerRes, cityRes] =
+      await Promise.all([
+        axios.get(metaTagBaseApi + metabrand),
+        axios.get(footerTagBaseApi + metabrand),
+        api.getMobileHeaderMenu(),
+        api.getMobileFooterMenu(),
+        api.getCities(),
+      ])
 
     const metaData = fetchMeta.data.data
     const footerData = fetchFooter.data.data
@@ -164,13 +185,11 @@ export const getServerSideProps: GetServerSideProps<{
       ...(sortBy && { sortBy }),
     }
 
-    const [funnel, alternative] = await Promise.all([
+    const [funnel] = await Promise.all([
       getNewFunnelRecommendations({ ...queryParam }),
-      getNewFunnelRecommendations({ ...queryParam, brand: [] }),
     ])
 
     const recommendation = funnel
-    const alternativeData = alternative
 
     if (metaData && metaData.length > 0) {
       meta.title = metaData[0].attributes.meta_title
@@ -182,10 +201,25 @@ export const getServerSideProps: GetServerSideProps<{
     }
 
     if (recommendation) meta.carRecommendations = recommendation
-    meta.alternativeCarRecommendation = alternativeData.carRecommendations
 
-    return { props: { meta, isSsrMobile: getIsSsrMobile(ctx) } }
+    return {
+      props: {
+        meta,
+        isSsrMobile: getIsSsrMobile(ctx),
+        dataHeader: menuRes.data,
+        dataFooter: footerRes.data,
+        dataCities: cityRes,
+      },
+    }
   } catch (e) {
-    return { props: { meta, isSsrMobile: getIsSsrMobile(ctx) } }
+    return {
+      props: {
+        meta,
+        isSsrMobile: getIsSsrMobile(ctx),
+        dataHeader: [],
+        dataFooter: [],
+        dataCities: [],
+      },
+    }
   }
 }

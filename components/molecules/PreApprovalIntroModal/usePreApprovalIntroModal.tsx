@@ -105,7 +105,7 @@ const StyledClose = styled.div`
 const StyledTitle = styled.h2`
   margin-top: 16px;
   color: ${colors.title};
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
@@ -117,7 +117,7 @@ const StyledTitle = styled.h2`
   }
 `
 const StyledSubtitle = styled.h2`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -178,7 +178,7 @@ const StyledStepIconWrapper = styled.div`
 `
 
 const StyledStepText = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -195,7 +195,7 @@ const StyledSecureInfoWrapper = styled.div`
 `
 
 const StyledSecureInfoTitle = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -232,7 +232,7 @@ const StyledPositiveButtonWrapper = styled.span`
   background: ${colors.primary1};
   color: ${colors.white};
   border-radius: 16px;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0px;

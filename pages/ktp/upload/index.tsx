@@ -405,7 +405,7 @@ const StyledGuidlineWrapper = styled.div`
 `
 
 const StyledGuidlineText = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 12px;
   line-height: 18px;
   color: ${colors.white};

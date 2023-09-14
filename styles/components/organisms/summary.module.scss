@@ -128,7 +128,7 @@
   color: #246ed4 !important;
 }
 .openSansBoldGrey {
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-weight: 700;
   font-size: 11px;
   line-height: 16px;

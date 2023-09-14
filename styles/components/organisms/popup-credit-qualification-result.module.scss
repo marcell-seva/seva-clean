@@ -33,7 +33,7 @@
 }
 
 .popupTitle {
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
@@ -43,7 +43,7 @@
 }
 
 .smallButtonText {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
@@ -60,7 +60,7 @@
 }
 
 .bodyText {
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-size: 12px;
   font-style: normal;
   font-weight: 400;

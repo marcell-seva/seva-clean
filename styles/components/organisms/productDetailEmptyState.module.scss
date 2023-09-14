@@ -18,7 +18,7 @@
 }
 
 .textInfo {
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-size: 20px;
   line-height: 28px;
   color: #{$primary-black};

@@ -35,11 +35,12 @@ type tabProps = {
 const Summary = memo(({ tab, isSticky }: tabProps) => {
   const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const {
-    carModelDetailsResDefaultCity,
+    dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
     carRecommendationsResDefaultCity,
   } = useContext(PdpDataLocalContext)
-  const modelDetailData = carModelDetails || carModelDetailsResDefaultCity
+  const modelDetailData =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const variantDetailData = carVariantDetails || carVariantDetailsResDefaultCity
   const recommendationsDetailData =
     recommendation.length !== 0
@@ -298,7 +299,7 @@ const Container = styled.div`
 `
 
 const Title = styled.h2`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 14px;
   font-weight: 700;
   line-height: 24px;
@@ -313,7 +314,7 @@ const Title = styled.h2`
 `
 
 const TitlePrice = styled.h2`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 14px;
   line-height: 20px;
   margin-bottom: 12px;
@@ -326,7 +327,7 @@ const TitlePrice = styled.h2`
 `
 
 const TitleFaq = styled.h3`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 14px;
   font-weight: 700;
   line-height: 20px;

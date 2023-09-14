@@ -195,7 +195,7 @@ const BigDisplayCarouselWordingStyle = css`
   align-items: center;
   justify-content: center;
   padding: 0 7px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 10px;
@@ -207,7 +207,7 @@ const BigDisplayCarouselWordingStyle = css`
     width: 60px;
     height: 30px;
     padding: 0;
-    font-family: 'OpenSansSemiBold';
+    font-family: var(--open-sans-semi-bold);
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;

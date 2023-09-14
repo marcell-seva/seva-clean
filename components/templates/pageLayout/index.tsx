@@ -38,6 +38,7 @@ const PageLayout = ({ children, footer = true }: PageLayoutProps) => {
   }
 
   useEffect(() => {
+    console.log('datasss baru')
     getAnnouncementBox()
     checkCitiesData()
   }, [])

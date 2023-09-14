@@ -32,7 +32,7 @@ export const screenWidth = client
 //     box-sizing: border-box;
 //     margin: 0;
 //     padding: 0;
-//     font-family: 'OpenSans';
+//     font-family: var(--open-sans);
 //     -webkit-font-smoothing: antialiased;
 //     -moz-osx-font-smoothing: grayscale;
 //   }

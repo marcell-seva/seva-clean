@@ -192,7 +192,7 @@ const StyledShareButtonList = styled.div`
 `
 
 const StyledTitle = styled.h2`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
@@ -213,7 +213,7 @@ const StyledText = styled.span`
   font-size: 10px;
   line-height: 15px;
   letter-spacing: 0px;
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   color: ${colors.title};
 `
 
@@ -231,7 +231,7 @@ const StyledUrlField = styled.div`
 `
 
 const StyledUrlText = styled.span`
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -240,7 +240,7 @@ const StyledUrlText = styled.span`
 `
 
 const StyledCopyUrl = styled.div`
-  font-family: 'Kanyon';
+  font-family: var(--kanyon);
   text-decoration: none;
   cursor: pointer;
   color: ${colors.primary1};

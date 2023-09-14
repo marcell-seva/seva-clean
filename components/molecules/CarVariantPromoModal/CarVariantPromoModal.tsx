@@ -45,7 +45,7 @@ const PromoWrapper = styled.div`
 `
 
 const Title = styled.span`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-size: 20px;
   line-height: 24px;
   color: ${colors.primary1};

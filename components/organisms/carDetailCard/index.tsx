@@ -166,16 +166,29 @@ export const CarDetailCard = ({
   return (
     <div className={styles.container}>
       <CardShadow className={styles.cardWrapper}>
-        <LazyLoadImage
-          src={recommendation.images[0]}
-          className={styles.heroImg}
-          alt={`${recommendation.brand} ${recommendation.model}`}
-          onClick={navigateToPDP}
-          data-testid={elementId.CarImage}
-          width={279}
-          height={209}
-          loading={order === 0 ? 'eager' : 'lazy'}
-        />
+        {order === 0 ? (
+          <Image
+            src={recommendation.images[0]}
+            className={styles.heroImg}
+            alt={`${recommendation.brand} ${recommendation.model}`}
+            onClick={navigateToPDP}
+            data-testid={elementId.CarImage}
+            width={279}
+            height={209}
+            loading="eager"
+          />
+        ) : (
+          <LazyLoadImage
+            src={recommendation.images[0]}
+            className={styles.heroImg}
+            alt={`${recommendation.brand} ${recommendation.model}`}
+            onClick={navigateToPDP}
+            data-testid={elementId.CarImage}
+            width={279}
+            height={209}
+          />
+        )}
+
         <LabelPromo
           className={styles.labelCard}
           onClick={onClickLabel}

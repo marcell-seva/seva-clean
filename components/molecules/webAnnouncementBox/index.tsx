@@ -19,6 +19,7 @@ import { Shimmer } from 'components/atoms/shimmerOld'
 import { api } from 'services/api'
 import { SessionStorageKey } from 'utils/enum'
 import { getToken } from 'utils/handler/auth'
+import { useUtils } from 'services/context/utilsContext'
 
 const CustomRight = '/revamp/images/announcementBox/custom-desktop-right.webp'
 const CustomLeft = '/revamp/images/announcementBox/custom-desktop-left.webp'
@@ -75,23 +76,17 @@ export const WebAnnouncementBox = ({
   const [announcement, setAnnouncement] = useState<AnnouncementBoxDataType>()
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
+  const { dataAnnouncementBox } = useUtils()
 
   useEffect(() => {
     setIsLoading(true)
-    api
-      .getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      .then((res) => {
-        setAnnouncement(res.data)
-        setIsLoading(false)
-      })
-      .catch(() => {
-        setIsError(true)
-        setIsLoading(false)
-      })
+    if (dataAnnouncementBox !== undefined) {
+      setAnnouncement(dataAnnouncementBox)
+      setIsLoading(false)
+    } else {
+      setIsError(true)
+      setIsLoading(false)
+    }
   }, [])
 
   useEffect(() => {
@@ -411,7 +406,7 @@ const StyledText = styled.div`
   p {
     margin: 0;
     color: white;
-    font-family: 'OpenSansSemiBold';
+    font-family: var(--open-sans-semi-bold);
     font-weight: 600;
     font-size: 13px;
     line-height: 17.7px;
@@ -425,7 +420,7 @@ const StyledText = styled.div`
     }
     strong {
       font-weight: 800;
-      font-family: 'OpenSansExtraBold';
+      font-family: var(--open-sans-extra-bold);
     }
   }
   @media (max-width: 1024px) {
@@ -457,7 +452,7 @@ const WrapperClose = styled.div`
 `
 const StyledCTA = styled.div<{ isUrl?: boolean }>`
   color: white;
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-weight: 700;
   font-size: 14px;
   line-height: 20px;

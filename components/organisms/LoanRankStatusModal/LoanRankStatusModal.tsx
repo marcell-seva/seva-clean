@@ -242,12 +242,12 @@ const CommonFontStyle = css`
 
 const CarName = styled.span`
   ${CommonFontStyle}
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-weight: 700;
 `
 
 const LoanRankStyle = css`
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-style: normal;
   font-weight: 700;
   color: ${colors.white};
@@ -268,7 +268,7 @@ const LoanRankLabel = styled.span`
 
 const Subtitle = styled.span`
   margin-top: 10px;
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -317,7 +317,7 @@ const StyledButton2 = styled.button`
 `
 
 const ButtonTextStyle = css`
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -343,7 +343,7 @@ const PickOtherCar = styled.button`
   margin-top: 6px;
   background: none;
   border: none;
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 12px;

@@ -61,7 +61,9 @@ export const BadgeLoanStatus = ({
       return (
         <Wording>
           Peluang Kreditmu:&nbsp;
-          <span style={{ fontFamily: 'OpenSansBold', fontWeight: 700 }}>
+          <span
+            style={{ fontFamily: 'var(--open-sans-bold)', fontWeight: 700 }}
+          >
             MUDAH
           </span>
         </Wording>
@@ -70,7 +72,9 @@ export const BadgeLoanStatus = ({
       return (
         <Wording>
           Peluang Kreditmu:&nbsp;
-          <span style={{ fontFamily: 'OpenSansBold', fontWeight: 700 }}>
+          <span
+            style={{ fontFamily: 'var(--open-sans-bold)', fontWeight: 700 }}
+          >
             SULIT
           </span>
         </Wording>
@@ -79,7 +83,9 @@ export const BadgeLoanStatus = ({
       return (
         <Wording>
           Lihat&nbsp;
-          <span style={{ fontFamily: 'OpenSansBold', fontWeight: 700 }}>
+          <span
+            style={{ fontFamily: 'var(--open-sans-bold)', fontWeight: 700 }}
+          >
             Peluang Kreditmu
           </span>
         </Wording>
@@ -203,7 +209,7 @@ const IconWrapper = styled.div`
 `
 
 const Wording = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 600;
   font-size: 10px;

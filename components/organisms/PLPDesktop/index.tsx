@@ -55,7 +55,10 @@ import FloatingIcon from 'components/molecules/FloatingIcon/FloatingIcon'
 import { SeoParagraphSection } from '../SeoParagraphSection/SeoParagraphSection'
 import { NewFilterSideMenu } from './Filter/FilterSideMenu/NewFilterSideMenu'
 import { t } from 'config/localization/locales/id'
-import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
+import {
+  defaultCity,
+  getCity,
+} from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import HeaderCarResult from 'components/molecules/header/headerCarResult'
 import { PageHeaderSevaCarResults } from '../PageHeaderSeva/PageHeaderSevaCarResults'
 import { setTrackEventMoEngage } from 'helpers/moengage'
@@ -134,6 +137,7 @@ export default function PLPDesktop({
       inline: 'nearest',
     })
   }
+  const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
 
   useEffect(() => {
     scrollToSectionContent()
@@ -351,42 +355,35 @@ export default function PLPDesktop({
 
   const getDataFunnel = () => {
     getNewFunnelRecommendations(funnelQuery).then((response) => {
-      setRecommendationLists(response.carRecommendations || [])
+      saveRecommendation(response.carRecommendations || [])
       timeoutShimmer()
     })
   }
 
   useEffect(() => {
-    if (
-      getCity().cityName !== 'Jakarta Pusat' ||
-      carRecommendation.carRecommendations.length === 0
-    ) {
-      if (brand) {
-        if (!brand.includes('SEVA')) {
-          setBrandName(
-            brand === 'bmw'
-              ? brand.toUpperCase()
-              : capitalizeFirstLetter(brand),
-          )
-          const forFilterRecommendations = recommendation.map((item: any) => {
-            item.brandAndModel = `${item.brand} ${item.model}`
-            item.modelAndBrand = `${item.model} ${item.brand}`
-            return item
-          })
-          const filterRecommendations = brand
-            ? forFilterRecommendations.filter((item: { brandAndModel: any }) =>
-                String(item.brandAndModel)
-                  .toLowerCase()
-                  .includes(brand.toLowerCase()),
-              )
-            : recommendation
-          setRecommendationLists(filterRecommendations)
-          timeoutShimmer()
-        }
-      } else {
-        setRecommendationLists(recommendation)
+    if (brand) {
+      if (!brand.includes('SEVA')) {
+        setBrandName(
+          brand === 'bmw' ? brand.toUpperCase() : capitalizeFirstLetter(brand),
+        )
+        const forFilterRecommendations = recommendation.map((item: any) => {
+          item.brandAndModel = `${item.brand} ${item.model}`
+          item.modelAndBrand = `${item.model} ${item.brand}`
+          return item
+        })
+        const filterRecommendations = brand
+          ? forFilterRecommendations.filter((item: { brandAndModel: any }) =>
+              String(item.brandAndModel)
+                .toLowerCase()
+                .includes(brand.toLowerCase()),
+            )
+          : recommendation
+        setRecommendationLists(filterRecommendations)
         timeoutShimmer()
       }
+    } else {
+      setRecommendationLists(recommendation)
+      timeoutShimmer()
     }
   }, [recommendation])
 
@@ -401,7 +398,7 @@ export default function PLPDesktop({
         funnelQuery.carModel ||
         funnelQuery.downPaymentAmount ||
         funnelQuery.monthlyInstallment ||
-        Array(funnelQuery.brand).length > 0
+        (!!funnelQuery.brand && funnelQuery.brand.length > 0)
       ) {
         setSearchInputValue(String(funnelQuery.carModel))
         getDataFunnel()
@@ -622,7 +619,7 @@ const ResultAndFilterWrapper = styled.div`
 `
 
 const StyledTextNotFound = styled.div`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-weight: 700;
   font-size: 24px;
   line-height: 28px;
@@ -664,7 +661,7 @@ const StyledWebHeader = styled.div`
 const StyledTitleRegular = styled.h1`
   display: flex;
   align-items: baseline;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -679,14 +676,14 @@ const StyledTitleRegular = styled.h1`
 `
 const StyledTitle = styled.div`
   color: ${colors.title};
-  font-family: 'OpenSansBold';
+  font-family: var(--open-sans-bold);
   font-weight: 700;
   font-size: 16px;
   line-height: 16px;
   letter-spacing: 0px;
 
   @media (max-width: 1024px) {
-    font-family: 'OpenSansBold';
+    font-family: var(--open-sans-bold);
     font-size: 14px;
     line-height: 16px;
     font-weight: 700;
@@ -722,7 +719,7 @@ const StyledContent = styled.div`
 
 const StyledCarModelTileV2 = styled(CarModelTileV2)`
   @media (min-width: 1025px) {
-    max-width: 511px;
+    max-width: 360px;
   }
 `
 
@@ -773,7 +770,7 @@ const StyledNotFound = styled.div`
 `
 
 const StyledNotFoundDesc = styled(TextSmallRegular)`
-  font-family: 'KanyonMedium';
+  font-family: var(--kanyon-medium);
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -809,7 +806,7 @@ const StyledFloatinFilterButton = styled.div`
 `
 
 const StyledFloatingFilterText = styled(TextSmallRegular)`
-  font-family: 'KanyonBold';
+  font-family: var(--kanyon-bold);
   font-style: normal;
   font-weight: 700;
   font-size: 12px;

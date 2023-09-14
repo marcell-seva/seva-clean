@@ -131,7 +131,7 @@
 }
 
 .counterText {
-  font-family: 'OpenSansSemiBold';
+  font-family: var(--open-sans-semi-bold);
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
@@ -145,14 +145,14 @@
   padding: 0px;
   gap: 4px;
   height: 18px;
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
   color: $primary-black;
   p {
-    font-family: 'OpenSansSemiBold';
+    font-family: var(--open-sans-semi-bold);
     font-weight: 600;
     font-size: 12px;
     line-height: 18px;

@@ -228,7 +228,7 @@ export const SelectLoanCalculatorPage = <T extends FormControlValue>({
 const screenHeight = client ? document.documentElement.clientHeight : 0
 
 const StyledSelect = styled.input<InputProps>`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -250,7 +250,7 @@ const StyledSelect = styled.input<InputProps>`
   font-size: ${({ isNewRegularPage, isTabCreditDesktop }) =>
     isNewRegularPage ? '24px' : isTabCreditDesktop ? '16px' : '18px'};
   font-family: ${({ isTabCreditDesktop }) =>
-    isTabCreditDesktop ? 'OpenSans' : 'Kanyon'};
+    isTabCreditDesktop ? 'var(--open-sans)' : 'var(--kanyon)'};
   color: #05256e;
   &::placeholder {
     color: ${colors.placeholder};
@@ -281,7 +281,7 @@ const StyledOption = styled.div<{
   isSelected: boolean
   isNewRegularPage: boolean
 }>`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -475,7 +475,7 @@ const SelectAndIconContainer = styled.div<InputProps>`
 `
 
 const StyledTextNoOption = styled.span`
-  font-family: 'OpenSans';
+  font-family: var(--open-sans);
   font-style: normal;
   font-weight: 500;
   font-size: 12px;

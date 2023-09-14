@@ -10,6 +10,7 @@ import { getLocalStorage } from 'utils/handler/localStorage'
 import { UTMTagsData } from 'utils/types/utils'
 import { LocalStorageKey } from 'utils/enum'
 import { api } from 'services/api'
+import { useUtils } from 'services/context/utilsContext'
 
 const SevaLogo = '/revamp/icon/logo-on-dark.webp'
 const ISOIcon = '/revamp/icon/iso.webp'
@@ -29,15 +30,7 @@ export interface FooterMenu {
 
 export const FooterMobile = () => {
   const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
-  const [menu, setMenu] = useState<FooterMenu[]>([])
-
-  useEffect(() => {
-    api
-      .getMobileFooterMenu()
-      .then((result: { data: React.SetStateAction<FooterMenu[]> }) => {
-        setMenu(result.data) // result.data.data undefined
-      })
-  }, [])
+  const { mobileWebFooterMenus } = useUtils()
 
   const dataTestId = (code: string) => {
     switch (code) {
@@ -84,8 +77,8 @@ export const FooterMobile = () => {
           pembiayaan dan dealer resmi dari Astra Group
         </span>
         <div className={styles.linkedTextWrapper}>
-          {menu?.length > 0 &&
-            menu?.map((item, index) => (
+          {mobileWebFooterMenus?.length > 0 &&
+            mobileWebFooterMenus?.map((item, index) => (
               <a
                 href={formatMenuUrl(item.menuUrl)}
                 key={index}

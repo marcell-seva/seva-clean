@@ -153,29 +153,26 @@ export const PriceTab = ({
       hundred,
     )
   }
-  const getMonthlyInstallment = () => {
-    if (variantView) {
-      getNewFunnelLoanSpecialRate({
-        otr: variantView?.priceValue - variantView?.discount,
-        dp: 20,
-        dpAmount: variantView?.priceValue * 0.2,
-        city: cityOtr?.cityCode,
-        discount: variantView?.discount,
-        rateType: 'REGULAR',
-        angsuranType: InstallmentTypeOptions.ADDM,
+  const getMonthlyInstallment = (carVariantTmp: CarVariantRecommendation) => {
+    getNewFunnelLoanSpecialRate({
+      otr: carVariantTmp?.priceValue - carVariantTmp?.discount,
+      dp: 20,
+      dpAmount: carVariantTmp?.priceValue * 0.2,
+      city: cityOtr?.cityCode,
+      discount: carVariantTmp?.discount,
+      rateType: 'REGULAR',
+      angsuranType: InstallmentTypeOptions.ADDM,
+    })
+      .then((res) => {
+        const result = res.data.reverse()
+        const selectedLoanInitialValue =
+          result.filter((item: SpecialRateListType) => item.tenure === 5)[0] ??
+          null
+        setMonthlyInstallment(selectedLoanInitialValue.installment)
       })
-        .then((res) => {
-          const result = res.data.reverse()
-          const selectedLoanInitialValue =
-            result.filter(
-              (item: SpecialRateListType) => item.tenure === 5,
-            )[0] ?? null
-          setMonthlyInstallment(selectedLoanInitialValue.installment)
-        })
-        .catch(() => {
-          // TODO add error toast
-        })
-    }
+      .catch(() => {
+        // TODO add error toast
+      })
   }
   const getPriceRange = (payload: any) => {
     const variantLength = payload.length
@@ -246,7 +243,7 @@ export const PriceTab = ({
             setOpenModal={setOpenModal}
             setViewVariant={setVariantView}
             setSelectedTabValue={setSelectedTabValue}
-            onCardClick={() => getMonthlyInstallment()}
+            onCardClick={(value) => getMonthlyInstallment(value)}
           />
         )}
         {variantView && (
