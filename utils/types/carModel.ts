@@ -15,3 +15,8 @@ export interface CarModel {
   variants: CarVariant[]
   width: number
 }
+
+export interface BodyTypes {
+  body_type: string
+  data_count: number
+}

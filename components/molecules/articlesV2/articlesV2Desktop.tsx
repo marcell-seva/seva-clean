@@ -17,15 +17,13 @@ import { ArticleItemType, ArticlesItemV2Desktop } from './ArticlesItemV2Desktop'
 import { ArticlesItemV2Placeholder } from './ArticlesItemV2Placeholder'
 import { Previous } from 'components/atoms/icon/Previous'
 import { HomePageDataLocalContext } from 'pages'
+import { useUtils } from 'services/context/utilsContext'
 
 export const ArticlesV2Desktop = () => {
-  const { dataMainArticle } = useContext(HomePageDataLocalContext)
+  const { articles } = useUtils()
   const [showArticle, setShowArticles] = useState<boolean>(true)
-  const [mainArticle, setMainArticle] = useState<ArticleData>(
-    dataMainArticle[0],
-  )
-  const [articlesList, setArticlesList] =
-    useState<Array<ArticleData>>(dataMainArticle)
+  const [mainArticle, setMainArticle] = useState<ArticleData>(articles[0])
+  const [articlesList, setArticlesList] = useState<Array<ArticleData>>(articles)
   const [allArticles, setAllArticles] = useState<any>()
   const categoryScrollWrapperRef = useRef<any>(null)
   const [isShowPrev, setIsShowPrev] = useState(false)

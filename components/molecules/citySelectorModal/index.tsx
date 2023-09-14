@@ -68,8 +68,8 @@ const CitySelectorModal = ({
         label: '',
         value: '',
       }
-      tempObj.value = item.cityName
-      tempObj.label = item.cityName
+      tempObj.value = item?.cityName
+      tempObj.label = item?.cityName
       tempArray.push(tempObj)
     }
     return tempArray
@@ -204,21 +204,21 @@ const CitySelectorModal = ({
     const topCityDataList: CityOtrOption[] = []
 
     for (let i = 0; i < topCityName.length; i++) {
-      for (let j = 0; j < cityListFromApi.length; j++) {
+      for (let j = 0; j < cityListFromApi?.length; j++) {
         if (topCityName[i] === cityListFromApi[j].cityName) {
           topCityDataList.push(cityListFromApi[j])
         }
       }
     }
 
-    const restOfCityData = cityListFromApi.filter(
+    const restOfCityData = cityListFromApi?.filter(
       (x) => !topCityDataList.includes(x),
     )
-    const sortedRestOfCityData = restOfCityData.sort((a, b) =>
+    const sortedRestOfCityData = restOfCityData?.sort((a, b) =>
       a.cityName.localeCompare(b.cityName),
     )
 
-    return [...topCityDataList, ...sortedRestOfCityData]
+    return [...topCityDataList, sortedRestOfCityData] //here
   }
 
   useEffect(() => {

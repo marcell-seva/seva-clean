@@ -8,13 +8,19 @@ import {
   MobileWebTopMenuType,
 } from 'utils/types/props'
 import { CityOtrOption } from 'utils/types'
-import { AnnouncementBoxDataType, NavbarItemResponse } from 'utils/types/utils'
+import {
+  AnnouncementBoxDataType,
+  ArticleData,
+  NavbarItemResponse,
+} from 'utils/types/utils'
 
 export type UtilsContextType = {
   dataAnnouncementBox: AnnouncementBoxDataType | undefined
   saveDataAnnouncementBox: (data: AnnouncementBoxDataType) => void
   cities: CityOtrOption[]
   saveCities: (data: CityOtrOption[]) => void
+  articles: ArticleData[]
+  saveArticles: (data: ArticleData[]) => void
   mobileWebTopMenus: MobileWebTopMenuType[] | []
   mobileWebFooterMenus: MobileWebFooterMenuType[] | []
   saveMobileWebTopMenus: (data: MobileWebTopMenuType[]) => void
@@ -31,6 +37,7 @@ export const UtilsContext = createContext<UtilsContextType | []>([])
 
 export const UtilsContextProvider = ({ children }: any) => {
   const [cities, setCities] = useState<CityOtrOption[] | []>([])
+  const [articles, setArticles] = useState<ArticleData[] | []>([])
   const [dataAnnouncementBox, setIsShowAnnouncementBox] = useState<
     AnnouncementBoxDataType | undefined
   >()
@@ -53,6 +60,10 @@ export const UtilsContextProvider = ({ children }: any) => {
   )
 
   const saveCities = (citiesData: CityOtrOption[]) => setCities(citiesData)
+
+  const saveArticles = (articlesData: ArticleData[]) =>
+    setArticles(articlesData)
+
   const saveDataAnnouncementBox = (
     dataAnnouncementBox: AnnouncementBoxDataType,
   ) => setIsShowAnnouncementBox(dataAnnouncementBox)
@@ -76,6 +87,8 @@ export const UtilsContextProvider = ({ children }: any) => {
         saveDataAnnouncementBox,
         cities,
         saveCities,
+        articles,
+        saveArticles,
         mobileWebTopMenus,
         saveMobileWebTopMenus,
         mobileWebFooterMenus,

@@ -142,7 +142,7 @@ export default function NewCarVariantList() {
   const [isButtonClick, setIsButtonClick] = useState(false)
   const [promoName, setPromoName] = useState('promo1')
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
-  const { cities, dataAnnouncementBox, saveDataAnnouncementBox } = useUtils()
+  const { cities, saveDataAnnouncementBox } = useUtils()
   const [isOpenShareModal, setIsOpenShareModal] = useState(false)
   const [connectedRefCode, setConnectedRefCode] = useState('')
   const { funnelQuery } = useFunnelQueryData()

@@ -7,6 +7,7 @@ import { Information } from './information'
 import { COMData } from 'utils/types/utils'
 import { HomePageDataLocalContext } from 'pages'
 import { api } from 'services/api'
+import { useCar } from 'services/context/carContext'
 
 interface CarOfMonthProps {
   onSendOffer: () => void
@@ -14,9 +15,9 @@ interface CarOfMonthProps {
 }
 
 export const CarOfMonth = ({ onSendOffer }: CarOfMonthProps) => {
-  const { dataCarofTheMonth } = useContext(HomePageDataLocalContext)
+  const { carOfTheMonth } = useCar()
   const [tabIndex, setTabIndex] = useState(0)
-  const [comDataNew, setComDataNew] = useState<COMData[]>(dataCarofTheMonth)
+  const [comDataNew, setComDataNew] = useState<COMData[]>(carOfTheMonth)
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState(false)
 

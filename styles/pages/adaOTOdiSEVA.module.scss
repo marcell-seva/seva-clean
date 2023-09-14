@@ -1,0 +1,16 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.mobile {
+  display: block;
+  @include lg {
+    display: none;
+  }
+}
+
+.desktop {
+  display: none;
+  @include lg {
+    display: block;
+  }
+}

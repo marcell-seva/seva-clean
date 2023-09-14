@@ -1,0 +1,98 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+}
+
+.wrapper {
+  position: relative;
+}
+
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #{$primary-green-40};
+  z-index: 1;
+}
+
+.wrapperSupergraphicLeft {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+}
+
+.supergraphicLeft {
+  width: 100px;
+  height: 55px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.wrapperSupergraphicRight {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+}
+
+.supergraphicRight {
+  width: 100px;
+  height: 164px;
+  position: absolute;
+  right: 0;
+  top: 109px;
+  z-index: 1;
+}
+
+.foreground {
+  position: relative;
+  z-index: 2;
+  padding: 35px 16px 73px 16px;
+}
+
+.form {
+  margin-top: 24px;
+}
+
+.textHeading {
+  font-family: var(--kanyon);
+  font-size: 20px;
+  line-height: 28px;
+  color: #{$secondary-sky-blue-10};
+}
+
+.textSubHeading {
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$primary-white};
+}
+
+.textSuggestion {
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #{$primary-white};
+  margin: 20px 0px;
+}
+
+.inputPhone {
+  margin-top: 24px;
+}
+
+.button {
+  margin-top: 32px;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
