@@ -19,6 +19,7 @@ import { LinkLabelLargeSemiBold } from 'components/atoms/typography/LinkLabelLar
 import { TestimoniTile } from './testimoniTile'
 import { HomePageDataLocalContext } from 'pages'
 import { LocalStorageKey } from 'utils/enum'
+import Image from 'next/image'
 
 const leftArrow = '/revamp/icon/arrowLeftSmall.webp'
 const rightArrow = '/revamp/icon/arrowRightSmall.webp'
@@ -143,7 +144,7 @@ const Testimonial = () => {
               {Array.isArray(data) && data.length > 2 && (
                 <>
                   <ButtonBack className="button-back-tm">
-                    <img
+                    <Image
                       src={leftArrow}
                       className="left-button-tm"
                       alt="seva-right-arrow"
@@ -152,7 +153,7 @@ const Testimonial = () => {
                     />
                   </ButtonBack>
                   <ButtonNext className="button-next-tm">
-                    <img
+                    <Image
                       src={rightArrow}
                       className="right-button-tm"
                       alt="seva-right-arrow"

@@ -83,7 +83,7 @@
     border-radius: 4px;
   }
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   flex-direction: column;
 
   @media (min-width: 1025px) {

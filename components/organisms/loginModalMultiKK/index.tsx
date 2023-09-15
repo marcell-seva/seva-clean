@@ -4,6 +4,7 @@ import { Button, Gap, Modal } from 'components/atoms'
 import { LoginSevaUrl } from 'utils/helpers/routes'
 import { useRouter } from 'next/router'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import Image from 'next/image'
 
 const IlustrationLoginModal =
   '/revamp/illustration/ilustration-login-modal.webp'
@@ -27,7 +28,7 @@ export const LoginModalMultiKK: React.FC<PropsLoginModalMultiKK> = ({
     <Modal open onCancel={onClose} isFull>
       <div className={styles.wrapper}>
         <div className={styles.wrapperImage}>
-          <img
+          <Image
             src={IlustrationLoginModal}
             width={135}
             height={135}

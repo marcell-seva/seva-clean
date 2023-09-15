@@ -24,6 +24,7 @@ import PromoBottomSheet from '../promoBottomSheet'
 import { LanguageCode } from 'utils/enum'
 import { useContextCalculator } from 'services/context/calculatorContext'
 import { InsuranceTooltip } from '../insuranceTooltip'
+import Image from 'next/image'
 
 const LogoAcc = '/revamp/icon/logo-acc.webp'
 const LogoTaf = '/revamp/icon/logo-taf.webp'
@@ -191,14 +192,14 @@ export const CalculationResult = ({
   const renderLogoFinco = () => {
     return (
       <div className={styles.logoFincoWrapper}>
-        <img
+        <Image
           src={LogoAcc}
           width={24.24}
           height={32}
           className={styles.logoAcc}
           alt="logo acc"
         />
-        <img
+        <Image
           src={LogoTaf}
           width={37}
           height={19}

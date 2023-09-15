@@ -38,6 +38,7 @@ import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { Currency } from 'utils/handler/calculation'
 import { CityOtrOption } from 'utils/types'
 import { LoanRank } from 'utils/types/models'
+import Image from 'next/image'
 
 const SupergraphicLeft = '/revamp/illustration/supergraphic-small.webp'
 const SupergraphicRight = '/revamp/illustration/supergraphic-large.webp'
@@ -292,7 +293,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
       <div className={styles.wrapper}>
         <div className={styles.background}>
           <div className={styles.wrapperSupergraphicLeft}>
-            <img
+            <Image
               src={SupergraphicLeft}
               alt="seva-vector-blue-rounded"
               width={200}
@@ -301,7 +302,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
             />
           </div>
           <div className={styles.wrapperSupergraphicRight}>
-            <img
+            <Image
               src={SupergraphicRight}
               alt="seva-vector-red-rounded"
               width={200}

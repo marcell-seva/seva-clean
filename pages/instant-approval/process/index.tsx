@@ -39,6 +39,7 @@ import { CitySelectorModal } from 'components/molecules'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import Image from 'next/image'
 
 const KualifikasiKreditImage = '/revamp/illustration/kualifikasi-kredit.webp'
 const PlayStoreImage = '/revamp/images/profile/google-play.webp'
@@ -283,7 +284,7 @@ const CreditQualificationProcess = () => {
         />
       </div>
       <div className={styles.container}>
-        <img
+        <Image
           src={KualifikasiKreditImage}
           alt="Instant Approval"
           className={styles.heroImage}
@@ -353,12 +354,12 @@ const CreditQualificationProcess = () => {
         <div className={styles.directAppsContainer}>
           <div className={styles.title}>Download Aplikasi SEVA</div>
           <div className={styles.directAppsWrapper}>
-            <img
+            <Image
               src={PlayStoreImage}
               alt="Playstore Seva"
               onClick={onClickPlayStore}
             />
-            <img
+            <Image
               src={AppStoreImage}
               alt="App Store Seva"
               onClick={onClickAppStore}

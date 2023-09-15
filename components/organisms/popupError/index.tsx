@@ -4,6 +4,7 @@ import type { ModalProps } from 'antd'
 import elementId from 'helpers/elementIds'
 import { Button, Modal } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import Image from 'next/image'
 
 const ErrorIllustration = '/revamp/illustration/error.webp'
 
@@ -38,7 +39,7 @@ const PopupError = ({
       {...props}
     >
       <div className={styles.modal__wrapper}>
-        <img src={ErrorIllustration} alt="Error Modal Illustration" />
+        <Image src={ErrorIllustration} alt="Error Modal Illustration" />
         <div className={styles.modal__wording}>
           <div className={styles.title_section}>
             <div>{title}</div>

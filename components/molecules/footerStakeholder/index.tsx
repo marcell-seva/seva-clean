@@ -1,6 +1,7 @@
 import { IconACC } from 'components/atoms/icon/ACC'
 import { IconLockFill } from 'components/atoms/icon/LockFill'
 import elementId from 'helpers/elementIds'
+import Image from 'next/image'
 import React from 'react'
 import styles from 'styles/components/organisms/landingIA.module.scss'
 
@@ -16,7 +17,7 @@ export const FooterStakeholder = () => {
         <span>Kami menjamin datamu aman dan terlindungi</span>
       </div>
       <div className={styles.iconWrapper}>
-        <img
+        <Image
           src={ISOIcon}
           width={26}
           height={27}
@@ -24,8 +25,8 @@ export const FooterStakeholder = () => {
           datatest-id={elementId.Footer.LogoISO}
         />
         <IconACC width={40} height={40} />
-        <img src={TAFIcon} width={40} height={40} alt="TAF" />
-        <img
+        <Image src={TAFIcon} width={40} height={40} alt="TAF" />
+        <Image
           src={AstraFinancialIcon}
           width={114}
           height={40}

@@ -32,6 +32,7 @@ import { ArrowRightNew } from 'components/atoms/icon/ArrowRightNew'
 import { CarBrandItem } from './CarBrandItem'
 import { client } from 'utils/helpers/const'
 import { HomePageDataLocalContext } from 'pages'
+import Image from 'next/image'
 
 const LogoToyota = '/revamp/icon/logo-toyota-min.png'
 const LogoDaihatsu = '/revamp/icon/logo-daihatsu-min.png'
@@ -69,7 +70,7 @@ export const CarBranchRecommendation = ({
     {
       key: 'Toyota',
       icon: (
-        <img
+        <Image
           src={LogoToyota}
           alt="Toyota"
           style={{ width: isMobile ? 48 : 51, height: isMobile ? 41 : 44 }}
@@ -81,7 +82,7 @@ export const CarBranchRecommendation = ({
     {
       key: 'Daihatsu',
       icon: (
-        <img
+        <Image
           src={LogoDaihatsu}
           alt="Daihatsu"
           style={{ width: isMobile ? 48 : 64, height: isMobile ? 32.45 : 44 }}
@@ -100,7 +101,7 @@ export const CarBranchRecommendation = ({
     {
       key: 'BMW',
       icon: (
-        <img
+        <Image
           src={LogoBmw}
           alt="BMW"
           style={{ width: isMobile ? 40 : 44, height: isMobile ? 40 : 44 }}
@@ -379,7 +380,7 @@ export const CarBranchRecommendation = ({
                   {recommendationLists.length > 3 && (
                     <>
                       <StyledButtonBack>
-                        <img
+                        <Image
                           src={leftArrow}
                           className="left-button-arrow-cbr"
                           alt="seva-left-arrow-icon"
@@ -388,7 +389,7 @@ export const CarBranchRecommendation = ({
                         />
                       </StyledButtonBack>
                       <StyledButtonNext>
-                        <img
+                        <Image
                           src={rightArrow}
                           className="right-button-arrow-cbr"
                           alt="seva-right-arrow-icon"

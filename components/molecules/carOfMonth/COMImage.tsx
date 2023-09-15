@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
 import { parsedToUnCapitalizeWithHyphen } from 'utils/parsedToUnCapitalizeWithHyphen'
+import Image from 'next/image'
 
 const Arrow = '/revamp/illustration/Forward.svg'
 
@@ -78,7 +79,7 @@ export const COMImage = ({ carBrand, onChangeTab }: COMImageProps) => {
                     scroll(300)
                   }}
                 >
-                  <img
+                  <Image
                     src={Arrow}
                     alt="seva-arrow-right"
                     width={9}
@@ -94,7 +95,7 @@ export const COMImage = ({ carBrand, onChangeTab }: COMImageProps) => {
                     scroll(-300)
                   }}
                 >
-                  <img
+                  <Image
                     src={Arrow}
                     alt="seva-arrow-left"
                     width={9}

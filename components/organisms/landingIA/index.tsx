@@ -17,6 +17,7 @@ import {
 import { Button, IconLoading } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { FooterStakeholder } from 'components/molecules/footerStakeholder'
+import Image from 'next/image'
 
 const LandingIAImage = '/revamp/illustration/landing-ia.webp'
 const BGLanding = '/revamp/illustration/bg-landing-ia.webp'
@@ -142,16 +143,16 @@ const Header = () => {
             <span className={styles.boldText}>Cepat?</span> Yuk, Lanjut ke Tahap{' '}
             <span className={styles.boldText}>Instant Approval</span>
           </span>
-          <img src={BGLanding} alt="illustration" />
+          <Image src={BGLanding} alt="illustration" />
         </div>
       </div>
-      <img
+      <Image
         src={LandingIAImage}
         className={styles.imgLanding}
         width={212}
         height={213}
         alt="Landing Instant Approval"
-      ></img>
+      />
     </div>
   )
 }

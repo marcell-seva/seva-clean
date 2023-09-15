@@ -53,6 +53,7 @@ import { tracSelectV2LoanCalculatorSpeak } from 'helpers/amplitude/newLoanCalcul
 import { useCar } from 'services/context/carContext'
 import { useContextForm } from 'services/context/formContext'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
+import Image from 'next/image'
 
 const PromoAsuransi = '/revamp/illustration/PromoAsuransi.gif'
 const AstraLogo = '/revamp/icon/AstraLogo.webp'
@@ -761,7 +762,7 @@ export const SpecialRateResults = ({
                           )}
                     </StyledTextIsActiveBlueInstallment>
                     {freeInsurance && (
-                      <img src={PromoAsuransi} alt="promo asuransi" />
+                      <Image src={PromoAsuransi} alt="promo asuransi" />
                     )}
                   </LoanRankThirdColumn>
                   <LoanRankFourthColumn>
@@ -886,7 +887,7 @@ export const SpecialRateResults = ({
                           )}
                     </StyledTextIsActiveBlueInstallment>
                     {freeInsurance && (
-                      <img src={PromoAsuransi} alt="promo asuransi" />
+                      <Image src={PromoAsuransi} alt="promo asuransi" />
                     )}
                   </LoanRankThirdColumn>
                   <LoanRankFourthColumn>
@@ -991,7 +992,7 @@ export const SpecialRateResults = ({
                           )}
                     </StyledTextIsActiveBlueInstallment>
                     {freeInsurance && (
-                      <img src={PromoAsuransi} alt="promo asuransi" />
+                      <Image src={PromoAsuransi} alt="promo asuransi" />
                     )}
                   </LoanRankThirdColumn>
                   <LoanRankFourthColumn>
@@ -1661,7 +1662,7 @@ const LoanRankSecondColumn = styled.div`
   align-items: center;
 
   @media (max-width: 1024px) {
-    align-items: start;
+    align-items: flex-start;
     flex-direction: column;
     width: 25%;
     padding-bottom: 20px;
@@ -1674,7 +1675,7 @@ const LoanRankSecondColumnNewRegular = styled.div<{ carVariantPage: boolean }>`
   flex-direction: column;
 
   @media (max-width: 1024px) {
-    align-items: start;
+    align-items: flex-start;
     flex-direction: column;
     width: 25%;
     padding-bottom: 10px;
@@ -1703,7 +1704,7 @@ const LoanRankThirdColumn = styled.div<{ insurance: boolean }>`
   @media (max-width: 1024px) {
     width: 35%;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
     padding-top: 0px;
     padding-bottom: ${({ insurance }) => (insurance ? '20px' : '40px')};
   }
