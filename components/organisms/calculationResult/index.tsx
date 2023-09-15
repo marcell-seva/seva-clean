@@ -30,6 +30,7 @@ import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
+import Image from 'next/image'
 
 const LogoAcc = '/revamp/icon/logo-acc.webp'
 const LogoTaf = '/revamp/icon/logo-taf.webp'
@@ -270,14 +271,14 @@ export const CalculationResult = ({
   const renderLogoFinco = () => {
     return (
       <div className={styles.logoFincoWrapper}>
-        <img
+        <Image
           src={LogoAcc}
           width={24.24}
           height={32}
           className={styles.logoAcc}
           alt="logo acc"
         />
-        <img
+        <Image
           src={LogoTaf}
           width={37}
           height={19}

@@ -31,7 +31,7 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: start;
+  align-items: flex-start;
   background-image: url(${ShimmerLoader as any});
   background-repeat: no-repeat;
   background-size: cover;

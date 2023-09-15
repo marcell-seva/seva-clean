@@ -2,13 +2,14 @@ import React from 'react'
 // import CarDetailLoad from '../carDetailLoadPdp'
 import styles from 'styles/components/organisms/pdpSkeleton.module.scss'
 import { Skeleton } from 'components/atoms'
+import Image from 'next/image'
 
 const CarSkeleton = '/revamp/illustration/car-skeleton.webp'
 
 const PdpCarOverviewSkeleton = () => {
   return (
     <div className={styles.carWrapperCarOverview}>
-      <img
+      <Image
         src={CarSkeleton}
         className={styles.heroImg}
         alt={'car skeleton'}

@@ -2,7 +2,7 @@ import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react'
 import styles from '/styles/components/molecules/Offering.module.scss'
 import amplitude from 'amplitude-js'
-import FlagIndonesia from '/public/revamp/images/flagIndonesia.png'
+import flagIndonesia from '/public/revamp/images/flagIndonesia.png'
 import { IconCross } from 'components/atoms'
 import {
   CarContext,
@@ -106,7 +106,7 @@ const Offering: React.FC<PropsOffering> = ({
           <div className={styles.wrapperInputPhone}>
             <div className={styles.phoneDetail}>
               <Image
-                src={FlagIndonesia}
+                src={flagIndonesia}
                 width={16}
                 height={16}
                 alt="indonesia-flag"

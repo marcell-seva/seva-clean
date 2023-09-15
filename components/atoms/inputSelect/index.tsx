@@ -8,6 +8,7 @@ import {
 } from 'utils/types'
 import React, { ChangeEvent, ForwardedRef, forwardRef, useState } from 'react'
 import styles from '../../../styles/components/atoms/inputSelect.module.scss'
+import Image from 'next/image'
 
 interface Props<T extends FormControlValue> {
   value: string
@@ -255,8 +256,8 @@ const forwardedInputSelect = <T extends FormControlValue>(
                 )}
 
                 {showDropdownImage && (
-                  <img
-                    src={(item as OptionWithImage<string>)?.image}
+                  <Image
+                    src={(item as OptionWithImage<string>)?.image || ''}
                     alt={item.label}
                     className={styles.dropdownItemImage}
                   />

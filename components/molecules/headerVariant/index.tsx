@@ -32,6 +32,7 @@ import {
 import { getPageName } from 'utils/pageName'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import Image from 'next/image'
 interface HeaderVariantProps {
   overrideDisplay?: string
   isOnModal?: boolean
@@ -277,7 +278,7 @@ export default function HeaderVariant({
                   padding: '14px',
                 }}
               >
-                <img
+                <Image
                   src={car.image}
                   alt={car.name}
                   style={{

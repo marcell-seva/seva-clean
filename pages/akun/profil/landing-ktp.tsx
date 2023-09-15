@@ -9,6 +9,7 @@ import { CheckedSquareOutlined } from 'components/atoms/icon/CheckedSquareOutlin
 import { Button, Toast, UncheckedSquareOutlined } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import PopupError from 'components/organisms/popupError'
+import Image from 'next/image'
 
 const CheckedIcon = '/revamp/icon/checked.webp'
 const PromotionBanner = '/revamp/images/profile/ktp_promotion-banner.webp'
@@ -40,7 +41,7 @@ const Ktp = () => {
                 1 Promo yang tersedia
               </h2>
             </section>
-            <img
+            <Image
               src={PromotionBanner}
               className={styles.banner__promo}
               onClick={() =>
@@ -63,18 +64,18 @@ const Ktp = () => {
                 </span>
                 <ul className={styles.ktp__wrapper__form}>
                   <li className={styles.ktp__info}>
-                    <img src={CheckedIcon} alt="Checked" />
+                    <Image src={CheckedIcon} alt="Checked" />
                     <span>Siapkan KTP kamu untuk proses ini.</span>
                   </li>
                   <li className={styles.ktp__info}>
-                    <img src={CheckedIcon} alt="Checked" />
+                    <Image src={CheckedIcon} alt="Checked" />
                     <span>
                       Pastikan menggunakan KTP yang akan digunakan untuk Surat
                       Pemesanan Kendaraan.
                     </span>
                   </li>
                   <li className={styles.ktp__info}>
-                    <img src={CheckedIcon} alt="Checked" />
+                    <Image src={CheckedIcon} alt="Checked" />
                     <span>
                       Pastikan foto KTP kamu terlihat jelas dan bisa dibaca.
                     </span>

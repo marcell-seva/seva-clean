@@ -39,6 +39,7 @@ import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { useRouter } from 'next/router'
 import { LoanRank } from 'utils/types/models'
 import { getLocalStorage } from 'utils/handler/localStorage'
+import Image from 'next/image'
 
 interface PropsGallery {
   items: Array<string>
@@ -116,7 +117,7 @@ export const Gallery: React.FC<PropsGallery> = ({
   }
 
   const MainImage: React.FC<PropsGalleryMainImage> = ({ url }): JSX.Element => (
-    <img
+    <Image
       width={274}
       height={207}
       alt="car"
@@ -141,7 +142,7 @@ export const Gallery: React.FC<PropsGallery> = ({
     return (
       <div className={styles.subImageWrapper}>
         {!isActive && <div className={styles.coverSubImage} />}
-        <img
+        <Image
           width={61}
           height={46}
           alt="car"

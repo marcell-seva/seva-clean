@@ -7,6 +7,7 @@ import { PageLayout } from 'components/templates'
 import { Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { AccountSevaUrl, carResultsUrl } from 'utils/helpers/routes'
+import Image from 'next/image'
 
 const SuccessVerif = '/revamp/illustration/success-verification.webp'
 
@@ -29,7 +30,7 @@ const SuccessChangeKtpPage = () => {
       <PageLayout>
         <main className={styles.wrapper}>
           <div className={styles.container}>
-            <img
+            <Image
               src={SuccessVerif}
               className={styles.banner__illustration}
               style={{

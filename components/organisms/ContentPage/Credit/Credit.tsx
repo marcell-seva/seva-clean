@@ -394,9 +394,9 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
               Perhitungan kredit ini disediakan oleh ACC dan TAF.
             </TextDisclaimer>
             <ContainerDisclaimerLogo>
-              <img src={AccLogo} width={24} height={31} alt="acc logo" />
+              <Image src={AccLogo} width={24} height={31} alt="acc logo" />
               <SpaceLogo />
-              <img src={TafLogo} width={44} height={25} alt="taf logo" />
+              <Image src={TafLogo} width={44} height={25} alt="taf logo" />
             </ContainerDisclaimerLogo>
           </ContainerDisclaimer>
         </ContainerField>
@@ -535,14 +535,14 @@ const Credit = memo(({ tab, isShowLoading }: tabProps) => {
                       Perhitungan kredit ini disediakan oleh ACC dan TAF.
                     </TextDisclaimer>
                     <ContainerDisclaimerLogo>
-                      <img
+                      <Image
                         src={AccLogo}
                         width={24}
                         height={31}
                         alt="acc logo"
                       />
                       <SpaceLogo />
-                      <img
+                      <Image
                         src={TafLogo}
                         width={44}
                         height={25}

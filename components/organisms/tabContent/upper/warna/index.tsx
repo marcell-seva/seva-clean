@@ -55,6 +55,7 @@ export const WarnaTab = ({ isShowAnnouncementBox }: any) => {
               data-testid={elementId.HeroImage}
               alt="color"
               priority
+              quality="20"
             />
           </div>
           {colorsList.length > 0 ? (

@@ -9,6 +9,7 @@ import { Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import Image from 'next/image'
 
 const PLPEmpty = '/revamp/illustration/plp-empty.webp'
 
@@ -32,7 +33,7 @@ export const PopupResultInfo = (props: PopupResultInfo) => {
     >
       <>
         <div className={styles.container}>
-          <img
+          <Image
             src={PLPEmpty}
             className={styles.imageStyle}
             alt={'image-result-info'}

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import styles from 'styles/components/molecules/ContactUs.module.scss'
-import FlagIndonesia from '/public/revamp/images/flagIndonesia.png'
+import flagIndonesia from '/public/revamp/images/flagIndonesia.png'
 import Image from 'next/image'
 import amplitude from 'amplitude-js'
 import { api } from 'services/api'
@@ -124,7 +124,7 @@ const ContactUs: React.FC<PropsContactUs> = ({
           <div className={styles.wrapperInputPhone}>
             <div className={styles.phoneDetail}>
               <Image
-                src={FlagIndonesia}
+                src={flagIndonesia}
                 width={16}
                 height={16}
                 alt="indonesia-flag"
