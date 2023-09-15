@@ -35,11 +35,11 @@ define(['./workbox-7c2a5a06'], function (e) {
     e.precacheAndRoute(
       [
         {
-          url: '/_next/static/QmTcOPIACRlshAonMRsbF/_buildManifest.js',
+          url: '/_next/static/-BVo2AOU57eTbo2tK_wgJ/_buildManifest.js',
           revision: '46e46f4e0988f16adbf096c64784b69e',
         },
         {
-          url: '/_next/static/QmTcOPIACRlshAonMRsbF/_ssgManifest.js',
+          url: '/_next/static/-BVo2AOU57eTbo2tK_wgJ/_ssgManifest.js',
           revision: 'b6652df95db52feb4daf4eca35380933',
         },
         {

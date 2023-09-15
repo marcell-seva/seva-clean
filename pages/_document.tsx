@@ -41,6 +41,8 @@ export default class MyDocument extends Document {
           <link rel="apple-touch-icon" href="/icon.png"></link>
           <link rel="preconnect" href="https://storage.googleapis.com" />
           <link rel="dns-prefetch" href="https://storage.googleapis.com" />
+          <link rel="preconnect" href="https://images.prod.seva.id" />
+          <link rel="dns-prefetch" href="https://images.prod.seva.id" />
           <meta name="theme-color" content="#fff" />
           <meta
             name="viewport"
