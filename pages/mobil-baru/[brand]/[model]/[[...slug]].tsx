@@ -81,19 +81,7 @@ export default function index({
     saveMobileWebTopMenus(dataHeader)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
-    getAnnouncementBox()
   }, [])
-
-  const getAnnouncementBox = () => {
-    try {
-      const res: any = api.getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      saveDataAnnouncementBox(res.data)
-    } catch (error) {}
-  }
 
   return (
     <>

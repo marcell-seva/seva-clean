@@ -13,11 +13,9 @@ export const WarnaTab = ({ isShowAnnouncementBox }: any) => {
     dataCombinationOfCarRecomAndModelDetailDefaultCity: carModelDetails,
   } = useContext(PdpDataLocalContext)
 
-  const [colorsList, setColorList] = useState<(string | string[])[]>([])
-
   const router = useRouter()
 
-  useEffect(() => {
+  const getColorList = () => {
     const model = router.query.model
     const brand = router.query.brand
     const currentUrlPathName = router.asPath
@@ -29,9 +27,19 @@ export const WarnaTab = ({ isShowAnnouncementBox }: any) => {
         (url) => url.url === carBrandModelUrl,
       )[0].colors
 
-      if (colorsTmp.length === 0) return
-      setColorList(colorsTmp)
+      if (colorsTmp.length === 0) return []
+      return colorsTmp
     }
+
+    return []
+  }
+
+  const [colorsList, setColorList] = useState<(string | string[])[]>(
+    getColorList(),
+  )
+
+  useEffect(() => {
+    if (colorsList.length === 0) setColorList(getColorList())
   }, [carModelDetails])
 
   return (
@@ -46,6 +54,7 @@ export const WarnaTab = ({ isShowAnnouncementBox }: any) => {
               className={styles.carImage}
               data-testid={elementId.HeroImage}
               alt="color"
+              priority
             />
           </div>
           {colorsList.length > 0 ? (
