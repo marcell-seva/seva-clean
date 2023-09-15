@@ -40,3 +40,10 @@ export const getCityWithoutDefault = () => {
 export const saveCity = (city: Location | CityOtrOption) => {
   saveLocalStorage(LocalStorageKey.CityOtr, JSON.stringify(city))
 }
+
+export const isCurrentCityJakartaPusatOrSurabaya = () => {
+  return (
+    getCity().cityName.toLowerCase() === 'jakarta pusat' ||
+    getCity().cityName.toLowerCase() === 'surabaya'
+  )
+}
