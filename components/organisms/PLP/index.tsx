@@ -1,21 +1,13 @@
 import { Spin } from 'antd'
-import axios, { AxiosResponse } from 'axios'
+import axios from 'axios'
 import clsx from 'clsx'
 import { CSAButton } from 'components/atoms'
-import { CitySelectorModal } from 'components/molecules'
 import {
   CarDetailCard,
-  FilterMobile,
   FooterMobile,
   HeaderMobile,
-  LeadsFormPrimary,
   NavigationFilterMobile,
   PLPEmpty,
-  PopupPromo,
-  PopupResultInfo,
-  PopupResultMudah,
-  PopupResultSulit,
-  SortingMobile,
 } from 'components/organisms'
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import {
@@ -79,6 +71,32 @@ import { LoanRank } from 'utils/types/models'
 import { useUtils } from 'services/context/utilsContext'
 import { temanSevaUrlPath } from 'services/temanseva'
 import { decryptValue } from 'utils/encryptionUtils'
+import dynamic from 'next/dynamic'
+
+const LeadsFormPrimary = dynamic(() =>
+  import('components/organisms').then((mod) => mod.LeadsFormPrimary),
+)
+const FilterMobile = dynamic(() =>
+  import('components/organisms').then((mod) => mod.FilterMobile),
+)
+const SortingMobile = dynamic(() =>
+  import('components/organisms').then((mod) => mod.SortingMobile),
+)
+const PopupPromo = dynamic(() =>
+  import('components/organisms').then((mod) => mod.PopupPromo),
+)
+const PopupResultSulit = dynamic(() =>
+  import('components/organisms').then((mod) => mod.PopupResultSulit),
+)
+const PopupResultMudah = dynamic(() =>
+  import('components/organisms').then((mod) => mod.PopupResultMudah),
+)
+const PopupResultInfo = dynamic(() =>
+  import('components/organisms').then((mod) => mod.PopupResultInfo),
+)
+const CitySelectorModal = dynamic(() =>
+  import('components/molecules').then((mod) => mod.CitySelectorModal),
+)
 
 interface PLPProps {
   minmaxPrice: MinMaxPrice

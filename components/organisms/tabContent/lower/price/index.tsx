@@ -2,7 +2,6 @@ import { formatNumberByLocalization, rupiah } from 'utils/handler/rupiah'
 import { TrackVariantList } from 'utils/types/tracker'
 import { trackWebPDPPriceTab } from 'helpers/amplitude/seva20Tracking'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-
 import React, { useEffect, useMemo, useState } from 'react'
 import { LeadsFormSecondary } from 'components/organisms'
 import Variants from '../variants'
@@ -11,8 +10,6 @@ import {
   CityOtrOption,
   SpecialRateListType,
 } from 'utils/types/utils'
-import { Modal } from 'antd'
-import PopupVariantDetail from 'components/organisms/popupVariantDetail/index'
 import styles from 'styles/components/organisms/price.module.scss'
 import { Info } from 'components/molecules'
 import { getMinimumMonthlyInstallment } from 'utils/carModelUtils/carModelUtils'
@@ -24,6 +21,12 @@ import { getNewFunnelLoanSpecialRate } from 'services/newFunnel'
 import { useCar } from 'services/context/carContext'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { TrackerFlag, InstallmentTypeOptions } from 'utils/types/models'
+import dynamic from 'next/dynamic'
+
+const Modal = dynamic(() => import('antd').then((mod) => mod.Modal))
+const PopupVariantDetail = dynamic(
+  () => import('components/organisms/popupVariantDetail/index'),
+)
 
 type PriceTabProps = {
   setSelectedTabValue: (value: string) => void

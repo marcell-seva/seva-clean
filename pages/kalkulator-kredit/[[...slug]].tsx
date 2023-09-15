@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Button, IconLoading, Toast } from 'components/atoms'
+import { Button, IconLoading } from 'components/atoms'
 import styles from 'styles/pages/loanCalculator.module.scss'
 import {
   CitySelectorModal,
@@ -16,11 +16,8 @@ import {
   FormSelectCarVariant,
   variantEmptyValue,
 } from 'components/molecules/form/formSelectCarVariant'
-import { QualificationCreditModal } from 'components/molecules/qualificationCreditModal'
-import { Articles, CalculationResult, HeaderMobile } from 'components/organisms'
+import { HeaderMobile } from 'components/organisms'
 import { CalculationResultEmpty } from 'components/organisms/calculationResultEmpty'
-import CarRecommendations from 'components/organisms/carRecomendations'
-import CreditCualificationBenefit from 'components/organisms/CreditCualificationBenefit'
 import {
   trackLCCTAHitungKemampuanClick,
   trackLCCtaWaDirectClick,
@@ -101,6 +98,26 @@ import {
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
+import dynamic from 'next/dynamic'
+
+const CalculationResult = dynamic(() =>
+  import('components/organisms').then((mod) => mod.CalculationResult),
+)
+const CarRecommendations = dynamic(
+  () => import('components/organisms/carRecomendations'),
+)
+const CreditCualificationBenefit = dynamic(
+  () => import('components/organisms/CreditCualificationBenefit'),
+)
+const Articles = dynamic(() =>
+  import('components/organisms').then((mod) => mod.Articles),
+)
+const QualificationCreditModal = dynamic(() =>
+  import('components/molecules/qualificationCreditModal').then(
+    (mod) => mod.QualificationCreditModal,
+  ),
+)
+const Toast = dynamic(() => import('components/atoms').then((mod) => mod.Toast))
 
 const CarSillhouete = '/revamp/illustration/car-sillhouete.webp'
 
