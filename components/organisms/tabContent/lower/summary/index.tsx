@@ -16,13 +16,11 @@ import { Info, VideoItemCard } from 'components/molecules'
 import { Gap, IconPlay } from 'components/atoms'
 // import promoBannerTradeIn from '/public/revamp/illustration/PromoTradeIn.webp'
 import Variants from '../variants'
-import PopupVariantDetail from 'components/organisms/popupVariantDetail/index'
 import { Faq } from 'components/molecules/section/faq'
 import { TrackVariantList } from 'utils/types/tracker'
 import { CityOtrOption } from 'utils/types/utils'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { trackNewVariantListPageView } from 'helpers/amplitude/seva20Tracking'
-import { Modal } from 'antd'
 import { LeadsFormSecondary } from 'components/organisms'
 import { setTrackEventMoEngage } from 'helpers/moengage'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
@@ -34,6 +32,12 @@ import { useRouter } from 'next/router'
 import { useCar } from 'services/context/carContext'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { TrackerFlag, InstallmentTypeOptions } from 'utils/types/models'
+import dynamic from 'next/dynamic'
+
+const Modal = dynamic(() => import('antd').then((mod) => mod.Modal))
+const PopupVariantDetail = dynamic(
+  () => import('components/organisms/popupVariantDetail/index'),
+)
 
 type RingkasanProps = {
   setPromoName: (value: string) => void

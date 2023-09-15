@@ -2,10 +2,8 @@ import React, { useContext, useEffect, useMemo, useState } from 'react'
 import {
   FooterMobile,
   HeaderMobile,
-  PDPSkeleton,
   PdpLowerSection,
   PdpUpperSection,
-  ProductDetailEmptyState,
 } from 'components/organisms'
 import styles from 'styles/pages/carVariantList.module.scss'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
@@ -30,12 +28,6 @@ import {
   getCarVariantDetailsById,
   handleRecommendationsAndCarModelDetailsUpdate,
 } from 'services/recommendations'
-import {
-  CitySelectorModal,
-  OverlayGallery,
-  ShareModal,
-} from 'components/molecules'
-import PromoPopup from 'components/organisms/promoPopup'
 import { getCities } from 'services/cities'
 import { decryptValue } from 'utils/encryptionUtils'
 import { WhatsappButton } from 'components/atoms'
@@ -76,6 +68,24 @@ import { client } from 'utils/helpers/const'
 import { defineRouteName } from 'utils/navigate'
 import { useUtils } from 'services/context/utilsContext'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
+import dynamic from 'next/dynamic'
+
+const OverlayGallery = dynamic(() =>
+  import('components/molecules').then((mod) => mod.OverlayGallery),
+)
+const CitySelectorModal = dynamic(() =>
+  import('components/molecules').then((mod) => mod.CitySelectorModal),
+)
+const ShareModal = dynamic(() =>
+  import('components/molecules').then((mod) => mod.ShareModal),
+)
+const ProductDetailEmptyState = dynamic(() =>
+  import('components/organisms').then((mod) => mod.ProductDetailEmptyState),
+)
+const PDPSkeleton = dynamic(() =>
+  import('components/organisms').then((mod) => mod.PDPSkeleton),
+)
+const PromoPopup = dynamic(() => import('components/organisms/promoPopup'))
 
 export interface CarVariantListPageUrlParams {
   brand: string

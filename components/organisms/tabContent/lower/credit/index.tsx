@@ -29,19 +29,9 @@ import {
   TrackerFlag,
 } from 'utils/types/models'
 import React, { useEffect, useMemo, useState } from 'react'
-import {
-  Articles,
-  CalculationResult,
-  LeadsFormSecondary,
-} from 'components/organisms'
+import { LeadsFormSecondary } from 'components/organisms'
 import styles from 'styles/components/organisms/creditTab.module.scss'
-import {
-  Button,
-  Gap,
-  IconCalculator,
-  IconLoading,
-  Toast,
-} from 'components/atoms'
+import { Button, Gap, IconCalculator, IconLoading } from 'components/atoms'
 import {
   FormPromoCode,
   FormSelectCarVariant,
@@ -78,11 +68,8 @@ import {
   SpecialRateListType,
 } from 'utils/types/utils'
 import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
-import CarRecommendations from 'components/organisms/carRecomendations'
-import CreditCualificationBenefit from 'components/organisms/CreditCualificationBenefit'
 import { variantEmptyValue } from 'components/molecules/form/formSelectCarVariant'
 import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
-import { QualificationCreditModal } from 'components/molecules/qualificationCreditModal'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
@@ -114,6 +101,26 @@ import {
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
+import dynamic from 'next/dynamic'
+
+const CalculationResult = dynamic(() =>
+  import('components/organisms').then((mod) => mod.CalculationResult),
+)
+const CarRecommendations = dynamic(
+  () => import('components/organisms/carRecomendations'),
+)
+const CreditCualificationBenefit = dynamic(
+  () => import('components/organisms/CreditCualificationBenefit'),
+)
+const Articles = dynamic(() =>
+  import('components/organisms').then((mod) => mod.Articles),
+)
+const QualificationCreditModal = dynamic(() =>
+  import('components/molecules/qualificationCreditModal').then(
+    (mod) => mod.QualificationCreditModal,
+  ),
+)
+const Toast = dynamic(() => import('components/atoms').then((mod) => mod.Toast))
 
 const CarSillhouete = '/revamp/illustration/car-sillhouete.webp'
 
