@@ -46,6 +46,7 @@ import { temanSevaUrlPath } from 'services/temanseva'
 import { ThreeDots } from 'components/atoms/icon/ThreeDots'
 import { Forward } from 'components/atoms/icon/Forward'
 import { Button, ButtonType } from 'components/atoms/ButtonOld/Button'
+import Image from 'next/image'
 
 const ProfileIcon = '/revamp/illustration/Profile.svg'
 
@@ -439,7 +440,7 @@ const LoginButton = ({ onClick }: LoginButtonProps) => (
     buttonType={ButtonType.primary1}
     onClick={onClick}
   >
-    <img src={ProfileIcon} alt="profile-icon" />
+    <Image src={ProfileIcon} alt="profile-icon" />
     Masuk / Daftar
   </StyledLoginButton>
 )

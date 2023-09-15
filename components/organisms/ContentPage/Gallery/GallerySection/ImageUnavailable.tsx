@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
@@ -12,7 +13,7 @@ export const ImageUnavailable = ({ type }: Props) => {
   return (
     <Container>
       {/* <img src={isMobile ? ImageNotAvailable : ImageNotAvailableDesktop} /> */}
-      <img
+      <Image
         src={ImageNotAvailableDesktop}
         width={217}
         height={168}

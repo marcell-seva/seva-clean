@@ -50,6 +50,7 @@ import { FormReferralCode } from 'components/molecules/form/formReferralCode'
 import PopupCreditDetail from 'components/organisms/popupCreditDetail'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import Image from 'next/image'
 
 const searchOption = {
   keys: ['label'],
@@ -496,8 +497,8 @@ const CreditQualificationPage = () => {
         <div className={styles.paddingInfoCar} onClick={handleOpenModal}>
           <div className={styles.cardInfoCar}>
             <div className={styles.imageCar}>
-              <img
-                src={dataCar?.variantDetail?.images[0]}
+              <Image
+                src={dataCar?.variantDetail?.images[0] || ''}
                 alt="car-images"
                 width="82"
               />

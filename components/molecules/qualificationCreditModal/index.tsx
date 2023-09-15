@@ -17,6 +17,7 @@ import { SessionStorageKey } from 'utils/enum'
 import { LoanRank } from 'utils/types/models'
 import { saveSessionStorage } from 'utils/handler/sessionStorage'
 import { navigateToKK } from 'utils/navigate'
+import Image from 'next/image'
 
 const MainImage = '/revamp/illustration/loan-calculator.webp'
 
@@ -109,7 +110,7 @@ export const QualificationCreditModal: React.FC<
       data-testid={elementId.LoanCalculator.Popup.KualifikasiKredit}
     >
       <div>
-        <img
+        <Image
           src={MainImage}
           alt="Banner Qualification Kredit"
           className={styles.modalBanner}

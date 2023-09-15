@@ -12,6 +12,7 @@ import { carResultsUrl } from 'utils/helpers/routes'
 import { CarRecommendation } from 'utils/types'
 import { CarBrandItemCreditTab } from './CarBrandItemCreditTab'
 import { DesktopShimmerCarBrand } from './DesktopShimmerCarBrand'
+import Image from 'next/image'
 
 const LogoToyota = '/revamp/icon/logo-toyota.webp'
 const LogoDaihatsu = '/revamp/icon/logo-daihatsu.webp'
@@ -57,7 +58,7 @@ export const CarBrandRecommendationCreditTab = ({
     {
       key: 'Toyota',
       icon: (
-        <img
+        <Image
           src={LogoToyota}
           alt="Toyota"
           style={{ width: isMobile ? 48 : 51, height: isMobile ? 41 : 44 }}
@@ -69,7 +70,7 @@ export const CarBrandRecommendationCreditTab = ({
     {
       key: 'Daihatsu',
       icon: (
-        <img
+        <Image
           src={LogoDaihatsu}
           alt="Daihatsu"
           style={{ width: isMobile ? 48 : 64, height: isMobile ? 32.45 : 44 }}
@@ -80,7 +81,7 @@ export const CarBrandRecommendationCreditTab = ({
     },
     {
       key: 'Isuzu',
-      icon: <img src={Isuzu} width={70} />,
+      icon: <Image src={Isuzu} width={70} alt="isuzu" />,
       value: 'Isuzu',
       isChecked: isCheckedGroups.includes('Isuzu'),
       hide: true,
@@ -88,7 +89,7 @@ export const CarBrandRecommendationCreditTab = ({
     {
       key: 'BMW',
       icon: (
-        <img
+        <Image
           src={LogoBmw}
           alt="BMW"
           style={{ width: isMobile ? 40 : 44, height: isMobile ? 40 : 44 }}
@@ -99,7 +100,7 @@ export const CarBrandRecommendationCreditTab = ({
     },
     {
       key: 'Peugeot',
-      icon: <img src={Peugeot} width={40} height={44} />,
+      icon: <Image src={Peugeot} width={40} height={44} alt="peugot" />,
       value: 'Peugeot',
       isChecked: isCheckedGroups.includes('Peugeot'),
       hide: true,
@@ -257,7 +258,7 @@ export const CarBrandRecommendationCreditTab = ({
                   </StyledContainerCarNotAvailable>
                 ) : (
                   <StyledContainerCarNotAvailable>
-                    <img src={ImageCarNotExist} alt="image car not exist" />
+                    <Image src={ImageCarNotExist} alt="image car not exist" />
                     <StyledTextCarNotAvailableSubtitle>
                       Sesuaikan nilai DP dan tenormu untuk melihat mobil{' '}
                       {isCheckedGroups} dengan peluang kredit yang mudah

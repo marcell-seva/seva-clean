@@ -19,6 +19,7 @@ import { HeaderMobile } from 'components/organisms'
 import { Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { CitySelectorModal } from 'components/molecules'
+import Image from 'next/image'
 
 const MainImage = '/revamp/illustration/approved.webp'
 
@@ -116,7 +117,7 @@ export default function index() {
           [styles.contentWithSpace]: showAnnouncementBox,
         })}
       >
-        <img
+        <Image
           src={MainImage}
           alt="delete-account-success-main-image"
           width="224"

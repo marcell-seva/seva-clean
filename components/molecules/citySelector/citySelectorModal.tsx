@@ -410,7 +410,7 @@ const StyledLink = styled.a`
   @media (max-width: 1024px) {
     display: flex;
     height: 50px;
-    align-items: start;
+    align-items: flex-start;
     justify-content: center;
     flex-direction: column;
     padding-left: 25px;

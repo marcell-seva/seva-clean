@@ -70,7 +70,7 @@ const StyledCardHeader = styled.div<{ background: string }>`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  align-items: start;
+  align-items: flex-start;
   position: relative;
 
   @media (max-width: 1024px) {

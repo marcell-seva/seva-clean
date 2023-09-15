@@ -35,6 +35,7 @@ import { CarButtonProps } from 'utils/types/context'
 import { newBodyTypes } from './carBodyTypes'
 import { HomePageDataLocalContext } from 'pages'
 import { useCar } from 'services/context/carContext'
+import Image from 'next/image'
 
 const leftArrow = '/revamp/icon/arrowLeftSmall.svg'
 const rightArrow = '/revamp/icon/arrowRightSmall.svg'
@@ -239,7 +240,7 @@ export const CarBodyTypesDesktop = () => {
                   recommendationLists.length > 3 && (
                     <>
                       <ButtonBack className="button-back-cbtd">
-                        <img
+                        <Image
                           className="left-button-cbtd"
                           src={leftArrow}
                           alt="seva-left-arrow"
@@ -248,7 +249,7 @@ export const CarBodyTypesDesktop = () => {
                         />
                       </ButtonBack>
                       <ButtonNext className="button-next-cbtd">
-                        <img
+                        <Image
                           className="right-button-cbtd"
                           src={rightArrow}
                           alt="seva-right-arrow"
