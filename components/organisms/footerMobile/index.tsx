@@ -117,7 +117,12 @@ export const FooterMobile = () => {
             target="_blank"
             datatest-id={elementId.Footer.LogoFacebook}
           >
-            <img src={FacebookLogo} width={25} alt="facebook outline" />
+            <Image
+              src={FacebookLogo}
+              width={25}
+              height={25}
+              alt="facebook outline"
+            />
           </a>
         </div>
         <div className={styles.isoWrapper}>

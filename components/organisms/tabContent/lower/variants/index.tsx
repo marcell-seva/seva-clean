@@ -31,6 +31,7 @@ import {
   replacePriceSeparatorByLocalization,
   formatNumberByLocalization,
 } from 'utils/handler/rupiah'
+import Image from 'next/image'
 
 const rpIcon = '/revamp/illustration/rp-icon.webp'
 
@@ -135,8 +136,8 @@ const TabContentLowerVariant = ({
             className={styles.rowWithGap}
             data-testid={elementId.Text + 'harga'}
           >
-            <img src={rpIcon} alt="rp icon" />
-            <h2 className={styles.textTitleSection}>Harga</h2>
+            <Image src={rpIcon} alt="rp icon" height={20} width={20} />
+            <h3 className={styles.textTitleSection}>Harga</h3>
           </div>
           <div>
             {toggleHorizontal ? (
