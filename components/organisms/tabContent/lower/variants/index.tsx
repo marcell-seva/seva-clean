@@ -47,6 +47,7 @@ import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
+import Image from 'next/image'
 
 const rpIcon = '/revamp/illustration/rp-icon.webp'
 
@@ -247,7 +248,7 @@ const TabContentLowerVariant = ({
             className={styles.rowWithGap}
             data-testid={elementId.Text + 'harga'}
           >
-            <img src={rpIcon} alt="rp icon" />
+            <Image src={rpIcon} alt="rp icon" height={20} width={20} />
             <h3 className={styles.textTitleSection}>Harga</h3>
           </div>
           <div>
