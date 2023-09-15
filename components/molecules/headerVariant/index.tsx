@@ -24,6 +24,7 @@ import { Option } from 'utils/types'
 import { COMData, FunnelQueryKey } from 'utils/types/models'
 import { Line } from './Line'
 import { useToast } from './Toast'
+import Image from 'next/image'
 interface HeaderVariantProps {
   overrideDisplay?: string
   isOnModal?: boolean
@@ -239,7 +240,7 @@ export default function HeaderVariant({
                   padding: '14px',
                 }}
               >
-                <img
+                <Image
                   src={car.image}
                   alt={car.name}
                   style={{

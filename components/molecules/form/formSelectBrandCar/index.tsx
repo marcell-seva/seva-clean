@@ -3,6 +3,7 @@ import styles from '../../../../styles/components/molecules/form/formSelectBrand
 import { Space } from 'antd'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
+import Image from 'next/image'
 
 const LogoToyota = '/revamp/icon/logo-toyota.webp'
 const LogoDaihatsu = '/revamp/icon/logo-daihatsu.webp'
@@ -42,7 +43,11 @@ export const FormSelectBrandCar = ({
     {
       key: 'Toyota',
       icon: (
-        <img src={LogoToyota} alt="Toyota" style={{ width: 21, height: 18 }} />
+        <Image
+          src={LogoToyota}
+          alt="Toyota"
+          style={{ width: 21, height: 18 }}
+        />
       ),
       value: 'Toyota',
       isChecked: isCheckedBrandQuery.includes('Toyota'),
@@ -50,7 +55,7 @@ export const FormSelectBrandCar = ({
     {
       key: 'Daihatsu',
       icon: (
-        <img
+        <Image
           src={LogoDaihatsu}
           alt="Daihatsu"
           style={{ width: 21.6, height: 15 }}
@@ -62,7 +67,7 @@ export const FormSelectBrandCar = ({
     {
       key: 'Isuzu',
       icon: (
-        <img src={Isuzu} alt="Isuzu" style={{ width: 21.6, height: 7.2 }} />
+        <Image src={Isuzu} alt="Isuzu" style={{ width: 21.6, height: 7.2 }} />
       ),
       value: 'Isuzu',
       isChecked: isCheckedBrandQuery.includes('Isuzu'),
@@ -70,7 +75,7 @@ export const FormSelectBrandCar = ({
     {
       key: 'BMW',
       icon: (
-        <img src={LogoBmw} alt="BMW" style={{ width: 19.2, height: 19.2 }} />
+        <Image src={LogoBmw} alt="BMW" style={{ width: 19.2, height: 19.2 }} />
       ),
       value: 'BMW',
       isChecked: isCheckedBrandQuery.includes('BMW'),
@@ -78,7 +83,7 @@ export const FormSelectBrandCar = ({
     {
       key: 'Peugeot',
       icon: (
-        <img
+        <Image
           src={Peugeot}
           alt="Peugeot"
           style={{ width: 17.49, height: 19.2 }}

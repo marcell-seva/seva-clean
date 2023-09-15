@@ -44,6 +44,7 @@ import PopupError from 'components/organisms/popupError'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import Image from 'next/image'
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
@@ -354,7 +355,7 @@ const KtpForm = () => {
           <IconChevronLeft width={24} height={24} color="#13131B" />
         </div>
         <div className={styles.logo}>
-          <img src={LogoPrimary} alt="back" />
+          <Image src={LogoPrimary} alt="back" />
         </div>
         <ProgressBar percentage={85} colorPrecentage="#51A8DB" />
         <main className={styles.wrapper}>
@@ -376,8 +377,8 @@ const KtpForm = () => {
                 </h2>
                 <span className={styles.light__text}>{getSubtitleText()}</span>
               </div>
-              <img
-                src={galleryFile}
+              <Image
+                src={galleryFile || ''}
                 alt="KTP Image"
                 className={styles.ktp__preview__image}
               />

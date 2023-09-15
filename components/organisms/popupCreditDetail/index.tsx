@@ -11,6 +11,7 @@ import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { Currency } from 'utils/handler/calculation'
 import { useBadgePromo } from 'utils/hooks/usebadgePromo'
+import Image from 'next/image'
 
 type VariantsProps = {
   carVariant: any
@@ -37,7 +38,7 @@ const PopupCreditDetail = ({
   return (
     <div className={styles.container}>
       <div className={styles.wrapperCar}>
-        <img
+        <Image
           src={carVariant.variantDetail.images[0]}
           width="188.39"
           alt="car-image"

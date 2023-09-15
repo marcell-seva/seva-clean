@@ -356,7 +356,7 @@ export const StyledLink = styled.a`
     display: flex;
     height: auto;
     width: auto;
-    align-items: start;
+    align-items: flex-start;
     line-height: 22px;
     justify-content: center;
     flex-direction: column;

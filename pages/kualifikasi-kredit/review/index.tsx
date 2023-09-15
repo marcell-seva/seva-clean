@@ -53,6 +53,7 @@ import { FormLCState } from 'pages/kalkulator-kredit/[[...slug]]'
 import { isIsoDateFormat } from 'utils/handler/regex'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import Image from 'next/image'
 
 const CreditQualificationReviewPage = () => {
   useProtectPage()
@@ -366,8 +367,8 @@ const CreditQualificationReviewPage = () => {
           className={styles.imageCar}
           style={{ paddingBottom: promoCode ? 15.56 : 31.56 }}
         >
-          <img
-            src={dataCar?.variantDetail?.images[0]}
+          <Image
+            src={dataCar?.variantDetail?.images[0] || ''}
             alt="car-images"
             width="188.39"
           />

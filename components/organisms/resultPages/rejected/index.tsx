@@ -34,6 +34,7 @@ import { getToken } from 'utils/handler/auth'
 import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import { TrackerFlag } from 'utils/types/models'
 import { HeaderMobile } from 'components/organisms'
+import Image from 'next/image'
 
 const RejectedImage = '/revamp/illustration/rejected-approval.webp'
 
@@ -253,7 +254,7 @@ export const CreditQualificationRejected = () => {
       >
         <div className={styles.resultRejected}>
           <div className={styles.bundleImage}>
-            <img
+            <Image
               src={RejectedImage}
               alt="approval-image"
               className={styles.rejectedImage}

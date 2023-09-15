@@ -18,6 +18,7 @@ import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { api } from 'services/api'
 import { InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 const LogoACC = '/revamp/icon/logo-acc.webp'
@@ -117,7 +118,7 @@ const LeasingCompanyOptionPage = ({
       onClick={onClick}
     >
       <div className={styles.bundleLogo}>
-        <img
+        <Image
           src={logo}
           alt="acc-logo"
           width={40}
@@ -183,7 +184,7 @@ const LeasingCompanyOptionPage = ({
             <div className={styles.backButton} onClick={() => router.back()}>
               <IconChevronLeft width={24} height={24} color="#13131B" />
             </div>
-            <img className={styles.logoHeader} src={LogoPrimary} alt="back" />
+            <Image className={styles.logoHeader} src={LogoPrimary} alt="back" />
           </div>
           <ProgressBar percentage={87} colorPrecentage="#51A8DB" />
         </div>

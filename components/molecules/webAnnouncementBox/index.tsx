@@ -20,6 +20,7 @@ import { api } from 'services/api'
 import { SessionStorageKey } from 'utils/enum'
 import { getToken } from 'utils/handler/auth'
 import { useUtils } from 'services/context/utilsContext'
+import Image from 'next/image'
 
 const CustomRight = '/revamp/images/announcementBox/custom-desktop-right.webp'
 const CustomLeft = '/revamp/images/announcementBox/custom-desktop-left.webp'
@@ -173,10 +174,10 @@ export const WebAnnouncementBox = ({
             {announcement.bannerDesign === 'Customize Design without Preset' &&
             announcement.data.icon ? (
               <ImageWrapper>
-                <img
+                <Image
                   src={announcement.data.icon}
-                  width="19px"
-                  height="19px"
+                  width={19}
+                  height={19}
                   alt="seva-announcement-icon"
                 />
               </ImageWrapper>

@@ -3,6 +3,7 @@ import React from 'react'
 import styles from 'styles/components/molecules/card/primaryCard.module.scss'
 import CommonLabel from '../../labelCard/common'
 import { articleDateFormat } from 'utils/handler/date'
+import Image from 'next/image'
 
 type TPrimaryCardProps = {
   title: string
@@ -24,7 +25,7 @@ export default function PrimaryCard({
   return (
     <div onClick={() => handleClick(url)} className={styles.container}>
       <div className={styles.imageWrapper}>
-        <img src={image} alt={title} className={styles.image} />
+        <Image src={image} alt={title} className={styles.image} />
 
         {label && <CommonLabel title={label} />}
       </div>

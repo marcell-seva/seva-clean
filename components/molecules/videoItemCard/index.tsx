@@ -11,6 +11,7 @@ import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { LocalStorageKey } from 'utils/enum'
 import { useCar } from 'services/context/carContext'
+import Image from 'next/image'
 
 interface Props {
   data: VideoDataType
@@ -71,7 +72,7 @@ export const VideoItemCard = ({ data }: Props) => {
           onClick={clickThumbnailHandler}
           data-testid={elementId.PDP.RingkasanTab.VideoSection.Thumbnail}
         >
-          <img
+          <Image
             className={styles.thumbnail}
             src={data.thumbnailVideo}
             alt={`${data.title}`}

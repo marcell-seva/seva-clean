@@ -37,6 +37,7 @@ import { api } from 'services/api'
 import { getToken } from 'utils/handler/auth'
 import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import { TrackerFlag } from 'utils/types/models'
+import Image from 'next/image'
 
 const ApprovalImageAcc = '/revamp/illustration/approve-acc.webp'
 const ApprovalImageTaf = '/revamp/illustration/approve-taf.webp'
@@ -155,7 +156,7 @@ export const CreditQualificationSuccess = () => {
         className={styles.wrapperLogoGooglePlay}
         onClick={onClickPlayStore}
       >
-        <img
+        <Image
           src={LogoGooglePlay}
           alt="google-play"
           className={styles.logoGooglePlay}
@@ -168,7 +169,7 @@ export const CreditQualificationSuccess = () => {
         className={styles.wrapperLogoAppStore}
         onClick={onClickAppStore}
       >
-        <img
+        <Image
           src={LogoAppStore}
           alt="app-store"
           className={styles.logoAppStore}
@@ -315,7 +316,7 @@ export const CreditQualificationSuccess = () => {
       >
         <div className={styles.resultSuccess}>
           <div className={styles.bundleImage}>
-            <img
+            <Image
               src={
                 preApprovalResultData?.finco.toLowerCase() === 'acc'
                   ? ApprovalImageAcc
