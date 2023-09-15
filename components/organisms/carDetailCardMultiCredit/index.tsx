@@ -38,6 +38,7 @@ import LabelSedang from 'components/molecules/labelCard/sedang'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getPageName } from 'utils/pageName'
+import Image from 'next/image'
 
 type CarDetailCardProps = {
   recommendation: MultKKCarRecommendation
@@ -361,7 +362,7 @@ const CarDetailCardMultiCredit = ({
     <>
       <div className={styles.container} ref={showToolTip ? goToButton : null}>
         <CardShadow className={styles.cardWrapper}>
-          <img
+          <Image
             src={recommendation.images[0]}
             className={styles.heroImg}
             alt={`${recommendation.brand} ${recommendation.model}`}

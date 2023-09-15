@@ -47,6 +47,7 @@ import {
   PreviousButton,
   saveDataForCountlyTrackerPageViewLC,
 } from 'utils/navigate'
+import Image from 'next/image'
 
 const MainImageGreenMale = '/revamp/illustration/credit-result-green-male.webp'
 const MainImageGreenFemale =
@@ -277,21 +278,21 @@ export default function CreditQualificationResultPage() {
         <div
           className={clsx(styles.mainImageWrapper, styles.mainImageWrapperRed)}
         >
-          <img
+          <Image
             className={styles.mainImageIllustration}
             alt="credit-result-illustration"
             src={MainImageRedBackground}
             width={327.13}
             height={188.14}
           />
-          <img
+          <Image
             className={styles.carImageRed}
             alt="car-image"
-            src={carData?.variantDetail?.images[0]}
+            src={carData?.variantDetail?.images[0] || ''}
             width={86.84}
             height={65.3}
           />
-          <img
+          <Image
             className={styles.magnifierImage}
             alt="magnifier-illustration"
             src={MainImageMagnifier}
@@ -308,17 +309,17 @@ export default function CreditQualificationResultPage() {
             styles.mainImageWrapperYellow,
           )}
         >
-          <img
+          <Image
             className={styles.mainImageIllustration}
             alt="credit-result-illustration"
-            src={getMainImageSource()}
+            src={getMainImageSource() || ''}
             width={311}
             height={198.62}
           />
-          <img
+          <Image
             className={styles.carImage}
             alt="car-image"
-            src={carData?.variantDetail?.images[0]}
+            src={carData?.variantDetail?.images[0] || ''}
             width={86.84}
             height={65.3}
           />
@@ -332,17 +333,17 @@ export default function CreditQualificationResultPage() {
             styles.mainImageWrapperGreen,
           )}
         >
-          <img
+          <Image
             className={styles.mainImageIllustration}
             alt="credit-result-illustration"
-            src={getMainImageSource()}
+            src={getMainImageSource() || ''}
             width={317.08}
             height={197.11}
           />
-          <img
+          <Image
             className={styles.carImage}
             alt="car-image"
-            src={carData?.variantDetail?.images[0]}
+            src={carData?.variantDetail?.images[0] || ''}
             width={86.84}
             height={65.3}
           />
@@ -356,17 +357,17 @@ export default function CreditQualificationResultPage() {
             styles.mainImageWrapperYellow,
           )}
         >
-          <img
+          <Image
             className={styles.mainImageIllustration}
             alt="credit-result-illustration"
-            src={getMainImageSource()}
+            src={getMainImageSource() || ''}
             width={311}
             height={198.62}
           />
-          <img
+          <Image
             className={styles.carImage}
             alt="car-image"
-            src={carData?.variantDetail?.images[0]}
+            src={carData?.variantDetail?.images[0] || ''}
             width={86.84}
             height={65.3}
           />

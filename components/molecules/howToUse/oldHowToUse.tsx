@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
@@ -23,7 +24,7 @@ export const HowToUse = ({ uspData }: HowToUseProps) => {
         <div className="htu-step-wrapper">
           <div className="htu-item-wrapper">
             <div className="htu-image-wrapper">
-              <img
+              <Image
                 src={apiBanner + uspData?.icon_1.data.attributes.url}
                 alt={uspData?.icon_1.data.attributes.formats.thumbnail.name}
               />
@@ -35,7 +36,7 @@ export const HowToUse = ({ uspData }: HowToUseProps) => {
           </div>
           <div className="htu-item-wrapper">
             <div className="htu-image-wrapper">
-              <img
+              <Image
                 src={apiBanner + uspData?.icon_2.data.attributes.url}
                 alt={uspData?.icon_2.data.attributes.formats.thumbnail.name}
               />
@@ -47,7 +48,7 @@ export const HowToUse = ({ uspData }: HowToUseProps) => {
           </div>
           <div className="htu-item-wrapper">
             <div className="htu-image-wrapper">
-              <img
+              <Image
                 src={apiBanner + uspData?.icon_3.data.attributes.url}
                 alt={uspData?.icon_3.data.attributes.formats.thumbnail.name}
               />
@@ -60,7 +61,7 @@ export const HowToUse = ({ uspData }: HowToUseProps) => {
         </div>
       </div>
       <div className="htu-vector-6">
-        <img
+        <Image
           src={vector6}
           alt="seva-vector-banner-1"
           width="136"
@@ -68,7 +69,12 @@ export const HowToUse = ({ uspData }: HowToUseProps) => {
         />
       </div>
       <div className="htu-vector-7">
-        <img src={vector7} alt="seva-vector-banner-2" width="125" height="86" />
+        <Image
+          src={vector7}
+          alt="seva-vector-banner-2"
+          width="125"
+          height="86"
+        />
       </div>
     </div>
   )

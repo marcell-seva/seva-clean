@@ -52,6 +52,7 @@ import Link from 'next/link'
 import { ToastV2 } from 'components/atoms/toastV2'
 import PopupError from 'components/organisms/popupError'
 import LabelAccount from 'components/molecules/labelAccount'
+import Image from 'next/image'
 
 const PromotionBanner = '/revamp/images/profile/card_promotion-banner.webp'
 
@@ -391,7 +392,7 @@ const Profile = () => {
                       }}
                     >
                       <div className={styles.banner__img}>
-                        <img
+                        <Image
                           src={PromotionBanner}
                           alt="Promotion Banner"
                           data-testid={elementId.Profil.PromoWidget.Image}
@@ -431,7 +432,7 @@ const Profile = () => {
                       }}
                     >
                       <div className={styles.banner__img}>
-                        <img src={PromotionBanner} alt="Promotion Banner" />
+                        <Image src={PromotionBanner} alt="Promotion Banner" />
                       </div>
                       <div className={styles.banner__text}>
                         <span className={styles.body}>

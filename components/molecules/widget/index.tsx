@@ -5,7 +5,7 @@ import { trackGAContact, trackGALead } from 'services/googleAds'
 import styles from 'styles/components/molecules/Widget.module.scss'
 import { rupiah, useComponentVisible } from 'utils'
 import { IconChevronDown, IconChevronUp } from 'components/atoms'
-import FlagIndonesia from '/public/revamp/images/flagIndonesia.png'
+import flagIndonesia from '/public/revamp/images/flagIndonesia.png'
 import {
   AuthContext,
   ConfigContext,
@@ -308,7 +308,7 @@ const Widget: React.FC<PropsWidget> = ({ expandForm }): JSX.Element => {
       <div className={styles.wrapperInputPhone}>
         <div className={styles.phoneDetail}>
           <Image
-            src={FlagIndonesia}
+            src={flagIndonesia}
             width={16}
             height={16}
             priority

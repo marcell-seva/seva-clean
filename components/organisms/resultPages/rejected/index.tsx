@@ -38,6 +38,7 @@ import {
   PreviousButton,
   saveDataForCountlyTrackerPageViewHomepage,
 } from 'utils/navigate'
+import Image from 'next/image'
 
 const RejectedImage = '/revamp/illustration/rejected-approval.webp'
 
@@ -257,7 +258,7 @@ export const CreditQualificationRejected = () => {
       >
         <div className={styles.resultRejected}>
           <div className={styles.bundleImage}>
-            <img
+            <Image
               src={RejectedImage}
               alt="approval-image"
               className={styles.rejectedImage}

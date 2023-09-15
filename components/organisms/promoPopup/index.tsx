@@ -13,6 +13,7 @@ import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { useRouter } from 'next/router'
 import { LoanRank } from 'utils/types/models'
+import Image from 'next/image'
 
 const promoBannerTSO = '/revamp/illustration/PromoTSO.webp'
 const promoBannerCumaDiSEVA = '/revamp/illustration/PromoCumaDiSEVA.webp'
@@ -88,7 +89,7 @@ const PromoPopup = ({
         </div>
       </div>
       <div className={styles.imagePromoSpacing}>
-        <img
+        <Image
           src={promoBannerCumaDiSEVA}
           alt="promo banner cuma di seva"
           className={styles.promoBanner}
@@ -137,7 +138,7 @@ const PromoPopup = ({
         </div>
       </div>
       <div className={styles.imagePromoSpacing}>
-        <img
+        <Image
           src={promoBannerTSO}
           alt="promo banner TSO"
           className={styles.promoBanner}
@@ -178,7 +179,7 @@ const PromoPopup = ({
         </div>
       </div>
       <div className={styles.imagePromoSpacing}>
-        <img
+        <Image
           src={promoBannerTradeIn}
           alt="promo banner trade In"
           className={styles.promoBanner}

@@ -16,6 +16,7 @@ import { getLocalStorage } from 'utils/handler/localStorage'
 import { LoanRank } from 'utils/types/models'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import Image from 'next/image'
 
 interface Props {
   data: VideoDataType
@@ -103,7 +104,7 @@ export const VideoItemCard = ({ data }: Props) => {
           onClick={clickThumbnailHandler}
           data-testid={elementId.PDP.RingkasanTab.VideoSection.Thumbnail}
         >
-          <img
+          <Image
             className={styles.thumbnail}
             src={data.thumbnailVideo}
             alt={`${data.title}`}
