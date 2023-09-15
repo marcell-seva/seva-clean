@@ -1,13 +1,6 @@
 import React, { useState } from 'react'
 import styles from '../../../styles/components/organisms/headerMobile.module.scss'
-import {
-  IconHamburger,
-  IconSearch,
-  IconLocationLine,
-  Overlay,
-} from 'components/atoms'
-import { SidebarMobile } from 'components/organisms'
-// import { useSearchModal } from 'components/molecules/searchModal'
+import { IconHamburger, IconSearch, IconLocationLine } from 'components/atoms'
 import { rootUrl } from 'utils/helpers/routes'
 import clsx from 'clsx'
 import {
@@ -20,10 +13,21 @@ import getCurrentEnvironment from 'helpers/environments'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { WebAnnouncementBox } from 'components/organisms'
-import { SearchModal } from 'components/molecules/searchModal'
 import Image from 'next/image'
+import dynamic from 'next/dynamic'
 
+const Overlay = dynamic(() =>
+  import('components/atoms').then((mod) => mod.Overlay),
+)
+const SearchModal = dynamic(() =>
+  import('components/molecules/searchModal').then((mod) => mod.SearchModal),
+)
+const WebAnnouncementBox = dynamic(() =>
+  import('components/organisms').then((mod) => mod.WebAnnouncementBox),
+)
+const SidebarMobile = dynamic(() =>
+  import('components/organisms').then((mod) => mod.SidebarMobile),
+)
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
 type HeaderMobileProps = {
