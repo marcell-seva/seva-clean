@@ -41,6 +41,7 @@ import {
   PreviousButton,
   saveDataForCountlyTrackerPageViewLC,
 } from 'utils/navigate'
+import { isCurrentCityJakartaPusatOrSurabaya } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 
 interface Props {
   onClickCityOtrCarOverview: () => void
@@ -105,11 +106,19 @@ export const CarOverview = ({
   }
 
   const onClickOtrCity = () => {
-    modelDetail?.brand !== 'Daihatsu' && onClickCityOtrCarOverview()
+    if (
+      modelDetail?.brand !== 'Daihatsu' ||
+      isCurrentCityJakartaPusatOrSurabaya()
+    ) {
+      onClickCityOtrCarOverview()
+    }
   }
 
   const getCity = () => {
-    if (modelDetail?.brand === 'Daihatsu') {
+    if (
+      modelDetail?.brand === 'Daihatsu' &&
+      !isCurrentCityJakartaPusatOrSurabaya()
+    ) {
       return 'Jakarta Pusat'
     } else if (cityOtr && cityOtr.cityName) {
       return cityOtr.cityName
@@ -315,7 +324,10 @@ export const CarOverview = ({
             <span
               style={{
                 color:
-                  modelDetail?.brand === 'Daihatsu' ? '#878D98' : '#246ED4',
+                  modelDetail?.brand === 'Daihatsu' &&
+                  !isCurrentCityJakartaPusatOrSurabaya()
+                    ? '#878D98'
+                    : '#246ED4',
               }}
               onClick={onClickOtrCity}
               data-testid={elementId.PDP.CarOverview.CityOtr}
@@ -323,7 +335,8 @@ export const CarOverview = ({
               {getCity()}
             </span>
           </span>
-          {modelDetail?.brand === 'Daihatsu' ? (
+          {modelDetail?.brand === 'Daihatsu' &&
+          !isCurrentCityJakartaPusatOrSurabaya() ? (
             <div
               className={styles.tooltipWrapper}
               ref={tooltipRef}
