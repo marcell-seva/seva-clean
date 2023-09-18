@@ -39,8 +39,11 @@ export const PdpLowerSection = ({
   setVariantIdFuelRatio,
   variantFuelRatio,
 }: pdpLowerSectionProps) => {
+  const router = useRouter()
+  const lowerTab = router.query.slug as string
+  const path = lowerTab ? capitalizeFirstLetter(lowerTab[0]) : ''
   const [selectedTabValue, setSelectedTabValue] = useState(
-    lowerSectionNavigationTab[0].value,
+    path || lowerSectionNavigationTab[0].value,
   )
   const { carModelDetails } = useCar()
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
@@ -51,7 +54,6 @@ export const PdpLowerSection = ({
     !!filterStorage?.monthlyIncome &&
     !!filterStorage?.tenure
 
-  const router = useRouter()
   const loanRankcr = router.query.loanRankCVL ?? ''
   const upperTab = router.query.tab as string
 
@@ -82,46 +84,34 @@ export const PdpLowerSection = ({
     trackClickLowerTabCountly(value)
     setSelectedTabValue(value)
     const destinationElm = document.getElementById('pdp-lower-content')
-    const urlWithoutSlug = window.location.href
+    const urlWithoutSlug = window.location.pathname
       .replace('/ringkasan', '')
       .replace('/spesifikasi', '')
       .replace('/harga', '')
       .replace('/kredit', '')
-    const lastIndexUrl = window.location.href.slice(-1)
+    const lastIndexUrl = window.location.pathname.slice(-1)
+
+    const { brand, model, slug, ...restQuery } = router.query
 
     if (lastIndexUrl === '/') {
-      window.history.pushState(
-        null,
-        '',
-        urlWithoutSlug + value.toLocaleLowerCase(),
-      )
+      router.push({
+        pathname: urlWithoutSlug + value.toLocaleLowerCase(),
+        query: { ...restQuery },
+      })
     } else {
-      window.history.pushState(
-        null,
-        '',
-        urlWithoutSlug +
+      router.push({
+        pathname:
+          urlWithoutSlug +
           '/' +
           (value !== 'Ringkasan' ? value.toLocaleLowerCase() : ''),
-      )
+        query: { ...restQuery },
+      })
     }
 
     if (destinationElm) {
       destinationElm.scrollIntoView()
       // add more scroll because global page header is fixed position
       window.scrollBy({ top: -100, left: 0 })
-    }
-  }
-
-  useEffect(() => {
-    setTabFromDirectUrl()
-  }, [])
-
-  const setTabFromDirectUrl = () => {
-    const slug = router.query.slug
-
-    if (slug) {
-      const path = capitalizeFirstLetter(slug[0])
-      setSelectedTabValue(path)
     }
   }
 
