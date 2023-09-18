@@ -40,6 +40,7 @@ import { LinkLabelSmallMedium } from 'components/atoms/typography/LinkLabelSmall
 import { Hamburger } from 'components/atoms/icon/OldHamburger'
 import { TextLegalMedium } from 'utils/typography/TextLegalMedium'
 import { client } from 'utils/helpers/const'
+import { useUtils } from 'services/context/utilsContext'
 
 const LogoSeva = '/revamp/illustration/seva-header.svg'
 const RegisterImg = '/revamp/illustration/Register.png'
@@ -50,6 +51,7 @@ interface PageHeaderSevaProps {
 
 export const PageHeaderSevaHeight = '80px'
 export const PageHeaderSeva = memo((props: PageHeaderSevaProps) => {
+  const { dekstopWebTopMenu } = useUtils()
   const router = useRouter()
   const enableLanguageDropdown =
     getCurrentEnvironment.featureToggles.enableLanguageDropdown
@@ -57,7 +59,6 @@ export const PageHeaderSeva = memo((props: PageHeaderSevaProps) => {
     getCurrentEnvironment.featureToggles.enableAccountDashboard
   const { sideMenu, patchSideMenu } = useSideMenuContext()
   const { showModal: showSearchModal, SearchModal } = useSearchModal()
-  const [data, setData] = useState<Array<NavbarItemResponse>>()
   const [nameIcon, setNameIcon] = useState('')
   const [iconIsClicked, setIconIsClicked] = useState(false)
   const [fullName, setFullName] = useState('')
@@ -99,10 +100,6 @@ export const PageHeaderSeva = memo((props: PageHeaderSevaProps) => {
     if (getToken()) {
       fetchDataCustomer()
     }
-    getMenus().then((res) => {
-      setData(res.data)
-      setMenusData(res.data)
-    })
   }, [])
 
   const setMoengageUser = async (payload: string) => {
@@ -141,11 +138,6 @@ export const PageHeaderSeva = memo((props: PageHeaderSevaProps) => {
     saveLocalStorage(LocalStorageKey.sevaCust, encryptedData)
   }
 
-  const setMenusData = (payload: any) => {
-    const encryptedData = encryptValue(JSON.stringify(payload))
-    saveLocalStorage(LocalStorageKey.menu, encryptedData)
-  }
-
   const onClickLogoHeader = () => {
     // make sure side menu bar to close
     // before go to homepage
@@ -176,10 +168,13 @@ export const PageHeaderSeva = memo((props: PageHeaderSevaProps) => {
     removeInformationWhenLogout()
     window.location.reload()
   }
+
   return (
     <>
       <Wrapper>
-        {data && <SidebarBurger data={data} />}
+        {dekstopWebTopMenu.length > 0 && (
+          <SidebarBurger data={dekstopWebTopMenu} />
+        )}
         <StyledLogoSection>
           <StyledLogoContainer>
             <BurgerAndLogoWrapper>

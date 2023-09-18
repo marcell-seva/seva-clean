@@ -4,6 +4,7 @@ import { api } from 'services/api'
 import { CarRecommendation } from 'utils/types/utils'
 import { InferGetServerSidePropsType } from 'next'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
+import { getToken } from 'utils/handler/auth'
 import { useUtils } from 'services/context/utilsContext'
 import styles from 'styles/pages/plp.module.scss'
 import { mergeModelDetailsWithLoanRecommendations } from 'services/recommendations'
@@ -49,18 +50,37 @@ export default function index({
   metaTagDataRes,
   carVideoReviewRes,
   carArticleReviewRes,
-  dataHeader,
+  dataDesktopMenu,
+  dataMobileMenu,
   dataFooter,
   dataCities,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { saveMobileWebTopMenus, saveMobileWebFooterMenus, saveCities } =
-    useUtils()
+  const {
+    saveDataAnnouncementBox,
+    saveDesktopWebTopMenu,
+    saveMobileWebTopMenus,
+    saveMobileWebFooterMenus,
+    saveCities,
+  } = useUtils()
 
   useEffect(() => {
-    saveMobileWebTopMenus(dataHeader)
+    saveDesktopWebTopMenu(dataDesktopMenu)
+    saveMobileWebTopMenus(dataMobileMenu)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
+    getAnnouncementBox()
   }, [])
+
+  const getAnnouncementBox = async () => {
+    try {
+      const res: any = await api.getAnnouncementBox({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
+      })
+      saveDataAnnouncementBox(res.data)
+    } catch (error) {}
+  }
 
   return (
     <>
@@ -101,9 +121,10 @@ export async function getServerSideProps(context: any) {
       carRecommendationsRes,
       metaTagDataRes,
       carVideoReviewRes,
-      menuRes,
+      menuMobileRes,
       footerRes,
       cityRes,
+      menuDesktopRes,
     ]: any = await Promise.all([
       api.getRecommendation('?city=jakarta&cityId=118'),
       api.getMetaTagData(context.query.model.replaceAll('-', '')),
@@ -111,6 +132,7 @@ export async function getServerSideProps(context: any) {
       api.getMobileHeaderMenu(),
       api.getMobileFooterMenu(),
       api.getCities(),
+      api.getMenu(),
     ])
     let id = ''
     const carList = carRecommendationsRes.carRecommendations
@@ -159,9 +181,10 @@ export async function getServerSideProps(context: any) {
         carVideoReviewRes,
         carArticleReviewRes,
         isSsrMobile: getIsSsrMobile(context),
-        dataHeader: menuRes.data,
+        dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        dataDesktopMenu: menuDesktopRes.data,
       },
     }
   } catch (error) {
@@ -169,9 +192,10 @@ export async function getServerSideProps(context: any) {
     return {
       props: {
         notFound: true,
-        dataHeader: [],
+        dataMobileMenu: [],
         dataFooter: [],
         dataCities: [],
+        dataDesktopMenu: [],
       },
     }
   }

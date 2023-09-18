@@ -62,7 +62,7 @@ export const ArticlesItemV2Desktop = ({
         <ContentHeader articleType={articleType}>
           <a
             style={{ width: 'fit-content' }}
-            data-testId={
+            data-testid={
               elementId.Homepage.Article.LabelLink +
               parsedToUnCapitalizeWithHyphen(data.category)
             }

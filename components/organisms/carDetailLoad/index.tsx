@@ -13,6 +13,8 @@ export const CarDetailLoad = () => {
           src={CarSkeleton}
           className={styles.heroImg}
           alt={'car skeleton'}
+          width={248}
+          height={248}
         />
         <Skeleton
           height={32}

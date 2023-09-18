@@ -1,18 +1,17 @@
 import { PLP } from 'components/organisms'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import Head from 'next/head'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
 import { saveLocalStorage } from 'utils/handler/localStorage'
 import { LocalStorageKey } from 'utils/enum'
 import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
 import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
-import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import {
   CityOtrOption,
   FooterSEOAttributes,
   MobileWebTopMenuType,
+  NavbarItemResponse,
 } from 'utils/types/utils'
 import PLPDesktop from 'components/organisms/PLPDesktop'
 import { defaultSeoImage } from 'utils/helpers/const'
@@ -25,17 +24,23 @@ import moment from 'moment'
 
 const NewCarResultPage = ({
   meta,
-  dataHeader,
+  dataDesktopMenu,
+  dataMobileMenu,
   dataFooter,
   dataCities,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const id = router.query.brand
-  const { saveMobileWebTopMenus, saveMobileWebFooterMenus, saveCities } =
-    useUtils()
+  const {
+    saveDesktopWebTopMenu,
+    saveMobileWebTopMenus,
+    saveMobileWebFooterMenus,
+    saveCities,
+  } = useUtils()
 
   useEffect(() => {
-    saveMobileWebTopMenus(dataHeader)
+    saveDesktopWebTopMenu(dataDesktopMenu)
+    saveMobileWebTopMenus(dataMobileMenu)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
 
@@ -94,7 +99,8 @@ const getBrand = (brand: string | string[] | undefined) => {
 
 export const getServerSideProps: GetServerSideProps<{
   meta: PLPProps
-  dataHeader: MobileWebTopMenuType[]
+  dataDesktopMenu: NavbarItemResponse[]
+  dataMobileMenu: MobileWebTopMenuType[]
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
 }> = async (ctx) => {
@@ -143,14 +149,21 @@ export const getServerSideProps: GetServerSideProps<{
   } = ctx.query
 
   try {
-    const [fetchMeta, fetchFooter, menuRes, footerRes, cityRes] =
-      await Promise.all([
-        axios.get(metaTagBaseApi + metabrand),
-        axios.get(footerTagBaseApi + metabrand),
-        api.getMobileHeaderMenu(),
-        api.getMobileFooterMenu(),
-        api.getCities(),
-      ])
+    const [
+      fetchMeta,
+      fetchFooter,
+      menuDesktopRes,
+      menuMobileRes,
+      footerRes,
+      cityRes,
+    ] = await Promise.all([
+      axios.get(metaTagBaseApi + metabrand),
+      axios.get(footerTagBaseApi + metabrand),
+      api.getMenu(),
+      api.getMobileHeaderMenu(),
+      api.getMobileFooterMenu(),
+      api.getCities(),
+    ])
 
     const metaData = fetchMeta.data.data
     const footerData = fetchFooter.data.data
@@ -199,7 +212,8 @@ export const getServerSideProps: GetServerSideProps<{
     return {
       props: {
         meta,
-        dataHeader: menuRes.data,
+        dataDesktopMenu: menuDesktopRes.data,
+        dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
       },
@@ -208,7 +222,8 @@ export const getServerSideProps: GetServerSideProps<{
     return {
       props: {
         meta,
-        dataHeader: [],
+        dataDesktopMenu: [],
+        dataMobileMenu: [],
         dataFooter: [],
         dataCities: [],
       },
