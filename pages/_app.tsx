@@ -35,6 +35,7 @@ import 'styles/insuranceTooltip.scss'
 import { FBPixelStandardEvent, FB_PIXEL_ID } from 'helpers/facebookPixel'
 import { client } from 'utils/helpers/const'
 import { IsSsrMobileContext } from 'services/context/isSsrMobileContext'
+import Head from 'next/head'
 
 const kanyonLight = localFont({
   src: '../public/revamp/fonts/Kanyon/Kanyon-Light.otf',
@@ -91,6 +92,13 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [])
   return (
     <>
+      <Head>
+        <meta name="theme-color" content="#fff" />
+        <meta
+          name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
+        />
+      </Head>
       <Script
         type="text/javascript"
         strategy="afterInteractive"

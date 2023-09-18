@@ -1,5 +1,4 @@
 const path = require('path')
-
 const nextConfig = {
   basePath: '',
   poweredByHeader: false,
@@ -8,6 +7,7 @@ const nextConfig = {
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },
+  // experimental: { optimizeCss: true },
   compiler: {
     styledComponents: true,
   },
@@ -65,10 +65,5 @@ const nextConfig = {
   },
 }
 
-const withPWA = require('next-pwa')({
-  dest: 'public',
-  register: true,
-  skipWaiting: true,
-})
 
-module.exports = withPWA(nextConfig)
+module.exports = nextConfig

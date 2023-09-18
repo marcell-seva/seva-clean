@@ -25,6 +25,8 @@ export const HowToUse = ({ uspData }: HowToUseProps) => {
           <div className="htu-item-wrapper">
             <div className="htu-image-wrapper">
               <Image
+                width={40}
+                height={40}
                 src={apiBanner + uspData?.icon_1.data.attributes.url}
                 alt={uspData?.icon_1.data.attributes.formats.thumbnail.name}
               />
@@ -37,6 +39,8 @@ export const HowToUse = ({ uspData }: HowToUseProps) => {
           <div className="htu-item-wrapper">
             <div className="htu-image-wrapper">
               <Image
+                width={40}
+                height={40}
                 src={apiBanner + uspData?.icon_2.data.attributes.url}
                 alt={uspData?.icon_2.data.attributes.formats.thumbnail.name}
               />
@@ -49,6 +53,8 @@ export const HowToUse = ({ uspData }: HowToUseProps) => {
           <div className="htu-item-wrapper">
             <div className="htu-image-wrapper">
               <Image
+                width={40}
+                height={40}
                 src={apiBanner + uspData?.icon_3.data.attributes.url}
                 alt={uspData?.icon_3.data.attributes.formats.thumbnail.name}
               />

@@ -73,6 +73,8 @@ export const CarBranchRecommendation = ({
         <Image
           src={LogoToyota}
           alt="Toyota"
+          width={48}
+          height={41}
           style={{ width: isMobile ? 48 : 51, height: isMobile ? 41 : 44 }}
         />
       ),
@@ -85,6 +87,8 @@ export const CarBranchRecommendation = ({
         <Image
           src={LogoDaihatsu}
           alt="Daihatsu"
+          width={48}
+          height={32.45}
           style={{ width: isMobile ? 48 : 64, height: isMobile ? 32.45 : 44 }}
         />
       ),
@@ -104,6 +108,8 @@ export const CarBranchRecommendation = ({
         <Image
           src={LogoBmw}
           alt="BMW"
+          width={40}
+          height={40}
           style={{ width: isMobile ? 40 : 44, height: isMobile ? 40 : 44 }}
         />
       ),

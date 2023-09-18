@@ -248,7 +248,7 @@ const DpForm: React.FC<DpFormProps> = ({
             onBlur={handleValueBlur}
             name={name}
             disabled={isDisabled}
-            data-testId={elementId.Field.DP}
+            data-testid={elementId.Field.DP}
           />
           {isDpTooLow && (
             <div className={`${styles.errorMessageWrapper} shake-animation-X`}>
@@ -277,7 +277,7 @@ const DpForm: React.FC<DpFormProps> = ({
             disabled={isDisabled}
             suffix="%"
             maxLength={2}
-            data-testId={elementId.Field.DPPercentage}
+            data-testid={elementId.Field.DPPercentage}
           />
         </Col>
       </Row>

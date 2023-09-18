@@ -4,7 +4,7 @@ import { PropsIcon } from 'utils/types'
 
 const IsuzuBrand = '/revamp/icon/Isuzu-new.png'
 
-export const Isuzu = ({ width = 50, height }: PropsIcon) => {
+export const Isuzu = ({ width = 50, height = 50 }: PropsIcon) => {
   return (
     <Image
       src={IsuzuBrand}

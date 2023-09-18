@@ -110,8 +110,6 @@ export default function NewCarVariantList() {
     LocalStorageKey.CityOtr,
     null,
   )
-  // const { PreApprovalCarNotAvailableModal } = usePreApprovalCarNotAvailable()
-
   const {
     saveCarVariantDetails,
     carModelDetails,
@@ -139,7 +137,7 @@ export default function NewCarVariantList() {
   const [isButtonClick, setIsButtonClick] = useState(false)
   const [promoName, setPromoName] = useState('promo1')
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
-  const { cities, dataAnnouncementBox, saveDataAnnouncementBox } = useUtils()
+  const { cities, dataAnnouncementBox } = useUtils()
   const [isOpenShareModal, setIsOpenShareModal] = useState(false)
   const [connectedRefCode, setConnectedRefCode] = useState('')
   const { funnelQuery } = useFunnelQueryData()
@@ -154,13 +152,7 @@ export default function NewCarVariantList() {
 
   const [showAnnouncementBox, setShowAnnouncementBox] = useState<
     boolean | null
-  >(
-    getSessionStorage(
-      getToken()
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ) ?? true,
-  )
+  >(false)
   const [variantIdFuel, setVariantIdFuelRatio] = useState<string | undefined>()
   const [variantFuelRatio, setVariantFuelRatio] = useState<string | undefined>()
   // for disable promo popup after change route
@@ -364,20 +356,18 @@ export default function NewCarVariantList() {
   }
 
   useEffect(() => {
-    getAnnouncementBox()
-  }, [])
-
-  const getAnnouncementBox = () => {
-    try {
-      const res: any = api.getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      saveDataAnnouncementBox(res.data)
-      setShowAnnouncementBox(res.data !== undefined)
-    } catch (error) {}
-  }
+    if (dataAnnouncementBox) {
+      const isShowAnnouncement =
+        getSessionStorage(
+          getToken()
+            ? SessionStorageKey.ShowWebAnnouncementLogin
+            : SessionStorageKey.ShowWebAnnouncementNonLogin,
+        ) ?? true
+      if (isShowAnnouncement) setShowAnnouncementBox(true)
+    } else {
+      setShowAnnouncementBox(false)
+    }
+  }, [dataAnnouncementBox])
 
   useEffect(() => {
     checkConnectedRefCode()
