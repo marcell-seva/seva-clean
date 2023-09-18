@@ -43,9 +43,9 @@ const NewCarResultPage = ({
     saveCities(dataCities)
   }, [])
 
+  const carBrand = meta.carRecommendations.carRecommendations[0]?.brand
   const metaTitle =
-    meta.title.slice(0, 23) +
-    ` - Harga OTR dengan Promo Cicilan bulan ${moment().format('MMMM')} | SEVA`
+    `Harga OTR ${carBrand} - Harga OTR dengan Promo Cicilan bulan ${moment().format('MMMM')} | SEVA`
   const metaDesc = `Temukan beragam mobil ${moment().format(
     'YYYY',
   )} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
