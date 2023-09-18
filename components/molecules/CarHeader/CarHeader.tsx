@@ -9,6 +9,7 @@ import { HeaderAndContentProps } from 'components/organisms/HeaderAndContent/Hea
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useCar } from 'services/context/carContext'
+import Image from 'next/image'
 
 export interface CarHeaderProps extends HeaderAndContentProps {
   onClickShare: () => void
@@ -50,7 +51,13 @@ export function CarHeader({
           </IconControlWrapper>
           <DesktopWrapper>
             {modelDetailData?.images && (
-              <StyledImage src={modelDetailData.images[0]} />
+              <StyledImage
+                src={modelDetailData.images[0]}
+                width={354}
+                height={265}
+                alt=""
+                priority
+              />
             )}
             <TitleHeader {...props} />
           </DesktopWrapper>
@@ -136,7 +143,7 @@ const IconControlWrapper = styled.div`
   }
 `
 
-const StyledImage = styled(Img)`
+const StyledImage = styled(Image)`
   width: 100%;
 
   @media (min-width: 1025px) {

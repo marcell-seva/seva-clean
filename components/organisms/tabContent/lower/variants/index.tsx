@@ -166,7 +166,10 @@ const TabContentLowerVariant = ({
           .replace(':brand', brand)
           .replace(':model', model)
           .replace(':tab?', 'kredit'),
-        query: { selectedVariantId: carVariant.id },
+        query: {
+          selectedVariantId: carVariant.id,
+          ...(loanRankcr && { loanRankCVL: loanRankcr }),
+        },
       },
       undefined,
       { scroll: false },

@@ -1,15 +1,12 @@
-import React, { createContext, useEffect, useMemo, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import { PdpDesktop, PdpMobile } from 'components/organisms'
 import { api } from 'services/api'
-import { AnnouncementBoxDataType, CarRecommendation } from 'utils/types/utils'
+import { CarRecommendation } from 'utils/types/utils'
 import { InferGetServerSidePropsType } from 'next'
-import Head from 'next/head'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
-import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
-import { useMediaQuery } from 'react-responsive'
+import { getToken } from 'utils/handler/auth'
 import { useUtils } from 'services/context/utilsContext'
 import styles from 'styles/pages/plp.module.scss'
-import { getToken } from 'utils/handler/auth'
 import { mergeModelDetailsWithLoanRecommendations } from 'services/recommendations'
 
 interface PdpDataLocalContextType {
@@ -58,8 +55,6 @@ export default function index({
   dataFooter,
   dataCities,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
-  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const {
     saveDataAnnouncementBox,
     saveDesktopWebTopMenu,
@@ -67,10 +62,6 @@ export default function index({
     saveMobileWebFooterMenus,
     saveCities,
   } = useUtils()
-
-  useEffect(() => {
-    setIsMobile(isClientMobile)
-  }, [isClientMobile])
 
   useEffect(() => {
     saveDesktopWebTopMenu(dataDesktopMenu)

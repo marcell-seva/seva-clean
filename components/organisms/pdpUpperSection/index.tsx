@@ -58,14 +58,13 @@ export const PdpUpperSection = ({
     upperTab || upperSectionNavigationTab[0].value,
   )
 
-  const [tabItemList, setTabItemList] = useState(upperSectionNavigationTab)
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
   )
 
   const getImageExterior360 = () => {
-    const currentUrlPathname = window.location.pathname
+    const currentUrlPathname = router.asPath
     const temp = exteriorImagesListNew.filter((item) =>
       currentUrlPathname.includes(item.url),
     )
@@ -74,7 +73,7 @@ export const PdpUpperSection = ({
   }
 
   const getImageInterior360 = () => {
-    const currentUrlPathname = window.location.pathname
+    const currentUrlPathname = router.asPath
     const temp = interiorImagesListNew.filter((item) =>
       currentUrlPathname.includes(item.url),
     )
@@ -108,8 +107,10 @@ export const PdpUpperSection = ({
     if (getInteriorImage()?.length === 0) {
       temp = temp.filter((item: any) => item.value !== 'Interior')
     }
-    setTabItemList(temp)
+    return temp
   }
+
+  const [tabItemList] = useState(filterTabItem())
 
   const trackEventPhoto = (
     event: TrackingEventWebPDPPhoto,
@@ -128,7 +129,7 @@ export const PdpUpperSection = ({
   useEffect(() => {
     // useEffect to set tab item hidden or not
     filterTabItem()
-  }, [videoData, carModelDetails])
+  }, [carModelDetails])
 
   const renderContent = () => {
     switch (selectedTabValue) {

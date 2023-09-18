@@ -82,6 +82,7 @@ export const CarOverview = ({
   const brand = router.query.brand as string
   const model = router.query.model as string
   const upperTab = router.query.tab as string
+  const loanRankcr = router.query.loanRankCVL ?? ''
 
   const sortedCarModelVariant = useMemo(() => {
     return (
@@ -267,6 +268,16 @@ export const CarOverview = ({
     trackClickBrochureCountly()
   }
 
+  const queryParamForPDP = () => {
+    const params = new URLSearchParams({
+      ...(upperTab && { tab: `${upperTab}` }),
+      ...(loanRankcr &&
+        typeof loanRankcr === 'string' && { loanRankCVL: loanRankcr }),
+    })
+
+    return params
+  }
+
   const onClickCalculateCta = () => {
     trackHitungKemampuan()
     trackClickCtaCountly()
@@ -275,7 +286,7 @@ export const CarOverview = ({
       variantListUrl
         .replace(':brand', brand)
         .replace(':model', model)
-        .replace(':tab', 'kredit') + `${upperTab ? `tab=${upperTab}` : ''}`
+        .replace(':tab', 'kredit') + queryParamForPDP()
   }
 
   if (!modelDetail || !variantDetail) return <></>

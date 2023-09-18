@@ -39,8 +39,11 @@ export const PdpLowerSection = ({
   setVariantIdFuelRatio,
   variantFuelRatio,
 }: pdpLowerSectionProps) => {
+  const router = useRouter()
+  const lowerTab = router.query.slug as string
+  const path = lowerTab ? capitalizeFirstLetter(lowerTab[0]) : ''
   const [selectedTabValue, setSelectedTabValue] = useState(
-    lowerSectionNavigationTab[0].value,
+    path || lowerSectionNavigationTab[0].value,
   )
   const { carModelDetails } = useCar()
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
@@ -51,7 +54,6 @@ export const PdpLowerSection = ({
     !!filterStorage?.monthlyIncome &&
     !!filterStorage?.tenure
 
-  const router = useRouter()
   const loanRankcr = router.query.loanRankCVL ?? ''
   const upperTab = router.query.tab as string
 
