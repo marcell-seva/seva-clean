@@ -11,6 +11,8 @@ import { useUtils } from 'services/context/utilsContext'
 import styles from 'styles/pages/plp.module.scss'
 import { getToken } from 'utils/handler/auth'
 import { mergeModelDetailsWithLoanRecommendations } from 'services/recommendations'
+import Seo from 'components/atoms/seo'
+import { defaultSeoImage } from 'utils/helpers/const'
 
 interface PdpDataLocalContextType {
   /**
