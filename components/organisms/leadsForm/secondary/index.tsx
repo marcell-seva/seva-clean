@@ -93,6 +93,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
   const model = router.query.model as string
   const brand = router.query.brand as string
   const upperTab = router.query.tab as string
+  const loanRankcr = router.query.loanRankCVL ?? ''
 
   const handleInputName = (payload: any): void => {
     if (payload !== ' ' && onlyLettersAndSpaces(payload)) {
@@ -335,11 +336,21 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
     })
   }
 
+  const queryParamForPDP = () => {
+    const params = new URLSearchParams({
+      ...(loanRankcr &&
+        typeof loanRankcr === 'string' && { loanRankCVL: loanRankcr }),
+    })
+
+    return params
+  }
+
   const onClickCalculateCta = () => {
-    let urlDirection = variantListUrl
-      .replace(':brand', brand)
-      .replace(':model', model)
-      .replace(':tab', 'kredit')
+    let urlDirection =
+      variantListUrl
+        .replace(':brand', brand)
+        .replace(':model', model)
+        .replace(':tab', 'kredit') + queryParamForPDP()
 
     if (router.basePath) {
       urlDirection = router.basePath + urlDirection
