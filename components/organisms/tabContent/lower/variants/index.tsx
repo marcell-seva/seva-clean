@@ -61,6 +61,7 @@ const TabContentLowerVariant = ({
 
   const brand = router.query.brand as string
   const model = router.query.model as string
+  const loanRankcr = router.query.loanRankCVL ?? ''
 
   const { funnelQuery } = useFunnelQueryData()
   const getDataForAmplitude = (carVariant: CarVariantRecommendation) => {
@@ -121,7 +122,10 @@ const TabContentLowerVariant = ({
           .replace(':brand', brand)
           .replace(':model', model)
           .replace(':tab?', 'kredit'),
-        query: { selectedVariantId: carVariant.id },
+        query: {
+          selectedVariantId: carVariant.id,
+          ...(loanRankcr && { loanRankCVL: loanRankcr }),
+        },
       },
       undefined,
       { scroll: false },
