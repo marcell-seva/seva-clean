@@ -266,7 +266,7 @@ const PromoSection = ({
 
             <div
               style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(255,0,0,0), black);`,
+                backgroundImage: `linear-gradient(to bottom, rgba(255,0,0,0), black)`,
               }}
             >
               <p className={styles.textPromoBanner}>
@@ -305,7 +305,7 @@ const PromoSection = ({
 
             <div
               style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(255,0,0,0), black);`,
+                backgroundImage: `linear-gradient(to bottom, rgba(255,0,0,0), black)`,
               }}
             >
               <p className={styles.textPromoBanner}>

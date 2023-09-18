@@ -9,10 +9,12 @@ import { getCity } from 'utils/hooks/useGetCity'
 import styles from 'styles/pages/homepage.module.scss'
 import { useCar } from 'services/context/carContext'
 import { useUtils } from 'services/context/utilsContext'
+import { MobileWebTopMenuType, NavbarItemResponse } from 'utils/types/utils'
 
 interface HomePageDataLocalContextType {
   dataBanner: any
-  dataMenu: any
+  dataDesktopMenu: NavbarItemResponse[]
+  dataMobileMenu: MobileWebTopMenuType[]
   dataCities: any
   dataTestimony: any
   dataRecToyota: any
@@ -28,7 +30,8 @@ interface HomePageDataLocalContextType {
 export const HomePageDataLocalContext =
   createContext<HomePageDataLocalContextType>({
     dataBanner: null,
-    dataMenu: null,
+    dataDesktopMenu: [],
+    dataMobileMenu: [],
     dataCities: null,
     dataTestimony: null,
     dataRecToyota: null,
@@ -42,7 +45,8 @@ export const HomePageDataLocalContext =
 export default function WithTracker({
   dataReccomendation,
   dataBanner,
-  dataMenu,
+  dataDesktopMenu,
+  dataMobileMenu,
   dataCities,
   dataTestimony,
   dataRecToyota,
@@ -54,7 +58,8 @@ export default function WithTracker({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isMobile, setIsMobile] = useState(useIsMobileSSr())
   const { saveTypeCar, saveCarOfTheMonth, saveRecommendationToyota } = useCar()
-  const { saveArticles } = useUtils()
+  const { saveArticles, saveDesktopWebTopMenu, saveMobileWebTopMenus } =
+    useUtils()
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
   useEffect(() => {
@@ -62,6 +67,8 @@ export default function WithTracker({
   }, [isClientMobile])
 
   useEffect(() => {
+    saveDesktopWebTopMenu(dataDesktopMenu)
+    saveMobileWebTopMenus(dataMobileMenu)
     saveArticles(dataMainArticle)
     saveCarOfTheMonth(dataCarofTheMonth)
     saveTypeCar(dataTypeCar)
@@ -72,7 +79,8 @@ export default function WithTracker({
     <HomePageDataLocalContext.Provider
       value={{
         dataBanner,
-        dataMenu,
+        dataDesktopMenu,
+        dataMobileMenu,
         dataCities,
         dataTestimony,
         dataRecToyota,
@@ -103,7 +111,7 @@ export async function getServerSideProps(context: any) {
     const [
       recommendationRes,
       bannerRes,
-      menuRes,
+      menuMobileRes,
       citiesRes,
       testimonyRes,
       recTotoyaRes,
@@ -112,10 +120,11 @@ export async function getServerSideProps(context: any) {
       mainArticleRes,
       typeCarRes,
       carofTheMonthRes,
+      menuDesktopRes,
     ]: any = await Promise.all([
       api.getRecommendation(params),
       api.getBanner(),
-      api.getMenu(),
+      api.getMobileHeaderMenu(),
       api.getCities(),
       api.getTestimony(),
       api.getRecommendation('?brand=Toyota&city=jakarta&cityId=118'),
@@ -124,11 +133,12 @@ export async function getServerSideProps(context: any) {
       api.getMainArticle('65'),
       api.getTypeCar('?city=jakarta'),
       api.getCarofTheMonth(),
+      api.getMenu(),
     ])
     const [
       dataReccomendation,
       dataBanner,
-      dataMenu,
+      dataMobileMenu,
       dataCities,
       dataTestimony,
       dataRecToyota,
@@ -137,10 +147,11 @@ export async function getServerSideProps(context: any) {
       dataMainArticle,
       dataTypeCar,
       dataCarofTheMonth,
+      dataDesktopMenu,
     ] = await Promise.all([
       recommendationRes.carRecommendations,
       bannerRes.data,
-      menuRes.data,
+      menuMobileRes.data,
       citiesRes,
       testimonyRes.data,
       recTotoyaRes.carRecommendations,
@@ -149,12 +160,13 @@ export async function getServerSideProps(context: any) {
       mainArticleRes,
       typeCarRes,
       carofTheMonthRes.data,
+      menuDesktopRes.data,
     ])
     return {
       props: {
         dataReccomendation,
         dataBanner,
-        dataMenu,
+        dataMobileMenu,
         dataCities,
         dataTestimony,
         dataRecToyota,
@@ -164,6 +176,7 @@ export async function getServerSideProps(context: any) {
         dataTypeCar,
         dataCarofTheMonth,
         isSsrMobile: getIsSsrMobile(context),
+        dataDesktopMenu,
       },
     }
   } catch (error) {

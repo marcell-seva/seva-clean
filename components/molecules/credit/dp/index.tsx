@@ -254,7 +254,7 @@ const DpForm: React.FC<DpFormProps> = ({
             onBlur={handleValueBlur}
             name={name}
             disabled={isDisabled}
-            data-testId={elementId.Field.DP}
+            data-testid={elementId.Field.DP}
             onFocus={() => {
               emitOnFocusDpAmountField && emitOnFocusDpAmountField()
             }}
@@ -286,7 +286,7 @@ const DpForm: React.FC<DpFormProps> = ({
             disabled={isDisabled}
             suffix="%"
             maxLength={2}
-            data-testId={elementId.Field.DPPercentage}
+            data-testid={elementId.Field.DPPercentage}
             onFocus={() => {
               emitOnFocusDpPercentageField && emitOnFocusDpPercentageField()
             }}

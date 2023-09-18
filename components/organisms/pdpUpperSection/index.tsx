@@ -8,7 +8,6 @@ import {
   CarOverview,
 } from 'components/organisms'
 import React, { useEffect, useState } from 'react'
-
 import { upperSectionNavigationTab } from 'config/carVariantList.config'
 import { NavigationTabV2 } from 'components/molecules'
 import { CityOtrOption, VideoDataType } from 'utils/types/utils'
@@ -177,13 +176,7 @@ export const PdpUpperSection = ({
 
   return (
     <div>
-      <div
-        className={`${styles.upperSpacing}  ${
-          isShowAnnouncementBox && styles.showAnnouncementBox
-        }`}
-      >
-        {/* div used as spacing because it needs to be in different color than html */}
-      </div>
+      <div className={styles.upperSpacing} />
       <NavigationTabV2
         itemList={tabItemList}
         onSelectTab={(value: any) => {

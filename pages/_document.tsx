@@ -1,4 +1,3 @@
-import { NextPageContext } from 'next'
 import Document, {
   Html,
   Head,
@@ -7,7 +6,6 @@ import Document, {
   DocumentContext,
 } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
-
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheet()
@@ -41,11 +39,8 @@ export default class MyDocument extends Document {
           <link rel="apple-touch-icon" href="/icon.png"></link>
           <link rel="preconnect" href="https://storage.googleapis.com" />
           <link rel="dns-prefetch" href="https://storage.googleapis.com" />
-          <meta name="theme-color" content="#fff" />
-          <meta
-            name="viewport"
-            content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
-          />
+          <link rel="preconnect" href="https://images.prod.seva.id" />
+          <link rel="dns-prefetch" href="https://images.prod.seva.id" />
         </Head>
         <body>
           <Main />

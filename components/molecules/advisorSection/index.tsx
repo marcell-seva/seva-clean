@@ -240,7 +240,7 @@ export const AdvisorSection = ({
               loading={loading}
               height={'40px'}
               id="advisor-section-submit-button-element"
-              data-testId={elementId.Homepage.ContactAgent.ButtonSend}
+              data-testid={elementId.Homepage.ContactAgent.ButtonSend}
               className={'advisor-section-submit-button-element'}
             >
               <StyledButtonText>Kirim Rincian</StyledButtonText>

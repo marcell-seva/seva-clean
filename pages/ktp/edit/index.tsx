@@ -270,7 +270,7 @@ const KtpForm = () => {
         a.value.localeCompare(b.value),
     )
 
-    return [...topCityDataList, ...sortedRestOfCityData]
+    return [...topCityDataList, sortedRestOfCityData] // here
   }
 
   const getPopupErrorSubtitle = () => {

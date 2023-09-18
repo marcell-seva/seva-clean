@@ -48,7 +48,7 @@ import { Forward } from 'components/atoms/icon/Forward'
 import { Button, ButtonType } from 'components/atoms/ButtonOld/Button'
 import Image from 'next/image'
 
-const ProfileIcon = '/revamp/illustration/Profile.svg'
+const ProfileIcon = '/public/revamp/illustration/Profile.svg'
 
 interface Props {
   isShow: boolean
@@ -440,7 +440,7 @@ const LoginButton = ({ onClick }: LoginButtonProps) => (
     buttonType={ButtonType.primary1}
     onClick={onClick}
   >
-    <Image src={ProfileIcon} alt="profile-icon" />
+    <Image src={ProfileIcon} alt="profile-icon" width={12} height={12} />
     Masuk / Daftar
   </StyledLoginButton>
 )
