@@ -288,7 +288,7 @@ export default function KtpReview() {
       a.cityName.localeCompare(b.cityName),
     )
 
-    return [...topCityDataList, sortedRestOfCityData] //here
+    return [...topCityDataList, ...sortedRestOfCityData]
   }
 
   const onClickRadioButton = (ktpData: GetCustomerKtpSeva) => {
