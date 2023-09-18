@@ -4,9 +4,9 @@ import { api } from 'services/api'
 import { CarRecommendation } from 'utils/types/utils'
 import { InferGetServerSidePropsType } from 'next'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
+import { getToken } from 'utils/handler/auth'
 import { useUtils } from 'services/context/utilsContext'
 import styles from 'styles/pages/plp.module.scss'
-import { getToken } from 'utils/handler/auth'
 import { mergeModelDetailsWithLoanRecommendations } from 'services/recommendations'
 
 interface PdpDataLocalContextType {
@@ -63,6 +63,14 @@ export default function index({
     saveCities,
   } = useUtils()
 
+  useEffect(() => {
+    saveDesktopWebTopMenu(dataDesktopMenu)
+    saveMobileWebTopMenus(dataMobileMenu)
+    saveMobileWebFooterMenus(dataFooter)
+    saveCities(dataCities)
+    getAnnouncementBox()
+  }, [])
+
   const getAnnouncementBox = async () => {
     try {
       const res: any = await api.getAnnouncementBox({
@@ -73,14 +81,6 @@ export default function index({
       saveDataAnnouncementBox(res.data)
     } catch (error) {}
   }
-
-  useEffect(() => {
-    saveDesktopWebTopMenu(dataDesktopMenu)
-    saveMobileWebTopMenus(dataMobileMenu)
-    saveMobileWebFooterMenus(dataFooter)
-    saveCities(dataCities)
-    getAnnouncementBox()
-  }, [])
 
   return (
     <>
