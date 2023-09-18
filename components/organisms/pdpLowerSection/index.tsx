@@ -84,34 +84,46 @@ export const PdpLowerSection = ({
     trackClickLowerTabCountly(value)
     setSelectedTabValue(value)
     const destinationElm = document.getElementById('pdp-lower-content')
-    const urlWithoutSlug = window.location.pathname
+    const urlWithoutSlug = window.location.href
       .replace('/ringkasan', '')
       .replace('/spesifikasi', '')
       .replace('/harga', '')
       .replace('/kredit', '')
-    const lastIndexUrl = window.location.pathname.slice(-1)
-
-    const { brand, model, slug, ...restQuery } = router.query
+    const lastIndexUrl = window.location.href.slice(-1)
 
     if (lastIndexUrl === '/') {
-      router.push({
-        pathname: urlWithoutSlug + value.toLocaleLowerCase(),
-        query: { ...restQuery },
-      })
+      window.history.pushState(
+        null,
+        '',
+        urlWithoutSlug + value.toLocaleLowerCase(),
+      )
     } else {
-      router.push({
-        pathname:
-          urlWithoutSlug +
+      window.history.pushState(
+        null,
+        '',
+        urlWithoutSlug +
           '/' +
           (value !== 'Ringkasan' ? value.toLocaleLowerCase() : ''),
-        query: { ...restQuery },
-      })
+      )
     }
 
     if (destinationElm) {
       destinationElm.scrollIntoView()
       // add more scroll because global page header is fixed position
       window.scrollBy({ top: -100, left: 0 })
+    }
+  }
+
+  useEffect(() => {
+    setTabFromDirectUrl()
+  }, [])
+
+  const setTabFromDirectUrl = () => {
+    const slug = router.query.slug
+
+    if (slug) {
+      const path = capitalizeFirstLetter(slug[0])
+      setSelectedTabValue(path)
     }
   }
 
