@@ -225,6 +225,12 @@ export default function index() {
         carModelDetailsResDefaultCity,
       ])
       saveCarVariantDetails(carVariantDetailsResDefaultCity)
+      const currentCar =
+        carRecommendationsResDefaultCity.carRecommendations.filter(
+          (value: CarRecommendation) =>
+            value.model.replace(/ +/g, '-').toLowerCase() === model,
+        )
+      savePreviouslyViewed(currentCar[0])
     }
 
     if (modal.isOpenContactUsModal) {
