@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect } from 'react'
 import { PdpDesktop, PdpMobile } from 'components/organisms'
 import { api } from 'services/api'
 import { CarRecommendation } from 'utils/types/utils'
