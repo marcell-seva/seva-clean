@@ -8,7 +8,6 @@ import {
 import styles from 'styles/pages/carVariantList.module.scss'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import {
-  AnnouncementBoxDataType,
   CarRecommendation,
   CityOtrOption,
   MainVideoResponseType,
@@ -18,10 +17,7 @@ import {
 } from 'utils/types/utils'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import {
-  getCarVideoReview,
-  getNewFunnelRecommendations,
-} from 'services/newFunnel'
+import { getNewFunnelRecommendations } from 'services/newFunnel'
 import { savePreviouslyViewed } from 'utils/carUtils'
 import {
   getCarModelDetailsById,
@@ -44,7 +40,6 @@ import {
   getSessionStorage,
   removeSessionStorage,
 } from 'utils/handler/sessionStorage'
-import { AxiosResponse } from 'axios'
 import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
@@ -81,9 +76,6 @@ const ShareModal = dynamic(() =>
 )
 const ProductDetailEmptyState = dynamic(() =>
   import('components/organisms').then((mod) => mod.ProductDetailEmptyState),
-)
-const PDPSkeleton = dynamic(() =>
-  import('components/organisms').then((mod) => mod.PDPSkeleton),
 )
 const PromoPopup = dynamic(() => import('components/organisms/promoPopup'))
 
