@@ -198,7 +198,6 @@ export const AdaOTOdiSEVALeadsForm: React.FC<PropsLeadsForm> = ({
       temanSevaStatus = 'Yes'
     } else if (!!getToken()) {
       const response = await getCustomerInfoSeva()
-      console.log('datas', response)
       if (response[0].temanSevaTrxCode) {
         temanSevaStatus = 'Yes'
       }

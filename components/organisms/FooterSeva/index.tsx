@@ -44,7 +44,7 @@ export const FooterSeva = () => {
         {/* <LogoSeva height={48} width={94.55} /> */}
         <Wrapper>
           {/* <StyledImage src={LogoSeva} alt="seva-footer-icon" /> */}
-          <FooterWording data-testId={elementId.Footer.DescriptionLink}>
+          <FooterWording data-testid={elementId.Footer.DescriptionLink}>
             SEVA - Platform yang berada di bawah Astra Financial yang
             menyediakan layanan pembiayaan mobil baru dengan didukung oleh
             perusahaan pembiayaan dan dealer resmi dari Astra Group

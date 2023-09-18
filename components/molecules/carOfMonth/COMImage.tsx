@@ -59,7 +59,7 @@ export const COMImage = ({ carBrand, onChangeTab }: COMImageProps) => {
                     Car_Brand: item.name,
                   })
                 }}
-                data-testId={
+                data-testid={
                   elementId.Homepage.CarOfTheMonth.ListBrand +
                   parsedToUnCapitalizeWithHyphen(item.name)
                 }

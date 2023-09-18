@@ -3,7 +3,6 @@ import { Avatar, Button } from 'components/atoms'
 import { MenuList } from 'components/molecules'
 import styles from '../../../styles/components/organisms/sidebarMobile.module.scss'
 import { LoginSevaUrl } from 'utils/helpers/routes'
-import { getMobileWebTopMenu } from 'services/menu'
 import { getToken } from 'utils/handler/auth'
 import {
   trackLoginButtonClick,

@@ -23,14 +23,15 @@ export type UtilsContextType = {
   saveArticles: (data: ArticleData[]) => void
   mobileWebTopMenus: MobileWebTopMenuType[] | []
   mobileWebFooterMenus: MobileWebFooterMenuType[] | []
-  saveMobileWebTopMenus: (data: MobileWebTopMenuType[]) => void
-  saveMobileWebFooterMenus: (data: MobileWebFooterMenuType[]) => void
+  saveMobileWebTopMenus: (data: MobileWebTopMenuType[] | []) => void
+  saveMobileWebFooterMenus: (data: MobileWebFooterMenuType[] | []) => void
   lastOtpSentTime: number
   setLastOtpSentTime: (value: number) => void
   currentLanguage: LanguageCode
   setCurrentLanguage: (value: LanguageCode) => void
   isSsrMobile: boolean
-  dataMenu: NavbarItemResponse[]
+  dekstopWebTopMenu: NavbarItemResponse[]
+  saveDesktopWebTopMenu: (data: NavbarItemResponse[] | []) => void
 }
 
 export const UtilsContext = createContext<UtilsContextType | []>([])
@@ -43,6 +44,10 @@ export const UtilsContextProvider = ({ children }: any) => {
   >()
   const [mobileWebTopMenus, setMobileWebTopMenus] = useState<
     MobileWebTopMenuType[] | []
+  >([])
+
+  const [dekstopWebTopMenu, setDesktopWebTopMenu] = useState<
+    NavbarItemResponse[] | []
   >([])
 
   const [mobileWebFooterMenus, setMobileWebFooterMenus] = useState<
@@ -59,9 +64,9 @@ export const UtilsContextProvider = ({ children }: any) => {
     LanguageCode.id,
   )
 
-  const saveCities = (citiesData: CityOtrOption[]) => setCities(citiesData)
+  const saveCities = (citiesData: CityOtrOption[] | []) => setCities(citiesData)
 
-  const saveArticles = (articlesData: ArticleData[]) =>
+  const saveArticles = (articlesData: ArticleData[] | []) =>
     setArticles(articlesData)
 
   const saveDataAnnouncementBox = (
@@ -75,9 +80,15 @@ export const UtilsContextProvider = ({ children }: any) => {
   }
 
   const saveMobileWebFooterMenus = (
-    mobileWebFooterMenusData: MobileWebFooterMenuType[],
+    mobileWebFooterMenusData: MobileWebFooterMenuType[] | [],
   ) => {
     setMobileWebFooterMenus(mobileWebFooterMenusData)
+  }
+
+  const saveDesktopWebTopMenu = (
+    desktopWebTopMenu: NavbarItemResponse[] | [],
+  ) => {
+    setDesktopWebTopMenu(desktopWebTopMenu)
   }
 
   return (
@@ -98,7 +109,8 @@ export const UtilsContextProvider = ({ children }: any) => {
         currentLanguage,
         setCurrentLanguage,
         isSsrMobile: false,
-        dataMenu: [],
+        dekstopWebTopMenu,
+        saveDesktopWebTopMenu,
       }}
     >
       {children}
