@@ -18,6 +18,7 @@ import { sortOptions } from 'utils/config/funnel.config'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { carResultsUrl } from 'utils/helpers/routes'
 import { useRouter } from 'next/router'
+import { isCurrentCityJakartaPusatOrSurabaya } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 
 type NavFilterMobileProps = {
   carlist?: any
@@ -287,19 +288,21 @@ export const NavigationFilterMobile = ({
           {/*</div>*/}
         </>
       )}
-      {showInformationDaihatsu && !sticky && (
-        <>
-          <div className={styles.line} />
-          <div className={styles.informWrapper}>
-            <span
-              className={styles.informDaihatsuText}
-              data-testid={elementId.DSOCityBlocker}
-            >
-              Harga OTR Daihatsu menggunakan harga OTR Jakarta Pusat.
-            </span>
-          </div>
-        </>
-      )}
+      {showInformationDaihatsu &&
+        !isCurrentCityJakartaPusatOrSurabaya() &&
+        !sticky && (
+          <>
+            <div className={styles.line} />
+            <div className={styles.informWrapper}>
+              <span
+                className={styles.informDaihatsuText}
+                data-testid={elementId.DSOCityBlocker}
+              >
+                Harga OTR Daihatsu menggunakan harga OTR Jakarta Pusat.
+              </span>
+            </div>
+          </>
+        )}
     </>
   )
 }
