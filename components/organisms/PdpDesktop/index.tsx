@@ -251,7 +251,6 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
     return { title, description }
   }, [metaTagDataRes])
 
-  const carMetaTitleName = meta.title.split('20')[0]
   const currentYear = moment().format('YYYY')
   const currentMonth = moment().format('MMMM')
   const carOTR = `Rp ${
@@ -260,33 +259,31 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const getMetaTitle = () => {
     switch (tab) {
       case 'kredit':
-        return `Kredit ${carMetaTitleName} ${currentYear}. Simulasi Cicilan OTR ${
+        return `Kredit ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear}. Simulasi Cicilan OTR ${
           getCity().cityName
         } dengan Loan Calculator | SEVA`
       case 'spesifikasi':
-        return `Spesifikasi ${carMetaTitleName} ${currentYear} | SEVA`
+        return `Spesifikasi ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} | SEVA`
       case 'harga':
-        return `Harga ${carMetaTitleName} ${currentYear} ${
+        return `Harga ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} ${
           getCity().cityName
         } Terbaru | SEVA`
     }
     return (
-      `Ringkasan Produk ` +
-      carMetaTitleName +
-      ` ${currentYear} - Harga OTR Promo Bulan ${currentMonth} | SEVA`
+      `Ringkasan Produk ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} - Harga OTR Promo Bulan ${currentMonth} | SEVA`
     )
   }
 
   const getMetaDescription = () => {
     switch (tab) {
       case 'kredit':
-        return `Hitung simulasi cicilan ${carMetaTitleName} ${currentYear}. Beli mobil Toyota secara kredit dengan Instant Approval* di SEVA.`
+        return `Hitung simulasi cicilan ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear}. Beli mobil ${carModelDetails?.brand} secara kredit, proses aman & mudah dengan Instant Approval* di SEVA."`
       case 'spesifikasi':
-        return `Dapatkan informasi lengkap mengenai spesifikasi ${carMetaTitleName} ${currentYear} terbaru di SEVA`
+        return `Dapatkan informasi lengkap mengenai spesifikasi ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} terbaru di SEVA`
       case 'harga':
-        return `Daftar harga ${carMetaTitleName} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carMetaTitleName} ${currentYear} terbaru di SEVA.`
+        return `Daftar harga ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} terbaru di SEVA.`
     }
-    return `Beli mobil ${carMetaTitleName} 2023 terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, kredit di SEVA`
+    return `Beli mobil ${carModelDetails?.brand} ${carModelDetails?.model} 2023 terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, dan kredit di SEVA`
   }
 
   return (

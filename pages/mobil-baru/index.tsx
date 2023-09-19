@@ -43,16 +43,23 @@ const NewCarResultPage = ({
     saveCities(dataCities)
   }, [])
 
+  const carBrand = meta.carRecommendations.carRecommendations[0]?.brand
   const metaTitle =
-    meta.title.slice(0, 23) +
-    ` - Harga OTR dengan Promo Cicilan bulan ${moment().format('MMMM')} | SEVA`
-  const metaDesc = `Temukan beragam mobil ${moment().format(
+    `Harga OTR ${carBrand} - Harga OTR dengan Promo Cicilan bulan ${moment().format('MMMM')} | SEVA`
+  const metaDesc = `Beli mobil ${moment().format(
     'YYYY',
   )} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
+  const metaBrandDesc = `Beli mobil ${carBrand} ${moment().format(
+    'YYYY',
+  )} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
 
-  return (
+   return (
     <>
-      <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
+      {meta.footer.location_tag !== '' ? (
+            <Seo title={metaTitle} description={metaBrandDesc} image={defaultSeoImage} />
+        ) : (
+          <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
+      )}
 
       <CarProvider
         car={null}
@@ -222,6 +229,12 @@ export const getServerSideProps: GetServerSideProps<{
 
     if (recommendation) {
       meta.carRecommendations = recommendation
+    }
+    console.log(brand, 'ini brand dari query params', typeof brand)
+    if (brand){
+      if (typeof brand === 'string') {
+        meta.footer.location_tag = brand;
+      }
     }
 
     return {
