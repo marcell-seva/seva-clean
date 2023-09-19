@@ -277,13 +277,13 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const getMetaDescription = () => {
     switch (tab) {
       case 'kredit':
-        return `Hitung simulasi cicilan ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear}. Beli mobil Toyota secara kredit dengan Instant Approval* di SEVA.`
+        return `Hitung simulasi cicilan ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear}. Beli mobil ${carModelDetails?.brand} secara kredit, proses aman & mudah dengan Instant Approval* di SEVA."`
       case 'spesifikasi':
         return `Dapatkan informasi lengkap mengenai spesifikasi ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} terbaru di SEVA`
       case 'harga':
         return `Daftar harga ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} terbaru di SEVA.`
     }
-    return `Beli mobil ${carModelDetails?.brand} ${carModelDetails?.model} 2023 terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, kredit di SEVA`
+    return `Beli mobil ${carModelDetails?.brand} ${carModelDetails?.model} 2023 terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, dan kredit di SEVA`
   }
 
   return (
