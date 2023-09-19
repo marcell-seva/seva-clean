@@ -113,7 +113,7 @@
 .wrapper [data-rsbs-overlay] {
   max-height: 88%;
   min-height: 280px;
-  overflow: scroll;
+  // overflow: scroll;
   z-index: 100;
 }
 
@@ -123,4 +123,8 @@
 
 .marginBot {
   margin-bottom: 100px;
+}
+
+.enhanceMargin {
+  margin-bottom: 88px;
 }

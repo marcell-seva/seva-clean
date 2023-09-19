@@ -53,9 +53,12 @@ type CarDetailCardProps = {
   onClickLabel: () => void
   onClickResultSulit: () => void
   onClickResultMudah: () => void
+  setOpenInterestingModal: (value: boolean) => void
   isFilter?: boolean
   isFilterTrayOpened: boolean
 }
+
+const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
 export const CarDetailCard = ({
   order = 0,
@@ -65,6 +68,7 @@ export const CarDetailCard = ({
   onClickResultSulit,
   onClickResultMudah,
   isFilterTrayOpened,
+  setOpenInterestingModal,
 }: CarDetailCardProps) => {
   const router = useRouter()
   const { funnelQuery } = useFunnelQueryData()
@@ -287,6 +291,15 @@ export const CarDetailCard = ({
           onClick={onClickLabel}
           data-testid={elementId.PLP.Button.Promo}
         />
+        <Image
+          src={LogoPrimary}
+          height={30}
+          width={50}
+          alt="Logo SEVA"
+          className={styles.logoImg}
+          data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+          priority={true}
+        />
         {isFilter && recommendation.loanRank === 'Red' && (
           <LabelSulit onClick={onClickResultSulit} />
         )}
@@ -396,10 +409,10 @@ export const CarDetailCard = ({
         <Button
           version={ButtonVersion.Secondary}
           size={ButtonSize.Big}
-          onClick={navigateToLoanCalculator}
+          onClick={() => setOpenInterestingModal(true)}
           data-testid={elementId.PLP.Button.HitungKemampuan}
         >
-          Hitung Kemampuan
+          Saya Tertarik
         </Button>
       </CardShadow>
     </div>

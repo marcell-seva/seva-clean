@@ -3,6 +3,7 @@ import axios from 'axios'
 import clsx from 'clsx'
 import { CSAButton } from 'components/atoms'
 import {
+  AdaOTOdiSEVALeadsForm,
   CarDetailCard,
   FooterMobile,
   HeaderMobile,
@@ -72,6 +73,7 @@ import { useUtils } from 'services/context/utilsContext'
 import { temanSevaUrlPath } from 'services/temanseva'
 import { decryptValue } from 'utils/encryptionUtils'
 import dynamic from 'next/dynamic'
+import { InterestingModal } from '../leadsForm/InterestingModal'
 
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
@@ -121,6 +123,10 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
     age,
     sortBy,
   } = router.query as FilterParam
+  const isNewCar: boolean = router.asPath.split('/')[1].match('mobil-baru')
+    ? true
+    : false
+
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
 
   const [cityOtr] = useLocalStorage<Location | null>(
@@ -156,6 +162,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
   const [openLabelResultSulit, setOpenLabelResultSulit] = useState(false)
   const [openLabelResultInfo, setOpenLabelResultInfo] = useState(false)
   const [openSorting, setOpenSorting] = useState(false)
+  const [openInterestingModal, setOpenInterestingModal] = useState(false)
   const [startScroll, setStartScroll] = useState(false)
   const [hasMore, setHasMore] = useState(true)
   const [sticky, setSticky] = useState(false)
@@ -305,6 +312,10 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
 
   const closeLeadsForm = () => {
     setIsModalOpened(false)
+  }
+
+  const closeInterestingBtn = () => {
+    setOpenInterestingModal(false)
   }
 
   const handleShowFilter = () => {
@@ -722,6 +733,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
           setShowAnnouncementBox={setIsShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
           pageOrigination={'PLP'}
+          isNewCar={isNewCar}
         />
 
         {!showLoading && sampleArray.items.length === 0 ? (
@@ -781,6 +793,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
                       key={index}
                       recommendation={i}
                       isFilter={isFilterCredit}
+                      setOpenInterestingModal={setOpenInterestingModal}
                       onClickLabel={() => {
                         setOpenLabelPromo(true)
                         trackCountlyPromoBadgeClick(i, index)
@@ -890,6 +903,13 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
           onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
           cityListFromApi={cities}
         />
+        {openInterestingModal && (
+          <InterestingModal
+            onCancel={closeInterestingBtn}
+            trackerProperties={trackLeads()}
+            onPage="LP"
+          />
+        )}
       </div>
     </>
   )

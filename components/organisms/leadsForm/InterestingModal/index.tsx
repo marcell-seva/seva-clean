@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styles from '../../../../styles/components/organisms/leadsFormPrimary.module.scss'
+import styles from '/styles/components/organisms/leadsFormPrimary.module.scss'
 import {
   Button,
   Gap,
@@ -50,7 +50,7 @@ interface PropsLeadsForm {
   onPage?: string
 }
 
-export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
+export const InterestingModal: React.FC<PropsLeadsForm> = ({
   onCancel,
   trackerProperties,
   onPage,
@@ -198,7 +198,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
       temanSevaStatus = 'Yes'
     } else if (!!getToken()) {
       const response = await getCustomerInfoSeva()
-      if (response.data[0].temanSevaTrxCode) {
+      if (response[0].temanSevaTrxCode) {
         temanSevaStatus = 'Yes'
       }
     }
@@ -318,11 +318,10 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
               </div>
             </div>
             <div className={styles.foreground}>
-              <h2 className={styles.textHeading}>Agen SEVA Siap Membantumu</h2>
+              <h2 className={styles.textHeading}>Tim Kami Siap Membantumu</h2>
               <p className={styles.textDesc}>
-                Untuk tahu lebih lanjut, yuk ngobrol dengan Agen SEVA. Kami akan
-                menghubungi kamu <br />
-                dalam 1x24 jam.
+                Untuk tahu lebih lanjut, yuk ngobrol dengan <br /> tim kami.
+                Kami akan menghubungi kamu <br /> dalam 1x24 jam.
               </p>
               <div className={styles.form}>
                 <Input
