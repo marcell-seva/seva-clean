@@ -43,7 +43,7 @@ import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
 import Seo from 'components/atoms/seo'
-import moment from 'moment'
+import { monthId } from 'utils/handler/date'
 
 export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const router = useRouter()
@@ -251,27 +251,29 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
     return { title, description }
   }, [metaTagDataRes])
 
-  const currentYear = moment().format('YYYY')
-  const currentMonth = moment().format('MMMM')
+  const todayDate = new Date()
+
+  const currentYear = todayDate.getFullYear()
+  const currentMonth = monthId(todayDate.getMonth())
   const carOTR = `Rp ${
     (modelDetailData?.variants[0].priceValue as number) / 1000000
   } Juta`
   const getMetaTitle = () => {
     switch (tab) {
       case 'kredit':
-        return `Kredit ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear}. Simulasi Cicilan OTR ${
+        return `Kredit ${carModelDetails?.brand} ${
+          carModelDetails?.model
+        } ${currentYear}. Simulasi Cicilan OTR ${
           getCity().cityName
         } dengan Loan Calculator | SEVA`
       case 'spesifikasi':
         return `Spesifikasi ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} | SEVA`
       case 'harga':
-        return `Harga ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} ${
-          getCity().cityName
-        } Terbaru | SEVA`
+        return `Harga ${carModelDetails?.brand} ${
+          carModelDetails?.model
+        } ${currentYear} ${getCity().cityName} Terbaru | SEVA`
     }
-    return (
-      `Ringkasan Produk ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} - Harga OTR Promo Bulan ${currentMonth} | SEVA`
-    )
+    return `Ringkasan Produk ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} - Harga OTR Promo Bulan ${currentMonth} | SEVA`
   }
 
   const getMetaDescription = () => {
