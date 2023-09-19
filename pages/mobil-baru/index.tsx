@@ -21,6 +21,7 @@ import { MobileWebFooterMenuType } from 'utils/types/props'
 import styles from 'styles/pages/plp.module.scss'
 import { CarProvider } from 'services/context'
 import { generateBlurRecommendations } from 'utils/generateBlur'
+import { monthId } from 'utils/handler/date'
 
 const NewCarResultPage = ({
   meta,
@@ -202,6 +203,11 @@ export const getServerSideProps: GetServerSideProps<{
 
     if (recommendation) {
       meta.carRecommendations = recommendation
+    }
+    if (brand) {
+      if (typeof brand === 'string') {
+        meta.footer.location_tag = brand
+      }
     }
 
     return {
