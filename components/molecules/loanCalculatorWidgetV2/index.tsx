@@ -25,8 +25,12 @@ import {
 import { handleProgressUpdate } from 'utils/loadingUtils'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import { SearchInputV2 } from '../searchInputV2'
-import { Loading } from 'components/atoms/loading'
 import { useCar } from 'services/context/carContext'
+import dynamic from 'next/dynamic'
+
+const Loading = dynamic(() =>
+  import('components/atoms/loading').then((mod) => mod.Loading),
+)
 
 const BackgroundImageDesktop =
   '/revamp/illustration/background-image-desktop.webp'

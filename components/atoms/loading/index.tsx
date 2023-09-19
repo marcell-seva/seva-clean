@@ -1,12 +1,16 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { MasterImage } from '../masterImage'
 import { useModal } from '../ModalOld/Modal'
 import { ModalBody } from '../ModalBodyWrapper/ModalBodyWrapper'
 import { ProgressBar } from '../progressBar'
 import { TextMediumRegular } from '../typography/TextMediumRegular'
 import { H2MediumBold } from 'utils/typography/H2MediumBold'
+import dynamic from 'next/dynamic'
+
+const MasterImage = dynamic(() =>
+  import('../masterImage').then((mod) => mod.MasterImage),
+)
 
 interface LoadingPageProps {
   progress: number
