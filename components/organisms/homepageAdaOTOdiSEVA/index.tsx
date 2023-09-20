@@ -18,11 +18,12 @@ import { CitySelectorModal, FooterMobile } from 'components/molecules'
 import {
   ArticleWidget,
   WebAnnouncementBox,
-  TestimonyWidget,
-  LpCarRecommendations,
-  HeaderMobile,
   LeadsFormAdaOTOdiSEVA,
   AdaOTOdiSEVALeadsForm,
+  TestimonyWidgetOTO,
+  HeaderMobile,
+  LpCarRecommendations,
+  TestimonyWidget,
 } from 'components/organisms'
 import { CarContext, CarContextType } from 'services/context'
 import { getCity } from 'utils/hooks/useGetCity'
@@ -177,6 +178,10 @@ const HomepageAdaOTOdiSEVA = ({ dataReccomendation }: any) => {
     }
   }
 
+  const showLeadsForm = () => {
+    setIsModalOpened(true)
+  }
+
   useEffect(() => {
     cityHandler()
     setTrackEventMoEngageWithoutValue(EventName.view_homepage)
@@ -244,10 +249,12 @@ const HomepageAdaOTOdiSEVA = ({ dataReccomendation }: any) => {
             setIsActive={setIsActive}
             style={{
               position: 'fixed',
+              background: 'transparent',
             }}
             emitClickCityIcon={() => setOpenCitySelectorModal(true)}
             setShowAnnouncementBox={setShowAnnouncementBox}
             isShowAnnouncementBox={showAnnouncementBox}
+            isGlobal={true}
           />
           <div className={styles.banner}>
             <Image
@@ -260,7 +267,7 @@ const HomepageAdaOTOdiSEVA = ({ dataReccomendation }: any) => {
                 secondaryClassName={styles.button}
                 version={ButtonVersion.PrimaryDarkBlue}
                 size={ButtonSize.Big}
-                onClick={scrollToLeadsForm}
+                onClick={showLeadsForm}
               >
                 Saya Tertarik
               </Button>
@@ -270,6 +277,7 @@ const HomepageAdaOTOdiSEVA = ({ dataReccomendation }: any) => {
           <LpCarRecommendations
             dataReccomendation={dataReccomendation}
             onClickOpenCityModal={() => setOpenCitySelectorModal(true)}
+            isOTO={true}
           />
 
           <InformationSection />
@@ -293,9 +301,8 @@ const HomepageAdaOTOdiSEVA = ({ dataReccomendation }: any) => {
           cityListFromApi={cityListApi}
         />
         {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
-        {!isLeadsFormSectionVisible && (
-          <CSAButton onClick={scrollToLeadsForm} />
-        )}
+
+        <CSAButton onClick={showLeadsForm} />
 
         {isLoginModalOpened && (
           <LoginModalMultiKK onCancel={() => setIsLoginModalOpened(false)} />

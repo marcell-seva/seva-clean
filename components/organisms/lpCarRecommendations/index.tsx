@@ -32,15 +32,18 @@ import {
   saveDataForCountlyTrackerPageViewLC,
   saveDataForCountlyTrackerPageViewPDP,
 } from 'utils/navigate'
+import { AdaOTOdiSEVALeadsForm } from '../leadsForm/adaOTOdiSEVA/popUp'
 
 type LPCarRecommendationsProps = {
   dataReccomendation: any
   onClickOpenCityModal: () => void
+  isOTO?: boolean
 }
 
 const LpCarRecommendations = ({
   dataReccomendation,
   onClickOpenCityModal,
+  isOTO,
 }: LPCarRecommendationsProps) => {
   const router = useRouter()
   const swiperRef = useRef<SwiperType>()
@@ -52,23 +55,7 @@ const LpCarRecommendations = ({
   const [openPromo, setOpenPromo] = useState(false)
   const [selectedBrand, setSelectedBrand] = useState('')
   const [load, setLoad] = useState(false)
-
-  const handleCalculateAbility = (item: CarRecommendation) => {
-    saveDataForCountlyTrackerPageViewLC(PreviousButton.CarRecommendationCta)
-    const selectedCity = city ? city.cityName : 'Jakarta Pusat'
-    const path = urls.internalUrls.loanCalculatorWithCityBrandModelUrl
-      .replace(
-        ':cityName/:brand/:model',
-        selectedCity.replace(/ +/g, '-') +
-          '/' +
-          item.brand.replace(/ +/g, '-') +
-          '/' +
-          item.model.replace(/ +/g, '-') +
-          '/',
-      )
-      .toLocaleLowerCase()
-    router.push(path)
-  }
+  const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
 
   const handleClickDetailCar = (item: CarRecommendation) => {
     saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
@@ -82,7 +69,9 @@ const LpCarRecommendations = ({
       )
       .toLocaleLowerCase()
 
-    router.push(path)
+    const newPath = window.location.pathname + path
+
+    router.push(isOTO ? newPath : path)
   }
 
   const handleClickLabel = () => {
@@ -111,6 +100,10 @@ const LpCarRecommendations = ({
       }
     }
     setLoad(false)
+  }
+
+  const closeLeadsForm = () => {
+    setIsModalOpened(false)
   }
 
   const lihatSemuaMobil = () => {
@@ -213,11 +206,11 @@ const LpCarRecommendations = ({
                             Car_Model: item.model,
                           },
                         )
-                        handleCalculateAbility(item)
+                        setIsModalOpened(true)
                       }}
                       data-testid={elementId.PLP.Button.HitungKemampuan}
                     >
-                      Hitung Kemampuan
+                      Saya Tertarik
                     </Button>
                   </AlternativeCarCard>
                 </SwiperSlide>
@@ -241,6 +234,7 @@ const LpCarRecommendations = ({
             </Swiper>
           )}
         </div>
+        {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
       </div>
       <PopupPromo open={openPromo} onCancel={() => setOpenPromo(false)} />
     </>
