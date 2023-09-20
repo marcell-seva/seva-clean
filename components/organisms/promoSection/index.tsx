@@ -77,12 +77,10 @@ const PromoSection = ({
 
   const navigateToSpecificationTab = () => {
     setSelectedTabValue && setSelectedTabValue('Spesifikasi')
-    router.push(
-      variantListUrl
-        .replace(':brand', brand)
-        .replace(':model', model)
-        .replace(':tab?', 'spesifikasi'),
-    )
+    window.location.href = variantListUrl
+      .replace(':brand', brand)
+      .replace(':model', model)
+      .replace(':tab?', 'spesifikasi')
   }
   const trackCountlePromoCLick = (promoDetail: string, promoOrder: number) => {
     trackEventCountly(CountlyEventNames.WEB_PROMO_CLICK, {

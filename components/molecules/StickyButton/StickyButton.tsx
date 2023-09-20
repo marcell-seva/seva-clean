@@ -200,7 +200,7 @@ export const MintaPenawaranButton = styled(Button)`
   }
 `
 
-export const LinkHitungCicilan = styled(Link)`
+export const LinkHitungCicilan = styled.a`
   width: 50%;
   max-height: 48px;
 

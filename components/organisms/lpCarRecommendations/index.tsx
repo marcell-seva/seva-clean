@@ -71,7 +71,7 @@ const LpCarRecommendations = ({
 
     const newPath = window.location.pathname + path
 
-    router.push(isOTO ? newPath : path)
+    window.location.href = isOTO ? newPath : path
   }
 
   const handleClickLabel = () => {

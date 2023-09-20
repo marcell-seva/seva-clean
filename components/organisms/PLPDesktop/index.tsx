@@ -282,17 +282,15 @@ export default function PLPDesktop({
     getCarModelDetailsById(carModel.id)
       .then(handleCarModelDetailsUpdate(recommendation, saveCarModelDetails))
       .then(() => {
-        router.push(
-          variantListUrl
-            .replace(
-              ':brand/:model',
-              (carModel.brand + '/' + carModel.model.replace(/ +/g, '-'))
-                .replace(/ +/g, '')
-                .toLowerCase(),
-            )
-            .replace(':tab', '')
-            .replace('?', `?loanRankCVL=${carModel.loanRank}`),
-        )
+        window.location.href = variantListUrl
+          .replace(
+            ':brand/:model',
+            (carModel.brand + '/' + carModel.model.replace(/ +/g, '-'))
+              .replace(/ +/g, '')
+              .toLowerCase(),
+          )
+          .replace(':tab', '')
+          .replace('?', `?loanRankCVL=${carModel.loanRank}`)
       })
       .catch((error: any) => {
         console.error(error)
@@ -311,7 +309,9 @@ export default function PLPDesktop({
       setShowLoading(true)
       getNewFunnelRecommendationsByQueries({
         [QueryKeys.CarBodyType]: bodyType?.split(','),
-        [QueryKeys.CarBrand]: brand?.split(',').map(item => getCarBrand(item)),
+        [QueryKeys.CarBrand]: brand
+          ?.split(',')
+          .map((item) => getCarBrand(item)),
       })
         .then((response: any) => {
           saveRecommendation(response.carRecommendations || [])
@@ -357,8 +357,10 @@ export default function PLPDesktop({
   const getDataFunnel = () => {
     if (Array(funnelQuery.brand).length > 0) {
       const { brand, ...restParams } = funnelQuery
-      const brandNames = Array(funnelQuery.brand).map(item => getCarBrand(item))
-      const queryParams = { ...restParams, brand: brandNames}
+      const brandNames = Array(funnelQuery.brand).map((item) =>
+        getCarBrand(item),
+      )
+      const queryParams = { ...restParams, brand: brandNames }
       return getNewFunnelRecommendations(queryParams).then((response) => {
         saveRecommendation(response.carRecommendations || [])
         timeoutShimmer()
