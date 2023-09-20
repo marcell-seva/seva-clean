@@ -16,11 +16,12 @@ import {
 } from 'utils/types/utils'
 import PLPDesktop from 'components/organisms/PLPDesktop'
 import { defaultSeoImage } from 'utils/helpers/const'
-import styles from 'styles/pages/plp.module.scss'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import { api } from 'services/api'
 import Seo from 'components/atoms/seo'
+import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
+import { useMediaQuery } from 'react-responsive'
 
 const NewCarResultPage = ({
   meta,
@@ -32,6 +33,8 @@ const NewCarResultPage = ({
   const id = router.query.brand
   const { saveMobileWebTopMenus, saveMobileWebFooterMenus, saveCities } =
     useUtils()
+  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
+  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
   useEffect(() => {
     saveMobileWebTopMenus(dataHeader)
@@ -43,6 +46,10 @@ const NewCarResultPage = ({
     }
   }, [])
 
+  useEffect(() => {
+    setIsMobile(isClientMobile)
+  }, [isClientMobile])
+
   return (
     <>
       <Seo
@@ -50,15 +57,14 @@ const NewCarResultPage = ({
         description={meta.description}
         image={defaultSeoImage}
       />
-      <div className={styles.mobile}>
+      {isMobile ? (
         <PLP minmaxPrice={meta.MinMaxPrice} />
-      </div>
-      <div className={styles.desktop}>
+      ) : (
         <PLPDesktop
           carRecommendation={meta.carRecommendations}
           footer={meta.footer}
         />
-      </div>
+      )}
     </>
   )
 }

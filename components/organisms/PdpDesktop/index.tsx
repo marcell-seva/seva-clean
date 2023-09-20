@@ -42,8 +42,6 @@ import { HeaderAndContent } from '../HeaderAndContent/HeaderAndContent'
 import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
-import Seo from 'components/atoms/seo'
-import { monthId } from 'utils/handler/date'
 
 export default function index() {
   const router = useRouter()
