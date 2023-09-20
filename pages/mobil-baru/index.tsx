@@ -1,5 +1,5 @@
 import { PLP } from 'components/organisms'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
@@ -21,7 +21,8 @@ import { MobileWebFooterMenuType } from 'utils/types/props'
 import styles from 'styles/pages/plp.module.scss'
 import { CarProvider } from 'services/context'
 import { generateBlurRecommendations } from 'utils/generateBlur'
-import { monthId } from 'utils/handler/date'
+import { useMediaQuery } from 'react-responsive'
+import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 
 const NewCarResultPage = ({
   meta,
@@ -29,6 +30,8 @@ const NewCarResultPage = ({
   dataFooter,
   dataCities,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
+  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const { saveMobileWebTopMenus, saveMobileWebFooterMenus, saveCities } =
     useUtils()
 
@@ -37,6 +40,10 @@ const NewCarResultPage = ({
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
   }, [])
+
+  useEffect(() => {
+    setIsMobile(isClientMobile)
+  }, [isClientMobile])
 
   return (
     <>
@@ -53,15 +60,14 @@ const NewCarResultPage = ({
         carVariantDetails={null}
         recommendation={meta.carRecommendations.carRecommendations}
       >
-        <div className={styles.mobile}>
+        {isMobile ? (
           <PLP minmaxPrice={meta.MinMaxPrice} />
-        </div>
-        <div className={styles.desktop}>
+        ) : (
           <PLPDesktop
             carRecommendation={meta.carRecommendations}
             footer={meta.footer}
           />
-        </div>
+        )}
       </CarProvider>
     </>
   )
@@ -216,6 +222,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataHeader: menuRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        isSsrMobile: getIsSsrMobile(ctx),
       },
     }
   } catch (e) {
@@ -225,6 +232,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataHeader: [],
         dataFooter: [],
         dataCities: [],
+        isSsrMobile: true,
       },
     }
   }

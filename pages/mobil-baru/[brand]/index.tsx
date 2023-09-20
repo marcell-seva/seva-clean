@@ -201,6 +201,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataHeader: menuRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        isSsrMobile: getIsSsrMobile(ctx),
       },
     }
   } catch (e) {
