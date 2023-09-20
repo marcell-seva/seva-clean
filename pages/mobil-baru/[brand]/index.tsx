@@ -22,6 +22,7 @@ import { api } from 'services/api'
 import Seo from 'components/atoms/seo'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
+import { CarProvider } from 'services/context'
 
 const NewCarResultPage = ({
   meta,
@@ -57,14 +58,22 @@ const NewCarResultPage = ({
         description={meta.description}
         image={defaultSeoImage}
       />
-      {isMobile ? (
-        <PLP minmaxPrice={meta.MinMaxPrice} />
-      ) : (
-        <PLPDesktop
-          carRecommendation={meta.carRecommendations}
-          footer={meta.footer}
-        />
-      )}
+      <CarProvider
+        car={null}
+        carModel={null}
+        carModelDetails={null}
+        carVariantDetails={null}
+        recommendation={meta.carRecommendations.carRecommendations}
+      >
+        {isMobile ? (
+          <PLP minmaxPrice={meta.MinMaxPrice} />
+        ) : (
+          <PLPDesktop
+            carRecommendation={meta.carRecommendations}
+            footer={meta.footer}
+          />
+        )}
+      </CarProvider>
     </>
   )
 }
