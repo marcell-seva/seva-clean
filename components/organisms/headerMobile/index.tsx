@@ -51,10 +51,10 @@ type HeaderMobileProps = {
   style?: {
     withBoxShadow?: boolean
     position?: 'fixed' | 'sticky'
-    background?: 'transparent' | ''
   }
   pageOrigination?: string
   isGlobal?: boolean
+  transparent?: boolean
 }
 
 export const HeaderMobile = ({
@@ -67,6 +67,7 @@ export const HeaderMobile = ({
   style,
   pageOrigination,
   isGlobal,
+  transparent = false,
 }: HeaderMobileProps): JSX.Element => {
   const enableAnnouncementBoxAleph =
     getCurrentEnvironment.featureToggles.enableAnnouncementBoxAleph
@@ -126,11 +127,7 @@ export const HeaderMobile = ({
   return (
     <>
       <header
-        style={
-          style?.position
-            ? { position: style.position, background: style.background }
-            : { background: style?.background }
-        }
+        style={style?.position ? { position: style.position } : {}}
         className={clsx({
           [styles.wrapper]: true,
           [styles.stickyWrapper]: style?.position ? true : false,
@@ -141,6 +138,7 @@ export const HeaderMobile = ({
             isShowAnnouncementBox && enableAnnouncementBoxAleph,
           [styles.shadow]: style?.withBoxShadow,
           [styles.homepage]: router.pathname === '/' && !isActive,
+          [styles.transparent]: transparent,
         })}
       >
         <div className={styles.wrapperAnnouncementBox}>

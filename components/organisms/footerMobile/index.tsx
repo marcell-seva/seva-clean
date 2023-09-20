@@ -89,19 +89,6 @@ export const FooterMobile = ({ pageOrigination }: FooterProps) => {
             <Link href={urls.privacyPolicySeva}>Kebijakan Privasi</Link>
             <Link href={urls.contactUs}>Hubungi Kami</Link>
           </span>
-          {mobileWebFooterMenus?.length > 0 &&
-            mobileWebFooterMenus?.map((item, index) => (
-              <a
-                href={formatMenuUrl(item.menuUrl)}
-                key={index}
-                rel="noreferrer noopener"
-                target="_blank"
-                onClick={() => handleClickMenu(item.menuName)}
-                data-testid={dataTestId(item.menuCode)}
-              >
-                {item.menuName}
-              </a>
-            ))}
         </div>
         <div className={styles.socialWrapper}>
           <a

@@ -20,7 +20,6 @@ import {
   WebAnnouncementBox,
   LeadsFormAdaOTOdiSEVA,
   AdaOTOdiSEVALeadsForm,
-  TestimonyWidgetOTO,
   HeaderMobile,
   LpCarRecommendations,
   TestimonyWidget,
@@ -249,12 +248,12 @@ const HomepageAdaOTOdiSEVA = ({ dataReccomendation }: any) => {
             setIsActive={setIsActive}
             style={{
               position: 'fixed',
-              background: 'transparent',
             }}
             emitClickCityIcon={() => setOpenCitySelectorModal(true)}
             setShowAnnouncementBox={setShowAnnouncementBox}
             isShowAnnouncementBox={showAnnouncementBox}
             isGlobal={true}
+            transparent={true}
           />
           <div className={styles.banner}>
             <Image
