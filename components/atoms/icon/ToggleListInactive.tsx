@@ -4,6 +4,7 @@ import { PropsIcon } from '../../../utils/types'
 export const IconToggleListInactive: React.FC<PropsIcon> = ({
   width,
   height,
+  alt,
 }): JSX.Element => {
   return (
     <svg
@@ -13,6 +14,7 @@ export const IconToggleListInactive: React.FC<PropsIcon> = ({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <title>{alt}</title>
       <path
         fillRule="evenodd"
         clipRule="evenodd"

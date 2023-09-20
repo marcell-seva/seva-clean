@@ -153,6 +153,7 @@ export const HeaderMobile = ({
               <IconHamburger
                 width={24}
                 height={24}
+                alt="SEVA burger menu Icon"
                 onClick={handleToggleBurgerMenu}
               />
             </div>
@@ -189,12 +190,21 @@ export const HeaderMobile = ({
               className={styles.right}
               data-testid={elementId.Homepage.GlobalHeader.IconSearch}
             >
-              <IconSearch width={24} height={24} onClick={handleSearch} />
+              <IconSearch
+                width={24}
+                height={24}
+                onClick={handleSearch}
+                alt="SEVA search Icon"
+              />
               <div
                 onClick={handleClickCityIcon}
                 data-testid={elementId.Homepage.GlobalHeader.IconCitySelector}
               >
-                <IconLocationLine width={24} height={24} />
+                <IconLocationLine
+                  width={24}
+                  height={24}
+                  alt="SEVA location Icon"
+                />
               </div>
             </div>
           </div>

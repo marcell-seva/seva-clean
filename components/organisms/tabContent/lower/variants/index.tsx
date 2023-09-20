@@ -251,7 +251,7 @@ const TabContentLowerVariant = ({
             className={styles.rowWithGap}
             data-testid={elementId.Text + 'harga'}
           >
-            <Image src={rpIcon} alt="rp icon" height={20} width={20} />
+            <Image src={rpIcon} alt="SEVA Rupiah Icon" height={20} width={20} />
             <h3 className={styles.textTitleSection}>Harga</h3>
           </div>
           <div>
@@ -264,10 +264,18 @@ const TabContentLowerVariant = ({
                   className={styles.toggleActive}
                   onClick={onClickHorizontalView}
                 >
-                  <IconToggleGridActive width={16} height={16} />
+                  <IconToggleGridActive
+                    width={16}
+                    height={16}
+                    alt="SEVA Menu Icon"
+                  />
                 </div>
                 <div onClick={onClickVerticalView}>
-                  <IconToggleListInactive width={16} height={16} />
+                  <IconToggleListInactive
+                    width={16}
+                    height={16}
+                    alt="SEVA List Icon"
+                  />
                 </div>
               </div>
             ) : (
@@ -276,13 +284,21 @@ const TabContentLowerVariant = ({
                 data-testid={elementId.PDP.Button.List}
               >
                 <div onClick={onClickHorizontalView}>
-                  <IconToggleGridInactive width={16} height={16} />
+                  <IconToggleGridInactive
+                    width={16}
+                    height={16}
+                    alt="SEVA Menu Icon"
+                  />
                 </div>
                 <div
                   className={styles.toggleActive}
                   onClick={onClickVerticalView}
                 >
-                  <IconToggleListActive width={16} height={16} />
+                  <IconToggleListActive
+                    width={16}
+                    height={16}
+                    alt="SEVA List Icon"
+                  />
                 </div>
               </div>
             )}

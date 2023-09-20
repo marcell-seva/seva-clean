@@ -53,7 +53,7 @@ export const WarnaTab = ({ isShowAnnouncementBox }: any) => {
               height="146"
               className={styles.carImage}
               data-testid={elementId.HeroImage}
-              alt="color"
+              alt={`Warna Mobil ${carModelDetails?.brand} ${carModelDetails?.model} Bagian Depan`}
               priority
               quality="20"
             />
