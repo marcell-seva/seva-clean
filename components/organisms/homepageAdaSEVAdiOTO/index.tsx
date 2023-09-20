@@ -44,7 +44,7 @@ import logoOTO from '/public/revamp/images/logo/logo-oto.webp'
 import logoSEVA from '/public/revamp/images/logo/seva-header.png'
 import supergraphic from '/public/revamp/illustration/supergraphic-crop.webp'
 
-const HomepageAdaOTOdiSEVA = ({ dataReccomendation }: any) => {
+const HomepageAdaSEVAdiOTO = ({ dataReccomendation }: any) => {
   useEffect(() => {
     sendAmplitudeData(AmplitudeEventName.WEB_LANDING_PAGE_VIEW, {})
   }, [])
@@ -311,4 +311,4 @@ const HomepageAdaOTOdiSEVA = ({ dataReccomendation }: any) => {
   )
 }
 
-export default HomepageAdaOTOdiSEVA
+export default HomepageAdaSEVAdiOTO
