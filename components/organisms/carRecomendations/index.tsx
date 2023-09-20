@@ -104,7 +104,8 @@ export default function CarRecommendations({
       Monthly_Installment: `Rp${formatLowestInstallment}`,
       Page_Origination: window.location.href,
     })
-    router.push(path)
+
+    window.location.href = path
   }
 
   return (

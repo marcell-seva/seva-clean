@@ -74,7 +74,7 @@ const LpCarRecommendations = ({
       )
       .toLocaleLowerCase()
 
-    router.push(path)
+    window.location.href = path
   }
 
   const handleClickLabel = () => {

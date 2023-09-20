@@ -173,7 +173,7 @@ export const CarDetailCard = ({
   const navigateToPDP = () => {
     if (!isFilterTrayOpened) {
       trackCarClick()
-      router.push(detailCarRoute)
+      window.location.href = detailCarRoute
     }
   }
 

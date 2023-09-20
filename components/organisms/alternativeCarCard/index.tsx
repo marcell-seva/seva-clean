@@ -69,7 +69,7 @@ export const AlternativeCarCard = ({
 
   const navigateToPDP = () => {
     trackCarRecommendation()
-    router.push(detailCarRoute)
+    window.location.href = detailCarRoute
   }
 
   const lowestInstallment = getLowestInstallment(recommendation.variants)
@@ -122,7 +122,7 @@ export const AlternativeCarCard = ({
           <Button
             version={ButtonVersion.Secondary}
             size={ButtonSize.Big}
-            onClick={() => router.push(detailCarRoute)}
+            onClick={() => (window.location.href = detailCarRoute)}
             data-testid={elementId.CarRecommendation.Button.LihatDetail}
           >
             Lihat Detail

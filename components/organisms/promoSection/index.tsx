@@ -52,12 +52,10 @@ const PromoSection = ({
 
   const navigateToSpecificationTab = () => {
     setSelectedTabValue && setSelectedTabValue('Spesifikasi')
-    router.push(
-      variantListUrl
-        .replace(':brand', brand)
-        .replace(':model', model)
-        .replace(':tab?', 'spesifikasi'),
-    )
+    window.location.href = variantListUrl
+      .replace(':brand', brand)
+      .replace(':model', model)
+      .replace(':tab?', 'spesifikasi')
   }
   return (
     <div>

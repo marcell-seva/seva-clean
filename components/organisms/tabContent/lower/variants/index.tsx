@@ -116,6 +116,8 @@ const TabContentLowerVariant = ({
   const navigateToCreditTab = (carVariant: CarVariantRecommendation) => {
     trackCarVariantPricelistClickCta(getDataForAmplitude(carVariant))
     setSelectedTabValue && setSelectedTabValue('Kredit')
+
+    // no need to use window.location.href because user still in PDP
     router.replace(
       {
         pathname: variantListUrl
