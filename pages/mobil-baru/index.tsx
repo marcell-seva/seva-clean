@@ -194,7 +194,11 @@ export const getServerSideProps: GetServerSideProps<{
     const queryParam: any = {
       ...(downPaymentAmount && { downPaymentType: 'amount' }),
       ...(downPaymentAmount && { downPaymentAmount }),
-      ...(brand && { brand: String(brand)?.split(',').map(item => getCarBrand(item)) }),
+      ...(brand && {
+        brand: String(brand)
+          ?.split(',')
+          .map((item) => getCarBrand(item)),
+      }),
       ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
       ...(priceRangeGroup
         ? { priceRangeGroup }
@@ -234,7 +238,7 @@ export const getServerSideProps: GetServerSideProps<{
     if (recommendation) {
       meta.carRecommendations = recommendation
     }
-    console.log(brand, 'ini brand dari query params', typeof brand)
+
     if (brand) {
       if (typeof brand === 'string') {
         meta.footer.location_tag = brand
