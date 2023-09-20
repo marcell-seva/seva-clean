@@ -236,7 +236,7 @@ export const CarDetailCard = ({
       trackCarClick(index + 1)
       saveDataCarForLoginPageView()
       saveDataForCountlyTrackerPageViewPDP(PreviousButton.ProductCard)
-      router.push(detailCarRoute)
+      window.location.href = detailCarRoute
     }
   }
 

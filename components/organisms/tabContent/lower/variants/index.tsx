@@ -160,6 +160,8 @@ const TabContentLowerVariant = ({
     saveDataForCountlyTrackerPageViewLC(PreviousButton.VariantPriceList)
 
     setSelectedTabValue && setSelectedTabValue('Kredit')
+
+    // no need to use window.location.href because user still in PDP
     router.replace(
       {
         pathname: variantListUrl

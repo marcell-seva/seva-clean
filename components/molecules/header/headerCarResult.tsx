@@ -134,12 +134,11 @@ export default function HeaderCarResult({
         return window.location.href.replace('https://www.', '')
       }
     }
-    router.push(urlDestination)
+    window.location.href = urlDestination
     trackSearchBarSuggestionClick({
       Page_Origination_URL: getOriginationUrl(),
       Page_Direction_URL: window.location.href.replace('https://www.', ''),
     })
-    window.location.reload()
   }
 
   const clickEnter = (e: any) => {

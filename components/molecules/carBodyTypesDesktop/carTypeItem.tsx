@@ -43,16 +43,14 @@ export const CarTypeItem = ({ carModel, bodyTypeSelected }: CarTileProps) => {
           Car_Model: carModel.model,
           Car_Body_Type: bodyTypeSelected,
         })
-        router.push(
-          variantListUrl
-            .replace(
-              ':brand/:model',
-              (carModel.brand + '/' + carModel.model.replace(/ +/g, '-'))
-                .replace(/ +/g, '')
-                .toLowerCase(),
-            )
-            .replace(':tab', ''),
-        )
+        window.location.href = variantListUrl
+          .replace(
+            ':brand/:model',
+            (carModel.brand + '/' + carModel.model.replace(/ +/g, '-'))
+              .replace(/ +/g, '')
+              .toLowerCase(),
+          )
+          .replace(':tab', '')
       })
   }
 
