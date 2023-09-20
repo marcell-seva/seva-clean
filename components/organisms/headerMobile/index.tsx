@@ -129,6 +129,7 @@ export const HeaderMobile = ({
                 alt="seva"
                 className={styles.logoImg}
                 data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+                priority={true}
               />
             </Link>
             <SidebarMobile

@@ -29,8 +29,11 @@ export const PdpLowerSection = ({
   setVariantIdFuelRatio,
   variantFuelRatio,
 }: pdpLowerSectionProps) => {
+  const router = useRouter()
+  const lowerTab = router.query.slug as string
+  const path = lowerTab ? capitalizeFirstLetter(lowerTab[0]) : ''
   const [selectedTabValue, setSelectedTabValue] = useState(
-    lowerSectionNavigationTab[0].value,
+    path || lowerSectionNavigationTab[0].value,
   )
 
   const onSelectLowerTab = (value: string) => {
@@ -70,7 +73,6 @@ export const PdpLowerSection = ({
     setTabFromDirectUrl()
   }, [])
 
-  const router = useRouter()
   const setTabFromDirectUrl = () => {
     const slug = router.query.slug
 

@@ -10,6 +10,7 @@ import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { CarVariantRecommendation, CityOtrOption } from 'utils/types'
+import { getCity } from 'utils/hooks/useGetCity'
 
 interface SpecificationSelectProps {
   initialValue?: CarVariantRecommendation
@@ -59,9 +60,7 @@ export const SpecificationSelect = ({
   }, [showOption])
 
   const getCityParam = () => {
-    return `?city=${cityOtr?.cityCode ?? 'jakarta'}&cityId=${
-      cityOtr?.cityId ?? '118'
-    }`
+    return `?city=${getCity().cityCode}&cityId=${getCity().id}`
   }
 
   const getVarintDetail = async (optionId: string) => {

@@ -15,10 +15,13 @@ import {
   MobileWebTopMenuType,
 } from 'utils/types/utils'
 import PLPDesktop from 'components/organisms/PLPDesktop'
-import styles from 'styles/pages/plp.module.scss'
+import { defaultSeoImage } from 'utils/helpers/const'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import { api } from 'services/api'
+import Seo from 'components/atoms/seo'
+import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
+import { useMediaQuery } from 'react-responsive'
 import { CarProvider } from 'services/context'
 
 const NewCarResultPage = ({
@@ -31,6 +34,8 @@ const NewCarResultPage = ({
   const id = router.query.brand
   const { saveMobileWebTopMenus, saveMobileWebFooterMenus, saveCities } =
     useUtils()
+  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
+  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
   useEffect(() => {
     saveMobileWebTopMenus(dataHeader)
@@ -42,14 +47,17 @@ const NewCarResultPage = ({
     }
   }, [])
 
+  useEffect(() => {
+    setIsMobile(isClientMobile)
+  }, [isClientMobile])
+
   return (
     <>
-      <Head>
-        <title>{meta.title}</title>
-        <meta name="title" content={meta.title} />
-        <meta name="description" content={meta.description} />
-        <link rel="icon" href="/favicon.png" />
-      </Head>
+      <Seo
+        title={meta.title}
+        description={meta.description}
+        image={defaultSeoImage}
+      />
       <CarProvider
         car={null}
         carModel={null}
@@ -57,15 +65,14 @@ const NewCarResultPage = ({
         carVariantDetails={null}
         recommendation={meta.carRecommendations.carRecommendations}
       >
-        <div className={styles.mobile}>
+        {isMobile ? (
           <PLP minmaxPrice={meta.MinMaxPrice} />
-        </div>
-        <div className={styles.desktop}>
+        ) : (
           <PLPDesktop
             carRecommendation={meta.carRecommendations}
             footer={meta.footer}
           />
-        </div>
+        )}
       </CarProvider>
     </>
   )
@@ -95,7 +102,6 @@ const getBrand = (brand: string | string[] | undefined) => {
 
 export const getServerSideProps: GetServerSideProps<{
   meta: PLPProps
-  isSsrMobile: boolean
   dataHeader: MobileWebTopMenuType[]
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
@@ -201,17 +207,16 @@ export const getServerSideProps: GetServerSideProps<{
     return {
       props: {
         meta,
-        isSsrMobile: getIsSsrMobile(ctx),
         dataHeader: menuRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        isSsrMobile: getIsSsrMobile(ctx),
       },
     }
   } catch (e) {
     return {
       props: {
         meta,
-        isSsrMobile: getIsSsrMobile(ctx),
         dataHeader: [],
         dataFooter: [],
         dataCities: [],

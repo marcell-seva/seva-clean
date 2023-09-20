@@ -79,8 +79,7 @@ export default function RecentlyViewed() {
           .toLowerCase(),
       )
       .replace(':tab', '')
-    // router.push(destinationUrl)
-    // window.location.reload()
+
     window.location.href = destinationUrl
   }
 

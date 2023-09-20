@@ -61,6 +61,7 @@ const TabContentLowerVariant = ({
 
   const brand = router.query.brand as string
   const model = router.query.model as string
+  const loanRankcr = router.query.loanRankCVL ?? ''
 
   const { funnelQuery } = useFunnelQueryData()
   const getDataForAmplitude = (carVariant: CarVariantRecommendation) => {
@@ -115,13 +116,18 @@ const TabContentLowerVariant = ({
   const navigateToCreditTab = (carVariant: CarVariantRecommendation) => {
     trackCarVariantPricelistClickCta(getDataForAmplitude(carVariant))
     setSelectedTabValue && setSelectedTabValue('Kredit')
+
+    // no need to use window.location.href because user still in PDP
     router.replace(
       {
         pathname: variantListUrl
           .replace(':brand', brand)
           .replace(':model', model)
           .replace(':tab?', 'kredit'),
-        query: { selectedVariantId: carVariant.id },
+        query: {
+          selectedVariantId: carVariant.id,
+          ...(loanRankcr && { loanRankCVL: loanRankcr }),
+        },
       },
       undefined,
       { scroll: false },

@@ -20,10 +20,14 @@ import {
   trackSearchCarResults,
   trackViewCarResult,
 } from 'helpers/amplitude/newFunnelEventTracking'
-import { Loading } from 'components/atoms/loading'
 import { SearchInput } from 'components/atoms/searchInput/oldSearchInput'
 import { client } from 'utils/helpers/const'
 import { FunnelQueryKey } from 'utils/types/models'
+import dynamic from 'next/dynamic'
+
+const Loading = dynamic(() =>
+  import('components/atoms/loading').then((mod) => mod.Loading),
+)
 
 interface HeaderCarResultProps {
   overrideDisplay?: string
@@ -130,12 +134,11 @@ export default function HeaderCarResult({
         return window.location.href.replace('https://www.', '')
       }
     }
-    router.push(urlDestination)
+    window.location.href = urlDestination
     trackSearchBarSuggestionClick({
       Page_Origination_URL: getOriginationUrl(),
       Page_Direction_URL: window.location.href.replace('https://www.', ''),
     })
-    window.location.reload()
   }
 
   const clickEnter = (e: any) => {

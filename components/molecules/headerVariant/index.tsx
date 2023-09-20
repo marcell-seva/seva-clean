@@ -1,5 +1,4 @@
 import { SearchInput } from 'components/atoms'
-import { Loading } from 'components/atoms/loading'
 import { trackSearchBarSuggestionClick } from 'helpers/amplitude/seva20Tracking'
 import { findAll } from 'highlight-words-core'
 import debounce from 'lodash.debounce'
@@ -25,6 +24,12 @@ import { COMData, FunnelQueryKey } from 'utils/types/models'
 import { Line } from './Line'
 import { useToast } from './Toast'
 import Image from 'next/image'
+import dynamic from 'next/dynamic'
+
+const Loading = dynamic(() =>
+  import('components/atoms/loading').then((mod) => mod.Loading),
+)
+
 interface HeaderVariantProps {
   overrideDisplay?: string
   isOnModal?: boolean

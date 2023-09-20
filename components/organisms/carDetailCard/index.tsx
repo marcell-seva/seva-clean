@@ -173,7 +173,7 @@ export const CarDetailCard = ({
   const navigateToPDP = () => {
     if (!isFilterTrayOpened) {
       trackCarClick()
-      router.push(detailCarRoute)
+      window.location.href = detailCarRoute
     }
   }
 
@@ -203,7 +203,7 @@ export const CarDetailCard = ({
             data-testid={elementId.CarImage}
             width={279}
             height={209}
-            loading="eager"
+            priority
           />
         ) : (
           <LazyLoadImage
@@ -213,7 +213,8 @@ export const CarDetailCard = ({
             onClick={navigateToPDP}
             data-testid={elementId.CarImage}
             width={279}
-            height={209}
+            effect="blur"
+            placeholderSrc={recommendation.base64}
           />
         )}
 
