@@ -351,31 +351,21 @@ export default function NewCarVariantList() {
   }
 
   useEffect(() => {
-    getAnnouncementBox()
-  }, [])
-
-  const getAnnouncementBox = () => {
-    try {
-      const res: any = api.getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      if (res.data) {
-        saveDataAnnouncementBox(res.data)
-        const sessionBox = getSessionStorage(
-          getToken()
-            ? SessionStorageKey.ShowWebAnnouncementLogin
-            : SessionStorageKey.ShowWebAnnouncementNonLogin,
-        )
-        if (typeof sessionBox !== 'undefined') {
-          setShowAnnouncementBox(Boolean(sessionBox))
-        } else {
-          setShowAnnouncementBox(true)
-        }
+    if (dataAnnouncementBox) {
+      const isShowAnnouncement = getSessionStorage(
+        getToken()
+          ? SessionStorageKey.ShowWebAnnouncementLogin
+          : SessionStorageKey.ShowWebAnnouncementNonLogin,
+      )
+      if (typeof isShowAnnouncement !== 'undefined') {
+        setShowAnnouncementBox(isShowAnnouncement as boolean)
+      } else {
+        setShowAnnouncementBox(true)
       }
-    } catch (error) {}
-  }
+    } else {
+      setShowAnnouncementBox(false)
+    }
+  }, [dataAnnouncementBox])
 
   useEffect(() => {
     checkConnectedRefCode()
