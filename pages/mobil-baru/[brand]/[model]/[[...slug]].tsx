@@ -1,4 +1,4 @@
-import React, { createContext, useEffect } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import { PdpDesktop, PdpMobile } from 'components/organisms'
 import { api } from 'services/api'
 import { CarRecommendation } from 'utils/types/utils'
@@ -6,8 +6,9 @@ import { InferGetServerSidePropsType } from 'next'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { getToken } from 'utils/handler/auth'
 import { useUtils } from 'services/context/utilsContext'
-import styles from 'styles/pages/plp.module.scss'
 import { mergeModelDetailsWithLoanRecommendations } from 'services/recommendations'
+import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
+import { useMediaQuery } from 'react-responsive'
 
 interface PdpDataLocalContextType {
   /**
@@ -62,6 +63,8 @@ export default function index({
     saveMobileWebFooterMenus,
     saveCities,
   } = useUtils()
+  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
+  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
   useEffect(() => {
     saveDesktopWebTopMenu(dataDesktopMenu)
@@ -70,6 +73,10 @@ export default function index({
     saveCities(dataCities)
     getAnnouncementBox()
   }, [])
+
+  useEffect(() => {
+    setIsMobile(isClientMobile)
+  }, [isClientMobile])
 
   const getAnnouncementBox = async () => {
     try {
@@ -96,12 +103,11 @@ export default function index({
           carArticleReviewRes: carArticleReviewRes,
         }}
       >
-        <div className={styles.mobile}>
+        {isMobile ? (
           <PdpMobile />
-        </div>
-        <div className={styles.desktop}>
+        ) : (
           <PdpDesktop metaTagDataRes={metaTagDataRes} />
-        </div>
+        )}
       </PdpDataLocalContext.Provider>
     </>
   )

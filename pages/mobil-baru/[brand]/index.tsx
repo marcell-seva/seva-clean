@@ -15,12 +15,14 @@ import {
 } from 'utils/types/utils'
 import PLPDesktop from 'components/organisms/PLPDesktop'
 import { defaultSeoImage } from 'utils/helpers/const'
-import styles from 'styles/pages/plp.module.scss'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import { api } from 'services/api'
 import Seo from 'components/atoms/seo'
-import moment from 'moment'
+import { monthId } from 'utils/handler/date'
+import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
+import { useMediaQuery } from 'react-responsive'
+import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 
 const NewCarResultPage = ({
   meta,
@@ -37,6 +39,8 @@ const NewCarResultPage = ({
     saveMobileWebFooterMenus,
     saveCities,
   } = useUtils()
+  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
+  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
   useEffect(() => {
     saveDesktopWebTopMenu(dataDesktopMenu)
@@ -49,28 +53,31 @@ const NewCarResultPage = ({
     }
   }, [])
 
+  useEffect(() => {
+    setIsMobile(isClientMobile)
+  }, [isClientMobile])
+
+  const todayDate = new Date()
+
   const metaTitle =
     `Harga OTR ` +
     meta.title.split('20')[0] +
-    ` ${moment().format('YYYY')} - Promo Cicilan bulan ${moment().format(
-      'MMMM',
+    ` ${todayDate.getFullYear()} - Promo Cicilan bulan ${monthId(
+      todayDate.getMonth(),
     )} | SEVA`
-  const metaDesc = `Beli mobil Toyota ${moment().format(
-    'YYYY',
-  )} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
+  const metaDesc = `Beli mobil Toyota ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
 
   return (
     <>
       <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
-      <div className={styles.mobile}>
+      {isMobile ? (
         <PLP minmaxPrice={meta.MinMaxPrice} />
-      </div>
-      <div className={styles.desktop}>
+      ) : (
         <PLPDesktop
           carRecommendation={meta.carRecommendations}
           footer={meta.footer}
         />
-      </div>
+      )}
     </>
   )
 }
@@ -179,7 +186,7 @@ export const getServerSideProps: GetServerSideProps<{
     const queryParam: any = {
       ...(downPaymentAmount && { downPaymentType: 'amount' }),
       ...(downPaymentAmount && { downPaymentAmount }),
-      ...(brand && { brand: String(brand)?.split(',') }),
+      ...(brand && { brand: String(brand)?.split(',').map(item => getCarBrand(item)) }),
       ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
       ...(priceRangeGroup
         ? { priceRangeGroup }
