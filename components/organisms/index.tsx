@@ -47,7 +47,7 @@ import TestimonyWidget from './testimonyWidget'
 import LpCarRecommendations from './lpCarRecommendations'
 import CarOfTheMonth from './carOfTheMonth'
 import dynamic from 'next/dynamic'
-import HomepageAdaOTOdiSEVA from './homepageAdaOTOdiSEVA'
+import HomepageAdaSEVAdiOTO from './homepageAdaSEVAdiOTO'
 import { InsuranceTooltip } from './insuranceTooltip'
 import LeadsFormAdaOTOdiSEVA from './leadsForm/adaOTOdiSEVA'
 import { AdaOTOdiSEVALeadsForm } from './leadsForm/adaOTOdiSEVA/popUp'
@@ -109,7 +109,7 @@ export {
   LpCarRecommendations,
   CarOfTheMonth,
   InsuranceTooltip,
-  HomepageAdaOTOdiSEVA,
+  HomepageAdaSEVAdiOTO,
   LeadsFormAdaOTOdiSEVA,
   AdaOTOdiSEVALeadsForm,
 }

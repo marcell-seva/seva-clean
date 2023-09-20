@@ -137,3 +137,19 @@ export const getLowestInstallment = (variants: MonthlyInstallmentObject[]) => {
   const prices = variants.map((variant) => variant.monthlyInstallment)
   return Math.min(...prices)
 }
+
+export const getCarBrand = (brand: string | string[] | undefined) => {
+  if (String(brand).toLowerCase() === 'toyota') {
+    return 'Toyota'
+  } else if (String(brand).toLowerCase() === 'daihatsu') {
+    return 'Daihatsu'
+  } else if (String(brand).toLowerCase() === 'bmw') {
+    return 'BMW'
+  }else if (String(brand).toLowerCase() === 'isuzu') {
+    return 'Isuzu'
+  }else if (String(brand).toLowerCase() === 'peugeot') {
+    return 'Peugeot'
+  } else {
+    return ''
+  }
+}

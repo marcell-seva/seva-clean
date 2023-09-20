@@ -42,6 +42,7 @@ import { LinkLabelSmallSemiBold } from 'utils/typography/LinkLabelSmallSemiBold'
 import { CarButtonProps } from 'utils/types/context'
 import { IconInfoSmall } from 'components/atoms/icon/InfoSmall'
 import { useCar } from 'services/context/carContext'
+import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 
 const LogoToyota = '/revamp/icon/toyota-1989.png'
 const LogoDaihatsu = '/revamp/icon/daihatsu-update.png'
@@ -505,6 +506,8 @@ export const NewFilterSideMenu = () => {
           isChecked={
             funnelQuery.brand
               ? funnelQuery.brand.includes(value)
+              : router.query.brand
+              ? getCarBrand(String(router.query.brand)).includes(value)
               : isCheckedBrand.includes(value)
           }
         >

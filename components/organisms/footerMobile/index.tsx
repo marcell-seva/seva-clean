@@ -11,6 +11,7 @@ import { UTMTagsData } from 'utils/types/utils'
 import { LocalStorageKey } from 'utils/enum'
 import { api } from 'services/api'
 import { useUtils } from 'services/context/utilsContext'
+import Link from 'next/link'
 
 const SevaLogo = '/revamp/icon/logo-on-dark.webp'
 const ISOIcon = '/revamp/icon/iso.webp'
@@ -80,19 +81,14 @@ export const FooterMobile = ({ pageOrigination }: FooterProps) => {
           pembiayaan dan dealer resmi dari Astra Group
         </span>
         <div className={styles.linkedTextWrapper}>
-          {mobileWebFooterMenus?.length > 0 &&
-            mobileWebFooterMenus?.map((item, index) => (
-              <a
-                href={formatMenuUrl(item.menuUrl)}
-                key={index}
-                rel="noreferrer noopener"
-                target="_blank"
-                onClick={() => handleClickMenu(item.menuName)}
-                data-testid={dataTestId(item.menuCode)}
-              >
-                {item.menuName}
-              </a>
-            ))}
+          <span className={styles.gap}>
+            <Link href={urls.about}>Tentang Kami</Link>
+            <Link href={urls.termsAndConditionsSeva}>Syarat & Ketentuan</Link>
+          </span>
+          <span className={styles.gap}>
+            <Link href={urls.privacyPolicySeva}>Kebijakan Privasi</Link>
+            <Link href={urls.contactUs}>Hubungi Kami</Link>
+          </span>
         </div>
         <div className={styles.socialWrapper}>
           <a
