@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styles from '/styles/pages/account-profile.module.scss'
 import inputStyles from '/styles/components/atoms/inputDate.module.scss'
 import { useFormik } from 'formik'
-import * as Yup from 'yup'
+import { object, string, InferType } from 'yup'
 import dayjs from 'dayjs'
 import { fetchCustomerDetails } from 'utils/httpUtils/customerUtils'
 import { useTranslation } from 'react-i18next'
@@ -76,9 +76,9 @@ const Profile = () => {
     getCurrentEnvironment.featureToggles.enableDeleteAccount
   const enableUploadKtp = getCurrentEnvironment.featureToggles.enableUploadKtp
 
-  const userSchema = Yup.object().shape({
-    fullName: Yup.string().required('Wajib diisi.'),
-    email: Yup.string()
+  const userSchema = object().shape({
+    fullName: string().required('Wajib diisi.'),
+    email: string()
       .matches(
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         {
@@ -86,11 +86,11 @@ const Profile = () => {
         },
       )
       .required('Wajib diisi.'),
-    dob: Yup.string().required('Wajib diisi.'),
-    gender: Yup.string(),
+    dob: string().required('Wajib diisi.'),
+    gender: string(),
   })
 
-  type UserForm = Yup.InferType<typeof userSchema>
+  type UserForm = InferType<typeof userSchema>
 
   const {
     values,

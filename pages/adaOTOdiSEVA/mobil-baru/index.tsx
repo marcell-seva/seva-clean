@@ -20,7 +20,7 @@ import { MobileWebFooterMenuType } from 'utils/types/props'
 import styles from 'styles/pages/plp.module.scss'
 import { CarProvider } from 'services/context'
 import { generateBlurRecommendations } from 'utils/generateBlur'
-import moment from 'moment'
+import { monthId } from 'utils/handler/date'
 
 const NewCarResultPage = ({
   meta,
@@ -37,12 +37,14 @@ const NewCarResultPage = ({
     saveCities(dataCities)
   }, [])
 
+  const todayDate = new Date()
+
   const metaTitle =
     meta.title.slice(0, 23) +
-    ` - Harga OTR dengan Promo Cicilan bulan ${moment().format('MMMM')} | SEVA`
-  const metaDesc = `Temukan beragam mobil ${moment().format(
-    'YYYY',
-  )} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
+    ` - Harga OTR dengan Promo Cicilan bulan ${monthId(
+      todayDate.getMonth(),
+    )} | SEVA`
+  const metaDesc = `Temukan beragam mobil ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
 
   return (
     <>
