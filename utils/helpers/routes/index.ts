@@ -1,7 +1,7 @@
 export const rootUrl = '/'
-export const rootOTOUrl = '/adaOTOdiSEVA'
+export const rootOTOUrl = '/adaSEVAdiOTO'
 export const carResultsUrl = '/mobil-baru'
-export const OTOCarResultsUrl = '/adaOTOdiSEVA/mobil-baru/:brand/:model'
+export const OTOCarResultsUrl = '/adaSEVAdiOTO/mobil-baru/:brand/:model'
 export const loanCalculatorWithCityBrandModelVariantUrl =
   '/kalkulator-kredit/:cityName/:brand/:model/:variant'
 export const variantListUrl = '/mobil-baru/:brand/:model/:tab?'
