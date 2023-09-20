@@ -3,9 +3,9 @@ import { useRouter } from 'next/router'
 import React from 'react'
 
 interface SeoProps {
-  title: string | null
-  description: string | null
-  image: string | null
+  title: string
+  description: string
+  image: string
 }
 
 const Seo: React.FC<SeoProps> = ({ title, description, image }) => {

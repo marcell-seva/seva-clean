@@ -100,7 +100,12 @@ const PromoSection = ({
         <div className={styles.cardInfoDetail} style={{ padding: '16px' }}>
           <div className={styles.row}>
             <div className={styles.rowWithGap}>
-              <IconCar width={24} height={24} color={'#B4231E'} />
+              <IconCar
+                width={24}
+                height={24}
+                color={'#B4231E'}
+                alt="SEVA Car Icon"
+              />
               <h3 className={styles.kanyonMedium}>Detail</h3>
             </div>
             <div
@@ -116,13 +121,23 @@ const PromoSection = ({
           </div>
           <div className={styles.row}>
             <div className={styles.rowWithGap}>
-              <IconSeat width={24} height={24} color={'#246ED4'} />
+              <IconSeat
+                width={24}
+                height={24}
+                color={'#246ED4'}
+                alt="SEVA Chair Icon"
+              />
               <p className={styles.openSans} style={{ color: '#13131B' }}>
                 {info.seats + ' Kursi'}
               </p>
             </div>
             <div className={styles.rowWithGap}>
-              <IconTransmission width={24} height={24} color={'#246ED4'} />
+              <IconTransmission
+                width={24}
+                height={24}
+                color={'#246ED4'}
+                alt="SEVA Transmition gear Icon"
+              />
               <p className={styles.openSans} style={{ color: '#13131B' }}>
                 {cheapestVariantData?.transmission}
               </p>
@@ -130,13 +145,23 @@ const PromoSection = ({
           </div>
           <div className={styles.row}>
             <div className={styles.rowWithGap}>
-              <IconEngine width={24} height={24} color={'#246ED4'} />
+              <IconEngine
+                width={24}
+                height={24}
+                color={'#246ED4'}
+                alt="SEVA Engine Icon"
+              />
               <p className={styles.openSans} style={{ color: '#13131B' }}>
                 {'Mesin ' + cheapestVariantData?.engineCapacity + ' cc'}
               </p>
             </div>
             <div className={styles.rowWithGap}>
-              <IconFuel width={24} height={24} color={'#246ED4'} />
+              <IconFuel
+                width={24}
+                height={24}
+                color={'#246ED4'}
+                alt="SEVA Gas Station icon"
+              />
               <p className={styles.openSans} style={{ color: '#13131B' }}>
                 {cheapestVariantData?.fuelType}
               </p>
@@ -155,7 +180,12 @@ const PromoSection = ({
           <div className={styles.rowWithGap}>
             {onPage === 'VariantListPage' ? (
               <div className={styles.headerWrapper}>
-                <IconPromo width={19} height={19} color={'#B4231E'} />
+                <IconPromo
+                  width={19}
+                  height={19}
+                  color={'#B4231E'}
+                  alt="SEVA Price Tag icon"
+                />
                 <h3 className={styles.kanyonMedium}>Promo</h3>
               </div>
             ) : (
