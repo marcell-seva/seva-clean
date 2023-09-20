@@ -115,7 +115,7 @@ export const AlternativeCarCard = ({
     if (!label) {
       trackCountlyCarRecommendation()
     }
-    router.push(detailCarRoute)
+    window.location.href = detailCarRoute
   }
 
   const lowestInstallment = getLowestInstallment(recommendation.variants)
@@ -144,7 +144,7 @@ export const AlternativeCarCard = ({
       saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
     }
 
-    router.push(detailCarRoute)
+    window.location.href = detailCarRoute
   }
 
   return (

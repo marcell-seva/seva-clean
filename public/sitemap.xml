@@ -1,0 +1,37 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        <loc>
+            <![CDATA[ https://www.seva.id/mobil-baru ]]>
+        </loc>
+        <name>ProductSeva</name>
+        <lastmod>2023-08-31</lastmod>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Beli mobil terbaru 2023 - Harga OTR dengan Promo Cicilan bulan Agustus]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[mobil baru, mobil toyota, mobil daihatsu, mobil bmw, mobil isuzu, mobil peugeot]]>
+            </news:keywords>
+        </news:news>
+        <image:image>
+            <image:loc>
+                https://images.prod.seva.id/Daihatsu/New%20Ayla/main_color/main_banner_daihatsu_ayla_ultrablacksolid_1.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>
+                https://images.prod.seva.id/Daihatsu/All%20New%20Ayla/main_color/main_ayla_maincolor_1-min.png</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>https://images.prod.seva.id/Daihatsu/Sigra/main_color/sigra_main_1.webp</image:loc>
+        </image:image>
+        <image:image>
+            <image:loc>
+                https://images.prod.seva.id/Daihatsu/Granmax%20PU/main_color/granmaxpu_main_1.webp</image:loc>
+        </image:image>
+    </url>
+</urlset>

@@ -4,7 +4,7 @@ import { useMediaQuery } from 'react-responsive'
 import { api } from 'services/api'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import {
-  HomepageAdaOTOdiSEVA,
+  HomepageAdaSEVAdiOTO,
   HomepageDesktop,
   HomepageMobile,
 } from 'components/organisms'
@@ -88,7 +88,7 @@ export default function WithTracker({
       }}
     >
       <div className={styles.mobile}>
-        <HomepageAdaOTOdiSEVA dataReccomendation={dataReccomendation} />
+        <HomepageAdaSEVAdiOTO dataReccomendation={dataReccomendation} />
       </div>
     </HomePageDataLocalContext2.Provider>
   )

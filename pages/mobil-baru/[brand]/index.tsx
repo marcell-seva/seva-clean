@@ -23,6 +23,7 @@ import { monthId } from 'utils/handler/date'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
 import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
+import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 
 const NewCarResultPage = ({
   meta,
@@ -227,6 +228,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        isSsrMobile: getIsSsrMobile(ctx),
       },
     }
   } catch (e) {

@@ -57,7 +57,7 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const { model, brand, slug } = router.query
   const tab = Array.isArray(slug) ? slug[0] : undefined
   const [stickyCTA, setStickyCTA] = useState(false)
-
+  const routerQuery = router.query
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const { showModal: showCarNotExistModal, PreApprovalCarNotAvailableModal } =
     usePreApprovalCarNotAvailable()
@@ -239,60 +239,62 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
       showContactUsModal()
     }
   }, [])
-  const meta = useMemo(() => {
-    const title =
-      metaTagDataRes.data && metaTagDataRes.data.length > 0
-        ? metaTagDataRes.data[0].attributes.meta_title
-        : 'SEVA'
-    const description =
-      metaTagDataRes.data && metaTagDataRes.data.length > 0
-        ? metaTagDataRes.data[0].attributes.meta_description
-        : ''
-    return { title, description }
-  }, [metaTagDataRes])
 
   const todayDate = new Date()
 
+  const capitalizeWord = (word: string) =>
+    word.charAt(0).toUpperCase() + word.slice(1)
+
+  const capitalizeIfString = (value: string) =>
+    typeof value === 'string'
+      ? value.split('-').map(capitalizeWord).join(' ')
+      : ''
+
+  const carBrand = capitalizeIfString(routerQuery.brand as string)
+  const carModel = capitalizeIfString(routerQuery.model as string)
+
   const currentYear = todayDate.getFullYear()
   const currentMonth = monthId(todayDate.getMonth())
-  const carOTR = `Rp ${
-    (modelDetailData?.variants[0].priceValue as number) / 1000000
-  } Juta`
+
+  const carOTRValue = carModelDetails?.variants[0].priceValue as number
+  const carOTR = isNaN(carOTRValue) ? null : `Rp ${carOTRValue / 1000000} Juta`
+
   const getMetaTitle = () => {
     switch (tab) {
       case 'kredit':
-        return `Kredit ${carModelDetails?.brand} ${
-          carModelDetails?.model
-        } ${currentYear}. Simulasi Cicilan OTR ${
+        return `Kredit ${carBrand} ${carModel} ${currentYear}. Simulasi Cicilan OTR ${
           getCity().cityName
         } dengan Loan Calculator | SEVA`
       case 'spesifikasi':
-        return `Spesifikasi ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} | SEVA`
+        return `Spesifikasi ${carBrand} ${carModel} ${currentYear} | SEVA`
       case 'harga':
-        return `Harga ${carModelDetails?.brand} ${
-          carModelDetails?.model
-        } ${currentYear} ${getCity().cityName} Terbaru | SEVA`
+        return `Harga ${carBrand} ${carModel} ${currentYear} ${
+          getCity().cityName
+        } Terbaru | SEVA`
     }
-    return `Ringkasan Produk ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} - Harga OTR Promo Bulan ${currentMonth} | SEVA`
+    return `Ringkasan Produk ${carBrand} ${carModel} ${currentYear} - Harga OTR Promo Bulan ${currentMonth} | SEVA`
   }
 
   const getMetaDescription = () => {
-    switch (tab) {
-      case 'kredit':
-        return `Hitung simulasi cicilan ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear}. Beli mobil ${carModelDetails?.brand} secara kredit, proses aman & mudah dengan Instant Approval* di SEVA."`
-      case 'spesifikasi':
-        return `Dapatkan informasi lengkap mengenai spesifikasi ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} terbaru di SEVA`
-      case 'harga':
-        return `Daftar harga ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} terbaru di SEVA.`
+    if (carOTR !== null) {
+      switch (tab) {
+        case 'kredit':
+          return `Hitung simulasi cicilan ${carBrand} ${carModel} ${currentYear}. Beli mobil ${carBrand} secara kredit, proses aman & mudah dengan Instant Approval* di SEVA."`
+        case 'spesifikasi':
+          return `Dapatkan informasi lengkap mengenai spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
+        case 'harga':
+          return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
+      }
+      return `Beli mobil ${carBrand} ${carModel} 2023 terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, dan kredit di SEVA`
     }
-    return `Beli mobil ${carModelDetails?.brand} ${carModelDetails?.model} 2023 terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, dan kredit di SEVA`
+    return null
   }
 
   return (
     <>
       <Seo
         title={getMetaTitle()}
-        description={getMetaDescription()}
+        description={getMetaDescription() ?? ''}
         image={modelDetailData?.images[0] || defaultSeoImage}
       />
       <div className={styles.pageHeaderWrapper}>

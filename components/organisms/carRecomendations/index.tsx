@@ -157,7 +157,7 @@ export default function CarRecommendations({
       saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
     }
 
-    router.push(path)
+    window.location.href = path
   }
 
   return (

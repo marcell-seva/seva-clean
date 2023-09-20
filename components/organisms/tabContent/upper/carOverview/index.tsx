@@ -380,7 +380,12 @@ export const CarOverview = ({
               onClick={onClickOtrCity}
               data-testid={elementId.PDP.CarOverview.CityOtr}
             >
-              <IconEdit width={16} height={16} color="#246ED4" />
+              <IconEdit
+                width={16}
+                height={16}
+                color="#246ED4"
+                alt="SEVA pen Icon"
+              />
             </button>
           )}
         </div>
@@ -435,7 +440,12 @@ export const CarOverview = ({
         >
           <TextButton
             leftIcon={() => (
-              <IconDownload width={16} height={16} color="#246ED4" />
+              <IconDownload
+                width={16}
+                height={16}
+                color="#246ED4"
+                alt="SEVA download Icon"
+              />
             )}
             data-testid={elementId.PDP.CTA.UnduhBrosur}
           >
@@ -461,7 +471,12 @@ export const CarOverview = ({
           onClick={onClickShareButtonHandler}
           data-testid={elementId.PDP.Button.Share}
         >
-          <IconShare width={32} height={32} color="#05256E" />
+          <IconShare
+            width={32}
+            height={32}
+            color="#05256E"
+            alt="SEVA Share Icon"
+          />
         </button>
       </div>
     </div>

@@ -17,6 +17,7 @@ import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import { hundred, million, ten } from 'utils/helpers/const'
 import {
   loanCalculatorWithCityBrandModelVariantUrl,
+  rootOTOUrl,
   variantListUrl,
 } from 'utils/helpers/routes'
 import {
@@ -124,15 +125,17 @@ export const CarDetailCard = ({
     ten,
   )
 
-  const detailCarRoute = variantListUrl
-    .replace(
-      ':brand/:model',
-      (recommendation.brand + '/' + recommendation.model.replace(/ +/g, '-'))
-        .replace(/ +/g, '')
-        .toLowerCase(),
-    )
-    .replace(':tab', '')
-    .replace('?', `?loanRankCVL=${recommendation.loanRank}&source=plp`)
+  const detailCarRoute =
+    rootOTOUrl +
+    variantListUrl
+      .replace(
+        ':brand/:model',
+        (recommendation.brand + '/' + recommendation.model.replace(/ +/g, '-'))
+          .replace(/ +/g, '')
+          .toLowerCase(),
+      )
+      .replace(':tab', '')
+      .replace('?', `?loanRankCVL=${recommendation.loanRank}&source=plp`)
 
   const cityName =
     recommendation.brand === 'Daihatsu' &&
@@ -237,7 +240,7 @@ export const CarDetailCard = ({
       trackCarClick(index + 1)
       saveDataCarForLoginPageView()
       saveDataForCountlyTrackerPageViewPDP(PreviousButton.ProductCard)
-      router.push(detailCarRoute)
+      window.location.href = detailCarRoute
     }
   }
 
