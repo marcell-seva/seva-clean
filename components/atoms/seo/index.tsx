@@ -3,14 +3,17 @@ import { useRouter } from 'next/router'
 import React from 'react'
 
 interface SeoProps {
-  title: string
-  description: string
-  image: string
+  title: string | null
+  description: string | null
+  image: string | null
 }
 
 const Seo: React.FC<SeoProps> = ({ title, description, image }) => {
   const router = useRouter()
   const currentUrl = router.asPath
+  if (!title || !description || !image) {
+    return null
+  }
 
   return (
     <Head>
