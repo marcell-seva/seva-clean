@@ -73,6 +73,7 @@ import { useUtils } from 'services/context/utilsContext'
 import { temanSevaUrlPath } from 'services/temanseva'
 import { decryptValue } from 'utils/encryptionUtils'
 import dynamic from 'next/dynamic'
+import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
@@ -273,7 +274,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
     const filterIncome = getConvertFilterIncome(String(monthlyIncome))
     return {
       ...(brand && {
-        Car_Brand: brand,
+        Car_Brand: getCarBrand(brand),
       }),
       ...(bodyType && {
         Car_Body_Type: bodyType,
@@ -539,7 +540,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
             const queryParam: any = {
               downPaymentType: 'amount',
               downPaymentAmount: downPaymentAmount || '',
-              brand: brand?.split(',') || '',
+              brand: brand?.split(',')?.map(item => getCarBrand(item)) || '',
               bodyType: bodyType?.split(',') || '',
               priceRangeGroup: priceRangeGroup ? minTemp + '-' + maxTemp : '',
               age: age || '',
@@ -589,7 +590,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
       saveRecommendation(recommendation)
       const queryParam: any = {
         downPaymentAmount: downPaymentAmount || '',
-        brand: brand?.split(',') || '',
+        brand: brand?.split(',')?.map(item => getCarBrand(item)) || '',
         bodyType: bodyType?.split(',') || '',
         priceRangeGroup: priceRangeGroup,
         age: age || '',
