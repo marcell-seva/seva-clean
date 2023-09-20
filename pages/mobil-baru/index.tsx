@@ -244,7 +244,7 @@ export const getServerSideProps: GetServerSideProps<{
     if (recommendation) {
       meta.carRecommendations = recommendation
     }
-    console.log(brand, 'ini brand dari query params', typeof brand)
+
     if (brand) {
       if (typeof brand === 'string') {
         meta.footer.location_tag = brand
