@@ -218,7 +218,11 @@ const CitySelectorModal = ({
       a.cityName.localeCompare(b.cityName),
     )
 
-    return [...topCityDataList, ...sortedRestOfCityData]
+    if (Array.isArray(sortedRestOfCityData)) {
+      return [...topCityDataList, ...sortedRestOfCityData]
+    } else {
+      return topCityDataList // or return []
+    }
   }
 
   useEffect(() => {

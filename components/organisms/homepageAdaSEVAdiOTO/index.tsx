@@ -151,30 +151,13 @@ const HomepageAdaSEVAdiOTO = ({ dataReccomendation }: any) => {
   }
 
   const cityHandler = async () => {
-    if (!cityOtr && !isIn30DaysInterval()) {
+    if (cityOtr === null || !isIn30DaysInterval) {
       setOpenCitySelectorModal(true)
     }
   }
 
   const closeLeadsForm = () => {
     setIsModalOpened(false)
-  }
-
-  const scrollToLeadsForm = () => {
-    const destinationElm = document.getElementById(
-      'landing-page-leads-form-section',
-    )
-    if (destinationElm) {
-      destinationElm.scrollIntoView({
-        inline: 'center',
-        block: 'center',
-        behavior: 'smooth',
-      })
-      sendAmplitudeData(
-        AmplitudeEventName.WEB_LEADS_FORM_OPEN,
-        trackLeadsLPForm(),
-      )
-    }
   }
 
   const showLeadsForm = () => {
