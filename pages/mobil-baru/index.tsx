@@ -53,7 +53,6 @@ const NewCarResultPage = ({
   const metaDesc = `Beli mobil ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
   const metaBrandDesc = `Beli mobil ${carBrand} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
 
-  console.error(carBrand, 'testing')
   return (
     <>
       {meta.footer.location_tag !== '' ? (
@@ -239,7 +238,7 @@ export const getServerSideProps: GetServerSideProps<{
     if (recommendation) {
       meta.carRecommendations = recommendation
     }
-    console.log(brand, 'ini brand dari query params', typeof brand)
+
     if (brand) {
       if (typeof brand === 'string') {
         meta.footer.location_tag = brand
