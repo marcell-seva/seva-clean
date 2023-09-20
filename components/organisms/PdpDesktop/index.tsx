@@ -239,17 +239,6 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
       showContactUsModal()
     }
   }, [])
-  const meta = useMemo(() => {
-    const title =
-      metaTagDataRes.data && metaTagDataRes.data.length > 0
-        ? metaTagDataRes.data[0].attributes.meta_title
-        : 'SEVA'
-    const description =
-      metaTagDataRes.data && metaTagDataRes.data.length > 0
-        ? metaTagDataRes.data[0].attributes.meta_description
-        : ''
-    return { title, description }
-  }, [metaTagDataRes])
 
   const todayDate = new Date()
 
@@ -305,7 +294,7 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
     <>
       <Seo
         title={getMetaTitle()}
-        description={getMetaDescription()}
+        description={getMetaDescription() ?? ''}
         image={modelDetailData?.images[0] || defaultSeoImage}
       />
       <div className={styles.pageHeaderWrapper}>
