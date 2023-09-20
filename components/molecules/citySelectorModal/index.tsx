@@ -218,7 +218,14 @@ const CitySelectorModal = ({
       a.cityName.localeCompare(b.cityName),
     )
 
-    return [...topCityDataList, ...sortedRestOfCityData]
+    if (Array.isArray(sortedRestOfCityData)) {
+      return [...topCityDataList, ...sortedRestOfCityData]
+    } else {
+      // Handle the case where sortedRestOfCityData is not an iterable
+      console.error('sortedRestOfCityData is not iterable.')
+      // You might return an empty array or handle it as needed.
+      return topCityDataList // or return []
+    }
   }
 
   useEffect(() => {
