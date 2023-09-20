@@ -16,7 +16,6 @@ import { useUtils } from 'services/context/utilsContext'
 import styles from 'styles/pages/plp.module.scss'
 import { getToken } from 'utils/handler/auth'
 import { AxiosResponse } from 'axios'
-import moment from 'moment'
 
 interface PdpDataLocalContextType {
   /**

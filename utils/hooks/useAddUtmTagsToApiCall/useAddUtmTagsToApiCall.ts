@@ -7,8 +7,29 @@ import {
   UTMProps,
   setUtmTagsAsUserProperties,
 } from 'helpers/amplitude/trackingUserProperties'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
+import { isEmptyObject } from 'utils/objectUtils'
 
 export type UtmTagsMap = { [key in UTMTags]: string | null }
+
+const isUtmExpired = () => {
+  let isExpired
+
+  const lastTimeUpdateUtm = getLocalStorage<string>(
+    LocalStorageKey.LastTimeUpdateUtm,
+  )
+
+  if (!!lastTimeUpdateUtm) {
+    const currentDateTime = new Date().getTime()
+    const expiredDate = parseInt(lastTimeUpdateUtm) + 11 * 24 * 60 * 60 * 1000 // 11 days
+    isExpired = currentDateTime > expiredDate
+  } else {
+    isExpired = false
+  }
+
+  return isExpired
+}
+
 export const useAddUtmTagsToApiCall = () => {
   const defaultUtmTagsMap = {
     [UTMTags.UtmId]: null,
@@ -51,7 +72,20 @@ export const useAddUtmTagsToApiCall = () => {
       adset,
     }
 
-    setUtmTagsAsUserProperties(localUtmTagsMap)
-    setUtmTagsMap(localUtmTagsMap)
+    const isEmptyUtmTagsFromQuery = isEmptyObject(localUtmTagsMap)
+    const isEmptyUtmTagsInLocalStorage = isEmptyObject(utmTagsMap)
+
+    if (
+      isEmptyUtmTagsInLocalStorage ||
+      (!isEmptyUtmTagsInLocalStorage && !isEmptyUtmTagsFromQuery) ||
+      isUtmExpired()
+    ) {
+      setUtmTagsAsUserProperties(localUtmTagsMap)
+      setUtmTagsMap(localUtmTagsMap)
+      saveLocalStorage(
+        LocalStorageKey.LastTimeUpdateUtm,
+        new Date().getTime().toString(),
+      )
+    }
   }, [])
 }
