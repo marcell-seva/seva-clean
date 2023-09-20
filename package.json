@@ -1,6 +1,7 @@
 {
   "name": "seva-next",
   "version": "0.1.0",
+  "sideEffects": false,
   "private": true,
   "scripts": {
     "dev": "next dev",
