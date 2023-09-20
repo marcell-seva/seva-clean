@@ -113,6 +113,11 @@ const LpCarRecommendations = ({
     )
     if (!selectedBrand) return navigateToPLP(PreviousButton.undefined)
 
+    const path = router.asPath.split('/')[1]
+    if (path === 'adaSEVAdiOTO') {
+      return router.push(`/adaSEVAdiOTO/mobil-baru/${selectedBrand}`)
+    }
+
     navigateToPLP(PreviousButton.undefined, {
       search: new URLSearchParams({ brand: selectedBrand }).toString(),
     })

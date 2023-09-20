@@ -123,9 +123,11 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
     age,
     sortBy,
   } = router.query as FilterParam
-  const isNewCar: boolean = router.asPath.split('/')[1].match('mobil-baru')
-    ? true
-    : false
+  const isNewCar: boolean =
+    router.asPath.split('/')[1].match('mobil-baru') ||
+    router.asPath.split('/')[1].match('adaSEVAdiOTO')
+      ? true
+      : false
 
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
 
@@ -540,7 +542,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
             const queryParam: any = {
               downPaymentType: 'amount',
               downPaymentAmount: downPaymentAmount || '',
-              brand: brand?.split(',')?.map(item => getCarBrand(item)) || '',
+              brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
               bodyType: bodyType?.split(',') || '',
               priceRangeGroup: priceRangeGroup ? minTemp + '-' + maxTemp : '',
               age: age || '',
@@ -590,7 +592,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
       saveRecommendation(recommendation)
       const queryParam: any = {
         downPaymentAmount: downPaymentAmount || '',
-        brand: brand?.split(',')?.map(item => getCarBrand(item)) || '',
+        brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
         bodyType: bodyType?.split(',') || '',
         priceRangeGroup: priceRangeGroup,
         age: age || '',
