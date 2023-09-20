@@ -1,5 +1,5 @@
 import { PLP } from 'components/organisms'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
@@ -22,6 +22,8 @@ import { CarProvider } from 'services/context'
 import { generateBlurRecommendations } from 'utils/generateBlur'
 import { monthId } from 'utils/handler/date'
 import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
+import { useMediaQuery } from 'react-responsive'
+import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 
 const NewCarResultPage = ({
   meta,
@@ -30,6 +32,16 @@ const NewCarResultPage = ({
   dataCities,
   dataDesktopMenu,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const todayDate = new Date()
+  const carBrand = meta.carRecommendations.carRecommendations[0]?.brand
+  const metaTitle = `Harga OTR ${carBrand} - Harga OTR dengan Promo Cicilan bulan ${monthId(
+    todayDate.getMonth(),
+  )} | SEVA`
+  const metaDesc = `Beli mobil ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
+  const metaBrandDesc = `Beli mobil ${carBrand} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
+
+  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
+  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const {
     saveDesktopWebTopMenu,
     saveMobileWebTopMenus,
@@ -44,14 +56,9 @@ const NewCarResultPage = ({
     saveCities(dataCities)
   }, [])
 
-  const todayDate = new Date()
-
-  const carBrand = meta.carRecommendations.carRecommendations[0]?.brand
-  const metaTitle = `Harga OTR ${carBrand} - Harga OTR dengan Promo Cicilan bulan ${monthId(
-    todayDate.getMonth(),
-  )} | SEVA`
-  const metaDesc = `Beli mobil ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
-  const metaBrandDesc = `Beli mobil ${carBrand} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
+  useEffect(() => {
+    setIsMobile(isClientMobile)
+  }, [isClientMobile])
 
   return (
     <>
@@ -75,15 +82,14 @@ const NewCarResultPage = ({
         recommendation={meta.carRecommendations.carRecommendations}
         recommendationToyota={[]}
       >
-        <div className={styles.mobile}>
+        {isMobile ? (
           <PLP minmaxPrice={meta.MinMaxPrice} />
-        </div>
-        <div className={styles.desktop}>
+        ) : (
           <PLPDesktop
             carRecommendation={meta.carRecommendations}
             footer={meta.footer}
           />
-        </div>
+        )}
       </CarProvider>
     </>
   )
@@ -252,6 +258,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        isSsrMobile: getIsSsrMobile(ctx),
       },
     }
   } catch (e) {
@@ -262,6 +269,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataMobileMenu: [],
         dataFooter: [],
         dataCities: [],
+        isSsrMobile: true,
       },
     }
   }
