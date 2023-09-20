@@ -338,7 +338,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
                   dataTestId={elementId.PLP.LeadsForm.PhoneNumber}
                   disabled={isUserLoggedIn}
                   placeholder="Masukkan nomor HP"
-                  title="Nomor Handphone"
+                  title="Nomor HP"
                   value={phone}
                   onChange={(e: any) => handleInputPhone(e.target.value)}
                   onFocus={onClickPhoneField}

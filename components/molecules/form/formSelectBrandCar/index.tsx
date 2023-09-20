@@ -47,6 +47,8 @@ export const FormSelectBrandCar = ({
           src={LogoToyota}
           alt="Toyota"
           style={{ width: 21, height: 18 }}
+          width={21}
+          height={18}
         />
       ),
       value: 'Toyota',
@@ -59,6 +61,8 @@ export const FormSelectBrandCar = ({
           src={LogoDaihatsu}
           alt="Daihatsu"
           style={{ width: 21.6, height: 15 }}
+          width={21.6}
+          height={15}
         />
       ),
       value: 'Daihatsu',
@@ -67,7 +71,13 @@ export const FormSelectBrandCar = ({
     {
       key: 'Isuzu',
       icon: (
-        <Image src={Isuzu} alt="Isuzu" style={{ width: 21.6, height: 7.2 }} />
+        <Image
+          src={Isuzu}
+          alt="Isuzu"
+          style={{ width: 21.6, height: 7.2 }}
+          width={21.6}
+          height={7.2}
+        />
       ),
       value: 'Isuzu',
       isChecked: isCheckedBrandQuery.includes('Isuzu'),
@@ -75,7 +85,13 @@ export const FormSelectBrandCar = ({
     {
       key: 'BMW',
       icon: (
-        <Image src={LogoBmw} alt="BMW" style={{ width: 19.2, height: 19.2 }} />
+        <Image
+          src={LogoBmw}
+          alt="BMW"
+          style={{ width: 19.2, height: 19.2 }}
+          width={19.2}
+          height={19.2}
+        />
       ),
       value: 'BMW',
       isChecked: isCheckedBrandQuery.includes('BMW'),
@@ -87,6 +103,8 @@ export const FormSelectBrandCar = ({
           src={Peugeot}
           alt="Peugeot"
           style={{ width: 17.49, height: 19.2 }}
+          width={17.49}
+          height={19.2}
         />
       ),
       value: 'Peugeot',

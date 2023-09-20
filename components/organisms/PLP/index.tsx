@@ -3,6 +3,7 @@ import axios from 'axios'
 import clsx from 'clsx'
 import { CSAButton } from 'components/atoms'
 import {
+  AdaOTOdiSEVALeadsForm,
   CarDetailCard,
   FooterMobile,
   HeaderMobile,
@@ -122,6 +123,12 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
     age,
     sortBy,
   } = router.query as FilterParam
+  const isNewCar: boolean =
+    router.asPath.split('/')[1].match('mobil-baru') ||
+    router.asPath.split('/')[1].match('adaSEVAdiOTO')
+      ? true
+      : false
+
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
 
   const [cityOtr] = useLocalStorage<Location | null>(
@@ -157,6 +164,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
   const [openLabelResultSulit, setOpenLabelResultSulit] = useState(false)
   const [openLabelResultInfo, setOpenLabelResultInfo] = useState(false)
   const [openSorting, setOpenSorting] = useState(false)
+  const [openInterestingModal, setOpenInterestingModal] = useState(false)
   const [startScroll, setStartScroll] = useState(false)
   const [hasMore, setHasMore] = useState(true)
   const [sticky, setSticky] = useState(false)
@@ -306,6 +314,10 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
 
   const closeLeadsForm = () => {
     setIsModalOpened(false)
+  }
+
+  const closeInterestingBtn = () => {
+    setOpenInterestingModal(false)
   }
 
   const handleShowFilter = () => {
@@ -530,7 +542,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
             const queryParam: any = {
               downPaymentType: 'amount',
               downPaymentAmount: downPaymentAmount || '',
-              brand: brand?.split(',')?.map(item => getCarBrand(item)) || '',
+              brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
               bodyType: bodyType?.split(',') || '',
               priceRangeGroup: priceRangeGroup ? minTemp + '-' + maxTemp : '',
               age: age || '',
@@ -580,7 +592,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
       saveRecommendation(recommendation)
       const queryParam: any = {
         downPaymentAmount: downPaymentAmount || '',
-        brand: brand?.split(',')?.map(item => getCarBrand(item)) || '',
+        brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
         bodyType: bodyType?.split(',') || '',
         priceRangeGroup: priceRangeGroup,
         age: age || '',
@@ -723,6 +735,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
           setShowAnnouncementBox={setIsShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
           pageOrigination={'PLP'}
+          isNewCar={isNewCar}
         />
 
         {!showLoading && sampleArray.items.length === 0 ? (
@@ -782,6 +795,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
                       key={index}
                       recommendation={i}
                       isFilter={isFilterCredit}
+                      setOpenInterestingModal={setOpenInterestingModal}
                       onClickLabel={() => {
                         setOpenLabelPromo(true)
                         trackCountlyPromoBadgeClick(i, index)
@@ -891,6 +905,13 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
           onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
           cityListFromApi={cities}
         />
+        {openInterestingModal && (
+          <AdaOTOdiSEVALeadsForm
+            onCancel={closeInterestingBtn}
+            trackerProperties={trackLeads()}
+            onPage="LP"
+          />
+        )}
       </div>
     </>
   )

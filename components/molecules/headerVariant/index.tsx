@@ -294,6 +294,8 @@ export default function HeaderVariant({
                     objectPosition: 'center',
                     alignItems: 'left',
                   }}
+                  width={'70'}
+                  height={'50'}
                 />
                 <div className={styles.styledCarName}>{car.name}</div>
               </div>
