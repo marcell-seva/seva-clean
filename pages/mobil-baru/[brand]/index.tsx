@@ -22,6 +22,7 @@ import Seo from 'components/atoms/seo'
 import { monthId } from 'utils/handler/date'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
+import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 
 const NewCarResultPage = ({
   meta,
@@ -185,7 +186,7 @@ export const getServerSideProps: GetServerSideProps<{
     const queryParam: any = {
       ...(downPaymentAmount && { downPaymentType: 'amount' }),
       ...(downPaymentAmount && { downPaymentAmount }),
-      ...(brand && { brand: String(brand)?.split(',') }),
+      ...(brand && { brand: String(brand)?.split(',').map(item => getCarBrand(item)) }),
       ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
       ...(priceRangeGroup
         ? { priceRangeGroup }

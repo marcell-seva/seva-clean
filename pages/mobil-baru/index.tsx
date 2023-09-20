@@ -21,6 +21,7 @@ import styles from 'styles/pages/plp.module.scss'
 import { CarProvider } from 'services/context'
 import { generateBlurRecommendations } from 'utils/generateBlur'
 import { monthId } from 'utils/handler/date'
+import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 
 const NewCarResultPage = ({
   meta,
@@ -193,7 +194,7 @@ export const getServerSideProps: GetServerSideProps<{
     const queryParam: any = {
       ...(downPaymentAmount && { downPaymentType: 'amount' }),
       ...(downPaymentAmount && { downPaymentAmount }),
-      ...(brand && { brand: String(brand)?.split(',') }),
+      ...(brand && { brand: String(brand)?.split(',').map(item => getCarBrand(item)) }),
       ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
       ...(priceRangeGroup
         ? { priceRangeGroup }

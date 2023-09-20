@@ -20,6 +20,7 @@ import {
   getNewFunnelRecommendationsByQueries,
 } from 'services/newFunnel'
 import {
+  getCarBrand,
   getDpRange,
   getMinimumDp,
   getMinimumMonthlyInstallment,
@@ -310,7 +311,7 @@ export default function PLPDesktop({
       setShowLoading(true)
       getNewFunnelRecommendationsByQueries({
         [QueryKeys.CarBodyType]: bodyType?.split(','),
-        [QueryKeys.CarBrand]: brand?.split(','),
+        [QueryKeys.CarBrand]: brand?.split(',').map(item => getCarBrand(item)),
       })
         .then((response: any) => {
           saveRecommendation(response.carRecommendations || [])
@@ -354,7 +355,16 @@ export default function PLPDesktop({
   }, [])
 
   const getDataFunnel = () => {
-    getNewFunnelRecommendations(funnelQuery).then((response) => {
+    if (Array(funnelQuery.brand).length > 0) {
+      const { brand, ...restParams } = funnelQuery
+      const brandNames = Array(funnelQuery.brand).map(item => getCarBrand(item))
+      const queryParams = { ...restParams, brand: brandNames}
+      return getNewFunnelRecommendations(queryParams).then((response) => {
+        saveRecommendation(response.carRecommendations || [])
+        timeoutShimmer()
+      })
+    }
+    return getNewFunnelRecommendations(funnelQuery).then((response) => {
       saveRecommendation(response.carRecommendations || [])
       timeoutShimmer()
     })
@@ -363,9 +373,7 @@ export default function PLPDesktop({
   useEffect(() => {
     if (brand) {
       if (!brand.includes('SEVA')) {
-        setBrandName(
-          brand === 'bmw' ? brand.toUpperCase() : capitalizeFirstLetter(brand),
-        )
+        setBrandName(getCarBrand(brand))
         const forFilterRecommendations = recommendation.map((item: any) => {
           item.brandAndModel = `${item.brand} ${item.model}`
           item.modelAndBrand = `${item.model} ${item.brand}`
