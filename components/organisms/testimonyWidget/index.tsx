@@ -76,8 +76,7 @@ const TestimonyWidget = () => {
                   {item.age ? `, ${item.age}  Th` : ''}
                 </h3>
                 <span className={styles.timeCity}>
-                  {differentDateStatus(new Date(item.purchaseDate))},{' '}
-                  {item.cityName}
+                  {differentDateStatus(new Date(item.purchaseDate))}
                 </span>
                 <span
                   ref={descRef}

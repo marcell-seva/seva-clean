@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from '../../../styles/components/organisms/headerMobile.module.scss'
 import { IconHamburger, IconSearch, IconLocationLine } from 'components/atoms'
-import { rootUrl } from 'utils/helpers/routes'
+import { rootOTOUrl, rootUrl } from 'utils/helpers/routes'
 import clsx from 'clsx'
 import {
   trackCitySelectorOpen,
@@ -53,6 +53,8 @@ type HeaderMobileProps = {
     position?: 'fixed' | 'sticky'
   }
   pageOrigination?: string
+  isGlobal?: boolean
+  transparent?: boolean
 }
 
 export const HeaderMobile = ({
@@ -64,6 +66,8 @@ export const HeaderMobile = ({
   isShowAnnouncementBox = false,
   style,
   pageOrigination,
+  isGlobal,
+  transparent = false,
 }: HeaderMobileProps): JSX.Element => {
   const enableAnnouncementBoxAleph =
     getCurrentEnvironment.featureToggles.enableAnnouncementBoxAleph
@@ -134,6 +138,7 @@ export const HeaderMobile = ({
             isShowAnnouncementBox && enableAnnouncementBoxAleph,
           [styles.shadow]: style?.withBoxShadow,
           [styles.homepage]: router.pathname === '/' && !isActive,
+          [styles.transparent]: transparent,
         })}
       >
         <div className={styles.wrapperAnnouncementBox}>
@@ -151,17 +156,31 @@ export const HeaderMobile = ({
                 onClick={handleToggleBurgerMenu}
               />
             </div>
-            <Link href={rootUrl} onClick={handleLogoClick}>
-              <Image
-                src={LogoPrimary}
-                height={30}
-                width={50}
-                alt="Logo SEVA"
-                className={styles.logoImg}
-                data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
-                priority={true}
-              />
-            </Link>
+            {isGlobal ? (
+              <Link href={rootOTOUrl} onClick={handleLogoClick}>
+                <Image
+                  src={LogoPrimary}
+                  height={30}
+                  width={50}
+                  alt="Logo SEVA"
+                  className={styles.logoImg}
+                  data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+                  priority={true}
+                />
+              </Link>
+            ) : (
+              <Link href={rootUrl} onClick={handleLogoClick}>
+                <Image
+                  src={LogoPrimary}
+                  height={30}
+                  width={50}
+                  alt="Logo SEVA"
+                  className={styles.logoImg}
+                  data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+                  priority={true}
+                />
+              </Link>
+            )}
             <SidebarMobile
               showSidebar={isActive}
               isShowAnnouncementBox={isShowAnnouncementBox}

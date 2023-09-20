@@ -18,11 +18,11 @@ import { CitySelectorModal, FooterMobile } from 'components/molecules'
 import {
   ArticleWidget,
   WebAnnouncementBox,
-  TestimonyWidget,
-  LpCarRecommendations,
-  HeaderMobile,
   LeadsFormAdaOTOdiSEVA,
   AdaOTOdiSEVALeadsForm,
+  HeaderMobile,
+  LpCarRecommendations,
+  TestimonyWidget,
 } from 'components/organisms'
 import { CarContext, CarContextType } from 'services/context'
 import { getCity } from 'utils/hooks/useGetCity'
@@ -44,7 +44,7 @@ import logoOTO from '/public/revamp/images/logo/logo-oto.webp'
 import logoSEVA from '/public/revamp/images/logo/seva-header.png'
 import supergraphic from '/public/revamp/illustration/supergraphic-crop.webp'
 
-const HomepageAdaOTOdiSEVA = ({ dataReccomendation }: any) => {
+const HomepageAdaSEVAdiOTO = ({ dataReccomendation }: any) => {
   useEffect(() => {
     sendAmplitudeData(AmplitudeEventName.WEB_LANDING_PAGE_VIEW, {})
   }, [])
@@ -177,6 +177,10 @@ const HomepageAdaOTOdiSEVA = ({ dataReccomendation }: any) => {
     }
   }
 
+  const showLeadsForm = () => {
+    setIsModalOpened(true)
+  }
+
   useEffect(() => {
     cityHandler()
     setTrackEventMoEngageWithoutValue(EventName.view_homepage)
@@ -248,6 +252,8 @@ const HomepageAdaOTOdiSEVA = ({ dataReccomendation }: any) => {
             emitClickCityIcon={() => setOpenCitySelectorModal(true)}
             setShowAnnouncementBox={setShowAnnouncementBox}
             isShowAnnouncementBox={showAnnouncementBox}
+            isGlobal={true}
+            transparent={true}
           />
           <div className={styles.banner}>
             <Image
@@ -260,7 +266,7 @@ const HomepageAdaOTOdiSEVA = ({ dataReccomendation }: any) => {
                 secondaryClassName={styles.button}
                 version={ButtonVersion.PrimaryDarkBlue}
                 size={ButtonSize.Big}
-                onClick={scrollToLeadsForm}
+                onClick={showLeadsForm}
               >
                 Saya Tertarik
               </Button>
@@ -270,6 +276,7 @@ const HomepageAdaOTOdiSEVA = ({ dataReccomendation }: any) => {
           <LpCarRecommendations
             dataReccomendation={dataReccomendation}
             onClickOpenCityModal={() => setOpenCitySelectorModal(true)}
+            isOTO={true}
           />
 
           <InformationSection />
@@ -293,9 +300,8 @@ const HomepageAdaOTOdiSEVA = ({ dataReccomendation }: any) => {
           cityListFromApi={cityListApi}
         />
         {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
-        {!isLeadsFormSectionVisible && (
-          <CSAButton onClick={scrollToLeadsForm} />
-        )}
+
+        <CSAButton onClick={showLeadsForm} />
 
         {isLoginModalOpened && (
           <LoginModalMultiKK onCancel={() => setIsLoginModalOpened(false)} />
@@ -305,4 +311,4 @@ const HomepageAdaOTOdiSEVA = ({ dataReccomendation }: any) => {
   )
 }
 
-export default HomepageAdaOTOdiSEVA
+export default HomepageAdaSEVAdiOTO
