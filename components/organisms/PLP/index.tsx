@@ -73,7 +73,6 @@ import { useUtils } from 'services/context/utilsContext'
 import { temanSevaUrlPath } from 'services/temanseva'
 import { decryptValue } from 'utils/encryptionUtils'
 import dynamic from 'next/dynamic'
-import { InterestingModal } from '../leadsForm/InterestingModal'
 
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
@@ -904,7 +903,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
           cityListFromApi={cities}
         />
         {openInterestingModal && (
-          <InterestingModal
+          <AdaOTOdiSEVALeadsForm
             onCancel={closeInterestingBtn}
             trackerProperties={trackLeads()}
             onPage="LP"
