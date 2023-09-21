@@ -156,6 +156,7 @@ export enum SessionStorageKey {
   PreviousCarDataBeforeLogin = 'previousCarDataBeforeLogin',
   PreviousSourceSectionLogin = 'previousSourceSectionLogin',
   PageReferrerLoginPage = 'pageReferrerLoginPage',
+  IsShowBadgeCreditOpportunity = 'IsShowBadgeCreditOpportunity',
 }
 
 export enum HTTPResponseStatusCode {

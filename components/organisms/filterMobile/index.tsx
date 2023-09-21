@@ -38,6 +38,8 @@ import { PreviousButton, navigateToPLP } from 'utils/navigate'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { CarModelResponse } from 'utils/types'
+import { SessionStorageKey } from 'utils/enum'
+import { saveSessionStorage } from 'utils/handler/sessionStorage'
 
 interface ParamsUrl {
   age?: string
@@ -369,6 +371,13 @@ const FilterMobile = ({
     }
     patchFinancialQuery(dataFinancial)
     patchFunnelQuery(dataFunnelQuery)
+    if (
+      funnelQuery.downPaymentAmount &&
+      funnelQuery.monthlyIncome &&
+      funnelQuery.age
+    ) {
+      saveSessionStorage(SessionStorageKey.IsShowBadgeCreditOpportunity, 'true')
+    }
 
     saveRecommendation(response?.carRecommendations || [])
     trackPLPSubmitFilter(trackFilterAction())
