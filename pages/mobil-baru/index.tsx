@@ -1,5 +1,5 @@
 import { PLP } from 'components/organisms'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
@@ -20,6 +20,9 @@ import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import styles from 'styles/pages/plp.module.scss'
 import { CarProvider } from 'services/context'
+import { generateBlurRecommendations } from 'utils/generateBlur'
+import { useMediaQuery } from 'react-responsive'
+import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 
 const NewCarResultPage = ({
   meta,
@@ -28,6 +31,8 @@ const NewCarResultPage = ({
   dataCities,
   dataDesktopMenu,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
+  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const {
     saveDesktopWebTopMenu,
     saveMobileWebTopMenus,
@@ -41,6 +46,10 @@ const NewCarResultPage = ({
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
   }, [])
+
+  useEffect(() => {
+    setIsMobile(isClientMobile)
+  }, [isClientMobile])
 
   return (
     <>
@@ -60,15 +69,14 @@ const NewCarResultPage = ({
         recommendation={meta.carRecommendations.carRecommendations}
         recommendationToyota={[]}
       >
-        <div className={styles.mobile}>
+        {isMobile ? (
           <PLP minmaxPrice={meta.MinMaxPrice} />
-        </div>
-        <div className={styles.desktop}>
+        ) : (
           <PLPDesktop
             carRecommendation={meta.carRecommendations}
             footer={meta.footer}
           />
-        </div>
+        )}
       </CarProvider>
     </>
   )
@@ -196,7 +204,16 @@ export const getServerSideProps: GetServerSideProps<{
       getNewFunnelRecommendations({ ...queryParam }),
     ])
 
-    const recommendation = funnel
+    const generateRecommendation = await generateBlurRecommendations(
+      funnel.carRecommendations,
+    )
+    const recommendation = {
+      carRecommendations: generateRecommendation
+        ? [...generateRecommendation]
+        : funnel.carRecommendations,
+      lowestCarPrice: funnel.lowestCarPrice,
+      highestCarPrice: funnel.highestCarPrice,
+    }
 
     if (metaData && metaData.length > 0) {
       meta.title = metaData[0].attributes.meta_title
@@ -210,6 +227,11 @@ export const getServerSideProps: GetServerSideProps<{
     if (recommendation) {
       meta.carRecommendations = recommendation
     }
+    if (brand) {
+      if (typeof brand === 'string') {
+        meta.footer.location_tag = brand
+      }
+    }
 
     return {
       props: {
@@ -218,6 +240,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        isSsrMobile: getIsSsrMobile(ctx),
       },
     }
   } catch (e) {
@@ -228,6 +251,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataMobileMenu: [],
         dataFooter: [],
         dataCities: [],
+        isSsrMobile: true,
       },
     }
   }

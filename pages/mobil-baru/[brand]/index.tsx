@@ -14,12 +14,16 @@ import {
   NavbarItemResponse,
 } from 'utils/types/utils'
 import PLPDesktop from 'components/organisms/PLPDesktop'
-import styles from 'styles/pages/plp.module.scss'
+import { defaultSeoImage } from 'utils/helpers/const'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import { api } from 'services/api'
+import Seo from 'components/atoms/seo'
+import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
+import { useMediaQuery } from 'react-responsive'
 import { CarProvider } from 'services/context'
 import Head from 'next/head'
+import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 
 const NewCarResultPage = ({
   meta,
@@ -36,6 +40,8 @@ const NewCarResultPage = ({
     saveMobileWebFooterMenus,
     saveCities,
   } = useUtils()
+  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
+  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
   useEffect(() => {
     saveDesktopWebTopMenu(dataDesktopMenu)
@@ -48,14 +54,17 @@ const NewCarResultPage = ({
     }
   }, [])
 
+  useEffect(() => {
+    setIsMobile(isClientMobile)
+  }, [isClientMobile])
+
   return (
     <>
-      <Head>
-        <title>{meta.title}</title>
-        <meta name="title" content={meta.title} />
-        <meta name="description" content={meta.description} />
-        <link rel="icon" href="/favicon.png" />
-      </Head>
+      <Seo
+        title={meta.title}
+        description={meta.description}
+        image={defaultSeoImage}
+      />
       <CarProvider
         car={null}
         carOfTheMonth={[]}
@@ -66,15 +75,14 @@ const NewCarResultPage = ({
         recommendation={meta.carRecommendations.carRecommendations}
         recommendationToyota={[]}
       >
-        <div className={styles.mobile}>
+        {isMobile ? (
           <PLP minmaxPrice={meta.MinMaxPrice} />
-        </div>
-        <div className={styles.desktop}>
+        ) : (
           <PLPDesktop
             carRecommendation={meta.carRecommendations}
             footer={meta.footer}
           />
-        </div>
+        )}
       </CarProvider>
     </>
   )
@@ -221,6 +229,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        isSsrMobile: getIsSsrMobile(ctx),
       },
     }
   } catch (e) {

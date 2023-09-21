@@ -8,7 +8,6 @@ import {
 import styles from 'styles/pages/carVariantList.module.scss'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import {
-  AnnouncementBoxDataType,
   CarRecommendation,
   CityOtrOption,
   MainVideoResponseType,
@@ -17,10 +16,7 @@ import {
 } from 'utils/types/utils'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import {
-  getCarVideoReview,
-  getNewFunnelRecommendations,
-} from 'services/newFunnel'
+import { getNewFunnelRecommendations } from 'services/newFunnel'
 import { savePreviouslyViewed } from 'utils/carUtils'
 import {
   getCarModelDetailsById,
@@ -40,7 +36,6 @@ import {
 } from 'helpers/amplitude/seva20Tracking'
 // import { usePreApprovalCarNotAvailable } from 'pages/component/PreApprovalCarNotAvalable/useModalCarNotAvalable'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
-import { AxiosResponse } from 'axios'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
@@ -68,9 +63,6 @@ const ShareModal = dynamic(() =>
 )
 const ProductDetailEmptyState = dynamic(() =>
   import('components/organisms').then((mod) => mod.ProductDetailEmptyState),
-)
-const PDPSkeleton = dynamic(() =>
-  import('components/organisms').then((mod) => mod.PDPSkeleton),
 )
 const PromoPopup = dynamic(() => import('components/organisms/promoPopup'))
 
@@ -126,14 +118,41 @@ export default function NewCarVariantList() {
   const modelDetail =
     carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
 
-  const [videoData, setVideoData] = useState<VideoDataType>({
+  const initVideoData = {
     thumbnailVideo: '',
     title: '',
     videoSrc: '',
     videoId: '',
     accountName: '',
     date: '',
-  })
+  }
+
+  const getVideoReview = () => {
+    const filterVideoReview = dataVideoReview.data.filter(
+      (video: MainVideoResponseType) => video.modelId === modelDetail?.id,
+    )[0]
+    if (filterVideoReview) {
+      const videoId = filterVideoReview.link.split(/[=&]/)[1]
+      const idThumbnailVideo = filterVideoReview.thumbnail.substring(
+        filterVideoReview.thumbnail.indexOf('d/') + 2,
+        filterVideoReview.thumbnail.lastIndexOf('/view'),
+      )
+      const thumbnailVideo =
+        'https://drive.google.com/uc?export=view&id=' + idThumbnailVideo
+      const temp = {
+        thumbnailVideo: thumbnailVideo,
+        title: filterVideoReview.title,
+        videoSrc: filterVideoReview.link,
+        videoId: videoId,
+        accountName: filterVideoReview.accountName,
+        date: filterVideoReview.updatedAt,
+      }
+      return temp
+    }
+    return initVideoData
+  }
+
+  const [videoData] = useState<VideoDataType>(getVideoReview())
   const [isButtonClick, setIsButtonClick] = useState(false)
   const [promoName, setPromoName] = useState('promo1')
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
@@ -150,9 +169,7 @@ export default function NewCarVariantList() {
 
   const loanRankcr = router.query.loanRankCVL ?? ''
 
-  const [showAnnouncementBox, setShowAnnouncementBox] = useState<
-    boolean | null
-  >(false)
+  const [showAnnouncementBox, setShowAnnouncementBox] = useState<boolean>(false)
   const [variantIdFuel, setVariantIdFuelRatio] = useState<string | undefined>()
   const [variantFuelRatio, setVariantFuelRatio] = useState<string | undefined>()
   // for disable promo popup after change route
@@ -188,30 +205,6 @@ export default function NewCarVariantList() {
       }) || []
     )
   }, [modelDetail])
-
-  const getVideoReview = async () => {
-    const filterVideoReview = dataVideoReview.data.filter(
-      (video: MainVideoResponseType) => video.modelId === modelDetail?.id,
-    )[0]
-    if (filterVideoReview) {
-      const videoId = filterVideoReview.link.split(/[=&]/)[1]
-      const idThumbnailVideo = filterVideoReview.thumbnail.substring(
-        filterVideoReview.thumbnail.indexOf('d/') + 2,
-        filterVideoReview.thumbnail.lastIndexOf('/view'),
-      )
-      const thumbnailVideo =
-        'https://drive.google.com/uc?export=view&id=' + idThumbnailVideo
-      const temp = {
-        thumbnailVideo: thumbnailVideo,
-        title: filterVideoReview.title,
-        videoSrc: filterVideoReview.link,
-        videoId: videoId,
-        accountName: filterVideoReview.accountName,
-        date: filterVideoReview.updatedAt,
-      }
-      setVideoData(temp)
-    }
-  }
 
   const getMonthlyInstallment = () => {
     return formatNumberByLocalization(
@@ -357,13 +350,16 @@ export default function NewCarVariantList() {
 
   useEffect(() => {
     if (dataAnnouncementBox) {
-      const isShowAnnouncement =
-        getSessionStorage(
-          getToken()
-            ? SessionStorageKey.ShowWebAnnouncementLogin
-            : SessionStorageKey.ShowWebAnnouncementNonLogin,
-        ) ?? true
-      if (isShowAnnouncement) setShowAnnouncementBox(true)
+      const isShowAnnouncement = getSessionStorage(
+        getToken()
+          ? SessionStorageKey.ShowWebAnnouncementLogin
+          : SessionStorageKey.ShowWebAnnouncementNonLogin,
+      )
+      if (typeof isShowAnnouncement !== 'undefined') {
+        setShowAnnouncementBox(isShowAnnouncement as boolean)
+      } else {
+        setShowAnnouncementBox(true)
+      }
     } else {
       setShowAnnouncementBox(false)
     }
@@ -441,8 +437,6 @@ export default function NewCarVariantList() {
     if (carModelDetails) {
       setStatus('exist')
       getVideoReview()
-    } else {
-      setStatus('loading')
     }
   }, [carModelDetails])
 
@@ -465,8 +459,6 @@ export default function NewCarVariantList() {
       ' ' +
       capitalizeFirstLetter(parsedModel.replace(/-/g, ' '))
     switch (status) {
-      case 'loading':
-        return <PDPSkeleton />
       case 'empty':
         return (
           <>
@@ -541,7 +533,7 @@ export default function NewCarVariantList() {
           isShowAnnouncementBox={showAnnouncementBox}
         />
         <div className={styles.content}>{renderContent()}</div>
-        {status !== 'loading' && <FooterMobile />}
+        <FooterMobile />
       </div>
 
       {isPreviewGalleryOpened && (

@@ -99,15 +99,11 @@ export const PriceList = () => {
       }
     })
 
-    router.push({
-      pathname: variantListUrl
+    window.location.href =
+      variantListUrl
         .replace(':brand', (brand as string) ?? '')
         .replace(':model', (model as string) ?? '')
-        .replace(':tab?', 'kredit'),
-      query: {
-        variant: item.id,
-      },
-    })
+        .replace(':tab', 'kredit') + `selectedVariantId=${item.id}`
   }
 
   return (

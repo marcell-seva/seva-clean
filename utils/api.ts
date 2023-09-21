@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
-import * as retryAxios from 'retry-axios'
+import { getConfig, attach } from 'retry-axios'
 import endpoints, { shouldCheckAuth } from '../helpers/endpoints'
 
 import createAuthRefreshInterceptor, {
@@ -28,7 +28,7 @@ class APIService {
       statusCodesToRetry: [[500, 599]],
       httpMethodsToRetry: ['GET', 'POST'],
       onRetryAttempt: (err: AxiosError) => {
-        const cfg = retryAxios.getConfig(err)
+        const cfg = getConfig(err)
         throw new Error(`Retry attempt #${cfg?.currentRetryAttempt}`)
       },
     }
@@ -67,7 +67,7 @@ class APIService {
       },
     })
 
-    retryAxios.attach()
+    attach()
   }
 
   refreshAuthLogic = async () => {
