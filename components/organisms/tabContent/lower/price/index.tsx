@@ -32,11 +32,13 @@ type PriceTabProps = {
   setSelectedTabValue: (value: string) => void
   setVariantIdFuelRatio: (value: string) => void
   variantFuelRatio: string | undefined
+  isOTO?: boolean
 }
 export const PriceTab = ({
   setSelectedTabValue,
   setVariantIdFuelRatio,
   variantFuelRatio,
+  isOTO = false,
 }: PriceTabProps) => {
   const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
@@ -247,6 +249,7 @@ export const PriceTab = ({
             setViewVariant={setVariantView}
             setSelectedTabValue={setSelectedTabValue}
             onCardClick={(value) => getMonthlyInstallment(value)}
+            isOTO={isOTO}
           />
         )}
         {variantView && (

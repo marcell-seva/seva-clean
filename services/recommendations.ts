@@ -64,7 +64,7 @@ export const handleRecommendationsAndCarModelDetailsUpdate =
     setCarModelDetails: (data: CarModelDetailsResponse) => void,
   ) =>
   ([recommendationsResponse, carModelDetailsResponse]: any) => {
-    const recommendations = recommendationsResponse.carRecommendations || []
+    const recommendations = recommendationsResponse?.carRecommendations || []
     const carModelDetails = carModelDetailsResponse
 
     setRecommendations(recommendations)

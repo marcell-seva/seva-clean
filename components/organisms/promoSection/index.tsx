@@ -21,7 +21,11 @@ import {
   IconCar,
 } from 'components/atoms'
 import { CarVariantRecommendation } from 'utils/types/utils'
-import { variantListUrl } from 'utils/helpers/routes'
+import {
+  OTOCarResultsUrl,
+  OTOVariantListUrl,
+  variantListUrl,
+} from 'utils/helpers/routes'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
@@ -39,6 +43,7 @@ type PromoSectionProps = {
   info?: any
   onPage?: string
   setSelectedTabValue?: (value: string) => void
+  isOTO?: boolean
 }
 
 const PromoSection = ({
@@ -49,6 +54,7 @@ const PromoSection = ({
   info,
   onPage,
   setSelectedTabValue,
+  isOTO = false,
 }: PromoSectionProps) => {
   const router = useRouter()
   const brand = router.query.brand as string
@@ -77,7 +83,7 @@ const PromoSection = ({
 
   const navigateToSpecificationTab = () => {
     setSelectedTabValue && setSelectedTabValue('Spesifikasi')
-    window.location.href = variantListUrl
+    window.location.href = (isOTO ? OTOVariantListUrl : variantListUrl)
       .replace(':brand', brand)
       .replace(':model', model)
       .replace(':tab?', 'spesifikasi')

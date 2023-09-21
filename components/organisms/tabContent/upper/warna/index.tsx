@@ -7,11 +7,12 @@ import { PDPCarOverviewSkeleton } from 'components/organisms'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import { PdpDataOTOLocalContext } from 'pages/adaOTOdiSEVA/mobil-baru/[brand]/[model]/[[...slug]]'
 
-export const WarnaTab = ({ isShowAnnouncementBox }: any) => {
+export const WarnaTab = ({ isShowAnnouncementBox, isOTO = false }: any) => {
   const {
     dataCombinationOfCarRecomAndModelDetailDefaultCity: carModelDetails,
-  } = useContext(PdpDataLocalContext)
+  } = useContext(isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext)
 
   const router = useRouter()
 
@@ -20,7 +21,7 @@ export const WarnaTab = ({ isShowAnnouncementBox }: any) => {
     const brand = router.query.brand
     const currentUrlPathName = router.asPath
     const splitedPath = currentUrlPathName.split('/')
-    const carBrandModelUrl = `/${splitedPath[1]}/${brand}/${model}`
+    const carBrandModelUrl = `/${splitedPath[isOTO ? 2 : 1]}/${brand}/${model}`
 
     if (availableList.includes(carBrandModelUrl)) {
       const colorsTmp = availableListColors.filter(
