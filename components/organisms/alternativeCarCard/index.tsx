@@ -1,6 +1,10 @@
 import elementId from 'helpers/elementIds'
 import React from 'react'
-import { loanCalculatorDefaultUrl, variantListUrl } from 'utils/helpers/routes'
+import {
+  OTOVariantListUrl,
+  loanCalculatorDefaultUrl,
+  variantListUrl,
+} from 'utils/helpers/routes'
 import { getLowestInstallment } from 'utils/carModelUtils/carModelUtils'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { Button, CardShadow } from 'components/atoms'
@@ -32,6 +36,7 @@ type AlternativeCarCardProps = {
   onClickLabel: () => void
   children?: React.ReactNode
   label?: React.ReactNode
+  isOTO?: boolean
 }
 
 export const AlternativeCarCard = ({
@@ -39,6 +44,7 @@ export const AlternativeCarCard = ({
   onClickLabel,
   children,
   label,
+  isOTO = false,
 }: AlternativeCarCardProps) => {
   const router = useRouter()
   const [cityOtr] = useLocalStorage<Location | null>(
@@ -48,7 +54,7 @@ export const AlternativeCarCard = ({
   const dataCar: trackDataCarType | null = getSessionStorage(
     SessionStorageKey.PreviousCarDataBeforeLogin,
   )
-  const detailCarRoute = variantListUrl
+  const detailCarRoute = (isOTO ? OTOVariantListUrl : variantListUrl)
     .replace(
       ':brand/:model',
       (recommendation.brand + '/' + recommendation.model.replace(/ +/g, '-'))
