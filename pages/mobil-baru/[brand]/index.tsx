@@ -91,8 +91,9 @@ const NewCarResultPage = ({
           />
         )}
       </CarProvider>
-      </>
+    </>
   )
+}
 
 export default NewCarResultPage
 
