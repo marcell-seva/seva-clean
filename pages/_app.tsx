@@ -38,6 +38,7 @@ import { client } from 'utils/helpers/const'
 import { IsSsrMobileContext } from 'services/context/isSsrMobileContext'
 import { useAddUtmTagsToApiCall } from 'utils/hooks/useAddUtmTagsToApiCall/useAddUtmTagsToApiCall'
 import Head from 'next/head'
+import { CityFirst } from 'components/molecules/cityFirst'
 
 const kanyonLight = localFont({
   src: '../public/revamp/fonts/Kanyon/Kanyon-Light.otf',
@@ -187,6 +188,7 @@ export default function App({ Component, pageProps }: AppProps) {
               --open-sans-extra-bold: ${OpenSansExtraBold.style.fontFamily};
             }
           `}</style>
+          <CityFirst />
           <Component {...pageProps} />
         </GlobalContextProvider>
       </IsSsrMobileContext.Provider>
