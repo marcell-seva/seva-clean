@@ -29,6 +29,7 @@ type pdpLowerSectionProps = {
   showAnnouncementBox: boolean | null
   setVariantIdFuelRatio: (value: string) => void
   variantFuelRatio: string | undefined
+  isOTO?: boolean
 }
 
 export const PdpLowerSection = ({
@@ -38,12 +39,15 @@ export const PdpLowerSection = ({
   showAnnouncementBox,
   setVariantIdFuelRatio,
   variantFuelRatio,
+  isOTO = false,
 }: pdpLowerSectionProps) => {
   const router = useRouter()
   const lowerTab = router.query.slug as string
   const path = lowerTab ? capitalizeFirstLetter(lowerTab[0]) : ''
   const [selectedTabValue, setSelectedTabValue] = useState(
-    path || lowerSectionNavigationTab[0].value,
+    path ||
+      lowerSectionNavigationTab.filter((item) => item.label !== 'Kredit')[0]
+        .value,
   )
   const { carModelDetails } = useCar()
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
@@ -138,6 +142,7 @@ export const PdpLowerSection = ({
             setSelectedTabValue={onSelectLowerTab}
             setVariantIdFuelRatio={setVariantIdFuelRatio}
             variantFuelRatio={variantFuelRatio}
+            isOTO={isOTO}
           />
         )
       case 'Spesifikasi':
@@ -148,6 +153,7 @@ export const PdpLowerSection = ({
             setSelectedTabValue={onSelectLowerTab}
             setVariantIdFuelRatio={setVariantIdFuelRatio}
             variantFuelRatio={variantFuelRatio}
+            isOTO={isOTO}
           />
         )
       case 'Kredit':
@@ -169,7 +175,13 @@ export const PdpLowerSection = ({
   return (
     <div>
       <NavigationTabV1
-        itemList={lowerSectionNavigationTab}
+        itemList={
+          isOTO
+            ? lowerSectionNavigationTab.filter(
+                (item) => item.label !== 'Kredit',
+              )
+            : lowerSectionNavigationTab
+        }
         onSelectTab={(value) => onSelectLowerTab(value, true)}
         selectedTabValueProps={selectedTabValue}
         showAnnouncementBox={showAnnouncementBox}

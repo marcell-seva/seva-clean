@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import {
+  AdaOTOdiSEVALeadsForm,
   FooterMobile,
   HeaderMobile,
   PdpLowerSection,
@@ -26,7 +27,7 @@ import {
 } from 'services/recommendations'
 import { getCities } from 'services/cities'
 import { decryptValue } from 'utils/encryptionUtils'
-import { WhatsappButton } from 'components/atoms'
+import { CSAButton, WhatsappButton } from 'components/atoms'
 import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { getCustomerInfoSeva } from 'services/customer'
@@ -43,6 +44,7 @@ import {
 import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { PdpDataOTOLocalContext } from 'pages/adaOTOdiSEVA/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useQuery } from 'utils/hooks/useQuery'
 import { api } from 'services/api'
 import { useCar } from 'services/context/carContext'
@@ -85,7 +87,13 @@ export interface CarVariantListPageUrlParams {
   tab: string
 }
 
-export default function NewCarVariantList() {
+interface NewCarVariantListProps {
+  isOTO?: boolean
+}
+
+export default function NewCarVariantList({
+  isOTO = false,
+}: NewCarVariantListProps) {
   const [isPreviewGalleryOpened, setIsPreviewGalleryOpened] =
     useState<boolean>(false)
   const [status, setStatus] = useState<'loading' | 'empty' | 'exist'>('exist')
@@ -94,7 +102,18 @@ export default function NewCarVariantList() {
   const { source }: { source: string } = useQuery(['source'])
   const [isSentCountlyPageView, setIsSentCountlyPageView] = useState(false)
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
-  const { carVideoReviewRes: dataVideoReview } = useContext(PdpDataLocalContext)
+  const { carVideoReviewRes: dataVideoReview } = useContext(
+    isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext,
+  )
+  const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
+
+  const closeLeadsForm = () => {
+    setIsModalOpened(false)
+  }
+
+  const showLeadsForm = () => {
+    setIsModalOpened(true)
+  }
 
   const handlePreviewOpened = (payload: number) => {
     setGalleryIndexActive(payload)
@@ -128,7 +147,7 @@ export default function NewCarVariantList() {
     carModelDetailsResDefaultCity,
     dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
-  } = useContext(PdpDataLocalContext)
+  } = useContext(isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext)
 
   const modelDetail =
     carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
@@ -143,7 +162,7 @@ export default function NewCarVariantList() {
   }
 
   const getVideoReview = () => {
-    const filterVideoReview = dataVideoReview.data.filter(
+    const filterVideoReview = dataVideoReview?.data.filter(
       (video: MainVideoResponseType) => video.modelId === modelDetail?.id,
     )[0]
     if (filterVideoReview) {
@@ -217,7 +236,10 @@ export default function NewCarVariantList() {
 
   const sortedCarModelVariant = useMemo(() => {
     return (
-      modelDetail?.variants.sort(function (a: VariantDetail, b: VariantDetail) {
+      modelDetail?.variants?.sort(function (
+        a: VariantDetail,
+        b: VariantDetail,
+      ) {
         return a.priceValue - b.priceValue
       }) || []
     )
@@ -592,10 +614,14 @@ export default function NewCarVariantList() {
               model={parsedModel}
               message={`${brandModel}  tersedia di`}
             />
-            <WhatsappButton
-              onClick={onClickFloatingWhatsapp}
-              data-testid={elementId.PDP.FloatingWhatsapp}
-            />
+            {isOTO ? (
+              <CSAButton onClick={showLeadsForm} />
+            ) : (
+              <WhatsappButton
+                onClick={onClickFloatingWhatsapp}
+                data-testid={elementId.PDP.FloatingWhatsapp}
+              />
+            )}
           </>
         )
       case 'exist':
@@ -610,6 +636,7 @@ export default function NewCarVariantList() {
               onClickCityOtrCarOverview={() => setIsOpenCitySelectorModal(true)}
               onClickShareButton={() => setIsOpenShareModal(true)}
               isShowAnnouncementBox={showAnnouncementBox}
+              isOTO={isOTO}
             />
             <PdpLowerSection
               onButtonClick={setIsButtonClick}
@@ -618,16 +645,21 @@ export default function NewCarVariantList() {
               showAnnouncementBox={showAnnouncementBox}
               setVariantIdFuelRatio={setVariantIdFuelRatio}
               variantFuelRatio={variantFuelRatio}
+              isOTO={isOTO}
             />
             <PromoPopup
               onButtonClick={setIsButtonClick}
               isButtonClick={isButtonClick}
               promoName={promoName}
             />
-            <WhatsappButton
-              onClick={onClickFloatingWhatsapp}
-              data-testid={elementId.PDP.FloatingWhatsapp}
-            />
+            {isOTO ? (
+              <CSAButton onClick={showLeadsForm} />
+            ) : (
+              <WhatsappButton
+                onClick={onClickFloatingWhatsapp}
+                data-testid={elementId.PDP.FloatingWhatsapp}
+              />
+            )}
           </>
         )
       default:
@@ -637,10 +669,14 @@ export default function NewCarVariantList() {
               model={capitalizeFirstLetter(parsedModel)}
               message={`${brandModel}  tersedia di`}
             />
-            <WhatsappButton
-              onClick={onClickFloatingWhatsapp}
-              data-testid={elementId.PDP.FloatingWhatsapp}
-            />
+            {isOTO ? (
+              <CSAButton onClick={showLeadsForm} />
+            ) : (
+              <WhatsappButton
+                onClick={onClickFloatingWhatsapp}
+                data-testid={elementId.PDP.FloatingWhatsapp}
+              />
+            )}
           </>
         )
     }
@@ -658,6 +694,7 @@ export default function NewCarVariantList() {
           setShowAnnouncementBox={setShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
           pageOrigination={'PDP - ' + valueMenuTabCategory()}
+          isGlobal={isOTO}
         />
         <div className={styles.content}>{renderContent()}</div>
         <FooterMobile />
@@ -675,7 +712,7 @@ export default function NewCarVariantList() {
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
         cityListFromApi={cities}
       />
-
+      {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
       <ShareModal
         open={isOpenShareModal}
         onCancel={() => setIsOpenShareModal(false)}
