@@ -13,7 +13,7 @@ import { BeliMobilMenu } from './beliMobilMenu'
 import { useUtils } from 'services/context/utilsContext'
 
 export const Navbar = () => {
-  const { dataMenu: menus } = useUtils()
+  const { dekstopWebTopMenu: menus } = useUtils()
   const filterCategory = (
     data: Array<NavbarItemResponse>,
     category: string,
@@ -46,29 +46,9 @@ export const Navbar = () => {
   )
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
-  useEffect(() => {
-    checkMenusData()
-  }, [])
-
   const setMenusData = (payload: any) => {
     const encryptedData: any = encryptValue(JSON.stringify(payload))
     saveLocalStorage(LocalStorageKey.menu, encryptedData)
-  }
-
-  const checkMenusData = () => {
-    const data: string | null = getLocalStorage(LocalStorageKey.menu)
-    if (data === null) {
-      getMenus().then((res) => {
-        const result = res.data
-        setMenuCategory(result)
-      })
-    } else {
-      if (decryptValue(data)) {
-        const decryptedValue: any = JSON.parse(decryptValue(data))
-        setMenusData(decryptedValue)
-        setMenuCategory(decryptedValue)
-      }
-    }
   }
 
   const setMenuCategory = (data: Array<NavbarItemResponse>): void => {
@@ -108,6 +88,14 @@ export const Navbar = () => {
     status: true,
     subMenu: [],
   }
+
+  useEffect(() => {
+    if (menus) {
+      setMenusData(menus)
+      setMenuCategory(menus)
+    }
+  }, [menus])
+
   return (
     <nav>
       <StyledList isMobile={isMobile}>

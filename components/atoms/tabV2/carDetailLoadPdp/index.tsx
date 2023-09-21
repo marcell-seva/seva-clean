@@ -12,6 +12,8 @@ const CarDetailLoadPdp = () => {
           src={CarSkeleton}
           className={styles.heroImgPdp}
           alt={'car skeleton'}
+          width={248}
+          height={248}
         />
         <div className={styles.contentWrapperPdp}>
           <Skeleton width={'100%'} style={{ marginBottom: 13 }} />

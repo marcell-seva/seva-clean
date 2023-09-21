@@ -13,6 +13,8 @@ const PdpCarOverviewSkeleton = () => {
         src={CarSkeleton}
         className={styles.heroImg}
         alt={'car skeleton'}
+        width={248}
+        height={248}
         style={{ marginBottom: 13 }}
       />
       <div className={styles.lineWrapper}>

@@ -26,17 +26,23 @@ import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 
 const NewCarResultPage = ({
   meta,
-  dataHeader,
+  dataMobileMenu,
   dataFooter,
   dataCities,
+  dataDesktopMenu,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [isMobile, setIsMobile] = useState(useIsMobileSSr())
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
-  const { saveMobileWebTopMenus, saveMobileWebFooterMenus, saveCities } =
-    useUtils()
+  const {
+    saveDesktopWebTopMenu,
+    saveMobileWebTopMenus,
+    saveMobileWebFooterMenus,
+    saveCities,
+  } = useUtils()
 
   useEffect(() => {
-    saveMobileWebTopMenus(dataHeader)
+    saveDesktopWebTopMenu(dataDesktopMenu)
+    saveMobileWebTopMenus(dataMobileMenu)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
   }, [])
@@ -55,10 +61,13 @@ const NewCarResultPage = ({
 
       <CarProvider
         car={null}
+        carOfTheMonth={[]}
+        typeCar={null}
         carModel={null}
         carModelDetails={null}
         carVariantDetails={null}
         recommendation={meta.carRecommendations.carRecommendations}
+        recommendationToyota={[]}
       >
         {isMobile ? (
           <PLP minmaxPrice={meta.MinMaxPrice} />
@@ -97,7 +106,8 @@ const getBrand = (brand: string | string[] | undefined) => {
 
 export const getServerSideProps: GetServerSideProps<{
   meta: PLPProps
-  dataHeader: MobileWebTopMenuType[]
+  dataDesktopMenu: NavbarItemResponse[]
+  dataMobileMenu: MobileWebTopMenuType[]
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
 }> = async (ctx) => {
@@ -146,14 +156,21 @@ export const getServerSideProps: GetServerSideProps<{
   } = ctx.query
 
   try {
-    const [fetchMeta, fetchFooter, menuRes, footerRes, cityRes]: any =
-      await Promise.all([
-        axios.get(metaTagBaseApi + metabrand),
-        axios.get(footerTagBaseApi + metabrand),
-        api.getMobileHeaderMenu(),
-        api.getMobileFooterMenu(),
-        api.getCities(),
-      ])
+    const [
+      fetchMeta,
+      fetchFooter,
+      menuDesktopRes,
+      menuMobileRes,
+      footerRes,
+      cityRes,
+    ]: any = await Promise.all([
+      axios.get(metaTagBaseApi + metabrand),
+      axios.get(footerTagBaseApi + metabrand),
+      api.getMenu(),
+      api.getMobileHeaderMenu(),
+      api.getMobileFooterMenu(),
+      api.getCities(),
+    ])
 
     const metaData = fetchMeta.data.data
     const footerData = fetchFooter.data.data
@@ -219,7 +236,8 @@ export const getServerSideProps: GetServerSideProps<{
     return {
       props: {
         meta,
-        dataHeader: menuRes.data,
+        dataDesktopMenu: menuDesktopRes.data,
+        dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
         isSsrMobile: getIsSsrMobile(ctx),
@@ -229,7 +247,8 @@ export const getServerSideProps: GetServerSideProps<{
     return {
       props: {
         meta,
-        dataHeader: [],
+        dataDesktopMenu: [],
+        dataMobileMenu: [],
         dataFooter: [],
         dataCities: [],
         isSsrMobile: true,

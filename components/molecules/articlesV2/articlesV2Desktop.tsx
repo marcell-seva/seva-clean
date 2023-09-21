@@ -163,7 +163,7 @@ export const ArticlesV2Desktop = () => {
       <Header>
         <Title>Baca Artikel Terkini</Title>
         <SeeAll
-          data-testId={elementId.Homepage.Article.SeeAllButton}
+          data-testid={elementId.Homepage.Article.SeeAllButton}
           href={urls.articleWordpress}
           onClick={clickSeeAll}
         >
@@ -192,7 +192,7 @@ export const ArticlesV2Desktop = () => {
                   key={index}
                   isSelected={item.isSelected}
                   onClick={() => onClickCategory(item, index)}
-                  data-testId={
+                  data-testid={
                     parsedToUnCapitalizeWithHyphen(item.name) +
                     elementId.Homepage.Article.ButtonCategory
                   }

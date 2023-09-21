@@ -6,11 +6,11 @@ import { InferGetServerSidePropsType } from 'next'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { useUtils } from 'services/context/utilsContext'
 import { getToken } from 'utils/handler/auth'
-import Seo from 'components/atoms/seo'
-import { defaultSeoImage } from 'const/const'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
 import { mergeModelDetailsWithLoanRecommendations } from 'services/recommendations'
+import Seo from 'components/atoms/seo'
+import { defaultSeoImage } from 'utils/helpers/const'
 
 interface PdpDataLocalContextType {
   /**
@@ -53,12 +53,14 @@ export default function index({
   metaTagDataRes,
   carVideoReviewRes,
   carArticleReviewRes,
-  dataHeader,
+  dataDesktopMenu,
+  dataMobileMenu,
   dataFooter,
   dataCities,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const {
     saveDataAnnouncementBox,
+    saveDesktopWebTopMenu,
     saveMobileWebTopMenus,
     saveMobileWebFooterMenus,
     saveCities,
@@ -67,7 +69,8 @@ export default function index({
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
   useEffect(() => {
-    saveMobileWebTopMenus(dataHeader)
+    saveDesktopWebTopMenu(dataDesktopMenu)
+    saveMobileWebTopMenus(dataMobileMenu)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
     getAnnouncementBox()
@@ -140,9 +143,10 @@ export async function getServerSideProps(context: any) {
       carRecommendationsRes,
       metaTagDataRes,
       carVideoReviewRes,
-      menuRes,
+      menuMobileRes,
       footerRes,
       cityRes,
+      menuDesktopRes,
     ]: any = await Promise.all([
       api.getRecommendation('?city=jakarta&cityId=118'),
       api.getMetaTagData(context.query.model.replaceAll('-', '')),
@@ -150,6 +154,7 @@ export async function getServerSideProps(context: any) {
       api.getMobileHeaderMenu(),
       api.getMobileFooterMenu(),
       api.getCities(),
+      api.getMenu(),
     ])
     let id = ''
     const carList = carRecommendationsRes.carRecommendations
@@ -198,9 +203,10 @@ export async function getServerSideProps(context: any) {
         carVideoReviewRes,
         carArticleReviewRes,
         isSsrMobile: getIsSsrMobile(context),
-        dataHeader: menuRes.data,
+        dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        dataDesktopMenu: menuDesktopRes.data,
       },
     }
   } catch (error) {
@@ -208,9 +214,10 @@ export async function getServerSideProps(context: any) {
     return {
       props: {
         notFound: true,
-        dataHeader: [],
+        dataMobileMenu: [],
         dataFooter: [],
         dataCities: [],
+        dataDesktopMenu: [],
       },
     }
   }
