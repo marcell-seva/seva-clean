@@ -57,6 +57,7 @@ type CarDetailCardProps = {
   setOpenInterestingModal: (value: boolean) => void
   isFilter?: boolean
   isFilterTrayOpened: boolean
+  isOTO?: boolean
 }
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
@@ -70,6 +71,7 @@ export const CarDetailCard = ({
   onClickResultMudah,
   isFilterTrayOpened,
   setOpenInterestingModal,
+  isOTO = false,
 }: CarDetailCardProps) => {
   const router = useRouter()
   const { funnelQuery } = useFunnelQueryData()
@@ -420,10 +422,12 @@ export const CarDetailCard = ({
         <Button
           version={ButtonVersion.Secondary}
           size={ButtonSize.Big}
-          onClick={() => setOpenInterestingModal(true)}
+          onClick={() =>
+            isOTO ? setOpenInterestingModal(true) : navigateToLoanCalculator()
+          }
           data-testid={elementId.PLP.Button.HitungKemampuan}
         >
-          Saya Tertarik
+          {isOTO ? 'Saya Tertarik' : 'Hitung Kemampuan'}
         </Button>
       </CardShadow>
     </div>

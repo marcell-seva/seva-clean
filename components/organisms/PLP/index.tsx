@@ -102,9 +102,10 @@ const CitySelectorModal = dynamic(() =>
 
 interface PLPProps {
   minmaxPrice: MinMaxPrice
+  isOTO?: boolean
 }
 
-export const PLP = ({ minmaxPrice }: PLPProps) => {
+export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
   const { recommendation, saveRecommendation } = useCar()
@@ -794,6 +795,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
                       order={Number(index)}
                       key={index}
                       recommendation={i}
+                      isOTO={isOTO}
                       isFilter={isFilterCredit}
                       setOpenInterestingModal={setOpenInterestingModal}
                       onClickLabel={() => {
