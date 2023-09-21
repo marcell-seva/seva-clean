@@ -40,7 +40,9 @@ export const CityFirst = () => {
     }
   }
 
-  const filterCity = cityFirstRoute.filter((x) => router.pathname.includes(x))
+  const filterCity = cityFirstRoute.filter(
+    (x) => router.pathname.includes(x) && !router.pathname.includes('form'),
+  )
   const showCondition =
     filterCity.length > 0 && !currentCity && !isIn30DaysInterval()
   const [showCity, setShowCity] = useState(showCondition)
@@ -66,7 +68,7 @@ export const CityFirst = () => {
 
   useEffect(() => {
     setShowCity(showCondition)
-  }, [location.pathname])
+  }, [router.pathname])
 
   return (
     <CitySelectorModal
