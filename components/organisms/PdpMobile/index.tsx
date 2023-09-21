@@ -698,7 +698,7 @@ export default function NewCarVariantList({
           isGlobal={isOTO}
         />
         <div className={styles.content}>{renderContent()}</div>
-        <FooterMobile />
+        <FooterMobile pageOrigination="PDP" />
       </div>
 
       {isPreviewGalleryOpened && (
