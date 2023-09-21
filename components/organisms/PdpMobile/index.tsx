@@ -712,6 +712,7 @@ export default function NewCarVariantList({
         isOpen={isOpenCitySelectorModal}
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
         cityListFromApi={cities}
+        pageOrigination="PDP"
       />
       {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
       <ShareModal
