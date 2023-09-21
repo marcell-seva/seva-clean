@@ -16,8 +16,9 @@ import { useUtils } from 'services/context/utilsContext'
 import styles from 'styles/pages/plp.module.scss'
 import { getToken } from 'utils/handler/auth'
 import { AxiosResponse } from 'axios'
+import { mergeModelDetailsWithLoanRecommendations } from 'services/recommendations'
 
-interface PdpDataLocalContextType {
+interface PdpDataOTOLocalContextType {
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.
    * need to re-fetch API in client with city from localStorage
@@ -28,6 +29,7 @@ interface PdpDataLocalContextType {
    * need to re-fetch API in client with city from localStorage
    */
   carModelDetailsResDefaultCity: any
+  dataCombinationOfCarRecomAndModelDetailDefaultCity: any
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.
    * need to re-fetch API in client with city from localStorage
@@ -40,17 +42,21 @@ interface PdpDataLocalContextType {
 /**
  * used to pass props without drilling through components
  */
-export const PdpDataLocalContext = createContext<PdpDataLocalContextType>({
-  carRecommendationsResDefaultCity: null,
-  carModelDetailsResDefaultCity: null,
-  carVariantDetailsResDefaultCity: null,
-  metaTagDataRes: null,
-  carVideoReviewRes: null,
-  carArticleReviewRes: null,
-})
+export const PdpDataOTOLocalContext = createContext<PdpDataOTOLocalContextType>(
+  {
+    carRecommendationsResDefaultCity: null,
+    carModelDetailsResDefaultCity: null,
+    dataCombinationOfCarRecomAndModelDetailDefaultCity: null,
+    carVariantDetailsResDefaultCity: null,
+    metaTagDataRes: null,
+    carVideoReviewRes: null,
+    carArticleReviewRes: null,
+  },
+)
 export default function index({
   carRecommendationsRes,
   carModelDetailsRes,
+  dataCombinationOfCarRecomAndModelDetail,
   carVariantDetailsRes,
   metaTagDataRes,
   carVideoReviewRes,
@@ -92,10 +98,12 @@ export default function index({
 
   return (
     <>
-      <PdpDataLocalContext.Provider
+      <PdpDataOTOLocalContext.Provider
         value={{
           carRecommendationsResDefaultCity: carRecommendationsRes,
           carModelDetailsResDefaultCity: carModelDetailsRes,
+          dataCombinationOfCarRecomAndModelDetailDefaultCity:
+            dataCombinationOfCarRecomAndModelDetail,
           carVariantDetailsResDefaultCity: carVariantDetailsRes,
           metaTagDataRes: metaTagDataRes,
           carVideoReviewRes: carVideoReviewRes,
@@ -103,12 +111,12 @@ export default function index({
         }}
       >
         <div className={styles.mobile}>
-          <PdpMobile />
+          <PdpMobile isOTO={true} />
         </div>
         <div className={styles.desktop}>
           <PdpDesktop metaTagDataRes={metaTagDataRes} />
         </div>
-      </PdpDataLocalContext.Provider>
+      </PdpDataOTOLocalContext.Provider>
     </>
   )
 }
@@ -169,10 +177,17 @@ export async function getServerSideProps(context: any) {
       ),
     ])
 
+    const dataCombinationOfCarRecomAndModelDetail =
+      mergeModelDetailsWithLoanRecommendations(
+        carRecommendationsRes.carRecommendations,
+        carModelDetailsRes,
+      )
+
     return {
       props: {
         carRecommendationsRes,
         carModelDetailsRes,
+        dataCombinationOfCarRecomAndModelDetail,
         carVariantDetailsRes,
         metaTagDataRes,
         carVideoReviewRes,
