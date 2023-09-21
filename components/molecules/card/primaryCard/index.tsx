@@ -11,7 +11,8 @@ type TPrimaryCardProps = {
   date: Date
   url: string
   label: string
-  handleClick: (url: string) => void
+  articleOrder: number
+  handleClick: (article: any) => void
 }
 
 export default function PrimaryCard({
@@ -20,10 +21,21 @@ export default function PrimaryCard({
   image,
   url,
   label,
+  articleOrder,
   handleClick,
 }: TPrimaryCardProps) {
   return (
-    <div onClick={() => handleClick(url)} className={styles.container}>
+    <div
+      onClick={() => {
+        const dataArticle = {
+          url: url,
+          articleCategory: label,
+          articleOrder: articleOrder,
+        }
+        handleClick(dataArticle)
+      }}
+      className={styles.container}
+    >
       <div className={styles.imageWrapper}>
         <Image src={image} alt={title} className={styles.image} />
 

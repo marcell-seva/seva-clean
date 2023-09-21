@@ -10,7 +10,7 @@ import {
 } from 'components/atoms'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
-import { filterNonDigitCharacters } from 'utils/stringUtils'
+import { capitalizeWords, filterNonDigitCharacters } from 'utils/stringUtils'
 import { onlyLettersAndSpaces } from 'utils/handler/regex'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
@@ -38,6 +38,18 @@ import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { Currency } from 'utils/handler/calculation'
 import { CityOtrOption } from 'utils/types'
 import { LoanRank } from 'utils/types/models'
+import {
+  trackEventCountly,
+  valueForUserTypeProperty,
+  valueMenuTabCategory,
+} from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getToken } from 'utils/handler/auth'
+import { getCustomerInfoSeva } from 'services/customer'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewLC,
+} from 'utils/navigate'
 import Image from 'next/image'
 
 const SupergraphicLeft = '/revamp/illustration/supergraphic-small.webp'
@@ -72,11 +84,16 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
     SessionStorageKey.LoanRankFromPLP,
     false,
   )
+  const referralCodeFromUrl: string | null = getLocalStorage(
+    LocalStorageKey.referralTemanSeva,
+  )
 
   const router = useRouter()
 
   const model = router.query.model as string
   const brand = router.query.brand as string
+  const upperTab = router.query.tab as string
+  const loanRankcr = router.query.loanRankCVL ?? ''
 
   const handleInputName = (payload: any): void => {
     if (payload !== ' ' && onlyLettersAndSpaces(payload)) {
@@ -176,22 +193,41 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
     sendUnverifiedLeads()
   }
 
+  const trackCountlySendLeads = async (verifiedPhone: string) => {
+    trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SEND_CLICK, {
+      PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
+      LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
+      PHONE_VERIFICATION_STATUS: verifiedPhone,
+      PHONE_NUMBER: '+62' + phone,
+    })
+  }
   const sendOtpCode = async () => {
     setIsLoading(true)
     trackLeadsFormAction(TrackingEventName.WEB_LEADS_FORM_SUBMIT, trackLeads())
     const dataLeads = checkDataFlagLeads()
     if (dataLeads) {
       if (phone === dataLeads.phone && name === dataLeads.name) {
+        trackCountlySendLeads('Yes')
         sendUnverifiedLeads()
       } else if (phone === dataLeads.phone && name !== dataLeads.name) {
+        trackCountlySendLeads('Yes')
         sendUnverifiedLeads()
         updateFlagLeadsName(name)
       } else {
+        trackCountlySendLeads('No')
+        trackEventCountly(CountlyEventNames.WEB_OTP_VIEW, {
+          PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
+        })
         setModalOpened('otp')
       }
     } else if (isUserLoggedIn) {
+      trackCountlySendLeads('Yes')
       sendUnverifiedLeads()
     } else {
+      trackCountlySendLeads('No')
+      trackEventCountly(CountlyEventNames.WEB_OTP_VIEW, {
+        PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
+      })
       setModalOpened('otp')
     }
   }
@@ -213,6 +249,16 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
   }
 
   const sendUnverifiedLeads = async () => {
+    let temanSevaStatus = 'No'
+
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response.data[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
     const data = {
       platform,
       name,
@@ -232,6 +278,13 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
         TrackingEventName.WEB_LEADS_FORM_SUCCESS,
         trackLeads(),
       )
+
+      trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SUCCESS_VIEW, {
+        PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
+        LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
+        TEMAN_SEVA_STATUS: temanSevaStatus,
+        PHONE_NUMBER: '+62' + phone,
+      })
       setIsLoading(false)
       setTimeout(() => setModalOpened('none'), 3000)
     } catch (error) {
@@ -271,11 +324,33 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
     }
   }
 
+  const trackClickCtaCountly = () => {
+    trackEventCountly(CountlyEventNames.WEB_PDP_LOAN_CALCULATOR_CTA_CLICK, {
+      SOURCE_SECTION: 'Leads form',
+      MENU_TAB_CATEGORY: valueMenuTabCategory(),
+      VISUAL_TAB_CATEGORY: upperTab ? upperTab : 'Warna',
+      CAR_BRAND: brand ? capitalizeWords(brand.replaceAll('-', ' ')) : '',
+      CAR_MODEL: model ? capitalizeWords(model.replaceAll('-', ' ')) : '',
+      CAR_ORDER: 'Null',
+      CAR_VARIANT: 'Null',
+    })
+  }
+
+  const queryParamForPDP = () => {
+    const params = new URLSearchParams({
+      ...(loanRankcr &&
+        typeof loanRankcr === 'string' && { loanRankCVL: loanRankcr }),
+    })
+
+    return params
+  }
+
   const onClickCalculateCta = () => {
-    let urlDirection = variantListUrl
-      .replace(':brand', brand)
-      .replace(':model', model)
-      .replace(':tab', 'kredit')
+    let urlDirection =
+      variantListUrl
+        .replace(':brand', brand)
+        .replace(':model', model)
+        .replace(':tab', 'kredit') + queryParamForPDP()
 
     if (router.basePath) {
       urlDirection = router.basePath + urlDirection
@@ -285,9 +360,23 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
       Page_Direction_URL:
         'https://' + window.location.host + urlDirection.replace('?', ''),
     })
+    trackClickCtaCountly()
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.LeadsForm)
     window.location.href = urlDirection
   }
+  const onClickNameField = () => {
+    trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_NAME_CLICK, {
+      PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
+      USER_TYPE: valueForUserTypeProperty(),
+    })
+  }
 
+  const onClickPhoneField = () => {
+    trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_PHONE_NUMBER_CLICK, {
+      PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
+      USER_TYPE: valueForUserTypeProperty(),
+    })
+  }
   return (
     <div>
       <div className={styles.wrapper}>
@@ -295,7 +384,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
           <div className={styles.wrapperSupergraphicLeft}>
             <Image
               src={SupergraphicLeft}
-              alt="seva-vector-blue-rounded"
+              alt="Vector Promosi Mobil"
               width={200}
               height={140}
               className={styles.supergraphicLeft}
@@ -304,7 +393,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
           <div className={styles.wrapperSupergraphicRight}>
             <Image
               src={SupergraphicRight}
-              alt="seva-vector-red-rounded"
+              alt="Vector Promosi Mobil"
               width={200}
               height={140}
               className={styles.supergraphicRight}
@@ -323,6 +412,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
               title="Nama Lengkap"
               value={name}
               onChange={(e: any) => handleInputName(e.target.value)}
+              onFocus={onClickNameField}
             />
             <Gap height={24} />
             <InputPhone
@@ -332,6 +422,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
               title="Nomor Handphone"
               value={phone}
               onChange={(e: any) => handleInputPhone(e.target.value)}
+              onFocus={onClickPhoneField}
             />
             <Gap height={32} />
             <Button
@@ -370,6 +461,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
             setModalOpened('none')
           }}
           isOtpVerified={() => verified()}
+          pageOrigination={'PDP - ' + valueMenuTabCategory()}
         />
       )}
       <Toast

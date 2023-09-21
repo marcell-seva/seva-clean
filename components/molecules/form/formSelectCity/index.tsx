@@ -26,6 +26,8 @@ type FormSelectCityProps = {
   handleChange: (name: string, value: any) => void
   isError?: boolean
   datatestid?: TestID
+  onOpenTooltip?: () => void
+  onShowDropdown?: () => void
 }
 
 export default function FormSelectCity({
@@ -33,6 +35,8 @@ export default function FormSelectCity({
   handleChange,
   name,
   isError = false,
+  onOpenTooltip,
+  onShowDropdown,
 }: FormSelectCityProps) {
   const [cityListApi, setCityListApi] = useState<Array<Location>>([])
   const [defaultCity, setDefaultCity] = useState<Location | null>(null)
@@ -86,8 +90,8 @@ export default function FormSelectCity({
         label: '',
         value: '',
       }
-      tempObj.value = item.cityName
-      tempObj.label = item.cityName
+      tempObj.value = item?.cityName
+      tempObj.label = item?.cityName
       tempArray.push(tempObj)
     }
     return tempArray
@@ -210,6 +214,7 @@ export default function FormSelectCity({
             berbeda di setiap kota."
         name={name}
         datatestid={elementId.LoanCalculator.Info.OTRIcon}
+        onOpenTooltip={onOpenTooltip}
       />
       <InputSelect
         ref={inputRef}
@@ -247,6 +252,7 @@ export default function FormSelectCity({
         }}
         isError={isError}
         datatestid={elementId.PDP.Drowpdown.PilihKota}
+        onShowDropdown={onShowDropdown}
       />
     </>
   )

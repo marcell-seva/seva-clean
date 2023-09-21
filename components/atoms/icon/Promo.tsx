@@ -4,6 +4,7 @@ import { PropsIcon } from '../../../utils/types'
 export const IconPromo: React.FC<PropsIcon> = ({
   width = 40,
   height = 40,
+  alt,
   color = '#05256E',
 }): JSX.Element => {
   return (
@@ -14,6 +15,7 @@ export const IconPromo: React.FC<PropsIcon> = ({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <title>{alt}</title>
       <path
         fillRule="evenodd"
         clipRule="evenodd"

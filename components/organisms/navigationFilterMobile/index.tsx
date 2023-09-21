@@ -16,7 +16,7 @@ import elementId from 'helpers/elementIds'
 import { LanguageCode } from 'utils/enum'
 import { sortOptions } from 'utils/config/funnel.config'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
-import { carResultsUrl } from 'utils/helpers/routes'
+import { PreviousButton, navigateToPLP } from 'utils/navigate'
 import { useRouter } from 'next/router'
 import { isCurrentCityJakartaPusatOrSurabaya } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 
@@ -139,8 +139,8 @@ export const NavigationFilterMobile = ({
         tenure: String(filter.tenure),
         sortBy: String(funnelQuery.sortBy) || 'lowToHigh',
       }
-      router.replace({
-        pathname: carResultsUrl,
+
+      navigateToPLP(PreviousButton.SmartSearch, {
         search: new URLSearchParams(
           Object.entries(paramUrl).filter(([, v]) => v !== ''),
         )

@@ -3,6 +3,7 @@ import styles from 'styles/components/organisms/variantsOptions.module.scss'
 import {
   CarModelDetailsResponse,
   CarVariantRecommendation,
+  trackDataCarType,
 } from 'utils/types/utils'
 import { IconFuel, IconTransmission } from 'components/atoms'
 
@@ -26,12 +27,28 @@ import { variantListUrl } from 'utils/helpers/routes'
 import elementId from 'helpers/elementIds'
 import { CityOtrOption } from 'utils/types/utils'
 import { useRouter } from 'next/router'
-import { LanguageCode, LocalStorageKey } from 'utils/enum'
+import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import {
   replacePriceSeparatorByLocalization,
   formatNumberByLocalization,
 } from 'utils/handler/rupiah'
+import {
+  trackEventCountly,
+  valueMenuTabCategory,
+} from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { LoanRank } from 'utils/types/models'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewLC,
+} from 'utils/navigate'
+import { getLocalStorage } from 'utils/handler/localStorage'
+import {
+  getSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
 import Image from 'next/image'
+import { AdaOTOdiSEVALeadsForm } from 'components/organisms/leadsForm/adaOTOdiSEVA/popUp'
 
 const rpIcon = '/revamp/illustration/rp-icon.webp'
 
@@ -41,6 +58,7 @@ type VariantsProps = {
   setOpenModal: (value: boolean) => void
   onCardClick: (value: CarVariantRecommendation) => void
   setSelectedTabValue?: (value: string) => void
+  isOTO?: boolean
 }
 const TabContentLowerVariant = ({
   carModelDetails,
@@ -48,6 +66,7 @@ const TabContentLowerVariant = ({
   setViewVariant,
   setSelectedTabValue,
   onCardClick,
+  isOTO = false,
 }: VariantsProps) => {
   const [toggleHorizontal, setToggleHorizontal] = useState(true)
   const [expandHorizontal, setExpandHorizontal] = useState(false)
@@ -57,10 +76,19 @@ const TabContentLowerVariant = ({
     LocalStorageKey.CityOtr,
     null,
   )
-  const router = useRouter()
+  const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
 
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
+
+  const router = useRouter()
   const brand = router.query.brand as string
   const model = router.query.model as string
+  const tab = router.query.tab as string
   const loanRankcr = router.query.loanRankCVL ?? ''
 
   const { funnelQuery } = useFunnelQueryData()
@@ -113,8 +141,36 @@ const TabContentLowerVariant = ({
     }
   }
 
-  const navigateToCreditTab = (carVariant: CarVariantRecommendation) => {
+  const closeLeadsForm = () => {
+    setIsModalOpened(false)
+  }
+
+  const showLeadsForm = () => {
+    setIsModalOpened(true)
+  }
+
+  const saveDataCarForLoginPageView = (carVariant: string) => {
+    const dataCar: trackDataCarType | null = getSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+    )
+    const dataCarTemp = {
+      ...dataCar,
+      CAR_VARIANT: carVariant,
+    }
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarTemp),
+    )
+  }
+  const navigateToCreditTab = (
+    carVariant: CarVariantRecommendation,
+    index: number,
+  ) => {
     trackCarVariantPricelistClickCta(getDataForAmplitude(carVariant))
+    trackClickCtaCountly(carVariant, index)
+    saveDataCarForLoginPageView(carVariant.name)
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.VariantPriceList)
+
     setSelectedTabValue && setSelectedTabValue('Kredit')
 
     // no need to use window.location.href because user still in PDP
@@ -134,6 +190,73 @@ const TabContentLowerVariant = ({
     )
   }
 
+  const trackClickCtaCountly = (
+    carVariant: CarVariantRecommendation,
+    index: number,
+  ) => {
+    trackEventCountly(CountlyEventNames.WEB_PDP_LOAN_CALCULATOR_CTA_CLICK, {
+      SOURCE_SECTION: 'Variant pricelist',
+      MENU_TAB_CATEGORY: valueMenuTabCategory(),
+      VISUAL_TAB_CATEGORY: tab ? tab : 'Warna',
+      CAR_BRAND: carModelDetails.brand ?? '',
+      CAR_MODEL: carModelDetails.model ?? '',
+      CAR_ORDER: index + 1,
+      CAR_VARIANT: carVariant.name,
+    })
+  }
+
+  const trackOpenPopupCountly = (
+    carVariant: CarVariantRecommendation,
+    index: number,
+  ) => {
+    let creditBadge = 'Null'
+    if (loanRankcr && loanRankcr.includes(LoanRank.Green)) {
+      creditBadge = 'Mudah disetujui'
+    } else if (loanRankcr && loanRankcr.includes(LoanRank.Red)) {
+      creditBadge = 'Sulit disetujui'
+    }
+
+    trackEventCountly(CountlyEventNames.WEB_PDP_VARIANT_PRICELIST_CLICK, {
+      MENU_TAB_CATEGORY: valueMenuTabCategory(),
+      CAR_BRAND: carModelDetails.brand ?? '',
+      CAR_MODEL: carModelDetails.model ?? '',
+      CAR_VARIANT: carVariant.name,
+      CAR_ORDER: index + 1,
+      PELUANG_KREDIT_BADGE: isUsingFilterFinancial ? creditBadge : 'Null',
+    })
+  }
+
+  const onClickHorizontalView = () => {
+    setToggleHorizontal(true)
+    trackChangeLayoutClick({
+      Page_Origination_URL: window.location.href,
+    })
+    trackEventCountly(CountlyEventNames.WEB_PDP_VARIANT_LIST_LAYOUT_CLICK, {
+      LIST_TYPE: 'Horizontal list',
+    })
+  }
+
+  const onClickVerticalView = () => {
+    setToggleHorizontal(false)
+    trackChangeLayoutClick({
+      Page_Origination_URL: window.location.href,
+    })
+    trackEventCountly(CountlyEventNames.WEB_PDP_VARIANT_LIST_LAYOUT_CLICK, {
+      LIST_TYPE: 'Vertical list',
+    })
+  }
+
+  const handleOpenPopup = (
+    carVariant: CarVariantRecommendation,
+    index: number,
+  ) => {
+    setOpenModal(true)
+    setViewVariant(carVariant)
+    onCardClick(carVariant)
+    trackCarVariantPricelistClick(getDataForAmplitude(carVariant))
+    trackOpenPopupCountly(carVariant, index)
+  }
+
   return (
     <div>
       <div className={styles.cardInfoDetail} style={{ height: 'auto' }}>
@@ -142,7 +265,7 @@ const TabContentLowerVariant = ({
             className={styles.rowWithGap}
             data-testid={elementId.Text + 'harga'}
           >
-            <Image src={rpIcon} alt="rp icon" height={20} width={20} />
+            <Image src={rpIcon} alt="SEVA Rupiah Icon" height={20} width={20} />
             <h3 className={styles.textTitleSection}>Harga</h3>
           </div>
           <div>
@@ -153,24 +276,20 @@ const TabContentLowerVariant = ({
               >
                 <div
                   className={styles.toggleActive}
-                  onClick={() => {
-                    setToggleHorizontal(true)
-                    trackChangeLayoutClick({
-                      Page_Origination_URL: window.location.href,
-                    })
-                  }}
+                  onClick={onClickHorizontalView}
                 >
-                  <IconToggleGridActive width={16} height={16} />
+                  <IconToggleGridActive
+                    width={16}
+                    height={16}
+                    alt="SEVA Menu Icon"
+                  />
                 </div>
-                <div
-                  onClick={() => {
-                    setToggleHorizontal(false)
-                    trackChangeLayoutClick({
-                      Page_Origination_URL: window.location.href,
-                    })
-                  }}
-                >
-                  <IconToggleListInactive width={16} height={16} />
+                <div onClick={onClickVerticalView}>
+                  <IconToggleListInactive
+                    width={16}
+                    height={16}
+                    alt="SEVA List Icon"
+                  />
                 </div>
               </div>
             ) : (
@@ -178,26 +297,22 @@ const TabContentLowerVariant = ({
                 className={styles.toggleVerticalWrapper}
                 data-testid={elementId.PDP.Button.List}
               >
-                <div
-                  onClick={() => {
-                    setToggleHorizontal(true)
-                    trackChangeLayoutClick({
-                      Page_Origination_URL: window.location.href,
-                    })
-                  }}
-                >
-                  <IconToggleGridInactive width={16} height={16} />
+                <div onClick={onClickHorizontalView}>
+                  <IconToggleGridInactive
+                    width={16}
+                    height={16}
+                    alt="SEVA Menu Icon"
+                  />
                 </div>
                 <div
                   className={styles.toggleActive}
-                  onClick={() => {
-                    setToggleHorizontal(false)
-                    trackChangeLayoutClick({
-                      Page_Origination_URL: window.location.href,
-                    })
-                  }}
+                  onClick={onClickVerticalView}
                 >
-                  <IconToggleListActive width={16} height={16} />
+                  <IconToggleListActive
+                    width={16}
+                    height={16}
+                    alt="SEVA List Icon"
+                  />
                 </div>
               </div>
             )}
@@ -210,7 +325,7 @@ const TabContentLowerVariant = ({
         </div>
         {!toggleHorizontal && !expandHorizontal ? (
           carModelDetails.variants
-            .map((carVariant: CarVariantRecommendation) => (
+            .map((carVariant: CarVariantRecommendation, index: number) => (
               <div
                 key={carVariant.id}
                 className={styles.containerCard}
@@ -284,14 +399,7 @@ const TabContentLowerVariant = ({
                       <div
                         className={styles.row}
                         style={{ marginBottom: '24px', marginTop: '16px' }}
-                        onClick={() => {
-                          setOpenModal(true)
-                          setViewVariant(carVariant)
-                          onCardClick(carVariant)
-                          trackCarVariantPricelistClick(
-                            getDataForAmplitude(carVariant),
-                          )
-                        }}
+                        onClick={() => handleOpenPopup(carVariant, index)}
                         data-testid={elementId.PDP.List.VariantDetail}
                       >
                         <p className={styles.openSansLightBlue}>Lihat Detail</p>
@@ -312,14 +420,7 @@ const TabContentLowerVariant = ({
                             ? '8%'
                             : '0',
                       }}
-                      onClick={() => {
-                        setOpenModal(true)
-                        setViewVariant(carVariant)
-                        onCardClick(carVariant)
-                        trackCarVariantPricelistClick(
-                          getDataForAmplitude(carVariant),
-                        )
-                      }}
+                      onClick={() => handleOpenPopup(carVariant, index)}
                       data-testid={elementId.PDP.List.VariantPrice}
                     >
                       <div className={styles.variantPriceWrapper}>
@@ -335,11 +436,15 @@ const TabContentLowerVariant = ({
                   </div>
                   <div
                     className={styles.buttonPrimary}
-                    onClick={() => navigateToCreditTab(carVariant)}
+                    onClick={() => {
+                      isOTO
+                        ? showLeadsForm()
+                        : navigateToCreditTab(carVariant, index)
+                    }}
                     data-testid={elementId.PDP.List.CTAHitungKemampuan}
                   >
                     <p style={{ color: '#ffffff', fontSize: 12 }}>
-                      Hitung Kemampuan
+                      {isOTO ? 'Saya Tertarik' : 'Hitung Kemampuan'}
                     </p>
                   </div>
                 </div>
@@ -349,7 +454,7 @@ const TabContentLowerVariant = ({
             .slice(0, 5)
         ) : !toggleHorizontal && expandHorizontal ? (
           carModelDetails.variants
-            .map((carVariant: CarVariantRecommendation) => (
+            .map((carVariant: CarVariantRecommendation, index: number) => (
               <div
                 key={carVariant.id}
                 className={styles.containerCard}
@@ -423,14 +528,7 @@ const TabContentLowerVariant = ({
                       <div
                         className={styles.row}
                         style={{ marginBottom: '24px', marginTop: '16px' }}
-                        onClick={() => {
-                          setOpenModal(true)
-                          setViewVariant(carVariant)
-                          onCardClick(carVariant)
-                          trackCarVariantPricelistClick(
-                            getDataForAmplitude(carVariant),
-                          )
-                        }}
+                        onClick={() => handleOpenPopup(carVariant, index)}
                         data-testid={elementId.PDP.List.VariantDetail}
                       >
                         <p className={styles.openSansLightBlue}>Lihat Detail</p>
@@ -451,14 +549,7 @@ const TabContentLowerVariant = ({
                             ? '5%'
                             : '0',
                       }}
-                      onClick={() => {
-                        setOpenModal(true)
-                        setViewVariant(carVariant)
-                        onCardClick(carVariant)
-                        trackCarVariantPricelistClick(
-                          getDataForAmplitude(carVariant),
-                        )
-                      }}
+                      onClick={() => handleOpenPopup(carVariant, index)}
                       data-testid={elementId.PDP.List.VariantPrice}
                     >
                       <div className={styles.variantPriceWrapper}>
@@ -474,11 +565,15 @@ const TabContentLowerVariant = ({
                   </div>
                   <div
                     className={styles.buttonPrimary}
-                    onClick={() => navigateToCreditTab(carVariant)}
+                    onClick={() => {
+                      isOTO
+                        ? showLeadsForm()
+                        : navigateToCreditTab(carVariant, index)
+                    }}
                     data-testid={elementId.PDP.List.CTAHitungKemampuan}
                   >
                     <p style={{ color: '#ffffff', fontSize: 12 }}>
-                      Hitung Kemampuan
+                      {isOTO ? 'Saya Tertarik' : 'Hitung Kemampuan'}
                     </p>
                   </div>
                 </div>
@@ -488,7 +583,7 @@ const TabContentLowerVariant = ({
         ) : (
           <div className={styles.rowScrollHorizontal}>
             {carModelDetails.variants
-              .map((carVariant: CarVariantRecommendation) => (
+              .map((carVariant: CarVariantRecommendation, index: number) => (
                 <div
                   key={carVariant.id}
                   data-testid={elementId.PDP.Grid.VariantCard}
@@ -554,14 +649,7 @@ const TabContentLowerVariant = ({
                           </div>
                         </div>
                         <div
-                          onClick={() => {
-                            setOpenModal(true)
-                            setViewVariant(carVariant)
-                            onCardClick(carVariant)
-                            trackCarVariantPricelistClick(
-                              getDataForAmplitude(carVariant),
-                            )
-                          }}
+                          onClick={() => handleOpenPopup(carVariant, index)}
                           className={styles.onClickWrapper}
                         >
                           <div
@@ -582,6 +670,7 @@ const TabContentLowerVariant = ({
                               color={'#246ED4'}
                               height={24}
                               width={24}
+                              alt="SEVA Transmition gear Icon"
                             />
                             <p
                               className={styles.openSans}
@@ -595,6 +684,7 @@ const TabContentLowerVariant = ({
                               color={'#246ED4'}
                               height={24}
                               width={24}
+                              alt="SEVA Gas Station Icon"
                             />
                             <p
                               className={styles.openSans}
@@ -607,11 +697,15 @@ const TabContentLowerVariant = ({
                       </div>
                       <div
                         className={styles.buttonPrimary}
-                        onClick={() => navigateToCreditTab(carVariant)}
+                        onClick={() => {
+                          isOTO
+                            ? showLeadsForm()
+                            : navigateToCreditTab(carVariant, index)
+                        }}
                         data-testid={elementId.PDP.Grid.CTAHitungKemampuan}
                       >
                         <p style={{ color: '#ffffff', fontSize: 12 }}>
-                          Hitung Kemampuan
+                          {isOTO ? 'Saya Tertarik' : 'Hitung Kemampuan'}
                         </p>
                       </div>
                     </div>
@@ -646,6 +740,7 @@ const TabContentLowerVariant = ({
           </div>
         )}
       </div>
+      {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
     </div>
   )
 }

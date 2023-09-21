@@ -31,29 +31,45 @@ import {
   formatPriceNumberThousandDivisor,
   formatPriceNumber,
 } from 'utils/numberUtils/numberUtils'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import {
+  trackEventCountly,
+  valueMenuTabCategory,
+} from 'helpers/countly/countly'
+import { getPageName } from 'utils/pageName'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewLC,
+} from 'utils/navigate'
 import { isCurrentCityJakartaPusatOrSurabaya } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
+import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
+import { AdaOTOdiSEVALeadsForm } from 'components/organisms/leadsForm/adaOTOdiSEVA/popUp'
 
 interface Props {
   onClickCityOtrCarOverview: () => void
   onClickShareButton: () => void
   currentTabMenu: string
+  isOTO?: boolean
 }
 
 export const CarOverview = ({
   onClickCityOtrCarOverview,
   onClickShareButton,
   currentTabMenu,
+  isOTO = false,
 }: Props) => {
   const {
     dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
-  } = useContext(PdpDataLocalContext)
+  } = useContext(isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext)
 
   const { carModelDetails, carVariantDetails } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
   )
+
+  const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
 
   const modelDetail =
     carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
@@ -72,6 +88,7 @@ export const CarOverview = ({
   const brand = router.query.brand as string
   const model = router.query.model as string
   const upperTab = router.query.tab as string
+  const loanRankcr = router.query.loanRankCVL ?? ''
 
   const sortedCarModelVariant = useMemo(() => {
     return (
@@ -81,8 +98,19 @@ export const CarOverview = ({
     )
   }, [modelDetail])
 
+  const closeLeadsForm = () => {
+    setIsModalOpened(false)
+  }
+
+  const showLeadsForm = () => {
+    setIsModalOpened(true)
+  }
+
   const onClickToolTipIcon = () => {
     setIsShowTooltip(true)
+    trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_TOOLTIP_CLICK, {
+      PAGE_ORIGINATION: getPageName(),
+    })
   }
 
   const closeTooltip = () => {
@@ -187,6 +215,7 @@ export const CarOverview = ({
 
   const onClickShareButtonHandler = () => {
     trackAmplitudeShare()
+    trackClickShareCountly()
     onClickShareButton()
   }
 
@@ -218,25 +247,72 @@ export const CarOverview = ({
     trackPDPHitungKemampuan(properties)
   }
 
+  const trackClickCtaCountly = () => {
+    trackEventCountly(CountlyEventNames.WEB_PDP_LOAN_CALCULATOR_CTA_CLICK, {
+      SOURCE_SECTION: 'Main Top CTA',
+      MENU_TAB_CATEGORY: valueMenuTabCategory(),
+      VISUAL_TAB_CATEGORY: currentTabMenu,
+      CAR_BRAND: modelDetail?.brand ?? '',
+      CAR_MODEL: modelDetail?.model ?? '',
+      CAR_ORDER: 'Null',
+      CAR_VARIANT: 'Null',
+    })
+  }
+
+  const trackClickBrochureCountly = () => {
+    trackEventCountly(CountlyEventNames.WEB_PDP_BROCHURE_CLICK, {
+      CAR_BRAND: modelDetail?.brand ?? '',
+      CAR_MODEL: modelDetail?.model ?? '',
+      VISUAL_TAB_CATEGORY: currentTabMenu,
+      MENU_TAB_CATEGORY: valueMenuTabCategory(),
+    })
+  }
+
+  const trackClickShareCountly = () => {
+    trackEventCountly(CountlyEventNames.WEB_PDP_OPEN_SHARE_CLICK, {
+      CAR_BRAND: modelDetail?.brand ?? '',
+      CAR_MODEL: modelDetail?.model ?? '',
+      VISUAL_TAB_CATEGORY: currentTabMenu,
+      MENU_TAB_CATEGORY: valueMenuTabCategory(),
+    })
+  }
+
+  const onClickDownloadBrochure = () => {
+    trackAmplitudeBrochure()
+    trackClickBrochureCountly()
+  }
+
+  const queryParamForPDP = () => {
+    const params = new URLSearchParams({
+      ...(upperTab && { tab: `${upperTab}` }),
+      ...(loanRankcr &&
+        typeof loanRankcr === 'string' && { loanRankCVL: loanRankcr }),
+    })
+
+    return params
+  }
+
   const onClickCalculateCta = () => {
     trackHitungKemampuan()
+    trackClickCtaCountly()
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.MainTopCta)
     window.location.href =
       variantListUrl
         .replace(':brand', brand)
         .replace(':model', model)
-        .replace(':tab', 'kredit') + `${upperTab ? `tab=${upperTab}` : ''}`
+        .replace(':tab', 'kredit') + queryParamForPDP()
   }
 
   if (!modelDetail || !variantDetail) return <></>
 
   return (
     <div className={styles.container}>
-      <h2
+      <h1
         className={styles.carBrandModelText}
         data-testid={elementId.Text + 'car-brand-model'}
       >
         {modelDetail?.brand + ' ' + modelDetail?.model}
-      </h2>
+      </h1>
       <p
         className={styles.carDescriptionText}
         data-testid={elementId.Text + 'car-description'}
@@ -318,7 +394,12 @@ export const CarOverview = ({
               onClick={onClickOtrCity}
               data-testid={elementId.PDP.CarOverview.CityOtr}
             >
-              <IconEdit width={16} height={16} color="#246ED4" />
+              <IconEdit
+                width={16}
+                height={16}
+                color="#246ED4"
+                alt="SEVA pen Icon"
+              />
             </button>
           )}
         </div>
@@ -369,11 +450,16 @@ export const CarOverview = ({
           target="_blank"
           rel="noreferrer"
           data-testid={elementId.PDP.CarOverview.DownloadBrochure}
-          onClick={trackAmplitudeBrochure}
+          onClick={onClickDownloadBrochure}
         >
           <TextButton
             leftIcon={() => (
-              <IconDownload width={16} height={16} color="#246ED4" />
+              <IconDownload
+                width={16}
+                height={16}
+                color="#246ED4"
+                alt="SEVA download Icon"
+              />
             )}
             data-testid={elementId.PDP.CTA.UnduhBrosur}
           >
@@ -387,10 +473,10 @@ export const CarOverview = ({
           <Button
             version={ButtonVersion.PrimaryDarkBlue}
             size={ButtonSize.Big}
-            onClick={onClickCalculateCta}
+            onClick={isOTO ? showLeadsForm : onClickCalculateCta}
             data-testid={elementId.PDP.Button.HitungKemampuan}
           >
-            Hitung Kemampuan
+            {isOTO ? 'Saya Tertarik' : 'Hitung Kemampuan'}
           </Button>
         </div>
 
@@ -399,9 +485,15 @@ export const CarOverview = ({
           onClick={onClickShareButtonHandler}
           data-testid={elementId.PDP.Button.Share}
         >
-          <IconShare width={32} height={32} color="#05256E" />
+          <IconShare
+            width={32}
+            height={32}
+            color="#05256E"
+            alt="SEVA Share Icon"
+          />
         </button>
       </div>
+      {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
     </div>
   )
 }

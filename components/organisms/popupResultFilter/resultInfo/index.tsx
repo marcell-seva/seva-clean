@@ -1,5 +1,5 @@
 import { Modal } from 'antd'
-import React from 'react'
+import React, { useEffect } from 'react'
 import type { ModalProps } from 'antd'
 import { colors } from 'styles/colors'
 import { IconClose } from 'components/atoms'
@@ -7,12 +7,19 @@ import styles from '../../../../styles/components/organisms/popupResultInfo.modu
 
 import { Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 import Image from 'next/image'
 
 const PLPEmpty = '/revamp/illustration/plp-empty.webp'
 
 type PopupResultInfo = Omit<ModalProps, 'children'>
 export const PopupResultInfo = (props: PopupResultInfo) => {
+  useEffect(() => {
+    if (props.open) {
+      trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BANNER_DESC_VIEW)
+    }
+  }, [props.open])
   return (
     <Modal
       closeIcon={

@@ -23,6 +23,14 @@ import { Option } from 'utils/types'
 import { COMData, FunnelQueryKey } from 'utils/types/models'
 import { Line } from './Line'
 import { useToast } from './Toast'
+import {
+  PreviousButton,
+  navigateToPLP,
+  saveDataForCountlyTrackerPageViewPDP,
+} from 'utils/navigate'
+import { getPageName } from 'utils/pageName'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
@@ -60,6 +68,8 @@ export default function HeaderVariant({
   const [isError, setIsError] = useState(false)
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const [isNotFoundClicked, setIsNotFoundClicked] = useState(false)
+
+  const isInLoanCalcKK = router.query.from === 'homepageKualifikasi'
 
   const handleDebounceFn = (inputValue: string) => {
     getCarsSearchBar(inputValue)
@@ -124,6 +134,10 @@ export default function HeaderVariant({
     }
     let urlDestination = ''
     if (item.value.length > 0) {
+      saveDataForCountlyTrackerPageViewPDP(
+        PreviousButton.SearchIcon,
+        isInLoanCalcKK ? 'Loan Calculator - Kualifikasi Kredit' : undefined,
+      )
       urlDestination = variantListUrl
         .replace('/:brand/:model', item.value)
         .replace(':tab?', '')
@@ -131,10 +145,7 @@ export default function HeaderVariant({
       patchFunnelQuery({
         [FunnelQueryKey.Brand]: [item.label],
       })
-      const funnelQueryTemp = {
-        brand: [item.label],
-      }
-      urlDestination = carResultsUrl + '?' + convertObjectQuery(funnelQueryTemp)
+      urlDestination = carResultsUrl
     }
 
     // simpan pencarian ke dalam local storage
@@ -148,14 +159,33 @@ export default function HeaderVariant({
     localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
 
     hideModal()
-
+    trackEventCountly(CountlyEventNames.WEB_CAR_SEARCH_ICON_SUGGESTION_CLICK, {
+      PAGE_ORIGINATION: getPageName(),
+      SUGGESTION_CATEGORY: 'Keyword',
+      CAR_BRAND: item.label,
+      CAR_MODEL: item.value,
+      PAGE_DIRECTION_URL: window.location.origin + urlDestination,
+    })
     trackSearchBarSuggestionClick({
       Page_Origination_URL: window.location.href,
       Page_Direction_URL: window.location.origin + urlDestination,
     })
 
     // use window location to reload page
-    window.location.href = urlDestination
+    if (item.value.length > 0) {
+      window.location.href = urlDestination
+    } else {
+      const funnelQueryTemp = {
+        brand: [item.label],
+      }
+      navigateToPLP(
+        PreviousButton.SearchBar,
+        { search: convertObjectQuery(funnelQueryTemp) },
+        true,
+        false,
+        urlDestination,
+      )
+    }
     setIsNotFoundClicked(false)
   }
 
@@ -205,6 +235,13 @@ export default function HeaderVariant({
     return temp
   }
 
+  const onClickRecommedationList = () => {
+    saveDataForCountlyTrackerPageViewPDP(
+      PreviousButton.SearchIcon,
+      isInLoanCalcKK ? 'Loan Calculator - Kualifikasi Kredit' : undefined,
+    )
+  }
+
   const carData = useMemo(() => {
     const data = comDataNew?.slice(0, 5).map((item) => ({
       name: `${item.brand} ${item.model?.carModel.model ?? ''}`,
@@ -237,6 +274,7 @@ export default function HeaderVariant({
             <a
               className={styles.styledCarName}
               href={`/mobil-baru${car.link.toLowerCase()}`}
+              onClick={onClickRecommedationList}
             >
               <div
                 style={{
@@ -256,6 +294,8 @@ export default function HeaderVariant({
                     objectPosition: 'center',
                     alignItems: 'left',
                   }}
+                  width={'70'}
+                  height={'50'}
                 />
                 <div className={styles.styledCarName}>{car.name}</div>
               </div>
@@ -273,11 +313,15 @@ export default function HeaderVariant({
       const funnelQueryTemp = {
         brand: data.label,
       }
-      router.push({
-        pathname: carResultsUrl,
+
+      navigateToPLP(PreviousButton.SearchBar, {
         search: convertObjectQuery(funnelQueryTemp),
       })
     } else {
+      saveDataForCountlyTrackerPageViewPDP(
+        PreviousButton.SearchIcon,
+        isInLoanCalcKK ? 'Loan Calculator - Kualifikasi Kredit' : undefined,
+      )
       // use window location to reload page
       window.location.href = carResultsUrl + data.value
     }
@@ -341,6 +385,11 @@ export default function HeaderVariant({
                   enablePrefixIcon={false}
                   searchIconSuffix={true}
                   className={styles.styledSearchInput}
+                  onFocus={() =>
+                    trackEventCountly(
+                      CountlyEventNames.WEB_CAR_SEARCH_ICON_FIELD_CLICK,
+                    )
+                  }
                 />
               ) : (
                 <SearchInput

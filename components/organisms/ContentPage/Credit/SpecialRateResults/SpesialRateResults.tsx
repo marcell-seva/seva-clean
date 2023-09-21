@@ -53,6 +53,7 @@ import { tracSelectV2LoanCalculatorSpeak } from 'helpers/amplitude/newLoanCalcul
 import { useCar } from 'services/context/carContext'
 import { useContextForm } from 'services/context/formContext'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
+import { navigateToKK } from 'utils/navigate'
 import Image from 'next/image'
 
 const PromoAsuransi = '/revamp/illustration/PromoAsuransi.gif'
@@ -538,7 +539,7 @@ export const SpecialRateResults = ({
       router.push(loginUrl)
     }
   }
-  const goTopPreApprovalStartPage = () => router.push(creditQualificationUrl)
+  const goTopPreApprovalStartPage = () => navigateToKK()
 
   const [hover, setHover] = useState(false)
   const onHover = () => {

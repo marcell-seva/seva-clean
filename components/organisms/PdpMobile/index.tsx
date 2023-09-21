@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import {
+  AdaOTOdiSEVALeadsForm,
   FooterMobile,
   HeaderMobile,
   PdpLowerSection,
@@ -13,6 +14,7 @@ import {
   MainVideoResponseType,
   VariantDetail,
   VideoDataType,
+  trackDataCarType,
 } from 'utils/types/utils'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
@@ -25,7 +27,7 @@ import {
 } from 'services/recommendations'
 import { getCities } from 'services/cities'
 import { decryptValue } from 'utils/encryptionUtils'
-import { WhatsappButton } from 'components/atoms'
+import { CSAButton, WhatsappButton } from 'components/atoms'
 import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { getCustomerInfoSeva } from 'services/customer'
@@ -35,10 +37,14 @@ import {
   trackCarVariantPageWaChatbot,
 } from 'helpers/amplitude/seva20Tracking'
 // import { usePreApprovalCarNotAvailable } from 'pages/component/PreApprovalCarNotAvalable/useModalCarNotAvalable'
-import { getSessionStorage } from 'utils/handler/sessionStorage'
-import { capitalizeFirstLetter } from 'utils/stringUtils'
+import {
+  getSessionStorage,
+  removeSessionStorage,
+} from 'utils/handler/sessionStorage'
+import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useQuery } from 'utils/hooks/useQuery'
 import { api } from 'services/api'
 import { useCar } from 'services/context/carContext'
@@ -48,6 +54,15 @@ import {
   replacePriceSeparatorByLocalization,
 } from 'utils/handler/rupiah'
 import { LoanRank } from 'utils/types/models'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import {
+  trackEventCountly,
+  valueForInitialPageProperty,
+  valueForUserTypeProperty,
+  valueMenuTabCategory,
+} from 'helpers/countly/countly'
+import { client } from 'utils/helpers/const'
+import { defineRouteName } from 'utils/navigate'
 import { useUtils } from 'services/context/utilsContext'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
 import dynamic from 'next/dynamic'
@@ -72,14 +87,33 @@ export interface CarVariantListPageUrlParams {
   tab: string
 }
 
-export default function NewCarVariantList() {
+interface NewCarVariantListProps {
+  isOTO?: boolean
+}
+
+export default function NewCarVariantList({
+  isOTO = false,
+}: NewCarVariantListProps) {
   const [isPreviewGalleryOpened, setIsPreviewGalleryOpened] =
     useState<boolean>(false)
   const [status, setStatus] = useState<'loading' | 'empty' | 'exist'>('exist')
   const [galleryIndexActive, setGalleryIndexActive] = useState<number>(0)
   const [dataPreviewImages, setDataPreviewImages] = useState<Array<string>>([])
   const { source }: { source: string } = useQuery(['source'])
-  const { carVideoReviewRes: dataVideoReview } = useContext(PdpDataLocalContext)
+  const [isSentCountlyPageView, setIsSentCountlyPageView] = useState(false)
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+  const { carVideoReviewRes: dataVideoReview } = useContext(
+    isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext,
+  )
+  const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
+
+  const closeLeadsForm = () => {
+    setIsModalOpened(false)
+  }
+
+  const showLeadsForm = () => {
+    setIsModalOpened(true)
+  }
 
   const handlePreviewOpened = (payload: number) => {
     setGalleryIndexActive(payload)
@@ -113,7 +147,7 @@ export default function NewCarVariantList() {
     carModelDetailsResDefaultCity,
     dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
-  } = useContext(PdpDataLocalContext)
+  } = useContext(isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext)
 
   const modelDetail =
     carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
@@ -128,7 +162,7 @@ export default function NewCarVariantList() {
   }
 
   const getVideoReview = () => {
-    const filterVideoReview = dataVideoReview.data.filter(
+    const filterVideoReview = dataVideoReview?.data.filter(
       (video: MainVideoResponseType) => video.modelId === modelDetail?.id,
     )[0]
     if (filterVideoReview) {
@@ -169,7 +203,9 @@ export default function NewCarVariantList() {
 
   const loanRankcr = router.query.loanRankCVL ?? ''
 
-  const [showAnnouncementBox, setShowAnnouncementBox] = useState<boolean>(false)
+  const [showAnnouncementBox, setShowAnnouncementBox] = useState<
+    boolean | null
+  >(false)
   const [variantIdFuel, setVariantIdFuelRatio] = useState<string | undefined>()
   const [variantFuelRatio, setVariantFuelRatio] = useState<string | undefined>()
   // for disable promo popup after change route
@@ -200,7 +236,10 @@ export default function NewCarVariantList() {
 
   const sortedCarModelVariant = useMemo(() => {
     return (
-      modelDetail?.variants.sort(function (a: VariantDetail, b: VariantDetail) {
+      modelDetail?.variants?.sort(function (
+        a: VariantDetail,
+        b: VariantDetail,
+      ) {
         return a.priceValue - b.priceValue
       }) || []
     )
@@ -269,10 +308,54 @@ export default function NewCarVariantList() {
     }
     trackCarVariantPageWaChatbot(trackerProperty)
   }
-
+  const trackCountlyFloatingWhatsapp = async () => {
+    let temanSevaStatus = 'No'
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
+    const dataCar: trackDataCarType | null = getSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+    )
+    trackEventCountly(CountlyEventNames.WEB_WA_DIRECT_CLICK, {
+      PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
+      SOURCE_BUTTON: 'Floating Button',
+      CAR_BRAND: carModelDetails?.brand,
+      CAR_MODEL: carModelDetails?.model,
+      CAR_VARIANT: dataCar?.CAR_VARIANT ? dataCar?.CAR_VARIANT : 'Null',
+      PELUANG_KREDIT_BADGE:
+        dataCar?.PELUANG_KREDIT_BADGE &&
+        dataCar?.PELUANG_KREDIT_BADGE === 'Green'
+          ? 'Mudah disetujui'
+          : dataCar?.PELUANG_KREDIT_BADGE &&
+            dataCar?.PELUANG_KREDIT_BADGE === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      TENOR_OPTION: dataCar?.PELUANG_KREDIT_BADGE
+        ? dataCar?.TENOR_OPTION + ' Tahun'
+        : 'Null',
+      TENOR_RESULT:
+        dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Green'
+          ? 'Mudah disetujui'
+          : dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      KK_RESULT: 'Null',
+      IA_RESULT: 'Null',
+      TEMAN_SEVA_STATUS: temanSevaStatus,
+      INCOME_LOAN_CALCULATOR: filterStorage?.monthlyIncome,
+      INCOME_KUALIFIKASI_KREDIT: 'Null',
+      INCOME_CHANGE: 'Null',
+      OCCUPATION: 'Null',
+    })
+  }
   const onClickFloatingWhatsapp = async () => {
     let message = ''
-
+    trackCountlyFloatingWhatsapp()
     trackFloatingWhatsapp()
     const parsedModel = capitalizeFirstLetter(model.replace(/-/g, ' '))
     const brandModel =
@@ -347,6 +430,74 @@ export default function NewCarVariantList() {
         setVariantFuelRatio(result.variantDetail.rasioBahanBakar)
       })
   }
+
+  const trackCountlyPageView = async () => {
+    const pageReferrer = getSessionStorage(SessionStorageKey.PageReferrerPDP)
+    const previousSourceButton = getSessionStorage(
+      SessionStorageKey.PreviousSourceButtonPDP,
+    )
+
+    const isUsingFilterFinancial =
+      !!filterStorage?.age &&
+      !!filterStorage?.downPaymentAmount &&
+      !!filterStorage?.monthlyIncome &&
+      !!filterStorage?.tenure
+
+    let pageOrigination = 'PDP - Ringkasan'
+    if (!!lowerTab && lowerTab.toLowerCase() === 'kredit') {
+      pageOrigination = 'Null'
+    } else if (!!lowerTab) {
+      pageOrigination = defineRouteName(window.location.href)
+    }
+
+    let creditBadge = 'Null'
+    if (loanRankcr && loanRankcr.includes(LoanRank.Green)) {
+      creditBadge = 'Mudah disetujui'
+    } else if (loanRankcr && loanRankcr.includes(LoanRank.Red)) {
+      creditBadge = 'Sulit disetujui'
+    }
+
+    let temanSevaStatus = 'No'
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
+
+    if (client && !!window?.Countly?.q) {
+      trackEventCountly(CountlyEventNames.WEB_PDP_VIEW, {
+        PAGE_REFERRER: pageReferrer ?? 'Null',
+        PREVIOUS_SOURCE_BUTTON: previousSourceButton ?? 'Null',
+        FINCAP_FILTER_USAGE: isUsingFilterFinancial ? 'Yes' : 'No',
+        CAR_BRAND: brand ? capitalizeWords(brand) : 'Null',
+        CAR_MODEL: model ? capitalizeWords(model.replaceAll('-', ' ')) : 'Null',
+        PAGE_ORIGINATION: pageOrigination,
+        PELUANG_KREDIT_BADGE: isUsingFilterFinancial ? creditBadge : 'Null',
+        USER_TYPE: valueForUserTypeProperty(),
+        INITIAL_PAGE: pageReferrer ? 'No' : valueForInitialPageProperty(),
+        TEMAN_SEVA_STATUS: temanSevaStatus,
+      })
+
+      setIsSentCountlyPageView(true)
+      removeSessionStorage(SessionStorageKey.PageReferrerPDP)
+      removeSessionStorage(SessionStorageKey.PreviousSourceButtonPDP)
+    }
+  }
+
+  useEffect(() => {
+    if (!isSentCountlyPageView) {
+      const timeoutCountlyTracker = setTimeout(() => {
+        if (!isSentCountlyPageView) {
+          trackCountlyPageView()
+        }
+      }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
+
+      return () => clearTimeout(timeoutCountlyTracker)
+    }
+  }, [])
 
   useEffect(() => {
     if (dataAnnouncementBox) {
@@ -466,10 +617,14 @@ export default function NewCarVariantList() {
               model={parsedModel}
               message={`${brandModel}  tersedia di`}
             />
-            <WhatsappButton
-              onClick={onClickFloatingWhatsapp}
-              data-testid={elementId.PDP.FloatingWhatsapp}
-            />
+            {isOTO ? (
+              <CSAButton onClick={showLeadsForm} />
+            ) : (
+              <WhatsappButton
+                onClick={onClickFloatingWhatsapp}
+                data-testid={elementId.PDP.FloatingWhatsapp}
+              />
+            )}
           </>
         )
       case 'exist':
@@ -484,6 +639,7 @@ export default function NewCarVariantList() {
               onClickCityOtrCarOverview={() => setIsOpenCitySelectorModal(true)}
               onClickShareButton={() => setIsOpenShareModal(true)}
               isShowAnnouncementBox={showAnnouncementBox}
+              isOTO={isOTO}
             />
             <PdpLowerSection
               onButtonClick={setIsButtonClick}
@@ -492,16 +648,21 @@ export default function NewCarVariantList() {
               showAnnouncementBox={showAnnouncementBox}
               setVariantIdFuelRatio={setVariantIdFuelRatio}
               variantFuelRatio={variantFuelRatio}
+              isOTO={isOTO}
             />
             <PromoPopup
               onButtonClick={setIsButtonClick}
               isButtonClick={isButtonClick}
               promoName={promoName}
             />
-            <WhatsappButton
-              onClick={onClickFloatingWhatsapp}
-              data-testid={elementId.PDP.FloatingWhatsapp}
-            />
+            {isOTO ? (
+              <CSAButton onClick={showLeadsForm} />
+            ) : (
+              <WhatsappButton
+                onClick={onClickFloatingWhatsapp}
+                data-testid={elementId.PDP.FloatingWhatsapp}
+              />
+            )}
           </>
         )
       default:
@@ -511,10 +672,14 @@ export default function NewCarVariantList() {
               model={capitalizeFirstLetter(parsedModel)}
               message={`${brandModel}  tersedia di`}
             />
-            <WhatsappButton
-              onClick={onClickFloatingWhatsapp}
-              data-testid={elementId.PDP.FloatingWhatsapp}
-            />
+            {isOTO ? (
+              <CSAButton onClick={showLeadsForm} />
+            ) : (
+              <WhatsappButton
+                onClick={onClickFloatingWhatsapp}
+                data-testid={elementId.PDP.FloatingWhatsapp}
+              />
+            )}
           </>
         )
     }
@@ -531,9 +696,12 @@ export default function NewCarVariantList() {
           emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
           setShowAnnouncementBox={setShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
+          pageOrigination={'PDP - ' + valueMenuTabCategory()}
+          isNewCar={isOTO}
+          isGlobal={isOTO}
         />
         <div className={styles.content}>{renderContent()}</div>
-        <FooterMobile />
+        <FooterMobile pageOrigination="PDP" />
       </div>
 
       {isPreviewGalleryOpened && (
@@ -548,7 +716,7 @@ export default function NewCarVariantList() {
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
         cityListFromApi={cities}
       />
-
+      {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
       <ShareModal
         open={isOpenShareModal}
         onCancel={() => setIsOpenShareModal(false)}

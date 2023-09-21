@@ -6,7 +6,6 @@ import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { HomepageDesktop, HomepageMobile } from 'components/organisms'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { getCity } from 'utils/hooks/useGetCity'
-import styles from 'styles/pages/homepage.module.scss'
 import { useCar } from 'services/context/carContext'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebTopMenuType, NavbarItemResponse } from 'utils/types/utils'
@@ -57,7 +56,6 @@ export default function WithTracker({
   dataCarofTheMonth,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isMobile, setIsMobile] = useState(useIsMobileSSr())
-
   const { saveTypeCar, saveCarOfTheMonth, saveRecommendationToyota } = useCar()
   const { saveArticles, saveDesktopWebTopMenu, saveMobileWebTopMenus } =
     useUtils()

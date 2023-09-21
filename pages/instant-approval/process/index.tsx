@@ -39,6 +39,7 @@ import { CitySelectorModal } from 'components/molecules'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import { PreviousButton, navigateToPLP } from 'utils/navigate'
 import Image from 'next/image'
 
 const KualifikasiKreditImage = '/revamp/illustration/kualifikasi-kredit.webp'
@@ -104,8 +105,7 @@ const CreditQualificationProcess = () => {
       }),
       ...(tenure && { tenure: String(tenure) }),
     }).toString()
-
-    router.push({ pathname: carResultsUrl, search: urlParam })
+    navigateToPLP(PreviousButton.IAWaitingForResult, { search: urlParam })
   }
 
   // const gotoRp = () => {

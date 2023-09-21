@@ -30,7 +30,7 @@ import {
   getMinimumMonthlyInstallment,
 } from 'utils/carModelUtils/carModelUtils'
 import { savePreviouslyViewed } from 'utils/carUtils'
-import { hundred, million, ten } from 'utils/helpers/const'
+import { defaultSeoImage, hundred, million, ten } from 'utils/helpers/const'
 import { variantListUrl } from 'utils/helpers/routes'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { saveLocalStorage } from 'utils/handler/localStorage'
@@ -42,8 +42,10 @@ import { HeaderAndContent } from '../HeaderAndContent/HeaderAndContent'
 import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
+import Seo from 'components/atoms/seo'
+import { monthId } from 'utils/handler/date'
 
-export default function index() {
+export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const router = useRouter()
   const {
     carRecommendationsResDefaultCity,
@@ -55,7 +57,7 @@ export default function index() {
   const { model, brand, slug } = router.query
   const tab = Array.isArray(slug) ? slug[0] : undefined
   const [stickyCTA, setStickyCTA] = useState(false)
-
+  const routerQuery = router.query
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const { showModal: showCarNotExistModal, PreApprovalCarNotAvailableModal } =
     usePreApprovalCarNotAvailable()
@@ -240,8 +242,61 @@ export default function index() {
 
   const todayDate = new Date()
 
+  const capitalizeWord = (word: string) =>
+    word.charAt(0).toUpperCase() + word.slice(1)
+
+  const capitalizeIfString = (value: string) =>
+    typeof value === 'string'
+      ? value.split('-').map(capitalizeWord).join(' ')
+      : ''
+
+  const carBrand = capitalizeIfString(routerQuery.brand as string)
+  const carModel = capitalizeIfString(routerQuery.model as string)
+
+  const currentYear = todayDate.getFullYear()
+  const currentMonth = monthId(todayDate.getMonth())
+
+  const carOTRValue = carModelDetails?.variants[0].priceValue as number
+  const carOTR = isNaN(carOTRValue) ? null : `Rp ${carOTRValue / 1000000} Juta`
+
+  const getMetaTitle = () => {
+    switch (tab) {
+      case 'kredit':
+        return `Kredit ${carBrand} ${carModel} ${currentYear}. Simulasi Cicilan OTR ${
+          getCity().cityName
+        } dengan Loan Calculator | SEVA`
+      case 'spesifikasi':
+        return `Spesifikasi ${carBrand} ${carModel} ${currentYear} | SEVA`
+      case 'harga':
+        return `Harga ${carBrand} ${carModel} ${currentYear} ${
+          getCity().cityName
+        } Terbaru | SEVA`
+    }
+    return `Ringkasan Produk ${carBrand} ${carModel} ${currentYear} - Harga OTR Promo Bulan ${currentMonth} | SEVA`
+  }
+
+  const getMetaDescription = () => {
+    if (carOTR !== null) {
+      switch (tab) {
+        case 'kredit':
+          return `Hitung simulasi cicilan ${carBrand} ${carModel} ${currentYear}. Beli mobil ${carBrand} secara kredit, proses aman & mudah dengan Instant Approval* di SEVA."`
+        case 'spesifikasi':
+          return `Dapatkan informasi lengkap mengenai spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
+        case 'harga':
+          return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
+      }
+      return `Beli mobil ${carBrand} ${carModel} 2023 terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, dan kredit di SEVA`
+    }
+    return null
+  }
+
   return (
     <>
+      <Seo
+        title={getMetaTitle()}
+        description={getMetaDescription() ?? ''}
+        image={modelDetailData?.images[0] || defaultSeoImage}
+      />
       <div className={styles.pageHeaderWrapper}>
         <PageHeaderSeva>{!isMobile ? <HeaderVariant /> : <></>}</PageHeaderSeva>
       </div>

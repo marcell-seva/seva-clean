@@ -30,19 +30,35 @@ import { Location } from 'utils/types'
 import { CarRecommendation } from 'utils/types/context'
 import { LoanRank } from 'utils/types/models'
 import styles from '../../../styles/components/organisms/cardetailcard.module.scss'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewLC,
+  saveDataForCountlyTrackerPageViewPDP,
+} from 'utils/navigate'
+import { trackDataCarType } from 'utils/types/utils'
+import {
+  getSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
+import { getLocalStorage } from 'utils/handler/localStorage'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { useState } from 'react'
 import { useDetectClickOutside } from 'react-detect-click-outside'
 
 type CarDetailCardProps = {
+  order?: number
   recommendation: CarRecommendation
   onClickLabel: () => void
   onClickResultSulit: () => void
   onClickResultMudah: () => void
+  setOpenInterestingModal: (value: boolean) => void
   isFilter?: boolean
   isFilterTrayOpened: boolean
-  order: number
 }
+
+const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
 export const CarDetailCard = ({
   order = 0,
@@ -52,6 +68,7 @@ export const CarDetailCard = ({
   onClickResultSulit,
   onClickResultMudah,
   isFilterTrayOpened,
+  setOpenInterestingModal,
 }: CarDetailCardProps) => {
   const router = useRouter()
   const { funnelQuery } = useFunnelQueryData()
@@ -63,6 +80,10 @@ export const CarDetailCard = ({
     SessionStorageKey.LoanRankFromPLP,
     false,
   )
+  const [, setCarModelLoanRankPLP] = useLocalStorage(
+    LocalStorageKey.carModelLoanRank,
+    null,
+  )
   const [isShowTooltip, setIsShowTooltip] = useState(false)
   const tooltipRef = useDetectClickOutside({
     onTriggered: () => {
@@ -71,6 +92,10 @@ export const CarDetailCard = ({
       }
     },
   })
+
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
 
   const singleVariantPrice = formatNumberByLocalization(
     recommendation.variants[0].priceValue,
@@ -102,6 +127,13 @@ export const CarDetailCard = ({
     million,
     ten,
   )
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
 
   const detailCarRoute = variantListUrl
     .replace(
@@ -120,6 +152,7 @@ export const CarDetailCard = ({
       : getCity()?.cityName || 'Jakarta Pusat'
 
   const navigateToLoanCalculator = () => {
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.ProductCardCalculate)
     const cityNameSlug = cityName.toLowerCase().trim().replace(/ +/g, '-')
     const brandSlug = recommendation.brand
       .toLowerCase()
@@ -129,12 +162,13 @@ export const CarDetailCard = ({
       .toLowerCase()
       .trim()
       .replace(/ +/g, '-')
-    const destinationUrl = loanCalculatorWithCityBrandModelVariantUrl
-      .replace(':cityName', cityNameSlug)
-      .replace(':brand', brandSlug)
-      .replace(':model', modelSlug)
-      .replace(':variant', '')
-
+    const destinationUrl =
+      loanCalculatorWithCityBrandModelVariantUrl
+        .replace(':cityName', cityNameSlug)
+        .replace(':brand', brandSlug)
+        .replace(':model', modelSlug)
+        .replace(':variant', '') + `?loanRankCVL=${recommendation.loanRank}`
+    trackCarClick(order + 1, false, destinationUrl)
     router.push(destinationUrl)
   }
 
@@ -157,7 +191,25 @@ export const CarDetailCard = ({
     }
   }
 
-  const trackCarClick = () => {
+  const saveDataCarForLoginPageView = () => {
+    saveSessionStorage(SessionStorageKey.IsShowBadgeCreditOpportunity, 'true')
+    const dataCarTemp = {
+      ...dataCar,
+      PELUANG_KREDIT_BADGE:
+        isUsingFilterFinancial && recommendation.loanRank === LoanRank.Green
+          ? 'Mudah disetujui'
+          : isUsingFilterFinancial && recommendation.loanRank === LoanRank.Red
+          ? 'Sulit disetujui'
+          : 'Null',
+    }
+
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarTemp),
+    )
+  }
+  const trackCarClick = (index: number, detailClick = true, url?: string) => {
+    const peluangKredit = getPeluangKredit(recommendation)
     trackPLPCarClick({
       Car_Brand: recommendation.brand,
       Car_Model: recommendation.model,
@@ -167,14 +219,40 @@ export const CarDetailCard = ({
       Cicilan: `Rp${lowestInstallment} jt/bln`,
       ...(cityOtr && { City: cityOtr?.cityName }),
     })
+    setCarModelLoanRankPLP(recommendation.loanRank)
+    const datatrack = {
+      CAR_BRAND: recommendation.brand,
+      CAR_MODEL: recommendation.model,
+      CAR_ORDER: index,
+      PAGE_DIRECTION_URL: window.location.origin + (url || detailCarRoute),
+      PELUANG_KREDIT_BADGE:
+        peluangKredit === 'Null' ? peluangKredit : peluangKredit + ' disetujui',
+    }
+
     setLoanRankPLP(true)
+    setTimeout(() => {
+      if (detailClick) {
+        trackEventCountly(CountlyEventNames.WEB_PLP_CAR_DETAIL_CLICK, datatrack)
+      } else {
+        trackEventCountly(
+          CountlyEventNames.WEB_PLP_PRODUCT_CARD_CTA_CLICK,
+          datatrack,
+        )
+      }
+    }, 500)
   }
 
-  const navigateToPDP = () => {
+  const navigateToPDP = (index: number) => () => {
     if (!isFilterTrayOpened) {
-      trackCarClick()
+      trackCarClick(index + 1)
+      saveDataCarForLoginPageView()
+      saveDataForCountlyTrackerPageViewPDP(PreviousButton.ProductCard)
       window.location.href = detailCarRoute
     }
+  }
+
+  const onClickSeeDetail = () => {
+    saveDataForCountlyTrackerPageViewPDP(PreviousButton.ProductCard, 'PLP')
   }
 
   const onClickToolTipIcon = (
@@ -199,7 +277,7 @@ export const CarDetailCard = ({
             src={recommendation.images[0]}
             className={styles.heroImg}
             alt={`${recommendation.brand} ${recommendation.model}`}
-            onClick={navigateToPDP}
+            onClick={navigateToPDP(order)}
             data-testid={elementId.CarImage}
             width={279}
             height={209}
@@ -210,7 +288,7 @@ export const CarDetailCard = ({
             src={recommendation.images[0]}
             className={styles.heroImg}
             alt={`${recommendation.brand} ${recommendation.model}`}
-            onClick={navigateToPDP}
+            onClick={navigateToPDP(order)}
             data-testid={elementId.CarImage}
             width={279}
             effect="blur"
@@ -223,6 +301,15 @@ export const CarDetailCard = ({
           onClick={onClickLabel}
           data-testid={elementId.PLP.Button.Promo}
         />
+        <Image
+          src={LogoPrimary}
+          height={30}
+          width={50}
+          alt="Logo SEVA"
+          className={styles.logoImg}
+          data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+          priority={true}
+        />
         {isFilter && recommendation.loanRank === 'Red' && (
           <LabelSulit onClick={onClickResultSulit} />
         )}
@@ -232,14 +319,14 @@ export const CarDetailCard = ({
         <div
           className={styles.contentWrapper}
           role="button"
-          onClick={navigateToPDP}
+          onClick={navigateToPDP(order)}
         >
-          <h3
+          <h2
             className={styles.brandModelText}
             data-testid={elementId.PLP.Text + 'brand-model-mobil'}
           >
             {recommendation.brand} {recommendation.model}
-          </h3>
+          </h2>
           <div
             className={styles.hargaOtrWrapper}
             data-testid={elementId.PLP.Text + 'harga-otr'}
@@ -320,22 +407,22 @@ export const CarDetailCard = ({
               </span>
             </div>
           </div>
-          <Link
-            href={detailCarRoute}
+          <span
+            role="link"
+            onClick={onClickSeeDetail}
             className={styles.linkLihatDetail}
-            onClick={trackCarClick}
             data-testid={elementId.PLP.Button.LihatDetail}
           >
             Lihat Detail
-          </Link>
+          </span>
         </div>
         <Button
           version={ButtonVersion.Secondary}
           size={ButtonSize.Big}
-          onClick={navigateToLoanCalculator}
+          onClick={() => setOpenInterestingModal(true)}
           data-testid={elementId.PLP.Button.HitungKemampuan}
         >
-          Hitung Kemampuan
+          Saya Tertarik
         </Button>
       </CardShadow>
     </div>

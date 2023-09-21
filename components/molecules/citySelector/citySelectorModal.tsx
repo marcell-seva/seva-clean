@@ -55,8 +55,8 @@ export const useCitySelectorModal = () => {
           label: '',
           value: '',
         }
-        tempObj.value = item.cityName
-        tempObj.label = item.cityName
+        tempObj.value = item?.cityName
+        tempObj.label = item?.cityName
         tempArray.push(tempObj)
       }
       return tempArray

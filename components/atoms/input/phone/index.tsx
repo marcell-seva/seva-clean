@@ -1,6 +1,7 @@
 import { Separator } from 'components/atoms/separator'
 import React, { useState } from 'react'
 import styles from 'styles/components/atoms/inputPhone.module.scss'
+import { InputVersionType } from 'utils/enum'
 import { PropsInput } from 'utils/types/props'
 
 const InputPhone = ({
@@ -13,12 +14,23 @@ const InputPhone = ({
   title,
   dataTestId,
   className,
+  version,
   ...props
 }: PropsInput): JSX.Element => {
   const [isFocus, setIsFocus] = useState(false)
   return (
     <div className={`${styles.wrapper} ${className}`}>
-      {title && <p className={styles.titleText}>{title}</p>}
+      {title && (
+        <p
+          className={
+            version === InputVersionType.Secondary
+              ? styles.titleSecondaryText
+              : styles.titlePrimaryText
+          }
+        >
+          {title}
+        </p>
+      )}
       <div
         className={`${styles.wrapperInput} ${
           isFocus ? styles.focus : styles.default

@@ -53,6 +53,7 @@ import { FormLCState } from 'pages/kalkulator-kredit/[[...slug]]'
 import { isIsoDateFormat } from 'utils/handler/regex'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import { navigateToKK } from 'utils/navigate'
 import Image from 'next/image'
 
 const CreditQualificationReviewPage = () => {
@@ -259,7 +260,7 @@ const CreditQualificationReviewPage = () => {
         return
       }
       if (simpleCarVariantDetails && !dataReview) {
-        router.push(creditQualificationUrl)
+        navigateToKK()
         return
       }
       if (simpleCarVariantDetails) {

@@ -19,10 +19,11 @@ import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import { api } from 'services/api'
 import Seo from 'components/atoms/seo'
+import { monthId } from 'utils/handler/date'
+import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
 import { CarProvider } from 'services/context'
-import Head from 'next/head'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 
 const NewCarResultPage = ({
@@ -58,13 +59,19 @@ const NewCarResultPage = ({
     setIsMobile(isClientMobile)
   }, [isClientMobile])
 
+  const todayDate = new Date()
+
+  const metaTitle =
+    `Harga OTR ` +
+    meta.title.split('20')[0] +
+    ` ${todayDate.getFullYear()} - Promo Cicilan bulan ${monthId(
+      todayDate.getMonth(),
+    )} | SEVA`
+  const metaDesc = `Beli mobil Toyota ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
+
   return (
     <>
-      <Seo
-        title={meta.title}
-        description={meta.description}
-        image={defaultSeoImage}
-      />
+      <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
       <CarProvider
         car={null}
         carOfTheMonth={[]}
@@ -192,7 +199,11 @@ export const getServerSideProps: GetServerSideProps<{
     const queryParam: any = {
       ...(downPaymentAmount && { downPaymentType: 'amount' }),
       ...(downPaymentAmount && { downPaymentAmount }),
-      ...(brand && { brand: String(brand)?.split(',') }),
+      ...(brand && {
+        brand: String(brand)
+          ?.split(',')
+          .map((item) => getCarBrand(item)),
+      }),
       ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
       ...(priceRangeGroup
         ? { priceRangeGroup }

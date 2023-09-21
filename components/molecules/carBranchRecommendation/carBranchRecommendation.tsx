@@ -32,6 +32,7 @@ import { ArrowRightNew } from 'components/atoms/icon/ArrowRightNew'
 import { CarBrandItem } from './CarBrandItem'
 import { client } from 'utils/helpers/const'
 import { HomePageDataLocalContext } from 'pages'
+import { useCar } from 'services/context/carContext'
 import Image from 'next/image'
 
 const LogoToyota = '/revamp/icon/logo-toyota-min.png'
@@ -55,7 +56,7 @@ export const CarBranchRecommendation = ({
   onHomepage = true,
 }: CarBranchRecommendationProps) => {
   const router = useRouter()
-  const { dataRecToyota } = useContext(HomePageDataLocalContext)
+  const { recommendationToyota } = useCar()
   const { patchFunnelQuery, clearQueryFilter: clearFunnelQuery } =
     useFunnelQueryData()
   const [isCheckedGroups, setIsCheckedBrand] = useState('Toyota')
@@ -64,7 +65,7 @@ export const CarBranchRecommendation = ({
   const [load, setLoad] = useState(false)
 
   const [recommendationLists, setRecommendationLists] =
-    useState<CarRecommendation[]>(dataRecToyota)
+    useState<CarRecommendation[]>(recommendationToyota)
 
   const carList: CarButtonProps[] = [
     {
@@ -234,7 +235,7 @@ export const CarBranchRecommendation = ({
   }
 
   const naturalSlideWidth = useMemo(() => {
-    const innerWidth = client && window.innerWidth
+    const innerWidth = client ? window.innerWidth : 0
     if (innerWidth <= 1024 && innerWidth >= 744) {
       return 100
     }
@@ -242,7 +243,7 @@ export const CarBranchRecommendation = ({
   }, [client && window.innerWidth])
 
   const naturalSlideHeight = useMemo(() => {
-    const innerWidth = client && window.innerWidth
+    const innerWidth = client ? window.innerWidth : 0
     if (innerWidth <= 1024 && innerWidth >= 744) {
       return 130
     } else if (
@@ -272,7 +273,7 @@ export const CarBranchRecommendation = ({
   }, [client && window.innerWidth])
 
   const lastSlideStyle = useMemo(() => {
-    const innerWidth = client && window.innerWidth
+    const innerWidth = client ? window.innerWidth : 0
     if (innerWidth <= 400) {
       return {
         width: isSmallMobile ? '75px' : '140px',
@@ -284,7 +285,7 @@ export const CarBranchRecommendation = ({
   }, [client && window.innerWidth, isSmallMobile])
 
   const slideStyle = useMemo(() => {
-    const innerWidth = client && window.innerWidth
+    const innerWidth = client ? window.innerWidth : 0
     if (innerWidth <= 400) {
       return { width: isSmallMobile ? '130px' : '140px', marginRight: '8px' }
     }

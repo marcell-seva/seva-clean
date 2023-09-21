@@ -34,6 +34,10 @@ import { getToken } from 'utils/handler/auth'
 import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import { TrackerFlag } from 'utils/types/models'
 import { HeaderMobile } from 'components/organisms'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewHomepage,
+} from 'utils/navigate'
 import Image from 'next/image'
 
 const RejectedImage = '/revamp/illustration/rejected-approval.webp'
@@ -277,6 +281,9 @@ export const CreditQualificationRejected = () => {
               subTitle="Jelajahi lebih lanjut layanan lain dari SEVA."
               icon={<IconHome width={24} height={24} color="#B4231E" />}
               onClick={() => {
+                saveDataForCountlyTrackerPageViewHomepage(
+                  PreviousButton.ButtonBackToHomepage,
+                )
                 router.push('/')
               }}
             />

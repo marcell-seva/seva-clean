@@ -136,7 +136,7 @@ export const PageHeaderSevaCarResults = (props: PageHeaderSevaProps) => {
                   <></>
                 )}
                 <LogoWrapper onClick={onClickLogoHeader}>
-                  <StyledImage src={LogoSeva} alt="seva-header-icon" />
+                  <StyledImage src={LogoSeva} alt="Logo SEVA" />
                 </LogoWrapper>
               </BurgerAndLogoWrapper>
               <Spacing />

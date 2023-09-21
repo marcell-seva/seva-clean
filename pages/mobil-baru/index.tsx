@@ -5,7 +5,6 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
 import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
 import {
-  CarRecommendation,
   CityOtrOption,
   FooterSEOAttributes,
   MobileWebTopMenuType,
@@ -21,6 +20,8 @@ import { MobileWebFooterMenuType } from 'utils/types/props'
 import styles from 'styles/pages/plp.module.scss'
 import { CarProvider } from 'services/context'
 import { generateBlurRecommendations } from 'utils/generateBlur'
+import { monthId } from 'utils/handler/date'
+import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 import { useMediaQuery } from 'react-responsive'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 
@@ -31,6 +32,14 @@ const NewCarResultPage = ({
   dataCities,
   dataDesktopMenu,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const todayDate = new Date()
+  const carBrand = meta.carRecommendations.carRecommendations[0]?.brand
+  const metaTitle = `Harga OTR ${carBrand} - Harga OTR dengan Promo Cicilan bulan ${monthId(
+    todayDate.getMonth(),
+  )} | SEVA`
+  const metaDesc = `Beli mobil ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
+  const metaBrandDesc = `Beli mobil ${carBrand} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
+
   const [isMobile, setIsMobile] = useState(useIsMobileSSr())
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const {
@@ -53,11 +62,15 @@ const NewCarResultPage = ({
 
   return (
     <>
-      <Seo
-        title={meta.title}
-        description={meta.description}
-        image={defaultSeoImage}
-      />
+      {meta.footer.location_tag !== '' ? (
+        <Seo
+          title={metaTitle}
+          description={metaBrandDesc}
+          image={defaultSeoImage}
+        />
+      ) : (
+        <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
+      )}
 
       <CarProvider
         car={null}
@@ -187,7 +200,11 @@ export const getServerSideProps: GetServerSideProps<{
     const queryParam: any = {
       ...(downPaymentAmount && { downPaymentType: 'amount' }),
       ...(downPaymentAmount && { downPaymentAmount }),
-      ...(brand && { brand: String(brand)?.split(',') }),
+      ...(brand && {
+        brand: String(brand)
+          ?.split(',')
+          .map((item) => getCarBrand(item)),
+      }),
       ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
       ...(priceRangeGroup
         ? { priceRangeGroup }
@@ -227,6 +244,7 @@ export const getServerSideProps: GetServerSideProps<{
     if (recommendation) {
       meta.carRecommendations = recommendation
     }
+
     if (brand) {
       if (typeof brand === 'string') {
         meta.footer.location_tag = brand

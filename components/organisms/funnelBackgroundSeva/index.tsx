@@ -142,7 +142,7 @@ export const FunnelBackgroundSeva = ({
     <div className="wrapper">
       <FloatingIcon />
       <div className="content-wrapper">
-        {topBanner.length > 0 ? (
+        {topBanner?.length > 0 ? (
           <ImageCarousel data={topBanner}>
             {!isMobile ? (
               <div className="widget-desktop-wrapper">

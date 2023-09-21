@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { InputHTMLAttributes } from 'react'
 import styles from 'styles/components/atoms/input.module.scss'
 import clsx from 'clsx'
 import { PropsInput } from 'utils/types/props'
+import { InputVersionType } from 'utils/enum'
 
 const Input = ({
   value,
@@ -13,11 +14,20 @@ const Input = ({
   title,
   dataTestId,
   className,
+  version,
   ...props
 }: PropsInput): JSX.Element => {
   return (
     <div className={styles.wrapper}>
-      <p className={styles.titleText}>{title}</p>
+      <p
+        className={
+          version === InputVersionType.Secondary
+            ? styles.titleSecondaryText
+            : styles.titlePrimaryText
+        }
+      >
+        {title}
+      </p>
       <input
         data-test-id={dataTestId}
         value={value}

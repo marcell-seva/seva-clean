@@ -10,6 +10,7 @@ interface Props {
   iconHeight?: number
   iconWidth?: number
   color?: string
+  onOpenTooltip?: () => void
 }
 
 export const Tooltip: React.FC<Props> = ({
@@ -17,10 +18,14 @@ export const Tooltip: React.FC<Props> = ({
   iconWidth = 18,
   color = '#878D98',
   content,
+  onOpenTooltip,
 }) => {
   const [isShowOverlay, setIsShowOverlay] = React.useState(false)
 
-  const handleOpenTooltip = () => setIsShowOverlay(true)
+  const handleOpenTooltip = () => {
+    setIsShowOverlay(true)
+    onOpenTooltip && onOpenTooltip()
+  }
 
   const handleCloseTooltip = () => setIsShowOverlay(false)
 

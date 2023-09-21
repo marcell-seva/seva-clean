@@ -68,14 +68,6 @@ export default function index({
   const [isMobile, setIsMobile] = useState(useIsMobileSSr())
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
-  useEffect(() => {
-    saveDesktopWebTopMenu(dataDesktopMenu)
-    saveMobileWebTopMenus(dataMobileMenu)
-    saveMobileWebFooterMenus(dataFooter)
-    saveCities(dataCities)
-    getAnnouncementBox()
-  }, [])
-
   const meta = useMemo(() => {
     const title =
       metaTagDataRes.data && metaTagDataRes.data.length > 0
@@ -87,6 +79,14 @@ export default function index({
         : ''
     return { title, description }
   }, [metaTagDataRes])
+
+  useEffect(() => {
+    saveDesktopWebTopMenu(dataDesktopMenu)
+    saveMobileWebTopMenus(dataMobileMenu)
+    saveMobileWebFooterMenus(dataFooter)
+    saveCities(dataCities)
+    getAnnouncementBox()
+  }, [])
 
   useEffect(() => {
     setIsMobile(isClientMobile)
@@ -123,7 +123,11 @@ export default function index({
           carArticleReviewRes: carArticleReviewRes,
         }}
       >
-        {isMobile ? <PdpMobile /> : <PdpDesktop />}
+        {isMobile ? (
+          <PdpMobile />
+        ) : (
+          <PdpDesktop metaTagDataRes={metaTagDataRes} />
+        )}
       </PdpDataLocalContext.Provider>
     </>
   )

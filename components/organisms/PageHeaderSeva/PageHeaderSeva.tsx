@@ -192,7 +192,7 @@ export const PageHeaderSeva = memo((props: PageHeaderSevaProps) => {
                 <StyledImage
                   data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
                   src={LogoSeva}
-                  alt="seva-header-icon"
+                  alt="Logo SEVA"
                   width="120"
                   height="74"
                 />

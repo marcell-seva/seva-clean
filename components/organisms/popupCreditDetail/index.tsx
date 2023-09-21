@@ -11,6 +11,9 @@ import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { Currency } from 'utils/handler/calculation'
 import { useBadgePromo } from 'utils/hooks/usebadgePromo'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getPageName } from 'utils/pageName'
 import Image from 'next/image'
 
 type VariantsProps = {
@@ -81,7 +84,15 @@ const PopupCreditDetail = ({
               visible={isTooltipOpen}
             >
               <IconInfo
-                onClick={() => setIsTooltipOpen(true)}
+                onClick={() => {
+                  setIsTooltipOpen(true)
+                  trackEventCountly(
+                    CountlyEventNames.WEB_CITY_SELECTOR_TOOLTIP_CLICK,
+                    {
+                      PAGE_ORIGINATION: getPageName(),
+                    },
+                  )
+                }}
                 className={styles.margin}
                 width={18}
                 height={18}

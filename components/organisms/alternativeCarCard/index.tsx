@@ -1,6 +1,10 @@
 import elementId from 'helpers/elementIds'
 import React from 'react'
-import { loanCalculatorDefaultUrl, variantListUrl } from 'utils/helpers/routes'
+import {
+  OTOVariantListUrl,
+  loanCalculatorDefaultUrl,
+  variantListUrl,
+} from 'utils/helpers/routes'
 import { getLowestInstallment } from 'utils/carModelUtils/carModelUtils'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { Button, CardShadow } from 'components/atoms'
@@ -11,18 +15,35 @@ import {
   trackCarBrandRecomItemClick,
   trackLCCarRecommendationClick,
 } from 'helpers/amplitude/seva20Tracking'
-import { LanguageCode, LocalStorageKey } from 'utils/enum'
+import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { Location } from 'utils/types'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useRouter } from 'next/router'
 import { CarRecommendation } from 'utils/types/context'
 import Image from 'next/image'
+import {
+  PreviousButton,
+  defineRouteName,
+  saveDataForCountlyTrackerPageViewPDP,
+} from 'utils/navigate'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import {
+  CarVariantListPageUrlParams,
+  trackDataCarType,
+} from 'utils/types/utils'
+import { getSessionStorage } from 'utils/handler/sessionStorage'
+import { removeCarBrand } from 'utils/handler/removeCarBrand'
 
 type AlternativeCarCardProps = {
   recommendation: CarRecommendation
   onClickLabel: () => void
   children?: React.ReactNode
   label?: React.ReactNode
+  pageOrigination?: string
+  carBrand?: string // for value brand after calculated
+  carModel?: string // for value model after calculated
+  isOTO?: boolean
 }
 
 export const AlternativeCarCard = ({
@@ -30,13 +51,23 @@ export const AlternativeCarCard = ({
   onClickLabel,
   children,
   label,
+  pageOrigination,
+  carBrand,
+  carModel,
+  isOTO = false,
 }: AlternativeCarCardProps) => {
   const router = useRouter()
   const [cityOtr] = useLocalStorage<Location | null>(
     LocalStorageKey.CityOtr,
     null,
   )
-  const detailCarRoute = variantListUrl
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
+  const brand = router.query.brand as string
+  const model = router.query.model as string
+
+  const detailCarRoute = (isOTO ? OTOVariantListUrl : variantListUrl)
     .replace(
       ':brand/:model',
       (recommendation.brand + '/' + recommendation.model.replace(/ +/g, '-'))
@@ -45,6 +76,66 @@ export const AlternativeCarCard = ({
     )
     .replace(':tab', '')
 
+  const getValueBrandAndModel = (value: string) => {
+    if (value && value.length !== 0 && value.includes('-')) {
+      return value
+        .replaceAll('-', ' ')
+        .toLowerCase()
+        .split(' ')
+        .map((s: any) => s.charAt(0).toUpperCase() + s.substring(1))
+        .join(' ')
+    } else if (value && value.length !== 0) {
+      return value
+    } else {
+      return 'Null'
+    }
+  }
+  const getValueBrand = (value: string) => {
+    if (value) {
+      return value
+        .replaceAll('-', ' ')
+        .toLowerCase()
+        .split(' ')
+        .map((s: any) => s.charAt(0).toUpperCase() + s.substring(1))
+        .join(' ')
+    } else {
+      return 'Null'
+    }
+  }
+
+  const trackCountlyCarRecommendation = () => {
+    trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CLICK, {
+      PAGE_ORIGINATION: pageOrigination ? pageOrigination : 'PLP - Empty Page',
+      PELUANG_KREDIT_BADGE:
+        !label || pageOrigination?.toLowerCase() === 'homepage'
+          ? 'Null'
+          : 'Mudah disetujui',
+
+      CAR_BRAND:
+        pageOrigination?.toLowerCase() === 'homepage'
+          ? 'Null'
+          : carBrand
+          ? getValueBrandAndModel(carBrand)
+          : getValueBrand(brand),
+      CAR_MODEL:
+        pageOrigination?.toLowerCase() === 'homepage'
+          ? 'Null'
+          : carModel
+          ? getValueBrandAndModel(removeCarBrand(carModel))
+          : getValueBrandAndModel(model),
+      CAR_BRAND_RECOMMENDATION: recommendation.brand,
+      CAR_MODEL_RECOMMENDATION: recommendation.model,
+      PAGE_DIRECTION_URL:
+        'https://' + window.location.hostname + detailCarRoute,
+      TENOR_OPTION: dataCar?.TENOR_OPTION,
+      TENOR_RESULT:
+        dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Green'
+          ? 'Mudah disetujui'
+          : dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+    })
+  }
   const trackCarRecommendation = () => {
     if (location.pathname.includes(loanCalculatorDefaultUrl)) {
       const lowestInstallment = getLowestInstallment(recommendation.variants)
@@ -69,6 +160,17 @@ export const AlternativeCarCard = ({
 
   const navigateToPDP = () => {
     trackCarRecommendation()
+    if (window.location.pathname.includes('kalkulator-kredit')) {
+      saveDataForCountlyTrackerPageViewPDP(
+        PreviousButton.CarRecommendation,
+        defineRouteName(window.location.pathname + window.location.search),
+      )
+    } else {
+      saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
+    }
+    if (!label) {
+      trackCountlyCarRecommendation()
+    }
     window.location.href = detailCarRoute
   }
 
@@ -77,6 +179,29 @@ export const AlternativeCarCard = ({
     lowestInstallment,
     LanguageCode.id,
   )
+
+  const onClickSeeDetail = () => {
+    trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CTA_CLICK, {
+      PAGE_ORIGINATION: 'PLP - Empty Page',
+      CAR_BRAND: recommendation.brand,
+      CAR_MODEL: recommendation.model,
+      CAR_BRAND_RECOMMENDATION: recommendation.brand,
+      CAR_MODEL_RECOMMENDATION: recommendation.model,
+      CTA_BUTTON: 'Lihat Detail',
+      PAGE_DIRECTION_URL: window.location.hostname + detailCarRoute,
+    })
+
+    if (window.location.pathname.includes('kalkulator-kredit')) {
+      saveDataForCountlyTrackerPageViewPDP(
+        PreviousButton.CarRecommendation,
+        defineRouteName(window.location.pathname + window.location.search),
+      )
+    } else {
+      saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
+    }
+
+    window.location.href = detailCarRoute
+  }
 
   return (
     <div className={styles.container}>
@@ -122,7 +247,7 @@ export const AlternativeCarCard = ({
           <Button
             version={ButtonVersion.Secondary}
             size={ButtonSize.Big}
-            onClick={() => (window.location.href = detailCarRoute)}
+            onClick={onClickSeeDetail}
             data-testid={elementId.CarRecommendation.Button.LihatDetail}
           >
             Lihat Detail

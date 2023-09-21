@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
 import styles from '../../../styles/components/organisms/headerMobile.module.scss'
-import { IconHamburger, IconSearch, IconLocationLine } from 'components/atoms'
-import { rootUrl } from 'utils/helpers/routes'
+import {
+  IconHamburger,
+  IconSearch,
+  IconLocationLine,
+  IconChevronLeft,
+} from 'components/atoms'
+import { rootOTOUrl, rootUrl } from 'utils/helpers/routes'
 import clsx from 'clsx'
 import {
   trackCitySelectorOpen,
@@ -13,7 +18,18 @@ import getCurrentEnvironment from 'helpers/environments'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import {
+  trackEventCountly,
+  valueForUserTypeProperty,
+  valueMenuTabCategory,
+} from 'helpers/countly/countly'
+import { getPageName } from 'utils/pageName'
 import Image from 'next/image'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewHomepage,
+} from 'utils/navigate'
 import dynamic from 'next/dynamic'
 
 const Overlay = dynamic(() =>
@@ -41,6 +57,10 @@ type HeaderMobileProps = {
     withBoxShadow?: boolean
     position?: 'fixed' | 'sticky'
   }
+  pageOrigination?: string
+  isGlobal?: boolean
+  transparent?: boolean
+  isNewCar?: boolean
 }
 
 export const HeaderMobile = ({
@@ -51,6 +71,10 @@ export const HeaderMobile = ({
   setShowAnnouncementBox,
   isShowAnnouncementBox = false,
   style,
+  pageOrigination,
+  isGlobal,
+  transparent = false,
+  isNewCar,
 }: HeaderMobileProps): JSX.Element => {
   const enableAnnouncementBoxAleph =
     getCurrentEnvironment.featureToggles.enableAnnouncementBoxAleph
@@ -63,12 +87,23 @@ export const HeaderMobile = ({
       trackCitySelectorOpen({
         Page_Origination_URL: window.location.href,
       })
+      trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_OPEN_CLICK, {
+        PAGE_ORIGINATION:
+          getPageName() === 'PLP'
+            ? getPageName()
+            : 'PDP - ' + valueMenuTabCategory(),
+        USER_TYPE: valueForUserTypeProperty(),
+        SOURCE_BUTTON: 'Location Icon',
+      })
       emitClickCityIcon()
     }
   }
 
   const handleSearch = () => {
     if (!isActive) {
+      trackEventCountly(CountlyEventNames.WEB_CAR_SEARCH_ICON_CLICK, {
+        PAGE_ORIGINATION: getPageName(),
+      })
       setIsOpenSearchModal(true)
       trackSearchbarOpen({
         Page_Origination_URL: window.location.href,
@@ -89,6 +124,11 @@ export const HeaderMobile = ({
     trackSevaLogoClick({
       Page_Origination_URL: window.location.href,
     })
+    trackEventCountly(CountlyEventNames.WEB_SEVA_LOGO_CLICK, {
+      PAGE_ORIGINATION: getPageName(),
+      USER_TYPE: valueForUserTypeProperty(),
+    })
+    saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
   }
 
   return (
@@ -105,50 +145,124 @@ export const HeaderMobile = ({
             isShowAnnouncementBox && enableAnnouncementBoxAleph,
           [styles.shadow]: style?.withBoxShadow,
           [styles.homepage]: router.pathname === '/' && !isActive,
+          [styles.transparent]: transparent,
         })}
       >
         <div className={styles.wrapperAnnouncementBox}>
           {router.pathname !== '/' && enableAnnouncementBoxAleph && (
             <WebAnnouncementBox
               onCloseAnnouncementBox={setShowAnnouncementBox}
+              pageOrigination={pageOrigination}
             />
           )}
-          <div className={styles.container}>
-            <div data-testid={elementId.Homepage.GlobalHeader.HamburgerMenu}>
-              <IconHamburger
-                width={24}
-                height={24}
-                onClick={handleToggleBurgerMenu}
-              />
-            </div>
-            <Link href={rootUrl} onClick={handleLogoClick}>
-              <Image
-                src={LogoPrimary}
-                height={30}
-                width={50}
-                alt="seva"
-                className={styles.logoImg}
-                data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
-                priority={true}
-              />
-            </Link>
-            <SidebarMobile
-              showSidebar={isActive}
-              isShowAnnouncementBox={isShowAnnouncementBox}
-            />
-            <div
-              className={styles.right}
-              data-testid={elementId.Homepage.GlobalHeader.IconSearch}
-            >
-              <IconSearch width={24} height={24} onClick={handleSearch} />
-              <div
-                onClick={handleClickCityIcon}
-                data-testid={elementId.Homepage.GlobalHeader.IconCitySelector}
+          {isNewCar ? (
+            <div className={styles.newContainer}>
+              <Link
+                data-testid={elementId.Homepage.GlobalHeader.HamburgerMenu}
+                className={styles.icons}
+                href={rootOTOUrl}
               >
-                <IconLocationLine width={24} height={24} />
+                <IconChevronLeft width={24} height={24} alt="SEVA back Icon" />
+              </Link>
+              {isGlobal ? (
+                <Link href={rootOTOUrl} onClick={handleLogoClick}>
+                  <Image
+                    src={LogoPrimary}
+                    height={30}
+                    width={50}
+                    alt="Logo SEVA"
+                    className={styles.logoImg}
+                    data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+                    priority={true}
+                  />
+                </Link>
+              ) : (
+                <Link href={rootUrl} onClick={handleLogoClick}>
+                  <Image
+                    src={LogoPrimary}
+                    height={30}
+                    width={50}
+                    alt="Logo SEVA"
+                    className={styles.logoImg}
+                    data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+                    priority={true}
+                  />
+                </Link>
+              )}
+              <div
+                className={styles.icons}
+                data-testid={elementId.Homepage.GlobalHeader.IconSearch}
+              >
+                <IconSearch
+                  width={24}
+                  height={24}
+                  onClick={handleSearch}
+                  alt="SEVA search Icon"
+                />
               </div>
             </div>
-          </div>
+          ) : (
+            <div className={styles.container}>
+              <div data-testid={elementId.Homepage.GlobalHeader.HamburgerMenu}>
+                <IconHamburger
+                  width={24}
+                  height={24}
+                  alt="SEVA burger menu Icon"
+                  onClick={handleToggleBurgerMenu}
+                />
+              </div>
+              {isGlobal ? (
+                <Link href={rootOTOUrl} onClick={handleLogoClick}>
+                  <Image
+                    src={LogoPrimary}
+                    height={30}
+                    width={50}
+                    alt="Logo SEVA"
+                    className={styles.logoImg}
+                    data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+                    priority={true}
+                  />
+                </Link>
+              ) : (
+                <Link href={rootUrl} onClick={handleLogoClick}>
+                  <Image
+                    src={LogoPrimary}
+                    height={30}
+                    width={50}
+                    alt="Logo SEVA"
+                    className={styles.logoImg}
+                    data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+                    priority={true}
+                  />
+                </Link>
+              )}
+              <SidebarMobile
+                showSidebar={isActive}
+                isShowAnnouncementBox={isShowAnnouncementBox}
+              />
+              <div
+                className={styles.right}
+                data-testid={elementId.Homepage.GlobalHeader.IconSearch}
+              >
+                <IconSearch
+                  width={24}
+                  height={24}
+                  onClick={handleSearch}
+                  alt="SEVA search Icon"
+                />
+                <div
+                  onClick={handleClickCityIcon}
+                  data-testid={elementId.Homepage.GlobalHeader.IconCitySelector}
+                >
+                  <IconLocationLine
+                    width={24}
+                    height={24}
+                    alt="SEVA location Icon"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         <SearchModal
           isOpen={isOpenSearchModal}

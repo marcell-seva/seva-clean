@@ -20,6 +20,8 @@ import {
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { t } from 'config/localization/locales/id'
 import { useUtils } from 'services/context/utilsContext'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 export const OTP = ({
   phoneNumber,
@@ -28,6 +30,7 @@ export const OTP = ({
   isOtpVerified,
   onFailed,
   savedTokenAfterVerify,
+  pageOrigination,
 }: any): JSX.Element => {
   const { lastOtpSentTime, setLastOtpSentTime } = useUtils()
   const [otp, setOtp] = useState<string>(' ')
@@ -49,6 +52,7 @@ export const OTP = ({
     LocalStorageKey.LastOtpSentPhoneNumber,
     '',
   )
+  const [isFieldClicked, setIsFieldClicked] = useState(false)
 
   const { countDownTime, startCountDownTime, setCountDownTimeInMilliseconds } =
     useCountDownTimer({
@@ -167,6 +171,11 @@ export const OTP = ({
     }
 
     target.setSelectionRange(0, target.value.length)
+    if (!isFieldClicked)
+      trackEventCountly(CountlyEventNames.WEB_OTP_CLICK, {
+        PAGE_ORIGINATION: pageOrigination,
+      })
+    setIsFieldClicked(true)
   }
 
   const focusToNextInput = (target: HTMLElement) => {
@@ -291,6 +300,9 @@ export const OTP = ({
 
   const resendOtp = async () => {
     trackOtpResendClick({ Page_Origination: window.location.href })
+    trackEventCountly(CountlyEventNames.WEB_OTP_RESEND_CLICK, {
+      PAGE_ORIGINATION: pageOrigination,
+    })
     const captcha = await getCaptchaToken()
     try {
       if (recaptchaWrapperRef) {
