@@ -10,7 +10,7 @@ import { CityOtrOption } from 'utils/types'
 import { HeaderMobile } from '../headerMobile'
 import MainHeroImage from '/public/revamp/illustration/main-hero-raize-cencored.webp'
 import SupergraphicImage from '/public/revamp/illustration/supergraphic-secondary-large.webp'
-import { HomePageDataLocalContext2 } from 'pages/adaOTOdiSEVA'
+import { HomePageDataLocalContext2 } from 'pages/adaSEVAdiOTO'
 import { useUtils } from 'services/context/utilsContext'
 
 type MainHeroLPProps = {
