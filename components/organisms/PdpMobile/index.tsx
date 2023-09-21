@@ -44,7 +44,7 @@ import {
 import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
-import { PdpDataOTOLocalContext } from 'pages/adaOTOdiSEVA/mobil-baru/[brand]/[model]/[[...slug]]'
+import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useQuery } from 'utils/hooks/useQuery'
 import { api } from 'services/api'
 import { useCar } from 'services/context/carContext'

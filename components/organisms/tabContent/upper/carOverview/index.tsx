@@ -42,7 +42,7 @@ import {
   saveDataForCountlyTrackerPageViewLC,
 } from 'utils/navigate'
 import { isCurrentCityJakartaPusatOrSurabaya } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
-import { PdpDataOTOLocalContext } from 'pages/adaOTOdiSEVA/mobil-baru/[brand]/[model]/[[...slug]]'
+import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
 import { AdaOTOdiSEVALeadsForm } from 'components/organisms/leadsForm/adaOTOdiSEVA/popUp'
 
 interface Props {

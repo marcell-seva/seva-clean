@@ -27,7 +27,7 @@ import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]
 import { useCar } from 'services/context/carContext'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
-import { PdpDataOTOLocalContext } from 'pages/adaOTOdiSEVA/mobil-baru/[brand]/[model]/[[...slug]]'
+import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
 
 type tabProps = {
   tab: string | undefined

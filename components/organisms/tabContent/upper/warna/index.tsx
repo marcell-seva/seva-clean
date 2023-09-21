@@ -7,7 +7,7 @@ import { PDPCarOverviewSkeleton } from 'components/organisms'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
-import { PdpDataOTOLocalContext } from 'pages/adaOTOdiSEVA/mobil-baru/[brand]/[model]/[[...slug]]'
+import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
 
 export const WarnaTab = ({ isShowAnnouncementBox, isOTO = false }: any) => {
   const {
