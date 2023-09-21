@@ -12,6 +12,11 @@ import { LocalStorageKey } from 'utils/enum'
 import { api } from 'services/api'
 import { useUtils } from 'services/context/utilsContext'
 import Link from 'next/link'
+import {
+  trackEventCountly,
+  valueMenuTabCategory,
+} from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 const SevaLogo = '/revamp/icon/logo-on-dark.webp'
 const ISOIcon = '/revamp/icon/iso.webp'
@@ -56,12 +61,22 @@ export const FooterMobile = ({ pageOrigination }: FooterProps) => {
 
     return url
   }
-
-  const handleClickMenu = (menuName: string) => {
+  const trackCountlyFooter = (menuUrl: string) => {
+    if (pageOrigination && pageOrigination.length !== 0) {
+      trackEventCountly(CountlyEventNames.WEB_FOOTER_CLICK, {
+        PAGE_ORIGINATION: pageOrigination.includes('PDP')
+          ? pageOrigination + valueMenuTabCategory()
+          : pageOrigination,
+        PAGE_DIRECTION_URL: formatMenuUrl(menuUrl),
+      })
+    }
+  }
+  const handleClickMenu = (menuName: string, menuUrl: string) => {
     trackFooterClick({
       Page_Origination_URL: window.location.href,
       Menu: menuName,
     })
+    trackCountlyFooter(menuUrl)
   }
 
   return (
@@ -82,18 +97,40 @@ export const FooterMobile = ({ pageOrigination }: FooterProps) => {
         </span>
         <div className={styles.linkedTextWrapper}>
           <span className={styles.gap}>
-            <Link href={urls.about}>Tentang Kami</Link>
-            <Link href={urls.termsAndConditionsSeva}>Syarat & Ketentuan</Link>
+            <Link
+              href={urls.about}
+              onClick={() => {
+                trackCountlyFooter(urls.about)
+              }}
+            >
+              Tentang Kami
+            </Link>
+            <Link
+              href={urls.termsAndConditionsSeva}
+              onClick={() => trackCountlyFooter(urls.termsAndConditionsSeva)}
+            >
+              Syarat & Ketentuan
+            </Link>
           </span>
           <span className={styles.gap}>
-            <Link href={urls.privacyPolicySeva}>Kebijakan Privasi</Link>
-            <Link href={urls.contactUs}>Hubungi Kami</Link>
+            <Link
+              href={urls.privacyPolicySeva}
+              onClick={() => trackCountlyFooter(urls.privacyPolicySeva)}
+            >
+              Kebijakan Privasi
+            </Link>
+            <Link
+              href={urls.contactUs}
+              onClick={() => trackCountlyFooter(urls.contactUs)}
+            >
+              Hubungi Kami
+            </Link>
           </span>
         </div>
         <div className={styles.socialWrapper}>
           <a
             href={urls.instagram}
-            onClick={() => handleClickMenu('Instagram')}
+            onClick={() => handleClickMenu('Instagram', urls.instagram)}
             rel="noreferrer noopener"
             target="_blank"
             datatest-id={elementId.Footer.LogoInstagram}
@@ -107,7 +144,7 @@ export const FooterMobile = ({ pageOrigination }: FooterProps) => {
           </a>
           <a
             href={urls.twitter}
-            onClick={() => handleClickMenu('Twitter')}
+            onClick={() => handleClickMenu('Twitter', urls.twitter)}
             rel="noreferrer noopener"
             target="_blank"
             datatest-id={elementId.Footer.LogoTwitter}
@@ -121,7 +158,7 @@ export const FooterMobile = ({ pageOrigination }: FooterProps) => {
           </a>
           <a
             href={urls.facebook}
-            onClick={() => handleClickMenu('Facebook')}
+            onClick={() => handleClickMenu('Facebook', urls.facebook)}
             rel="noreferrer noopener"
             target="_blank"
             datatest-id={elementId.Footer.LogoFacebook}
