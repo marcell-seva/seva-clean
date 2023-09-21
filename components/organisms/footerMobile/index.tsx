@@ -71,7 +71,7 @@ export const FooterMobile = ({ pageOrigination }: FooterProps) => {
           src={SevaLogo}
           width={61}
           height={31}
-          alt="seva"
+          alt="Logo SEVA Footer"
           className={styles.sevaLogo}
           loading="lazy"
         />
@@ -98,7 +98,12 @@ export const FooterMobile = ({ pageOrigination }: FooterProps) => {
             target="_blank"
             datatest-id={elementId.Footer.LogoInstagram}
           >
-            <IconInstagram width={32} height={32} color={colors.white} />
+            <IconInstagram
+              width={32}
+              height={32}
+              color={colors.white}
+              alt="SEVA Instagram Icon"
+            />
           </a>
           <a
             href={urls.twitter}
@@ -107,7 +112,12 @@ export const FooterMobile = ({ pageOrigination }: FooterProps) => {
             target="_blank"
             datatest-id={elementId.Footer.LogoTwitter}
           >
-            <IconTwitterOutlined width={32} height={32} color={colors.white} />
+            <IconTwitterOutlined
+              width={32}
+              height={32}
+              color={colors.white}
+              alt="SEVA Twitter Icon"
+            />
           </a>
           <a
             href={urls.facebook}
@@ -120,7 +130,7 @@ export const FooterMobile = ({ pageOrigination }: FooterProps) => {
               src={FacebookLogo}
               width={25}
               height={25}
-              alt="facebook outline"
+              alt="SEVA Facebook Icon"
             />
           </a>
         </div>

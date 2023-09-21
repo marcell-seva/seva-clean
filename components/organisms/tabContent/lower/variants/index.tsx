@@ -650,6 +650,7 @@ const TabContentLowerVariant = ({
                               color={'#246ED4'}
                               height={24}
                               width={24}
+                              alt="SEVA Transmition gear Icon"
                             />
                             <p
                               className={styles.openSans}
@@ -663,6 +664,7 @@ const TabContentLowerVariant = ({
                               color={'#246ED4'}
                               height={24}
                               width={24}
+                              alt="SEVA Gas Station Icon"
                             />
                             <p
                               className={styles.openSans}
