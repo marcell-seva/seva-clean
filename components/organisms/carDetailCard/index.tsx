@@ -47,6 +47,7 @@ import {
 } from 'utils/handler/sessionStorage'
 import { useState } from 'react'
 import { useDetectClickOutside } from 'react-detect-click-outside'
+import { getLocalStorage } from 'utils/handler/localStorage'
 
 type CarDetailCardProps = {
   order?: number
@@ -94,6 +95,10 @@ export const CarDetailCard = ({
     },
   })
 
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
+
   const singleVariantPrice = formatNumberByLocalization(
     recommendation.variants[0].priceValue,
     LanguageCode.id,
@@ -124,6 +129,13 @@ export const CarDetailCard = ({
     million,
     ten,
   )
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
 
   const detailCarRoute =
     rootOTOUrl +
@@ -182,20 +194,19 @@ export const CarDetailCard = ({
       return 'Null'
     }
   }
-  const saveDataCarForLoginPageView = () => {
-    const dataCar: trackDataCarType | null = getSessionStorage(
-      SessionStorageKey.PreviousCarDataBeforeLogin,
-    )
 
+  const saveDataCarForLoginPageView = () => {
+    saveSessionStorage(SessionStorageKey.IsShowBadgeCreditOpportunity, 'true')
     const dataCarTemp = {
       ...dataCar,
       PELUANG_KREDIT_BADGE:
-        recommendation.loanRank === LoanRank.Green
+        isUsingFilterFinancial && recommendation.loanRank === LoanRank.Green
           ? 'Mudah disetujui'
-          : recommendation.loanRank === LoanRank.Red
+          : isUsingFilterFinancial && recommendation.loanRank === LoanRank.Red
           ? 'Sulit disetujui'
           : 'Null',
     }
+
     saveSessionStorage(
       SessionStorageKey.PreviousCarDataBeforeLogin,
       JSON.stringify(dataCarTemp),
