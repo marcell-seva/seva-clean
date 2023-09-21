@@ -908,6 +908,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
           isOpen={isOpenCitySelectorModal}
           onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
           cityListFromApi={cities}
+          pageOrigination="PLP"
         />
         {openInterestingModal && (
           <AdaOTOdiSEVALeadsForm
