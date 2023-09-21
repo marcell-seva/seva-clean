@@ -251,7 +251,7 @@ const PromoSection = ({
                 className={styles.promoBannerSmall}
                 height={156}
                 width={208}
-                alt="promo seva"
+                alt="Promo Toyota Spektakuler Hemat Puluhan Juta"
                 loading="lazy"
               />
               <div>
@@ -288,7 +288,7 @@ const PromoSection = ({
               className={styles.promoBannerSmall}
               height={156}
               width={208}
-              alt="promo seva"
+              alt="Promo Daihatsu Tukar Mobil Kamu Dengan Mobil Daihatsu Baru"
               loading="lazy"
             />
 
@@ -327,7 +327,7 @@ const PromoSection = ({
               className={styles.promoBannerSmall}
               height={156}
               width={208}
-              alt="promo seva"
+              alt="Promo Cuma di SEVA dapat Asuransi Comprehensive dan Cashback"
               loading="lazy"
             />
 
