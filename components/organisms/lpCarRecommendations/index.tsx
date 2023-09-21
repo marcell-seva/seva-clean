@@ -111,7 +111,16 @@ const LpCarRecommendations = ({
       AmplitudeEventName.WEB_LP_BRANDRECOMMENDATION_CAR_SEE_ALL_CLICK,
       { Car_Brand: selectedBrand || 'Semua' },
     )
-    if (!selectedBrand) return navigateToPLP(PreviousButton.undefined)
+    if (!selectedBrand)
+      return isOTO
+        ? navigateToPLP(
+            PreviousButton.undefined,
+            '',
+            true,
+            false,
+            urls.internalUrls.duplicatedCarResultsUrl,
+          )
+        : navigateToPLP(PreviousButton.undefined)
 
     const path = router.asPath.split('/')[1]
     if (path === 'adaSEVAdiOTO') {
@@ -177,6 +186,7 @@ const LpCarRecommendations = ({
                   <AlternativeCarCard
                     recommendation={item}
                     onClickLabel={handleClickLabel}
+                    isOTO={isOTO}
                     label={
                       <LabelPromo
                         className={stylec.labelCard}

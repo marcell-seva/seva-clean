@@ -1,6 +1,10 @@
 import elementId from 'helpers/elementIds'
 import React from 'react'
-import { loanCalculatorDefaultUrl, variantListUrl } from 'utils/helpers/routes'
+import {
+  OTOVariantListUrl,
+  loanCalculatorDefaultUrl,
+  variantListUrl,
+} from 'utils/helpers/routes'
 import { getLowestInstallment } from 'utils/carModelUtils/carModelUtils'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { Button, CardShadow } from 'components/atoms'
@@ -39,6 +43,7 @@ type AlternativeCarCardProps = {
   pageOrigination?: string
   carBrand?: string // for value brand after calculated
   carModel?: string // for value model after calculated
+  isOTO?: boolean
 }
 
 export const AlternativeCarCard = ({
@@ -49,6 +54,7 @@ export const AlternativeCarCard = ({
   pageOrigination,
   carBrand,
   carModel,
+  isOTO = false,
 }: AlternativeCarCardProps) => {
   const router = useRouter()
   const [cityOtr] = useLocalStorage<Location | null>(
@@ -60,7 +66,8 @@ export const AlternativeCarCard = ({
   )
   const brand = router.query.brand as string
   const model = router.query.model as string
-  const detailCarRoute = variantListUrl
+
+  const detailCarRoute = (isOTO ? OTOVariantListUrl : variantListUrl)
     .replace(
       ':brand/:model',
       (recommendation.brand + '/' + recommendation.model.replace(/ +/g, '-'))
