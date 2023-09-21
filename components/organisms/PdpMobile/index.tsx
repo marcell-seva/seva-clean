@@ -695,6 +695,7 @@ export default function NewCarVariantList({
           isShowAnnouncementBox={showAnnouncementBox}
           pageOrigination={'PDP - ' + valueMenuTabCategory()}
           isNewCar={isOTO}
+          isGlobal={isOTO}
         />
         <div className={styles.content}>{renderContent()}</div>
         <FooterMobile />
