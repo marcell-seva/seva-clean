@@ -17,6 +17,7 @@ import { LanguageCode } from 'utils/enum'
 import { sortOptions } from 'utils/config/funnel.config'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { PreviousButton, navigateToPLP } from 'utils/navigate'
+import { useRouter } from 'next/router'
 import { isCurrentCityJakartaPusatOrSurabaya } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 
 type NavFilterMobileProps = {
@@ -46,6 +47,7 @@ export const NavigationFilterMobile = ({
 }: NavFilterMobileProps) => {
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
   const { sortBy } = funnelQuery
+  const router = useRouter()
   const filterSortOption = sortOptions.filter((x) => x.value === sortBy)[0]
   const sortFilter = filterSortOption?.label || ''
   const summaryCar = carlist?.length || 0

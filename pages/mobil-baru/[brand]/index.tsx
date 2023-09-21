@@ -20,9 +20,10 @@ import { MobileWebFooterMenuType } from 'utils/types/props'
 import { api } from 'services/api'
 import Seo from 'components/atoms/seo'
 import { monthId } from 'utils/handler/date'
+import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
-import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
+import { CarProvider } from 'services/context'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 
 const NewCarResultPage = ({
@@ -71,17 +72,27 @@ const NewCarResultPage = ({
   return (
     <>
       <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
-      {isMobile ? (
-        <PLP minmaxPrice={meta.MinMaxPrice} />
-      ) : (
-        <PLPDesktop
-          carRecommendation={meta.carRecommendations}
-          footer={meta.footer}
-        />
-      )}
-    </>
+      <CarProvider
+        car={null}
+        carOfTheMonth={[]}
+        typeCar={null}
+        carModel={null}
+        carModelDetails={null}
+        carVariantDetails={null}
+        recommendation={meta.carRecommendations.carRecommendations}
+        recommendationToyota={[]}
+      >
+        {isMobile ? (
+          <PLP minmaxPrice={meta.MinMaxPrice} />
+        ) : (
+          <PLPDesktop
+            carRecommendation={meta.carRecommendations}
+            footer={meta.footer}
+          />
+        )}
+      </CarProvider>
+      </>
   )
-}
 
 export default NewCarResultPage
 

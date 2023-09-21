@@ -3,7 +3,7 @@ import { useToast } from 'components/atoms/OldToast/Toast'
 import Seo from 'components/atoms/seo'
 import { HomePageShimmer } from 'components/molecules'
 import HeaderVariant from 'components/molecules/header/header'
-import { client, defaultSeoImage } from 'utils/helpers/const'
+import { client, defaultSeoImage } from 'const/const'
 import { trackLandingPageView } from 'helpers/amplitude/seva20Tracking'
 import {
   setTrackEventMoEngage,

@@ -37,16 +37,15 @@ import {
   saveDataForCountlyTrackerPageViewLC,
   saveDataForCountlyTrackerPageViewPDP,
 } from 'utils/navigate'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
-import clsx from 'clsx'
 import { trackDataCarType } from 'utils/types/utils'
 import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
+import { getLocalStorage } from 'utils/handler/localStorage'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { useState } from 'react'
 import { useDetectClickOutside } from 'react-detect-click-outside'
-import { getLocalStorage } from 'utils/handler/localStorage'
 
 type CarDetailCardProps = {
   order?: number

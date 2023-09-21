@@ -1,14 +1,16 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useMemo, useState } from 'react'
 import { PdpDesktop, PdpMobile } from 'components/organisms'
 import { api } from 'services/api'
 import { CarRecommendation } from 'utils/types/utils'
 import { InferGetServerSidePropsType } from 'next'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
-import { getToken } from 'utils/handler/auth'
 import { useUtils } from 'services/context/utilsContext'
-import { mergeModelDetailsWithLoanRecommendations } from 'services/recommendations'
+import { getToken } from 'utils/handler/auth'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
+import { mergeModelDetailsWithLoanRecommendations } from 'services/recommendations'
+import Seo from 'components/atoms/seo'
+import { defaultSeoImage } from 'utils/helpers/const'
 
 interface PdpDataLocalContextType {
   /**
@@ -66,6 +68,18 @@ export default function index({
   const [isMobile, setIsMobile] = useState(useIsMobileSSr())
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
+  const meta = useMemo(() => {
+    const title =
+      metaTagDataRes.data && metaTagDataRes.data.length > 0
+        ? metaTagDataRes.data[0].attributes.meta_title
+        : 'SEVA'
+    const description =
+      metaTagDataRes.data && metaTagDataRes.data.length > 0
+        ? metaTagDataRes.data[0].attributes.meta_description
+        : ''
+    return { title, description }
+  }, [metaTagDataRes])
+
   useEffect(() => {
     saveDesktopWebTopMenu(dataDesktopMenu)
     saveMobileWebTopMenus(dataMobileMenu)
@@ -91,6 +105,12 @@ export default function index({
 
   return (
     <>
+      <Seo
+        title={meta.title}
+        description={meta.description}
+        image={carModelDetailsRes.images[0] || defaultSeoImage}
+      />
+
       <PdpDataLocalContext.Provider
         value={{
           carRecommendationsResDefaultCity: carRecommendationsRes,

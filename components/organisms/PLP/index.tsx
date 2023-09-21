@@ -69,11 +69,11 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getPageName } from 'utils/pageName'
 import { LoanRank } from 'utils/types/models'
-import { useUtils } from 'services/context/utilsContext'
 import { temanSevaUrlPath } from 'services/temanseva'
 import { decryptValue } from 'utils/encryptionUtils'
-import dynamic from 'next/dynamic'
 import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
+import { useUtils } from 'services/context/utilsContext'
+import dynamic from 'next/dynamic'
 
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
@@ -216,6 +216,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
     saveRecommendation([])
     setPage(1)
     setShowLoading(true)
+    setSampleArray({ items: [] })
   }
 
   const handelSticky = (position: number) => {
@@ -422,15 +423,18 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
       trackPLPView()
     }
   }
+
   //handle scrolling
   useEffect(() => {
     window.scrollTo(0, 0)
     moengageViewPLP()
 
+    window.addEventListener('touchstart', getAnnouncementBox)
     window.addEventListener('scroll', handleScroll)
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('touchstart', getAnnouncementBox)
     }
   }, [])
 

@@ -501,13 +501,16 @@ export default function NewCarVariantList({
 
   useEffect(() => {
     if (dataAnnouncementBox) {
-      const isShowAnnouncement =
-        getSessionStorage(
-          getToken()
-            ? SessionStorageKey.ShowWebAnnouncementLogin
-            : SessionStorageKey.ShowWebAnnouncementNonLogin,
-        ) ?? true
-      if (isShowAnnouncement) setShowAnnouncementBox(true)
+      const isShowAnnouncement = getSessionStorage(
+        getToken()
+          ? SessionStorageKey.ShowWebAnnouncementLogin
+          : SessionStorageKey.ShowWebAnnouncementNonLogin,
+      )
+      if (typeof isShowAnnouncement !== 'undefined') {
+        setShowAnnouncementBox(isShowAnnouncement as boolean)
+      } else {
+        setShowAnnouncementBox(true)
+      }
     } else {
       setShowAnnouncementBox(false)
     }

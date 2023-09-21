@@ -380,6 +380,8 @@ const FilterMobile = ({
     }
 
     saveRecommendation(response?.carRecommendations || [])
+    setResetTmp(false)
+
     trackPLPSubmitFilter(trackFilterAction())
     setResetTmp(false)
     navigateToPLP(
