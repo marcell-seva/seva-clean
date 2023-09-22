@@ -2,12 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { NavigationTabV1 } from 'components/molecules'
 import { lowerSectionNavigationTab } from 'config/carVariantList.config'
 import styles from 'styles/pages/carVariantList.module.scss'
-import {
-  CreditTab,
-  PriceTab,
-  SpecificationTab,
-  SummaryTab,
-} from 'components/organisms'
+import { PriceTab, SummaryTab } from 'components/organisms'
 import { VideoDataType } from 'utils/types/utils'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
@@ -20,8 +15,7 @@ import {
   saveDataForCountlyTrackerPageViewLC,
 } from 'utils/navigate'
 import { getLocalStorage } from 'utils/handler/localStorage'
-import { LanguageCode, LocalStorageKey } from 'utils/enum'
-import { monthId } from 'utils/handler/date'
+import { LocalStorageKey } from 'utils/enum'
 
 type pdpLowerSectionProps = {
   onButtonClick: (value: boolean) => void
