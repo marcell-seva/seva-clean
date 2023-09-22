@@ -243,6 +243,7 @@ export const HeaderMobile = ({
               <SidebarMobile
                 showSidebar={isActive}
                 isShowAnnouncementBox={isShowAnnouncementBox}
+                isOTO={isGlobal}
               />
               <div
                 className={styles.right}
@@ -271,6 +272,7 @@ export const HeaderMobile = ({
         <SearchModal
           isOpen={isOpenSearchModal}
           handleCloseModal={() => setIsOpenSearchModal(false)}
+          isOTO={isGlobal}
         />
       </header>
       <Overlay isShow={isActive} onClick={() => setIsActive(false)} />

@@ -737,6 +737,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
           isShowAnnouncementBox={showAnnouncementBox}
           pageOrigination={'PLP'}
           isNewCar={isNewCar}
+          isGlobal={isOTO}
         />
 
         {!showLoading && sampleArray.items.length === 0 ? (

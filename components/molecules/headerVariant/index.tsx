@@ -17,7 +17,12 @@ import { getCarsSearchBar } from 'services/searchbar'
 import styles from 'styles/components/molecules/headerSearch.module.scss'
 import { LocalStorageKey } from 'utils/enum'
 import { convertObjectQuery } from 'utils/handler/convertObjectQuery'
-import { carResultsUrl, variantListUrl } from 'utils/helpers/routes'
+import {
+  OTONewCarUrl,
+  OTOVariantListUrl,
+  carResultsUrl,
+  variantListUrl,
+} from 'utils/helpers/routes'
 import elementId from 'utils/helpers/trackerId'
 import { Option } from 'utils/types'
 import { COMData, FunnelQueryKey } from 'utils/types/models'
@@ -44,6 +49,7 @@ interface HeaderVariantProps {
   closeModal?: (e: KeyboardEvent) => void
   suggestionListMobileWidth?: string
   hideModal: () => void
+  isOTO?: boolean
 }
 
 const SEARCH_NOT_FOUND_TEXT = 'Mobil tidak ditemukan'
@@ -54,6 +60,7 @@ export default function HeaderVariant({
   closeModal,
   hideModal,
   suggestionListMobileWidth = '90%',
+  isOTO = false,
 }: HeaderVariantProps) {
   const { patchFunnelQuery } = useFunnelQueryData()
   const [searchInputValue, setSearchInputValue] = useState('')
@@ -138,14 +145,14 @@ export default function HeaderVariant({
         PreviousButton.SearchIcon,
         isInLoanCalcKK ? 'Loan Calculator - Kualifikasi Kredit' : undefined,
       )
-      urlDestination = variantListUrl
+      urlDestination = (isOTO ? OTOVariantListUrl : variantListUrl)
         .replace('/:brand/:model', item.value)
         .replace(':tab?', '')
     } else {
       patchFunnelQuery({
         [FunnelQueryKey.Brand]: [item.label],
       })
-      urlDestination = carResultsUrl
+      urlDestination = isOTO ? OTONewCarUrl : carResultsUrl
     }
 
     // simpan pencarian ke dalam local storage
@@ -273,7 +280,9 @@ export default function HeaderVariant({
           <div className={styles.styledCarContentName} key={car.name}>
             <a
               className={styles.styledCarName}
-              href={`/mobil-baru${car.link.toLowerCase()}`}
+              href={`${
+                isOTO ? `/adaSEVAdiOTO` : ``
+              }/mobil-baru${car.link.toLowerCase()}`}
               onClick={onClickRecommedationList}
             >
               <div
@@ -313,17 +322,28 @@ export default function HeaderVariant({
       const funnelQueryTemp = {
         brand: data.label,
       }
-
-      navigateToPLP(PreviousButton.SearchBar, {
-        search: convertObjectQuery(funnelQueryTemp),
-      })
+      {
+        isOTO
+          ? navigateToPLP(
+              PreviousButton.SearchBar,
+              {
+                search: convertObjectQuery(funnelQueryTemp),
+              },
+              true,
+              false,
+              OTONewCarUrl,
+            )
+          : navigateToPLP(PreviousButton.SearchBar, {
+              search: convertObjectQuery(funnelQueryTemp),
+            })
+      }
     } else {
       saveDataForCountlyTrackerPageViewPDP(
         PreviousButton.SearchIcon,
         isInLoanCalcKK ? 'Loan Calculator - Kualifikasi Kredit' : undefined,
       )
       // use window location to reload page
-      window.location.href = carResultsUrl + data.value
+      window.location.href = (isOTO ? OTONewCarUrl : carResultsUrl) + data.value
     }
     // use location reload so that content re-fetched
     // window.location.reload()
