@@ -61,7 +61,7 @@ const NewCarResultPage = ({
         recommendationToyota={[]}
       >
         <div className={styles.mobile}>
-          <PLP minmaxPrice={meta.MinMaxPrice} />
+          <PLP minmaxPrice={meta.MinMaxPrice} isOTO={true} />
         </div>
         <div className={styles.desktop}>
           <PLPDesktop

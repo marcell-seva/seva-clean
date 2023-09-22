@@ -57,7 +57,6 @@ export const PdpLowerSection = ({
     !!filterStorage?.downPaymentAmount &&
     !!filterStorage?.monthlyIncome &&
     !!filterStorage?.tenure
-
   const loanRankcr = router.query.loanRankCVL ?? ''
   const upperTab = router.query.tab as string
 
@@ -147,6 +146,7 @@ export const PdpLowerSection = ({
         )
       case 'Spesifikasi':
         return <SpecificationTab />
+
       case 'Harga':
         return (
           <PriceTab
@@ -158,6 +158,7 @@ export const PdpLowerSection = ({
         )
       case 'Kredit':
         return <CreditTab />
+
       default:
         return (
           <SummaryTab

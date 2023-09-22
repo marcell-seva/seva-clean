@@ -245,7 +245,7 @@ const LpCarRecommendations = ({
                       }}
                       data-testid={elementId.PLP.Button.HitungKemampuan}
                     >
-                      Saya Tertarik
+                      {isOTO ? 'Saya Tertarik' : 'Hitung Kemampuan'}
                     </Button>
                   </AlternativeCarCard>
                 </SwiperSlide>
