@@ -33,6 +33,8 @@ import {
 } from 'utils/handler/getBrandAndModel'
 import { trackDataCarType } from 'utils/types/utils'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
+import { RouteName } from 'utils/navigate'
+import { removeCarBrand } from 'utils/handler/removeCarBrand'
 
 const searchOption = {
   keys: ['label'],
