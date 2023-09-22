@@ -43,7 +43,8 @@ const PopupCreditDetail = ({
       <div className={styles.wrapperCar}>
         <Image
           src={carVariant.variantDetail.images[0]}
-          width="188.39"
+          width="188"
+          height="141"
           alt="car-image"
         />
       </div>

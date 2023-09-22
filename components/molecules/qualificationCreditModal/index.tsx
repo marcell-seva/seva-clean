@@ -114,6 +114,8 @@ export const QualificationCreditModal: React.FC<
           src={MainImage}
           alt="Banner Qualification Kredit"
           className={styles.modalBanner}
+          width="200"
+          height="200"
         />
       </div>
 
