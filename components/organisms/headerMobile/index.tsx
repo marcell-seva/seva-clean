@@ -82,6 +82,8 @@ export const HeaderMobile = ({
 
   const router = useRouter()
 
+  const adaSeva = router.asPath.split('/')[1]
+
   const handleClickCityIcon = () => {
     if (!isActive) {
       trackCitySelectorOpen({
@@ -131,6 +133,8 @@ export const HeaderMobile = ({
     saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
   }
 
+  const redirectHome = adaSeva === 'adaSEVAdiOTO' ? rootOTOUrl : rootUrl
+
   return (
     <>
       <header
@@ -160,12 +164,12 @@ export const HeaderMobile = ({
               <Link
                 data-testid={elementId.Homepage.GlobalHeader.HamburgerMenu}
                 className={styles.icons}
-                href={rootOTOUrl}
+                href={redirectHome}
               >
                 <IconChevronLeft width={24} height={24} alt="SEVA back Icon" />
               </Link>
               {isGlobal ? (
-                <Link href={rootOTOUrl} onClick={handleLogoClick}>
+                <Link href={redirectHome} onClick={handleLogoClick}>
                   <Image
                     src={LogoPrimary}
                     height={30}
@@ -177,7 +181,7 @@ export const HeaderMobile = ({
                   />
                 </Link>
               ) : (
-                <Link href={rootUrl} onClick={handleLogoClick}>
+                <Link href={redirectHome} onClick={handleLogoClick}>
                   <Image
                     src={LogoPrimary}
                     height={30}
@@ -212,7 +216,7 @@ export const HeaderMobile = ({
                 />
               </div>
               {isGlobal ? (
-                <Link href={rootOTOUrl} onClick={handleLogoClick}>
+                <Link href={redirectHome} onClick={handleLogoClick}>
                   <Image
                     src={LogoPrimary}
                     height={30}
@@ -224,7 +228,7 @@ export const HeaderMobile = ({
                   />
                 </Link>
               ) : (
-                <Link href={rootUrl} onClick={handleLogoClick}>
+                <Link href={redirectHome} onClick={handleLogoClick}>
                   <Image
                     src={LogoPrimary}
                     height={30}
