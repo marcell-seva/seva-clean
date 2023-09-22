@@ -28,34 +28,20 @@ import {
   getLowestInstallment,
   getMinimumDp,
   getMinimumMonthlyInstallment,
-  getModelPriceRange,
 } from 'utils/carModelUtils/carModelUtils'
 import { savePreviouslyViewed } from 'utils/carUtils'
-import { defaultSeoImage, hundred, million, ten } from 'utils/helpers/const'
+import { hundred, million, ten } from 'utils/helpers/const'
 import { variantListUrl } from 'utils/helpers/routes'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { saveLocalStorage } from 'utils/handler/localStorage'
 import { LoanRank } from 'utils/types/models'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { CityOtrOption } from 'utils/types'
-import {
-  CarModelDetailsResponse,
-  CarRecommendation,
-  CarVariantDetails,
-  MainVideoResponseType,
-} from 'utils/types/utils'
+import { CarRecommendation } from 'utils/types/utils'
 import { HeaderAndContent } from '../HeaderAndContent/HeaderAndContent'
 import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
-import Seo from 'components/atoms/seo'
-import { monthId } from 'utils/handler/date'
-import { formatShortPrice } from '../OldPdpSectionComponents/FAQ/FAQ'
-import {
-  formatPriceNumber,
-  formatPriceNumberThousandDivisor,
-} from 'utils/numberUtils/numberUtils'
-import { MainVideoType } from '../ContentPage/Gallery/Video/Video'
 
 export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const router = useRouter()
@@ -79,34 +65,6 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const { funnelQuery } = useFunnelQueryData()
   const { DialogModal, showModal: showDialogModal } = useDialogModal()
   const [isShowLoading, setShowLoading] = useState(false)
-
-  const [videoReview, setVideoReview] = useState<MainVideoResponseType>()
-  useEffect(() => {
-    getVideoReview()
-  }, [])
-  const getVideoReview = async () => {
-    const dataVideoReview = carVideoReviewRes
-    const filterVideoReview = dataVideoReview.data.filter(
-      (video: MainVideoResponseType) => video.modelId === modelDetailData.id,
-    )[0]
-
-    if (filterVideoReview) {
-      const linkVideo = filterVideoReview.link.split(/[=&]/)[1]
-      const idThumbnailVideo = filterVideoReview.thumbnail.substring(
-        filterVideoReview.thumbnail.indexOf('d/') + 2,
-        filterVideoReview.thumbnail.lastIndexOf('/view'),
-      )
-      const thumbnailVideo =
-        'https://drive.google.com/uc?export=view&id=' + idThumbnailVideo
-      const dataMainVideo = {
-        uploadedBy: filterVideoReview.accountName,
-        videoId: linkVideo,
-        title: filterVideoReview.title,
-        thumbnailVideo: thumbnailVideo,
-      }
-      setVideoReview(filterVideoReview)
-    }
-  }
 
   const {
     saveCarVariantDetails,
@@ -284,73 +242,8 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
     }
   }, [])
 
-  const todayDate = new Date()
-
-  const capitalizeWord = (word: string) =>
-    word.charAt(0).toUpperCase() + word.slice(1)
-
-  const capitalizeIfString = (value: string) =>
-    typeof value === 'string'
-      ? value.split('-').map(capitalizeWord).join(' ')
-      : ''
-
-  const carBrand = capitalizeIfString(routerQuery.brand as string)
-  const carModel = capitalizeIfString(routerQuery.model as string)
-
-  const currentYear = todayDate.getFullYear()
-  const currentMonth = monthId(todayDate.getMonth())
-
-  const carOTRValue = carModelDetails?.variants[0].priceValue as number
-  const carOTR = isNaN(carOTRValue) ? null : `Rp ${carOTRValue / 1000000} Juta`
-
-  const getMetaTitle = () => {
-    switch (tab) {
-      case 'kredit':
-        return `Kredit ${carBrand} ${carModel} ${currentYear}. Simulasi Cicilan OTR ${
-          getCity().cityName
-        } dengan Loan Calculator | SEVA`
-      case 'spesifikasi':
-        return `Spesifikasi ${carBrand} ${carModel} ${currentYear} | SEVA`
-      case 'harga':
-        return `Harga ${carBrand} ${carModel} ${currentYear} ${
-          getCity().cityName
-        } Terbaru | SEVA`
-    }
-    return `Ringkasan Produk ${carBrand} ${carModel} ${currentYear} - Harga OTR Promo Bulan ${currentMonth} | SEVA`
-  }
-
-  const getMetaDescription = () => {
-    if (carOTR !== null) {
-      switch (tab) {
-        case 'kredit':
-          return `Hitung simulasi cicilan ${carBrand} ${carModel} ${currentYear}. Beli mobil ${carBrand} secara kredit, proses aman & mudah dengan Instant Approval* di SEVA."`
-        case 'spesifikasi':
-          return `Dapatkan informasi lengkap mengenai spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
-        case 'harga':
-          return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
-      }
-      return `Beli mobil ${carBrand} ${carModel} 2023 terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, dan kredit di SEVA`
-    }
-    return null
-  }
-  const recommendationsDetailData =
-    recommendation.length !== 0
-      ? recommendation
-      : carRecommendationsResDefaultCity.carRecommendations
-
   return (
     <>
-      <Seo
-        title={getMetaTitle()}
-        description={getMetaDescription() ?? ''}
-        image={modelDetailData?.images[0] || defaultSeoImage}
-        jsonLd={jsonLD(
-          carModelDetails,
-          carVariantDetails,
-          recommendationsDetailData,
-          videoReview,
-        )}
-      />
       <div className={styles.pageHeaderWrapper}>
         <PageHeaderSeva>{!isMobile ? <HeaderVariant /> : <></>}</PageHeaderSeva>
       </div>
@@ -403,190 +296,4 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
       <LoginAlertModal />
     </>
   )
-}
-
-const getItemListElement = (carModel: CarModelDetailsResponse | null) => {
-  return (
-    carModel?.variants.map((variant, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      item: {
-        '@type': 'Product',
-        name: `${carModel?.brand} ${carModel?.model} ${variant.name}`,
-        description: `Variant ${carModel?.brand} ${carModel?.model} ${variant.name}`,
-        vehicleTransmission: variant.transmission,
-        fuelType: variant.fuelType,
-        offers: {
-          '@type': 'Offer',
-          priceCurrency: 'IDR',
-          price: variant.priceValue,
-        },
-      },
-    })) || []
-  )
-}
-
-const getSelectedCar = (
-  recommendationsDetailData: CarRecommendation[] | undefined,
-  carVariant: CarVariantDetails | null,
-) => {
-  if (!recommendationsDetailData || !carVariant) return ''
-  const selected = recommendationsDetailData.find(
-    (item: CarRecommendation) => item.id === carVariant.modelDetail.id,
-  )
-  return selected || ''
-}
-
-const handlingCarLogo = (brand: string) => {
-  switch (brand) {
-    case 'Toyota':
-      return 'https://www.seva.id/_next/image?url=%2Frevamp%2Ficon%2Flogo-toyota.webp&w=48&q=75'
-    case 'Daihatsu':
-      return 'https://www.seva.id/_next/image?url=%2Frevamp%2Ficon%2Flogo-daihatsu.webp&w=48&q=75'
-    case 'Isuzu':
-      return 'https://www.seva.id/_next/image?url=%2Frevamp%2Ficon%2Flogo-isuzu.webp&w=48&q=75'
-    case 'BMW':
-      return 'https://www.seva.id/_next/image?url=%2Frevamp%2Ficon%2Flogo-bmw.webp&w=48&q=75'
-    case 'Peugeot':
-      return 'https://www.seva.id/_next/image?url=%2Frevamp%2Ficon%2Flogo-peugeot.webp&w=48&q=75'
-    default:
-      return 'https://www.seva.id/_next/image?url=%2Frevamp%2Ficon%2Flogo-toyota.webp&w=48&q=75'
-  }
-}
-
-const jsonLD = (
-  carModel: CarModelDetailsResponse | null,
-  carVariant: CarVariantDetails | null,
-  recommendationsDetailData?: CarRecommendation[],
-  videoReview?: MainVideoResponseType,
-) => {
-  const lowestAssetPrice = carModel?.variants[0].priceValue
-  const highestAssetPrice =
-    carModel?.variants[carModel?.variants.length - 1].priceValue
-  const highLowPrice = {
-    highestAssetPrice: highestAssetPrice || 0,
-    lowestAssetPrice: lowestAssetPrice || 0,
-  }
-  const formatLowestPrice = formatPriceNumber(
-    carModel?.variants[0].priceValue ?? 0,
-  )
-  const selectedCar = getSelectedCar(recommendationsDetailData, carVariant)
-
-  const priceRange =
-    carModel?.variants[carModel?.variants.length - 1].priceValue ===
-    carModel?.variants[0].priceValue
-      ? formatLowestPrice >= 1000
-        ? formatPriceNumberThousandDivisor(formatLowestPrice, LanguageCode.id)
-        : formatLowestPrice
-      : getModelPriceRange(highLowPrice, LanguageCode.id)
-
-  return {
-    videoObject: {
-      '@type': 'VideoObject',
-      name: videoReview?.title,
-      description: videoReview?.title,
-      thumbnailUrl: videoReview?.thumbnail,
-      uploadDate: videoReview?.createdAt,
-      embedUrl: videoReview?.link,
-      publisher: {
-        '@type': 'Organization',
-        name: videoReview?.accountName,
-        logo: 'https://yt3.googleusercontent.com/ytc/AOPolaSQYe9yssWU8fmq-MB-nmuifNUMpOnGYYALyEDL=s176-c-k-c0x00ffffff-no-rj',
-      },
-    },
-    product: {
-      '@type': 'Product',
-      name: `${carModel?.brand} ${carModel?.model}`,
-      model: `${carModel?.model}`,
-      image: carModel?.images[0],
-      url: `https://www.seva.id/mobil-baru/${carModel?.brand.toLocaleLowerCase()}/${carModel?.model
-        .replace(' ', '-')
-        .toLocaleLowerCase()}`,
-      bodyType: carVariant?.variantDetail.bodyType,
-      description: carVariant?.variantDetail.description,
-      brand: {
-        '@type': 'Brand',
-        name: carModel?.brand,
-        logo: handlingCarLogo(carModel?.brand ?? ''),
-      },
-      vehicleSeatingCapacity: {
-        '@type': 'QuantitativeValue',
-        value: carVariant?.variantDetail.carSeats,
-      },
-      fuelType: {
-        '@type': 'QualitativeValue',
-        name: carVariant?.variantDetail.fuelType,
-      },
-      vehicleTransmission: {
-        '@type': 'QualitativeValue',
-        name: carVariant?.variantDetail.transmission,
-      },
-      vehicleEngine: {
-        '@type': 'EngineSpecification',
-        name: `Mesin ${carVariant?.variantDetail.engineCapacity} cc`,
-      },
-      manufacturer: {
-        '@type': 'Organization',
-        name: carModel?.brand,
-      },
-      offers: {
-        '@type': 'Offer',
-        priceCurrency: 'IDR',
-        lowPrice: carModel?.variants[0].priceValue,
-        highPrice: carModel?.variants[carModel?.variants.length - 1].priceValue,
-        offerCicilan: carModel?.variants[0].monthlyInstallment,
-        offerDp: carModel?.variants[0].dpAmount,
-        tenor: carModel?.variants[0].tenure,
-      },
-    },
-    itemList: {
-      '@type': 'ItemList',
-      name: `Variant ${carModel?.brand} ${carModel?.model}`,
-      description: `Daftar Variant ${carModel?.brand} ${carModel?.model} 2023`,
-      itemListOrder: 'http://schema.org/ItemListOrderDescending',
-      numberOfItems: carModel?.variants.length,
-      itemListElement: getItemListElement(carModel),
-    },
-    FAQPage: {
-      '@type': 'FAQPage',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: `Berapa Cicilan / Kredit Bulanan ${carModel?.brand} ${carModel?.model} Terendah?`,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: ` Cicilan / kredit bulanan terendah untuk ${
-              carModel?.brand
-            } ${carModel?.model} dimulai dari Rp ${formatShortPrice(
-              carModel?.variants[0].priceValue || 0,
-            )} juta untuk ${
-              (carModel?.variants[0].tenure ?? 0) * 12
-            } bulan dengan DP Rp ${formatShortPrice(
-              carModel?.variants[0].dpAmount ?? 0,
-            )} juta.`,
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Berapa Harga Toyota Rush?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: `Harga ${carModel?.brand} ${carModel?.model} dimulai dari kisaran harga Rp ${priceRange} juta.`,
-          },
-        },
-        {
-          '@type': 'Question',
-          name: `Berapa Panjang Mobil ${carModel?.brand} ${carModel?.model}?`,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: `Panjang dimensi Toyota Rush adalah ${
-              selectedCar.length
-            } mm dan lebarnya ${
-              selectedCar ? selectedCar.width : ''
-            } mm, dan tinggi ${selectedCar ? selectedCar.height : ''} mm.`,
-          },
-        },
-      ],
-    },
-  }
 }
