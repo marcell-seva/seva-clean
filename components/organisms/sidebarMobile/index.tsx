@@ -103,7 +103,7 @@ const sidebarMobile = ({
     trackProfileAkunSayaClick({
       Page_Origination_URL: window.location.href,
     })
-    router.push(url)
+    window.location.href = url
   }
 
   return (
@@ -117,7 +117,8 @@ const sidebarMobile = ({
     >
       {isLogin ? (
         <>
-          <a
+          <div
+            role="navigation"
             onClick={() => {
               saveLocalStorage(
                 LocalStorageKey.PageBeforeProfile,
@@ -139,7 +140,7 @@ const sidebarMobile = ({
                 {phoneNumber?.code} | {phoneNumber?.number}
               </h2>
             </div>
-          </a>
+          </div>
 
           {/* TODO component for credit, maybe used later */}
           {/* <div className={styles.creditInfoWrapper}>

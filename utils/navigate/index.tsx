@@ -196,7 +196,10 @@ export const navigateToPLP = (
   })
 }
 
-export const navigateToKK = (option?: any) => {
+export const navigateToKK = (
+  navigateWithWindowLocation?: boolean,
+  option?: any,
+) => {
   const source = ''
   const refer = defineRouteName(location.pathname)
 
@@ -206,7 +209,11 @@ export const navigateToKK = (option?: any) => {
     JSON.stringify(dataPrevPage),
   )
 
-  return Router.push({ pathname: creditQualificationUrl, ...option })
+  if (navigateWithWindowLocation) {
+    return (window.location.href = creditQualificationUrl)
+  } else {
+    return Router.push({ pathname: creditQualificationUrl, ...option })
+  }
 }
 
 export const saveDataForCountlyTrackerPageViewPDP = (

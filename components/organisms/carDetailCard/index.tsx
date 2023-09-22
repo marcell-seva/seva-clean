@@ -171,7 +171,7 @@ export const CarDetailCard = ({
         .replace(':model', modelSlug)
         .replace(':variant', '') + `?loanRankCVL=${recommendation.loanRank}`
     trackCarClick(order + 1, false, destinationUrl)
-    router.push(destinationUrl)
+    window.location.href = destinationUrl
   }
 
   const getPeluangKredit = (carModel: CarRecommendation) => {

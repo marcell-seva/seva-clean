@@ -185,7 +185,9 @@ export const PageHeaderSevaCarResults = (props: PageHeaderSevaProps) => {
                 <WrapperInfoProfile>
                   {enableAccountDashboard && (
                     <WrapperRowLogout>
-                      <LogoutButton onClick={() => router.push('/akun/profil')}>
+                      <LogoutButton
+                        onClick={() => (window.location.href = '/akun/profil')}
+                      >
                         <StyledLogo>
                           <User />
                         </StyledLogo>

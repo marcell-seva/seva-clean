@@ -130,6 +130,8 @@ export const HeaderMobile = ({
       USER_TYPE: valueForUserTypeProperty(),
     })
     saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
+
+    window.location.href = redirectHome
   }
 
   const redirectHome = adaSeva === 'adaSEVAdiOTO' ? rootOTOUrl : rootUrl
@@ -167,7 +169,7 @@ export const HeaderMobile = ({
               >
                 <IconChevronLeft width={24} height={24} alt="SEVA back Icon" />
               </Link>
-              <Link href={redirectHome} onClick={handleLogoClick}>
+              <div role="navigation" onClick={handleLogoClick}>
                 <Image
                   src={LogoPrimary}
                   height={30}
@@ -177,7 +179,7 @@ export const HeaderMobile = ({
                   data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
                   priority={true}
                 />
-              </Link>
+              </div>
               <div
                 className={styles.icons}
                 data-testid={elementId.Homepage.GlobalHeader.IconSearch}
@@ -201,7 +203,7 @@ export const HeaderMobile = ({
                 />
               </div>
 
-              <Link href={redirectHome} onClick={handleLogoClick}>
+              <div role="navigation" onClick={handleLogoClick}>
                 <Image
                   src={LogoPrimary}
                   height={30}
@@ -211,7 +213,7 @@ export const HeaderMobile = ({
                   data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
                   priority={true}
                 />
-              </Link>
+              </div>
               <SidebarMobile
                 showSidebar={isActive}
                 isShowAnnouncementBox={isShowAnnouncementBox}

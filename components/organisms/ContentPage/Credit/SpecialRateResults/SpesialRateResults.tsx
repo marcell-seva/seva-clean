@@ -539,7 +539,7 @@ export const SpecialRateResults = ({
       router.push(loginUrl)
     }
   }
-  const goTopPreApprovalStartPage = () => navigateToKK()
+  const goTopPreApprovalStartPage = () => navigateToKK(true)
 
   const [hover, setHover] = useState(false)
   const onHover = () => {
