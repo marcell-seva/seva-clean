@@ -260,6 +260,8 @@ const forwardedInputSelect = <T extends FormControlValue>(
                     src={(item as OptionWithImage<string>)?.image || ''}
                     alt={item.label}
                     className={styles.dropdownItemImage}
+                    width="67"
+                    height="48"
                   />
                 )}
 

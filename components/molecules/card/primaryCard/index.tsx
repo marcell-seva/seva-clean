@@ -37,7 +37,13 @@ export default function PrimaryCard({
       className={styles.container}
     >
       <div className={styles.imageWrapper}>
-        <Image src={image} alt={title} className={styles.image} />
+        <Image
+          src={image}
+          alt={title}
+          className={styles.image}
+          width={'258'}
+          height={'194'}
+        />
 
         {label && <CommonLabel title={label} />}
       </div>
