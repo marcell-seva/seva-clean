@@ -1,4 +1,3 @@
-import MobileDetect from 'mobile-detect'
 import { GetServerSidePropsContext } from 'next'
 
 export const getIsSsrMobile = (context: GetServerSidePropsContext) => {

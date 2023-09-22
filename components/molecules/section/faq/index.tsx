@@ -87,7 +87,12 @@ export const Faq: React.FC<PropsInfo> = ({
       <div className={styles.heading}>
         {isWithIcon && (
           <div className={styles.iconInfo}>
-            <IconQuestion width={24} height={24} color="#B4231E" />
+            <IconQuestion
+              width={24}
+              height={24}
+              color="#B4231E"
+              alt="SEVA Tanda Tanya Icon"
+            />
           </div>
         )}
         <h3
@@ -122,7 +127,11 @@ export const Faq: React.FC<PropsInfo> = ({
                         : '',
                     }}
                   >
-                    <IconChevronDown width={16} height={16} />
+                    <IconChevronDown
+                      width={16}
+                      height={16}
+                      alt="SEVA Drop Down Pertama Icon"
+                    />
                   </div>
                 </div>
                 {/* <div ref={expandRef}> */}
@@ -158,7 +167,11 @@ export const Faq: React.FC<PropsInfo> = ({
                         : '',
                     }}
                   >
-                    <IconChevronDown width={16} height={16} />
+                    <IconChevronDown
+                      width={16}
+                      height={16}
+                      alt="SEVA Drop Down Pertama Icon"
+                    />
                   </div>
                 </div>
                 {/* <div ref={expandRef}> */}
@@ -180,9 +193,17 @@ export const Faq: React.FC<PropsInfo> = ({
           <span>{expandList ? 'Tutup' : 'Muat lebih banyak lagi'}</span>
           <div className={styles.spacingLeft}>
             {expandList ? (
-              <IconChevronUp width={16} height={16} />
+              <IconChevronUp
+                width={16}
+                height={16}
+                alt="SEVA Drop Down Pertama Icon"
+              />
             ) : (
-              <IconChevronDown width={16} height={16} />
+              <IconChevronDown
+                width={16}
+                height={16}
+                alt="SEVA Drop Down Pertama Icon"
+              />
             )}
           </div>
         </div>

@@ -5,6 +5,7 @@ export const IconHamburger: React.FC<PropsIcon> = ({
   width,
   height,
   color = '#05256E',
+  alt,
   onClick,
 }): JSX.Element => {
   return (
@@ -16,6 +17,7 @@ export const IconHamburger: React.FC<PropsIcon> = ({
       xmlns="http://www.w3.org/2000/svg"
       onClick={onClick}
     >
+      <title>{alt}</title>
       <path
         fillRule="evenodd"
         clipRule="evenodd"

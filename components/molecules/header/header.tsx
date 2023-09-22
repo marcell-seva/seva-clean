@@ -128,7 +128,7 @@ export default function HeaderVariant({
       Page_Origination_URL: getOriginationUrl(),
       Page_Direction_URL: window.location.href.replace('https://www.', ''),
     })
-    router.push(urlDestination)
+    window.location.href = urlDestination
   }
 
   const removeUnnecessaryDataFilter = (): void => {

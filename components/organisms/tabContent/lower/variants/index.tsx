@@ -48,6 +48,7 @@ import {
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import Image from 'next/image'
+import { AdaOTOdiSEVALeadsForm } from 'components/organisms/leadsForm/adaOTOdiSEVA/popUp'
 
 const rpIcon = '/revamp/illustration/rp-icon.webp'
 
@@ -57,6 +58,7 @@ type VariantsProps = {
   setOpenModal: (value: boolean) => void
   onCardClick: (value: CarVariantRecommendation) => void
   setSelectedTabValue?: (value: string) => void
+  isOTO?: boolean
 }
 const TabContentLowerVariant = ({
   carModelDetails,
@@ -64,6 +66,7 @@ const TabContentLowerVariant = ({
   setViewVariant,
   setSelectedTabValue,
   onCardClick,
+  isOTO = false,
 }: VariantsProps) => {
   const [toggleHorizontal, setToggleHorizontal] = useState(true)
   const [expandHorizontal, setExpandHorizontal] = useState(false)
@@ -73,6 +76,7 @@ const TabContentLowerVariant = ({
     LocalStorageKey.CityOtr,
     null,
   )
+  const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
 
   const isUsingFilterFinancial =
@@ -137,6 +141,14 @@ const TabContentLowerVariant = ({
     }
   }
 
+  const closeLeadsForm = () => {
+    setIsModalOpened(false)
+  }
+
+  const showLeadsForm = () => {
+    setIsModalOpened(true)
+  }
+
   const saveDataCarForLoginPageView = (carVariant: string) => {
     const dataCar: trackDataCarType | null = getSessionStorage(
       SessionStorageKey.PreviousCarDataBeforeLogin,
@@ -160,6 +172,8 @@ const TabContentLowerVariant = ({
     saveDataForCountlyTrackerPageViewLC(PreviousButton.VariantPriceList)
 
     setSelectedTabValue && setSelectedTabValue('Kredit')
+
+    // no need to use window.location.href because user still in PDP
     router.replace(
       {
         pathname: variantListUrl
@@ -251,7 +265,7 @@ const TabContentLowerVariant = ({
             className={styles.rowWithGap}
             data-testid={elementId.Text + 'harga'}
           >
-            <Image src={rpIcon} alt="rp icon" height={20} width={20} />
+            <Image src={rpIcon} alt="SEVA Rupiah Icon" height={20} width={20} />
             <h3 className={styles.textTitleSection}>Harga</h3>
           </div>
           <div>
@@ -264,10 +278,18 @@ const TabContentLowerVariant = ({
                   className={styles.toggleActive}
                   onClick={onClickHorizontalView}
                 >
-                  <IconToggleGridActive width={16} height={16} />
+                  <IconToggleGridActive
+                    width={16}
+                    height={16}
+                    alt="SEVA Menu Icon"
+                  />
                 </div>
                 <div onClick={onClickVerticalView}>
-                  <IconToggleListInactive width={16} height={16} />
+                  <IconToggleListInactive
+                    width={16}
+                    height={16}
+                    alt="SEVA List Icon"
+                  />
                 </div>
               </div>
             ) : (
@@ -276,13 +298,21 @@ const TabContentLowerVariant = ({
                 data-testid={elementId.PDP.Button.List}
               >
                 <div onClick={onClickHorizontalView}>
-                  <IconToggleGridInactive width={16} height={16} />
+                  <IconToggleGridInactive
+                    width={16}
+                    height={16}
+                    alt="SEVA Menu Icon"
+                  />
                 </div>
                 <div
                   className={styles.toggleActive}
                   onClick={onClickVerticalView}
                 >
-                  <IconToggleListActive width={16} height={16} />
+                  <IconToggleListActive
+                    width={16}
+                    height={16}
+                    alt="SEVA List Icon"
+                  />
                 </div>
               </div>
             )}
@@ -406,11 +436,15 @@ const TabContentLowerVariant = ({
                   </div>
                   <div
                     className={styles.buttonPrimary}
-                    onClick={() => navigateToCreditTab(carVariant, index)}
+                    onClick={() => {
+                      isOTO
+                        ? showLeadsForm()
+                        : navigateToCreditTab(carVariant, index)
+                    }}
                     data-testid={elementId.PDP.List.CTAHitungKemampuan}
                   >
                     <p style={{ color: '#ffffff', fontSize: 12 }}>
-                      Hitung Kemampuan
+                      {isOTO ? 'Saya Tertarik' : 'Hitung Kemampuan'}
                     </p>
                   </div>
                 </div>
@@ -531,11 +565,15 @@ const TabContentLowerVariant = ({
                   </div>
                   <div
                     className={styles.buttonPrimary}
-                    onClick={() => navigateToCreditTab(carVariant, index)}
+                    onClick={() => {
+                      isOTO
+                        ? showLeadsForm()
+                        : navigateToCreditTab(carVariant, index)
+                    }}
                     data-testid={elementId.PDP.List.CTAHitungKemampuan}
                   >
                     <p style={{ color: '#ffffff', fontSize: 12 }}>
-                      Hitung Kemampuan
+                      {isOTO ? 'Saya Tertarik' : 'Hitung Kemampuan'}
                     </p>
                   </div>
                 </div>
@@ -632,6 +670,7 @@ const TabContentLowerVariant = ({
                               color={'#246ED4'}
                               height={24}
                               width={24}
+                              alt="SEVA Transmition gear Icon"
                             />
                             <p
                               className={styles.openSans}
@@ -645,6 +684,7 @@ const TabContentLowerVariant = ({
                               color={'#246ED4'}
                               height={24}
                               width={24}
+                              alt="SEVA Gas Station Icon"
                             />
                             <p
                               className={styles.openSans}
@@ -657,11 +697,15 @@ const TabContentLowerVariant = ({
                       </div>
                       <div
                         className={styles.buttonPrimary}
-                        onClick={() => navigateToCreditTab(carVariant, index)}
+                        onClick={() => {
+                          isOTO
+                            ? showLeadsForm()
+                            : navigateToCreditTab(carVariant, index)
+                        }}
                         data-testid={elementId.PDP.Grid.CTAHitungKemampuan}
                       >
                         <p style={{ color: '#ffffff', fontSize: 12 }}>
-                          Hitung Kemampuan
+                          {isOTO ? 'Saya Tertarik' : 'Hitung Kemampuan'}
                         </p>
                       </div>
                     </div>
@@ -696,6 +740,7 @@ const TabContentLowerVariant = ({
           </div>
         )}
       </div>
+      {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
     </div>
   )
 }

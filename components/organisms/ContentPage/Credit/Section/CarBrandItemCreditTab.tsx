@@ -130,17 +130,14 @@ export const CarBrandItemCreditTab = ({
             onClickNewModel && onClickNewModel(false)
             onReset && onReset(false)
             setSpecialRateResults([])
-            router.push(
-              variantListUrl
-                .replace(
-                  ':brand/:model',
-                  (carModel.brand + '/' + carModel.model.replace(/ +/g, '-'))
-                    .replace(/ +/g, '')
-                    .toLowerCase(),
-                )
-                .replace(':tab', 'kredit'),
-            )
-            window.location.reload()
+            window.location.href = variantListUrl
+              .replace(
+                ':brand/:model',
+                (carModel.brand + '/' + carModel.model.replace(/ +/g, '-'))
+                  .replace(/ +/g, '')
+                  .toLowerCase(),
+              )
+              .replace(':tab', 'kredit')
           }
         })
       })
@@ -181,16 +178,14 @@ export const CarBrandItemCreditTab = ({
     getCarModelDetailsById(carModel.id)
       .then(handleCarModelDetailsUpdate(recommendation, saveCarModelDetails))
       .then(() => {
-        router.push(
-          variantListUrl
-            .replace(
-              ':brand/:model',
-              (carModel.brand + '/' + carModel.model.replace(/ +/g, '-'))
-                .replace(/ +/g, '')
-                .toLowerCase(),
-            )
-            .replace(':tab', ''),
-        )
+        window.location.href = variantListUrl
+          .replace(
+            ':brand/:model',
+            (carModel.brand + '/' + carModel.model.replace(/ +/g, '-'))
+              .replace(/ +/g, '')
+              .toLowerCase(),
+          )
+          .replace(':tab', '')
       })
       .catch((error) => {
         console.error(error)

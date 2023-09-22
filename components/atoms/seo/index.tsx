@@ -11,7 +11,9 @@ interface SeoProps {
 const Seo: React.FC<SeoProps> = ({ title, description, image }) => {
   const router = useRouter()
   const currentUrl = router.asPath
-
+  if (!title || !description || !image) {
+    return null
+  }
   return (
     <Head>
       <title>{title}</title>

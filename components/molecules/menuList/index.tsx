@@ -20,11 +20,13 @@ import { getPageName } from 'utils/pageName'
 type MenuListProps = {
   menuList?: MobileWebTopMenuType[]
   customerDetail?: CustomerInfoSeva
+  isOTO?: boolean
 }
 
 export const MenuList: React.FC<MenuListProps> = ({
   menuList,
   customerDetail,
+  isOTO = false,
 }): JSX.Element => {
   const [isLogin] = React.useState(!!getToken())
   const [isTemanSeva, setIsTemanSeva] = React.useState(false)
@@ -105,7 +107,7 @@ export const MenuList: React.FC<MenuListProps> = ({
               {menuItem.subMenu.length > 0 &&
                 menuItem.subMenu.map((sub: any, key: any) => {
                   if (sub.subMenu.length > 0) {
-                    return <MenuItem key={key} item={sub} />
+                    return <MenuItem key={key} item={sub} isOTO={isOTO} />
                   } else {
                     const icon = renderIcon(sub.menuName)
                     return (

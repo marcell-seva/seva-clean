@@ -38,6 +38,7 @@ interface Props {
   onClickCityOtrCarOverview: () => void
   onClickShareButton: () => void
   isShowAnnouncementBox: boolean | null
+  isOTO?: boolean
 }
 
 export const PdpUpperSection = ({
@@ -49,6 +50,7 @@ export const PdpUpperSection = ({
   onClickCityOtrCarOverview,
   onClickShareButton,
   isShowAnnouncementBox,
+  isOTO = false,
 }: Props) => {
   const router = useRouter()
 
@@ -134,7 +136,12 @@ export const PdpUpperSection = ({
   const renderContent = () => {
     switch (selectedTabValue) {
       case 'Warna':
-        return <WarnaTab isShowAnnouncementBox={isShowAnnouncementBox} />
+        return (
+          <WarnaTab
+            isShowAnnouncementBox={isShowAnnouncementBox}
+            isOTO={isOTO}
+          />
+        )
       case 'Eksterior':
         return (
           <ExteriorTab
@@ -171,7 +178,12 @@ export const PdpUpperSection = ({
           <Interior360ViewerTab isShowAnnouncementBox={isShowAnnouncementBox} />
         )
       default:
-        return <WarnaTab isShowAnnouncementBox={isShowAnnouncementBox} />
+        return (
+          <WarnaTab
+            isShowAnnouncementBox={isShowAnnouncementBox}
+            isOTO={isOTO}
+          />
+        )
     }
   }
 
@@ -203,6 +215,7 @@ export const PdpUpperSection = ({
             onClickCityOtrCarOverview={onClickCityOtrCarOverview}
             onClickShareButton={onClickShareButton}
             currentTabMenu={selectedTabValue}
+            isOTO={isOTO}
           />
         </>
       </div>

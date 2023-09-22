@@ -5,6 +5,7 @@ export const IconLocationLine: React.FC<PropsIcon> = ({
   width,
   height,
   color = '#05256E',
+  alt,
 }): JSX.Element => {
   return (
     <svg
@@ -14,6 +15,7 @@ export const IconLocationLine: React.FC<PropsIcon> = ({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <title>{alt}</title>
       <path
         fillRule="evenodd"
         clipRule="evenodd"

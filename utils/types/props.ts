@@ -127,6 +127,7 @@ export interface PropsIcon {
   className?: string
   isActive?: boolean
   datatestid?: string
+  alt?: string
 }
 
 export interface PropsInput extends React.ComponentProps<'input'> {

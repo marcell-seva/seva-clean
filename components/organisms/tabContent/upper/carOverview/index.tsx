@@ -42,28 +42,34 @@ import {
   saveDataForCountlyTrackerPageViewLC,
 } from 'utils/navigate'
 import { isCurrentCityJakartaPusatOrSurabaya } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
+import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
+import { AdaOTOdiSEVALeadsForm } from 'components/organisms/leadsForm/adaOTOdiSEVA/popUp'
 
 interface Props {
   onClickCityOtrCarOverview: () => void
   onClickShareButton: () => void
   currentTabMenu: string
+  isOTO?: boolean
 }
 
 export const CarOverview = ({
   onClickCityOtrCarOverview,
   onClickShareButton,
   currentTabMenu,
+  isOTO = false,
 }: Props) => {
   const {
     dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
-  } = useContext(PdpDataLocalContext)
+  } = useContext(isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext)
 
   const { carModelDetails, carVariantDetails } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
   )
+
+  const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
 
   const modelDetail =
     carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
@@ -91,6 +97,14 @@ export const CarOverview = ({
       }) || []
     )
   }, [modelDetail])
+
+  const closeLeadsForm = () => {
+    setIsModalOpened(false)
+  }
+
+  const showLeadsForm = () => {
+    setIsModalOpened(true)
+  }
 
   const onClickToolTipIcon = () => {
     setIsShowTooltip(true)
@@ -380,7 +394,12 @@ export const CarOverview = ({
               onClick={onClickOtrCity}
               data-testid={elementId.PDP.CarOverview.CityOtr}
             >
-              <IconEdit width={16} height={16} color="#246ED4" />
+              <IconEdit
+                width={16}
+                height={16}
+                color="#246ED4"
+                alt="SEVA pen Icon"
+              />
             </button>
           )}
         </div>
@@ -435,7 +454,12 @@ export const CarOverview = ({
         >
           <TextButton
             leftIcon={() => (
-              <IconDownload width={16} height={16} color="#246ED4" />
+              <IconDownload
+                width={16}
+                height={16}
+                color="#246ED4"
+                alt="SEVA download Icon"
+              />
             )}
             data-testid={elementId.PDP.CTA.UnduhBrosur}
           >
@@ -449,10 +473,10 @@ export const CarOverview = ({
           <Button
             version={ButtonVersion.PrimaryDarkBlue}
             size={ButtonSize.Big}
-            onClick={onClickCalculateCta}
+            onClick={isOTO ? showLeadsForm : onClickCalculateCta}
             data-testid={elementId.PDP.Button.HitungKemampuan}
           >
-            Hitung Kemampuan
+            {isOTO ? 'Saya Tertarik' : 'Hitung Kemampuan'}
           </Button>
         </div>
 
@@ -461,9 +485,15 @@ export const CarOverview = ({
           onClick={onClickShareButtonHandler}
           data-testid={elementId.PDP.Button.Share}
         >
-          <IconShare width={32} height={32} color="#05256E" />
+          <IconShare
+            width={32}
+            height={32}
+            color="#05256E"
+            alt="SEVA Share Icon"
+          />
         </button>
       </div>
+      {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
     </div>
   )
 }

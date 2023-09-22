@@ -320,9 +320,8 @@ export const AdaOTOdiSEVALeadsForm: React.FC<PropsLeadsForm> = ({
             <div className={styles.foreground}>
               <h2 className={styles.textHeading}>Tim Kami Siap Membantumu</h2>
               <p className={styles.textDesc}>
-                Untuk tahu lebih lanjut, yuk ngobrol dengan dengan Agen SEVA.
-                Kami akan menghubungi kamu <br />
-                dalam 1x24 jam.
+                Untuk tahu lebih lanjut, yuk ngobrol dengan <br /> tim kami.
+                Kami akan menghubungi kamu <br /> dalam 1x24 jam.
               </p>
               <div className={styles.form}>
                 <Input
@@ -338,7 +337,7 @@ export const AdaOTOdiSEVALeadsForm: React.FC<PropsLeadsForm> = ({
                   dataTestId={elementId.PLP.LeadsForm.PhoneNumber}
                   disabled={isUserLoggedIn}
                   placeholder="Masukkan nomor HP"
-                  title="Nomor Handphone"
+                  title="Nomor HP"
                   value={phone}
                   onChange={(e: any) => handleInputPhone(e.target.value)}
                   onFocus={onClickPhoneField}

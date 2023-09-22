@@ -56,16 +56,14 @@ export const CarBrandItem = ({
             Car_Model: carModel.model,
           })
         }
-        router.push(
-          variantListUrl
-            .replace(
-              ':brand/:model',
-              (carModel.brand + '/' + carModel.model.replace(/ +/g, '-'))
-                .replace(/ +/g, '')
-                .toLowerCase(),
-            )
-            .replace(':tab', ''),
-        )
+        window.location.href = variantListUrl
+          .replace(
+            ':brand/:model',
+            (carModel.brand + '/' + carModel.model.replace(/ +/g, '-'))
+              .replace(/ +/g, '')
+              .toLowerCase(),
+          )
+          .replace(':tab', '')
       })
   }
 

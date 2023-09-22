@@ -89,7 +89,7 @@ const LpCarRecommendations = ({
 
     const newPath = window.location.pathname + path
 
-    router.push(isOTO ? newPath : path)
+    window.location.href = isOTO ? newPath : path
   }
 
   const handleClickLabel = () => {
@@ -129,7 +129,21 @@ const LpCarRecommendations = ({
       AmplitudeEventName.WEB_LP_BRANDRECOMMENDATION_CAR_SEE_ALL_CLICK,
       { Car_Brand: selectedBrand || 'Semua' },
     )
-    if (!selectedBrand) return navigateToPLP(PreviousButton.undefined)
+    if (!selectedBrand)
+      return isOTO
+        ? navigateToPLP(
+            PreviousButton.undefined,
+            '',
+            true,
+            false,
+            urls.internalUrls.duplicatedCarResultsUrl,
+          )
+        : navigateToPLP(PreviousButton.undefined)
+
+    const path = router.asPath.split('/')[1]
+    if (path === 'adaSEVAdiOTO') {
+      return router.push(`/adaSEVAdiOTO/mobil-baru/${selectedBrand}`)
+    }
 
     navigateToPLP(PreviousButton.undefined, {
       search: new URLSearchParams({ brand: selectedBrand }).toString(),
@@ -190,6 +204,7 @@ const LpCarRecommendations = ({
                   <AlternativeCarCard
                     recommendation={item}
                     onClickLabel={handleClickLabel}
+                    isOTO={isOTO}
                     label={
                       <LabelPromo
                         className={stylec.labelCard}
@@ -230,7 +245,7 @@ const LpCarRecommendations = ({
                       }}
                       data-testid={elementId.PLP.Button.HitungKemampuan}
                     >
-                      Saya Tertarik
+                      {isOTO ? 'Saya Tertarik' : 'Hitung Kemampuan'}
                     </Button>
                   </AlternativeCarCard>
                 </SwiperSlide>

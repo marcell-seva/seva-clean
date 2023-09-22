@@ -17,7 +17,6 @@ import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import { hundred, million, ten } from 'utils/helpers/const'
 import {
   loanCalculatorWithCityBrandModelVariantUrl,
-  rootOTOUrl,
   variantListUrl,
 } from 'utils/helpers/routes'
 import {
@@ -47,6 +46,7 @@ import {
 } from 'utils/handler/sessionStorage'
 import { useState } from 'react'
 import { useDetectClickOutside } from 'react-detect-click-outside'
+import { getLocalStorage } from 'utils/handler/localStorage'
 
 type CarDetailCardProps = {
   order?: number
@@ -54,9 +54,13 @@ type CarDetailCardProps = {
   onClickLabel: () => void
   onClickResultSulit: () => void
   onClickResultMudah: () => void
+  setOpenInterestingModal: (value: boolean) => void
   isFilter?: boolean
   isFilterTrayOpened: boolean
+  isOTO?: boolean
 }
+
+const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
 export const CarDetailCard = ({
   order = 0,
@@ -66,6 +70,8 @@ export const CarDetailCard = ({
   onClickResultSulit,
   onClickResultMudah,
   isFilterTrayOpened,
+  setOpenInterestingModal,
+  isOTO = false,
 }: CarDetailCardProps) => {
   const router = useRouter()
   const { funnelQuery } = useFunnelQueryData()
@@ -89,6 +95,10 @@ export const CarDetailCard = ({
       }
     },
   })
+
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
 
   const singleVariantPrice = formatNumberByLocalization(
     recommendation.variants[0].priceValue,
@@ -120,18 +130,23 @@ export const CarDetailCard = ({
     million,
     ten,
   )
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
 
-  const detailCarRoute =
-    rootOTOUrl +
-    variantListUrl
-      .replace(
-        ':brand/:model',
-        (recommendation.brand + '/' + recommendation.model.replace(/ +/g, '-'))
-          .replace(/ +/g, '')
-          .toLowerCase(),
-      )
-      .replace(':tab', '')
-      .replace('?', `?loanRankCVL=${recommendation.loanRank}&source=plp`)
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
+
+  const detailCarRoute = variantListUrl
+    .replace(
+      ':brand/:model',
+      (recommendation.brand + '/' + recommendation.model.replace(/ +/g, '-'))
+        .replace(/ +/g, '')
+        .toLowerCase(),
+    )
+    .replace(':tab', '')
+    .replace('?', `?loanRankCVL=${recommendation.loanRank}&source=plp`)
 
   const cityName =
     recommendation.brand === 'Daihatsu' &&
@@ -178,20 +193,19 @@ export const CarDetailCard = ({
       return 'Null'
     }
   }
-  const saveDataCarForLoginPageView = () => {
-    const dataCar: trackDataCarType | null = getSessionStorage(
-      SessionStorageKey.PreviousCarDataBeforeLogin,
-    )
 
+  const saveDataCarForLoginPageView = () => {
+    saveSessionStorage(SessionStorageKey.IsShowBadgeCreditOpportunity, 'true')
     const dataCarTemp = {
       ...dataCar,
       PELUANG_KREDIT_BADGE:
-        recommendation.loanRank === LoanRank.Green
+        isUsingFilterFinancial && recommendation.loanRank === LoanRank.Green
           ? 'Mudah disetujui'
-          : recommendation.loanRank === LoanRank.Red
+          : isUsingFilterFinancial && recommendation.loanRank === LoanRank.Red
           ? 'Sulit disetujui'
           : 'Null',
     }
+
     saveSessionStorage(
       SessionStorageKey.PreviousCarDataBeforeLogin,
       JSON.stringify(dataCarTemp),
@@ -236,7 +250,7 @@ export const CarDetailCard = ({
       trackCarClick(index + 1)
       saveDataCarForLoginPageView()
       saveDataForCountlyTrackerPageViewPDP(PreviousButton.ProductCard)
-      router.push(detailCarRoute)
+      window.location.href = detailCarRoute
     }
   }
 
@@ -289,6 +303,15 @@ export const CarDetailCard = ({
           className={styles.labelCard}
           onClick={onClickLabel}
           data-testid={elementId.PLP.Button.Promo}
+        />
+        <Image
+          src={LogoPrimary}
+          height={30}
+          width={50}
+          alt="Logo SEVA"
+          className={styles.logoImg}
+          data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+          priority={true}
         />
         {isFilter && recommendation.loanRank === 'Red' && (
           <LabelSulit onClick={onClickResultSulit} />
@@ -399,10 +422,12 @@ export const CarDetailCard = ({
         <Button
           version={ButtonVersion.Secondary}
           size={ButtonSize.Big}
-          onClick={navigateToLoanCalculator}
+          onClick={() =>
+            isOTO ? setOpenInterestingModal(true) : navigateToLoanCalculator()
+          }
           data-testid={elementId.PLP.Button.HitungKemampuan}
         >
-          Hitung Kemampuan
+          {isOTO ? 'Saya Tertarik' : 'Hitung Kemampuan'}
         </Button>
       </CardShadow>
     </div>

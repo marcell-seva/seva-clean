@@ -17,7 +17,7 @@ const HeaderCreditClasificationMobile = (): JSX.Element => {
           <IconChevronLeft height={24} width={24} />
         </div>
         <div className={styles.logoMiddle}>
-          <Image src={LogoPrimary} width={58} alt="seva" />
+          <Image src={LogoPrimary} width={58} height={35} alt="seva" />
         </div>
       </div>
     </>

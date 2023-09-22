@@ -21,7 +21,11 @@ import {
   IconCar,
 } from 'components/atoms'
 import { CarVariantRecommendation } from 'utils/types/utils'
-import { variantListUrl } from 'utils/helpers/routes'
+import {
+  OTOCarResultsUrl,
+  OTOVariantListUrl,
+  variantListUrl,
+} from 'utils/helpers/routes'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
@@ -39,6 +43,7 @@ type PromoSectionProps = {
   info?: any
   onPage?: string
   setSelectedTabValue?: (value: string) => void
+  isOTO?: boolean
 }
 
 const PromoSection = ({
@@ -49,6 +54,7 @@ const PromoSection = ({
   info,
   onPage,
   setSelectedTabValue,
+  isOTO = false,
 }: PromoSectionProps) => {
   const router = useRouter()
   const brand = router.query.brand as string
@@ -77,12 +83,10 @@ const PromoSection = ({
 
   const navigateToSpecificationTab = () => {
     setSelectedTabValue && setSelectedTabValue('Spesifikasi')
-    router.push(
-      variantListUrl
-        .replace(':brand', brand)
-        .replace(':model', model)
-        .replace(':tab?', 'spesifikasi'),
-    )
+    window.location.href = (isOTO ? OTOVariantListUrl : variantListUrl)
+      .replace(':brand', brand)
+      .replace(':model', model)
+      .replace(':tab?', 'spesifikasi')
   }
   const trackCountlePromoCLick = (promoDetail: string, promoOrder: number) => {
     trackEventCountly(CountlyEventNames.WEB_PROMO_CLICK, {
@@ -102,7 +106,12 @@ const PromoSection = ({
         <div className={styles.cardInfoDetail} style={{ padding: '16px' }}>
           <div className={styles.row}>
             <div className={styles.rowWithGap}>
-              <IconCar width={24} height={24} color={'#B4231E'} />
+              <IconCar
+                width={24}
+                height={24}
+                color={'#B4231E'}
+                alt="SEVA Car Icon"
+              />
               <h3 className={styles.kanyonMedium}>Detail</h3>
             </div>
             <div
@@ -118,13 +127,23 @@ const PromoSection = ({
           </div>
           <div className={styles.row}>
             <div className={styles.rowWithGap}>
-              <IconSeat width={24} height={24} color={'#246ED4'} />
+              <IconSeat
+                width={24}
+                height={24}
+                color={'#246ED4'}
+                alt="SEVA Chair Icon"
+              />
               <p className={styles.openSans} style={{ color: '#13131B' }}>
                 {info.seats + ' Kursi'}
               </p>
             </div>
             <div className={styles.rowWithGap}>
-              <IconTransmission width={24} height={24} color={'#246ED4'} />
+              <IconTransmission
+                width={24}
+                height={24}
+                color={'#246ED4'}
+                alt="SEVA Transmition gear Icon"
+              />
               <p className={styles.openSans} style={{ color: '#13131B' }}>
                 {cheapestVariantData?.transmission}
               </p>
@@ -132,13 +151,23 @@ const PromoSection = ({
           </div>
           <div className={styles.row}>
             <div className={styles.rowWithGap}>
-              <IconEngine width={24} height={24} color={'#246ED4'} />
+              <IconEngine
+                width={24}
+                height={24}
+                color={'#246ED4'}
+                alt="SEVA Engine Icon"
+              />
               <p className={styles.openSans} style={{ color: '#13131B' }}>
                 {'Mesin ' + cheapestVariantData?.engineCapacity + ' cc'}
               </p>
             </div>
             <div className={styles.rowWithGap}>
-              <IconFuel width={24} height={24} color={'#246ED4'} />
+              <IconFuel
+                width={24}
+                height={24}
+                color={'#246ED4'}
+                alt="SEVA Gas Station icon"
+              />
               <p className={styles.openSans} style={{ color: '#13131B' }}>
                 {cheapestVariantData?.fuelType}
               </p>
@@ -157,7 +186,12 @@ const PromoSection = ({
           <div className={styles.rowWithGap}>
             {onPage === 'VariantListPage' ? (
               <div className={styles.headerWrapper}>
-                <IconPromo width={19} height={19} color={'#B4231E'} />
+                <IconPromo
+                  width={19}
+                  height={19}
+                  color={'#B4231E'}
+                  alt="SEVA Price Tag icon"
+                />
                 <h3 className={styles.kanyonMedium}>Promo</h3>
               </div>
             ) : (
@@ -223,7 +257,7 @@ const PromoSection = ({
                 className={styles.promoBannerSmall}
                 height={156}
                 width={208}
-                alt="promo seva"
+                alt="Promo Toyota Spektakuler Hemat Puluhan Juta"
                 loading="lazy"
               />
               <div>
@@ -260,7 +294,7 @@ const PromoSection = ({
               className={styles.promoBannerSmall}
               height={156}
               width={208}
-              alt="promo seva"
+              alt="Promo Daihatsu Tukar Mobil Kamu Dengan Mobil Daihatsu Baru"
               loading="lazy"
             />
 
@@ -299,7 +333,7 @@ const PromoSection = ({
               className={styles.promoBannerSmall}
               height={156}
               width={208}
-              alt="promo seva"
+              alt="Promo Cuma di SEVA dapat Asuransi Comprehensive dan Cashback"
               loading="lazy"
             />
 

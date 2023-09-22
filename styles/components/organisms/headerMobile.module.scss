@@ -51,6 +51,21 @@
   flex-grow: 0;
 }
 
+.newContainer {
+  display: flex;
+  padding: 10px 16px;
+  flex-direction: row;
+  align-items: center;
+  height: 54px;
+  justify-content: space-between;
+}
+
+.icons {
+  &:hover {
+    cursor: pointer !important;
+  }
+}
+
 .showAAnnouncementBox {
   height: 115px;
 }

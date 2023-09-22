@@ -120,7 +120,11 @@ export const Gallery: React.FC<PropsGallery> = ({
     <Image
       width={274}
       height={207}
-      alt="car"
+      alt={`Tampilan ${onTab} ${
+        carModelDetails?.brand
+      } ${carModelDetails?.model.replace(/-/g, ' ')} ${
+        url.match(/_(\d+)\.\w+$/)?.[1] ?? 'main'
+      }`}
       className={styles.mainImage}
       src={url}
       onClick={() => {
@@ -145,7 +149,9 @@ export const Gallery: React.FC<PropsGallery> = ({
         <Image
           width={61}
           height={46}
-          alt="car"
+          alt={`Tampilan ${onTab} ${carModelDetails?.brand} ${
+            carModelDetails?.model
+          } ${url.match(/_(\d+)\.\w+$/)?.[1] ?? 'main'}`}
           className={`${isActive && styles.active} ${styles.subImage}`}
           src={url}
         />

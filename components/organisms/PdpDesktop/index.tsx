@@ -30,7 +30,7 @@ import {
   getMinimumMonthlyInstallment,
 } from 'utils/carModelUtils/carModelUtils'
 import { savePreviouslyViewed } from 'utils/carUtils'
-import { defaultSeoImage, hundred, million, ten } from 'utils/helpers/const'
+import { hundred, million, ten } from 'utils/helpers/const'
 import { variantListUrl } from 'utils/helpers/routes'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { saveLocalStorage } from 'utils/handler/localStorage'
@@ -42,8 +42,6 @@ import { HeaderAndContent } from '../HeaderAndContent/HeaderAndContent'
 import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
-import Seo from 'components/atoms/seo'
-import { monthId } from 'utils/handler/date'
 
 export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const router = useRouter()
@@ -57,7 +55,6 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const { model, brand, slug } = router.query
   const tab = Array.isArray(slug) ? slug[0] : undefined
   const [stickyCTA, setStickyCTA] = useState(false)
-
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const { showModal: showCarNotExistModal, PreApprovalCarNotAvailableModal } =
     usePreApprovalCarNotAvailable()
@@ -66,6 +63,7 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const { funnelQuery } = useFunnelQueryData()
   const { DialogModal, showModal: showDialogModal } = useDialogModal()
   const [isShowLoading, setShowLoading] = useState(false)
+
   const {
     saveCarVariantDetails,
     saveRecommendation,
@@ -239,62 +237,9 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
       showContactUsModal()
     }
   }, [])
-  const meta = useMemo(() => {
-    const title =
-      metaTagDataRes.data && metaTagDataRes.data.length > 0
-        ? metaTagDataRes.data[0].attributes.meta_title
-        : 'SEVA'
-    const description =
-      metaTagDataRes.data && metaTagDataRes.data.length > 0
-        ? metaTagDataRes.data[0].attributes.meta_description
-        : ''
-    return { title, description }
-  }, [metaTagDataRes])
-
-  const todayDate = new Date()
-
-  const currentYear = todayDate.getFullYear()
-  const currentMonth = monthId(todayDate.getMonth())
-  const carOTR = `Rp ${
-    (modelDetailData?.variants[0].priceValue as number) / 1000000
-  } Juta`
-  const getMetaTitle = () => {
-    switch (tab) {
-      case 'kredit':
-        return `Kredit ${carModelDetails?.brand} ${
-          carModelDetails?.model
-        } ${currentYear}. Simulasi Cicilan OTR ${
-          getCity().cityName
-        } dengan Loan Calculator | SEVA`
-      case 'spesifikasi':
-        return `Spesifikasi ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} | SEVA`
-      case 'harga':
-        return `Harga ${carModelDetails?.brand} ${
-          carModelDetails?.model
-        } ${currentYear} ${getCity().cityName} Terbaru | SEVA`
-    }
-    return `Ringkasan Produk ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} - Harga OTR Promo Bulan ${currentMonth} | SEVA`
-  }
-
-  const getMetaDescription = () => {
-    switch (tab) {
-      case 'kredit':
-        return `Hitung simulasi cicilan ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear}. Beli mobil ${carModelDetails?.brand} secara kredit, proses aman & mudah dengan Instant Approval* di SEVA."`
-      case 'spesifikasi':
-        return `Dapatkan informasi lengkap mengenai spesifikasi ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} terbaru di SEVA`
-      case 'harga':
-        return `Daftar harga ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carModelDetails?.brand} ${carModelDetails?.model} ${currentYear} terbaru di SEVA.`
-    }
-    return `Beli mobil ${carModelDetails?.brand} ${carModelDetails?.model} 2023 terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, dan kredit di SEVA`
-  }
 
   return (
     <>
-      <Seo
-        title={getMetaTitle()}
-        description={getMetaDescription()}
-        image={modelDetailData?.images[0] || defaultSeoImage}
-      />
       <div className={styles.pageHeaderWrapper}>
         <PageHeaderSeva>{!isMobile ? <HeaderVariant /> : <></>}</PageHeaderSeva>
       </div>

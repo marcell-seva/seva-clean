@@ -37,6 +37,7 @@ import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useCar } from 'services/context/carContext'
 import { formatNumberByLocalization } from 'utils/handler/rupiah'
+import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
 
 type DescriptionProps = {
   title: string
@@ -45,6 +46,7 @@ type DescriptionProps = {
   carModel?: CarModelDetailsResponse
   carVariant?: CarVariantDetails
   tab: string
+  isOTO?: boolean
 }
 
 export const Description = ({
@@ -53,6 +55,7 @@ export const Description = ({
   carModel,
   carVariant,
   tab,
+  isOTO = false,
 }: DescriptionProps) => {
   const [open, setOpen] = useState(false)
   const [expandable, setExpandable] = useState(true)
@@ -66,13 +69,13 @@ export const Description = ({
   const {
     dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carRecommendationsResDefaultCity,
-  } = useContext(PdpDataLocalContext)
+  } = useContext(isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext)
   const modelDetailData =
     carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const recommendationsDetailData =
     recommendation.length !== 0
       ? recommendation
-      : carRecommendationsResDefaultCity.carRecommendations
+      : carRecommendationsResDefaultCity?.carRecommendations
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,

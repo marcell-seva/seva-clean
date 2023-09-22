@@ -8,12 +8,17 @@ import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { navigateToPLP, PreviousButton } from 'utils/navigate'
 import { getPageName } from 'utils/pageName'
+import { OTONewCarUrl } from 'utils/helpers/routes'
 
 type MenuItemProps = {
   item?: MobileWebTopMenuType
+  isOTO?: boolean
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ item }): JSX.Element => {
+const MenuItem: React.FC<MenuItemProps> = ({
+  item,
+  isOTO = false,
+}): JSX.Element => {
   const [state, setState] = React.useState(false)
 
   const handleClickMenu = (menuUrl: string, menuName: string) => {
@@ -23,7 +28,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item }): JSX.Element => {
         {},
         true,
         false,
-        menuUrl,
+        isOTO ? OTONewCarUrl : menuUrl,
       )
     }
     sendAmplitudeData(AmplitudeEventName.WEB_BURGER_MENU_CLICK, {
