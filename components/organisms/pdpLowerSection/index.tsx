@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { NavigationTabV1 } from 'components/molecules'
 import { lowerSectionNavigationTab } from 'config/carVariantList.config'
 import styles from 'styles/pages/carVariantList.module.scss'
-import { PriceTab, SummaryTab } from 'components/organisms'
+import {
+  CreditTab,
+  PriceTab,
+  SpecificationTab,
+  SummaryTab,
+} from 'components/organisms'
 import { VideoDataType } from 'utils/types/utils'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
@@ -140,7 +145,7 @@ export const PdpLowerSection = ({
           />
         )
       case 'Spesifikasi':
-        return
+        return <SpecificationTab />
 
       case 'Harga':
         return (
@@ -152,7 +157,7 @@ export const PdpLowerSection = ({
           />
         )
       case 'Kredit':
-        return
+        return <CreditTab />
 
       default:
         return (
