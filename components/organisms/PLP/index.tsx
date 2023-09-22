@@ -124,11 +124,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     age,
     sortBy,
   } = router.query as FilterParam
-  const isNewCar: boolean =
-    router.asPath.split('/')[1].match('mobil-baru') ||
-    router.asPath.split('/')[1].match('adaSEVAdiOTO')
-      ? true
-      : false
 
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
 
@@ -736,8 +731,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
           setShowAnnouncementBox={setIsShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
           pageOrigination={'PLP'}
-          isNewCar={isNewCar}
-          isGlobal={isOTO}
+          isOTO={isOTO}
         />
 
         {!showLoading && sampleArray.items.length === 0 ? (

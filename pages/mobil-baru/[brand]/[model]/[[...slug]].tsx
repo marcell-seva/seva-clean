@@ -236,8 +236,6 @@ export default function index({
     }
   }
 
-  console.log(getMetaDescription, getMetaTitle)
-
   const modelDetailData =
     carModelDetails || dataCombinationOfCarRecomAndModelDetail
   const recommendationsDetailData =
