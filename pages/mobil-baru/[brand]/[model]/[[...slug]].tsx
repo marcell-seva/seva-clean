@@ -491,6 +491,10 @@ const jsonLD = (
   recommendationsDetailData?: CarRecommendation[],
   videoReview?: MainVideoResponseType,
 ) => {
+  console.log(carModel, 'car model')
+  console.log(carVariant, 'car variant')
+  console.log(recommendationsDetailData, 'recommendation')
+  console.log(videoReview, 'video review')
   const lowestAssetPrice = carModel?.variants[0].priceValue
   const highestAssetPrice =
     carModel?.variants[carModel?.variants.length - 1].priceValue
@@ -619,5 +623,126 @@ const jsonLD = (
         },
       ],
     },
+    SiteNavigationElement: {
+      '@type': 'SiteNavigationElement',
+      name: 'SEVA',
+      potencialAction: [
+        {
+          '@type': 'Action',
+          name: 'Mobil',
+          url: 'https://www.seva.id/mobil-baru',
+        },
+        {
+          '@type': 'Action',
+          name: 'Fasilitas Dana',
+          url: 'https://www.seva.id/fasilitas-dana',
+        },
+        {
+          '@type': 'Action',
+          name: 'Layanan Surat Kendaraan',
+          url: 'https://www.seva.id/layanan-surat-kendaraan',
+        },
+        {
+          '@type': 'Action',
+          name: 'Tentang SEVA',
+          url: 'https://www.seva.id/info/tentang-kami/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Promo',
+          url: 'https://www.seva.id/info/promo/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Teman SEVA',
+          url: 'https://www.seva.id/teman-seva/dashboard',
+        },
+        {
+          '@type': 'Action',
+          name: 'Berita Utama Otomotif',
+          url: 'https://www.seva.id/blog/category/otomotif/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Review Otomotif',
+          url: 'https://www.seva.id/blog/category/otomotif/review-otomotif/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Tips & Rekomendasi',
+          url: 'https://www.seva.id/blog/category/otomotif/tips-rekomendasi-otomotif/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Keuangan',
+          url: 'https://www.seva.id/blog/category/keuangan/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Semua Artikel',
+          url: 'https://www.seva.id/blog/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Akun Saya',
+          url: 'https://www.seva.id/akun/profil',
+        },
+      ],
+    },
+    ImageObject: [
+      {
+        '@type': 'ImageObject',
+        contentUrl: carModel?.images[0],
+        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
+        representativeOfPage: 'http://schema.org/True',
+        isFamilyFriendly: 'http://schema.org/True',
+        isAccesibleForFree: 'http://schema.org/False',
+      },
+      {
+        '@type': 'ImageObject',
+        contentUrl: carModel?.images[0],
+        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
+        representativeOfPage: 'http://schema.org/True',
+        isFamilyFriendly: 'http://schema.org/True',
+        isAccesibleForFree: 'http://schema.org/False',
+      },
+    ],
+    NewsArticle: [
+      {
+        '@type': 'NewsArticle',
+        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
+        headline: 'Promo Toyota Spektakuler',
+        abstract:
+          'Dapatkan bunga spesial mulai dari 0%, bebas biaya administrasi atau bebas 2 tahun asuransi comprehensive hingga 20 juta rupiah untuk pembelian mobil baru Toyota Veloz, Avanza, Raize, dan Rush secara kredit',
+        image:
+          'https://www.seva.id/info/wp-content/uploads/2023/01/Seva_Promo-Toyota-2_SEVA-TSO-1040x336-1.png.webp',
+        datePublished: '2022-11-22',
+        publisher: {
+          '@type': '-',
+          name: 'Organization SEVA by Astra',
+          logo: {
+            '@type': 'ImageObject',
+            url: 'https://cdn.seva.id/blog/media/2022/07/Seva-LogoxAF_Seva-PrimarybyAstraFinancial3.png',
+          },
+        },
+      },
+      {
+        '@type': 'NewsArticle',
+        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
+        headline: 'Promo Potongan DP & Cashback Daihatsu',
+        abstract:
+          'Dapatkan cashback tambahan trade-in senilai 1 juta rupiah untuk pembelian mobil baru Brand Daihatsu semua tipe (LCGC dan non-LCGC)',
+        image: 'https://www.seva.id/revamp/illustration/PromoTradeIn.webp',
+        datePublished: '2022-11-24',
+        publisher: {
+          '@type': '-',
+          name: 'Organization SEVA by Astra',
+          logo: {
+            '@type': 'ImageObject',
+            url: 'https://cdn.seva.id/blog/media/2022/07/Seva-LogoxAF_Seva-PrimarybyAstraFinancial3.png',
+          },
+        },
+      },
+    ],
   }
 }
