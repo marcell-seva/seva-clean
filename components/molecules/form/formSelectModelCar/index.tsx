@@ -238,7 +238,7 @@ export const FormSelectModelCar = ({
       <div className={styles.imageWrapper}>
         <Image
           src={carImage}
-          alt="car"
+          alt={`Data Kredit Mobil ${inputValue.replace('-', ' ')}`}
           width={100}
           height={100}
           className={styles.carImage}

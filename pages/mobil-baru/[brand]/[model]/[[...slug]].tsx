@@ -491,10 +491,6 @@ const jsonLD = (
   recommendationsDetailData?: CarRecommendation[],
   videoReview?: MainVideoResponseType,
 ) => {
-  console.log(carModel, 'car model')
-  console.log(carVariant, 'car variant')
-  console.log(recommendationsDetailData, 'recommendation')
-  console.log(videoReview, 'video review')
   const lowestAssetPrice = carModel?.variants[0].priceValue
   const highestAssetPrice =
     carModel?.variants[carModel?.variants.length - 1].priceValue

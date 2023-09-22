@@ -261,7 +261,7 @@ export const SpecificationTab = () => {
     <div className={styles.spesification}>
       <div className={styles.heading}>
         <div className={styles.iconInfo}>
-          <IconCar width={24} height={24} color="#B4231E" />
+          <IconCar width={24} height={24} color="#B4231E" alt="SEVA Car Icon" />
         </div>
         <h3 className={styles.textHeading}>{headingText}</h3>
       </div>
