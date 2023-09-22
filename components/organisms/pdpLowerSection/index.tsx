@@ -135,51 +135,41 @@ export const PdpLowerSection = ({
     switch (selectedTabValue) {
       case 'Ringkasan':
         return (
-          <>
-            <SummaryTab
-              setPromoName={setPromoName}
-              onButtonClick={onButtonClick}
-              videoData={videoData}
-              setSelectedTabValue={onSelectLowerTab}
-              setVariantIdFuelRatio={setVariantIdFuelRatio}
-              variantFuelRatio={variantFuelRatio}
-            />
-          </>
+          <SummaryTab
+            setPromoName={setPromoName}
+            onButtonClick={onButtonClick}
+            videoData={videoData}
+            setSelectedTabValue={onSelectLowerTab}
+            setVariantIdFuelRatio={setVariantIdFuelRatio}
+            variantFuelRatio={variantFuelRatio}
+            isOTO={isOTO}
+          />
         )
       case 'Spesifikasi':
-        return (
-          <>
-            <SpecificationTab />
-          </>
-        )
+        return
+
       case 'Harga':
         return (
-          <>
-            <PriceTab
-              setSelectedTabValue={onSelectLowerTab}
-              setVariantIdFuelRatio={setVariantIdFuelRatio}
-              variantFuelRatio={variantFuelRatio}
-            />
-          </>
+          <PriceTab
+            setSelectedTabValue={onSelectLowerTab}
+            setVariantIdFuelRatio={setVariantIdFuelRatio}
+            variantFuelRatio={variantFuelRatio}
+            isOTO={isOTO}
+          />
         )
       case 'Kredit':
-        return (
-          <>
-            <CreditTab />
-          </>
-        )
+        return
+
       default:
         return (
-          <>
-            <SummaryTab
-              setPromoName={setPromoName}
-              onButtonClick={onButtonClick}
-              videoData={videoData}
-              setSelectedTabValue={onSelectLowerTab}
-              setVariantIdFuelRatio={setVariantIdFuelRatio}
-              variantFuelRatio={variantFuelRatio}
-            />
-          </>
+          <SummaryTab
+            setPromoName={setPromoName}
+            onButtonClick={onButtonClick}
+            videoData={videoData}
+            setSelectedTabValue={onSelectLowerTab}
+            setVariantIdFuelRatio={setVariantIdFuelRatio}
+            variantFuelRatio={variantFuelRatio}
+          />
         )
     }
   }
