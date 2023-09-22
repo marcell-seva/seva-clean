@@ -328,7 +328,9 @@ export const SummaryTab = ({
   const listFaq = [
     {
       question: `Berapa Cicilan / Kredit Bulanan ${summaryInfo.brand} ${summaryInfo.model} Terendah?`,
-      answer: ` Cicilan / kredit bulanan terendah untuk  dimulai dari Rp ${formatShortPrice(
+      answer: ` Cicilan / kredit bulanan terendah untuk ${summaryInfo.brand} ${
+        summaryInfo.model
+      } dimulai dari Rp ${formatShortPrice(
         summaryInfo.monthlyInstallment || 0,
       )} juta untuk  ${
         summaryInfo.carVariants && summaryInfo.carVariants.length > 0
