@@ -304,15 +304,17 @@ export const CarDetailCard = ({
           onClick={onClickLabel}
           data-testid={elementId.PLP.Button.Promo}
         />
-        <Image
-          src={LogoPrimary}
-          height={30}
-          width={50}
-          alt="Logo SEVA"
-          className={styles.logoImg}
-          data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
-          priority={true}
-        />
+        {isOTO && (
+          <Image
+            src={LogoPrimary}
+            height={30}
+            width={50}
+            alt="Logo SEVA"
+            className={styles.logoImg}
+            data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+            priority={true}
+          />
+        )}
         {isFilter && recommendation.loanRank === 'Red' && (
           <LabelSulit onClick={onClickResultSulit} />
         )}
