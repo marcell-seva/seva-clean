@@ -56,6 +56,7 @@ type CarDetailCardProps = {
   setOpenInterestingModal: (value: boolean) => void
   isFilter?: boolean
   isFilterTrayOpened: boolean
+  isOTO?: boolean
 }
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
@@ -69,6 +70,7 @@ export const CarDetailCard = ({
   onClickResultMudah,
   isFilterTrayOpened,
   setOpenInterestingModal,
+  isOTO = false,
 }: CarDetailCardProps) => {
   const router = useRouter()
   const { funnelQuery } = useFunnelQueryData()
@@ -301,15 +303,17 @@ export const CarDetailCard = ({
           onClick={onClickLabel}
           data-testid={elementId.PLP.Button.Promo}
         />
-        <Image
-          src={LogoPrimary}
-          height={30}
-          width={50}
-          alt="Logo SEVA"
-          className={styles.logoImg}
-          data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
-          priority={true}
-        />
+        {isOTO && (
+          <Image
+            src={LogoPrimary}
+            height={30}
+            width={50}
+            alt="Logo SEVA"
+            className={styles.logoImg}
+            data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+            priority={true}
+          />
+        )}
         {isFilter && recommendation.loanRank === 'Red' && (
           <LabelSulit onClick={onClickResultSulit} />
         )}
@@ -419,10 +423,12 @@ export const CarDetailCard = ({
         <Button
           version={ButtonVersion.Secondary}
           size={ButtonSize.Big}
-          onClick={() => setOpenInterestingModal(true)}
+          onClick={() =>
+            isOTO ? setOpenInterestingModal(true) : navigateToLoanCalculator()
+          }
           data-testid={elementId.PLP.Button.HitungKemampuan}
         >
-          Saya Tertarik
+          {isOTO ? 'Saya Tertarik' : 'Hitung Kemampuan'}
         </Button>
       </CardShadow>
     </div>

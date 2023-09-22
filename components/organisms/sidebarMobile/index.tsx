@@ -27,12 +27,14 @@ type sidebarMobileProps = {
   showSidebar?: boolean
   isShowAnnouncementBox?: boolean | null
   pageOrigination?: string
+  isOTO?: boolean
 }
 
 const sidebarMobile = ({
   showSidebar,
   isShowAnnouncementBox,
   pageOrigination,
+  isOTO = false,
 }: sidebarMobileProps): JSX.Element => {
   const [isLogin] = React.useState(!!getToken())
   const [nameIcon, setNameIcon] = React.useState('')
@@ -173,7 +175,11 @@ const sidebarMobile = ({
         </Button>
       )}
 
-      <MenuList menuList={mobileWebTopMenus} customerDetail={customerDetail} />
+      <MenuList
+        menuList={mobileWebTopMenus}
+        customerDetail={customerDetail}
+        isOTO={isOTO}
+      />
     </div>
   )
 }

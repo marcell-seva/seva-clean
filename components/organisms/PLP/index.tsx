@@ -102,9 +102,10 @@ const CitySelectorModal = dynamic(() =>
 
 interface PLPProps {
   minmaxPrice: MinMaxPrice
+  isOTO?: boolean
 }
 
-export const PLP = ({ minmaxPrice }: PLPProps) => {
+export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
   const { recommendation, saveRecommendation } = useCar()
@@ -123,11 +124,6 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
     age,
     sortBy,
   } = router.query as FilterParam
-  const isNewCar: boolean =
-    router.asPath.split('/')[1].match('mobil-baru') ||
-    router.asPath.split('/')[1].match('adaSEVAdiOTO')
-      ? true
-      : false
 
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
 
@@ -739,7 +735,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
           setShowAnnouncementBox={setIsShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
           pageOrigination={'PLP'}
-          isNewCar={isNewCar}
+          isOTO={isOTO}
         />
 
         {!showLoading && sampleArray.items.length === 0 ? (
@@ -798,6 +794,7 @@ export const PLP = ({ minmaxPrice }: PLPProps) => {
                       order={Number(index)}
                       key={index}
                       recommendation={i}
+                      isOTO={isOTO}
                       isFilter={isFilterCredit}
                       setOpenInterestingModal={setOpenInterestingModal}
                       onClickLabel={() => {

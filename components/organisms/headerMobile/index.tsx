@@ -58,9 +58,9 @@ type HeaderMobileProps = {
     position?: 'fixed' | 'sticky'
   }
   pageOrigination?: string
-  isGlobal?: boolean
+  isOTO?: boolean
   transparent?: boolean
-  isNewCar?: boolean
+  isRegular?: boolean
 }
 
 export const HeaderMobile = ({
@@ -72,15 +72,16 @@ export const HeaderMobile = ({
   isShowAnnouncementBox = false,
   style,
   pageOrigination,
-  isGlobal,
+  isOTO = false,
   transparent = false,
-  isNewCar,
 }: HeaderMobileProps): JSX.Element => {
   const enableAnnouncementBoxAleph =
     getCurrentEnvironment.featureToggles.enableAnnouncementBoxAleph
   const [isOpenSearchModal, setIsOpenSearchModal] = useState(false)
 
   const router = useRouter()
+
+  const adaSeva = router.asPath.split('/')[1]
 
   const handleClickCityIcon = () => {
     if (!isActive) {
@@ -131,6 +132,8 @@ export const HeaderMobile = ({
     saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
   }
 
+  const redirectHome = adaSeva === 'adaSEVAdiOTO' ? rootOTOUrl : rootUrl
+
   return (
     <>
       <header
@@ -155,40 +158,26 @@ export const HeaderMobile = ({
               pageOrigination={pageOrigination}
             />
           )}
-          {isNewCar ? (
+          {isOTO ? (
             <div className={styles.newContainer}>
               <Link
                 data-testid={elementId.Homepage.GlobalHeader.HamburgerMenu}
                 className={styles.icons}
-                href={rootOTOUrl}
+                href={redirectHome}
               >
                 <IconChevronLeft width={24} height={24} alt="SEVA back Icon" />
               </Link>
-              {isGlobal ? (
-                <Link href={rootOTOUrl} onClick={handleLogoClick}>
-                  <Image
-                    src={LogoPrimary}
-                    height={30}
-                    width={50}
-                    alt="Logo SEVA"
-                    className={styles.logoImg}
-                    data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
-                    priority={true}
-                  />
-                </Link>
-              ) : (
-                <Link href={rootUrl} onClick={handleLogoClick}>
-                  <Image
-                    src={LogoPrimary}
-                    height={30}
-                    width={50}
-                    alt="Logo SEVA"
-                    className={styles.logoImg}
-                    data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
-                    priority={true}
-                  />
-                </Link>
-              )}
+              <Link href={redirectHome} onClick={handleLogoClick}>
+                <Image
+                  src={LogoPrimary}
+                  height={30}
+                  width={50}
+                  alt="Logo SEVA"
+                  className={styles.logoImg}
+                  data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+                  priority={true}
+                />
+              </Link>
               <div
                 className={styles.icons}
                 data-testid={elementId.Homepage.GlobalHeader.IconSearch}
@@ -211,34 +200,22 @@ export const HeaderMobile = ({
                   onClick={handleToggleBurgerMenu}
                 />
               </div>
-              {isGlobal ? (
-                <Link href={rootOTOUrl} onClick={handleLogoClick}>
-                  <Image
-                    src={LogoPrimary}
-                    height={30}
-                    width={50}
-                    alt="Logo SEVA"
-                    className={styles.logoImg}
-                    data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
-                    priority={true}
-                  />
-                </Link>
-              ) : (
-                <Link href={rootUrl} onClick={handleLogoClick}>
-                  <Image
-                    src={LogoPrimary}
-                    height={30}
-                    width={50}
-                    alt="Logo SEVA"
-                    className={styles.logoImg}
-                    data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
-                    priority={true}
-                  />
-                </Link>
-              )}
+
+              <Link href={redirectHome} onClick={handleLogoClick}>
+                <Image
+                  src={LogoPrimary}
+                  height={30}
+                  width={50}
+                  alt="Logo SEVA"
+                  className={styles.logoImg}
+                  data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+                  priority={true}
+                />
+              </Link>
               <SidebarMobile
                 showSidebar={isActive}
                 isShowAnnouncementBox={isShowAnnouncementBox}
+                isOTO={isOTO}
               />
               <div
                 className={styles.right}
@@ -267,6 +244,7 @@ export const HeaderMobile = ({
         <SearchModal
           isOpen={isOpenSearchModal}
           handleCloseModal={() => setIsOpenSearchModal(false)}
+          isOTO={isOTO}
         />
       </header>
       <Overlay isShow={isActive} onClick={() => setIsActive(false)} />

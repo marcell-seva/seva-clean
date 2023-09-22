@@ -302,7 +302,7 @@ const CitySelectorModal = ({
     if (Array.isArray(sortedRestOfCityData)) {
       return [...topCityDataList, ...sortedRestOfCityData]
     } else {
-      return topCityDataList // or return []
+      return topCityDataList
     }
   }
 
