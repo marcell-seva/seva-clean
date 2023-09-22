@@ -43,135 +43,6 @@ import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
 
-const jsonLD = {
-  videoObject: {
-    '@type': 'VideoObject',
-    name: 'Toyota All New Rush 2018 Review Indonesia | OtoDriver',
-    description:
-      'Pada video ini reviewer OtoDriver, Hariawan Arif, melompat ke balik setir Toyota All New Rush TRD Sportivo untuk melihat apa saja yang ditawarkan mobil ini dari berbagai sisi.',
-    thumbnailUrl:
-      'https://www.seva.id/_next/image?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D1QUgHoIMcT5_5cX9Ap7d6zXXlDLuo25hF&w=750&q=75',
-    uploadDate: '2018-08-24',
-    embedUrl: 'https://youtu.be/x0mXPifsxZM',
-    publisher: {
-      '@type': 'Organization',
-      name: 'Oto Driver',
-      logo: 'https://yt3.googleusercontent.com/ytc/AOPolaSQYe9yssWU8fmq-MB-nmuifNUMpOnGYYALyEDL=s176-c-k-c0x00ffffff-no-rj',
-    },
-  },
-  product: {
-    '@type': 'Product',
-    name: 'Toyota Rush',
-    model: 'Rush',
-    image:
-      'https://images.prod.seva.id/Toyota/All%20New%20Rush/main_color/main_banner_toyota_all_new_rush_black_mica1.png',
-    url: 'https://www.seva.id/mobil-baru/toyota/rush',
-    bodyType: 'SUV',
-    description:
-      'Toyota Rush adalah mobil dengan 7 Kursi SUV yang tersedia dalam kisaran harga Rp 283 - 317 juta di Indonesia.',
-    brand: {
-      '@type': 'Brand',
-      name: 'Toyota',
-      logo: 'https://www.seva.id/_next/image?url=%2Frevamp%2Ficon%2Flogo-toyota.webp&w=48&q=75',
-    },
-    vehicleSeatingCapacity: {
-      '@type': 'QuantitiveValue',
-      value: '7',
-    },
-    fuelType: {
-      '@type': 'QualitativeValue',
-      name: 'Bensin',
-    },
-    vehicleTransmission: {
-      '@type': 'QualitativeValue',
-      name: 'Manual',
-    },
-    vehicleEngine: {
-      '@type': 'EngineSpecification',
-      name: 'Mesin 1496 cc',
-    },
-    manufacturer: {
-      '@type': 'Organization',
-      name: 'Toyota',
-    },
-    offers: {
-      '@type': 'Offer',
-      priceCurrency: 'IDR',
-      lowPrice: '283000000',
-      highPrice: '317100000',
-      offerCicilan: '5900000',
-      offerDp: '56500000',
-      tenor: '5 Tahun',
-    },
-  },
-  itemList: {
-    '@type': 'ItemList',
-    name: 'Variant Toyota Rush',
-    description: 'Daftar Variant Toyota Rush 2023',
-    itemListOrder: 'http://schema.org/ItemListOrderDescending',
-    numberOfItems: 2,
-    itemListElement: {
-      '@type': 'ListItem',
-      position: 1,
-      item: {
-        '@type': 'Product',
-        name: 'Toyota Rush G MT',
-        description: 'Variant Toyota Rush G MT',
-        vehicleTransmission: 'Manual',
-        fuelType: 'Bensin',
-        offers: {
-          '@type': 'Offer',
-          priceCurrency: 'IDR',
-          price: '282700000',
-        },
-      },
-    },
-    itemListElements: {
-      '@type': 'ListItem',
-      position: 2,
-      item: {
-        '@type': 'Product',
-        name: 'Toyota Rush G AT',
-        description: 'Variant Toyota Rush G AT',
-        vehicleTransmission: 'Automatic',
-        fuelType: 'Bensin',
-        offers: {
-          '@type': 'Offer',
-          priceCurrency: 'IDR',
-          price: '293500000',
-        },
-      },
-    },
-  },
-  FAQPage: {
-    '@type': 'FAQPage',
-    mainEntity: {
-      '@type': 'Question',
-      name: 'Berapa Cicilan / Kredit Bulanan Toyota Rush Terendah?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Cicilan / kredit bulanan terendah untuk Toyota Rush dimulai dari Rp 282,7 juta untuk 60 bulan dengan DP Rp 56,5 juta.',
-      },
-    },
-    mainEntity2: {
-      '@type': 'Question',
-      name: 'Berapa Harga Toyota Rush?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Harga Toyota Rush dimulai dari kisaran harga Rp 283-317 juta.',
-      },
-    },
-    mainEntity3: {
-      '@type': 'Question',
-      name: 'Berapa Panjang Mobil Toyota Rush?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Panjang dimensi Toyota Rush adalah 4435 mm dan lebarnya 1695 mm, dan tinggi 1705 mm.',
-      },
-    },
-  },
-}
-
 export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const router = useRouter()
   const {
@@ -179,13 +50,11 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
     carModelDetailsResDefaultCity,
     dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
-    carVideoReviewRes,
   } = useContext(PdpDataLocalContext)
 
   const { model, brand, slug } = router.query
   const tab = Array.isArray(slug) ? slug[0] : undefined
   const [stickyCTA, setStickyCTA] = useState(false)
-  const routerQuery = router.query
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const { showModal: showCarNotExistModal, PreApprovalCarNotAvailableModal } =
     usePreApprovalCarNotAvailable()
@@ -200,8 +69,6 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
     saveRecommendation,
     carModelDetails,
     saveCarModelDetails,
-    carVariantDetails,
-    recommendation,
   } = useCar()
   const modelDetailData =
     carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity

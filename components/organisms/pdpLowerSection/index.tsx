@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavigationTabV1 } from 'components/molecules'
 import { lowerSectionNavigationTab } from 'config/carVariantList.config'
 import styles from 'styles/pages/carVariantList.module.scss'
@@ -143,7 +143,6 @@ export const PdpLowerSection = ({
               setSelectedTabValue={onSelectLowerTab}
               setVariantIdFuelRatio={setVariantIdFuelRatio}
               variantFuelRatio={variantFuelRatio}
-              isOTO={isOTO}
             />
           </>
         )
@@ -160,7 +159,6 @@ export const PdpLowerSection = ({
               setSelectedTabValue={onSelectLowerTab}
               setVariantIdFuelRatio={setVariantIdFuelRatio}
               variantFuelRatio={variantFuelRatio}
-              isOTO={isOTO}
             />
           </>
         )
