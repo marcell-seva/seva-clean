@@ -501,6 +501,7 @@ const CreditQualificationPage = () => {
                 src={dataCar?.variantDetail?.images[0] || ''}
                 alt="car-images"
                 width="82"
+                height="61"
               />
             </div>
             <div className={styles.frameTextInfoCar}>
