@@ -8,9 +8,14 @@ import { Modal } from 'antd'
 interface Props {
   isOpen: boolean
   handleCloseModal: () => void
+  isOTO?: boolean
 }
 
-export const SearchModal = ({ isOpen, handleCloseModal }: Props) => {
+export const SearchModal = ({
+  isOpen,
+  handleCloseModal,
+  isOTO = false,
+}: Props) => {
   const closeModal = (e: React.MouseEvent | React.KeyboardEvent) => {
     e.stopPropagation()
     handleCloseModal()
@@ -37,6 +42,7 @@ export const SearchModal = ({ isOpen, handleCloseModal }: Props) => {
                 suggestionListMobileWidth={'100%'}
                 closeModal={closeModal}
                 hideModal={handleCloseModal}
+                isOTO={isOTO}
               />
             </div>
           </div>
