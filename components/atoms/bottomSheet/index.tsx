@@ -3,7 +3,6 @@ import type { RefHandles } from 'react-spring-bottom-sheet/dist/types'
 import { BottomSheet, BottomSheetProps } from 'react-spring-bottom-sheet'
 import { forwardRef } from 'react'
 import { colors } from 'utils/helpers/style/colors'
-import 'react-spring-bottom-sheet/dist/style.css'
 import styles from 'styles/components/atoms/bottomSheet.module.scss'
 import { IconClose } from '../icon'
 
@@ -26,7 +25,7 @@ const forwardBottomSheet = (
 ) => {
   return (
     <BottomSheet ref={ref} {...props}>
-      <div className={`${styles.header} ${additionalHeaderClassname}`}>
+      <div className={` ${additionalHeaderClassname || styles.header} `}>
         <div className={styles.subHeader}>
           <p>{title}</p>
           <div onClick={props.onDismiss} data-testid={closeDatatestid}>

@@ -41,8 +41,8 @@ export default function PrimaryCard({
           src={image}
           alt={title}
           className={styles.image}
-          width={'258'}
-          height={'194'}
+          height={194}
+          width={258}
         />
 
         {label && <CommonLabel title={label} />}
