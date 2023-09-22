@@ -33,6 +33,7 @@ import {
   saveDataForCountlyTrackerPageViewPDP,
 } from 'utils/navigate'
 import { AdaOTOdiSEVALeadsForm } from '../leadsForm/adaOTOdiSEVA/popUp'
+import { it } from 'node:test'
 
 type LPCarRecommendationsProps = {
   dataReccomendation: any
@@ -56,6 +57,23 @@ const LpCarRecommendations = ({
   const [selectedBrand, setSelectedBrand] = useState('')
   const [load, setLoad] = useState(false)
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
+
+  const handleCalculateAbility = (item: CarRecommendation) => {
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.CarRecommendationCta)
+    const selectedCity = city ? city.cityName : 'Jakarta Pusat'
+    const path = urls.internalUrls.loanCalculatorWithCityBrandModelUrl
+      .replace(
+        ':cityName/:brand/:model',
+        selectedCity.replace(/ +/g, '-') +
+          '/' +
+          item.brand.replace(/ +/g, '-') +
+          '/' +
+          item.model.replace(/ +/g, '-') +
+          '/',
+      )
+      .toLocaleLowerCase()
+    router.push(path)
+  }
 
   const handleClickDetailCar = (item: CarRecommendation) => {
     saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
@@ -206,7 +224,9 @@ const LpCarRecommendations = ({
                             Car_Model: item.model,
                           },
                         )
-                        setIsModalOpened(true)
+                        isOTO
+                          ? setIsModalOpened(true)
+                          : handleCalculateAbility(item)
                       }}
                       data-testid={elementId.PLP.Button.HitungKemampuan}
                     >
