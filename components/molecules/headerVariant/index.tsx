@@ -145,11 +145,9 @@ export default function HeaderVariant({
         PreviousButton.SearchIcon,
         isInLoanCalcKK ? 'Loan Calculator - Kualifikasi Kredit' : undefined,
       )
-      urlDestination = isOTO
-        ? OTOVariantListUrl
-        : variantListUrl
-            .replace('/:brand/:model', item.value)
-            .replace(':tab?', '')
+      urlDestination = (isOTO ? OTOVariantListUrl : variantListUrl)
+        .replace('/:brand/:model', item.value)
+        .replace(':tab?', '')
     } else {
       patchFunnelQuery({
         [FunnelQueryKey.Brand]: [item.label],
