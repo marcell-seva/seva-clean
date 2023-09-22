@@ -28,6 +28,7 @@ import {
   getLowestInstallment,
   getMinimumDp,
   getMinimumMonthlyInstallment,
+  getModelPriceRange,
 } from 'utils/carModelUtils/carModelUtils'
 import { savePreviouslyViewed } from 'utils/carUtils'
 import { defaultSeoImage, hundred, million, ten } from 'utils/helpers/const'
@@ -37,142 +38,24 @@ import { saveLocalStorage } from 'utils/handler/localStorage'
 import { LoanRank } from 'utils/types/models'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { CityOtrOption } from 'utils/types'
-import { CarRecommendation } from 'utils/types/utils'
+import {
+  CarModelDetailsResponse,
+  CarRecommendation,
+  CarVariantDetails,
+  MainVideoResponseType,
+} from 'utils/types/utils'
 import { HeaderAndContent } from '../HeaderAndContent/HeaderAndContent'
 import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
 import Seo from 'components/atoms/seo'
 import { monthId } from 'utils/handler/date'
-
-const jsonLD = {
-  videoObject: {
-    '@type': 'VideoObject',
-    name: 'Toyota All New Rush 2018 Review Indonesia | OtoDriver',
-    description:
-      'Pada video ini reviewer OtoDriver, Hariawan Arif, melompat ke balik setir Toyota All New Rush TRD Sportivo untuk melihat apa saja yang ditawarkan mobil ini dari berbagai sisi.',
-    thumbnailUrl:
-      'https://www.seva.id/_next/image?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D1QUgHoIMcT5_5cX9Ap7d6zXXlDLuo25hF&w=750&q=75',
-    uploadDate: '2018-08-24',
-    embedUrl: 'https://youtu.be/x0mXPifsxZM',
-    publisher: {
-      '@type': 'Organization',
-      name: 'Oto Driver',
-      logo: 'https://yt3.googleusercontent.com/ytc/AOPolaSQYe9yssWU8fmq-MB-nmuifNUMpOnGYYALyEDL=s176-c-k-c0x00ffffff-no-rj',
-    },
-  },
-  product: {
-    '@type': 'Product',
-    name: 'Toyota Rush',
-    model: 'Rush',
-    image:
-      'https://images.prod.seva.id/Toyota/All%20New%20Rush/main_color/main_banner_toyota_all_new_rush_black_mica1.png',
-    url: 'https://www.seva.id/mobil-baru/toyota/rush',
-    bodyType: 'SUV',
-    description:
-      'Toyota Rush adalah mobil dengan 7 Kursi SUV yang tersedia dalam kisaran harga Rp 283 - 317 juta di Indonesia.',
-    brand: {
-      '@type': 'Brand',
-      name: 'Toyota',
-      logo: 'https://www.seva.id/_next/image?url=%2Frevamp%2Ficon%2Flogo-toyota.webp&w=48&q=75',
-    },
-    vehicleSeatingCapacity: {
-      '@type': 'QuantitiveValue',
-      value: '7',
-    },
-    fuelType: {
-      '@type': 'QualitativeValue',
-      name: 'Bensin',
-    },
-    vehicleTransmission: {
-      '@type': 'QualitativeValue',
-      name: 'Manual',
-    },
-    vehicleEngine: {
-      '@type': 'EngineSpecification',
-      name: 'Mesin 1496 cc',
-    },
-    manufacturer: {
-      '@type': 'Organization',
-      name: 'Toyota',
-    },
-    offers: {
-      '@type': 'Offer',
-      priceCurrency: 'IDR',
-      lowPrice: '283000000',
-      highPrice: '317100000',
-      offerCicilan: '5900000',
-      offerDp: '56500000',
-      tenor: '5 Tahun',
-    },
-  },
-  itemList: {
-    '@type': 'ItemList',
-    name: 'Variant Toyota Rush',
-    description: 'Daftar Variant Toyota Rush 2023',
-    itemListOrder: 'http://schema.org/ItemListOrderDescending',
-    numberOfItems: 2,
-    itemListElement: {
-      '@type': 'ListItem',
-      position: 1,
-      item: {
-        '@type': 'Product',
-        name: 'Toyota Rush G MT',
-        description: 'Variant Toyota Rush G MT',
-        vehicleTransmission: 'Manual',
-        fuelType: 'Bensin',
-        offers: {
-          '@type': 'Offer',
-          priceCurrency: 'IDR',
-          price: '282700000',
-        },
-      },
-    },
-    itemListElements: {
-      '@type': 'ListItem',
-      position: 2,
-      item: {
-        '@type': 'Product',
-        name: 'Toyota Rush G AT',
-        description: 'Variant Toyota Rush G AT',
-        vehicleTransmission: 'Automatic',
-        fuelType: 'Bensin',
-        offers: {
-          '@type': 'Offer',
-          priceCurrency: 'IDR',
-          price: '293500000',
-        },
-      },
-    },
-  },
-  FAQPage: {
-    '@type': 'FAQPage',
-    mainEntity: {
-      '@type': 'Question',
-      name: 'Berapa Cicilan / Kredit Bulanan Toyota Rush Terendah?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Cicilan / kredit bulanan terendah untuk Toyota Rush dimulai dari Rp 282,7 juta untuk 60 bulan dengan DP Rp 56,5 juta.',
-      },
-    },
-    mainEntity2: {
-      '@type': 'Question',
-      name: 'Berapa Harga Toyota Rush?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Harga Toyota Rush dimulai dari kisaran harga Rp 283-317 juta.',
-      },
-    },
-    mainEntity3: {
-      '@type': 'Question',
-      name: 'Berapa Panjang Mobil Toyota Rush?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Panjang dimensi Toyota Rush adalah 4435 mm dan lebarnya 1695 mm, dan tinggi 1705 mm.',
-      },
-    },
-  },
-}
+import { formatShortPrice } from '../OldPdpSectionComponents/FAQ/FAQ'
+import {
+  formatPriceNumber,
+  formatPriceNumberThousandDivisor,
+} from 'utils/numberUtils/numberUtils'
+import { MainVideoType } from '../ContentPage/Gallery/Video/Video'
 
 export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const router = useRouter()
@@ -181,6 +64,7 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
     carModelDetailsResDefaultCity,
     dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
+    carVideoReviewRes,
   } = useContext(PdpDataLocalContext)
 
   const { model, brand, slug } = router.query
@@ -195,11 +79,42 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const { funnelQuery } = useFunnelQueryData()
   const { DialogModal, showModal: showDialogModal } = useDialogModal()
   const [isShowLoading, setShowLoading] = useState(false)
+
+  const [videoReview, setVideoReview] = useState<MainVideoResponseType>()
+  useEffect(() => {
+    getVideoReview()
+  }, [])
+  const getVideoReview = async () => {
+    const dataVideoReview = carVideoReviewRes
+    const filterVideoReview = dataVideoReview.data.filter(
+      (video: MainVideoResponseType) => video.modelId === modelDetailData.id,
+    )[0]
+
+    if (filterVideoReview) {
+      const linkVideo = filterVideoReview.link.split(/[=&]/)[1]
+      const idThumbnailVideo = filterVideoReview.thumbnail.substring(
+        filterVideoReview.thumbnail.indexOf('d/') + 2,
+        filterVideoReview.thumbnail.lastIndexOf('/view'),
+      )
+      const thumbnailVideo =
+        'https://drive.google.com/uc?export=view&id=' + idThumbnailVideo
+      const dataMainVideo = {
+        uploadedBy: filterVideoReview.accountName,
+        videoId: linkVideo,
+        title: filterVideoReview.title,
+        thumbnailVideo: thumbnailVideo,
+      }
+      setVideoReview(filterVideoReview)
+    }
+  }
+
   const {
     saveCarVariantDetails,
     saveRecommendation,
     carModelDetails,
     saveCarModelDetails,
+    carVariantDetails,
+    recommendation,
   } = useCar()
   const modelDetailData =
     carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
@@ -418,14 +333,23 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
     }
     return null
   }
+  const recommendationsDetailData =
+    recommendation.length !== 0
+      ? recommendation
+      : carRecommendationsResDefaultCity.carRecommendations
 
-  console.log(modelDetailData, 'ini model detail data')
   return (
     <>
       <Seo
         title={getMetaTitle()}
         description={getMetaDescription() ?? ''}
         image={modelDetailData?.images[0] || defaultSeoImage}
+        jsonLd={jsonLD(
+          carModelDetails,
+          carVariantDetails,
+          recommendationsDetailData,
+          videoReview,
+        )}
       />
       <div className={styles.pageHeaderWrapper}>
         <PageHeaderSeva>{!isMobile ? <HeaderVariant /> : <></>}</PageHeaderSeva>
@@ -479,4 +403,190 @@ export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
       <LoginAlertModal />
     </>
   )
+}
+
+const getItemListElement = (carModel: CarModelDetailsResponse | null) => {
+  return (
+    carModel?.variants.map((variant, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Product',
+        name: `${carModel?.brand} ${carModel?.model} ${variant.name}`,
+        description: `Variant ${carModel?.brand} ${carModel?.model} ${variant.name}`,
+        vehicleTransmission: variant.transmission,
+        fuelType: variant.fuelType,
+        offers: {
+          '@type': 'Offer',
+          priceCurrency: 'IDR',
+          price: variant.priceValue,
+        },
+      },
+    })) || []
+  )
+}
+
+const getSelectedCar = (
+  recommendationsDetailData: CarRecommendation[] | undefined,
+  carVariant: CarVariantDetails | null,
+) => {
+  if (!recommendationsDetailData || !carVariant) return ''
+  const selected = recommendationsDetailData.find(
+    (item: CarRecommendation) => item.id === carVariant.modelDetail.id,
+  )
+  return selected || ''
+}
+
+const handlingCarLogo = (brand: string) => {
+  switch (brand) {
+    case 'Toyota':
+      return 'https://www.seva.id/_next/image?url=%2Frevamp%2Ficon%2Flogo-toyota.webp&w=48&q=75'
+    case 'Daihatsu':
+      return 'https://www.seva.id/_next/image?url=%2Frevamp%2Ficon%2Flogo-daihatsu.webp&w=48&q=75'
+    case 'Isuzu':
+      return 'https://www.seva.id/_next/image?url=%2Frevamp%2Ficon%2Flogo-isuzu.webp&w=48&q=75'
+    case 'BMW':
+      return 'https://www.seva.id/_next/image?url=%2Frevamp%2Ficon%2Flogo-bmw.webp&w=48&q=75'
+    case 'Peugeot':
+      return 'https://www.seva.id/_next/image?url=%2Frevamp%2Ficon%2Flogo-peugeot.webp&w=48&q=75'
+    default:
+      return 'https://www.seva.id/_next/image?url=%2Frevamp%2Ficon%2Flogo-toyota.webp&w=48&q=75'
+  }
+}
+
+const jsonLD = (
+  carModel: CarModelDetailsResponse | null,
+  carVariant: CarVariantDetails | null,
+  recommendationsDetailData?: CarRecommendation[],
+  videoReview?: MainVideoResponseType,
+) => {
+  const lowestAssetPrice = carModel?.variants[0].priceValue
+  const highestAssetPrice =
+    carModel?.variants[carModel?.variants.length - 1].priceValue
+  const highLowPrice = {
+    highestAssetPrice: highestAssetPrice || 0,
+    lowestAssetPrice: lowestAssetPrice || 0,
+  }
+  const formatLowestPrice = formatPriceNumber(
+    carModel?.variants[0].priceValue ?? 0,
+  )
+  const selectedCar = getSelectedCar(recommendationsDetailData, carVariant)
+
+  const priceRange =
+    carModel?.variants[carModel?.variants.length - 1].priceValue ===
+    carModel?.variants[0].priceValue
+      ? formatLowestPrice >= 1000
+        ? formatPriceNumberThousandDivisor(formatLowestPrice, LanguageCode.id)
+        : formatLowestPrice
+      : getModelPriceRange(highLowPrice, LanguageCode.id)
+
+  return {
+    videoObject: {
+      '@type': 'VideoObject',
+      name: videoReview?.title,
+      description: videoReview?.title,
+      thumbnailUrl: videoReview?.thumbnail,
+      uploadDate: videoReview?.createdAt,
+      embedUrl: videoReview?.link,
+      publisher: {
+        '@type': 'Organization',
+        name: videoReview?.accountName,
+        logo: 'https://yt3.googleusercontent.com/ytc/AOPolaSQYe9yssWU8fmq-MB-nmuifNUMpOnGYYALyEDL=s176-c-k-c0x00ffffff-no-rj',
+      },
+    },
+    product: {
+      '@type': 'Product',
+      name: `${carModel?.brand} ${carModel?.model}`,
+      model: `${carModel?.model}`,
+      image: carModel?.images[0],
+      url: `https://www.seva.id/mobil-baru/${carModel?.brand.toLocaleLowerCase()}/${carModel?.model
+        .replace(' ', '-')
+        .toLocaleLowerCase()}`,
+      bodyType: carVariant?.variantDetail.bodyType,
+      description: carVariant?.variantDetail.description,
+      brand: {
+        '@type': 'Brand',
+        name: carModel?.brand,
+        logo: handlingCarLogo(carModel?.brand ?? ''),
+      },
+      vehicleSeatingCapacity: {
+        '@type': 'QuantitativeValue',
+        value: carVariant?.variantDetail.carSeats,
+      },
+      fuelType: {
+        '@type': 'QualitativeValue',
+        name: carVariant?.variantDetail.fuelType,
+      },
+      vehicleTransmission: {
+        '@type': 'QualitativeValue',
+        name: carVariant?.variantDetail.transmission,
+      },
+      vehicleEngine: {
+        '@type': 'EngineSpecification',
+        name: `Mesin ${carVariant?.variantDetail.engineCapacity} cc`,
+      },
+      manufacturer: {
+        '@type': 'Organization',
+        name: carModel?.brand,
+      },
+      offers: {
+        '@type': 'Offer',
+        priceCurrency: 'IDR',
+        lowPrice: carModel?.variants[0].priceValue,
+        highPrice: carModel?.variants[carModel?.variants.length - 1].priceValue,
+        offerCicilan: carModel?.variants[0].monthlyInstallment,
+        offerDp: carModel?.variants[0].dpAmount,
+        tenor: carModel?.variants[0].tenure,
+      },
+    },
+    itemList: {
+      '@type': 'ItemList',
+      name: `Variant ${carModel?.brand} ${carModel?.model}`,
+      description: `Daftar Variant ${carModel?.brand} ${carModel?.model} 2023`,
+      itemListOrder: 'http://schema.org/ItemListOrderDescending',
+      numberOfItems: carModel?.variants.length,
+      itemListElement: getItemListElement(carModel),
+    },
+    FAQPage: {
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: `Berapa Cicilan / Kredit Bulanan ${carModel?.brand} ${carModel?.model} Terendah?`,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: ` Cicilan / kredit bulanan terendah untuk ${
+              carModel?.brand
+            } ${carModel?.model} dimulai dari Rp ${formatShortPrice(
+              carModel?.variants[0].priceValue || 0,
+            )} juta untuk ${
+              (carModel?.variants[0].tenure ?? 0) * 12
+            } bulan dengan DP Rp ${formatShortPrice(
+              carModel?.variants[0].dpAmount ?? 0,
+            )} juta.`,
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Berapa Harga Toyota Rush?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: `Harga ${carModel?.brand} ${carModel?.model} dimulai dari kisaran harga Rp ${priceRange} juta.`,
+          },
+        },
+        {
+          '@type': 'Question',
+          name: `Berapa Panjang Mobil ${carModel?.brand} ${carModel?.model}?`,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: `Panjang dimensi Toyota Rush adalah ${
+              selectedCar.length
+            } mm dan lebarnya ${
+              selectedCar ? selectedCar.width : ''
+            } mm, dan tinggi ${selectedCar ? selectedCar.height : ''} mm.`,
+          },
+        },
+      ],
+    },
+  }
 }
