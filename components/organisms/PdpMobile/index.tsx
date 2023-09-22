@@ -40,6 +40,7 @@ import {
 import {
   getSessionStorage,
   removeSessionStorage,
+  saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
@@ -106,6 +107,9 @@ export default function NewCarVariantList({
     isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext,
   )
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
+
+  const [isOpenCitySelectorOTRPrice, setIsOpenCitySelectorOTRPrice] =
+    useState(false)
 
   const closeLeadsForm = () => {
     setIsModalOpened(false)
@@ -210,6 +214,9 @@ export default function NewCarVariantList({
   const [variantFuelRatio, setVariantFuelRatio] = useState<string | undefined>()
   // for disable promo popup after change route
   const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
 
   const getQueryParamForApiRecommendation = () => {
     if (source && source.toLowerCase() === 'plp') {
@@ -282,6 +289,27 @@ export default function NewCarVariantList({
       return '5'
     }
   }
+  const saveDataCarForLoginPageView = () => {
+    const dataCarTmp = {
+      CAR_BRAND: brand,
+      CAR_MODEL: model,
+      CAR_VARIANT: 'Null',
+      PELUANG_KREDIT_BADGE: dataCar?.PELUANG_KREDIT_BADGE
+        ? dataCar.PELUANG_KREDIT_BADGE
+        : loanRankcr
+        ? loanRankcr === LoanRank.Green
+          ? 'Mudah disetujui'
+          : loanRankcr === LoanRank.Red
+          ? 'Sulit disetujui'
+          : 'Null'
+        : 'Null',
+      TENOR_OPTION: 'Null',
+    }
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarTmp),
+    )
+  }
 
   const trackFloatingWhatsapp = () => {
     if (!modelDetail) return
@@ -318,9 +346,6 @@ export default function NewCarVariantList({
         temanSevaStatus = 'Yes'
       }
     }
-    const dataCar: trackDataCarType | null = getSessionStorage(
-      SessionStorageKey.PreviousCarDataBeforeLogin,
-    )
     trackEventCountly(CountlyEventNames.WEB_WA_DIRECT_CLICK, {
       PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
       SOURCE_BUTTON: 'Floating Button',
@@ -431,6 +456,13 @@ export default function NewCarVariantList({
       })
   }
 
+  const trackCountlyCityOTRClick = () => {
+    trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_OPEN_CLICK, {
+      PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
+      USER_TYPE: valueForUserTypeProperty(),
+      SOURCE_SECTION: 'OTR Price (PDP)',
+    })
+  }
   const trackCountlyPageView = async () => {
     const pageReferrer = getSessionStorage(SessionStorageKey.PageReferrerPDP)
     const previousSourceButton = getSessionStorage(
@@ -518,7 +550,7 @@ export default function NewCarVariantList({
 
   useEffect(() => {
     checkConnectedRefCode()
-
+    saveDataCarForLoginPageView()
     saveLocalStorage(LocalStorageKey.Model, model)
 
     if (!isCurrentCitySameWithSSR) {
@@ -636,7 +668,11 @@ export default function NewCarVariantList({
               emitActiveIndex={(e: number) => handlePreviewOpened(e)}
               activeIndex={galleryIndexActive}
               videoData={videoData}
-              onClickCityOtrCarOverview={() => setIsOpenCitySelectorModal(true)}
+              onClickCityOtrCarOverview={() => {
+                setIsOpenCitySelectorModal(true)
+                setIsOpenCitySelectorOTRPrice(true)
+                trackCountlyCityOTRClick()
+              }}
               onClickShareButton={() => setIsOpenShareModal(true)}
               isShowAnnouncementBox={showAnnouncementBox}
               isOTO={isOTO}
@@ -716,6 +752,7 @@ export default function NewCarVariantList({
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
         cityListFromApi={cities}
         pageOrigination="PDP"
+        sourceButton={isOpenCitySelectorOTRPrice ? 'OTR Price (PDP)' : ''}
       />
       {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
       <ShareModal

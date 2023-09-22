@@ -12,11 +12,11 @@ import { Button, InputSelect } from 'components/atoms'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import elementId from 'utils/helpers/trackerId'
-import { saveLocalStorage } from 'utils/handler/localStorage'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { getCity, saveCity } from 'utils/hooks/useGetCity'
 import { CityOtrOption, FormControlValue, Option } from 'utils/types'
-import { LocalStorageKey } from 'utils/enum'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import {
   trackEventCountly,
@@ -26,6 +26,13 @@ import {
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getPageName } from 'utils/pageName'
+import { countDaysDifference } from 'utils/handler/date'
+import {
+  getBrandAndModelValue,
+  getBrandValue,
+} from 'utils/handler/getBrandAndModel'
+import { trackDataCarType } from 'utils/types/utils'
+import { getSessionStorage } from 'utils/handler/sessionStorage'
 
 const searchOption = {
   keys: ['label'],
@@ -39,6 +46,9 @@ interface Props {
   cityListFromApi: CityOtrOption[]
   isOpen: boolean
   pageOrigination?: string
+  sourceButton?: string
+  modelName?: string
+  brandName?: string
 }
 
 const CitySelectorModal = ({
@@ -46,6 +56,9 @@ const CitySelectorModal = ({
   cityListFromApi,
   isOpen,
   pageOrigination,
+  sourceButton,
+  modelName,
+  brandName,
 }: Props) => {
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
@@ -60,6 +73,9 @@ const CitySelectorModal = ({
   >([])
   const [suggestionsLists, setSuggestionsLists] = useState<any>([])
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
 
   const getCityListOption = (cityList: any) => {
     const tempArray: Option<string>[] = []
@@ -159,30 +175,93 @@ const CitySelectorModal = ({
   const onResetHandler = () => {
     inputRef.current?.focus()
   }
+
+  const isIn30DaysInterval = () => {
+    const lastTimeSelectCity = getLocalStorage<string>(
+      LocalStorageKey.LastTimeSelectCity,
+    )
+    if (!lastTimeSelectCity) {
+      return false
+    } else if (
+      countDaysDifference(lastTimeSelectCity, new Date().toISOString()) <= 30
+    ) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  const getPageToShowValue = () => {
+    if (
+      (window.location.pathname !== '/mobil-baru' &&
+        window.location.pathname.includes('/mobil-baru')) ||
+      pageOrigination?.includes('Loan Calculator') ||
+      pageOrigination === RouteName.KKResult
+    ) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  const getPeluangKreditValue = () => {
+    if (
+      dataCar?.PELUANG_KREDIT_BADGE &&
+      dataCar?.PELUANG_KREDIT_BADGE === 'Green'
+    ) {
+      return 'Mudah disetujui'
+    } else if (
+      dataCar?.PELUANG_KREDIT_BADGE &&
+      dataCar?.PELUANG_KREDIT_BADGE === 'Red'
+    ) {
+      return 'Sulit disetujui'
+    } else if (
+      dataCar?.PELUANG_KREDIT_BADGE &&
+      dataCar?.PELUANG_KREDIT_BADGE.includes('disetujui')
+    ) {
+      return dataCar?.PELUANG_KREDIT_BADGE
+    } else {
+      return 'Null'
+    }
+  }
+
   useEffect(() => {
     if (isOpen) {
-      if (
-        pageOrigination?.includes('PDP') ||
-        pageOrigination?.includes('PLP')
-      ) {
-        let pageOriginationValue = 'PLP'
-        let sourceButtonValue = 'Location Icon'
-        if (pageOrigination?.includes('PDP')) {
-          pageOriginationValue = 'PDP - ' + valueMenuTabCategory()
-          sourceButtonValue = 'OTR Price'
-        }
-        trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_BANNER_VIEW, {
-          PAGE_ORIGINATION: pageOriginationValue,
-          USER_TYPE: valueForUserTypeProperty(),
-          SOURCE_BUTTON: sourceButtonValue,
-          INITIAL_PAGE: valueForInitialPageProperty(),
-          CAR_BRAND: 'Null',
-          CAR_MODEL: 'Null',
-          PELUANG_KREDIT_BADGE: 'Null',
-        })
-      }
+      trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_BANNER_VIEW, {
+        PAGE_ORIGINATION:
+          pageOrigination && pageOrigination.toLowerCase().includes('pdp')
+            ? 'PDP - ' + valueMenuTabCategory()
+            : pageOrigination,
+        USER_TYPE: valueForUserTypeProperty(),
+        SOURCE_BUTTON:
+          !cityOtr && !isIn30DaysInterval()
+            ? 'Null'
+            : sourceButton && sourceButton.length !== 0
+            ? sourceButton
+            : 'Location Icon (Navbar)',
+        INITIAL_PAGE: valueForInitialPageProperty(),
+        CAR_BRAND:
+          getPageToShowValue() && brandName
+            ? getBrandValue(brandName)
+            : getPageToShowValue() &&
+              dataCar &&
+              !window.location.pathname.includes('kalkulator-kredit')
+            ? getBrandValue(dataCar.CAR_BRAND)
+            : 'Null',
+        CAR_MODEL:
+          getPageToShowValue() && modelName
+            ? getBrandAndModelValue(removeCarBrand(modelName))
+            : getPageToShowValue() &&
+              dataCar &&
+              !window.location.pathname.includes('kalkulator-kredit')
+            ? getBrandAndModelValue(dataCar.CAR_MODEL)
+            : 'Null',
+        PELUANG_KREDIT_BADGE: getPageToShowValue()
+          ? getPeluangKreditValue()
+          : 'Null',
+      })
     }
-  }, [])
+  }, [isOpen])
 
   useEffect(() => {
     if (cityListFromApi) {
