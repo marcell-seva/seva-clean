@@ -14,7 +14,6 @@ const Seo: React.FC<SeoProps> = ({ title, description, image }) => {
   if (!title || !description || !image) {
     return null
   }
-
   return (
     <Head>
       <title>{title}</title>
