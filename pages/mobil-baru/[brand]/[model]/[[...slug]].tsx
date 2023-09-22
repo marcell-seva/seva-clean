@@ -291,12 +291,20 @@ export default function index({
         title={getMetaTitle()}
         description={getMetaDescription() ?? ''}
         image={modelDetailData?.images[0] || defaultSeoImage}
-        jsonLd={jsonLD(
-          carModelDetails,
-          carVariantDetails,
-          recommendationsDetailData,
-          videoReview,
-        )}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            jsonLD(
+              carModelDetails,
+              carVariantDetails,
+              recommendationsDetailData,
+              videoReview,
+            ),
+          ),
+        }}
+        key="product-jsonld"
       />
       <PdpDataLocalContext.Provider
         value={{

@@ -6,10 +6,9 @@ interface SeoProps {
   title: string
   description: string
   image: string
-  jsonLd?: any
 }
 
-const Seo: React.FC<SeoProps> = ({ title, description, image, jsonLd }) => {
+const Seo: React.FC<SeoProps> = ({ title, description, image }) => {
   const router = useRouter()
   const currentUrl = router.asPath
   if (!title || !description || !image) {
@@ -40,15 +39,6 @@ const Seo: React.FC<SeoProps> = ({ title, description, image, jsonLd }) => {
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
-      {jsonLd && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(jsonLd),
-          }}
-          key="product-jsonld"
-        />
-      )}
     </Head>
   )
 }
