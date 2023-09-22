@@ -145,7 +145,7 @@ export const PageHeaderSeva = memo((props: PageHeaderSevaProps) => {
     trackHeaderLogoClick({
       Page_Origination_URL: window.location.href.replace('https://www.', ''),
     })
-    router.push(rootUrl)
+    window.location.href = rootUrl
   }
 
   const burgerClickHandler = () => {
@@ -251,7 +251,7 @@ export const PageHeaderSeva = memo((props: PageHeaderSevaProps) => {
                             '',
                           ),
                         })
-                        router.push('/akun/profil')
+                        window.location.href = '/akun/profil'
                       }}
                     >
                       <StyledLogo>

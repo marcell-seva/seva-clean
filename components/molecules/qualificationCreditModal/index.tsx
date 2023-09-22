@@ -80,7 +80,7 @@ export const QualificationCreditModal: React.FC<
     saveSessionStorage(SessionStorageKey.PreviousSourceSectionLogin, 'Null')
     onClickCta && onClickCta()
     if (isLogin) {
-      navigateToKK()
+      navigateToKK(true)
     } else {
       saveSessionStorage(
         SessionStorageKey.PageReferrerLoginPage,
