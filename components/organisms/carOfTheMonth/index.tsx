@@ -26,6 +26,7 @@ export type carOfTheMonthData = {
   brand: string
   price: number
   imageUrl: string
+  priceValue: number
   priceValueJkt: number
 }
 const CarOfTheMonth = ({
@@ -48,6 +49,7 @@ const CarOfTheMonth = ({
       brand: item.brand ?? '',
       price: item.model?.price ?? 0,
       imageUrl: item.model?.data.image ?? '',
+      priceValue: item.model?.priceValue ?? item.model?.priceValueJkt ?? 0,
       priceValueJkt: item.model?.priceValueJkt ?? 0,
     }))
 
