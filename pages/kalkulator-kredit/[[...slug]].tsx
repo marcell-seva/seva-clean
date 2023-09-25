@@ -77,7 +77,11 @@ import {
 import { CityOtrOption } from 'utils/types'
 import { CarModel } from 'utils/types/carModel'
 import { ModelVariant } from 'utils/types/carVariant'
-import { CarRecommendation, FinalLoan } from 'utils/types/utils'
+import {
+  CarRecommendation,
+  FinalLoan,
+  trackDataCarType,
+} from 'utils/types/utils'
 import {
   Article,
   LoanCalculatorIncludePromoPayloadType,
@@ -249,6 +253,13 @@ export default function LoanCalculatorPage() {
   const referralCodeFromUrl: string | null = getLocalStorage(
     LocalStorageKey.referralTemanSeva,
   )
+  const IsShowBadgeCreditOpportunity = getSessionStorage(
+    SessionStorageKey.IsShowBadgeCreditOpportunity,
+  )
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
+
   const getAutofilledCityData = () => {
     // related to logic inside component "FormSelectCity"
     if (cityOtr) {
@@ -1359,7 +1370,9 @@ export default function LoanCalculatorPage() {
     loan: SpecialRateListWithPromoType,
   ) => {
     trackLCCtaWaDirectClick(getDataForAmplitudeQualification(loan))
-    trackCountlyDirectToWhatsapp(selectedLoan?.tenure)
+    if (selectedLoan) {
+      trackCountlyDirectToWhatsapp(selectedLoan.tenure)
+    }
     const { model, variant, downPaymentAmount } = forms
     const message = `Halo, saya tertarik dengan ${model?.modelName} ${variant?.variantName} dengan DP sebesar Rp ${downPaymentAmount}, cicilan per bulannya Rp ${loan?.installment}, dan tenor ${loan?.tenure} tahun.`
 
