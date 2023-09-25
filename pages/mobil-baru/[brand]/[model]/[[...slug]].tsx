@@ -266,19 +266,6 @@ export default function index({
     )[0]
 
     if (filterVideoReview) {
-      const linkVideo = filterVideoReview.link.split(/[=&]/)[1]
-      const idThumbnailVideo = filterVideoReview.thumbnail.substring(
-        filterVideoReview.thumbnail.indexOf('d/') + 2,
-        filterVideoReview.thumbnail.lastIndexOf('/view'),
-      )
-      const thumbnailVideo =
-        'https://drive.google.com/uc?export=view&id=' + idThumbnailVideo
-      const dataMainVideo = {
-        uploadedBy: filterVideoReview.accountName,
-        videoId: linkVideo,
-        title: filterVideoReview.title,
-        thumbnailVideo: thumbnailVideo,
-      }
       setVideoReview(filterVideoReview)
     }
   }
@@ -350,6 +337,7 @@ export async function getServerSideProps(context: any) {
         notFound: true,
       }
     }
+
     const [
       carRecommendationsRes,
       metaTagDataRes,

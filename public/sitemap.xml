@@ -1,4 +1,1354 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[ https://www.seva.id/mobil-baru/bmw/3-series-320i-sport/ ]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news>
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[BMW 3 series 320i Sport 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[3 series 320i Sport, BMW 3 series 320i Sport, Mobil BMW]]>
+            </news:keywords>
+        </news:news>
+        <image:image>
+            <image:loc>https://images.prod.seva.id/BMW/3%20series%20320i%20Sport/main_color/bmw_320_main_1.png</image:loc>
+        </image:image>
+        <video:video>
+            <video:thumbnail_loc>https://images.prod.seva.id/BMW/3%20series%20320i%20Sport/main_color/bmw_320_main_1.png</video:thumbnail_loc>
+            <video:title>BMW 3 series 320i Sport 2021 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc> https://www.youtube.com/watch?v=cG_HwVTDVZc </video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/bmw/3-series-330i-m-sport-pro/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[BMW 3 series 330i M Sport Pro 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[3 series 330i M Sport Pro, BMW 3 series 330i M Sport Pro, Mobil BMW]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.torq.id/BMW/3%20series%20330i%20M%20Sport/main_color/main_color_BMW_330iMSportPro_Black.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.torq.id/BMW/3%20series%20330i%20M%20Sport/main_color/main_color_BMW_330iMSportPro_Black.png</video:thumbnail_loc>
+            <video:title>BMW 3 series 330i M Sport Pro 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_1</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/bmw/5-series-520i-m-sport/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[BMW 5 series 520i M Sport 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[5 series 520i M Sport, BMW 5 series 520i M Sport, Mobil BMW]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/BMW/5%20series%20520i%20M%20Sport/main_color/main_banner_bmw_520iluxury_Black_Sapphire.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/BMW/5-series-520i-m-sport/main_color/main_banner_bmw_520i_m_sport_2.png</video:thumbnail_loc>
+            <video:title>BMW 5 series 520i M Sport 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_2</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/bmw/5-series-530i-opulence/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[BMW 5 series 530i Opulence 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[5 series 530i Opulence, BMW 5 series 530i Opulence, Mobil BMW]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/BMW/5%20series%20530i%20Opulence/main_color/main_banner_BMW_530iMSport_Black_Sapphire.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/BMW/5%20series%20530i%20Opulence/main_color/main_banner_BMW_530iMSport_Black_Sapphire.png</video:thumbnail_loc>
+            <video:title>BMW 5 series 530i Opulence 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_3</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/bmw/7-series-730li-m-sport/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[BMW 7 series 730li M Sport 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[7 series 730li M Sport, BMW 7 series 730li M Sport, Mobil BMW]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/BMW/7%20series%20730Li%20M%20Sport/main_color/main_banner_BMW730LiMSport_Black_Sapphire.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/BMW/7%20series%20730Li%20M%20Sport/main_color/main_banner_BMW730LiMSport_Black_Sapphire.png</video:thumbnail_loc>
+            <video:title>BMW 7 series 730li M Sport 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_4</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/bmw/7-series-740li-opulence/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[BMW 7 series 740li Opulence 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[7 series 740li Opulence, BMW 7 series 740li Opulence, Mobil BMW]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/BMW/7%20series%20740Li%20Opulence/main_color/main_banner_BMW_740LiOpulence_Black_Sapphire.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/BMW/7%20series%20740Li%20Opulence/main_color/main_banner_BMW_740LiOpulence_Black_Sapphire.png</video:thumbnail_loc>
+            <video:title>BMW 7 series 740li Opulence 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_5</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/bmw/x1-sdrive18i-xline/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[BMW X1 sDrive18i xLine 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[X1 sDrive18i xLine, BMW X1 sDrive18i xLine, Mobil BMW]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/BMW/X1%20sDrive18i%20xLine/main_color/main_banner_bmw_x1_mediterranean_blue1.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/BMW/X1%20sDrive18i%20xLine/main_color/main_banner_bmw_x1_mediterranean_blue1.png</video:thumbnail_loc>
+            <video:title>BMW X1 sDrive18i xLine 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_6</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/bmw/x3-sdrive20i/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[BMW X3 sDrive20i 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[X3 sDrive20i, BMW X3 sDrive20i, Mobil BMW]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/BMW/X3%20sDrive20i/main_color/X3SDR20I20_BSSW_main_banner_BMW_x3SDrive20i_Black_Sapphire.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/BMW/X3%20sDrive20i/main_color/X3SDR20I20_BSSW_main_banner_BMW_x3SDrive20i_Black_Sapphire.png</video:thumbnail_loc>
+            <video:title>BMW X3 sDrive20i 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_7</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/bmw/x5-xdrive40i-x-line/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[BMW X5 xDrive40i xLine 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[X5 xDrive40i xLine, BMW X5 xDrive40i xLine, Mobil BMW]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/BMW/X5%20xDrive40i%20X%20Line/main_color/main_banner_BMW_X5XdRIVE40iXline_Black_Sapphire_.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/BMW/X5%20xDrive40i%20X%20Line/main_color/main_banner_BMW_X5XdRIVE40iXline_Black_Sapphire_.png</video:thumbnail_loc>
+            <video:title>BMW X5 xDrive40i xLine 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_8</video:player_loc>
+        </video:video>
+    </url>
+   <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/bmw/x7-xdrive40i-opulence/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[BMW X7 xDrive40i Opulence 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[X7 xDrive40i Opulence, BMW X7 xDrive40i Opulence, Mobil BMW]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/BMW/X7%20xDrive40i%20Opulence/main_color/main_banner_BMWX7_xDrive40iBMW_Black_Sapphire.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/BMW/X7%20xDrive40i%20Opulence/main_color/main_banner_BMWX7_xDrive40iBMW_Black_Sapphire.png</video:thumbnail_loc>
+            <video:title>BMW X7 xDrive40i Opulence 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_9</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/daihatsu/all-new-terios/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Daihatsu All-New Terios 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[All-New Terios, Daihatsu All-New Terios, Mobil Daihatsu]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Daihatsu/All%20New%20Terios/main_color/Daihatsu_All_New_Terios_Hero.webp</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Daihatsu/All%20New%20Terios/main_color/Daihatsu_All_New_Terios_Hero.webp</video:thumbnail_loc>
+            <video:title>Daihatsu All-New Terios 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_10</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/daihatsu/all-new-xenia/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Daihatsu All-New Xenia 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[All-New Xenia, Daihatsu All-New Xenia, Mobil Daihatsu]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Daihatsu/All%20New%20Xenia/main_color/black.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Daihatsu/All%20New%20Xenia/main_color/black.png</video:thumbnail_loc>
+            <video:title>Daihatsu All-New Xenia 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_11</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/daihatsu/grand-new-xenia/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Daihatsu Grand New Xenia 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[Grand New Xenia, Daihatsu Grand New Xenia, Mobil Daihatsu]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Daihatsu/All%20New%20Xenia/main_color/black.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Daihatsu/All%20New%20Xenia/main_color/black.png</video:thumbnail_loc>
+            <video:title>Daihatsu Grand New Xenia 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_12</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/daihatsu/granmax-bv/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Daihatsu Granmax BV 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[Granmax BV, Daihatsu Granmax BV, Mobil Daihatsu]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Daihatsu/Granmax%20MB/main_color/ultra_black.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Daihatsu/Granmax%20MB/main_color/ultra_black.png</video:thumbnail_loc>
+            <video:title>Daihatsu Granmax BV 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_13</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/daihatsu/granmax-mb/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Daihatsu Granmax MB 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[Granmax MB, Daihatsu Granmax MB, Mobil Daihatsu]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Daihatsu/Granmax%20MB/main_color/ultra_black.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Daihatsu/Granmax%20MB/main_color/ultra_black.png</video:thumbnail_loc>
+            <video:title>Daihatsu Granmax MB 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_14</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/daihatsu/granmax-pu/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Daihatsu Granmax PU 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[Granmax PU, Daihatsu Granmax PU, Mobil Daihatsu]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Daihatsu/Granmax%20PU/main_color/granmaxpu_main_1.webp</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Daihatsu/Granmax%20PU/main_color/granmaxpu_main_1.webp</video:thumbnail_loc>
+            <video:title>Daihatsu Granmax PU 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_15</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/daihatsu/luxio/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Daihatsu Luxio 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[Luxio, Daihatsu Luxio, Mobil Daihatsu]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Daihatsu/Luxio/main_color/midnight_black_metallic.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Daihatsu/Luxio/main_color/midnight_black_metallic.png</video:thumbnail_loc>
+            <video:title>Daihatsu Luxio 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_16</video:player_loc>
+        </video:video>
+    </url>
+   <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/daihatsu/new-ayla/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Daihatsu New Ayla 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[New Ayla, Daihatsu New Ayla, Mobil Daihatsu]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Daihatsu/New%20Ayla/main_color/main_banner_daihatsu_ayla_ultrablacksolid_1.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Daihatsu/New%20Ayla/main_color/main_banner_daihatsu_ayla_ultrablacksolid_1.png</video:thumbnail_loc>
+            <video:title>Daihatsu New Ayla 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_17</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/daihatsu/new-sirion/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Daihatsu New Sirion 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[New Sirion, Daihatsu New Sirion, Mobil Daihatsu]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Daihatsu/New%20Sirion/main_color/main_banner_daihatsu_new_sirion_IcyWhite_1.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://www.seva.id/_next/image?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26amp;id%3D1MQM29UcbHh5f3Z-e4dEGveKVV1yCQo5z&amp;w=750&amp;q=75</video:thumbnail_loc>
+            <video:title>Daihatsu Sirion 2022 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=vvwkrcUtKd4</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/daihatsu/rocky/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Daihatsu Rocky 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[Rocky, Daihatsu Rocky, Mobil Daihatsu]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Daihatsu/Rocky/main_color/mainbanner_rocky_6.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://www.seva.id/_next/image?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D14CX2vQw-DIOF9rB7Ivph-MaGa4WvUTbH&amp;w=750&amp;q=75</video:thumbnail_loc>
+            <video:title>Daihatsu Rocky 1.2 2021 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://youtu.be/cG_HwVTDVZc</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/daihatsu/sigra/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Daihatsu Sigra 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[Sigra, Daihatsu Sigra, Mobil Daihatsu]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Daihatsu/Sigra/main_color/sigra_main_1.webp</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Daihatsu/Sigra/main_color/sigra_main_1.webp</video:thumbnail_loc>
+            <video:title>Daihatsu Sigra 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_20</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/isuzu/d-max/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Isuzu D-Max 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[D-Max, Isuzu D-Max, Mobil Isuzu]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.torq.id/Isuzu/D-MAX/main_color/dmax_black.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.torq.id/Isuzu/D-MAX/main_color/dmax_black.png</video:thumbnail_loc>
+            <video:title>Isuzu D-Max 2022 | First Drive | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=ra37A3IyFbs</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/isuzu/mu-x/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Isuzu MU-X 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[MU-X, Isuzu MU-X, Mobil Isuzu]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.torq.id/Isuzu/MU-X/main_color/mux_black.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.torq.id/Isuzu/MU-X/main_color/mux_black.png</video:thumbnail_loc>
+            <video:title>Isuzu MU-X 4X4 2022 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=Gltvdc-AJT4</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/peugeot/2008/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Peugeot 2008 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[2008, Peugeot 2008, Mobil Peugeot]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.torq.id/Peugeot/2008/main_color/2008_Fusion_Orange.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.torq.id/Peugeot/2008/main_color/2008_Fusion_Orange.png</video:thumbnail_loc>
+            <video:title>Peugeot 2008 2022 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=4cNDtCa0Pbs</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/peugeot/3008/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Peugeot 3008 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[3008, Peugeot 3008, Mobil Peugeot]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.torq.id/Peugeot/3008/main_color/3008_Active_Pearl_White.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.torq.id/Peugeot/3008/main_color/3008_Active_Pearl_White.png</video:thumbnail_loc>
+            <video:title>Peugeot 3008 &amp; Peugeot 5008 Allure Plus 2020 | First Impression | OtoDrive</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=rcllw7aNbaI</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/peugeot/5008/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Peugeot 5008 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[5008, Peugeot 5008, Mobil Peugeot]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.torq.id/Peugeot/5008/main_color/5008_main_1.webp</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.torq.id/Peugeot/5008/main_color/5008_main_1.webp</video:thumbnail_loc>
+            <video:title>Peugeot 5008 Allure Plus 2020 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=YTkOdXLOZ9U</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/all-new-avanza/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota All-New Avanza 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[All-New Avanza, Toyota All-New Avanza, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/All%20New%20Avanza/main_color/hitam.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Toyota/All%20New%20Avanza/main_color/hitam.png</video:thumbnail_loc>
+            <video:title>Toyota All-New Avanza 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_26</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/all-new-bz4x/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota All-New BZ4X 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[All-New BZ4X, Toyota All-New BZ4X, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/All%20New%20BZ4X/main_color/bz4x_main_1.webp</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Toyota/All%20New%20BZ4X/main_color/bz4x_main_1.webp</video:thumbnail_loc>
+            <video:title>Toyota All-New BZ4X 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_27</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/all-new-camry/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota All-New Camry 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[All-New Camry, Toyota All-New Camry, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/All%20New%20Camry/main_color/main_banner_toyota_camry_hybrid_attitude_black.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://www.seva.id/_next/image?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D1RFYawPySwo50hs_ViBDtXfs1fGg7Gpmg&amp;w=750&amp;q=75</video:thumbnail_loc>
+            <video:title>Toyota All New Camry 2019 | First Impression | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=I9tG8S5u3xg</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/all-new-c-hr/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota All-New C-HR 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[All-New C-HR, Toyota All-New C-HR, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/All%20New%20C-HR/main_color/main_banner_toyota_c_hr_attitude_black_mica.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Toyota/All%20New%20C-HR/main_color/main_banner_toyota_c_hr_attitude_black_mica.png</video:thumbnail_loc>
+            <video:title>Toyota All-New C-HR 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_29</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/all-new-corolla-altis/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota All-New Corolla Altis 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[All-New Corolla Altis, Toyota All-New Corolla Altis, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/All%20New%20Corolla%20Altis/main_color/main_banner_toyota_new_altis_attitude_black_mica.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Toyota/All%20New%20Corolla%20Altis/main_color/main_banner_toyota_new_altis_attitude_black_mica.png</video:thumbnail_loc>
+            <video:title>Toyota All-New Corolla Altis 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_30</video:player_loc>
+        </video:video>
+    </url>
+   <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/all-new-hilux/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota All-New Hilux 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[All-New Hilux, Toyota All-New Hilux, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/All%20New%20Hilux/main_color/main_banner_toyota_hilux_d_cab_attitude_black1.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Toyota/All%20New%20Hilux/main_color/main_banner_toyota_hilux_d_cab_attitude_black1.png</video:thumbnail_loc>
+            <video:title>Toyota All-New Hilux 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_31</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/all-new-kijang-innova-zenix/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota All-New Kijang Innova Zenix 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[All-New Kijang Innova Zenix, Toyota All-New Kijang Innova Zenix, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/All%20New%20Kijang%20Innova%20Zenix/main_color/Zenix_main_black_transparent.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Toyota/All%20New%20Kijang%20Innova%20Zenix/main_color/Zenix_main_black_transparent.png</video:thumbnail_loc>
+            <video:title>Toyota All-New Kijang Innova Zenix 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_32</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/rush/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota All-New Rush 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[All-New Rush, Toyota All-New Rush, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/All%20New%20Rush/main_color/main_banner_toyota_all_new_rush_black_mica1.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://www.seva.id/_next/image?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D1QUgHoIMcT5_5cX9Ap7d6zXXlDLuo25hF&amp;w=750&amp;q=75</video:thumbnail_loc>
+            <video:title>Toyota All New Rush 2018 Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=x0mXPifsxZM</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/all-new-veloz/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota All-New Veloz 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[All-New Veloz, Toyota All-New Veloz, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/All%20New%20Veloz/main_color/white.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Toyota/All%20New%20Veloz/main_color/white.png</video:thumbnail_loc>
+            <video:title>Toyota All-New Veloz 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_34</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/all-new-vios/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota All-New Vios 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[All-New Vios, Toyota All-New Vios, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/New%20Vios/main_color/vios_main_1.webp</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://www.seva.id/_next/image?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D15jdL5IhwU2IoD5uNYymSFuGwwa7tgiVC&amp;w=750&amp;q=75</video:thumbnail_loc>
+            <video:title>Toyota All New Vios 2022 | First Drive | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=qWbTS6lwOnQ</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/all-new-voxy/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota All-New Voxy 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[All-New Voxy, Toyota All-New Voxy, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/All%20New%20Voxy/main_color/voxy_main_new.webp</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://www.seva.id/_next/image?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D1cwnsUsuHQ11P2XccF6Aka2WqjeRbFqzr&amp;w=750&amp;q=75</video:thumbnail_loc>
+            <video:title>Toyota Voxy 2022 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=TeJ5xJ0XWwM</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/gr-86/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota GR 86 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[GR 86, Toyota GR 86, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/86/main_color/main_banner_FT86_black.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Toyota/86/main_color/main_banner_FT86_black.png</video:thumbnail_loc>
+            <video:title>Toyota GR 86 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_37</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/hiace-commuter/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota Hiace Premio 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[Hiace Premio, Toyota Hiace Premio, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/The%20All%20New%20Hiace%20Premio/main_color/main_banner_toyota_hiace_premio_white.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Toyota/The%20All%20New%20Hiace%20Premio/main_color/main_banner_toyota_hiace_premio_white.png</video:thumbnail_loc>
+            <video:title>Toyota Hiace Premio 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_38</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/land-cruiser/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota Land Cruiser 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[Land Cruiser, Toyota Land Cruiser, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/Land%20Cruiser/main_color/main_banner_toyota_land_cruiser_black1.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://www.seva.id/_next/image?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D1YLN-mzhZtjhSGXoS92VnzTVVmnhAsCOX&amp;w=750&amp;q=75</video:thumbnail_loc>
+            <video:title>Toyota Land Cruiser 300 2022 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=mj47BIwpEwM</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/new-agya/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota New Agya 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[New Agya, Toyota New Agya, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/All%20New%20Agya/main_color/All_New_Agya_main_desktop_1.webp</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Toyota/All%20New%20Agya/main_color/All_New_Agya_main_desktop_1.webp</video:thumbnail_loc>
+            <video:title>Toyota New Agya 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_40</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/new-alphard/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota New Alphard 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[New Alphard, Toyota New Alphard, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/New%20Alphard/main_color/main_banner_toyota_new_alphard_black1.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Toyota/New%20Alphard/main_color/main_banner_toyota_new_alphard_black1.png</video:thumbnail_loc>
+            <video:title>Toyota New Alphard 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_41</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/new-calya/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota New Calya 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[New Calya, Toyota New Calya, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/New%20Calya/main_color/calya_main_1.webp</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Toyota/New%20Calya/main_color/calya_main_1.webp</video:thumbnail_loc>
+            <video:title>Toyota New Calya 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_42</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/new-fortuner/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota New Fortuner 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[New Fortuner, Toyota New Fortuner, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/New%20Fortuner/main_color/main_banner_toyota_new_fortuner_Attitude_Black.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://www.seva.id/_next/image?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D1Kd8pxOflrrNej54em9_KRVIYzdrNFU-O&amp;w=750&amp;q=75</video:thumbnail_loc>
+            <video:title>Toyota Fortuner 2.8 GR Sport 2022 | Review Indonesia | OtoDrive</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=smlcB4B2jww</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/new-kijang-innova/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota New Kijang Innova 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[New Kijang Innova, Toyota New Kijang Innova, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/New%20Kijang%20Innova/main_color/main_banner_toyota_new_innova_attitude_black.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Toyota/New%20Kijang%20Innova/main_color/main_banner_toyota_new_innova_attitude_black.png</video:thumbnail_loc>
+            <video:title>Toyota New Kijang Innova 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_44</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/new-sienta/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota New Sienta 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[New Sienta, Toyota New Sienta, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/New%20Sienta/main_color/main_banner_toyota_new_sienta_attitudeblackmicametallic.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Toyota/New%20Sienta/main_color/main_banner_toyota_new_sienta_attitudeblackmicametallic.png</video:thumbnail_loc>
+            <video:title>Toyota New Sienta 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_45</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/new-yaris/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota New Yaris 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[New Yaris, Toyota New Yaris, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/New%20Yaris/main_color/main_galeri_toyota_new_yaris_black_mica_1.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://www.seva.id/_next/image?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D1T2SU-AFk2GotcAXZKq73CFCv_dMb1J7O&amp;w=750&amp;q=75</video:thumbnail_loc>
+            <video:title>Toyota GR Yaris 2022 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=zdk3ml1FB-k</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/raize/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota Raize 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[Raize, Toyota Raize, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/Raize/main_color/RaizeBlack.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://www.seva.id/_next/image?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D1Fe3X18KO0_7R465vHqL6s2nlNvIA0oQ5&amp;w=750&amp;q=75</video:thumbnail_loc>
+            <video:title>Toyota Raize 2021 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=NaeErfFmH4A</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/vellfire/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota Vellfire 2023 Harga OTR Cicilan Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[Vellfire, Toyota Vellfire, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/Vellfire/main_color/main_banner_toyota_new_vellfire_black.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://images.prod.seva.id/Toyota/Vellfire/main_color/main_banner_toyota_new_vellfire_black.png</video:thumbnail_loc>
+            <video:title>Toyota Vellfire 2023 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=example_video_id_48</video:player_loc>
+        </video:video>
+    </url>
+    <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        <loc>
+            <![CDATA[https://www.seva.id/mobil-baru/toyota/all-new-corolla-cross/]]>
+        </loc>
+        <lastmod>2023-08-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <news:news xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+            <news:name>ProductSeva</news:name>
+            <news:language>id</news:language>
+            <news:publication_date>2023-08-31</news:publication_date>
+            <news:title>
+                <![CDATA[Toyota All New Corolla Cross 2023 Harga OTR Kredit & Spesifikasi | SEVA]]>
+            </news:title>
+            <news:keywords>
+                <![CDATA[All New Corolla Cross, Toyota All New Corolla Cross, Mobil Toyota]]>
+            </news:keywords>
+        </news:news>
+        <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+            <image:loc>https://images.prod.seva.id/Toyota/All%20New%20Corolla%20Cross/main_color/main_banner_toyota_corolla_cross_attitudeBlackmetallic.png</image:loc>
+        </image:image>
+        <video:video xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+            <video:thumbnail_loc>https://www.seva.id/_next/image?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fexport%3Dview%26id%3D1m4VVAeZ8vgEyT6Xyjh_VWAgPLEXZw7W2&amp;w=750&amp;q=75</video:thumbnail_loc>
+            <video:title>Toyota Corolla Cross Hybrid 2020 | Review Indonesia | OtoDriver</video:title>
+            <video:player_loc>https://www.youtube.com/watch?v=we2-rkL78u4</video:player_loc>
+        </video:video>
+    </url>
     <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
         <loc>
