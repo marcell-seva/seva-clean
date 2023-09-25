@@ -624,6 +624,7 @@ export default function LoanCalculatorPage() {
     fetchArticles()
     getAnnouncementBox()
     fetchDataContext()
+    fetchMobileTopMenus()
     const timeoutCountlyTracker = setTimeout(() => {
       if (!isSentCountlyPageView) {
         trackCountlyPageView()
@@ -1421,6 +1422,11 @@ export default function LoanCalculatorPage() {
     saveDesktopWebTopMenu(menuDesktopRes.data)
     saveMobileWebFooterMenus(footerRes.data)
     saveCities(cityRes)
+  }
+  const fetchMobileTopMenus = async () => {
+    const menus = await api.getMobileHeaderMenu()
+    saveMobileWebTopMenus(menus.data)
+    console.log('asdf', menus.data)
   }
 
   useEffect(() => {
