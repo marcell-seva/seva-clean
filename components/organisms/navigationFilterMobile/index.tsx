@@ -9,6 +9,7 @@ import {
 } from 'components/atoms'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import clsx from 'clsx'
+import urls from 'utils/helpers/url'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
@@ -32,6 +33,7 @@ type NavFilterMobileProps = {
   setRecommendations: any
   isShowAnnouncementBox?: boolean | null
   showInformationDaihatsu: boolean
+  isOTO?: boolean
 }
 export const NavigationFilterMobile = ({
   carlist,
@@ -44,6 +46,7 @@ export const NavigationFilterMobile = ({
   setRecommendations,
   isShowAnnouncementBox,
   showInformationDaihatsu,
+  isOTO,
 }: NavFilterMobileProps) => {
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
   const { sortBy } = funnelQuery
@@ -140,13 +143,27 @@ export const NavigationFilterMobile = ({
         sortBy: String(funnelQuery.sortBy) || 'lowToHigh',
       }
 
-      navigateToPLP(PreviousButton.SmartSearch, {
-        search: new URLSearchParams(
-          Object.entries(paramUrl).filter(([, v]) => v !== ''),
-        )
-          .toString()
-          .replace('%2C', ','),
-      })
+      isOTO
+        ? navigateToPLP(
+            PreviousButton.SmartSearch,
+            {
+              search: new URLSearchParams(
+                Object.entries(paramUrl).filter(([, v]) => v !== ''),
+              )
+                .toString()
+                .replace('%2C', ','),
+            },
+            true,
+            false,
+            urls.internalUrls.duplicatedCarResultsUrl,
+          )
+        : navigateToPLP(PreviousButton.SmartSearch, {
+            search: new URLSearchParams(
+              Object.entries(paramUrl).filter(([, v]) => v !== ''),
+            )
+              .toString()
+              .replace('%2C', ','),
+          })
     })
   }
 

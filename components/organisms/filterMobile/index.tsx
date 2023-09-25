@@ -27,6 +27,7 @@ import {
 } from 'helpers/amplitude/seva20Tracking'
 import { carResultsUrl } from 'utils/helpers/routes'
 import elementId from 'helpers/elementIds'
+import urls from 'utils/helpers/url'
 import { useRouter } from 'next/router'
 import { CarRecommendationResponse, FunnelQuery } from 'utils/types/context'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
@@ -63,6 +64,7 @@ type FilterMobileProps = {
   setIsResetFilter?: (value: boolean) => void
   isErrorIncome?: boolean
   setIsErrorIncome?: (value: boolean) => void
+  isOTO?: boolean
 }
 const FilterMobile = ({
   onButtonClick,
@@ -73,6 +75,7 @@ const FilterMobile = ({
   setIsFilter,
   isResetFilter,
   setIsResetFilter,
+  isOTO,
 }: FilterMobileProps) => {
   const router = useRouter()
   const { bodyType, brand } = router.query
@@ -388,7 +391,8 @@ const FilterMobile = ({
       PreviousButton.SmartSearch,
       { query: { ...paramUrl } },
       true,
-      true,
+      false,
+      urls.internalUrls.duplicatedCarResultsUrl,
     )
     onClickClose()
   }
@@ -411,6 +415,18 @@ const FilterMobile = ({
       200,
     )
   }
+
+  useEffect(() => {
+    if (isButtonClick) {
+      setTimeout(() => scrollToTopDiv(), 200)
+    }
+  }, [isButtonClick])
+
+  const topDiv = useRef<null | HTMLDivElement>(null)
+  const scrollToTopDiv = () => {
+    topDiv.current?.scrollIntoView({ behavior: 'smooth', inline: 'start' })
+  }
+
   const dpRef = useRef<null | HTMLDivElement>(null)
   const scrollToDp = () => {
     dpRef.current?.scrollIntoView({ behavior: 'smooth', inline: 'start' })
@@ -447,38 +463,160 @@ const FilterMobile = ({
         title="Filter"
         closeDatatestid={elementId.PLP.Close.Button.FilterPopup}
       >
-        <div className={styles.enhanceMargin}>
-          <div className={styles.labelForm}>Merek Mobil</div>
-          <FormSelectBrandCar
-            setIsCheckedBrand={setIsCheckedBrand}
-            isResetFilter={isResetFilter || resetTmp}
-            isApplied={isButtonClick && isFilter && isApplied}
-            brand={brand}
-            setResetTmp={setResetTmp}
-            isButtonClick={isButtonClick}
-          />
-          <div className={styles.labelForm}>Tipe Mobil</div>
-          <FormSelectTypeCar
-            setIsCheckedType={setIsCheckedType}
-            isResetFilter={isResetFilter || resetTmp}
-            isApplied={isButtonClick && isFilter && isApplied}
-            bodyType={bodyType}
-            setResetTmp={setResetTmp}
-            isButtonClick={isButtonClick}
-          />
-          <div ref={priceRef} className={styles.labelForm}>
-            Kisaran Harga
-          </div>
-          <FormPrice
-            minMaxPrice={minMaxPrice}
-            setMinPriceFilter={setMinPriceFilter}
-            setMaxPriceFilter={setMaxPriceFilter}
-            isResetFilter={isResetFilter || resetTmp}
-            setIsErrorForm={setIsErrorForm}
-            isApplied={isButtonClick && isFilter && isApplied}
-            isButtonClick={isButtonClick}
-          />
-        </div>
+        {isOTO ? (
+          <>
+            <div ref={topDiv} />
+            <div className={styles.enhanceMargin}>
+              <div className={styles.labelForm}>Merek Mobil</div>
+              <FormSelectBrandCar
+                setIsCheckedBrand={setIsCheckedBrand}
+                isResetFilter={isResetFilter || resetTmp}
+                isApplied={isButtonClick && isFilter && isApplied}
+                brand={brand}
+                setResetTmp={setResetTmp}
+                isButtonClick={isButtonClick}
+              />
+              <div className={styles.labelForm}>Tipe Mobil</div>
+              <FormSelectTypeCar
+                setIsCheckedType={setIsCheckedType}
+                isResetFilter={isResetFilter || resetTmp}
+                isApplied={isButtonClick && isFilter && isApplied}
+                bodyType={bodyType}
+                setResetTmp={setResetTmp}
+                isButtonClick={isButtonClick}
+              />
+              <div ref={priceRef} className={styles.labelForm}>
+                Kisaran Harga
+              </div>
+              <FormPrice
+                minMaxPrice={minMaxPrice}
+                setMinPriceFilter={setMinPriceFilter}
+                setMaxPriceFilter={setMaxPriceFilter}
+                isResetFilter={isResetFilter || resetTmp}
+                setIsErrorForm={setIsErrorForm}
+                isApplied={isButtonClick && isFilter && isApplied}
+                isButtonClick={isButtonClick}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div
+              onClick={onCollapseFirst}
+              className={`${styles.collapse} `}
+              data-testid={elementId.PLP.Dropdown.DetailMobil}
+            >
+              <p className={styles.textCollapse}>Detail Mobil</p>{' '}
+              {collapseFirst ? (
+                <IconChevronUp width={24} height={24} />
+              ) : (
+                <IconChevronDown width={24} height={24} />
+              )}
+            </div>
+            {collapseFirst ? (
+              <>
+                <div className={styles.labelForm}>Merek Mobil</div>
+                <FormSelectBrandCar
+                  setIsCheckedBrand={setIsCheckedBrand}
+                  isResetFilter={isResetFilter || resetTmp}
+                  isApplied={isButtonClick && isFilter && isApplied}
+                  brand={brand}
+                  setResetTmp={setResetTmp}
+                  isButtonClick={isButtonClick}
+                />
+                <div className={styles.labelForm}>Tipe Mobil</div>
+                <FormSelectTypeCar
+                  setIsCheckedType={setIsCheckedType}
+                  isResetFilter={isResetFilter || resetTmp}
+                  isApplied={isButtonClick && isFilter && isApplied}
+                  bodyType={bodyType}
+                  setResetTmp={setResetTmp}
+                  isButtonClick={isButtonClick}
+                />
+                <div ref={priceRef} className={styles.labelForm}>
+                  Kisaran Harga
+                </div>
+                <FormPrice
+                  minMaxPrice={minMaxPrice}
+                  setMinPriceFilter={setMinPriceFilter}
+                  setMaxPriceFilter={setMaxPriceFilter}
+                  isResetFilter={isResetFilter || resetTmp}
+                  setIsErrorForm={setIsErrorForm}
+                  isApplied={isButtonClick && isFilter && isApplied}
+                  isButtonClick={isButtonClick}
+                />
+              </>
+            ) : (
+              ''
+            )}
+            <div className={styles.divider}></div>
+            <div className={styles.marginBot}>
+              <div
+                ref={resultRef}
+                onClick={onCollapseTwo}
+                className={`${styles.collapse}`}
+                data-testid={elementId.PLP.Dropdown.FilterFinansial}
+              >
+                <p className={styles.textCollapse}>Filter Finansial</p>{' '}
+                {collapseTwo ? (
+                  <IconChevronUp width={24} height={24} />
+                ) : (
+                  <IconChevronDown width={24} height={24} />
+                )}
+              </div>
+              {collapseTwo ? (
+                <>
+                  <div ref={dpRef} />
+                  <FormDP
+                    collapseTwo={collapseTwo}
+                    setDownPaymentAmount={setDownPaymentAmount}
+                    isResetFilter={isResetFilter || resetTmp}
+                    isErrorDp={isErrorDp}
+                    setIsErrorDp={setIsErrorDp}
+                    isErrorMinMaxDP={isErrorMinMaxDP}
+                    setIsErrorMinMaxDP={setIsErrorMinMaxDP}
+                    minPriceValidation={
+                      minPriceFilter
+                        ? minPriceFilter
+                        : minMaxPrice.minPriceValue
+                    }
+                    maxPriceValidation={
+                      maxPriceFilter
+                        ? maxPriceFilter
+                        : minMaxPrice.maxPriceValue
+                    }
+                    scrollToPrice={scrollToPrice}
+                    isButtonClick={isButtonClick}
+                  />
+                  <div ref={incomeRef} />
+                  <FormIncome
+                    collapseTwo={collapseTwo}
+                    setIncomeAmount={setIncomeAmount}
+                    isResetFilter={isResetFilter || resetTmp}
+                    isErrorIncome={isErrorIncome}
+                    setIsErrorIncome={setIsErrorIncome}
+                    isApplied={isApplied}
+                  />
+                  <FormTenure
+                    setTenureFilter={setTenureFilter}
+                    isResetFilter={isResetFilter || resetTmp}
+                    isApplied={isApplied}
+                  />
+                  <FormAge
+                    isErrorAge={isErrorAge}
+                    setAgeFilter={setAgeFilter}
+                    setIsErrorAge={setIsErrorAge}
+                    isResetFilter={isResetFilter || resetTmp}
+                  />
+                  <div ref={ageRef} />
+                </>
+              ) : (
+                ''
+              )}
+            </div>
+          </>
+        )}
+
         <div className={styles.footerButton}>
           <Button
             onClick={resetFilter}

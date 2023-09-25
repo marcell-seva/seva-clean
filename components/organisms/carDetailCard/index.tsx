@@ -16,6 +16,7 @@ import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import { hundred, million, ten } from 'utils/helpers/const'
 import {
+  OTOVariantListUrl,
   loanCalculatorWithCityBrandModelVariantUrl,
   variantListUrl,
 } from 'utils/helpers/routes'
@@ -70,7 +71,7 @@ export const CarDetailCard = ({
   onClickResultMudah,
   isFilterTrayOpened,
   setOpenInterestingModal,
-  isOTO = false,
+  isOTO,
 }: CarDetailCardProps) => {
   const router = useRouter()
   const { funnelQuery } = useFunnelQueryData()
@@ -137,15 +138,28 @@ export const CarDetailCard = ({
     !!filterStorage?.monthlyIncome &&
     !!filterStorage?.tenure
 
-  const detailCarRoute = variantListUrl
-    .replace(
-      ':brand/:model',
-      (recommendation.brand + '/' + recommendation.model.replace(/ +/g, '-'))
-        .replace(/ +/g, '')
-        .toLowerCase(),
-    )
-    .replace(':tab', '')
-    .replace('?', `?loanRankCVL=${recommendation.loanRank}&source=plp`)
+  const detailCarRoute = isOTO
+    ? OTOVariantListUrl.replace(
+        ':brand/:model',
+        (recommendation.brand + '/' + recommendation.model.replace(/ +/g, '-'))
+          .replace(/ +/g, '')
+          .toLowerCase(),
+      )
+        .replace(':tab', '')
+        .replace('?', `?loanRankCVL=${recommendation.loanRank}&source=plp`)
+    : variantListUrl
+        .replace(
+          ':brand/:model',
+          (
+            recommendation.brand +
+            '/' +
+            recommendation.model.replace(/ +/g, '-')
+          )
+            .replace(/ +/g, '')
+            .toLowerCase(),
+        )
+        .replace(':tab', '')
+        .replace('?', `?loanRankCVL=${recommendation.loanRank}&source=plp`)
 
   const cityName =
     recommendation.brand === 'Daihatsu' &&
