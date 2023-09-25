@@ -406,7 +406,12 @@ export const SummaryTab = ({
           <>
             <div className={styles.videoSectionCard}>
               <div className={styles.videoSectionHeader}>
-                <IconPlay width={24} height={24} color="#B4231E" />
+                <IconPlay
+                  width={24}
+                  height={24}
+                  color="#B4231E"
+                  alt="SEVA Play Icon"
+                />
                 <h3
                   className={styles.videoSectionHeaderText}
                   data-testid={elementId.Text + 'video-ulasan'}
