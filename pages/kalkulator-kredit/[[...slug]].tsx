@@ -261,7 +261,13 @@ export default function LoanCalculatorPage() {
   const dataCar: trackDataCarType | null = getSessionStorage(
     SessionStorageKey.PreviousCarDataBeforeLogin,
   )
-  const { saveMobileWebTopMenus, saveDataAnnouncementBox } = useUtils()
+  const {
+    saveMobileWebTopMenus,
+    saveCities,
+    saveDesktopWebTopMenu,
+    saveMobileWebFooterMenus,
+    saveDataAnnouncementBox,
+  } = useUtils()
 
   const getAutofilledCityData = () => {
     // related to logic inside component "FormSelectCity"
@@ -643,7 +649,7 @@ export default function LoanCalculatorPage() {
     fetchAllCarModels()
     fetchArticles()
     getAnnouncementBox()
-    fetchMobileTopMenus()
+    fetchDataContext()
     const timeoutCountlyTracker = setTimeout(() => {
       if (!isSentCountlyPageView) {
         trackCountlyPageView()
@@ -1410,9 +1416,19 @@ export default function LoanCalculatorPage() {
     setCarRecommendations(filteredCarRecommendations.slice(0, 10))
   }
 
-  const fetchMobileTopMenus = async () => {
-    const menus = await api.getMobileHeaderMenu()
-    saveMobileWebTopMenus(menus.data)
+  const fetchDataContext = async () => {
+    const [menuDesktopRes, menuMobileRes, footerRes, cityRes]: any =
+      await Promise.all([
+        api.getMenu(),
+        api.getMobileHeaderMenu(),
+        api.getMobileFooterMenu(),
+        api.getCities(),
+      ])
+
+    saveMobileWebTopMenus(menuMobileRes.data)
+    saveDesktopWebTopMenu(menuDesktopRes.data)
+    saveMobileWebFooterMenus(footerRes.data)
+    saveCities(cityRes)
   }
 
   useEffect(() => {
