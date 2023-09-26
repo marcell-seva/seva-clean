@@ -52,7 +52,12 @@ export const ForwardVideoOption = (
       ref={ref}
     >
       <PlayButtonWrapper>
-        <IconPlay color={'#52627A'} width={18} height={19} />
+        <IconPlay
+          color={'#52627A'}
+          width={18}
+          height={19}
+          alt="SEVA Play Icon"
+        />
       </PlayButtonWrapper>
       <VideoImage
         src={mainVideo.thumbnailVideo}
