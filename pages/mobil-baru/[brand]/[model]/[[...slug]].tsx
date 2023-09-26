@@ -208,25 +208,25 @@ export default function index({
         default:
           return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tahu spesifikasi, harga, dan kredit di SEVA`
       }
-    } else {
-      if (Array.isArray(slug)) {
-        const descriptions = slug.map((s) => {
-          switch (s) {
-            case 'kredit':
-              return `Hitung simulasi cicilan ${carBrand} ${carModel} ${currentYear}. Beli mobil ${carBrand} secara kredit, proses aman & mudah dengan Instant Approval* di SEVA."`
-            case 'spesifikasi':
-              return `Dapatkan informasi lengkap mengenai spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
-            case 'harga':
-              return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
-
-            default:
-              return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tahu spesifikasi, harga, dan kredit di SEVA`
-          }
-        })
-
-        return descriptions.join(' ')
-      }
     }
+    if (Array.isArray(slug)) {
+      const descriptions = slug.map((s) => {
+        switch (s) {
+          case 'kredit':
+            return `Hitung simulasi cicilan ${carBrand} ${carModel} ${currentYear}. Beli mobil ${carBrand} secara kredit, proses aman & mudah dengan Instant Approval* di SEVA."`
+          case 'spesifikasi':
+            return `Dapatkan informasi lengkap mengenai spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
+          case 'harga':
+            return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
+
+          default:
+            return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tahu spesifikasi, harga, dan kredit di SEVA`
+        }
+      })
+
+      return descriptions.join(' ')
+    }
+    return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tahu spesifikasi, harga, dan kredit di SEVA`
   }
 
   const modelDetailData =
@@ -264,7 +264,7 @@ export default function index({
               dataCombinationOfCarRecomAndModelDetail,
               carVariantDetailsRes,
               recommendationsDetailData,
-              selectedVideoReview,
+              selectedVideoReview ?? null,
             ),
           ),
         }}
@@ -358,9 +358,11 @@ export async function getServerSideProps(context: any) {
         carModelDetailsRes,
       )
 
-    const selectedVideoReview = carVideoReviewRes.data.filter(
-      (video: MainVideoResponseType) => video.modelId === carModelDetailsRes.id,
-    )[0]
+    const selectedVideoReview = carVideoReviewRes.data.find(
+      (video: MainVideoResponseType) => {
+        return video.modelId === carModelDetailsRes?.id
+      },
+    )
 
     return {
       props: {
@@ -376,7 +378,7 @@ export async function getServerSideProps(context: any) {
         dataFooter: footerRes.data,
         dataCities: cityRes,
         dataDesktopMenu: menuDesktopRes.data,
-        selectedVideoReview,
+        selectedVideoReview: selectedVideoReview || null,
       },
     }
   } catch (error) {
