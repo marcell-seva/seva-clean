@@ -24,6 +24,13 @@ import { OTP } from 'components/organisms/otp'
 import { LocalStorageKey } from 'utils/enum'
 import { CityOtrOption } from 'utils/types'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import {
+  trackEventCountly,
+  valueForUserTypeProperty,
+} from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getCustomerInfoSeva } from 'services/customer'
+import { getToken } from 'utils/handler/auth'
 
 interface PropsLeadsForm {
   otpStatus?: any
@@ -47,6 +54,9 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
+  )
+  const referralCodeFromUrl: string | null = getLocalStorage(
+    LocalStorageKey.referralTemanSeva,
   )
   const [modalOpened, setModalOpened] = useState<
     'otp' | 'success-toast' | 'none'
@@ -102,16 +112,27 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
     if (dataLeads) {
       if (phone === dataLeads.phone && name === dataLeads.name) {
         sendUnverifiedLeads()
+        onClickSendLeads('Yes')
       } else if (phone === dataLeads.phone && name !== dataLeads.name) {
         sendUnverifiedLeads()
         updateFlagLeadsName(name)
+        onClickSendLeads('Yes')
       } else {
         setModalOpened('otp')
+        trackEventCountly(CountlyEventNames.WEB_OTP_VIEW, {
+          PAGE_ORIGINATION: 'Homepage - Bottom Section',
+        })
+        onClickSendLeads('No')
       }
     } else if (isUserLoggedIn) {
       sendUnverifiedLeads()
+      onClickSendLeads('Yes')
     } else {
       setModalOpened('otp')
+      trackEventCountly(CountlyEventNames.WEB_OTP_VIEW, {
+        PAGE_ORIGINATION: 'Homepage - Bottom Section',
+      })
+      onClickSendLeads('No')
     }
   }
 
@@ -146,10 +167,25 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
       }),
     }
     try {
+      let temanSevaStatus = 'No'
+      if (referralCodeFromUrl) {
+        temanSevaStatus = 'Yes'
+      } else if (!!getToken()) {
+        const response = await getCustomerInfoSeva()
+        if (response.data[0].temanSevaTrxCode) {
+          temanSevaStatus = 'Yes'
+        }
+      }
       await api.postUnverifiedLeadsNew(data)
       sendAmplitudeData(AmplitudeEventName.WEB_LEADS_FORM_SUCCESS, {
         Page_Origination: PageOriginationName.LPLeadsForm,
         ...(cityOtr && { City: cityOtr.cityName }),
+      })
+      trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SUCCESS_VIEW, {
+        PAGE_ORIGINATION: 'Homepage - Bottom Section',
+        LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
+        TEMAN_SEVA_STATUS: temanSevaStatus,
+        PHONE_NUMBER: '+62' + phone,
       })
       setModalOpened('success-toast')
       setIsLoading(false)
@@ -209,6 +245,29 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
     }
   }
 
+  const onClickNameField = () => {
+    trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_NAME_CLICK, {
+      PAGE_ORIGINATION: 'Homepage - Floating Icon',
+      USER_TYPE: valueForUserTypeProperty(),
+    })
+  }
+
+  const onClickPhoneField = () => {
+    trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_PHONE_NUMBER_CLICK, {
+      PAGE_ORIGINATION: 'Homepage - Floating Icon',
+      USER_TYPE: valueForUserTypeProperty(),
+    })
+  }
+
+  const onClickSendLeads = async (PHONE_VERIFICATION_STATUS: string) => {
+    trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SEND_CLICK, {
+      PAGE_ORIGINATION: 'Homepage - Bottom Section',
+      LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
+      PHONE_VERIFICATION_STATUS: PHONE_VERIFICATION_STATUS,
+      PHONE_NUMBER: '+62' + phone,
+    })
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -243,6 +302,7 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
               value={name}
               onChange={(e: any) => handleInputName(e.target.value)}
               data-testid={elementId.Field.FullName}
+              onFocus={onClickNameField}
             />
             <InputPhone
               className={styles.inputPhone}
@@ -257,6 +317,7 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
               value={phone}
               onChange={(e: any) => handleInputPhone(e.target.value)}
               data-testid={elementId.Field.FullName}
+              onFocus={onClickPhoneField}
             />
             <Button
               secondaryClassName={styles.button}

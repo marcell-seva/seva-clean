@@ -184,6 +184,10 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
         AmplitudeEventName.WEB_LEADS_FORM_OPEN,
         trackLeadsLPForm(),
       )
+
+      trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_BUTTON_CLICK, {
+        PAGE_ORIGINATION: 'Homepage - Floating Icon',
+      })
     }
   }
 
@@ -310,6 +314,9 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
             carOfTheMonthData={carOfTheMonthData}
             onSendOffer={() => {
               setIsModalOpened(true)
+              trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_BUTTON_CLICK, {
+                PAGE_ORIGINATION: 'Homepage - Car of The Month',
+              })
             }}
             cityOtr={cityOtr}
             setSelectedCarOfTheMonth={setSelectedCarOfTheMonth}

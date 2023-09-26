@@ -6,14 +6,18 @@ import { articleDateFormat } from 'utils/handler/date'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { LanguageCode } from 'utils/enum'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 type ArticlesWidgetProps = {
   article: Article
   currentTab: string
+  articleOrder: number
 }
 const ArticleWidgetListCard = ({
   article,
   currentTab,
+  articleOrder,
 }: ArticlesWidgetProps) => {
   return (
     <div>
@@ -24,6 +28,13 @@ const ArticleWidgetListCard = ({
             Article_Category: currentTab,
             Article_Title: article.title,
             Article_URL: article.url,
+          })
+          trackEventCountly(CountlyEventNames.WEB_ARTICLE_CLICK, {
+            PAGE_ORIGINATION: 'Homepage',
+            ARTICLE_SECTION: 'Carousel',
+            ARTICLE_ORDER: articleOrder + 1,
+            ARTICLE_CATEGORY: currentTab.replace('&', 'dan'),
+            PAGE_DIRECTION_URL: article.url,
           })
           window.location.href = article.url
         }}
