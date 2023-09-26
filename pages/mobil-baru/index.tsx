@@ -36,8 +36,8 @@ const NewCarResultPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const todayDate = new Date()
-  const carBrand = meta.carRecommendations.carRecommendations[0]?.brand
-  const metaTitle = `Harga OTR ${carBrand} - Harga OTR dengan Promo Cicilan bulan ${monthId(
+
+  const metaTitle = `Beli Mobil Terbaru ${todayDate.getFullYear()} Harga OTR dengan Cicilan Kredit & Spesifikasi bulan ${monthId(
     todayDate.getMonth(),
   )} | SEVA`
   const metaDesc = `Beli mobil ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
