@@ -13,6 +13,10 @@
 
   &.showSidebar {
     left: 0;
+
+    @media (min-width: 570px) {
+      left: calc((100vw - 570px) / 2);
+    }
   }
 
   &.hideSidebar {

@@ -369,6 +369,9 @@ const Wrapper = styled.div<{
   position: -webkit-sticky;
   top: 0;
   width: 100%;
+  max-width: 570px;
+  margin-left: auto;
+  margin-right: auto;
   height: 64px;
   display: flex;
   align-items: center;

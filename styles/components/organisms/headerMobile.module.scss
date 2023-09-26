@@ -4,10 +4,15 @@
 .stickyWrapper {
   z-index: 6;
   width: 100%;
+  max-width: 570px;
+  margin-left: auto;
+  margin-right: auto;
   transition: top 700ms;
 
   &.showHeader {
     top: 0;
+    left: 0;
+    right: 0;
   }
 
   &.hideHeader {
@@ -16,6 +21,7 @@
 }
 
 .wrapper {
+  position: relative;
   display: flex;
   background: #{$primary-white};
   flex-direction: row;
@@ -27,10 +33,15 @@
   flex-grow: 0;
   z-index: 6;
   width: 100%;
+  max-width: 570px;
+  margin-left: auto;
+  margin-right: auto;
 
   &.isActive {
     position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
   }
 }
 
