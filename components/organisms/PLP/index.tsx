@@ -44,7 +44,7 @@ import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { hundred, million } from 'utils/helpers/const'
-import { carResultsUrl } from 'utils/helpers/routes'
+import { OTONewCarUrl, carResultsUrl } from 'utils/helpers/routes'
 import { useAmplitudePageView } from 'utils/hooks/useAmplitudePageView'
 import {
   defaultCity,
@@ -577,7 +577,9 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
               .catch(() => {
                 setShowLoading(false)
                 router.push({
-                  pathname: carResultsUrl,
+                  pathname: isOTO
+                    ? `adaSEVAdiOTO/${carResultsUrl}`
+                    : carResultsUrl,
                 })
               })
             getNewFunnelRecommendations({ ...queryParam, brand: [] }).then(
@@ -664,7 +666,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       setShowLoading(false)
 
       router.replace({
-        pathname: carResultsUrl,
+        pathname: isOTO ? OTONewCarUrl : carResultsUrl,
         query: {
           ...(age && { age }),
           ...(downPaymentAmount && { downPaymentAmount }),
@@ -769,6 +771,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
               resultMinMaxPrice={resultMinMaxPrice}
               isShowAnnouncementBox={showAnnouncementBox}
               showInformationDaihatsu={showInformDaihatsu}
+              isOTO={isOTO}
             />
             {stickyFilter()}
             <div
@@ -866,6 +869,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
           isFilter={isFilter}
           isFilterFinancial={isFilterFinancial}
           setIsFilter={setIsFilter}
+          isOTO={isOTO}
         />
         <SortingMobile
           open={openSorting}
