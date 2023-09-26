@@ -81,6 +81,7 @@ export const HeaderMobile = ({
 }: HeaderMobileProps): JSX.Element => {
   const enableAnnouncementBoxAleph =
     getCurrentEnvironment.featureToggles.enableAnnouncementBoxAleph
+
   const [isOpenSearchModal, setIsOpenSearchModal] = useState(false)
 
   const router = useRouter()
