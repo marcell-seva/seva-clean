@@ -23,7 +23,7 @@ import {
   formatPriceNumberThousandDivisor,
 } from 'utils/numberUtils/numberUtils'
 import { getModelPriceRange } from 'utils/carModelUtils/carModelUtils'
-import { monthId } from 'utils/handler/date'
+import { articleDateFormat, monthId } from 'utils/handler/date'
 import { useRouter } from 'next/router'
 import { getCity } from 'utils/hooks/useGetCity'
 import { useCar } from 'services/context/carContext'
@@ -75,7 +75,7 @@ export default function index({
   dataMobileMenu,
   dataFooter,
   dataCities,
-  isSsrMobileLocal,
+  selectedVideoReview,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const {
     saveDataAnnouncementBox,
@@ -148,8 +148,10 @@ export default function index({
   const currentYear = todayDate.getFullYear()
   const currentMonth = monthId(todayDate.getMonth())
 
-  const carOTRValue = carModelDetails?.variants[0].priceValue as number
-  const carOTR = isNaN(carOTRValue) ? null : `Rp ${carOTRValue / 1000000} Juta`
+  const carOTRValue = dataCombinationOfCarRecomAndModelDetail?.variants[
+    dataCombinationOfCarRecomAndModelDetail?.variants.length - 1
+  ].priceValue as number
+  const carOTR = `Rp ${carOTRValue / 1000000} Juta`
 
   const getMetaTitle = () => {
     if (isMobile) {
@@ -161,7 +163,7 @@ export default function index({
         case 'Spesifikasi':
           return `Spesifikasi ${carBrand} ${carModel} ${currentYear} | SEVA`
         case 'Harga':
-          return `Harga ${carBrand} ${carModel} ${currentYear} ${
+          return `Harga OTR ${carBrand} ${carModel} ${currentYear} ${
             getCity().cityName
           } Terbaru | SEVA`
         default:
@@ -178,7 +180,7 @@ export default function index({
             case 'spesifikasi':
               return `Spesifikasi ${carBrand} ${carModel} ${currentYear} | SEVA`
             case 'harga':
-              return `Harga ${carBrand} ${carModel} ${currentYear} ${
+              return `Harga OTR ${carBrand} ${carModel} ${currentYear} ${
                 getCity().cityName
               } Terbaru | SEVA`
             default:
@@ -201,11 +203,8 @@ export default function index({
         case 'Spesifikasi':
           return `Dapatkan informasi lengkap mengenai spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
         case 'Harga':
-          if (carOTR !== null) {
-            return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
-          }
-          // Handle the case when carOTR is null
-          return `Dapatkan informasi lengkap mengenai harga dan spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
+          return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
+
         default:
           return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tahu spesifikasi, harga, dan kredit di SEVA`
       }
@@ -218,33 +217,14 @@ export default function index({
             case 'spesifikasi':
               return `Dapatkan informasi lengkap mengenai spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
             case 'harga':
-              if (carOTR !== null) {
-                return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
-              }
-              // Handle the case when carOTR is null
-              return `Dapatkan informasi lengkap mengenai harga dan spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
+              return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
+
             default:
               return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tahu spesifikasi, harga, dan kredit di SEVA`
           }
         })
 
         return descriptions.join(' ')
-      } else {
-        if (carOTR !== null) {
-          switch (slug) {
-            case 'kredit':
-              return `Hitung simulasi cicilan ${carBrand} ${carModel} ${currentYear}. Beli mobil ${carBrand} secara kredit, proses aman & mudah dengan Instant Approval* di SEVA."`
-            case 'spesifikasi':
-              return `Dapatkan informasi lengkap mengenai spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
-            case 'harga':
-              return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
-            default:
-              return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tahu spesifikasi, harga, dan kredit di SEVA`
-          }
-        } else {
-          // Handle the case when carOTR is null and slug is undefined
-          return null
-        }
       }
     }
   }
@@ -255,20 +235,6 @@ export default function index({
     recommendation.length !== 0
       ? recommendation
       : carRecommendationsRes?.carRecommendations
-  const [videoReview, setVideoReview] = useState<MainVideoResponseType>()
-  useEffect(() => {
-    getVideoReview()
-  }, [])
-  const getVideoReview = async () => {
-    const dataVideoReview = carVideoReviewRes
-    const filterVideoReview = dataVideoReview.data.filter(
-      (video: MainVideoResponseType) => video.modelId === modelDetailData?.id,
-    )[0]
-
-    if (filterVideoReview) {
-      setVideoReview(filterVideoReview)
-    }
-  }
 
   useEffect(() => {
     setTabFromDirectUrl()
@@ -295,10 +261,10 @@ export default function index({
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             jsonLD(
-              carModelDetails,
-              carVariantDetails,
+              dataCombinationOfCarRecomAndModelDetail,
+              carVariantDetailsRes,
               recommendationsDetailData,
-              videoReview,
+              selectedVideoReview,
             ),
           ),
         }}
@@ -391,6 +357,10 @@ export async function getServerSideProps(context: any) {
         carModelDetailsRes,
       )
 
+    const selectedVideoReview = carVideoReviewRes.data.filter(
+      (video: MainVideoResponseType) => video.modelId === carModelDetailsRes.id,
+    )[0]
+
     return {
       props: {
         carRecommendationsRes,
@@ -405,7 +375,7 @@ export async function getServerSideProps(context: any) {
         dataFooter: footerRes.data,
         dataCities: cityRes,
         dataDesktopMenu: menuDesktopRes.data,
-        isSsrMobileLocal: getIsSsrMobile(context),
+        selectedVideoReview,
       },
     }
   } catch (error) {
@@ -424,8 +394,8 @@ export async function getServerSideProps(context: any) {
 }
 
 const getItemListElement = (carModel: CarModelDetailsResponse | null) => {
-  return (
-    carModel?.variants.map((variant, index) => ({
+  const resultList = carModel?.variants.map((variant, index) => {
+    return {
       '@type': 'ListItem',
       position: index + 1,
       item: {
@@ -440,8 +410,9 @@ const getItemListElement = (carModel: CarModelDetailsResponse | null) => {
           price: variant.priceValue,
         },
       },
-    })) || []
-  )
+    }
+  })
+  return resultList || []
 }
 
 const getSelectedCar = (
@@ -473,7 +444,7 @@ const handlingCarLogo = (brand: string) => {
 }
 
 const jsonLD = (
-  carModel: CarModelDetailsResponse | null,
+  carModel: CarModelDetailsResponse | undefined,
   carVariant: CarVariantDetails | null,
   recommendationsDetailData?: CarRecommendation[],
   videoReview?: MainVideoResponseType,
@@ -504,7 +475,10 @@ const jsonLD = (
       name: videoReview?.title,
       description: videoReview?.title,
       thumbnailUrl: videoReview?.thumbnail,
-      uploadDate: videoReview?.createdAt,
+      uploadDate: articleDateFormat(
+        new Date(videoReview?.createdAt ?? ''),
+        'id',
+      ),
       embedUrl: videoReview?.link,
       publisher: {
         '@type': 'Organization',
@@ -563,7 +537,7 @@ const jsonLD = (
       description: `Daftar Variant ${carModel?.brand} ${carModel?.model} 2023`,
       itemListOrder: 'http://schema.org/ItemListOrderDescending',
       numberOfItems: carModel?.variants.length,
-      itemListElement: getItemListElement(carModel),
+      itemListElement: getItemListElement(carModel ?? null),
     },
     FAQPage: {
       '@type': 'FAQPage',
