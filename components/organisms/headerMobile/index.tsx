@@ -76,6 +76,7 @@ export const HeaderMobile = ({
   pageOrigination,
   isOTO = false,
   transparent = false,
+  isRegular = true,
   passCountlyTrackerPageView,
 }: HeaderMobileProps): JSX.Element => {
   const enableAnnouncementBoxAleph =
@@ -156,7 +157,10 @@ export const HeaderMobile = ({
     }
     saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
     if (window.location.pathname.includes('kalkulator-kredit')) {
-      saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
+      saveDataForCountlyTrackerPageViewHomepage(
+        PreviousButton.SevaLogo,
+        pageOrigination,
+      )
     } else if (window.location.pathname === '/') {
       saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
       setTimeout(() => {

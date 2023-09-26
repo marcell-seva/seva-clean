@@ -50,6 +50,8 @@ import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { LocalStorageKey } from 'utils/enum'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { navigateToPLP, PreviousButton } from 'utils/navigate'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 export const initDataWidget = {
   downPaymentAmount: '',
@@ -143,6 +145,13 @@ const SearchWidget = () => {
   )
 
   const gotoPriceRange = () => {
+    trackEventCountly(
+      CountlyEventNames.WEB_HOMEPAGE_FILTER_DP_ADJUST_PRICE_CLICK,
+      {
+        DP_INPUT: `Rp${Currency(state.downPaymentAmount)}`,
+        DP_SUGGESTION: `Rp${Currency(limitMinimumDp)}`,
+      },
+    )
     priceRangeRef.current.scrollIntoView({
       behavior: 'smooth',
       block: 'center',
@@ -217,6 +226,41 @@ const SearchWidget = () => {
     return false
   }
 
+  const dataForCountlyTrackerOnClick = () => {
+    const tempPriceRange = formatPriceRangePlaceholder
+      .replaceAll(' ', '')
+      .replaceAll('Rp', '')
+
+    return {
+      CAR_BRAND: brandTypePlaceholder('brand'),
+      CAR_TYPE: brandTypePlaceholder('bodyType'),
+      MIN_PRICE: !!tempPriceRange
+        ? `Rp${Currency(tempPriceRange.split('-')[0])}`
+        : 'Null',
+      MAX_PRICE: !!tempPriceRange
+        ? `Rp${Currency(tempPriceRange.split('-')[1])}`
+        : 'Null',
+      DP_AMOUNT:
+        expandFinancial && !!state.downPaymentAmount
+          ? `Rp${Currency(state.downPaymentAmount)}`
+          : 'Null',
+      TENOR_OPTION:
+        expandFinancial && !!state.tenure ? `${state.tenure} tahun` : 'Null',
+      INCOME_AMOUNT:
+        expandFinancial && !!state.monthlyIncome
+          ? `Rp${Currency(state.monthlyIncome)}`
+          : 'Null',
+      AGE_RANGE: expandFinancial && !!state.age ? `${state.age} Tahun` : 'Null',
+    }
+  }
+
+  const trackCountlyClickCta = () => {
+    trackEventCountly(CountlyEventNames.WEB_HOMEPAGE_CAR_SEARCH_BUTTON_CLICK, {
+      SOURCE_SECTION: 'Smart search',
+      ...dataForCountlyTrackerOnClick(),
+    })
+  }
+
   const submit = () => {
     if (!checkFinancialEmpty()) return
     const {
@@ -285,6 +329,8 @@ const SearchWidget = () => {
         monthlyIncome && { Income: `Rp${Currency(monthlyIncome)}` }),
       ...(expandFinancial && age && { Age: age }),
     })
+
+    trackCountlyClickCta()
 
     navigateToPLP(PreviousButton.SmartSearch, { search: urlParam })
   }
@@ -372,6 +418,12 @@ const SearchWidget = () => {
           version={ButtonVersion.Secondary}
           size={ButtonSize.Small}
           onClick={() => {
+            trackEventCountly(
+              CountlyEventNames.WEB_HOMEPAGE_ADD_FINANCIAL_FILTER_CLICK,
+            )
+            trackEventCountly(
+              CountlyEventNames.WEB_HOMEPAGE_ADD_FINANCIAL_FILTER_CLOSE,
+            )
             sendAmplitudeData(
               AmplitudeEventName.WEB_LP_SEARCHWIDGET_FILTER_FINANSIAL_EXPAND,
               null,
@@ -392,6 +444,40 @@ const SearchWidget = () => {
         </span>
       </>
     )
+  }
+
+  const trackCountlyOnSubmitCarBrand = (checkedOption: string[]) => {
+    trackEventCountly(CountlyEventNames.WEB_HOMEPAGE_FILTER_APPLY_CLICK, {
+      FILTER_TYPE: 'Car Brand',
+      ...dataForCountlyTrackerOnClick(),
+      CAR_BRAND: checkedOption.join(', '),
+      AGE_RANGE: expandFinancial && !!state.age ? `${state.age}` : 'Null',
+    })
+  }
+
+  const trackCountlyOnSubmitCarBodyType = (checkedOption: string[]) => {
+    trackEventCountly(CountlyEventNames.WEB_HOMEPAGE_FILTER_APPLY_CLICK, {
+      FILTER_TYPE: 'Car Type',
+      ...dataForCountlyTrackerOnClick(),
+      CAR_TYPE: checkedOption.join(', '),
+      AGE_RANGE: expandFinancial && !!state.age ? `${state.age}` : 'Null',
+    })
+  }
+
+  const trackCountlyOnSubmitPriceRange = (min: number, max: number) => {
+    trackEventCountly(CountlyEventNames.WEB_HOMEPAGE_FILTER_APPLY_CLICK, {
+      FILTER_TYPE: 'Price Range',
+      ...dataForCountlyTrackerOnClick(),
+      MIN_PRICE: `Rp${Currency(min)}`,
+      MAX_PRICE: `Rp${Currency(max)}`,
+      AGE_RANGE: expandFinancial && !!state.age ? `${state.age}` : 'Null',
+    })
+  }
+
+  const trackCountlyOnReset = (type: string) => {
+    trackEventCountly(CountlyEventNames.WEB_HOMEPAGE_FILTER_BRAND_RESET_CLICK, {
+      FILTER_TYPE: type,
+    })
   }
 
   return (
@@ -417,6 +503,8 @@ const SearchWidget = () => {
               onClose={onClose}
               type="brand"
               errorToastMessage="Silahkan pilih salah satu merk mobil"
+              trackCountlyOnSubmit={trackCountlyOnSubmitCarBrand}
+              trackCountlyOnReset={() => trackCountlyOnReset('Car Brand')}
             />
           )}
           datatestid={elementId.FilterMerek}
@@ -432,6 +520,8 @@ const SearchWidget = () => {
               onClose={onClose}
               type="bodyType"
               errorToastMessage="Silahkan pilih salah satu tipe mobil"
+              trackCountlyOnSubmit={trackCountlyOnSubmitCarBodyType}
+              trackCountlyOnReset={() => trackCountlyOnReset('Car Type')}
             />
           )}
           datatestid={elementId.FilterType}
@@ -448,7 +538,12 @@ const SearchWidget = () => {
             />
           }
           sheetOption={({ onClose }: any) => (
-            <PriceRangeWidget onClose={onClose} limitPrice={limitPrice} />
+            <PriceRangeWidget
+              onClose={onClose}
+              limitPrice={limitPrice}
+              trackCountlyOnSubmit={trackCountlyOnSubmitPriceRange}
+              trackCountlyOnReset={() => trackCountlyOnReset('Price Range')}
+            />
           )}
           datatestid={elementId.FilterHarga}
         />

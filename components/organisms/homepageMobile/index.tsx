@@ -46,8 +46,19 @@ import { savePageBeforeLogin } from 'utils/loginUtils'
 import { LoginModalMultiKK } from '../loginModalMultiKK'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
-import { LocalStorageKey } from 'utils/enum'
-import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import {
+  trackEventCountly,
+  valueForUserTypeProperty,
+  valueForInitialPageProperty,
+} from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getCustomerInfoSeva } from 'services/customer'
+import {
+  getSessionStorage,
+  removeSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
 
 const HomepageMobile = ({ dataReccomendation }: any) => {
   useEffect(() => {
@@ -85,6 +96,8 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
   } = useInView({
     threshold: 0.5,
   })
+  const [isSentCountlyPageView, setIsSentCountlyPageView] = useState(false)
+  const [sourceButton, setSourceButton] = useState('Null')
 
   const checkCitiesData = () => {
     api.getCities().then((res: any) => {
@@ -153,8 +166,9 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
     }
   }
 
-  const cleanEffect = () => {
+  const cleanEffect = (timeout: NodeJS.Timeout) => {
     setLoadLP(true)
+    clearTimeout(timeout)
   }
 
   const closeLeadsForm = () => {
@@ -177,6 +191,42 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
     }
   }
 
+  const trackCountlyPageView = async () => {
+    const pageReferrer = getSessionStorage(
+      SessionStorageKey.PageReferrerHomepage,
+    )
+    const previousSourceButton = getSessionStorage(
+      SessionStorageKey.PreviousSourceButtonHomepage,
+    )
+    const referralCodeFromUrl: string | null = getLocalStorage(
+      LocalStorageKey.referralTemanSeva,
+    )
+
+    let temanSevaStatus = 'No'
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response.data[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
+
+    if (!!window?.Countly?.q) {
+      trackEventCountly(CountlyEventNames.WEB_HOMEPAGE_VIEW, {
+        PAGE_REFERRER: pageReferrer ?? 'Null',
+        PREVIOUS_SOURCE_BUTTON: previousSourceButton ?? 'Null',
+        USER_TYPE: valueForUserTypeProperty(),
+        INITIAL_PAGE: pageReferrer ? 'No' : valueForInitialPageProperty(),
+        TEMAN_SEVA_STATUS: temanSevaStatus,
+      })
+
+      setIsSentCountlyPageView(true)
+      removeSessionStorage(SessionStorageKey.PageReferrerHomepage)
+      removeSessionStorage(SessionStorageKey.PreviousSourceButtonHomepage)
+    }
+  }
+
   useEffect(() => {
     cityHandler()
     setTrackEventMoEngageWithoutValue(EventName.view_homepage)
@@ -188,9 +238,14 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
     ]).then(() => {
       setLoadLP(false)
     })
+    const timeoutCountlyTracker = setTimeout(() => {
+      if (!isSentCountlyPageView) {
+        trackCountlyPageView()
+      }
+    }, 1000)
 
     return () => {
-      cleanEffect()
+      cleanEffect(timeoutCountlyTracker)
     }
   }, [])
   const trackLeadsLPForm = (): LeadsActionParam => {
@@ -209,6 +264,14 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
   }
 
   const onClickMainHeroLP = () => {
+    saveSessionStorage(SessionStorageKey.PageReferrerMultiKK, 'Homepage')
+    trackEventCountly(
+      CountlyEventNames.WEB_HOMEPAGE_CHECK_CREDIT_QUALIFICATION_CLICK,
+      {
+        SOURCE_SECTION: 'Upper section',
+        LOGIN_STATUS: !!getToken() ? 'Yes' : 'No',
+      },
+    )
     trackLPKualifikasiKreditTopCtaClick()
     if (!!getToken()) {
       router.push(multiCreditQualificationPageUrl)
@@ -233,8 +296,12 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
 
         <div className={styles.container}>
           <MainHeroLP
-            onCityIconClick={() => setOpenCitySelectorModal(true)}
+            onCityIconClick={() => {
+              setOpenCitySelectorModal(true)
+              setSourceButton('Location Icon (Navbar)')
+            }}
             onCtaClick={onClickMainHeroLP}
+            passCountlyTrackerPageView={trackCountlyPageView}
           />
           <SearchWidget />
           <div className={styles.line} />
