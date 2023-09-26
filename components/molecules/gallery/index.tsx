@@ -120,7 +120,7 @@ export const Gallery: React.FC<PropsGallery> = ({
     <Image
       width={274}
       height={207}
-      alt={`Tampilan ${onTab === 'Exterior' ?? 'Eksterior'} ${
+      alt={`Tampilan ${onTab === 'Exterior' ? 'Eksterior' : 'Interior'} ${
         carModelDetails?.brand
       } ${carModelDetails?.model.replace('-', ' ')} ${
         url.match(/_(\d+)\.\w+$/)?.[1] ?? 'main'
@@ -149,7 +149,7 @@ export const Gallery: React.FC<PropsGallery> = ({
         <Image
           width={61}
           height={46}
-          alt={`Tampilan ${onTab === 'Exterior' ?? 'Eksterior'} ${
+          alt={`Tampilan ${onTab === 'Exterior' ? 'Eksterior' : 'Interior'} ${
             carModelDetails?.brand
           } ${carModelDetails?.model.replace('-', ' ')} ${
             url.match(/_(\d+)\.\w+$/)?.[1] ?? 'main'
