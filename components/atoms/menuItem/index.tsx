@@ -4,15 +4,33 @@ import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
 import { MobileWebTopMenuType } from 'utils/types/props'
 import { IconChevronDown } from '../icon'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { navigateToPLP, PreviousButton } from 'utils/navigate'
+import { getPageName } from 'utils/pageName'
+import { OTONewCarUrl } from 'utils/helpers/routes'
 
 type MenuItemProps = {
   item?: MobileWebTopMenuType
+  isOTO?: boolean
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ item }): JSX.Element => {
+const MenuItem: React.FC<MenuItemProps> = ({
+  item,
+  isOTO = false,
+}): JSX.Element => {
   const [state, setState] = React.useState(false)
 
   const handleClickMenu = (menuUrl: string, menuName: string) => {
+    if (menuName === 'Mobil Baru') {
+      return navigateToPLP(
+        PreviousButton.HamburgerMenu,
+        {},
+        true,
+        false,
+        isOTO ? OTONewCarUrl : menuUrl,
+      )
+    }
     sendAmplitudeData(AmplitudeEventName.WEB_BURGER_MENU_CLICK, {
       Page_Origination_URL: window.location.href,
       Menu: menuName,
@@ -22,7 +40,17 @@ const MenuItem: React.FC<MenuItemProps> = ({ item }): JSX.Element => {
 
   return (
     <>
-      <div className={styles.parentMenu} onClick={() => setState(() => !state)}>
+      <div
+        className={styles.parentMenu}
+        onClick={() => {
+          setState(() => !state)
+          if (state) {
+            trackEventCountly(CountlyEventNames.WEB_HAMBURGER_MENU_EXPAND, {
+              MENU: item?.menuName,
+            })
+          }
+        }}
+      >
         <h3 className={`${styles.menu} ${state ? styles.isActive : ''}`}>
           {item?.menuName}
         </h3>
@@ -41,9 +69,13 @@ const MenuItem: React.FC<MenuItemProps> = ({ item }): JSX.Element => {
       >
         {item?.subMenu.map((child) => (
           <div
-            onClick={() =>
+            onClick={() => {
+              trackEventCountly(CountlyEventNames.WEB_HAMBURGER_MENU_CLICK, {
+                PAGE_ORIGINATION: getPageName(),
+                PAGE_DIRECTION_URL: window.location.hostname + item?.subMenu,
+              })
               handleClickMenu(child.menuUrl as string, child.menuName)
-            }
+            }}
             className={styles.submenu}
             key={child.menuCode}
           >

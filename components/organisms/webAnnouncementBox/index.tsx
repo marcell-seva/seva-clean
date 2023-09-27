@@ -19,6 +19,8 @@ import { api } from 'services/api'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
 import { SessionStorageKey } from 'utils/enum'
 import { useUtils } from 'services/context/utilsContext'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 const CustomRight = '/revamp/images/announcementBox/custom-desktop-right.webp'
 const CustomLeft = '/revamp/images/announcementBox/custom-desktop-left.webp'
@@ -65,9 +67,11 @@ declare global {
 
 type WebAnnouncementBoxProps = {
   onCloseAnnouncementBox?: (value: boolean) => void
+  pageOrigination?: string
 }
 export const WebAnnouncementBox = ({
   onCloseAnnouncementBox,
+  pageOrigination,
 }: WebAnnouncementBoxProps) => {
   const [isOpen, setIsOpen] = useState<boolean | null>(
     getSessionStorage(
@@ -83,8 +87,8 @@ export const WebAnnouncementBox = ({
 
   useEffect(() => {
     if (dataAnnouncementBox !== undefined) {
-      setAnnouncement(dataAnnouncementBox)
       setIsError(false)
+      setAnnouncement(dataAnnouncementBox)
     } else {
       setIsError(true)
     }
@@ -132,6 +136,10 @@ export const WebAnnouncementBox = ({
         eventAction: 'Promotion View',
         eventLabel: announcement.title,
       })
+      trackEventCountly(CountlyEventNames.WEB_ANNOUNCEMENT_VIEW, {
+        ANNOUNCEMENT_TITLE: announcement.title,
+        PAGE_ORIGINATION: pageOrigination,
+      })
     }
   }, [isOpen, announcement])
 
@@ -155,6 +163,9 @@ export const WebAnnouncementBox = ({
     sendAmplitudeData(AmplitudeEventName.WEB_ANNOUNCEMENT_BOX_CLICK_CLOSE, {
       title: announcement ? announcement.title : '',
       Page_Origination_URL: window.location.href.replace('https://www.', ''),
+    })
+    trackEventCountly(CountlyEventNames.WEB_ANNOUNCEMENT_CLOSE_CLICK, {
+      ANNOUNCEMENT_TITLE: announcement?.title,
     })
     setIsOpen(false)
     onCloseAnnouncementBox && onCloseAnnouncementBox(false)
@@ -210,6 +221,11 @@ export const WebAnnouncementBox = ({
                       : '',
                   },
                 )
+                trackEventCountly(CountlyEventNames.WEB_ANNOUNCEMENT_CLICK, {
+                  ANNOUNCEMENT_TITLE: announcement.title,
+                  PAGE_ORIGINATION: pageOrigination,
+                  PAGE_DIRECTION_URL: announcement.url,
+                })
                 announcement.url &&
                   window.open(
                     !/^(http:|https:)/i.test(announcement.url)

@@ -45,12 +45,10 @@ export const ProductSpecification = (props: VariantSpecificationsType) => {
       <StyledTitleTextDetail
         onClick={() => {
           props.onClickDetail && props.onClickDetail()
-          router.push(
-            variantListUrl
-              .replace(':brand', (brand as string) ?? '')
-              .replace(':model', (model as string) ?? '')
-              .replace(':tab?', 'spesifikasi'),
-          )
+          window.location.href = variantListUrl
+            .replace(':brand', (brand as string) ?? '')
+            .replace(':model', (model as string) ?? '')
+            .replace(':tab?', 'spesifikasi')
         }}
       >
         LIHAT DETIL

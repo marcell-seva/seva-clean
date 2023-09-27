@@ -32,6 +32,8 @@ import { ArrowRightNew } from 'components/atoms/icon/ArrowRightNew'
 import { CarBrandItem } from './CarBrandItem'
 import { client } from 'utils/helpers/const'
 import { HomePageDataLocalContext } from 'pages'
+import { useCar } from 'services/context/carContext'
+import Image from 'next/image'
 
 const LogoToyota = '/revamp/icon/logo-toyota-min.png'
 const LogoDaihatsu = '/revamp/icon/logo-daihatsu-min.png'
@@ -54,7 +56,7 @@ export const CarBranchRecommendation = ({
   onHomepage = true,
 }: CarBranchRecommendationProps) => {
   const router = useRouter()
-  const { dataRecToyota } = useContext(HomePageDataLocalContext)
+  const { recommendationToyota } = useCar()
   const { patchFunnelQuery, clearQueryFilter: clearFunnelQuery } =
     useFunnelQueryData()
   const [isCheckedGroups, setIsCheckedBrand] = useState('Toyota')
@@ -63,15 +65,17 @@ export const CarBranchRecommendation = ({
   const [load, setLoad] = useState(false)
 
   const [recommendationLists, setRecommendationLists] =
-    useState<CarRecommendation[]>(dataRecToyota)
+    useState<CarRecommendation[]>(recommendationToyota)
 
   const carList: CarButtonProps[] = [
     {
       key: 'Toyota',
       icon: (
-        <img
+        <Image
           src={LogoToyota}
           alt="Toyota"
+          width={48}
+          height={41}
           style={{ width: isMobile ? 48 : 51, height: isMobile ? 41 : 44 }}
         />
       ),
@@ -81,9 +85,11 @@ export const CarBranchRecommendation = ({
     {
       key: 'Daihatsu',
       icon: (
-        <img
+        <Image
           src={LogoDaihatsu}
           alt="Daihatsu"
+          width={48}
+          height={32.45}
           style={{ width: isMobile ? 48 : 64, height: isMobile ? 32.45 : 44 }}
         />
       ),
@@ -100,9 +106,11 @@ export const CarBranchRecommendation = ({
     {
       key: 'BMW',
       icon: (
-        <img
+        <Image
           src={LogoBmw}
           alt="BMW"
+          width={40}
+          height={40}
           style={{ width: isMobile ? 40 : 44, height: isMobile ? 40 : 44 }}
         />
       ),
@@ -227,7 +235,7 @@ export const CarBranchRecommendation = ({
   }
 
   const naturalSlideWidth = useMemo(() => {
-    const innerWidth = client && window.innerWidth
+    const innerWidth = client ? window.innerWidth : 0
     if (innerWidth <= 1024 && innerWidth >= 744) {
       return 100
     }
@@ -235,7 +243,7 @@ export const CarBranchRecommendation = ({
   }, [client && window.innerWidth])
 
   const naturalSlideHeight = useMemo(() => {
-    const innerWidth = client && window.innerWidth
+    const innerWidth = client ? window.innerWidth : 0
     if (innerWidth <= 1024 && innerWidth >= 744) {
       return 130
     } else if (
@@ -265,7 +273,7 @@ export const CarBranchRecommendation = ({
   }, [client && window.innerWidth])
 
   const lastSlideStyle = useMemo(() => {
-    const innerWidth = client && window.innerWidth
+    const innerWidth = client ? window.innerWidth : 0
     if (innerWidth <= 400) {
       return {
         width: isSmallMobile ? '75px' : '140px',
@@ -277,7 +285,7 @@ export const CarBranchRecommendation = ({
   }, [client && window.innerWidth, isSmallMobile])
 
   const slideStyle = useMemo(() => {
-    const innerWidth = client && window.innerWidth
+    const innerWidth = client ? window.innerWidth : 0
     if (innerWidth <= 400) {
       return { width: isSmallMobile ? '130px' : '140px', marginRight: '8px' }
     }
@@ -379,7 +387,7 @@ export const CarBranchRecommendation = ({
                   {recommendationLists.length > 3 && (
                     <>
                       <StyledButtonBack>
-                        <img
+                        <Image
                           src={leftArrow}
                           className="left-button-arrow-cbr"
                           alt="seva-left-arrow-icon"
@@ -388,7 +396,7 @@ export const CarBranchRecommendation = ({
                         />
                       </StyledButtonBack>
                       <StyledButtonNext>
-                        <img
+                        <Image
                           src={rightArrow}
                           className="right-button-arrow-cbr"
                           alt="seva-right-arrow-icon"

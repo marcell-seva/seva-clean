@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 import styled from 'styled-components'
 import { colors } from 'styles/colors'
@@ -19,48 +20,54 @@ export const HowToUse = ({ uspData }: HowToUseProps) => {
     <div className="htu-container">
       <div className="htu-layer-wrapper" />
       <div className="htu-content-wrapper">
-        <Title>{uspData.head_title}</Title>
+        <Title>{uspData?.head_title}</Title>
         <div className="htu-step-wrapper">
           <div className="htu-item-wrapper">
             <div className="htu-image-wrapper">
-              <img
-                src={apiBanner + uspData.icon_1.data.attributes.url}
-                alt={uspData.icon_1.data.attributes.formats.thumbnail.name}
+              <Image
+                width={40}
+                height={40}
+                src={apiBanner + uspData?.icon_1.data.attributes.url}
+                alt={uspData?.icon_1.data.attributes.formats.thumbnail.name}
               />
             </div>
             <div className="htu-info">
-              <div className="htu-item-title">{uspData.title_1}</div>
-              <div className="htu-item-desc">{uspData.subtitle_1}</div>
+              <div className="htu-item-title">{uspData?.title_1}</div>
+              <div className="htu-item-desc">{uspData?.subtitle_1}</div>
             </div>
           </div>
           <div className="htu-item-wrapper">
             <div className="htu-image-wrapper">
-              <img
-                src={apiBanner + uspData.icon_2.data.attributes.url}
-                alt={uspData.icon_2.data.attributes.formats.thumbnail.name}
+              <Image
+                width={40}
+                height={40}
+                src={apiBanner + uspData?.icon_2.data.attributes.url}
+                alt={uspData?.icon_2.data.attributes.formats.thumbnail.name}
               />
             </div>
             <div className="htu-info">
-              <div className="htu-item-title">{uspData.title_2}</div>
-              <div className="htu-item-desc">{uspData.subtitle_2}</div>
+              <div className="htu-item-title">{uspData?.title_2}</div>
+              <div className="htu-item-desc">{uspData?.subtitle_2}</div>
             </div>
           </div>
           <div className="htu-item-wrapper">
             <div className="htu-image-wrapper">
-              <img
-                src={apiBanner + uspData.icon_3.data.attributes.url}
-                alt={uspData.icon_3.data.attributes.formats.thumbnail.name}
+              <Image
+                width={40}
+                height={40}
+                src={apiBanner + uspData?.icon_3.data.attributes.url}
+                alt={uspData?.icon_3.data.attributes.formats.thumbnail.name}
               />
             </div>
             <div className="htu-info">
-              <div className="htu-item-title">{uspData.title_3}</div>
-              <div className="htu-item-desc">{uspData.subtitle_3}</div>
+              <div className="htu-item-title">{uspData?.title_3}</div>
+              <div className="htu-item-desc">{uspData?.subtitle_3}</div>
             </div>
           </div>
         </div>
       </div>
       <div className="htu-vector-6">
-        <img
+        <Image
           src={vector6}
           alt="seva-vector-banner-1"
           width="136"
@@ -68,7 +75,12 @@ export const HowToUse = ({ uspData }: HowToUseProps) => {
         />
       </div>
       <div className="htu-vector-7">
-        <img src={vector7} alt="seva-vector-banner-2" width="125" height="86" />
+        <Image
+          src={vector7}
+          alt="seva-vector-banner-2"
+          width="125"
+          height="86"
+        />
       </div>
     </div>
   )

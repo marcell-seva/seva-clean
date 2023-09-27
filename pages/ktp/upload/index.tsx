@@ -35,6 +35,7 @@ import { maxPageWidth, screenHeight } from 'styles/globalStyle'
 import { CameraSelect } from 'components/molecules/cameraSelect'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import Image from 'next/image'
 
 const ChevronLeft = '/revamp/icon/chevron-left.webp'
 
@@ -228,7 +229,7 @@ export default function CameraKtp() {
         image={defaultSeoImage}
       />
       <StyledWrapper padding={horizontalMargin}>
-        <img
+        <Image
           src={ChevronLeft}
           alt="back"
           onClick={() => router.back()}

@@ -2127,13 +2127,6 @@ export const trackOtpClose = (data: OtpTriggerParam) => {
   })
 }
 
-// export const trackLoginPageCtaClick = () => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_LOGIN_PAGE_CTA_CLICK,
-//     data: null,
-//   })
-// }
-
 export const trackLoginPageSuccess = (data: LoginSuccessTriggerParam) => {
   logAmplitudeEvent({
     name: TrackingEventName.WEB_LOGIN_PAGE_SUCCESS,
@@ -2147,97 +2140,6 @@ export const trackRegisterPageCtaClick = (data: RegisterParam) => {
     data,
   })
 }
-
-// export const trackDeleteAccountPageView = () => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_DELETE_ACCOUNT_PAGE_VIEW,
-//     data: null,
-//   })
-// }
-
-// export const trackDeleteAccountReasonPageView = () => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_DELETE_ACCOUNT_REASON_PAGE_VIEW,
-//     data: null,
-//   })
-// }
-
-// export const trackDeleteAccountSuccessPageView = () => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_DELETE_ACCOUNT_SUCCESS_PAGE_VIEW,
-//     data: null,
-//   })
-// }
-
-// export const trackProfilePageSaveChanges = () => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_PROFILE_PAGE_SAVE_CHANGES,
-//     data: null,
-//   })
-// }
-
-// export const trackProfileSaveKtpChanges = () => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_PROFILE_PAGE_SAVE_KTP_CHANGES,
-//     data: null,
-//   })
-// }
-
-// export const trackProfilePageLogoutClick = () => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_PROFILE_PAGE_LOGOUT_CLICK,
-//     data: null,
-//   })
-// }
-
-// export const trackProfilePageDeleteAccountEntryPointClick = () => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_PROFILE_PAGE_DELETE_ACCOUNT_ENTRY_POINT_CLICK,
-//     data: null,
-//   })
-// }
-
-// export const trackProfileDeleteAccountConsentPageCTAClick = () => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_DELETE_ACCOUNT_CONSENT_PAGE_CTA_CLICK,
-//     data: null,
-//   })
-// }
-
-// export const trackDeleteAccountReasonPageCTAClick = (data: ReasonParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_DELETE_ACCOUNT_REASON_PAGE_CTA_CLICK,
-//     data,
-//   })
-// }
-
-// export const trackDeleteAccountPopupCTACancelClick = (data: ReasonParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_DELETE_ACCOUNT_POPUP_CTA_CANCEL_CLICK,
-//     data,
-//   })
-// }
-
-// export const trackDeleteAccountPopupCTAYesClick = (data: ReasonParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_DELETE_ACCOUNT_POPUP_CTA_YES_CLICK,
-//     data,
-//   })
-// }
-
-// export const trackDeleteAccountPopupClose = (data: ReasonParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_DELETE_ACCOUNT_POPUP_CLOSE,
-//     data,
-//   })
-// }
-
-// export const trackDeleteAccountSucessCTAClick = (data: ReasonParam) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_DELETE_ACCOUNT_SUCCESS_CTA_CLICK,
-//     data,
-//   })
-// }
 
 export const trackPromoBannerSeeAllClick = () => {
   logAmplitudeEvent({
@@ -2303,15 +2205,6 @@ export const trackKualifikasiKreditReviewPageCtaClick = (
   })
 }
 
-// export const trackKualifikasiKreditFormPageCTAClick = (
-//   data: CreditQualificationReviewParam,
-// ) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_KUALIFIKASI_KREDIT_FORM_PAGE_CTA_CLICK,
-//     data,
-//   })
-// }
-
 export const trackKualifikasiKreditCariMobilClick = (
   data: CreditQualificationReviewParam,
 ) => {
@@ -2320,14 +2213,6 @@ export const trackKualifikasiKreditCariMobilClick = (
     data,
   })
 }
-// export const trackKualifikasiKreditCarDetailClick = (
-//   data: CreditQualificationReviewParam,
-// ) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_KUALIFIKASI_KREDIT_CAR_DETAIL_CLICK,
-//     data,
-//   })
-// }
 
 export const trackKualifikasiKreditUploadKTP = (
   data: CreditQualificationReviewParam,
@@ -2337,14 +2222,6 @@ export const trackKualifikasiKreditUploadKTP = (
     data,
   })
 }
-// export const trackKualifikasiKreditCarDetailClose = (
-//   data: CreditQualificationReviewParam,
-// ) => {
-//   logAmplitudeEvent({
-//     name: TrackingEventName.WEB_KUALIFIKASI_KREDIT_CAR_DETAIL_CLOSE,
-//     data,
-//   })
-// }
 
 export const trackKualifikasiKreditWaitingResultPageView = (
   data: CreditQualificationReviewParam,

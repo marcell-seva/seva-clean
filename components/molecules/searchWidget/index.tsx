@@ -10,13 +10,9 @@ import {
   createUnverifiedLeadNew,
   UnverifiedLeadSubCategory,
 } from 'services/lead'
-import { trackLandingPageSearchWidgetSubmit } from 'helpers/amplitude/seva20Tracking'
-import { removeWhitespaces } from 'utils/stringUtils'
-import { createProbeTrack } from 'services/probe'
-import { getLocalStorage } from 'utils/handler/localStorage'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
-import { CityOtrOption, UTMTagsData } from 'utils/types/utils'
+import { CityOtrOption } from 'utils/types/utils'
 import { LocalStorageKey } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { ContactFormKey } from 'utils/types/models'
@@ -34,6 +30,7 @@ import { carResultsUrl } from 'utils/helpers/routes'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { useContextForm } from 'services/context/formContext'
 import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
+import { PreviousButton, navigateToPLP } from 'utils/navigate'
 
 export const SearchWidget = () => {
   const router = useRouter()
@@ -51,7 +48,6 @@ export const SearchWidget = () => {
     formContactValue: contactFormData,
     patchFormContactValue: patchContactFormValue,
   } = useContextForm()
-  const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -86,17 +82,17 @@ export const SearchWidget = () => {
         [ContactFormKey.PhoneNumberValid]: phoneNumber,
       })
       trackGALead()
-      createProbeTrack({
-        utmCampaign: UTMTags?.utm_campaign || '',
-        utmContent: UTMTags?.utm_content || '',
-        adsetId: UTMTags?.adset || '',
-        utmTerm: UTMTags?.utm_term || '',
-        phoneNumber: phoneNumber,
-        loanDownPayment: parseInt(
-          getConvertDP(financialQuery.downPaymentAmount),
-        ),
-        utmSource: UTMTags?.utm_source || '',
-      })
+      // createProbeTrack({
+      //   utmCampaign: UTMTags?.utm_campaign || '',
+      //   utmContent: UTMTags?.utm_content || '',
+      //   adsetId: UTMTags?.adset || '',
+      //   utmTerm: UTMTags?.utm_term || '',
+      //   phoneNumber: phoneNumber,
+      //   loanDownPayment: parseInt(
+      //     getConvertDP(financialQuery.downPaymentAmount),
+      //   ),
+      //   utmSource: UTMTags?.utm_source || '',
+      // })
       createUnverifiedLeadNew({
         phoneNumber,
         income: funnelQuery.monthlyIncome as string,
@@ -208,10 +204,10 @@ export const SearchWidget = () => {
       ).replaceAll('.', ''),
       tenure: funnelQuery.tenure,
     })
-    router.push({
-      pathname: carResultsUrl,
+    navigateToPLP(PreviousButton.SearchBar, {
       search: convertObjectQuery(tempQuery),
     })
+
     // getNewFunnelRecommendations(funnelQuery)
     //   .then((response: AxiosResponse<CarRecommendationResponse>) => {
     //     setRecommendations(response.data.carRecommendations || [])

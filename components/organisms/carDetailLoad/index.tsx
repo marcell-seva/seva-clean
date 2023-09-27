@@ -1,6 +1,7 @@
 import React from 'react'
 import { CardShadow, Skeleton } from 'components/atoms'
 import styles from 'styles/components/organisms/carDetailLoad.module.scss'
+import Image from 'next/image'
 
 const CarSkeleton = '/revamp/illustration/car-skeleton.webp'
 
@@ -8,10 +9,12 @@ export const CarDetailLoad = () => {
   return (
     <div className={styles.container}>
       <CardShadow className={styles.cardWrapper}>
-        <img
+        <Image
           src={CarSkeleton}
           className={styles.heroImg}
           alt={'car skeleton'}
+          width={248}
+          height={248}
         />
         <Skeleton
           height={32}

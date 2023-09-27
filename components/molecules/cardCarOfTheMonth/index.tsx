@@ -20,6 +20,10 @@ import { saveLocalStorage } from 'utils/handler/localStorage'
 import { client } from 'utils/helpers/const'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewPDP,
+} from 'utils/navigate'
 
 type carOfTheMonthData = {
   name: string
@@ -180,6 +184,9 @@ const CardCarOfTheMonth = ({
                       Car_Brand: item.brand,
                       Car_Model: item.name,
                     },
+                  )
+                  saveDataForCountlyTrackerPageViewPDP(
+                    PreviousButton.CarOfTheMonth,
                   )
                   window.location.href = item.link
                 }}

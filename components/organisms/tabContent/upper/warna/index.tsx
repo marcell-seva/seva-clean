@@ -7,31 +7,40 @@ import { PDPCarOverviewSkeleton } from 'components/organisms'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
 
-export const WarnaTab = ({ isShowAnnouncementBox }: any) => {
+export const WarnaTab = ({ isShowAnnouncementBox, isOTO = false }: any) => {
   const {
     dataCombinationOfCarRecomAndModelDetailDefaultCity: carModelDetails,
-  } = useContext(PdpDataLocalContext)
-
-  const [colorsList, setColorList] = useState<(string | string[])[]>([])
+  } = useContext(isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext)
 
   const router = useRouter()
 
-  useEffect(() => {
+  const getColorList = () => {
     const model = router.query.model
     const brand = router.query.brand
     const currentUrlPathName = router.asPath
     const splitedPath = currentUrlPathName.split('/')
-    const carBrandModelUrl = `/${splitedPath[1]}/${brand}/${model}`
+    const carBrandModelUrl = `/${splitedPath[isOTO ? 2 : 1]}/${brand}/${model}`
 
     if (availableList.includes(carBrandModelUrl)) {
       const colorsTmp = availableListColors.filter(
         (url) => url.url === carBrandModelUrl,
       )[0].colors
 
-      if (colorsTmp.length === 0) return
-      setColorList(colorsTmp)
+      if (colorsTmp.length === 0) return []
+      return colorsTmp
     }
+
+    return []
+  }
+
+  const [colorsList, setColorList] = useState<(string | string[])[]>(
+    getColorList(),
+  )
+
+  useEffect(() => {
+    if (colorsList.length === 0) setColorList(getColorList())
   }, [carModelDetails])
 
   return (
@@ -45,7 +54,9 @@ export const WarnaTab = ({ isShowAnnouncementBox }: any) => {
               height="146"
               className={styles.carImage}
               data-testid={elementId.HeroImage}
-              alt="color"
+              alt={`Warna Mobil ${carModelDetails?.brand} ${carModelDetails?.model} Bagian Depan`}
+              priority
+              quality="20"
             />
           </div>
           {colorsList.length > 0 ? (

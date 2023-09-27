@@ -225,6 +225,7 @@ export type CarRecommendation = {
   variants: CarVariantLoan[]
   brandAndModel?: string
   modelAndBrand?: string
+  base64?: string
 }
 
 export interface CarRecommendationResponse {
@@ -1047,4 +1048,17 @@ export interface FinalLoan {
   installmentBeforePromo: number
   tdpBeforePromo: number
   interestRateBeforePromo: number
+}
+
+export interface trackDataCarType {
+  CAR_BRAND: string
+  CAR_MODEL: string
+  CAR_VARIANT: string
+  PELUANG_KREDIT_BADGE: string
+  TENOR_OPTION: string
+  TENOR_RESULT: string
+  IA_FLOW: string
+  INCOME_CHANGE: string
+  INCOME_LC: string | number
+  INCOME_KK: number
 }

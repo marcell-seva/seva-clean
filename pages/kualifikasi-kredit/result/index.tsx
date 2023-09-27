@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styles from 'styles/pages/credit-qualification-result.module.scss'
-
 import { getCities } from 'services/cities'
 import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import { AxiosResponse } from 'axios'
-
 import clsx from 'clsx'
-
 import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
 import { getCarVariantDetailsById } from 'services/recommendations'
 import { getCustomerInfoSeva, getCustomerKtpSeva } from 'services/customer'
@@ -43,6 +40,11 @@ import { CitySelectorModal } from 'components/molecules'
 import { PopupCreditQualificationResult } from 'components/organisms/popoupCreditQualificationResult'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import {
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewLC,
+} from 'utils/navigate'
+import Image from 'next/image'
 
 const MainImageGreenMale = '/revamp/illustration/credit-result-green-male.webp'
 const MainImageGreenFemale =
@@ -273,21 +275,21 @@ export default function CreditQualificationResultPage() {
         <div
           className={clsx(styles.mainImageWrapper, styles.mainImageWrapperRed)}
         >
-          <img
+          <Image
             className={styles.mainImageIllustration}
             alt="credit-result-illustration"
             src={MainImageRedBackground}
             width={327.13}
             height={188.14}
           />
-          <img
+          <Image
             className={styles.carImageRed}
             alt="car-image"
-            src={carData?.variantDetail?.images[0]}
+            src={carData?.variantDetail?.images[0] || ''}
             width={86.84}
             height={65.3}
           />
-          <img
+          <Image
             className={styles.magnifierImage}
             alt="magnifier-illustration"
             src={MainImageMagnifier}
@@ -304,17 +306,17 @@ export default function CreditQualificationResultPage() {
             styles.mainImageWrapperYellow,
           )}
         >
-          <img
+          <Image
             className={styles.mainImageIllustration}
             alt="credit-result-illustration"
-            src={getMainImageSource()}
+            src={getMainImageSource() || ''}
             width={311}
             height={198.62}
           />
-          <img
+          <Image
             className={styles.carImage}
             alt="car-image"
-            src={carData?.variantDetail?.images[0]}
+            src={carData?.variantDetail?.images[0] || ''}
             width={86.84}
             height={65.3}
           />
@@ -328,17 +330,17 @@ export default function CreditQualificationResultPage() {
             styles.mainImageWrapperGreen,
           )}
         >
-          <img
+          <Image
             className={styles.mainImageIllustration}
             alt="credit-result-illustration"
-            src={getMainImageSource()}
+            src={getMainImageSource() || ''}
             width={317.08}
             height={197.11}
           />
-          <img
+          <Image
             className={styles.carImage}
             alt="car-image"
-            src={carData?.variantDetail?.images[0]}
+            src={carData?.variantDetail?.images[0] || ''}
             width={86.84}
             height={65.3}
           />
@@ -352,17 +354,17 @@ export default function CreditQualificationResultPage() {
             styles.mainImageWrapperYellow,
           )}
         >
-          <img
+          <Image
             className={styles.mainImageIllustration}
             alt="credit-result-illustration"
-            src={getMainImageSource()}
+            src={getMainImageSource() || ''}
             width={311}
             height={198.62}
           />
-          <img
+          <Image
             className={styles.carImage}
             alt="car-image"
-            src={carData?.variantDetail?.images[0]}
+            src={carData?.variantDetail?.images[0] || ''}
             width={86.84}
             height={65.3}
           />
@@ -590,6 +592,9 @@ export default function CreditQualificationResultPage() {
         onDismissPopup={onDismissPopup}
         loanCalculatorDestinationUrl={getLoanCalculatorDestinationUrl()}
         onClickContinueApproval={onClickContinueApproval}
+        onClickChangeCreditPlan={() => {
+          saveDataForCountlyTrackerPageViewLC(PreviousButton.PopUpUbahData)
+        }}
       />
     </>
   )

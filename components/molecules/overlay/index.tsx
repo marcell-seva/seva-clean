@@ -12,6 +12,7 @@ import 'swiper/css/thumbs'
 import { FreeMode, Navigation, Thumbs } from 'swiper'
 import { IconChevronLeft, IconChevronRight } from 'components/atoms'
 import elementId from 'helpers/elementIds'
+import Image from 'next/image'
 
 interface PropsGallery {
   items: Array<string>
@@ -37,7 +38,7 @@ export const OverlayGallery: React.FC<PropsGallery> = ({
   const [flagIndex, setFlagIndex] = useState<number>(activeIndex)
 
   const MainImage: React.FC<PropsGalleryMainImage> = ({ url }): JSX.Element => (
-    <img
+    <Image
       width={274}
       height={207}
       alt="car"
@@ -53,7 +54,7 @@ export const OverlayGallery: React.FC<PropsGallery> = ({
     return (
       <div className={styles.subImagePreviewActive}>
         {!isActive && <div className={styles.coverImage} />}
-        <img
+        <Image
           width={80}
           height={64}
           alt="car"

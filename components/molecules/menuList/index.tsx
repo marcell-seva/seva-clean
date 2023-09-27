@@ -12,15 +12,21 @@ import { IconAccount, IconHistory, IconWishlist } from 'components/atoms/icon'
 import { MobileWebTopMenuType, CustomerInfoSeva } from 'utils/types/utils'
 import { trackBurgerMenuClick } from 'helpers/amplitude/seva20Tracking'
 import { LocalStorageKey } from 'utils/enum'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { PreviousButton, navigateToPLP } from 'utils/navigate'
+import { getPageName } from 'utils/pageName'
 
 type MenuListProps = {
   menuList?: MobileWebTopMenuType[]
   customerDetail?: CustomerInfoSeva
+  isOTO?: boolean
 }
 
 export const MenuList: React.FC<MenuListProps> = ({
   menuList,
   customerDetail,
+  isOTO = false,
 }): JSX.Element => {
   const [isLogin] = React.useState(!!getToken())
   const [isTemanSeva, setIsTemanSeva] = React.useState(false)
@@ -101,16 +107,25 @@ export const MenuList: React.FC<MenuListProps> = ({
               {menuItem.subMenu.length > 0 &&
                 menuItem.subMenu.map((sub: any, key: any) => {
                   if (sub.subMenu.length > 0) {
-                    return <MenuItem key={key} item={sub} />
+                    return <MenuItem key={key} item={sub} isOTO={isOTO} />
                   } else {
                     const icon = renderIcon(sub.menuName)
                     return (
                       <div
                         key={key}
                         className={styles.parentMenu}
-                        onClick={() =>
+                        onClick={() => {
+                          if (sub.menuName === 'Akun Saya') {
+                            trackEventCountly(
+                              CountlyEventNames.WEB_HAMBURGER_ACCOUNT_CLICK,
+                              {
+                                PAGE_ORIGINATION: getPageName(),
+                                SOURCE_SECTION: 'Bottom',
+                              },
+                            )
+                          }
                           handleClickMenu(sub.menuUrl as string, sub.menuName)
-                        }
+                        }}
                       >
                         {icon && (
                           <div className={styles.iconContainer}>{icon}</div>

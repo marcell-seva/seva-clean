@@ -9,6 +9,7 @@ import {
 } from 'components/atoms'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import clsx from 'clsx'
+import urls from 'utils/helpers/url'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { getNewFunnelRecommendations } from 'services/newFunnel'
@@ -16,7 +17,7 @@ import elementId from 'helpers/elementIds'
 import { LanguageCode } from 'utils/enum'
 import { sortOptions } from 'utils/config/funnel.config'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
-import { carResultsUrl } from 'utils/helpers/routes'
+import { PreviousButton, navigateToPLP } from 'utils/navigate'
 import { useRouter } from 'next/router'
 import { isCurrentCityJakartaPusatOrSurabaya } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 
@@ -32,6 +33,7 @@ type NavFilterMobileProps = {
   setRecommendations: any
   isShowAnnouncementBox?: boolean | null
   showInformationDaihatsu: boolean
+  isOTO?: boolean
 }
 export const NavigationFilterMobile = ({
   carlist,
@@ -44,6 +46,7 @@ export const NavigationFilterMobile = ({
   setRecommendations,
   isShowAnnouncementBox,
   showInformationDaihatsu,
+  isOTO,
 }: NavFilterMobileProps) => {
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
   const { sortBy } = funnelQuery
@@ -139,14 +142,28 @@ export const NavigationFilterMobile = ({
         tenure: String(filter.tenure),
         sortBy: String(funnelQuery.sortBy) || 'lowToHigh',
       }
-      router.replace({
-        pathname: carResultsUrl,
-        search: new URLSearchParams(
-          Object.entries(paramUrl).filter(([, v]) => v !== ''),
-        )
-          .toString()
-          .replace('%2C', ','),
-      })
+
+      isOTO
+        ? navigateToPLP(
+            PreviousButton.SmartSearch,
+            {
+              search: new URLSearchParams(
+                Object.entries(paramUrl).filter(([, v]) => v !== ''),
+              )
+                .toString()
+                .replace('%2C', ','),
+            },
+            true,
+            false,
+            urls.internalUrls.duplicatedCarResultsUrl,
+          )
+        : navigateToPLP(PreviousButton.SmartSearch, {
+            search: new URLSearchParams(
+              Object.entries(paramUrl).filter(([, v]) => v !== ''),
+            )
+              .toString()
+              .replace('%2C', ','),
+          })
     })
   }
 

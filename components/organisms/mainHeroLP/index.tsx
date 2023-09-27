@@ -10,6 +10,8 @@ import { CityOtrOption } from 'utils/types'
 import { HeaderMobile } from '../headerMobile'
 import MainHeroImage from '/public/revamp/illustration/main-hero-raize-cencored.webp'
 import SupergraphicImage from '/public/revamp/illustration/supergraphic-secondary-large.webp'
+import { HomePageDataLocalContext2 } from 'pages/adaSEVAdiOTO'
+import { useUtils } from 'services/context/utilsContext'
 
 type MainHeroLPProps = {
   onCityIconClick: () => void
@@ -17,10 +19,9 @@ type MainHeroLPProps = {
 }
 
 const MainHeroLP = ({ onCityIconClick, onCtaClick }: MainHeroLPProps) => {
-  const { dataCities } = useContext(HomePageDataLocalContext)
+  const { cities } = useUtils()
   const [showSidebar, setShowSidebar] = useState(false)
-  const [cityListApi, setCityListApi] =
-    useState<Array<CityOtrOption>>(dataCities)
+  const [cityListApi, setCityListApi] = useState<Array<CityOtrOption>>(cities)
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
@@ -42,6 +43,7 @@ const MainHeroLP = ({ onCityIconClick, onCtaClick }: MainHeroLPProps) => {
             isActive={showSidebar}
             setIsActive={setShowSidebar}
             emitClickCityIcon={onCityIconClick}
+            pageOrigination="Homepage"
           />
           <div className={styles.mainWrapper}>
             <h1 className={`${styles.mainTitle} ${styles.bold}`}>

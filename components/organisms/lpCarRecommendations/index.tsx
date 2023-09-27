@@ -26,15 +26,25 @@ import { AlternativeCarCard } from '../alternativeCarCard'
 import { PopupPromo } from '../popupPromo'
 import { LocalStorageKey } from 'utils/enum'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import {
+  PreviousButton,
+  navigateToPLP,
+  saveDataForCountlyTrackerPageViewLC,
+  saveDataForCountlyTrackerPageViewPDP,
+} from 'utils/navigate'
+import { AdaOTOdiSEVALeadsForm } from '../leadsForm/adaOTOdiSEVA/popUp'
+import { it } from 'node:test'
 
 type LPCarRecommendationsProps = {
   dataReccomendation: any
   onClickOpenCityModal: () => void
+  isOTO?: boolean
 }
 
 const LpCarRecommendations = ({
   dataReccomendation,
   onClickOpenCityModal,
+  isOTO,
 }: LPCarRecommendationsProps) => {
   const router = useRouter()
   const swiperRef = useRef<SwiperType>()
@@ -46,8 +56,10 @@ const LpCarRecommendations = ({
   const [openPromo, setOpenPromo] = useState(false)
   const [selectedBrand, setSelectedBrand] = useState('')
   const [load, setLoad] = useState(false)
+  const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
 
   const handleCalculateAbility = (item: CarRecommendation) => {
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.CarRecommendationCta)
     const selectedCity = city ? city.cityName : 'Jakarta Pusat'
     const path = urls.internalUrls.loanCalculatorWithCityBrandModelUrl
       .replace(
@@ -64,6 +76,7 @@ const LpCarRecommendations = ({
   }
 
   const handleClickDetailCar = (item: CarRecommendation) => {
+    saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
     const path = urls.internalUrls.variantListUrl
       .replace(
         ':brand/:model/:tab?',
@@ -74,7 +87,9 @@ const LpCarRecommendations = ({
       )
       .toLocaleLowerCase()
 
-    router.push(path)
+    const newPath = window.location.pathname + path
+
+    window.location.href = isOTO ? newPath : path
   }
 
   const handleClickLabel = () => {
@@ -105,15 +120,32 @@ const LpCarRecommendations = ({
     setLoad(false)
   }
 
+  const closeLeadsForm = () => {
+    setIsModalOpened(false)
+  }
+
   const lihatSemuaMobil = () => {
     sendAmplitudeData(
       AmplitudeEventName.WEB_LP_BRANDRECOMMENDATION_CAR_SEE_ALL_CLICK,
       { Car_Brand: selectedBrand || 'Semua' },
     )
-    if (!selectedBrand) return router.push(urls.internalUrls.carResultsUrl)
+    if (!selectedBrand)
+      return isOTO
+        ? navigateToPLP(
+            PreviousButton.undefined,
+            '',
+            true,
+            false,
+            urls.internalUrls.duplicatedCarResultsUrl,
+          )
+        : navigateToPLP(PreviousButton.undefined)
 
-    router.push({
-      pathname: urls.internalUrls.carResultsUrl,
+    const path = router.asPath.split('/')[1]
+    if (path === 'adaSEVAdiOTO') {
+      return router.push(`/adaSEVAdiOTO/mobil-baru/${selectedBrand}`)
+    }
+
+    navigateToPLP(PreviousButton.undefined, {
       search: new URLSearchParams({ brand: selectedBrand }).toString(),
     })
   }
@@ -172,6 +204,7 @@ const LpCarRecommendations = ({
                   <AlternativeCarCard
                     recommendation={item}
                     onClickLabel={handleClickLabel}
+                    isOTO={isOTO}
                     label={
                       <LabelPromo
                         className={stylec.labelCard}
@@ -206,11 +239,13 @@ const LpCarRecommendations = ({
                             Car_Model: item.model,
                           },
                         )
-                        handleCalculateAbility(item)
+                        isOTO
+                          ? setIsModalOpened(true)
+                          : handleCalculateAbility(item)
                       }}
                       data-testid={elementId.PLP.Button.HitungKemampuan}
                     >
-                      Hitung Kemampuan
+                      {isOTO ? 'Saya Tertarik' : 'Hitung Kemampuan'}
                     </Button>
                   </AlternativeCarCard>
                 </SwiperSlide>
@@ -234,6 +269,7 @@ const LpCarRecommendations = ({
             </Swiper>
           )}
         </div>
+        {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
       </div>
       <PopupPromo open={openPromo} onCancel={() => setOpenPromo(false)} />
     </>

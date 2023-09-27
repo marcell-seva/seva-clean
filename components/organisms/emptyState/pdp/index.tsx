@@ -8,6 +8,7 @@ import { getCities } from 'services/cities'
 import { getNewFunnelCityRecommendations } from 'services/newFunnel'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { CityOtrOption } from 'utils/types/utils'
+import Image from 'next/image'
 
 const EmptyCar = '/revamp/illustration/empty-car.webp'
 
@@ -83,7 +84,7 @@ export const ProductDetailEmptyState: React.FC<PropsPDPEmptyState> = ({
   return (
     <>
       <div className={styles.wrapper}>
-        <img
+        <Image
           src={EmptyCar}
           width={250}
           height={130}

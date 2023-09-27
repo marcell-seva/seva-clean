@@ -35,6 +35,9 @@ interface DpFormProps {
   isDpExceedLimit: boolean
   setIsDpExceedLimit: (value: boolean) => void
   isAutofillValueFromCreditQualificationData?: boolean
+  emitOnFocusDpAmountField?: () => void
+  emitOnFocusDpPercentageField?: () => void
+  emitOnAfterChangeDpSlider?: () => void
 }
 
 const DpForm: React.FC<DpFormProps> = ({
@@ -53,6 +56,9 @@ const DpForm: React.FC<DpFormProps> = ({
   isDpExceedLimit,
   setIsDpExceedLimit,
   isAutofillValueFromCreditQualificationData = false,
+  emitOnFocusDpAmountField,
+  emitOnFocusDpPercentageField,
+  emitOnAfterChangeDpSlider,
 }) => {
   const formatCurrency = (value: number): string => {
     return `Rp${value.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`
@@ -248,7 +254,10 @@ const DpForm: React.FC<DpFormProps> = ({
             onBlur={handleValueBlur}
             name={name}
             disabled={isDisabled}
-            data-testId={elementId.Field.DP}
+            data-testid={elementId.Field.DP}
+            onFocus={() => {
+              emitOnFocusDpAmountField && emitOnFocusDpAmountField()
+            }}
           />
           {isDpTooLow && (
             <div className={`${styles.errorMessageWrapper} shake-animation-X`}>
@@ -277,7 +286,10 @@ const DpForm: React.FC<DpFormProps> = ({
             disabled={isDisabled}
             suffix="%"
             maxLength={2}
-            data-testId={elementId.Field.DPPercentage}
+            data-testid={elementId.Field.DPPercentage}
+            onFocus={() => {
+              emitOnFocusDpPercentageField && emitOnFocusDpPercentageField()
+            }}
           />
         </Col>
       </Row>
@@ -298,6 +310,9 @@ const DpForm: React.FC<DpFormProps> = ({
           onChange={handleSliderChange}
           handleStyle={sliderIconStyle}
           disabled={isDisabled}
+          onAfterChange={() => {
+            emitOnAfterChangeDpSlider && emitOnAfterChangeDpSlider()
+          }}
         />
       </Row>
       <Row>

@@ -3,14 +3,14 @@ import {
   trackLCCarRecommendationCTAClick,
 } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
-import { LanguageCode } from 'utils/enum'
+import { LanguageCode, SessionStorageKey } from 'utils/enum'
 import React from 'react'
 import {
   carResultsUrl,
   loanCalculatorWithCityBrandModelUrl,
   variantListUrl,
 } from 'utils/helpers/routes'
-import { CarRecommendation } from 'utils/types/utils'
+import { CarRecommendation, trackDataCarType } from 'utils/types/utils'
 import { getLowestInstallment } from 'utils/carModelUtils/carModelUtils'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { Button } from 'components/atoms'
@@ -19,6 +19,15 @@ import styles from 'styles/components/organisms/carRecomendations.module.scss'
 import { AlternativeCarCard } from '../alternativeCarCard'
 import { useRouter } from 'next/router'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import {
+  defineRouteName,
+  PreviousButton,
+  saveDataForCountlyTrackerPageViewLC,
+  saveDataForCountlyTrackerPageViewPDP,
+} from 'utils/navigate'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getSessionStorage } from 'utils/handler/sessionStorage'
 
 type CarRecommendationsPropss = {
   title: string
@@ -36,6 +45,9 @@ export default function CarRecommendations({
   additionalContainerStyle,
 }: CarRecommendationsPropss) {
   const router = useRouter()
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
 
   const getDestinationUrl = (carDetail: CarRecommendation) => {
     if (window.location.pathname.includes('/mobil-baru')) {
@@ -77,6 +89,16 @@ export default function CarRecommendations({
       Page_Origination: window.location.href,
     })
 
+    trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CTA_CLICK, {
+      PAGE_ORIGINATION: 'PDP - Kredit',
+      CAR_BRAND: item.brand,
+      CAR_MODEL: item.model,
+      CAR_BRAND_RECOMMENDATION: item.brand,
+      CAR_MODEL_RECOMMENDATION: item.model,
+      CTA_BUTTON: 'Hitung Kemampuan',
+      PAGE_DIRECTION_URL: window.location.hostname + getDestinationUrl(item),
+    })
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.CarRecommendation)
     window.location.replace(getDestinationUrl(item))
   }
 
@@ -104,7 +126,38 @@ export default function CarRecommendations({
       Monthly_Installment: `Rp${formatLowestInstallment}`,
       Page_Origination: window.location.href,
     })
-    router.push(path)
+    trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CLICK, {
+      PAGE_ORIGINATION: 'PDP - Kredit',
+      PELUANG_KREDIT_BADGE:
+        item.loanRank === 'Green'
+          ? 'Mudah disetujui'
+          : item.loanRank === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      CAR_BRAND: item.brand,
+      CAR_MODEL: item.model,
+      CAR_BRAND_RECOMMENDATION: item.brand,
+      CAR_MODEL_RECOMMENDATION: item.model,
+      PAGE_DIRECTION_URL: window.location.hostname + path,
+      TENOR_OPTION: dataCar?.TENOR_OPTION,
+      TENOR_RESULT:
+        dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Green'
+          ? 'Mudah disetujui'
+          : dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+    })
+
+    if (window.location.pathname.includes('kalkulator-kredit')) {
+      saveDataForCountlyTrackerPageViewPDP(
+        PreviousButton.CarRecommendation,
+        defineRouteName(window.location.pathname + window.location.search),
+      )
+    } else {
+      saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
+    }
+
+    window.location.href = path
   }
 
   return (

@@ -36,6 +36,7 @@ import { TextLegalSemiBold } from 'utils/typography/TextLegalSemiBold'
 import { LinkLabelSmallMedium } from 'components/atoms/typography/LinkLabelSmallMedium'
 import HeaderCarResult from 'components/molecules/header/headerCarResult'
 import { client } from 'utils/helpers/const'
+import { useUtils } from 'services/context/utilsContext'
 
 const LogoSeva = '/revamp/illustration/seva-header.svg'
 const RegisterImg = '/revamp/illustration/Register.png'
@@ -46,6 +47,7 @@ interface PageHeaderSevaProps {
 
 export const PageHeaderSevaHeight = '80px'
 export const PageHeaderSevaCarResults = (props: PageHeaderSevaProps) => {
+  const { dekstopWebTopMenu } = useUtils()
   const router = useRouter()
   const enableLanguageDropdown =
     getCurrentEnvironment.featureToggles.enableLanguageDropdown
@@ -83,9 +85,6 @@ export const PageHeaderSevaCarResults = (props: PageHeaderSevaProps) => {
     if (getToken()) {
       fetchDataName()
     }
-    getMenus().then((res) => {
-      setData(res.data)
-    })
   }, [])
 
   const onClickLogoHeader = () => {
@@ -119,7 +118,9 @@ export const PageHeaderSevaCarResults = (props: PageHeaderSevaProps) => {
   return (
     <>
       <Wrapper>
-        {data && <SidebarBurger data={data} />}
+        {dekstopWebTopMenu.length > 0 && (
+          <SidebarBurger data={dekstopWebTopMenu} />
+        )}
         {!showSearch ? (
           <StyledLogoSection>
             <StyledLogoContainer>
@@ -135,7 +136,7 @@ export const PageHeaderSevaCarResults = (props: PageHeaderSevaProps) => {
                   <></>
                 )}
                 <LogoWrapper onClick={onClickLogoHeader}>
-                  <StyledImage src={LogoSeva} alt="seva-header-icon" />
+                  <StyledImage src={LogoSeva} alt="Logo SEVA" />
                 </LogoWrapper>
               </BurgerAndLogoWrapper>
               <Spacing />
@@ -184,7 +185,9 @@ export const PageHeaderSevaCarResults = (props: PageHeaderSevaProps) => {
                 <WrapperInfoProfile>
                   {enableAccountDashboard && (
                     <WrapperRowLogout>
-                      <LogoutButton onClick={() => router.push('/akun/profil')}>
+                      <LogoutButton
+                        onClick={() => (window.location.href = '/akun/profil')}
+                      >
                         <StyledLogo>
                           <User />
                         </StyledLogo>

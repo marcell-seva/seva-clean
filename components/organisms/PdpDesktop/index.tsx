@@ -43,7 +43,7 @@ import { PageHeaderSeva } from '../PageHeaderSeva/PageHeaderSeva'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
 
-export default function index() {
+export default function index({ metaTagDataRes }: { metaTagDataRes: any }) {
   const router = useRouter()
   const {
     carRecommendationsResDefaultCity,
@@ -55,7 +55,6 @@ export default function index() {
   const { model, brand, slug } = router.query
   const tab = Array.isArray(slug) ? slug[0] : undefined
   const [stickyCTA, setStickyCTA] = useState(false)
-
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const { showModal: showCarNotExistModal, PreApprovalCarNotAvailableModal } =
     usePreApprovalCarNotAvailable()
@@ -64,6 +63,7 @@ export default function index() {
   const { funnelQuery } = useFunnelQueryData()
   const { DialogModal, showModal: showDialogModal } = useDialogModal()
   const [isShowLoading, setShowLoading] = useState(false)
+
   const {
     saveCarVariantDetails,
     saveRecommendation,
@@ -225,6 +225,12 @@ export default function index() {
         carModelDetailsResDefaultCity,
       ])
       saveCarVariantDetails(carVariantDetailsResDefaultCity)
+      const currentCar =
+        carRecommendationsResDefaultCity.carRecommendations.filter(
+          (value: CarRecommendation) =>
+            value.model.replace(/ +/g, '-').toLowerCase() === model,
+        )
+      savePreviouslyViewed(currentCar[0])
     }
 
     if (modal.isOpenContactUsModal) {

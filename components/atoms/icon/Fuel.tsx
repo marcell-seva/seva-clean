@@ -4,6 +4,7 @@ import { PropsIcon } from '../../../utils/types'
 export const IconFuel: React.FC<PropsIcon> = ({
   width,
   height,
+  alt,
   color = '#05256E',
 }): JSX.Element => {
   return (
@@ -14,6 +15,7 @@ export const IconFuel: React.FC<PropsIcon> = ({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <title>{alt}</title>
       <path
         d="M22.5342 36H5.83376C4.82307 36 4 35.1823 4 34.1716V6.82841C4 5.82067 4.82005 5 5.83376 5H22.5342C23.5448 5 24.3679 5.81766 24.3679 6.82841V34.1716C24.3649 35.1808 23.5433 36 22.5342 36ZM6.26951 33.7371H22.0953V7.26443H6.26951V33.7371Z"
         fill={color}

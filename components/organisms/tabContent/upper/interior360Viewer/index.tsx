@@ -5,6 +5,7 @@ import { Icon360 } from 'components/atoms'
 import { interiorImagesListNew } from 'config/Interior360ImageList.config'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 const Pannellum = dynamic(() => import('components/molecules/PanellumItem'), {
   ssr: false,
@@ -48,11 +49,7 @@ export const Interior360ViewerTab = ({ isShowAnnouncementBox }: Props) => {
   return (
     <div style={{ marginTop: isShowAnnouncementBox ? '24px' : '0px' }}>
       {getImage()?.includes('StaticImage') ? (
-        <img
-          className={styles.staticImage}
-          src={getImage()}
-          alt="interior"
-        ></img>
+        <Image className={styles.staticImage} src={getImage()} alt="interior" />
       ) : (
         renderNonStatic()
       )}

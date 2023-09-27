@@ -3,7 +3,6 @@ import { Avatar, Button } from 'components/atoms'
 import { MenuList } from 'components/molecules'
 import styles from '../../../styles/components/organisms/sidebarMobile.module.scss'
 import { LoginSevaUrl } from 'utils/helpers/routes'
-import { getMobileWebTopMenu } from 'services/menu'
 import { getToken } from 'utils/handler/auth'
 import {
   trackLoginButtonClick,
@@ -13,21 +12,29 @@ import { savePageBeforeLogin } from 'utils/loginUtils'
 import clsx from 'clsx'
 import { saveLocalStorage } from 'utils/handler/localStorage'
 import { useRouter } from 'next/router'
-import { LocalStorageKey } from 'utils/enum'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { separatePhoneNumber } from 'utils/handler/separatePhoneNumber'
 import { fetchCustomerDetails } from 'utils/httpUtils/customerUtils'
 import { CustomerInfoSeva } from 'utils/types/utils'
 import { useUtils } from 'services/context/utilsContext'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getPageName } from 'utils/pageName'
+import { saveSessionStorage } from 'utils/handler/sessionStorage'
 
 type sidebarMobileProps = {
   showSidebar?: boolean
   isShowAnnouncementBox?: boolean | null
+  pageOrigination?: string
+  isOTO?: boolean
 }
 
 const sidebarMobile = ({
   showSidebar,
   isShowAnnouncementBox,
+  pageOrigination,
+  isOTO = false,
 }: sidebarMobileProps): JSX.Element => {
   const [isLogin] = React.useState(!!getToken())
   const [nameIcon, setNameIcon] = React.useState('')
@@ -75,6 +82,19 @@ const sidebarMobile = ({
     trackLoginButtonClick({
       Page_Origination_URL: window.location.href,
     })
+    if (pageOrigination && pageOrigination.length !== 0) {
+      trackEventCountly(CountlyEventNames.WEB_HAMBURGER_LOGIN_REGISTER_CLICK, {
+        PAGE_ORIGINATION: pageOrigination,
+      })
+      saveSessionStorage(
+        SessionStorageKey.PageReferrerLoginPage,
+        pageOrigination,
+      )
+      saveSessionStorage(
+        SessionStorageKey.PreviousSourceSectionLogin,
+        'Hamburger Menu',
+      )
+    }
     savePageBeforeLogin(window.location.pathname)
     router.push(LoginSevaUrl)
   }
@@ -83,7 +103,7 @@ const sidebarMobile = ({
     trackProfileAkunSayaClick({
       Page_Origination_URL: window.location.href,
     })
-    router.push(url)
+    window.location.href = url
   }
 
   return (
@@ -97,12 +117,17 @@ const sidebarMobile = ({
     >
       {isLogin ? (
         <>
-          <a
+          <div
+            role="navigation"
             onClick={() => {
               saveLocalStorage(
                 LocalStorageKey.PageBeforeProfile,
                 window.location.pathname,
               )
+              trackEventCountly(CountlyEventNames.WEB_HAMBURGER_ACCOUNT_CLICK, {
+                PAGE_ORIGINATION: getPageName(),
+                SOURCE_SECTION: 'Top',
+              })
               handleClickMyAccount('/akun/profil')
             }}
             className={styles.profileWrapper}
@@ -115,7 +140,7 @@ const sidebarMobile = ({
                 {phoneNumber?.code} | {phoneNumber?.number}
               </h2>
             </div>
-          </a>
+          </div>
 
           {/* TODO component for credit, maybe used later */}
           {/* <div className={styles.creditInfoWrapper}>
@@ -151,7 +176,11 @@ const sidebarMobile = ({
         </Button>
       )}
 
-      <MenuList menuList={mobileWebTopMenus} customerDetail={customerDetail} />
+      <MenuList
+        menuList={mobileWebTopMenus}
+        customerDetail={customerDetail}
+        isOTO={isOTO}
+      />
     </div>
   )
 }

@@ -1,12 +1,12 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from 'styles/components/organisms/calculationResult.module.scss'
 import {
   FinalLoan,
   FormLCState,
   LoanCalculatorIncludePromoPayloadType,
   LoanCalculatorInsuranceAndPromoType,
-  SpecialRateListType,
   SpecialRateListWithPromoType,
+  trackDataCarType,
 } from 'utils/types/utils'
 import { CalculationResultItem } from 'components/molecules'
 import { Button, IconWhatsapp, Overlay } from 'components/atoms'
@@ -21,9 +21,16 @@ import {
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import elementId from 'helpers/elementIds'
 import PromoBottomSheet from '../promoBottomSheet'
-import { LanguageCode } from 'utils/enum'
-import { useContextCalculator } from 'services/context/calculatorContext'
+import { LanguageCode, SessionStorageKey } from 'utils/enum'
 import { InsuranceTooltip } from '../insuranceTooltip'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { removeCarBrand } from 'utils/handler/removeCarBrand'
+import {
+  getSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
+import Image from 'next/image'
 
 const LogoAcc = '/revamp/icon/logo-acc.webp'
 const LogoTaf = '/revamp/icon/logo-taf.webp'
@@ -40,9 +47,13 @@ interface Props {
   handleClickButtonQualification: (loan: SpecialRateListWithPromoType) => void
   formData: FormLCState
   insuranceAndPromoForAllTenure: LoanCalculatorInsuranceAndPromoType[]
+  setInsuranceAndPromoForAllTenure: (
+    value: LoanCalculatorInsuranceAndPromoType[],
+  ) => void
   calculationApiPayload?: LoanCalculatorIncludePromoPayloadType
   children?: React.ReactNode
   setFinalLoan: (value: FinalLoan) => void
+  pageOrigination?: string
 }
 
 export const CalculationResult = ({
@@ -56,8 +67,10 @@ export const CalculationResult = ({
   handleClickButtonQualification,
   formData,
   insuranceAndPromoForAllTenure,
+  setInsuranceAndPromoForAllTenure,
   calculationApiPayload,
   setFinalLoan,
+  pageOrigination,
 }: Props) => {
   const [state, setState] = useState<LoanCalculatorInsuranceAndPromoType[]>(
     insuranceAndPromoForAllTenure,
@@ -68,7 +81,60 @@ export const CalculationResult = ({
   const [selectedCalculatePromo, setSelectedCalculatePromo] =
     useState<LoanCalculatorInsuranceAndPromoType | null>()
 
+  const trackCountlyClickResultItem = (
+    selectedTenureData: SpecialRateListWithPromoType,
+  ) => {
+    trackEventCountly(CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_TENURE_CLICK, {
+      PAGE_ORIGINATION: pageOrigination,
+      CAR_BRAND: formData.model?.brandName ?? 'Null',
+      CAR_MODEL: formData.model?.modelName ?? 'Null',
+      CAR_VARIANT: formData.variant?.variantName ?? 'Null',
+      TENOR_OPTION: `${selectedTenureData.tenure} Tahun`,
+      TENOR_RESULT:
+        selectedTenureData.loanRank === LoanRank.Green
+          ? 'Mudah disetujui'
+          : 'Sulit disetujui',
+    })
+  }
+
+  const trackCountlyOpenPromoPopup = (
+    selectedTenure: SpecialRateListWithPromoType,
+    selectedTenurePromoData: LoanCalculatorInsuranceAndPromoType,
+  ) => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_TENURE_PROMO_CLICK,
+      {
+        PAGE_ORIGINATION: pageOrigination,
+        TENOR_OPTION: `${selectedTenure.tenure} Tahun`,
+        TENOR_RESULT:
+          selectedTenure.loanRank === LoanRank.Green
+            ? 'Mudah disetujui'
+            : 'Sulit disetujui',
+        TOTAL_APPLIED_PROMO: `${selectedTenurePromoData?.selectedPromo?.length} Promo`,
+      },
+    )
+  }
+
+  const saveDataCarForLoginPageView = (
+    tenure: string,
+    resultLoanRank: string,
+  ) => {
+    const dataCar: trackDataCarType | null = getSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+    )
+    const dataCarTemp = {
+      ...dataCar,
+      TENOR_OPTION: tenure,
+      TENOR_RESULT: resultLoanRank,
+    }
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarTemp),
+    )
+  }
   const handleOnClickResultItem = (value: SpecialRateListWithPromoType) => {
+    trackCountlyClickResultItem(value)
+    saveDataCarForLoginPageView(value.tenure.toString(), value.loanRank)
     setSelectedLoan(value)
     const selectedData = state.filter((item) => item.tenure === value.tenure)[0]
 
@@ -109,8 +175,21 @@ export const CalculationResult = ({
     })
   }
 
+  const trackCountlyOnClickUnderstandTooltip = () => {
+    trackEventCountly(
+      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_KUALIFIKASI_KREDIT_COACHMARK_CLICK,
+      {
+        PAGE_ORIGINATION: pageOrigination,
+        CAR_BRAND: formData.model?.brandName ?? 'Null',
+        CAR_MODEL: removeCarBrand(formData.model?.modelName ?? 'Null'),
+        CAR_VARIANT: formData.variant?.variantName ?? 'Null',
+      },
+    )
+  }
+
   const handleUnderstandTooltip = () => {
     if (selectedLoan) {
+      trackCountlyOnClickUnderstandTooltip()
       trackLCKualifikasiKreditTooltipCTAClick({
         Age: `${formData.age} Tahun`,
         Angsuran_Type: formData.paymentOption,
@@ -171,10 +250,11 @@ export const CalculationResult = ({
     closeTooltip()
   }
 
-  const handleOpenPopup = (tenure: number) => {
-    setTenureForPopUp(tenure)
+  const handleOpenPopup = (selectedData: SpecialRateListWithPromoType) => {
+    setTenureForPopUp(selectedData.tenure)
     setOpenPromo(true)
-    const selectPromo = state.filter((x) => x.tenure === tenure)
+    const selectPromo = state.filter((x) => x.tenure === selectedData.tenure)
+    trackCountlyOpenPromoPopup(selectedData, selectPromo[0])
     setSelectedCalculatePromo(selectPromo[0])
     setFinalLoan({
       selectedInsurance: selectPromo[0].selectedInsurance,
@@ -191,14 +271,14 @@ export const CalculationResult = ({
   const renderLogoFinco = () => {
     return (
       <div className={styles.logoFincoWrapper}>
-        <img
+        <Image
           src={LogoAcc}
           width={24.24}
           height={32}
           className={styles.logoAcc}
           alt="logo acc"
         />
-        <img
+        <Image
           src={LogoTaf}
           width={37}
           height={19}
@@ -347,7 +427,12 @@ export const CalculationResult = ({
           selectedCalculatePromoInsurance={selectedCalculatePromo}
           calculationApiPayload={calculationApiPayload}
           promoInsuranceReal={state}
-          setPromoInsuranceReal={setState}
+          setPromoInsuranceReal={(
+            value: LoanCalculatorInsuranceAndPromoType[],
+          ) => {
+            setState(value)
+            setInsuranceAndPromoForAllTenure(value)
+          }}
           setFinalLoan={setFinalLoan}
           onOpenInsuranceTooltip={() => {
             setOpenPromo(false)
@@ -355,6 +440,7 @@ export const CalculationResult = ({
               setOpenTooltipInsurance(true)
             }, 700)
           }}
+          pageOrigination={pageOrigination}
         />
       )}
       <InsuranceTooltip

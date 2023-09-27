@@ -5,6 +5,7 @@ export const IconSearch: React.FC<PropsIcon> = ({
   width,
   height,
   onClick,
+  alt,
   color = '#05256E',
 }): JSX.Element => {
   return (
@@ -16,6 +17,7 @@ export const IconSearch: React.FC<PropsIcon> = ({
       xmlns="http://www.w3.org/2000/svg"
       onClick={onClick}
     >
+      <title>{alt}</title>
       <path
         fillRule="evenodd"
         clipRule="evenodd"

@@ -14,10 +14,14 @@ import { useRouter } from 'next/router'
 import { getCarsSearchBar } from 'services/searchbar'
 import { LocalStorageKey } from 'utils/enum'
 import { convertObjectQuery } from 'utils/handler/convertObjectQuery'
-import { Loading } from 'components/atoms/loading'
 import { SearchInput } from 'components/atoms/searchInput/oldSearchInput'
 import { client } from 'utils/helpers/const'
 import { FunnelQueryKey } from 'utils/types/models'
+import dynamic from 'next/dynamic'
+
+const Loading = dynamic(() =>
+  import('components/atoms/loading').then((mod) => mod.Loading),
+)
 
 interface HeaderVariantProps {
   overrideDisplay?: string
@@ -124,7 +128,7 @@ export default function HeaderVariant({
       Page_Origination_URL: getOriginationUrl(),
       Page_Direction_URL: window.location.href.replace('https://www.', ''),
     })
-    router.push(urlDestination)
+    window.location.href = urlDestination
   }
 
   const removeUnnecessaryDataFilter = (): void => {
@@ -335,7 +339,7 @@ export const StyledLink = styled.a`
     display: flex;
     height: auto;
     width: auto;
-    align-items: start;
+    align-items: flex-start;
     line-height: 22px;
     justify-content: center;
     flex-direction: column;

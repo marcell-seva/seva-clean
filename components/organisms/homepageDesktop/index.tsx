@@ -48,8 +48,6 @@ const HomepageDesktop: React.FC<HomepageDesktopProps> = ({}) => {
     false,
   )
 
-  const { showToast, RenderToast } = useToast()
-
   const getBannerHomepage = async () => {
     try {
       const data = await api.getBanner()

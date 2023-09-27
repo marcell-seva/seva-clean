@@ -34,6 +34,8 @@ import { CarTypeItem } from './carTypeItem'
 import { CarButtonProps } from 'utils/types/context'
 import { newBodyTypes } from './carBodyTypes'
 import { HomePageDataLocalContext } from 'pages'
+import { useCar } from 'services/context/carContext'
+import Image from 'next/image'
 
 const leftArrow = '/revamp/icon/arrowLeftSmall.svg'
 const rightArrow = '/revamp/icon/arrowRightSmall.svg'
@@ -44,17 +46,17 @@ interface BodyTypes {
 }
 
 export const CarBodyTypesDesktop = () => {
-  const { dataTypeCar, dataRecToyota } = useContext(HomePageDataLocalContext)
-  const [bodyTypesList, setBodyTypes] = useState<BodyTypes[]>(dataTypeCar)
+  const { typeCar, recommendationToyota } = useCar()
+  const [bodyTypesList, setBodyTypes] = useState<BodyTypes[] | null>(typeCar)
   const router = useRouter()
   const [bodyTypeSelected, setBodyTypeSelected] = useState('MPV')
   const [recommendationLists, setRecommendationLists] =
-    useState<CarRecommendation[]>(dataRecToyota)
+    useState<CarRecommendation[]>(recommendationToyota)
   const { patchFunnelQuery, clearQueryFilter: clearFunnelQuery } =
     useFunnelQueryData()
   const [loading, setLoading] = useState(false)
   useEffect(() => {
-    if (bodyTypesList.length === 0) {
+    if (bodyTypesList?.length === 0) {
       getCarBodyTypes().then((res) => {
         setBodyTypes(res.data)
       })
@@ -137,7 +139,7 @@ export const CarBodyTypesDesktop = () => {
     })
   }
   const renderCarBodyTypes = () => {
-    return bodyTypesList.map((body: BodyTypes, index) => {
+    return bodyTypesList?.map((body: BodyTypes, index) => {
       //value
       return (
         <BodyTypesItem
@@ -238,7 +240,7 @@ export const CarBodyTypesDesktop = () => {
                   recommendationLists.length > 3 && (
                     <>
                       <ButtonBack className="button-back-cbtd">
-                        <img
+                        <Image
                           className="left-button-cbtd"
                           src={leftArrow}
                           alt="seva-left-arrow"
@@ -247,7 +249,7 @@ export const CarBodyTypesDesktop = () => {
                         />
                       </ButtonBack>
                       <ButtonNext className="button-next-cbtd">
-                        <img
+                        <Image
                           className="right-button-cbtd"
                           src={rightArrow}
                           alt="seva-right-arrow"

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Skeleton } from 'components/atoms'
 import styles from 'styles/components/organisms/carDetailLoadPdp.module.scss'
+import Image from 'next/image'
 
 const CarSkeleton = '/revamp/illustration/car-skeleton.webp'
 
@@ -8,10 +9,12 @@ const CarDetailLoadPdp = () => {
   return (
     <div className={styles.containerPdp}>
       <div className={styles.cardWrapperPdp}>
-        <img
+        <Image
           src={CarSkeleton}
           className={styles.heroImgPdp}
           alt={'car skeleton'}
+          width={248}
+          height={248}
         />
         <div className={styles.contentWrapperPdp}>
           <Skeleton width={'100%'} style={{ marginBottom: 13 }} />

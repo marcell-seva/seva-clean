@@ -19,6 +19,11 @@ export enum InputVersion {
   Mobile = 'Mobile',
 }
 
+export enum InputVersionType {
+  Primary = 'Primary',
+  Secondary = 'Secondary',
+}
+
 export enum PaymentType {
   MonthlyInstallment = 'monthlyInstallment',
   DownPayment = 'downPayment',
@@ -95,6 +100,9 @@ export enum LocalStorageKey {
   ChangeKtp = 'change_ktp',
   FormKtp = 'formKtp',
   PreApprovalResult = 'preApprovalResult',
+  LastHitTracker = 'lastHitTracker',
+  carModelLoanRank = 'carModelLoanRank', // loan rank on plp
+  LastTimeUpdateUtm = 'lastTimeUpdateUtm',
 }
 
 export enum SessionStorageKey {
@@ -134,6 +142,21 @@ export enum SessionStorageKey {
   MainKtpType = 'mainKtpType',
   KTPUploaded = 'KTPUploaded',
   HasOpenedInsuranceToast = 'hasOpenedInsuranceToast',
+  PreviousPage = 'PreviousPage',
+  UserType = 'UserType',
+  HasOpenSevaBefore = 'hasOpenSevaBefore',
+  PageReferrerPDP = 'pageReferrerPdp',
+  PreviousSourceButtonPDP = 'previousSourceButtonPDP',
+  PageReferrerLC = 'pageReferrerLC',
+  PreviousSourceSectionLC = 'previousSourceSectionLC',
+  HasTrackedDpSliderLC = 'hasTrackedDpSliderLC',
+  PageReferrerHomepage = 'pageReferrerHomepage',
+  PreviousSourceButtonHomepage = 'previousSourceButtonHomepage',
+  HasTracked360Exterior = 'hasTracked360Exterior',
+  PreviousCarDataBeforeLogin = 'previousCarDataBeforeLogin',
+  PreviousSourceSectionLogin = 'previousSourceSectionLogin',
+  PageReferrerLoginPage = 'pageReferrerLoginPage',
+  IsShowBadgeCreditOpportunity = 'IsShowBadgeCreditOpportunity',
 }
 
 export enum HTTPResponseStatusCode {

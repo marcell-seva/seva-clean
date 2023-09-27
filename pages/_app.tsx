@@ -11,9 +11,10 @@ import { GlobalContextProvider } from 'services/context'
 import { applyPolyfills, defineCustomElements } from 'seva-ui-kit/loader'
 import Script from 'next/script'
 import 'styles/global.scss'
+import 'react-spring-bottom-sheet/dist/style.css'
+import 'react-lazy-load-image-component/src/effects/blur.css'
 import 'styles/bottomSheet.scss'
 import 'styles/customAnimation.scss'
-import 'react-spring-bottom-sheet/dist/style.css'
 import 'styles/index.css'
 import 'styles/modal-gallery.scss'
 import 'styles/components/molecules/car-body-types-desktop.scss'
@@ -35,6 +36,9 @@ import 'styles/insuranceTooltip.scss'
 import { FBPixelStandardEvent, FB_PIXEL_ID } from 'helpers/facebookPixel'
 import { client } from 'utils/helpers/const'
 import { IsSsrMobileContext } from 'services/context/isSsrMobileContext'
+import { useAddUtmTagsToApiCall } from 'utils/hooks/useAddUtmTagsToApiCall/useAddUtmTagsToApiCall'
+import Head from 'next/head'
+import { CityFirst } from 'components/molecules/cityFirst'
 
 const kanyonLight = localFont({
   src: '../public/revamp/fonts/Kanyon/Kanyon-Light.otf',
@@ -84,13 +88,27 @@ applyPolyfills().then(() => {
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    TagManager.initialize({ gtmId: 'GTM-TV9J5JM' })
+    if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'staging') {
+      TagManager.initialize({ gtmId: 'GTM-K2P73CT' })
+    } else {
+      TagManager.initialize({ gtmId: 'GTM-TV9J5JM' })
+    }
     if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'production') {
       client && window.fbq('track', FBPixelStandardEvent.PageView)
     }
   }, [])
+
+  useAddUtmTagsToApiCall()
+
   return (
     <>
+      <Head>
+        <meta name="theme-color" content="#fff" />
+        <meta
+          name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
+        />
+      </Head>
       <Script
         type="text/javascript"
         strategy="afterInteractive"
@@ -110,6 +128,37 @@ export default function App({ Component, pageProps }: AppProps) {
             fbq('init', ${FB_PIXEL_ID});
             
           `,
+        }}
+      />
+      <Script
+        type="text/javascript"
+        strategy="afterInteractive"
+        async
+        dangerouslySetInnerHTML={{
+          __html: `
+            //some default pre init
+            var Countly = Countly || {};
+            Countly.q = Countly.q || [];
+
+            //provide countly initialization parameters
+            Countly.app_key = 'b3339752ab6da081b5fabf5e46be80ef26b666ca';
+            Countly.url = 'https://push.meshtics.com';
+
+            Countly.q.push(['track_sessions']);
+            Countly.q.push(['track_pageview']);
+            Countly.q.push(['track_clicks']);
+            Countly.q.push(['track_links']);
+
+            //load countly script asynchronously
+            (function() {
+              var cly = document.createElement('script'); cly.type = 'text/javascript';
+              cly.async = true;
+              //enter url of script here
+              cly.src = 'https://cdnjs.cloudflare.com/ajax/libs/countly-sdk-web/20.4.0/countly.min.js';
+              cly.onload = function(){Countly.init()};
+              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
+            })();
+            `,
         }}
       />
       <IsSsrMobileContext.Provider value={pageProps.isSsrMobile}>
@@ -139,6 +188,7 @@ export default function App({ Component, pageProps }: AppProps) {
               --open-sans-extra-bold: ${OpenSansExtraBold.style.fontFamily};
             }
           `}</style>
+          <CityFirst />
           <Component {...pageProps} />
         </GlobalContextProvider>
       </IsSsrMobileContext.Provider>

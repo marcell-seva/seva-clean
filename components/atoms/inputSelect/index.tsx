@@ -8,6 +8,7 @@ import {
 } from 'utils/types'
 import React, { ChangeEvent, ForwardedRef, forwardRef, useState } from 'react'
 import styles from '../../../styles/components/atoms/inputSelect.module.scss'
+import Image from 'next/image'
 
 interface Props<T extends FormControlValue> {
   value: string
@@ -40,6 +41,7 @@ interface Props<T extends FormControlValue> {
   datatestid?: string
   optionTestid?: string
   prefix?: string
+  onShowDropdown?: () => void
 }
 
 const forwardedInputSelect = <T extends FormControlValue>(
@@ -72,6 +74,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
     datatestid,
     optionTestid,
     prefix,
+    onShowDropdown,
   }: Props<T>,
   ref?: ForwardedRef<HTMLInputElement>,
 ) => {
@@ -113,7 +116,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
     setIsFocused(false)
     if (
       !options.some(
-        (x) => x.label.toLowerCase() === currentValue.toLowerCase(),
+        (x) => x.label?.toLowerCase() === currentValue.toLowerCase(),
       ) ||
       !options.some((x) =>
         typeof x.value === 'string'
@@ -178,6 +181,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
           onFocus={() => {
             setIsFocused(true)
             openDropdown().onOpen(true)
+            onShowDropdown && onShowDropdown()
           }}
           onBlur={onBlurHandler}
           autoFocus={isAutoFocus}
@@ -252,10 +256,12 @@ const forwardedInputSelect = <T extends FormControlValue>(
                 )}
 
                 {showDropdownImage && (
-                  <img
-                    src={(item as OptionWithImage<string>)?.image}
+                  <Image
+                    src={(item as OptionWithImage<string>)?.image || ''}
                     alt={item.label}
                     className={styles.dropdownItemImage}
+                    width="67"
+                    height="48"
                   />
                 )}
 

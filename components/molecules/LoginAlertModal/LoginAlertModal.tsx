@@ -31,7 +31,7 @@ export const useLoginAlertModal = () => {
               onClick={() => {
                 history.push(LoginSevaUrl)
               }}
-              data-testId={elementId.Modal.login}
+              data-testid={elementId.Modal.login}
             >
               Masuk
             </StyledButton>

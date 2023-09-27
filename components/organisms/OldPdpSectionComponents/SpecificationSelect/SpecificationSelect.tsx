@@ -10,6 +10,7 @@ import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { CarVariantRecommendation, CityOtrOption } from 'utils/types'
+import { getCity } from 'utils/hooks/useGetCity'
 
 interface SpecificationSelectProps {
   initialValue?: CarVariantRecommendation
@@ -30,7 +31,9 @@ export const SpecificationSelect = ({
   onVariantChange,
 }: SpecificationSelectProps) => {
   const router = useRouter()
-  const [selected, setSelected] = useState(options[0])
+  const initialOption =
+    Array.isArray(options) && options.length > 0 ? options[0] : null
+  const [selected, setSelected] = useState(initialOption)
   // const [isInitalValueEmpty, setIsInitalValueEmpty] = useState(false)
   const [showOption, setShowOption] = useState(false)
   const { saveCarVariantDetails } = useCar()
@@ -45,8 +48,10 @@ export const SpecificationSelect = ({
       setSelected(initialValue)
       getVarintDetail(initialValue.id)
     } else if (!router.query?.variant) {
-      onChooseOption && onChooseOption(options[0])
-      getVarintDetail(options[0].id)
+      if (options?.length > 0) {
+        onChooseOption && onChooseOption(options[0])
+        getVarintDetail(options[0].id)
+      }
     }
   }, [initialValue])
 
@@ -59,9 +64,7 @@ export const SpecificationSelect = ({
   }, [showOption])
 
   const getCityParam = () => {
-    return `?city=${cityOtr?.cityCode ?? 'jakarta'}&cityId=${
-      cityOtr?.cityId ?? '118'
-    }`
+    return `?city=${getCity().cityCode}&cityId=${getCity().id}`
   }
 
   const getVarintDetail = async (optionId: string) => {

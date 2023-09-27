@@ -8,6 +8,12 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { LocalStorageKey } from 'utils/enum'
 import { CityOtrOption } from 'utils/types/utils'
 import { useCar } from 'services/context/carContext'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getLocalStorage } from 'utils/handler/localStorage'
+import { useRouter } from 'next/router'
+import { LoanRank } from 'utils/types/models'
+import Image from 'next/image'
 
 const promoBannerTSO = '/revamp/illustration/PromoTSO.webp'
 const promoBannerCumaDiSEVA = '/revamp/illustration/PromoCumaDiSEVA.webp'
@@ -29,6 +35,27 @@ const PromoPopup = ({
     null,
   )
 
+  const router = useRouter()
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
+
+  const loanRankcr = router.query.loanRankCVL ?? ''
+
+  const getCreditBadgeForCountly = () => {
+    let creditBadge = 'Null'
+    if (loanRankcr && loanRankcr.includes(LoanRank.Green)) {
+      creditBadge = 'Mudah disetujui'
+    } else if (loanRankcr && loanRankcr.includes(LoanRank.Red)) {
+      creditBadge = 'Sulit disetujui'
+    }
+    return creditBadge
+  }
+
   const getDataForAmplitude = () => {
     return {
       Car_Brand: carModelDetails?.brand,
@@ -41,7 +68,18 @@ const PromoPopup = ({
     onButtonClick && onButtonClick(false)
     trackCarVariantBannerPromoPopupClose(getDataForAmplitude())
   }
-
+  const trackClickPromoSK = (promoDetail: string, promoOrder: number) => {
+    trackEventCountly(CountlyEventNames.WEB_PROMO_SK_CLICK, {
+      CAR_BRAND: carModelDetails?.brand,
+      CAR_MODEL: carModelDetails?.model,
+      PROMO_DETAILS: promoDetail,
+      PROMO_ORDER: promoOrder,
+      PELUANG_KREDIT_BADGE: isUsingFilterFinancial
+        ? getCreditBadgeForCountly()
+        : 'Null',
+      PAGE_ORIGINATION: 'PDP',
+    })
+  }
   const PromoCumanDiSeva = (): JSX.Element => (
     <div className={styles.container}>
       <div className={styles.popupSubHeader}>
@@ -51,7 +89,7 @@ const PromoPopup = ({
         </div>
       </div>
       <div className={styles.imagePromoSpacing}>
-        <img
+        <Image
           src={promoBannerCumaDiSEVA}
           alt="promo banner cuma di seva"
           className={styles.promoBanner}
@@ -81,6 +119,7 @@ const PromoPopup = ({
             href="https://www.seva.id/info/promo/cuma-di-seva/"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackClickPromoSK('Promo Cuma di SEVA', 1)}
           >
             {' '}
             Lihat S&K.
@@ -99,7 +138,7 @@ const PromoPopup = ({
         </div>
       </div>
       <div className={styles.imagePromoSpacing}>
-        <img
+        <Image
           src={promoBannerTSO}
           alt="promo banner TSO"
           className={styles.promoBanner}
@@ -122,6 +161,7 @@ const PromoPopup = ({
             href="https://www.seva.id/info/promo/toyota-spektakuler/"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackClickPromoSK('Toyota Spektakuler', 2)}
           >
             {' '}
             Lihat S&K.
@@ -139,7 +179,7 @@ const PromoPopup = ({
         </div>
       </div>
       <div className={styles.imagePromoSpacing}>
-        <img
+        <Image
           src={promoBannerTradeIn}
           alt="promo banner trade In"
           className={styles.promoBanner}
@@ -161,6 +201,7 @@ const PromoPopup = ({
             href="https://www.seva.id/info/promo/promo-trade-in-daihatsu/"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackClickPromoSK('Promo Trade-In Daihatsu', 3)}
           >
             {' '}
             Lihat S&K.

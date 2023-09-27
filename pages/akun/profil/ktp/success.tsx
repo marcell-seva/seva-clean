@@ -7,6 +7,8 @@ import { PageLayout } from 'components/templates'
 import { Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { carResultsUrl } from 'utils/helpers/routes'
+import { PreviousButton, navigateToPLP } from 'utils/navigate'
+import Image from 'next/image'
 
 const SuccessVerif = '/revamp/illustration/success-verification.webp'
 const LogoAppStore = '/revamp/images/profile/app-store.webp'
@@ -29,7 +31,7 @@ const SuccessPage = () => {
       <PageLayout>
         <main className={styles.wrapper}>
           <div className={styles.container}>
-            <img
+            <Image
               src={SuccessVerif}
               className={styles.banner__illustration}
               style={{
@@ -58,7 +60,7 @@ const SuccessPage = () => {
               <Button
                 version={ButtonVersion.Outline}
                 size={ButtonSize.Big}
-                onClick={() => router.push(carResultsUrl)}
+                onClick={() => navigateToPLP(PreviousButton.undefined)}
                 data-testid={elementId.Profil.Button.CariMobilLain}
               >
                 Cari Mobil Lain
@@ -89,7 +91,7 @@ const SuccessPage = () => {
                 margin: '0 auto',
               }}
             >
-              <img
+              <Image
                 src={LogoPlayStore}
                 alt="back"
                 onClick={() =>
@@ -100,7 +102,7 @@ const SuccessPage = () => {
                 style={{ width: '152px', height: '46px', objectFit: 'contain' }}
                 data-testid={elementId.Profil.Button.PlayStore}
               />
-              <img
+              <Image
                 src={LogoAppStore}
                 alt="back"
                 onClick={() =>

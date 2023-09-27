@@ -5,6 +5,7 @@ import { useMultiUnitQueryContext } from 'services/context/multiUnitQueryContext
 import { Currency } from 'utils/handler/calculation'
 import { Button, Gap, IconWhatsapp, Modal } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import Image from 'next/image'
 
 const EmptyCarIllustration = '/revamp/illustration/empty-car.webp'
 
@@ -48,7 +49,7 @@ export const NotFoundMultiUnit: React.FC<PropsNotFoundMultiUnit> = ({
     <Modal open={open} onCancel={onClose} isFull>
       <div className={styles.wrapper}>
         <div className={styles.wrapperImage}>
-          <img
+          <Image
             src={EmptyCarIllustration}
             width={200}
             height={150}

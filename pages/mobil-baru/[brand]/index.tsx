@@ -1,43 +1,52 @@
 import { PLP } from 'components/organisms'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import Head from 'next/head'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
 import { saveLocalStorage } from 'utils/handler/localStorage'
 import { LocalStorageKey } from 'utils/enum'
 import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
 import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
-import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import {
   CityOtrOption,
   FooterSEOAttributes,
   MobileWebTopMenuType,
+  NavbarItemResponse,
 } from 'utils/types/utils'
 import PLPDesktop from 'components/organisms/PLPDesktop'
-import { useMediaQuery } from 'react-responsive'
-import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
-import styles from 'styles/pages/plp.module.scss'
+import { defaultSeoImage } from 'utils/helpers/const'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import { api } from 'services/api'
+import Seo from 'components/atoms/seo'
+import { monthId } from 'utils/handler/date'
+import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
+import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
+import { useMediaQuery } from 'react-responsive'
 import { CarProvider } from 'services/context'
-import { getToken } from 'utils/handler/auth'
+import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 
 const NewCarResultPage = ({
   meta,
-  isSsrMobile,
-  dataHeader,
+  dataDesktopMenu,
+  dataMobileMenu,
   dataFooter,
   dataCities,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const id = router.query.brand
-  const { saveMobileWebTopMenus, saveMobileWebFooterMenus, saveCities } =
-    useUtils()
+  const {
+    saveDesktopWebTopMenu,
+    saveMobileWebTopMenus,
+    saveMobileWebFooterMenus,
+    saveCities,
+  } = useUtils()
+  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
+  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
   useEffect(() => {
-    saveMobileWebTopMenus(dataHeader)
+    saveDesktopWebTopMenu(dataDesktopMenu)
+    saveMobileWebTopMenus(dataMobileMenu)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
 
@@ -46,30 +55,41 @@ const NewCarResultPage = ({
     }
   }, [])
 
+  useEffect(() => {
+    setIsMobile(isClientMobile)
+  }, [isClientMobile])
+
+  const todayDate = new Date()
+
+  const metaTitle =
+    `Harga OTR ` +
+    meta.title.split('20')[0] +
+    ` ${todayDate.getFullYear()} - Promo Cicilan bulan ${monthId(
+      todayDate.getMonth(),
+    )} | SEVA`
+  const metaDesc = `Beli mobil Toyota ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
+
   return (
     <>
-      <Head>
-        <title>{meta.title}</title>
-        <meta name="title" content={meta.title} />
-        <meta name="description" content={meta.description} />
-        <link rel="icon" href="/favicon.png" />
-      </Head>
+      <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
       <CarProvider
         car={null}
+        carOfTheMonth={[]}
+        typeCar={null}
         carModel={null}
         carModelDetails={null}
         carVariantDetails={null}
         recommendation={meta.carRecommendations.carRecommendations}
+        recommendationToyota={[]}
       >
-        <div className={styles.mobile}>
+        {isMobile ? (
           <PLP minmaxPrice={meta.MinMaxPrice} />
-        </div>
-        <div className={styles.desktop}>
+        ) : (
           <PLPDesktop
             carRecommendation={meta.carRecommendations}
             footer={meta.footer}
           />
-        </div>
+        )}
       </CarProvider>
     </>
   )
@@ -99,8 +119,8 @@ const getBrand = (brand: string | string[] | undefined) => {
 
 export const getServerSideProps: GetServerSideProps<{
   meta: PLPProps
-  isSsrMobile: boolean
-  dataHeader: MobileWebTopMenuType[]
+  dataDesktopMenu: NavbarItemResponse[]
+  dataMobileMenu: MobileWebTopMenuType[]
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
 }> = async (ctx) => {
@@ -149,14 +169,21 @@ export const getServerSideProps: GetServerSideProps<{
   } = ctx.query
 
   try {
-    const [fetchMeta, fetchFooter, menuRes, footerRes, cityRes] =
-      await Promise.all([
-        axios.get(metaTagBaseApi + metabrand),
-        axios.get(footerTagBaseApi + metabrand),
-        api.getMobileHeaderMenu(),
-        api.getMobileFooterMenu(),
-        api.getCities(),
-      ])
+    const [
+      fetchMeta,
+      fetchFooter,
+      menuDesktopRes,
+      menuMobileRes,
+      footerRes,
+      cityRes,
+    ] = await Promise.all([
+      axios.get(metaTagBaseApi + metabrand),
+      axios.get(footerTagBaseApi + metabrand),
+      api.getMenu(),
+      api.getMobileHeaderMenu(),
+      api.getMobileFooterMenu(),
+      api.getCities(),
+    ])
 
     const metaData = fetchMeta.data.data
     const footerData = fetchFooter.data.data
@@ -172,7 +199,11 @@ export const getServerSideProps: GetServerSideProps<{
     const queryParam: any = {
       ...(downPaymentAmount && { downPaymentType: 'amount' }),
       ...(downPaymentAmount && { downPaymentAmount }),
-      ...(brand && { brand: String(brand)?.split(',') }),
+      ...(brand && {
+        brand: String(brand)
+          ?.split(',')
+          .map((item) => getCarBrand(item)),
+      }),
       ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
       ...(priceRangeGroup
         ? { priceRangeGroup }
@@ -205,18 +236,19 @@ export const getServerSideProps: GetServerSideProps<{
     return {
       props: {
         meta,
-        isSsrMobile: getIsSsrMobile(ctx),
-        dataHeader: menuRes.data,
+        dataDesktopMenu: menuDesktopRes.data,
+        dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        isSsrMobile: getIsSsrMobile(ctx),
       },
     }
   } catch (e) {
     return {
       props: {
         meta,
-        isSsrMobile: getIsSsrMobile(ctx),
-        dataHeader: [],
+        dataDesktopMenu: [],
+        dataMobileMenu: [],
         dataFooter: [],
         dataCities: [],
       },

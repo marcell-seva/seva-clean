@@ -42,7 +42,7 @@ import { LinkLabelSmallSemiBold } from 'utils/typography/LinkLabelSmallSemiBold'
 import { CarButtonProps } from 'utils/types/context'
 import { IconInfoSmall } from 'components/atoms/icon/InfoSmall'
 import { useCar } from 'services/context/carContext'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
+import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 
 const LogoToyota = '/revamp/icon/toyota-1989.png'
 const LogoDaihatsu = '/revamp/icon/daihatsu-update.png'
@@ -177,42 +177,33 @@ export const NewFilterSideMenu = () => {
   const carList: CarButtonProps[] = [
     {
       key: 'Toyota',
-      icon: (
-        <LazyLoadImage src={LogoToyota} alt="Toyota" width={48} height={41} />
-      ),
+      icon: <Image src={LogoToyota} alt="Toyota" width={48} height={41} />,
       value: 'Toyota',
       isChecked: isCheckedBrand.includes('Toyota'),
     },
     {
       key: 'Daihatsu',
       icon: (
-        <LazyLoadImage
-          src={LogoDaihatsu}
-          alt="Daihatsu"
-          width={48}
-          height={32.45}
-        />
+        <Image src={LogoDaihatsu} alt="Daihatsu" width={48} height={32.45} />
       ),
       value: 'Daihatsu',
       isChecked: isCheckedBrand.includes('Daihatsu'),
     },
     {
       key: 'Isuzu',
-      icon: <LazyLoadImage src={Isuzu} alt="Isuzu" width={52} height={23} />,
+      icon: <Image src={Isuzu} alt="Isuzu" width={52} height={23} />,
       value: 'Isuzu',
       isChecked: isCheckedBrand.includes('Isuzu'),
     },
     {
       key: 'BMW',
-      icon: <LazyLoadImage src={LogoBmw} alt="BMW" width={40} height={40} />,
+      icon: <Image src={LogoBmw} alt="BMW" width={40} height={40} />,
       value: 'BMW',
       isChecked: isCheckedBrand.includes('BMW'),
     },
     {
       key: 'Peugeot',
-      icon: (
-        <LazyLoadImage src={Peugeot} alt="Peugeot" width={40} height={44} />
-      ),
+      icon: <Image src={Peugeot} alt="Peugeot" width={40} height={44} />,
       value: 'Peugeot',
       isChecked: isCheckedBrand.includes('Peugeot'),
     },
@@ -220,46 +211,33 @@ export const NewFilterSideMenu = () => {
   const bodyTypes: CarButtonProps[] = [
     {
       key: 'MPV',
-      icon: (
-        <LazyLoadImage src={IconTypeMpv} alt="MPV" width="50" height="30" />
-      ),
+      icon: <Image src={IconTypeMpv} alt="MPV" width="50" height="30" />,
       value: 'MPV',
       isChecked: isCheckedType.includes('MPV'),
     },
     {
       key: 'Sedan',
-      icon: (
-        <LazyLoadImage src={IconTypeSedan} alt="SEDAN" width="50" height="30" />
-      ),
+      icon: <Image src={IconTypeSedan} alt="SEDAN" width="50" height="30" />,
       value: 'SEDAN',
       isChecked: isCheckedType.includes('SEDAN'),
     },
     {
       key: 'SUV',
-      icon: (
-        <LazyLoadImage src={IconTypeSuv} alt="SUV" width="50" height="30" />
-      ),
+      icon: <Image src={IconTypeSuv} alt="SUV" width="50" height="30" />,
       value: 'SUV',
       isChecked: isCheckedType.includes('SUV'),
     },
     {
       key: 'Hatchback',
       icon: (
-        <LazyLoadImage
-          src={IconTypeHatchback}
-          alt="Hatchback"
-          width="50"
-          height="30"
-        />
+        <Image src={IconTypeHatchback} alt="Hatchback" width="50" height="30" />
       ),
       value: 'HATCHBACK',
       isChecked: isCheckedType.includes('HATCHBACK'),
     },
     {
       key: 'Sport',
-      icon: (
-        <LazyLoadImage src={IconTypeSport} alt="Sport" width="50" height="30" />
-      ),
+      icon: <Image src={IconTypeSport} alt="Sport" width="50" height="30" />,
       value: 'SPORT',
       isChecked: isCheckedType.includes('SPORT'),
     },
@@ -528,6 +506,8 @@ export const NewFilterSideMenu = () => {
           isChecked={
             funnelQuery.brand
               ? funnelQuery.brand.includes(value)
+              : router.query.brand
+              ? getCarBrand(String(router.query.brand)).includes(value)
               : isCheckedBrand.includes(value)
           }
         >

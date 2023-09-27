@@ -55,8 +55,8 @@ export const useCitySelectorModal = () => {
           label: '',
           value: '',
         }
-        tempObj.value = item.cityName
-        tempObj.label = item.cityName
+        tempObj.value = item?.cityName
+        tempObj.label = item?.cityName
         tempArray.push(tempObj)
       }
       return tempArray
@@ -410,7 +410,7 @@ const StyledLink = styled.a`
   @media (max-width: 1024px) {
     display: flex;
     height: 50px;
-    align-items: start;
+    align-items: flex-start;
     justify-content: center;
     flex-direction: column;
     padding-left: 25px;

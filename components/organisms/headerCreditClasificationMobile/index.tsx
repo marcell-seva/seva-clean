@@ -3,6 +3,7 @@ import styles from 'styles/components/organisms/headerCreditClasificationMobile.
 
 import { useRouter } from 'next/router'
 import { IconChevronLeft } from 'components/atoms'
+import Image from 'next/image'
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
@@ -16,7 +17,7 @@ const HeaderCreditClasificationMobile = (): JSX.Element => {
           <IconChevronLeft height={24} width={24} />
         </div>
         <div className={styles.logoMiddle}>
-          <img src={LogoPrimary} width={58} alt="seva" />
+          <Image src={LogoPrimary} width={58} height={35} alt="seva" />
         </div>
       </div>
     </>

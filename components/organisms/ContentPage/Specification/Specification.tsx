@@ -27,25 +27,27 @@ import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]
 import { useCar } from 'services/context/carContext'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
 
 type tabProps = {
   tab: string | undefined
   isSticky?: boolean
+  isOTO?: boolean
 }
-const Specification = memo(({ tab, isSticky }: tabProps) => {
+const Specification = memo(({ tab, isSticky, isOTO = false }: tabProps) => {
   const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const {
     dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
     carRecommendationsResDefaultCity,
-  } = useContext(PdpDataLocalContext)
+  } = useContext(isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext)
   const modelDetailData =
     carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const variantDetailData = carVariantDetails || carVariantDetailsResDefaultCity
   const recommendationsDetailData =
     recommendation.length !== 0
       ? recommendation
-      : carRecommendationsResDefaultCity.carRecommendations
+      : carRecommendationsResDefaultCity?.carRecommendations
   const carResultParameter = useCarResultParameter()
   const { setSpecialRateResults } = useContextCalculator()
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
@@ -168,12 +170,12 @@ const Specification = memo(({ tab, isSticky }: tabProps) => {
       <Container>
         <DescriptionWrapper>
           <Description
-            title={`Spesifikasi ${modelDetailData.brand} ${
-              modelDetailData.model
+            title={`Spesifikasi ${modelDetailData?.brand} ${
+              modelDetailData?.model
             } di ${
               cityOtr && cityOtr.cityName ? cityOtr.cityName : 'Jakarta Pusat'
             }`}
-            description={variantDetailData.variantDetail.description.id}
+            description={variantDetailData?.variantDetail.description.id}
             carModel={modelDetailData}
             carVariant={variantDetailData}
             tab="spesification"
@@ -182,7 +184,7 @@ const Specification = memo(({ tab, isSticky }: tabProps) => {
         <SpecsAndBrochureWrapper>
           <SpecificationSelectWrapper>
             <SpecificationSelect
-              options={modelDetailData.variants.sort(
+              options={modelDetailData?.variants.sort(
                 (a: any, b: any) => a.priceValue - b.priceValue,
               )}
               onChooseOption={(item) => {

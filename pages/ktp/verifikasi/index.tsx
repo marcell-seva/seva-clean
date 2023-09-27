@@ -19,6 +19,7 @@ import { DocumentType } from 'utils/enum'
 import { buildFileKTPData, uploadKTPFile } from 'services/upload'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import Image from 'next/image'
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
@@ -92,7 +93,7 @@ const VerifyKtp = () => {
           <IconChevronLeft width={24} height={24} color="#13131B" />
         </div>
         <div className={styles.logo}>
-          <img
+          <Image
             src={LogoPrimary}
             alt="back"
             style={{ width: '58px', height: '34px', objectFit: 'contain' }}
@@ -107,8 +108,8 @@ const VerifyKtp = () => {
               </h2>
               <span className={styles.light__text}>{getSubtitleText()}</span>
             </div>
-            <img
-              src={galleryFile}
+            <Image
+              src={galleryFile || ''}
               alt="KTP Image"
               className={styles.ktp__preview__image}
             />

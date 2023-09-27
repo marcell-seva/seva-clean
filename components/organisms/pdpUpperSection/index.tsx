@@ -8,7 +8,6 @@ import {
   CarOverview,
 } from 'components/organisms'
 import React, { useEffect, useState } from 'react'
-
 import { upperSectionNavigationTab } from 'config/carVariantList.config'
 import { NavigationTabV2 } from 'components/molecules'
 import { CityOtrOption, VideoDataType } from 'utils/types/utils'
@@ -27,6 +26,8 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { LocalStorageKey } from 'utils/enum'
 import { useRouter } from 'next/router'
 import { useCar } from 'services/context/carContext'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 interface Props {
   emitActiveIndex: (e: number) => void
@@ -37,6 +38,7 @@ interface Props {
   onClickCityOtrCarOverview: () => void
   onClickShareButton: () => void
   isShowAnnouncementBox: boolean | null
+  isOTO?: boolean
 }
 
 export const PdpUpperSection = ({
@@ -48,23 +50,23 @@ export const PdpUpperSection = ({
   onClickCityOtrCarOverview,
   onClickShareButton,
   isShowAnnouncementBox,
+  isOTO = false,
 }: Props) => {
   const router = useRouter()
 
-  const tab = router.query.tab as string
+  const upperTab = router.query.tab as string
 
   const [selectedTabValue, setSelectedTabValue] = useState(
-    tab || upperSectionNavigationTab[0].value,
+    upperTab || upperSectionNavigationTab[0].value,
   )
 
-  const [tabItemList, setTabItemList] = useState(upperSectionNavigationTab)
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
   )
 
   const getImageExterior360 = () => {
-    const currentUrlPathname = window.location.pathname
+    const currentUrlPathname = router.asPath
     const temp = exteriorImagesListNew.filter((item) =>
       currentUrlPathname.includes(item.url),
     )
@@ -73,7 +75,7 @@ export const PdpUpperSection = ({
   }
 
   const getImageInterior360 = () => {
-    const currentUrlPathname = window.location.pathname
+    const currentUrlPathname = router.asPath
     const temp = interiorImagesListNew.filter((item) =>
       currentUrlPathname.includes(item.url),
     )
@@ -107,8 +109,10 @@ export const PdpUpperSection = ({
     if (getInteriorImage()?.length === 0) {
       temp = temp.filter((item: any) => item.value !== 'Interior')
     }
-    setTabItemList(temp)
+    return temp
   }
+
+  const [tabItemList] = useState(filterTabItem())
 
   const trackEventPhoto = (
     event: TrackingEventWebPDPPhoto,
@@ -127,12 +131,17 @@ export const PdpUpperSection = ({
   useEffect(() => {
     // useEffect to set tab item hidden or not
     filterTabItem()
-  }, [videoData, carModelDetails])
+  }, [carModelDetails])
 
   const renderContent = () => {
     switch (selectedTabValue) {
       case 'Warna':
-        return <WarnaTab isShowAnnouncementBox={isShowAnnouncementBox} />
+        return (
+          <WarnaTab
+            isShowAnnouncementBox={isShowAnnouncementBox}
+            isOTO={isOTO}
+          />
+        )
       case 'Eksterior':
         return (
           <ExteriorTab
@@ -169,19 +178,18 @@ export const PdpUpperSection = ({
           <Interior360ViewerTab isShowAnnouncementBox={isShowAnnouncementBox} />
         )
       default:
-        return <WarnaTab isShowAnnouncementBox={isShowAnnouncementBox} />
+        return (
+          <WarnaTab
+            isShowAnnouncementBox={isShowAnnouncementBox}
+            isOTO={isOTO}
+          />
+        )
     }
   }
 
   return (
     <div>
-      <div
-        className={`${styles.upperSpacing}  ${
-          isShowAnnouncementBox && styles.showAnnouncementBox
-        }`}
-      >
-        {/* div used as spacing because it needs to be in different color than html */}
-      </div>
+      <div className={styles.upperSpacing} />
       <NavigationTabV2
         itemList={tabItemList}
         onSelectTab={(value: any) => {
@@ -193,6 +201,9 @@ export const PdpUpperSection = ({
             },
           })
           trackEventPhoto(TrackingEventName.WEB_PDP_TAB_PHOTO_CLICK, value)
+          trackEventCountly(CountlyEventNames.WEB_PDP_VISUAL_TAB_CLICK, {
+            VISUAL_TAB_CATEGORY: value,
+          })
         }}
         isShowAnnouncementBox={isShowAnnouncementBox}
         onPage={'PDP'}
@@ -204,6 +215,7 @@ export const PdpUpperSection = ({
             onClickCityOtrCarOverview={onClickCityOtrCarOverview}
             onClickShareButton={onClickShareButton}
             currentTabMenu={selectedTabValue}
+            isOTO={isOTO}
           />
         </>
       </div>
