@@ -384,7 +384,9 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
           <div className={styles.wrapperSupergraphicLeft}>
             <Image
               src={SupergraphicLeft}
-              alt="Vector Promosi Mobil"
+              alt={
+                brand ? `Vector Form Mobil ${infoCar}` : 'Vector Promosi Mobil'
+              }
               width={200}
               height={140}
               className={styles.supergraphicLeft}
@@ -393,7 +395,9 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
           <div className={styles.wrapperSupergraphicRight}>
             <Image
               src={SupergraphicRight}
-              alt="Vector Promosi Mobil"
+              alt={
+                brand ? `Vector Form Mobil ${infoCar}` : 'Vector Promosi Mobil'
+              }
               width={200}
               height={140}
               className={styles.supergraphicRight}
