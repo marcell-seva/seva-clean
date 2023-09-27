@@ -248,13 +248,6 @@ export default function index({
       setSelectedTabValue(path)
     }
   }
-  console.log(
-    dataCombinationOfCarRecomAndModelDetail,
-    'dataCombinationOfCarRecomAndModelDetail',
-  )
-  console.log(carVariantDetailsRes, 'carVariantDetailsRes')
-  console.log(recommendationsDetailData, 'recommendationsDetailData')
-  console.log(selectedVideoReview, 'selectedVideoReview')
 
   return (
     <>
@@ -403,7 +396,6 @@ export async function getServerSideProps(context: any) {
 }
 
 const getItemListElement = (carModel: CarModelDetailsResponse) => {
-  console.log(carModel, 'ini car model get item list element')
   const resultList = carModel?.variants.map((variant, index) => {
     return {
       '@type': 'ListItem',
