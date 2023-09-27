@@ -385,7 +385,9 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
             <Image
               src={SupergraphicLeft}
               alt={
-                brand ? `Vector Form Mobil ${infoCar}` : 'Vector Promosi Mobil'
+                brand
+                  ? `Vector Form Customer Service Mobil ${infoCar}`
+                  : 'Vector Promosi Mobil'
               }
               width={200}
               height={140}
@@ -396,7 +398,9 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
             <Image
               src={SupergraphicRight}
               alt={
-                brand ? `Vector Form Mobil ${infoCar}` : 'Vector Promosi Mobil'
+                brand
+                  ? `Vector Form Customer Service Mobil ${infoCar}`
+                  : 'Vector Promosi Mobil'
               }
               width={200}
               height={140}
