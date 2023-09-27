@@ -386,7 +386,9 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
               src={SupergraphicLeft}
               alt={
                 brand
-                  ? `Vector Form Customer Service Mobil ${infoCar}`
+                  ? `Vector Form Customer Service Mobil ${
+                      carModelDetails?.brand
+                    } ${carModelDetails?.model.replace('-', ' ')}`
                   : 'Vector Promosi Mobil'
               }
               width={200}
@@ -399,7 +401,9 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
               src={SupergraphicRight}
               alt={
                 brand
-                  ? `Vector Form Customer Service Mobil ${infoCar}`
+                  ? `Vector Form Customer Service Mobil ${
+                      carModelDetails?.brand
+                    } ${carModelDetails?.model.replace('-', ' ')}`
                   : 'Vector Promosi Mobil'
               }
               width={200}
