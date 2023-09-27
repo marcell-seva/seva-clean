@@ -88,7 +88,7 @@ export default function index({
   const { model, brand, slug } = router.query
   const [isMobile, setIsMobile] = useState(isSsrMobileLocal)
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
-  const { carModelDetails, carVariantDetails, recommendation } = useCar()
+  const { carModelDetails, recommendation } = useCar()
   const lowerTab = router.query.slug as string
   const path = lowerTab ? capitalizeFirstLetter(lowerTab[0]) : ''
   const [selectedTabValue, setSelectedTabValue] = useState(
@@ -248,6 +248,13 @@ export default function index({
       setSelectedTabValue(path)
     }
   }
+  console.log(
+    dataCombinationOfCarRecomAndModelDetail,
+    'dataCombinationOfCarRecomAndModelDetail',
+  )
+  console.log(carVariantDetailsRes, 'carVariantDetailsRes')
+  console.log(recommendationsDetailData, 'recommendationsDetailData')
+  console.log(selectedVideoReview, 'selectedVideoReview')
 
   return (
     <>
@@ -396,7 +403,8 @@ export async function getServerSideProps(context: any) {
   }
 }
 
-const getItemListElement = (carModel: CarModelDetailsResponse | null) => {
+const getItemListElement = (carModel: CarModelDetailsResponse) => {
+  console.log(carModel, 'ini car model get item list element')
   const resultList = carModel?.variants.map((variant, index) => {
     return {
       '@type': 'ListItem',
@@ -478,10 +486,9 @@ const jsonLD = (
       name: videoReview?.title,
       description: videoReview?.title,
       thumbnailUrl: videoReview?.thumbnail,
-      uploadDate: articleDateFormat(
-        new Date(videoReview?.createdAt ?? ''),
-        'id',
-      ),
+      uploadDate: videoReview?.createdAt
+        ? articleDateFormat(new Date(videoReview?.createdAt), 'id')
+        : undefined,
       embedUrl: videoReview?.link,
       publisher: {
         '@type': 'Organization',
@@ -540,7 +547,7 @@ const jsonLD = (
       description: `Daftar Variant ${carModel?.brand} ${carModel?.model} 2023`,
       itemListOrder: 'http://schema.org/ItemListOrderDescending',
       numberOfItems: carModel?.variants.length,
-      itemListElement: getItemListElement(carModel ?? null),
+      itemListElement: carModel ? getItemListElement(carModel) : [],
     },
     FAQPage: {
       '@type': 'FAQPage',
