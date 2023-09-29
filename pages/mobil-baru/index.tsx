@@ -31,6 +31,7 @@ const NewCarResultPage = ({
   dataFooter,
   dataCities,
   dataDesktopMenu,
+  isSsrMobileLocal,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const todayDate = new Date()
   const carBrand = meta.carRecommendations.carRecommendations[0]?.brand
@@ -40,7 +41,7 @@ const NewCarResultPage = ({
   const metaDesc = `Beli mobil ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
   const metaBrandDesc = `Beli mobil ${carBrand} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
 
-  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
+  const [isMobile, setIsMobile] = useState(isSsrMobileLocal)
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const {
     saveDesktopWebTopMenu,
@@ -123,6 +124,7 @@ export const getServerSideProps: GetServerSideProps<{
   dataMobileMenu: MobileWebTopMenuType[]
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
+  isSsrMobileLocal: boolean
 }> = async (ctx) => {
   ctx.res.setHeader(
     'Cache-Control',
@@ -259,6 +261,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataFooter: footerRes.data,
         dataCities: cityRes,
         isSsrMobile: getIsSsrMobile(ctx),
+        isSsrMobileLocal: getIsSsrMobile(ctx),
       },
     }
   } catch (e) {
@@ -269,7 +272,8 @@ export const getServerSideProps: GetServerSideProps<{
         dataMobileMenu: [],
         dataFooter: [],
         dataCities: [],
-        isSsrMobile: true,
+        isSsrMobile: getIsSsrMobile(ctx),
+        isSsrMobileLocal: getIsSsrMobile(ctx),
       },
     }
   }

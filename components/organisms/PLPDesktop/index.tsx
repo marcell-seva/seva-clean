@@ -194,8 +194,8 @@ export default function PLPDesktop({
 
   const getAllRecommendations = () => {
     getNewFunnelAllRecommendations(undefined, '')
-      .then((response: AxiosResponse<CarRecommendationResponse>) => {
-        saveRecommendation(response.data.carRecommendations || [])
+      .then((response: any) => {
+        saveRecommendation(response.carRecommendations || [])
         timeoutShimmer()
         resetLoadingState()
       })
@@ -327,7 +327,7 @@ export default function PLPDesktop({
     if (
       funnelQuery.downPaymentAmount ||
       funnelQuery.monthlyInstallment ||
-      Array(funnelQuery.brand).length > 0
+      (!!funnelQuery.brand && funnelQuery.brand.length > 0)
     ) {
       if (downPaymentAmount || monthlyInstallment) {
         patchFunnelQuery({
@@ -340,7 +340,7 @@ export default function PLPDesktop({
           timeoutShimmer()
         })
       }
-    } else if (recommendation.length === 0) {
+    } else if (recommendation.length === 0 || !isCurrentCitySameWithSSR) {
       setShowLoading(true)
       getAllRecommendations()
     }
@@ -350,7 +350,9 @@ export default function PLPDesktop({
     }
 
     return () => {
-      saveRecommendation([])
+      if (!isCurrentCitySameWithSSR) {
+        saveRecommendation([])
+      }
     }
   }, [])
 
