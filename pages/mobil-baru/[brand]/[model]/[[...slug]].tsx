@@ -497,7 +497,9 @@ const jsonLD = (
         .replace(' ', '-')
         .toLocaleLowerCase()}`,
       bodyType: carVariant?.variantDetail.bodyType,
-      description: carVariant?.variantDetail.description,
+      description: carVariant?.variantDetail?.description?.id && {
+        id: carVariant?.variantDetail?.description?.id
+      },
       brand: {
         '@type': 'Brand',
         name: carModel?.brand,
@@ -505,7 +507,7 @@ const jsonLD = (
       },
       vehicleSeatingCapacity: {
         '@type': 'QuantitativeValue',
-        value: carVariant?.variantDetail.carSeats,
+        value: carVariant?.variantDetail.carSeats + ' Kursi',
       },
       fuelType: {
         '@type': 'QualitativeValue',
@@ -530,7 +532,7 @@ const jsonLD = (
         highPrice: carModel?.variants[carModel?.variants.length - 1].priceValue,
         offerCicilan: carModel?.variants[0].monthlyInstallment,
         offerDp: carModel?.variants[0].dpAmount,
-        tenor: carModel?.variants[0].tenure,
+        tenor: carModel?.variants[0].tenure + ' Tahun',
       },
     },
     itemList: {
