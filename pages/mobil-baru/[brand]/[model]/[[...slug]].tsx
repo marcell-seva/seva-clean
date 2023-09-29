@@ -75,6 +75,7 @@ export default function index({
   dataMobileMenu,
   dataFooter,
   dataCities,
+  isSsrMobileLocal,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const {
     saveDataAnnouncementBox,
@@ -85,7 +86,7 @@ export default function index({
   } = useUtils()
   const router = useRouter()
   const { model, brand, slug } = router.query
-  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
+  const [isMobile, setIsMobile] = useState(isSsrMobileLocal)
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const lowerTab = router.query.slug as string
@@ -416,6 +417,7 @@ export async function getServerSideProps(context: any) {
         dataFooter: footerRes.data,
         dataCities: cityRes,
         dataDesktopMenu: menuDesktopRes.data,
+        isSsrMobileLocal: getIsSsrMobile(context),
       },
     }
   } catch (error) {
@@ -427,6 +429,7 @@ export async function getServerSideProps(context: any) {
         dataFooter: [],
         dataCities: [],
         dataDesktopMenu: [],
+        isSsrMobileLocal: getIsSsrMobile(context),
       },
     }
   }

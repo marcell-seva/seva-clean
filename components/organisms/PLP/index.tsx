@@ -209,7 +209,9 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   }
 
   const cleanEffect = () => {
-    saveRecommendation([])
+    if (!isCurrentCitySameWithSSR) {
+      saveRecommendation([])
+    }
     setPage(1)
     setShowLoading(true)
     setSampleArray({ items: [] })
