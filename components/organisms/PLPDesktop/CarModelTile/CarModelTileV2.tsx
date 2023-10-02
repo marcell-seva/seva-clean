@@ -178,8 +178,6 @@ export const CarModelTileV2 = ({
                     style={{ objectFit: 'contain' }}
                     width={360}
                     height={270}
-                    effect="blur"
-                    placeholderSrc={index === 0 ? carModel.base64 : ''}
                   />
                 </CarImage>
               )

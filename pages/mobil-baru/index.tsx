@@ -24,6 +24,7 @@ import { monthId } from 'utils/handler/date'
 import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 import { useMediaQuery } from 'react-responsive'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
+import { useRouter } from 'next/router'
 
 const NewCarResultPage = ({
   meta,
@@ -32,6 +33,7 @@ const NewCarResultPage = ({
   dataCities,
   dataDesktopMenu,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const router = useRouter()
   const todayDate = new Date()
   const carBrand = meta.carRecommendations.carRecommendations[0]?.brand
   const metaTitle = `Harga OTR ${carBrand} - Harga OTR dengan Promo Cicilan bulan ${monthId(
@@ -39,7 +41,7 @@ const NewCarResultPage = ({
   )} | SEVA`
   const metaDesc = `Beli mobil ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
   const metaBrandDesc = `Beli mobil ${carBrand} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
-
+  const descTag = router.query.brand ? metaBrandDesc : metaDesc
   const [isMobile, setIsMobile] = useState(useIsMobileSSr())
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const {
@@ -62,16 +64,7 @@ const NewCarResultPage = ({
 
   return (
     <>
-      {meta.footer.location_tag !== '' ? (
-        <Seo
-          title={metaTitle}
-          description={metaBrandDesc}
-          image={defaultSeoImage}
-        />
-      ) : (
-        <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
-      )}
-
+      <Seo title={metaTitle} description={descTag} image={defaultSeoImage} />
       <CarProvider
         car={null}
         carOfTheMonth={[]}
@@ -129,8 +122,6 @@ export const getServerSideProps: GetServerSideProps<{
     'public, s-maxage=10, stale-while-revalidate=59',
   )
   const metabrand = getBrand(ctx.query.brand)
-  const metaTagBaseApi =
-    'https://api.sslpots.com/api/meta-seos/?filters[location_page3][$eq]=CarSearchResult'
   const footerTagBaseApi =
     'https://api.sslpots.com/api/footer-seos/?filters[location_page2][$eq]=CarSearchResult'
   const meta = {
@@ -170,14 +161,12 @@ export const getServerSideProps: GetServerSideProps<{
 
   try {
     const [
-      fetchMeta,
       fetchFooter,
       menuDesktopRes,
       menuMobileRes,
       footerRes,
       cityRes,
     ]: any = await Promise.all([
-      axios.get(metaTagBaseApi + metabrand),
       axios.get(footerTagBaseApi + metabrand),
       api.getMenu(),
       api.getMobileHeaderMenu(),
@@ -185,7 +174,6 @@ export const getServerSideProps: GetServerSideProps<{
       api.getCities(),
     ])
 
-    const metaData = fetchMeta.data.data
     const footerData = fetchFooter.data.data
 
     if (!priceRangeGroup) {
@@ -221,21 +209,7 @@ export const getServerSideProps: GetServerSideProps<{
       getNewFunnelRecommendations({ ...queryParam }),
     ])
 
-    const generateRecommendation = await generateBlurRecommendations(
-      funnel.carRecommendations,
-    )
-    const recommendation = {
-      carRecommendations: generateRecommendation
-        ? [...generateRecommendation]
-        : funnel.carRecommendations,
-      lowestCarPrice: funnel.lowestCarPrice,
-      highestCarPrice: funnel.highestCarPrice,
-    }
-
-    if (metaData && metaData.length > 0) {
-      meta.title = metaData[0].attributes.meta_title
-      meta.description = metaData[0].attributes.meta_description
-    }
+    const recommendation = funnel
 
     if (footerData && footerData.length > 0) {
       meta.footer = footerData[0].attributes
@@ -243,12 +217,6 @@ export const getServerSideProps: GetServerSideProps<{
 
     if (recommendation) {
       meta.carRecommendations = recommendation
-    }
-
-    if (brand) {
-      if (typeof brand === 'string') {
-        meta.footer.location_tag = brand
-      }
     }
 
     return {
