@@ -296,8 +296,8 @@ button {
 
 .search-custom-modal {
   width: 100vw !important;
-  max-width: unset;
   top: 0;
+  @include centeredWithMaxWidth;
 }
 
 .search-custom-modal .ant-modal-content {
@@ -307,7 +307,5 @@ button {
   top: 0;
   border-radius: 0;
   padding: 0;
-  @media (max-width: 1024px) {
-    height: 0;
-  }
+  @include centeredWithMaxWidth;
 }

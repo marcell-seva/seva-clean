@@ -30,7 +30,12 @@ export const SearchModal = ({
         className="search-custom-modal"
         open={isOpen}
         footer={null}
-        maskStyle={{ background: 'rgba(19, 19, 27, 0.5)' }}
+        maskStyle={{
+          background: 'rgba(19, 19, 27, 0.5)',
+          maxWidth: '570px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}
       >
         <div className={styles.styledWrapper}>
           <div className={styles.styledContent}>

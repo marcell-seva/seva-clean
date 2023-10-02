@@ -118,3 +118,7 @@
 .transparent {
   background: transparent;
 }
+
+.overlayAdditionalStyle {
+  @include centeredWithMaxWidth;
+}
