@@ -4,7 +4,6 @@ import { LabelMudah, LabelPromo, LabelSulit } from 'components/molecules'
 import { trackPLPCarClick } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import {
@@ -307,8 +306,6 @@ export const CarDetailCard = ({
             onClick={navigateToPDP(order)}
             data-testid={elementId.CarImage}
             width={279}
-            effect="blur"
-            placeholderSrc={recommendation.base64}
           />
         )}
 
