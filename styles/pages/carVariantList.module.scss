@@ -4,6 +4,7 @@
 .container {
   position: relative;
   background: #{$primary-white};
+  @include centeredWithMaxWidth;
 }
 
 .content {

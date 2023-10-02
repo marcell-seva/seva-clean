@@ -151,8 +151,8 @@ const PromoPopup = ({
           src={promoBannerTSO}
           alt="promo banner TSO"
           className={styles.promoBanner}
-          width={373}
-          height={280}
+          width={716}
+          height={537.6}
         />
       </div>
       <div>
@@ -241,6 +241,7 @@ const PromoPopup = ({
       <BottomSheet
         open={isButtonClick || false}
         onDismiss={() => onClickClose()}
+        className={styles.bottomSheet}
       >
         {renderPromoSection(promoName)}
       </BottomSheet>

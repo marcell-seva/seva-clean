@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { api } from 'services/api'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
-import { HomepageDesktop, HomepageMobile } from 'components/organisms'
+import { HomepageMobile } from 'components/organisms'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { getCity } from 'utils/hooks/useGetCity'
 import { useCar } from 'services/context/carContext'
@@ -90,11 +90,7 @@ export default function WithTracker({
         dataCarofTheMonth,
       }}
     >
-      {isMobile ? (
-        <HomepageMobile dataReccomendation={dataReccomendation} />
-      ) : (
-        <HomepageDesktop />
-      )}
+      <HomepageMobile dataReccomendation={dataReccomendation} />
     </HomePageDataLocalContext.Provider>
   )
 }

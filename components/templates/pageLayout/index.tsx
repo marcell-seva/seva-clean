@@ -9,6 +9,7 @@ import { getToken } from 'utils/handler/auth'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { CityOtrOption } from 'utils/types'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
+import styles from 'styles/components/templates/pageLayout.module.scss'
 
 type PageLayoutProps = {
   children: React.ReactNode
@@ -58,16 +59,18 @@ const PageLayout = ({ children, footer = true }: PageLayoutProps) => {
 
   return (
     <>
-      <HeaderMobile
-        isActive={isActive}
-        setIsActive={setIsActive}
-        emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
-        style={{ withBoxShadow: true, position: 'sticky' }}
-        isShowAnnouncementBox={showAnnouncementBox}
-        setShowAnnouncementBox={setShowAnnouncementBox}
-      />
-      {children}
-      {footer && <FooterMobile />}
+      <div className={styles.container}>
+        <HeaderMobile
+          isActive={isActive}
+          setIsActive={setIsActive}
+          emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
+          style={{ withBoxShadow: true, position: 'sticky' }}
+          isShowAnnouncementBox={showAnnouncementBox}
+          setShowAnnouncementBox={setShowAnnouncementBox}
+        />
+        {children}
+        {footer && <FooterMobile />}
+      </div>
       <CitySelectorModal
         isOpen={isOpenCitySelectorModal}
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}

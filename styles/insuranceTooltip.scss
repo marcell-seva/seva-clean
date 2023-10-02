@@ -1,5 +1,15 @@
+@import './abstract/mixins';
+
 .tooltip {
   [data-rsbs-scroll] {
     overflow: hidden;
+  }
+
+  [data-rsbs-overlay] {
+    @include centeredWithMaxWidth;
+  }
+
+  [data-rsbs-backdrop] {
+    @include centeredWithMaxWidth;
   }
 }

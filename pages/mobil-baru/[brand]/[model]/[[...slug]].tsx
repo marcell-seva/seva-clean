@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react'
-import { PdpDesktop, PdpMobile } from 'components/organisms'
+import { PdpMobile } from 'components/organisms'
 import { api } from 'services/api'
 import {
   CarModelDetailsResponse,
@@ -149,8 +149,11 @@ export default function index({
   const currentYear = todayDate.getFullYear()
   const currentMonth = monthId(todayDate.getMonth())
 
-  const carOTRValueArray = dataCombinationOfCarRecomAndModelDetail?.variants.map(item => Number(item.priceValue))
-  const carOTRValue = Math.min(...carOTRValueArray as number[])
+  const carOTRValueArray =
+    dataCombinationOfCarRecomAndModelDetail?.variants.map((item) =>
+      Number(item.priceValue),
+    )
+  const carOTRValue = Math.min(...(carOTRValueArray as number[]))
   const carOTR = `Rp ${carOTRValue / 1000000} juta`
 
   const getMetaTitle = () => {
@@ -283,12 +286,7 @@ export default function index({
           carArticleReviewRes: carArticleReviewRes,
         }}
       >
-        <div className={styles.mobile}>
-          <PdpMobile />
-        </div>
-        <div className={styles.desktop}>
-          <PdpDesktop metaTagDataRes={metaTagDataRes} />
-        </div>
+        <PdpMobile />
       </PdpDataLocalContext.Provider>
     </>
   )
@@ -661,8 +659,11 @@ const jsonLD = (
     ImageObject: [
       {
         '@type': 'ImageObject',
-        contentUrl: (filterImageBasedOnType(carModel?.images, 'eksterior') as string[])?.length ?
-          filterImageBasedOnType(carModel?.images, 'eksterior')?.[0] : carModel?.images?.[0],
+        contentUrl: (
+          filterImageBasedOnType(carModel?.images, 'eksterior') as string[]
+        )?.length
+          ? filterImageBasedOnType(carModel?.images, 'eksterior')?.[0]
+          : carModel?.images?.[0],
         mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
         representativeOfPage: 'http://schema.org/True',
         isFamilyFriendly: 'http://schema.org/True',
@@ -670,8 +671,11 @@ const jsonLD = (
       },
       {
         '@type': 'ImageObject',
-        contentUrl: (filterImageBasedOnType(carModel?.images, 'eksterior') as string[])?.length ?
-          filterImageBasedOnType(carModel?.images, 'interior')?.[0] : carModel?.images?.[0],
+        contentUrl: (
+          filterImageBasedOnType(carModel?.images, 'eksterior') as string[]
+        )?.length
+          ? filterImageBasedOnType(carModel?.images, 'interior')?.[0]
+          : carModel?.images?.[0],
         mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Interior`,
         representativeOfPage: 'https://schema.org/True',
         isFamilyFriendly: 'https://schema.org/True',

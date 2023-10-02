@@ -281,7 +281,7 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
           />
         )}
         {!isLeadsFormSectionVisible && (
-          <CSAButton onClick={scrollToLeadsForm} />
+          <CSAButton onClick={scrollToLeadsForm} additionalStyle={'csa-button-homepage'} />
         )}
 
         {isLoginModalOpened && (

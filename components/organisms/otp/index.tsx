@@ -6,7 +6,6 @@ import { encryptValue } from 'utils/encryptionUtils'
 import { IconLoading, Modal } from 'components/atoms'
 import styles from '../../../styles/components/organisms/otp.module.scss'
 import { getRecaptchaToken } from 'services/firebase'
-import { useMediaQuery } from 'react-responsive'
 import {
   trackOtpClose,
   trackOtpResendClick,
@@ -47,7 +46,6 @@ export const OTP = ({
   const RecaptchaNode = `<div id=${RECAPTCHA_CONTAINER}></div>`
   const recaptchaWrapperRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const RESEND_OTP_INTERVAL = 1000 * 60 * 2
-  const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const [, setLastOptSentPhoneNumber] = useLocalStorage<string>(
     LocalStorageKey.LastOtpSentPhoneNumber,
     '',
@@ -374,9 +372,15 @@ export const OTP = ({
   return (
     <div>
       <Modal
-        width={isMobile ? 343 : 588}
+        width={343}
         open={isOpened}
         onCancel={() => handleCloseModal()}
+        maskStyle={{
+          background: 'rgba(19, 19, 27, 0.5)',
+          maxWidth: '570px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}
       >
         <div className={styles.content}>
           <h2

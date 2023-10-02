@@ -33,38 +33,3 @@
   line-height: 24px;
   color: #{$primary-dark-blue};
 }
-
-@include lg {
-  .container {
-    background: #{$primary-white};
-    border-radius: 8px;
-    padding: 12px 24px;
-    flex-shrink: 0;
-  }
-
-  .container:first-child {
-    margin-left: 16px;
-  }
-
-  .containerActive {
-    background: #{$shades-sky-blue-5};
-  }
-
-  .text {
-    font-family: var(--kanyon);
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 32px;
-    color: #{$shades-grey-75};
-  }
-
-  .textActive {
-    font-family: var(--kanyon-medium);
-    font-style: normal;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 32px;
-    color: #{$primary-dark-blue};
-  }
-}

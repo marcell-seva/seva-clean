@@ -9,6 +9,7 @@
 .container {
   overflow-x: hidden;
   width: 100%;
+  @include centeredWithMaxWidth;
 }
 
 .supergraphic {
