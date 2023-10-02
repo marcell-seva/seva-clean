@@ -19,8 +19,7 @@ import styled from 'styled-components'
 import { savePageBeforeLogin } from 'utils/loginUtils'
 import { Button, ButtonType } from 'components/atoms/ButtonOld/Button'
 import { colors } from 'styles/colors'
-import { createProbeTrack } from 'services/probe'
-import { CityOtrOption, UTMTagsData } from 'utils/types/utils'
+import { CityOtrOption } from 'utils/types/utils'
 import elementId from 'helpers/elementIds'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
 import { TextLargeRegular } from 'components/atoms/typography/TextLargeRegular'
@@ -57,7 +56,6 @@ export const AdvisorSection = ({
   const { funnelQuery } = useFunnelQueryData()
   const { t } = useTranslation()
   const enableNewLogin = useEnableNewLogin()
-  const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -156,16 +154,16 @@ export const AdvisorSection = ({
       return
     }
 
-    createProbeTrack({
-      utmCampaign: UTMTags?.utm_campaign || '',
-      utmContent: UTMTags?.utm_content || '',
-      adsetId: UTMTags?.adset || '',
-      utmTerm: UTMTags?.utm_term || '',
-      fullName: fullName,
-      phoneNumber: phoneNumber,
-      loanDownPayment: parseInt(funnelQuery.downPaymentAmount as string),
-      utmSource: UTMTags?.utm_source || '',
-    })
+    // createProbeTrack({
+    //   utmCampaign: UTMTags?.utm_campaign || '',
+    //   utmContent: UTMTags?.utm_content || '',
+    //   adsetId: UTMTags?.adset || '',
+    //   utmTerm: UTMTags?.utm_term || '',
+    //   fullName: fullName,
+    //   phoneNumber: phoneNumber,
+    //   loanDownPayment: parseInt(funnelQuery.downPaymentAmount as string),
+    //   utmSource: UTMTags?.utm_source || '',
+    // })
     createUnverifiedLeadNew({
       phoneNumber: phoneNumber,
       ...(funnelQuery.downPaymentAmount && {
