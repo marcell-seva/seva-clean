@@ -213,7 +213,12 @@ const forwardedInputSelect = <T extends FormControlValue>(
               rightIcon
             )
           ) : (
-            <IconSearch width={24} height={24} color={'#13131B'} />
+            <IconSearch
+              width={24}
+              height={24}
+              color={'#13131B'}
+              alt="SEVA Dropdown Icon"
+            />
           )}
         </div>
       </div>

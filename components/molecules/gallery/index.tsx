@@ -120,9 +120,9 @@ export const Gallery: React.FC<PropsGallery> = ({
     <Image
       width={274}
       height={207}
-      alt={`Tampilan ${onTab} ${
+      alt={`Tampilan ${onTab === 'Exterior' ? 'Eksterior' : 'Interior'} ${
         carModelDetails?.brand
-      } ${carModelDetails?.model.replace(/-/g, ' ')} ${
+      } ${carModelDetails?.model.replace('-', ' ')} ${
         url.match(/_(\d+)\.\w+$/)?.[1] ?? 'main'
       }`}
       className={styles.mainImage}
@@ -149,9 +149,11 @@ export const Gallery: React.FC<PropsGallery> = ({
         <Image
           width={61}
           height={46}
-          alt={`Tampilan ${onTab} ${carModelDetails?.brand} ${
-            carModelDetails?.model
-          } ${url.match(/_(\d+)\.\w+$/)?.[1] ?? 'main'}`}
+          alt={`Tampilan ${onTab === 'Exterior' ? 'Eksterior' : 'Interior'} ${
+            carModelDetails?.brand
+          } ${carModelDetails?.model.replace('-', ' ')} ${
+            url.match(/_(\d+)\.\w+$/)?.[1] ?? 'main'
+          }`}
           className={`${isActive && styles.active} ${styles.subImage}`}
           src={url}
         />

@@ -82,7 +82,12 @@ export const Info: React.FC<PropsInfo> = ({
       <div className={styles.heading}>
         {isWithIcon && (
           <div className={styles.iconInfo}>
-            <IconInfo width={24} height={24} color="#B4231E" />
+            <IconInfo
+              width={24}
+              height={24}
+              color="#B4231E"
+              alt="SEVA Information Icon"
+            />
           </div>
         )}
         <h3
