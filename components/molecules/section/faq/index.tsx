@@ -130,7 +130,7 @@ export const Faq: React.FC<PropsInfo> = ({
                     <IconChevronDown
                       width={16}
                       height={16}
-                      alt="SEVA Drop Down Pertama Icon"
+                      alt="SEVA Dropdown Icon"
                     />
                   </div>
                 </div>
@@ -170,7 +170,7 @@ export const Faq: React.FC<PropsInfo> = ({
                     <IconChevronDown
                       width={16}
                       height={16}
-                      alt="SEVA Drop Down Pertama Icon"
+                      alt="SEVA Dropdown Icon"
                     />
                   </div>
                 </div>
@@ -193,16 +193,12 @@ export const Faq: React.FC<PropsInfo> = ({
           <span>{expandList ? 'Tutup' : 'Muat lebih banyak lagi'}</span>
           <div className={styles.spacingLeft}>
             {expandList ? (
-              <IconChevronUp
-                width={16}
-                height={16}
-                alt="SEVA Drop Down Pertama Icon"
-              />
+              <IconChevronUp width={16} height={16} alt="SEVA Dropdown Icon" />
             ) : (
               <IconChevronDown
                 width={16}
                 height={16}
-                alt="SEVA Drop Down Pertama Icon"
+                alt="SEVA Dropdown Icon"
               />
             )}
           </div>
