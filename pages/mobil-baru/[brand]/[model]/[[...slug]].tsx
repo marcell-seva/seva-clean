@@ -86,7 +86,7 @@ export default function index({
   } = useUtils()
   const router = useRouter()
   const { model, brand, slug } = router.query
-  const [isMobile, setIsMobile] = useState(isSsrMobileLocal)
+  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const { carModelDetails, recommendation } = useCar()
   const lowerTab = router.query.slug as string
@@ -497,7 +497,7 @@ const jsonLD = (
         .toLocaleLowerCase()}`,
       bodyType: carVariant?.variantDetail.bodyType,
       description: carVariant?.variantDetail?.description?.id && {
-        id: carVariant?.variantDetail?.description?.id
+        id: carVariant?.variantDetail?.description?.id,
       },
       brand: {
         '@type': 'Brand',
