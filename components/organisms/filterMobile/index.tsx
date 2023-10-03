@@ -392,7 +392,9 @@ const FilterMobile = ({
       { query: { ...paramUrl } },
       true,
       false,
-      urls.internalUrls.duplicatedCarResultsUrl,
+      isOTO
+        ? urls.internalUrls.duplicatedCarResultsUrl
+        : urls.internalUrls.carResultsUrl,
     )
     onClickClose()
   }
