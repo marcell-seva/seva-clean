@@ -32,7 +32,7 @@ export const featureToggles: FeatureToggles = {
     enableVidaV2: true,
     enableAnnouncementBoxAleph: true,
     enableDeleteAccount: true,
-    enableUploadKtp: true,
+    enableUploadKtp: false,
   },
   [Environment.Development]: {
     enableEkycCheck: true,
@@ -47,7 +47,7 @@ export const featureToggles: FeatureToggles = {
     enableVidaV2: true,
     enableAnnouncementBoxAleph: true,
     enableDeleteAccount: true,
-    enableUploadKtp: true,
+    enableUploadKtp: false,
   },
   [Environment.Staging]: {
     enableEkycCheck: true,
@@ -61,7 +61,7 @@ export const featureToggles: FeatureToggles = {
     enableExternalIA: true,
     enableVidaV2: false,
     enableAnnouncementBoxAleph: true,
-    enableDeleteAccount: false,
+    enableDeleteAccount: true,
     enableUploadKtp: false,
   },
   [Environment.Production]: {
@@ -75,8 +75,8 @@ export const featureToggles: FeatureToggles = {
     enablePromoCodeField: true,
     enableExternalIA: true,
     enableVidaV2: false,
-    enableAnnouncementBoxAleph: false,
-    enableDeleteAccount: false,
+    enableAnnouncementBoxAleph: true,
+    enableDeleteAccount: true,
     enableUploadKtp: false,
   },
 }

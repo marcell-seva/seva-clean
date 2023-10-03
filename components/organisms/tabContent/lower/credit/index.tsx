@@ -1712,7 +1712,12 @@ export const CreditTab = () => {
       <div className={styles.formCard}>
         <div className={styles.formCardHeader}>
           <div className={styles.iconWrapper}>
-            <IconCalculator width={24} height={24} color="#B4231E" />
+            <IconCalculator
+              width={24}
+              height={24}
+              color="#B4231E"
+              alt="SEVA Calculator Hitung Kemampuan Icon"
+            />
           </div>
           <h3 className={styles.formCardTitle}>Kredit</h3>
         </div>
