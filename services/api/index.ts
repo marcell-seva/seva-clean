@@ -17,6 +17,8 @@ import {
   SpecialRateRequest,
 } from 'utils/types/utils'
 import { CreateProbeTrackRequest } from 'services/probe'
+import environments from 'helpers/environments'
+import { AES } from 'crypto-js'
 // import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 // import { getLocalStorage } from 'utils/handler/localStorage'
 // import { UTMTagsData } from 'utils/types/props'
@@ -104,7 +106,8 @@ const getVariantCar = (params?: string, config?: AxiosRequestConfig) =>
 const getTypeCar = (params: string, config?: AxiosRequestConfig) =>
   get(collections.product.type + params, config)
 const getBanner = () => get(collections.utils.banner)
-const getCarofTheMonth = () => get(collections.product.carofTheMonth)
+const getCarofTheMonth = (city?: string) =>
+  get(collections.product.carofTheMonth + (city ? `?city=${city}` : ''))
 const getCarVideoReview = () => get(collections.product.carVideoReview)
 const getAnnouncementBox = (config: AxiosRequestConfig) =>
   get(collections.utils.announcementBox, config)
@@ -132,8 +135,21 @@ const getAvailableNIK = (config?: AxiosRequestConfig) =>
   get(collections.utils.checkNIKAvailable, config)
 
 // post request
-const postUnverifiedLeadsNew = (body: any) =>
-  post(collections.leads.unverifiedLeadNew, body)
+const postUnverifiedLeadsNew = (body: any) => {
+  const config = {
+    headers: {
+      'torq-api-key': environments.unverifiedLeadApiKey,
+      'Content-Type': 'text/plain',
+    },
+  }
+
+  const encryptedPayload = AES.encrypt(
+    JSON.stringify(body),
+    process.env.NEXT_PUBLIC_LEAD_PAYLOAD_ENCRYPTION_KEY ?? '',
+  ).toString()
+
+  return post(collections.leads.unverifiedLeadNew, encryptedPayload, config)
+}
 const postRefreshToken = (body: any, config?: AxiosRequestConfig) =>
   post(collections.auth.refresh, body, config)
 const postSendSMSGeneration = (recaptchaToken: string, phoneNumber: string) =>

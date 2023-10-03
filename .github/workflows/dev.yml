@@ -22,6 +22,7 @@ jobs:
           echo "PUBLIC_URL=${{ secrets.DEV_PUBLIC_URL }}" >> .env
           echo "NODE_ENV=development" >> .env
           echo "NEXT_PUBLIC_LOCAL_STORAGE_ENCRYPTION_KEY=${{ secrets.LOCAL_STORAGE_ENCRYPTION_KEY }}" >> .env
+          echo "NEXT_PUBLIC_LEAD_PAYLOAD_ENCRYPTION_KEY=${{ secrets.LEAD_PAYLOAD_ENCRYPTION_KEY }}" >> .env
           echo "NEXT_PUBLIC_SERVER_BASE_URL=${{secrets.DEV_PUBLIC_URL}}" >> .env
           echo "NEXT_PUBLIC_FIREBASE_API_KEY=${{secrets.DEV_REACT_FIREBASE_API_KEY}}" >> .env
           echo "NEXT_PUBLIC_ENVIRONMENT=development" >> .env
