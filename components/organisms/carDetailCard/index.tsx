@@ -186,7 +186,7 @@ export const CarDetailCard = ({
     trackCarClick(order + 1, false, destinationUrl)
     setTimeout(() => {
       window.location.href = destinationUrl
-    }, 4000)
+    }, 1000)
   }
 
   const getPeluangKredit = (carModel: CarRecommendation) => {
