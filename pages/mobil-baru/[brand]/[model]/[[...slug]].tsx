@@ -30,6 +30,7 @@ import { useCar } from 'services/context/carContext'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { lowerSectionNavigationTab } from 'config/carVariantList.config'
 import styles from 'styles/pages/pdp.module.scss'
+import Script from 'next/script'
 interface PdpDataLocalContextType {
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.
@@ -256,7 +257,8 @@ export default function index({
         description={getMetaDescription() ?? ''}
         image={modelDetailData?.images[0] || defaultSeoImage}
       />
-      <script
+      <Script
+        id="product-jsonld"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
