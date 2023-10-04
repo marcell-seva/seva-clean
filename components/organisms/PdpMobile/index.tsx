@@ -67,6 +67,7 @@ import { defineRouteName } from 'utils/navigate'
 import { useUtils } from 'services/context/utilsContext'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
 import dynamic from 'next/dynamic'
+import { Currency } from 'utils/handler/calculation'
 
 const OverlayGallery = dynamic(() =>
   import('components/molecules').then((mod) => mod.OverlayGallery),
@@ -374,10 +375,9 @@ export default function NewCarVariantList({
       KK_RESULT: 'Null',
       IA_RESULT: 'Null',
       TEMAN_SEVA_STATUS: temanSevaStatus,
-      INCOME_LOAN_CALCULATOR:
-        resultSelected?.loanRankResult !== 'Null'
-          ? `Rp${Currency(filterStorage?.monthlyIncome)}`
-          : 'Null',
+      INCOME_LOAN_CALCULATOR: filterStorage?.monthlyIncome
+        ? `Rp${Currency(filterStorage?.monthlyIncome)}`
+        : 'Null',
       INCOME_KUALIFIKASI_KREDIT: 'Null',
       INCOME_CHANGE: 'Null',
       OCCUPATION: 'Null',
