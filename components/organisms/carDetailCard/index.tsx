@@ -245,16 +245,17 @@ export const CarDetailCard = ({
     }
 
     setLoanRankPLP(true)
-    setTimeout(() => {
-      if (detailClick) {
+
+    if (detailClick) {
+      setTimeout(() => {
         trackEventCountly(CountlyEventNames.WEB_PLP_CAR_DETAIL_CLICK, datatrack)
-      } else {
-        trackEventCountly(
-          CountlyEventNames.WEB_PLP_PRODUCT_CARD_CTA_CLICK,
-          datatrack,
-        )
-      }
-    }, 500)
+      }, 500)
+    } else {
+      trackEventCountly(
+        CountlyEventNames.WEB_PLP_PRODUCT_CARD_CTA_CLICK,
+        datatrack,
+      )
+    }
   }
 
   const navigateToPDP = (index: number) => () => {
