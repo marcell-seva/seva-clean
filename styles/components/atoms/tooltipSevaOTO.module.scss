@@ -1,0 +1,57 @@
+@import '../../abstract/colors';
+
+@keyframes show {
+  0% {
+    visibility: hidden;
+    transform: translate(-50%, -50%) scale(0);
+  }
+
+  100% {
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes close {
+  0% {
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    visibility: hidden;
+    transform: translate(-50%, -50%) scale(0);
+  }
+}
+
+.tooltipWrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 14px;
+  background: #246ed4;
+  border-radius: 8px;
+  z-index: 99;
+  width: 90%;
+
+  &.show {
+    animation: show 0.3s ease-in-out both;
+  }
+
+  &.close {
+    animation: close 0.3s ease-in-out both;
+  }
+
+  .tooltipContent {
+    font-family: var(--open-sans);
+    font-weight: 400;
+    font-size: 14px;
+    color: #{$primary-black};
+    margin-right: 70px;
+    line-height: 20px;
+  }
+}
