@@ -109,12 +109,44 @@ export default function App({ Component, pageProps }: AppProps) {
           content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
         />
       </Head>
-      <Script
-        type="text/javascript"
-        strategy="afterInteractive"
-        async
-        dangerouslySetInnerHTML={{
-          __html: `
+      <IsSsrMobileContext.Provider value={pageProps.isSsrMobile}>
+        <GlobalContextProvider>
+          <style jsx global>{`
+            :root {
+              --kanyon-light: ${kanyonLight.style.fontFamily};
+              --kanyon: ${kanyon.style.fontFamily};
+              --kanyon-medium: ${kanyonMedium.style.fontFamily};
+              --kanyon-bold: ${kanyonBold.style.fontFamily};
+              --open-sans: ${OpenSans.style.fontFamily};
+              --open-sans-semi-bold: ${OpenSansSemiBold.style.fontFamily};
+              --open-sans-bold: ${OpenSansBold.style.fontFamily};
+              --open-sans-extra-bold: ${OpenSansExtraBold.style.fontFamily};
+            }
+          `}</style>
+          <CityFirst />
+          <Component {...pageProps} />
+        </GlobalContextProvider>
+        <Script>{`/*!@shinsenter/defer.js@3.6.0*/
+!(function(o,u,s){function f(t,n,e){k?S(t,n):((e=e===s?f.lazy:e)?N:C).push(t,Math.max(e?350:0,n))}function i(t){j.head.appendChild(t)}function a(t,n){t.forEach(function(t){n(t)})}function r(n,t,e,c){a(t.split(" "),function(t){(c||o)[n+"EventListener"](t,e||p)})}function l(t,n,e,c){return(c=n?j.getElementById(n):s)||(c=j.createElement(t),n&&(c.id=n)),e&&r(g,b,e,c),c}function d(t,n){a(q.call(t.attributes),function(t){n(t.name,t.value)})}function h(t,n){return q.call((n||j).querySelectorAll(t))}function m(c,t){a(h("source,img",c),m),d(c,function(t,n,e){(e=/^data-(.+)/.exec(t))&&c[x](e[1],n)}),t&&(c.className+=" "+t),c[b]&&c[b]()}function t(t,n,e){f(function(n){a(n=h(t||"script[type=deferjs]"),function(t,e){t.src&&(e=l(v),d(t,function(t,n){t!=A&&e[x]("src"==t?"href":t,n)}),e.rel="preload",e.as=y,i(e))}),(function c(t,e){(t=n[E]())&&(e=l(y),d(t,function(t,n){t!=A&&e[x](t,n)}),e.text=t.text,t.parentNode.replaceChild(e,t),e.src&&!e.getAttribute("async")?r(g,b+" error",c,e):c())})()},n,e)}function p(t,n){for(n=k?(r(e,c),N):(r(e,w),k=f,N[0]&&r(g,c),C);n[0];)S(n[E](),n[E]())}var v="link",y="script",b="load",n="pageshow",g="add",e="remove",c="touchstart mousemove mousedown keydown wheel",w="on"+n in o?n:b,x="setAttribute",E="shift",A="type",I=o.IntersectionObserver,j=o.document||o,k=/p/.test(j.readyState),C=[],N=[],S=o.setTimeout,q=C.slice;f.all=t,f.dom=function(t,n,o,i,r){f(function(e){function c(t){i&&!1===i(t)||m(t,o)}e=I?new I(function(t){a(t,function(t,n){t.isIntersecting&&(e.unobserve(n=t.target),c(n))})},r):s,a(h(t||"[data-src]"),function(t){t[u]||(t[u]=f,e?e.observe(t):c(t))})},n,!1)},f.css=function(n,e,t,c,o){f(function(t){(t=l(v,e,c)).rel="stylesheet",t.href=n,i(t)},t,o)},f.js=function(n,e,t,c,o){f(function(t){(t=l(y,e,c)).src=n,i(t)},t,o)},f.reveal=m,o[u]=f,k||r(g,w),t()})(this,"Defer");`}</Script>
+        <Script
+          async
+          type="text/javascript"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+                            !function(e,n,i,t,a,r,o,d){var s=e[a]=e[a]||[];if(s.invoked=0,s.initialised>0||s.invoked>0)return console.error("MoEngage Web SDK initialised multiple times. Please integrate the Web SDK only once!"),!1;e.moengage_object=a;var l={},g=function n(i){return function(){for(var n=arguments.length,t=Array(n),a=0;a<n;a++)t[a]=arguments[a];(e.moengage_q=e.moengage_q||[]).push({f:i,a:t})}},u=["track_event","add_user_attribute","add_first_name","add_last_name","add_email","add_mobile","add_user_name","add_gender","add_birthday","destroy_session","add_unique_user_id","moe_events","call_web_push","track","location_type_attribute"],m={onsite:["getData","registerCallback"]};for(var c in u)l[u[c]]=g(u[c]);for(var v in m)for(var f in m[v])null==l[v]&&(l[v]={}),l[v][m[v][f]]=g(v+"."+m[v][f]);r=n.createElement(i),o=n.getElementsByTagName("head")[0],r.async=1,r.src=t,o.appendChild(r),e.moe=e.moe||function(){return(s.invoked=s.invoked+1,s.invoked>1)?(console.error("MoEngage Web SDK initialised multiple times. Please integrate the Web SDK only once!"),!1):(d=arguments.length<=0?void 0:arguments[0],l)},r.addEventListener("load",function(){if(d)return e[a]=e.moe(d),e[a].initialised=e[a].initialised+1||1,!0}),r.addEventListener("error",function(){return console.error("Moengage Web SDK loading failed."),!1})}(window,document,"script","https://cdn.moengage.com/webpush/moe_webSdk.min.latest.js","Moengage");
+                            Moengage = moe({
+                            app_id:"KW8JVVD7VJKF2EQHOHX2YYOA",
+                            debug_logs: 0
+                            });`,
+          }}
+        ></Script>
+        <Script
+          type="text/javascript"
+          strategy="afterInteractive"
+          async
+          dangerouslySetInnerHTML={{
+            __html: `
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
             n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -128,14 +160,14 @@ export default function App({ Component, pageProps }: AppProps) {
             fbq('init', ${FB_PIXEL_ID});
             
           `,
-        }}
-      />
-      <Script
-        type="text/javascript"
-        strategy="afterInteractive"
-        async
-        dangerouslySetInnerHTML={{
-          __html: `
+          }}
+        />
+        <Script
+          type="text/javascript"
+          strategy="afterInteractive"
+          async
+          dangerouslySetInnerHTML={{
+            __html: `
             //some default pre init
             var Countly = Countly || {};
             Countly.q = Countly.q || [];
@@ -159,38 +191,11 @@ export default function App({ Component, pageProps }: AppProps) {
               var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
             })();
             `,
-        }}
-      />
-      <IsSsrMobileContext.Provider value={pageProps.isSsrMobile}>
-        <GlobalContextProvider>
-          <Script
-            async
-            type="text/javascript"
-            strategy="afterInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `
-                            !function(e,n,i,t,a,r,o,d){var s=e[a]=e[a]||[];if(s.invoked=0,s.initialised>0||s.invoked>0)return console.error("MoEngage Web SDK initialised multiple times. Please integrate the Web SDK only once!"),!1;e.moengage_object=a;var l={},g=function n(i){return function(){for(var n=arguments.length,t=Array(n),a=0;a<n;a++)t[a]=arguments[a];(e.moengage_q=e.moengage_q||[]).push({f:i,a:t})}},u=["track_event","add_user_attribute","add_first_name","add_last_name","add_email","add_mobile","add_user_name","add_gender","add_birthday","destroy_session","add_unique_user_id","moe_events","call_web_push","track","location_type_attribute"],m={onsite:["getData","registerCallback"]};for(var c in u)l[u[c]]=g(u[c]);for(var v in m)for(var f in m[v])null==l[v]&&(l[v]={}),l[v][m[v][f]]=g(v+"."+m[v][f]);r=n.createElement(i),o=n.getElementsByTagName("head")[0],r.async=1,r.src=t,o.appendChild(r),e.moe=e.moe||function(){return(s.invoked=s.invoked+1,s.invoked>1)?(console.error("MoEngage Web SDK initialised multiple times. Please integrate the Web SDK only once!"),!1):(d=arguments.length<=0?void 0:arguments[0],l)},r.addEventListener("load",function(){if(d)return e[a]=e.moe(d),e[a].initialised=e[a].initialised+1||1,!0}),r.addEventListener("error",function(){return console.error("Moengage Web SDK loading failed."),!1})}(window,document,"script","https://cdn.moengage.com/webpush/moe_webSdk.min.latest.js","Moengage");
-                            Moengage = moe({
-                            app_id:"KW8JVVD7VJKF2EQHOHX2YYOA",
-                            debug_logs: 0
-                            });`,
-            }}
-          ></Script>
-          <style jsx global>{`
-            :root {
-              --kanyon-light: ${kanyonLight.style.fontFamily};
-              --kanyon: ${kanyon.style.fontFamily};
-              --kanyon-medium: ${kanyonMedium.style.fontFamily};
-              --kanyon-bold: ${kanyonBold.style.fontFamily};
-              --open-sans: ${OpenSans.style.fontFamily};
-              --open-sans-semi-bold: ${OpenSansSemiBold.style.fontFamily};
-              --open-sans-bold: ${OpenSansBold.style.fontFamily};
-              --open-sans-extra-bold: ${OpenSansExtraBold.style.fontFamily};
-            }
-          `}</style>
-          <CityFirst />
-          <Component {...pageProps} />
-        </GlobalContextProvider>
+          }}
+        />
+        <Script>
+          {`Defer.all('script[type="text/javascript"]', 5000); Defer.lazy = true`}
+        </Script>
       </IsSsrMobileContext.Provider>
     </>
   )
