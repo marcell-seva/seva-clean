@@ -160,6 +160,8 @@ export const AlternativeCarCard = ({
 
   const navigateToPDP = () => {
     trackCarRecommendation()
+
+    trackCountlyCarRecommendation()
     if (window.location.pathname.includes('kalkulator-kredit')) {
       saveDataForCountlyTrackerPageViewPDP(
         PreviousButton.CarRecommendation,
@@ -168,9 +170,7 @@ export const AlternativeCarCard = ({
     } else {
       saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
     }
-    if (!label) {
-      trackCountlyCarRecommendation()
-    }
+
     window.location.href = detailCarRoute
   }
 

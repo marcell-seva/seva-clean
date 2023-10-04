@@ -218,6 +218,7 @@ export const HeaderMobile = ({
                 showSidebar={isActive}
                 isShowAnnouncementBox={isShowAnnouncementBox}
                 isOTO={isOTO}
+                pageOrigination={pageOrigination}
               />
               <div
                 className={styles.right}
