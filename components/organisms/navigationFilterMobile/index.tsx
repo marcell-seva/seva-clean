@@ -19,7 +19,6 @@ import { sortOptions } from 'utils/config/funnel.config'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { PreviousButton, navigateToPLP } from 'utils/navigate'
 import { useRouter } from 'next/router'
-import { isCurrentCityJakartaPusatOrSurabaya } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 
 type NavFilterMobileProps = {
   carlist?: any
@@ -32,7 +31,6 @@ type NavFilterMobileProps = {
   resultMinMaxPrice?: any
   setRecommendations: any
   isShowAnnouncementBox?: boolean | null
-  showInformationDaihatsu: boolean
   isOTO?: boolean
 }
 export const NavigationFilterMobile = ({
@@ -45,7 +43,6 @@ export const NavigationFilterMobile = ({
   isFilterFinancial,
   setRecommendations,
   isShowAnnouncementBox,
-  showInformationDaihatsu,
   isOTO,
 }: NavFilterMobileProps) => {
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
@@ -305,21 +302,6 @@ export const NavigationFilterMobile = ({
           {/*</div>*/}
         </>
       )}
-      {showInformationDaihatsu &&
-        !isCurrentCityJakartaPusatOrSurabaya() &&
-        !sticky && (
-          <>
-            <div className={styles.line} />
-            <div className={styles.informWrapper}>
-              <span
-                className={styles.informDaihatsuText}
-                data-testid={elementId.DSOCityBlocker}
-              >
-                Harga OTR Daihatsu menggunakan harga OTR Jakarta Pusat.
-              </span>
-            </div>
-          </>
-        )}
     </>
   )
 }
