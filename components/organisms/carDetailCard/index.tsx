@@ -184,7 +184,9 @@ export const CarDetailCard = ({
         .replace(':model', modelSlug)
         .replace(':variant', '') + `?loanRankCVL=${recommendation.loanRank}`
     trackCarClick(order + 1, false, destinationUrl)
-    window.location.href = destinationUrl
+    setTimeout(() => {
+      window.location.href = destinationUrl
+    }, 4000)
   }
 
   const getPeluangKredit = (carModel: CarRecommendation) => {
