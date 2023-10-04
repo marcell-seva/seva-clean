@@ -25,6 +25,7 @@ import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
 import { CarProvider } from 'services/context'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
+import styles from 'styles/pages/plp.module.scss'
 
 const NewCarResultPage = ({
   meta,
@@ -82,14 +83,15 @@ const NewCarResultPage = ({
         recommendation={meta.carRecommendations.carRecommendations}
         recommendationToyota={[]}
       >
-        {isMobile ? (
+        <div className={styles.mobile}>
           <PLP minmaxPrice={meta.MinMaxPrice} />
-        ) : (
+        </div>
+        <div className={styles.desktop}>
           <PLPDesktop
             carRecommendation={meta.carRecommendations}
             footer={meta.footer}
           />
-        )}
+        </div>
       </CarProvider>
     </>
   )
