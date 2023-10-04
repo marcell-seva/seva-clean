@@ -19,10 +19,12 @@ export const getBrandAndModelValue = (value: string) => {
 }
 
 export const getBrandValue = (value: string) => {
-  return value
-    .replaceAll('-', ' ')
-    .toLowerCase()
-    .split(' ')
-    .map((s: any) => s.charAt(0).toUpperCase() + s.substring(1))
-    .join(' ')
+  if (value) {
+    return value
+      .replaceAll('-', ' ')
+      .toLowerCase()
+      .split(' ')
+      .map((s: any) => s.charAt(0).toUpperCase() + s.substring(1))
+      .join(' ')
+  }
 }
