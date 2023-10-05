@@ -36,11 +36,13 @@ const NewCarResultPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const todayDate = new Date()
+  const brand = router.query.brand
 
   const metaTitle = `Beli Mobil Terbaru ${todayDate.getFullYear()} Harga OTR dengan Cicilan Kredit & Spesifikasi bulan ${monthId(
     todayDate.getMonth(),
   )} | SEVA`
-  const metaDesc = `Beli mobil ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
+  const metaDesc = `Beli mobil  ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
+  const metaDescBrand = `Beli mobil ${brand} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
   const [isMobile, setIsMobile] = useState(isSsrMobileLocal)
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const {
@@ -63,7 +65,15 @@ const NewCarResultPage = ({
 
   return (
     <>
-      <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
+      {brand ? (
+        <Seo
+          title={metaTitle}
+          description={metaDescBrand}
+          image={defaultSeoImage}
+        />
+      ) : (
+        <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
+      )}
       <CarProvider
         car={null}
         carOfTheMonth={[]}
