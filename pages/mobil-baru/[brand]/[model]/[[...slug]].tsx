@@ -29,6 +29,7 @@ import { getCity } from 'utils/hooks/useGetCity'
 import { useCar } from 'services/context/carContext'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { lowerSectionNavigationTab } from 'config/carVariantList.config'
+import Script from 'next/script'
 import styles from 'styles/pages/pdp.module.scss'
 interface PdpDataLocalContextType {
   /**
@@ -256,7 +257,8 @@ export default function index({
         description={getMetaDescription() ?? ''}
         image={modelDetailData?.images[0] || defaultSeoImage}
       />
-      <script
+      <Script
+        id="product-jsonld"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
@@ -653,7 +655,8 @@ const jsonLD = (
     ImageObject: [
       {
         '@type': 'ImageObject',
-        contentUrl: 'https://images.prod.seva.id/Toyota/All%20New%20Rush/gallery/main_galery_toyota_all_new_rush_eksterior_1.jpg',
+        contentUrl:
+          'https://images.prod.seva.id/Toyota/All%20New%20Rush/gallery/main_galery_toyota_all_new_rush_eksterior_1.jpg',
         mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
         representativeOfPage: 'https://schema.org/True',
         isFamilyFriendly: 'https://schema.org/True',
@@ -661,7 +664,8 @@ const jsonLD = (
       },
       {
         '@type': 'ImageObject',
-        contentUrl: 'https://images.prod.seva.id/Toyota/All%20New%20Rush/gallery/main_galery_toyota_all_new_rush_interior_1.jpg',
+        contentUrl:
+          'https://images.prod.seva.id/Toyota/All%20New%20Rush/gallery/main_galery_toyota_all_new_rush_interior_1.jpg',
         mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Interior`,
         representativeOfPage: 'https://schema.org/True',
         isFamilyFriendly: 'https://schema.org/True',
