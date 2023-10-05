@@ -207,7 +207,7 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
       temanSevaStatus = 'Yes'
     } else if (!!getToken()) {
       const response = await getCustomerInfoSeva()
-      if (response.data[0].temanSevaTrxCode) {
+      if (response[0].temanSevaTrxCode) {
         temanSevaStatus = 'Yes'
       }
     }
