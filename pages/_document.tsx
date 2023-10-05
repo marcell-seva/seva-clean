@@ -47,7 +47,7 @@ export default class MyDocument extends Document {
             content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
           />
           <script>
-            {`Defer.all('script[type="text/javascript"]', 5000); Defer.lazy = true`}
+            {`Defer.all('script[type="text/javascript"]', 500); Defer.lazy = true`}
           </script>
         </Head>
         <body>
