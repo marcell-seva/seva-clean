@@ -70,12 +70,6 @@ export const CityFirst = () => {
 
   useEffect(() => {
     checkCitiesData()
-    if (showCity) {
-      saveLocalStorage(
-        LocalStorageKey.LastTimeSelectCity,
-        new Date().toISOString(),
-      )
-    }
   }, [])
 
   useEffect(() => {
@@ -94,6 +88,10 @@ export const CityFirst = () => {
     <CitySelectorModal
       isOpen={showCity}
       onClickCloseButton={() => {
+        saveLocalStorage(
+          LocalStorageKey.LastTimeSelectCity,
+          new Date().toISOString(),
+        )
         setInteractive(true)
         setShowCity(false)
       }}
