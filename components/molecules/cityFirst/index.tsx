@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getCities } from 'services/cities'
 import { LocalStorageKey } from 'utils/enum'
 import { countDaysDifference } from 'utils/handler/date'
@@ -12,12 +12,9 @@ import {
 import { CityOtrOption } from 'utils/types'
 import CitySelectorModal from '../citySelectorModal'
 import { useRouter } from 'next/router'
-import { useMediaQuery } from 'react-responsive'
 
 export const CityFirst = () => {
   const router = useRouter()
-  const [interactive, setInteractive] = useState(false)
-  const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const currentCity = getLocalStorage<CityOtrOption>(LocalStorageKey.CityOtr)
   const cityFirstRoute = [
     carResultsUrl,
@@ -46,11 +43,9 @@ export const CityFirst = () => {
   const filterCity = cityFirstRoute.filter(
     (x) => router.pathname.includes(x) && !router.pathname.includes('form'),
   )
-
-  const [showCity, setShowCity] = useState(false)
   const showCondition =
-    isMobile && filterCity.length > 0 && !currentCity && !isIn30DaysInterval()
-
+    filterCity.length > 0 && !currentCity && !isIn30DaysInterval()
+  const [showCity, setShowCity] = useState(showCondition)
   const [cityListApi, setCityListApi] = useState<Array<CityOtrOption>>([])
 
   const checkCitiesData = () => {
@@ -61,40 +56,24 @@ export const CityFirst = () => {
     }
   }
 
-  const showConditionCity = () => {
-    if (!interactive) {
-      setInteractive(true)
-      setShowCity(showCondition)
-    }
-  }
-
   useEffect(() => {
     checkCitiesData()
+    if (showCity) {
+      saveLocalStorage(
+        LocalStorageKey.LastTimeSelectCity,
+        new Date().toISOString(),
+      )
+    }
   }, [])
 
   useEffect(() => {
-    ;['scroll', 'touchstart'].forEach((ev) =>
-      window.addEventListener(ev, showConditionCity),
-    )
-
-    return () => {
-      ;['scroll', 'touchstart'].forEach((ev) =>
-        window.removeEventListener(ev, showConditionCity),
-      )
-    }
-  }, [router.pathname, interactive])
+    setShowCity(showCondition)
+  }, [router.pathname])
 
   return (
     <CitySelectorModal
       isOpen={showCity}
-      onClickCloseButton={() => {
-        saveLocalStorage(
-          LocalStorageKey.LastTimeSelectCity,
-          new Date().toISOString(),
-        )
-        setInteractive(true)
-        setShowCity(false)
-      }}
+      onClickCloseButton={() => setShowCity(false)}
       cityListFromApi={cityListApi}
     />
   )
