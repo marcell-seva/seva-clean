@@ -31,6 +31,7 @@ import {
   saveDataForCountlyTrackerPageViewHomepage,
 } from 'utils/navigate'
 import dynamic from 'next/dynamic'
+import { getToken } from 'utils/handler/auth'
 
 const Overlay = dynamic(() =>
   import('components/atoms').then((mod) => mod.Overlay),
@@ -82,6 +83,7 @@ export const HeaderMobile = ({
   const router = useRouter()
 
   const adaSeva = router.asPath.split('/')[1]
+  const [isLogin] = useState(!!getToken())
 
   const handleClickCityIcon = () => {
     if (!isActive) {
