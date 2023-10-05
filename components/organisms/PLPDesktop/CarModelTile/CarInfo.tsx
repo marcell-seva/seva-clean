@@ -29,14 +29,7 @@ export const CarInfo = ({ carModel }: Props) => {
   }
 
   const renderCityInfoLabel = () => {
-    if (
-      carModel.brand.toLowerCase() === 'daihatsu' ||
-      carModel.brand.toLowerCase() === 'bmw'
-    ) {
-      return '(OTR Jakarta Pusat)'
-    } else {
-      return `(OTR ${currentCity?.cityName ?? 'Jakarta Pusat'})`
-    }
+    return `(OTR ${currentCity?.cityName ?? 'Jakarta Pusat'})`
   }
 
   return (

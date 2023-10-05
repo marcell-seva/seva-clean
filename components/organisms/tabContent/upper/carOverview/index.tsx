@@ -3,7 +3,6 @@ import styles from 'styles/components/organisms/carOverView.module.scss'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import {
   IconEdit,
-  IconInfo,
   Button,
   TextButton,
   IconDownload,
@@ -36,12 +35,10 @@ import {
   trackEventCountly,
   valueMenuTabCategory,
 } from 'helpers/countly/countly'
-import { getPageName } from 'utils/pageName'
 import {
   PreviousButton,
   saveDataForCountlyTrackerPageViewLC,
 } from 'utils/navigate'
-import { isCurrentCityJakartaPusatOrSurabaya } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
 import { AdaOTOdiSEVALeadsForm } from 'components/organisms/leadsForm/adaOTOdiSEVA/popUp'
 
@@ -106,36 +103,12 @@ export const CarOverview = ({
     setIsModalOpened(true)
   }
 
-  const onClickToolTipIcon = () => {
-    setIsShowTooltip(true)
-    trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_TOOLTIP_CLICK, {
-      PAGE_ORIGINATION: getPageName(),
-    })
-  }
-
-  const closeTooltip = () => {
-    // need to use timeout, if not it wont work
-    setTimeout(() => {
-      setIsShowTooltip(false)
-    }, 100)
-  }
-
   const onClickOtrCity = () => {
-    if (
-      modelDetail?.brand !== 'Daihatsu' ||
-      isCurrentCityJakartaPusatOrSurabaya()
-    ) {
-      onClickCityOtrCarOverview()
-    }
+    onClickCityOtrCarOverview()
   }
 
   const getCity = () => {
-    if (
-      modelDetail?.brand === 'Daihatsu' &&
-      !isCurrentCityJakartaPusatOrSurabaya()
-    ) {
-      return 'Jakarta Pusat'
-    } else if (cityOtr && cityOtr.cityName) {
+    if (cityOtr && cityOtr.cityName) {
       return cityOtr.cityName
     } else {
       return 'Jakarta Pusat'
@@ -348,11 +321,7 @@ export const CarOverview = ({
             Harga OTR{' '}
             <span
               style={{
-                color:
-                  modelDetail?.brand === 'Daihatsu' &&
-                  !isCurrentCityJakartaPusatOrSurabaya()
-                    ? '#878D98'
-                    : '#246ED4',
+                color: '#246ED4',
               }}
               onClick={onClickOtrCity}
               data-testid={elementId.PDP.CarOverview.CityOtr}
@@ -360,48 +329,18 @@ export const CarOverview = ({
               {getCity()}
             </span>
           </span>
-          {modelDetail?.brand === 'Daihatsu' &&
-          !isCurrentCityJakartaPusatOrSurabaya() ? (
-            <div
-              className={styles.tooltipWrapper}
-              ref={tooltipRef}
-              onClick={onClickToolTipIcon}
-              data-testid={elementId.PDP.CarOverview.CityToolTip}
-            >
-              <div className={styles.tooltipIcon}>
-                <IconInfo width={11} height={11} color="#878D98" />
-              </div>
-              {isShowTooltip ? (
-                <div className={styles.tooltipCard}>
-                  <IconInfo width={24} height={24} color="#FFFFFF" />
-                  <div className={styles.tooltipContent}>
-                    <span className={styles.tooltipDesc}>
-                      Harga OTR Daihatsu menggunakan harga OTR Jakarta Pusat
-                    </span>
-                    <button
-                      className={styles.tooltipCloseButton}
-                      onClick={closeTooltip}
-                    >
-                      OK, Saya Mengerti
-                    </button>
-                  </div>
-                </div>
-              ) : null}
-            </div>
-          ) : (
-            <button
-              className={styles.otrCityButton}
-              onClick={onClickOtrCity}
-              data-testid={elementId.PDP.CarOverview.CityOtr}
-            >
-              <IconEdit
-                width={16}
-                height={16}
-                color="#246ED4"
-                alt="SEVA pen Icon"
-              />
-            </button>
-          )}
+          <button
+            className={styles.otrCityButton}
+            onClick={onClickOtrCity}
+            data-testid={elementId.PDP.CarOverview.CityOtr}
+          >
+            <IconEdit
+              width={16}
+              height={16}
+              color="#246ED4"
+              alt="SEVA pen Icon"
+            />
+          </button>
         </div>
         <h3
           className={styles.carOtrPriceText}
