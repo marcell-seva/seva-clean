@@ -177,7 +177,7 @@ export default function App({ Component, pageProps }: AppProps) {
       })();
       `}</Script>
       <Script>
-        {`Defer.all('script[type="text/javascript"]', 5000); Defer.lazy = true`}
+        {`Defer.all('script[type="text/javascript"]', 500); Defer.lazy = true`}
       </Script>
     </>
   )
