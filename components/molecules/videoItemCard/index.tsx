@@ -113,7 +113,12 @@ export const VideoItemCard = ({ data }: Props) => {
             loading="lazy"
           />
           <div className={styles.playIconWrapper}>
-            <IconPlay width={24} height={24} color="#FFFFFF" />
+            <IconPlay
+              width={24}
+              height={24}
+              color="#FFFFFF"
+              alt="SEVA Play Icon"
+            />
           </div>{' '}
         </div>
       )}

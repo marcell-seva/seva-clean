@@ -19,10 +19,7 @@ import {
   loanCalculatorWithCityBrandModelVariantUrl,
   variantListUrl,
 } from 'utils/helpers/routes'
-import {
-  getCity,
-  isCurrentCityJakartaPusatOrSurabaya,
-} from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
+import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useSessionStorage } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { formatBillionPoint } from 'utils/numberUtils/numberUtils'
@@ -37,15 +34,13 @@ import {
   saveDataForCountlyTrackerPageViewLC,
   saveDataForCountlyTrackerPageViewPDP,
 } from 'utils/navigate'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { trackDataCarType } from 'utils/types/utils'
 import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import { getLocalStorage } from 'utils/handler/localStorage'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
-import { useState } from 'react'
-import { useDetectClickOutside } from 'react-detect-click-outside'
 
 type CarDetailCardProps = {
   order?: number
@@ -86,14 +81,6 @@ export const CarDetailCard = ({
     LocalStorageKey.carModelLoanRank,
     null,
   )
-  const [isShowTooltip, setIsShowTooltip] = useState(false)
-  const tooltipRef = useDetectClickOutside({
-    onTriggered: () => {
-      if (isShowTooltip) {
-        setIsShowTooltip(false)
-      }
-    },
-  })
 
   const dataCar: trackDataCarType | null = getSessionStorage(
     SessionStorageKey.PreviousCarDataBeforeLogin,
@@ -160,11 +147,7 @@ export const CarDetailCard = ({
         .replace(':tab', '')
         .replace('?', `?loanRankCVL=${recommendation.loanRank}&source=plp`)
 
-  const cityName =
-    recommendation.brand === 'Daihatsu' &&
-    !isCurrentCityJakartaPusatOrSurabaya()
-      ? 'Jakarta Pusat'
-      : getCity()?.cityName || 'Jakarta Pusat'
+  const cityName = getCity()?.cityName || 'Jakarta Pusat'
 
   const navigateToLoanCalculator = () => {
     saveDataForCountlyTrackerPageViewLC(PreviousButton.ProductCardCalculate)
@@ -184,7 +167,9 @@ export const CarDetailCard = ({
         .replace(':model', modelSlug)
         .replace(':variant', '') + `?loanRankCVL=${recommendation.loanRank}`
     trackCarClick(order + 1, false, destinationUrl)
-    window.location.href = destinationUrl
+    setTimeout(() => {
+      window.location.href = destinationUrl
+    }, 1000)
   }
 
   const getPeluangKredit = (carModel: CarRecommendation) => {
@@ -245,16 +230,17 @@ export const CarDetailCard = ({
     }
 
     setLoanRankPLP(true)
-    setTimeout(() => {
-      if (detailClick) {
+
+    if (detailClick) {
+      setTimeout(() => {
         trackEventCountly(CountlyEventNames.WEB_PLP_CAR_DETAIL_CLICK, datatrack)
-      } else {
-        trackEventCountly(
-          CountlyEventNames.WEB_PLP_PRODUCT_CARD_CTA_CLICK,
-          datatrack,
-        )
-      }
-    }, 500)
+      }, 500)
+    } else {
+      trackEventCountly(
+        CountlyEventNames.WEB_PLP_PRODUCT_CARD_CTA_CLICK,
+        datatrack,
+      )
+    }
   }
 
   const navigateToPDP = (index: number) => () => {
@@ -268,20 +254,6 @@ export const CarDetailCard = ({
 
   const onClickSeeDetail = () => {
     saveDataForCountlyTrackerPageViewPDP(PreviousButton.ProductCard, 'PLP')
-  }
-
-  const onClickToolTipIcon = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  ) => {
-    event.stopPropagation()
-    setIsShowTooltip(true)
-  }
-
-  const closeTooltip = () => {
-    // need to use timeout, if not it wont work
-    setTimeout(() => {
-      setIsShowTooltip(false)
-    }, 100)
   }
 
   return (
@@ -348,46 +320,6 @@ export const CarDetailCard = ({
           >
             <span className={styles.smallRegular}>Harga OTR</span>
             <span className={styles.smallSemibold}>{cityName}</span>
-            {recommendation.brand === 'Daihatsu' &&
-            !isCurrentCityJakartaPusatOrSurabaya() ? (
-              <div
-                className={styles.tooltipWrapper}
-                ref={tooltipRef}
-                onClick={(event) => onClickToolTipIcon(event)}
-                data-testid={elementId.PDP.CarOverview.CityToolTip}
-              >
-                <div className={styles.tooltipIcon}>
-                  <IconInfo width={12} height={12} color="#878D98" />
-                </div>
-                {isShowTooltip ? (
-                  <>
-                    <Overlay
-                      isShow={isShowTooltip}
-                      onClick={closeTooltip}
-                      zIndex={998}
-                      additionalStyle={styles.overlayAdditionalStyle}
-                    />
-                    <div className={styles.tooltipCard}>
-                      <IconInfo width={24} height={24} color="#FFFFFF" />
-                      <div className={styles.tooltipContent}>
-                        <span className={styles.tooltipDesc}>
-                          Harga OTR Daihatsu menggunakan harga OTR{' '}
-                          <span className={styles.tooltipDescBold}>
-                            Jakarta Pusat
-                          </span>
-                        </span>
-                        <button
-                          className={styles.tooltipCloseButton}
-                          onClick={closeTooltip}
-                        >
-                          OK, Saya Mengerti
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                ) : null}
-              </div>
-            ) : null}
           </div>
           <span
             className={styles.priceOtrRange}

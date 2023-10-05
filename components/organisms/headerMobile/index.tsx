@@ -31,6 +31,7 @@ import {
   saveDataForCountlyTrackerPageViewHomepage,
 } from 'utils/navigate'
 import dynamic from 'next/dynamic'
+import { getToken } from 'utils/handler/auth'
 
 const Overlay = dynamic(() =>
   import('components/atoms').then((mod) => mod.Overlay),
@@ -82,6 +83,7 @@ export const HeaderMobile = ({
   const router = useRouter()
 
   const adaSeva = router.asPath.split('/')[1]
+  const [isLogin] = useState(!!getToken())
 
   const handleClickCityIcon = () => {
     if (!isActive) {
@@ -117,6 +119,17 @@ export const HeaderMobile = ({
       trackOpenBurgerMenu({
         Page_Origination_URL: window.location.href,
       })
+      if (pageOrigination && pageOrigination.length !== 0) {
+        const track = {
+          PAGE_ORIGINATION: pageOrigination.includes('PDP')
+            ? 'PDP - ' + valueMenuTabCategory()
+            : pageOrigination,
+          LOGIN_STATUS: isLogin ? 'Yes' : 'No',
+          USER_TYPE: valueForUserTypeProperty(),
+        }
+
+        trackEventCountly(CountlyEventNames.WEB_HAMBURGER_OPEN, track)
+      }
     }
     setIsActive(() => !isActive)
   }
@@ -218,6 +231,7 @@ export const HeaderMobile = ({
                 showSidebar={isActive}
                 isShowAnnouncementBox={isShowAnnouncementBox}
                 isOTO={isOTO}
+                pageOrigination={pageOrigination}
               />
               <div
                 className={styles.right}
