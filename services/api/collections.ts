@@ -39,6 +39,11 @@ const leads = {
   customerAssistantDetails: `${baseUrl}/unverifiedLeads/csaDetails`,
 }
 
+const omnicom = {
+  check: `${baseUrl}/omnicom/check/:id`,
+  updateLeads: `${baseUrl}/omnicom`,
+}
+
 const auth = {
   user: `${baseUrl}/customers/info`,
   refresh: `${baseUrl}/auth/token`,
@@ -93,4 +98,5 @@ export const collections = {
   creditQualification,
   ktp,
   profile,
+  omnicom,
 }

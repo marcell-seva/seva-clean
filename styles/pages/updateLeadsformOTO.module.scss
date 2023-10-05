@@ -1,0 +1,91 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+@import '../abstract/animations';
+
+.container {
+  background: #{$primary-white};
+}
+
+.content {
+  margin-top: 54px; // page header height is 54px
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contentWithSpace {
+  @extend .content;
+  margin-top: 114px !important; // page header with announcement box
+}
+
+.titleWrapper {
+  padding: 42px 16px 0;
+  margin-bottom: 40px;
+}
+
+.title {
+  font-family: var(--open-sans);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$primary-black};
+}
+
+.containerInput {
+  margin-top: 24px;
+}
+
+.subtitle {
+  margin-top: 2px;
+  font-family: var(--open-sans);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$shades-grey-75};
+}
+
+.formWrapper {
+  padding: 16px 16px 6px;
+}
+
+.errorMessageWrapper {
+  margin-top: 8px;
+}
+
+.errorMessage {
+  font-family: var(--open-sans);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$secondary-brick-red};
+  mix-blend-mode: normal;
+  @include shake-animation-primary;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@include lg {
+  .container {
+  }
+
+  .content {
+  }
+}
+
+.announcementboxpadding {
+  padding-top: 45px;
+}
+
+.loanCalculatorFormAge {
+  margin-top: 20px;
+}
+
+.buttonSubmit {
+  margin-top: 36px;
+}

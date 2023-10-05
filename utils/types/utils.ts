@@ -1084,3 +1084,13 @@ export interface trackDataCarType {
   INCOME_LC: string | number
   INCOME_KK: number
 }
+
+export interface updateLeadFormOTO {
+  leadId: string
+  leadResponse: boolean
+  isLeadQualified: boolean
+  carVariantId: string
+  carModelId: string
+  cityId: number
+  priceOtr: number
+}
