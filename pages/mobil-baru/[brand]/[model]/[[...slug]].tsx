@@ -566,7 +566,7 @@ const jsonLD = (
         },
         {
           '@type': 'Question',
-          name: 'Berapa Harga Toyota Rush?',
+          name: `Berapa Harga Toyota ${carModel?.model}?`,
           acceptedAnswer: {
             '@type': 'Answer',
             text: `Harga ${carModel?.brand} ${carModel?.model} dimulai dari kisaran harga Rp ${priceRange} juta.`,
@@ -577,7 +577,7 @@ const jsonLD = (
           name: `Berapa Panjang Mobil ${carModel?.brand} ${carModel?.model}?`,
           acceptedAnswer: {
             '@type': 'Answer',
-            text: `Panjang dimensi Toyota Rush adalah ${
+            text: `Panjang dimensi Toyota ${carModel?.model} adalah ${
               selectedCar.length
             } mm dan lebarnya ${
               selectedCar ? selectedCar.width : ''
