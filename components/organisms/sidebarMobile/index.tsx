@@ -103,13 +103,18 @@ const sidebarMobile = ({
     trackProfileAkunSayaClick({
       Page_Origination_URL: window.location.href,
     })
+
+    trackEventCountly(CountlyEventNames.WEB_HAMBURGER_ACCOUNT_CLICK, {
+      PAGE_ORIGINATION: pageOrigination,
+      SOURCE_SECTION: 'Top',
+    })
     if (pageOrigination) {
       saveSessionStorage(
         SessionStorageKey.PageReferrerProfilePage,
         pageOrigination,
       )
     }
-    window.location.href = url
+    // window.location.href = url
   }
 
   return (
@@ -130,10 +135,6 @@ const sidebarMobile = ({
                 LocalStorageKey.PageBeforeProfile,
                 window.location.pathname,
               )
-              trackEventCountly(CountlyEventNames.WEB_HAMBURGER_ACCOUNT_CLICK, {
-                PAGE_ORIGINATION: getPageName(),
-                SOURCE_SECTION: 'Top',
-              })
               handleClickMyAccount('/akun/profil')
             }}
             className={styles.profileWrapper}

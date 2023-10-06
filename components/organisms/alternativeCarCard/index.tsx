@@ -162,6 +162,14 @@ export const AlternativeCarCard = ({
     trackCarRecommendation()
 
     trackCountlyCarRecommendation()
+    const dataCarTemp = {
+      ...dataCar,
+      PELUANG_KREDIT_BADGE: 'Mudah disetujui',
+    }
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarTemp),
+    )
     if (window.location.pathname.includes('kalkulator-kredit')) {
       saveDataForCountlyTrackerPageViewPDP(
         PreviousButton.CarRecommendation,

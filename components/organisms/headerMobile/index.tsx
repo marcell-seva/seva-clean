@@ -96,7 +96,7 @@ export const HeaderMobile = ({
             ? getPageName()
             : 'PDP - ' + valueMenuTabCategory(),
         USER_TYPE: valueForUserTypeProperty(),
-        SOURCE_BUTTON: 'Location Icon',
+        SOURCE_BUTTON: 'Location Icon (Navbar)',
       })
       emitClickCityIcon()
     }
@@ -105,7 +105,9 @@ export const HeaderMobile = ({
   const handleSearch = () => {
     if (!isActive) {
       trackEventCountly(CountlyEventNames.WEB_CAR_SEARCH_ICON_CLICK, {
-        PAGE_ORIGINATION: getPageName(),
+        PAGE_ORIGINATION: pageOrigination.includes('PDP')
+          ? 'PDP - ' + valueMenuTabCategory()
+          : pageOrigination,
       })
       setIsOpenSearchModal(true)
       trackSearchbarOpen({
@@ -138,13 +140,17 @@ export const HeaderMobile = ({
     trackSevaLogoClick({
       Page_Origination_URL: window.location.href,
     })
-    trackEventCountly(CountlyEventNames.WEB_SEVA_LOGO_CLICK, {
-      PAGE_ORIGINATION: getPageName(),
-      USER_TYPE: valueForUserTypeProperty(),
-    })
+    if (pageOrigination && pageOrigination.length !== 0) {
+      trackEventCountly(CountlyEventNames.WEB_SEVA_LOGO_CLICK, {
+        PAGE_ORIGINATION: pageOrigination.includes('PDP')
+          ? 'PDP - ' + valueMenuTabCategory()
+          : pageOrigination,
+        USER_TYPE: valueForUserTypeProperty(),
+      })
+    }
     saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
 
-    window.location.href = redirectHome
+    // window.location.href = redirectHome
   }
 
   const redirectHome = adaSeva === 'adaSEVAdiOTO' ? rootOTOUrl : rootUrl
@@ -261,6 +267,7 @@ export const HeaderMobile = ({
           isOpen={isOpenSearchModal}
           handleCloseModal={() => setIsOpenSearchModal(false)}
           isOTO={isOTO}
+          pageOrigination={pageOrigination}
         />
       </header>
       <Overlay isShow={isActive} onClick={() => setIsActive(false)} />
