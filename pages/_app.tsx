@@ -144,7 +144,7 @@ export default function App({ Component, pageProps }: AppProps) {
           app_id:"KW8JVVD7VJKF2EQHOHX2YYOA",
           debug_logs: 0
           });
-      }
+      };
 
       Defer(moeevent, 0, true)
       `}</Script>
@@ -158,13 +158,13 @@ export default function App({ Component, pageProps }: AppProps) {
       s.parentNode.insertBefore(t,s)};
 
       function fbevent() {
-        fbfb(window, document,'script','https://connect.facebook.net/en_US/fbevents.js')
+        fbfb(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
         fbq('set', 'debug', false, ${FB_PIXEL_ID});
         fbq('set', 'autoConfig', true, ${FB_PIXEL_ID});
         fbq('init', ${FB_PIXEL_ID});
-      }
+      };
 
-      Defer(fbevent, 0, true)
+      Defer(fbevent, 0, true);
     `}</Script>
       <Script>{`
       //some default pre init
@@ -189,7 +189,7 @@ export default function App({ Component, pageProps }: AppProps) {
         cly.onload = function(){Countly.init()};
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
       };
-      Defer(countly, 0, true)
+      Defer(countly, 0, true);
       `}</Script>
       <Script>{`Defer.all('script[type="deferjs"]', 0, true)`}</Script>
       <Script>{`Defer.lazy = true;`}</Script>
