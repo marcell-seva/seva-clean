@@ -20,6 +20,7 @@ const utils = {
   probe: 'https://probe.addpush.com/d/sub/',
   checkReferralCode: temanSevaUrlPath.checkRefCode,
   checkNIKAvailable: `${baseUrl}/customers/check-ktp-availability`,
+  salesAgent: `${baseUrl}/salesman/tso-dso`,
 }
 
 const product = {
@@ -42,6 +43,7 @@ const leads = {
 const omnicom = {
   check: `${baseUrl}/omnicom/check/:id`,
   updateLeads: `${baseUrl}/omnicom`,
+  updateLeadsCM: `${baseUrl}/omnicom/cm`,
 }
 
 const auth = {
