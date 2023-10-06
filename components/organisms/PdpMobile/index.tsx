@@ -68,6 +68,7 @@ import { useUtils } from 'services/context/utilsContext'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
 import dynamic from 'next/dynamic'
 import { Currency } from 'utils/handler/calculation'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const OverlayGallery = dynamic(() =>
   import('components/molecules').then((mod) => mod.OverlayGallery),
@@ -529,7 +530,7 @@ export default function NewCarVariantList({
     }
   }
 
-  useEffect(() => {
+  useAfterInteractive(() => {
     if (!isSentCountlyPageView) {
       const timeoutCountlyTracker = setTimeout(() => {
         if (!isSentCountlyPageView) {
@@ -541,7 +542,7 @@ export default function NewCarVariantList({
     }
   }, [])
 
-  useEffect(() => {
+  useAfterInteractive(() => {
     if (dataAnnouncementBox) {
       const isShowAnnouncement = getSessionStorage(
         getToken()

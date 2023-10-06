@@ -73,12 +73,10 @@ export const CityFirst = () => {
   }, [])
 
   useEffect(() => {
-    ;['scroll', 'touchstart'].forEach((ev) =>
-      window.addEventListener(ev, showConditionCity),
-    )
+    ;['scroll'].forEach((ev) => window.addEventListener(ev, showConditionCity))
 
     return () => {
-      ;['scroll', 'touchstart'].forEach((ev) =>
+      ;['scroll'].forEach((ev) =>
         window.removeEventListener(ev, showConditionCity),
       )
     }
