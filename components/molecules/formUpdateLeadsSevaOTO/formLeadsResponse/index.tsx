@@ -21,8 +21,6 @@ export const FormLeadsResponse = ({
   isApplied,
   ...divProps
 }: FilterMobileProps) => {
-  console.log(leadRes)
-
   const [leadsResponse, setLeadsResponse] = useState(
     leadRes === true ? 'Answered' : 'Unanswered',
   )

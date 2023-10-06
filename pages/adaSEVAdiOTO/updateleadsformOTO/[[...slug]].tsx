@@ -231,8 +231,8 @@ const UpdateLeadsFormOTO = ({
         isLeadQualified: forms.isLeadQualified,
         carModelId: forms?.model?.modelId,
         carVariantId: forms.variant?.variantId,
-        cityId: parseInt(forms?.city?.id),
-        priceOtr: parseInt(otr),
+        cityId: parseInt(forms?.city?.id!),
+        priceOtr: parseInt(otr!),
       }
 
       try {
