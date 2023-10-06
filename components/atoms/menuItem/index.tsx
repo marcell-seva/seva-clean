@@ -31,6 +31,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         isOTO ? OTONewCarUrl : menuUrl,
       )
     }
+
     sendAmplitudeData(AmplitudeEventName.WEB_BURGER_MENU_CLICK, {
       Page_Origination_URL: window.location.href,
       Menu: menuName,
