@@ -93,7 +93,6 @@ applyPolyfills().then(() => {
 export default function App({ Component, pageProps }: AppProps) {
   useAfterInteractive(() => {
     initAmplitude()
-    useAddUtmTagsToApiCall()
     if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'staging') {
       TagManager.initialize({ gtmId: 'GTM-K2P73CT' })
     } else {
@@ -103,6 +102,8 @@ export default function App({ Component, pageProps }: AppProps) {
       client && window.fbq('track', FBPixelStandardEvent.PageView)
     }
   }, [])
+
+  useAddUtmTagsToApiCall()
 
   return (
     <>
