@@ -38,6 +38,7 @@ import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
+import { getCity } from 'utils/hooks/useGetCity'
 
 const Loading = dynamic(() =>
   import('components/atoms/loading').then((mod) => mod.Loading),
@@ -263,7 +264,7 @@ export default function HeaderVariant({
 
   useEffect(() => {
     api
-      .getCarofTheMonth()
+      .getCarofTheMonth('?city=' + getCity().cityCode)
       .then((res) => {
         setComDataNew(res.data)
       })
