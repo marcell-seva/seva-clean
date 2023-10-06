@@ -67,8 +67,14 @@ export const CityFirst = () => {
   }, [])
 
   useEffect(() => {
-    setShowCity(showCondition)
-  }, [router.pathname])
+    ;['scroll'].forEach((ev) => window.addEventListener(ev, showConditionCity))
+
+    return () => {
+      ;['scroll'].forEach((ev) =>
+        window.removeEventListener(ev, showConditionCity),
+      )
+    }
+  }, [router.pathname, interactive])
 
   return (
     <CitySelectorModal
