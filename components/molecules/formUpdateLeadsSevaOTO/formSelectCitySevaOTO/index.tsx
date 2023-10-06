@@ -24,6 +24,7 @@ interface FormSelectCityProps extends React.ComponentProps<'div'> {
   isHasCarParameter: boolean
   name: string
   handleChange: (name: string, value: any) => void
+  disabledInput?: boolean
   isError?: boolean
   datatestid?: TestID
   onOpenTooltip?: () => void
@@ -34,6 +35,7 @@ export default function FormSelectCitySevaOTO({
   isHasCarParameter,
   handleChange,
   name,
+  disabledInput,
   isError = false,
   onOpenTooltip,
   onShowDropdown,
@@ -131,7 +133,7 @@ export default function FormSelectCitySevaOTO({
     )
     if (selectedCity) {
       handleChange(name, selectedCity)
-      saveCityOtrToLocalStorage(selectedCity)
+      // saveCityOtrToLocalStorage(selectedCity)
       window.dispatchEvent(new Event('storage'))
     }
   }
@@ -219,7 +221,8 @@ export default function FormSelectCitySevaOTO({
         onBlurInput={onBlurHandler}
         onChoose={onChooseHandler}
         isClearable={false}
-        disableIconClick={false}
+        disabled={disabledInput}
+        disableIconClick={disabledInput}
         rightIcon={(state) => {
           if (state.isOpen) {
             return (

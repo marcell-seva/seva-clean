@@ -129,7 +129,9 @@ export const FormSelectModelCarSevaOTO = ({
 
   useEffect(() => {
     if (choosenModel && selectedCity) {
-      const index = modelCarList.findIndex((model) => model.id === choosenModel)
+      const index = modelCarList.findIndex(
+        (model) => model.brand === choosenModel,
+      )
       if (index === -1 && modelCarList.length > 0) {
         setIsError(true)
         setModelError(true)
@@ -269,14 +271,13 @@ export const FormSelectModelCarSevaOTO = ({
           }
         }}
         isClearable={false}
-        showDropdownImage
         disableDropdownText="Tidak tersedia di kota pilihan kamu"
-        isError={isError && !!selectedCity && isCheckForError}
-        disabled={!selectedCity || overrideDisabled}
+        isError={isError && !selectedCity && isCheckForError}
+        disabled={!valueId || overrideDisabled}
         datatestid={elementId.Field.CarMobil}
         onShowDropdown={onShowDropdown}
       />
-      {isError && selectedCity && isCheckForError && (
+      {isError && !selectedCity && isCheckForError && (
         <ErrorMessage>
           Mobil tidak tersedia di kotamu. Silakan pilih mobil lain.
         </ErrorMessage>

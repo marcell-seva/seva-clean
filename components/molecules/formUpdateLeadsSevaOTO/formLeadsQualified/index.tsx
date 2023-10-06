@@ -5,7 +5,8 @@ import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
 
 interface FilterMobileProps extends React.ComponentProps<'div'> {
-  setTenureFilter?: any
+  setLeadQualified?: any
+  leadQualified?: any
   isResetFilter?: boolean
   isApplied?: boolean
 }
@@ -14,12 +15,15 @@ interface LeadsButtonProps {
 }
 
 export const FormLeadsQualified = ({
-  setTenureFilter,
+  setLeadQualified,
+  leadQualified,
   isResetFilter,
   isApplied,
   ...divProps
 }: FilterMobileProps) => {
-  const [leadsResponse, setLeadsResponse] = useState('Yes')
+  const [isQualified, setIsQualified] = useState(
+    leadQualified === true ? 'Yes' : 'No',
+  )
   const leadsList: LeadsButtonProps[] = [
     {
       value: 'Yes',
@@ -51,11 +55,12 @@ export const FormLeadsQualified = ({
             <>
               <div
                 onClick={() => {
-                  setLeadsResponse(value)
+                  setIsQualified(value)
+                  setLeadQualified(value === 'Yes' ? true : false)
                 }}
                 key={value}
                 className={
-                  leadsResponse === value ? styles.boxOnclick : styles.box
+                  isQualified === value ? styles.boxOnclick : styles.box
                 }
                 data-testid={elementId.Field.TenurePopup + value + '-th'}
               >

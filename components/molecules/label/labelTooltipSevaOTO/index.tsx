@@ -13,6 +13,7 @@ interface Props {
   iconWidth?: number
   color?: string
   datatestid?: string
+  required?: boolean
   onOpenTooltip?: () => void
   onClick?: () => void
 }
@@ -26,6 +27,7 @@ export const LabelTooltipSevaOTO: React.FC<Props> = ({
   iconHeight = 18,
   iconWidth = 18,
   color = '#878D98',
+  required = false,
   onClick,
 }) => {
   const [isToolTipOpen, setIsToolTipOpen] = useState(false)
@@ -40,7 +42,10 @@ export const LabelTooltipSevaOTO: React.FC<Props> = ({
 
   return (
     <div className={styles.wrapper} data-testid={datatestid}>
-      <Label name={name}>{label}</Label>
+      <Label name={name}>
+        {label}
+        {required && <span style={{ color: '#b4231e' }}> *</span>}
+      </Label>
 
       {!isToolTipOpen && (
         <div className={styles.tooltipWrapper}>
