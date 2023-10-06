@@ -5,7 +5,8 @@ import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
 
 interface FilterMobileProps extends React.ComponentProps<'div'> {
-  setTenureFilter?: any
+  setLeadRes?: any
+  leadRes?: any
   isResetFilter?: boolean
   isApplied?: boolean
 }
@@ -14,12 +15,17 @@ interface LeadsButtonProps {
 }
 
 export const FormLeadsResponse = ({
-  setTenureFilter,
+  setLeadRes,
+  leadRes,
   isResetFilter,
   isApplied,
   ...divProps
 }: FilterMobileProps) => {
-  const [leadsResponse, setLeadsResponse] = useState('Answered')
+  console.log(leadRes)
+
+  const [leadsResponse, setLeadsResponse] = useState(
+    leadRes === true ? 'Answered' : 'Unanswered',
+  )
   const leadsList: LeadsButtonProps[] = [
     {
       value: 'Answered',
@@ -46,24 +52,23 @@ export const FormLeadsResponse = ({
         </div>
       </div>
       <Space size={[16, 16]} wrap>
-        {leadsList.map(({ value }) => {
-          return (
-            <>
-              <div
-                onClick={() => {
-                  setLeadsResponse(value)
-                }}
-                key={value}
-                className={
-                  leadsResponse === value ? styles.boxOnclick : styles.box
-                }
-                data-testid={elementId.Field.TenurePopup + value + '-th'}
-              >
-                <div className={styles.content}>{value}</div>
-              </div>
-            </>
-          )
-        })}
+        {leadsList.map(({ value }) => (
+          <>
+            <div
+              onClick={() => {
+                setLeadsResponse(value)
+                setLeadRes(value === 'Answered' ? true : false)
+              }}
+              key={value}
+              className={
+                leadsResponse === value ? styles.boxOnclick : styles.box
+              }
+              data-testid={elementId.Field.TenurePopup + value + '-th'}
+            >
+              <div className={styles.content}>{value}</div>
+            </div>
+          </>
+        ))}
       </Space>
     </div>
   )

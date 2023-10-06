@@ -268,6 +268,7 @@ export const api = {
   getCustomerSpouseKtpSeva,
   getAvailableNIK,
   getLeadsDetail,
+  postUpdateLeadsOTO,
 
   postUnverifiedLeadsNew,
   postRefreshToken,

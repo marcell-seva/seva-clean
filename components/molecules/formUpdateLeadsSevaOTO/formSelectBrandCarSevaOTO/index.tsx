@@ -16,6 +16,7 @@ export interface FilterMobileProps {
   isResetFilter?: boolean
   isApplied?: boolean
   brand?: any
+  isSelected: boolean
   setResetTmp: any
   isButtonClick: boolean | undefined
 }
@@ -30,14 +31,14 @@ export const FormSelectBrandCarSevaOTO = ({
   setIsCheckedBrand,
   isResetFilter,
   isApplied,
+  isSelected,
   brand,
   // setResetTmp,
   isButtonClick,
 }: FilterMobileProps) => {
   const { funnelQuery } = useFunnelQueryData()
-  const [isCheckedBrandQuery, setIsCheckedBrandQuery] = useState<string[]>(
-    funnelQuery.brand ? funnelQuery.brand : [],
-  )
+  const [isCheckedBrandQuery, setIsCheckedBrandQuery] = useState<string[]>([])
+
   // setIsCheckedBrand(isCheckedBrandQuery)
   const carList: CarButtonProps[] = [
     {
@@ -117,9 +118,9 @@ export const FormSelectBrandCarSevaOTO = ({
       setIsCheckedBrandQuery(isCheckedBrandQuery.filter((item) => item !== key))
       paramQuery.brand = isCheckedBrandQuery.filter((item) => item !== key)
     } else {
-      setIsCheckedBrand(isCheckedBrandQuery.concat(key))
-      setIsCheckedBrandQuery(isCheckedBrandQuery.concat(key))
-      paramQuery.brand = isCheckedBrandQuery.concat(key)
+      setIsCheckedBrand([key])
+      setIsCheckedBrandQuery([key])
+      paramQuery.brand = [key]
     }
   }
   useEffect(() => {
@@ -166,12 +167,17 @@ export const FormSelectBrandCarSevaOTO = ({
           return (
             <>
               <div
-                onClick={() => onClick(value)}
+                onClick={() => (isSelected ? onClick(key) : '')}
                 key={key}
                 className={!isChecked ? styles.box : styles.boxOnclick}
                 data-testid={`${elementId.Logo}${
                   key === 'BMW' ? key : key.toLowerCase()
                 }`}
+                style={
+                  isSelected
+                    ? { background: 'white', cursor: 'pointer' }
+                    : { background: '#F5F6F6', cursor: 'not-allowed' }
+                }
               >
                 <div className={styles.content}>
                   {icon} {key}
