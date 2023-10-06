@@ -3,8 +3,8 @@ import styles from 'styles/components/molecules/formUpdateLeadsSevaOTO/formDBLea
 import React from 'react'
 
 interface PropsDBLeads extends React.ComponentProps<'input'> {
-  defaultValue?: number
-  value?: number
+  defaultValue?: string
+  value?: string
   title?: string
 }
 
@@ -20,7 +20,7 @@ const FormDBLeads = ({
         {...inputProps}
         value={value}
         title={title}
-        type="number"
+        type="text"
         disabled={true}
         className={styles.input}
       />
