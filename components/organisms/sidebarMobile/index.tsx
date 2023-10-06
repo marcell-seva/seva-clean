@@ -103,6 +103,12 @@ const sidebarMobile = ({
     trackProfileAkunSayaClick({
       Page_Origination_URL: window.location.href,
     })
+    if (pageOrigination) {
+      saveSessionStorage(
+        SessionStorageKey.PageReferrerProfilePage,
+        pageOrigination,
+      )
+    }
     window.location.href = url
   }
 
@@ -180,6 +186,7 @@ const sidebarMobile = ({
         menuList={mobileWebTopMenus}
         customerDetail={customerDetail}
         isOTO={isOTO}
+        pageOrigination={pageOrigination}
       />
     </div>
   )

@@ -255,7 +255,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
       temanSevaStatus = 'Yes'
     } else if (!!getToken()) {
       const response = await getCustomerInfoSeva()
-      if (response.data[0].temanSevaTrxCode) {
+      if (response[0]?.temanSevaTrxCode) {
         temanSevaStatus = 'Yes'
       }
     }
@@ -384,7 +384,13 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
           <div className={styles.wrapperSupergraphicLeft}>
             <Image
               src={SupergraphicLeft}
-              alt="Vector Promosi Mobil"
+              alt={
+                brand
+                  ? `Vector Form Customer Service Mobil ${
+                      carModelDetails?.brand
+                    } ${carModelDetails?.model.replace('-', ' ')}`
+                  : 'Vector Promosi Mobil'
+              }
               width={200}
               height={140}
               className={styles.supergraphicLeft}
@@ -393,7 +399,13 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
           <div className={styles.wrapperSupergraphicRight}>
             <Image
               src={SupergraphicRight}
-              alt="Vector Promosi Mobil"
+              alt={
+                brand
+                  ? `Vector Form Customer Service Mobil ${
+                      carModelDetails?.brand
+                    } ${carModelDetails?.model.replace('-', ' ')}`
+                  : 'Vector Promosi Mobil'
+              }
               width={200}
               height={140}
               className={styles.supergraphicRight}

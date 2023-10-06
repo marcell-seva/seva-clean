@@ -23,12 +23,13 @@ import {
   formatPriceNumberThousandDivisor,
 } from 'utils/numberUtils/numberUtils'
 import { getModelPriceRange } from 'utils/carModelUtils/carModelUtils'
-import { monthId } from 'utils/handler/date'
+import { articleDateFormat, monthId } from 'utils/handler/date'
 import { useRouter } from 'next/router'
 import { getCity } from 'utils/hooks/useGetCity'
 import { useCar } from 'services/context/carContext'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { lowerSectionNavigationTab } from 'config/carVariantList.config'
+import Script from 'next/script'
 import styles from 'styles/pages/pdp.module.scss'
 interface PdpDataLocalContextType {
   /**
@@ -75,7 +76,7 @@ export default function index({
   dataMobileMenu,
   dataFooter,
   dataCities,
-  isSsrMobileLocal,
+  selectedVideoReview,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const {
     saveDataAnnouncementBox,
@@ -86,9 +87,9 @@ export default function index({
   } = useUtils()
   const router = useRouter()
   const { model, brand, slug } = router.query
-  const [isMobile, setIsMobile] = useState(isSsrMobileLocal)
+  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
-  const { carModelDetails, carVariantDetails, recommendation } = useCar()
+  const { carModelDetails, recommendation } = useCar()
   const lowerTab = router.query.slug as string
   const path = lowerTab ? capitalizeFirstLetter(lowerTab[0]) : ''
   const [selectedTabValue, setSelectedTabValue] = useState(
@@ -148,8 +149,10 @@ export default function index({
   const currentYear = todayDate.getFullYear()
   const currentMonth = monthId(todayDate.getMonth())
 
-  const carOTRValue = carModelDetails?.variants[0].priceValue as number
-  const carOTR = isNaN(carOTRValue) ? null : `Rp ${carOTRValue / 1000000} Juta`
+  const carOTRValue = dataCombinationOfCarRecomAndModelDetail?.variants[
+    dataCombinationOfCarRecomAndModelDetail?.variants.length - 1
+  ].priceValue as number
+  const carOTR = `Rp ${carOTRValue / 1000000} Juta`
 
   const getMetaTitle = () => {
     if (isMobile) {
@@ -161,7 +164,7 @@ export default function index({
         case 'Spesifikasi':
           return `Spesifikasi ${carBrand} ${carModel} ${currentYear} | SEVA`
         case 'Harga':
-          return `Harga ${carBrand} ${carModel} ${currentYear} ${
+          return `Harga OTR ${carBrand} ${carModel} ${currentYear} ${
             getCity().cityName
           } Terbaru | SEVA`
         default:
@@ -178,7 +181,7 @@ export default function index({
             case 'spesifikasi':
               return `Spesifikasi ${carBrand} ${carModel} ${currentYear} | SEVA`
             case 'harga':
-              return `Harga ${carBrand} ${carModel} ${currentYear} ${
+              return `Harga OTR ${carBrand} ${carModel} ${currentYear} ${
                 getCity().cityName
               } Terbaru | SEVA`
             default:
@@ -201,52 +204,30 @@ export default function index({
         case 'Spesifikasi':
           return `Dapatkan informasi lengkap mengenai spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
         case 'Harga':
-          if (carOTR !== null) {
-            return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
-          }
-          // Handle the case when carOTR is null
-          return `Dapatkan informasi lengkap mengenai harga dan spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
+          return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
+
         default:
           return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tahu spesifikasi, harga, dan kredit di SEVA`
       }
-    } else {
-      if (Array.isArray(slug)) {
-        const descriptions = slug.map((s) => {
-          switch (s) {
-            case 'kredit':
-              return `Hitung simulasi cicilan ${carBrand} ${carModel} ${currentYear}. Beli mobil ${carBrand} secara kredit, proses aman & mudah dengan Instant Approval* di SEVA."`
-            case 'spesifikasi':
-              return `Dapatkan informasi lengkap mengenai spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
-            case 'harga':
-              if (carOTR !== null) {
-                return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
-              }
-              // Handle the case when carOTR is null
-              return `Dapatkan informasi lengkap mengenai harga dan spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
-            default:
-              return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tahu spesifikasi, harga, dan kredit di SEVA`
-          }
-        })
-
-        return descriptions.join(' ')
-      } else {
-        if (carOTR !== null) {
-          switch (slug) {
-            case 'kredit':
-              return `Hitung simulasi cicilan ${carBrand} ${carModel} ${currentYear}. Beli mobil ${carBrand} secara kredit, proses aman & mudah dengan Instant Approval* di SEVA."`
-            case 'spesifikasi':
-              return `Dapatkan informasi lengkap mengenai spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
-            case 'harga':
-              return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
-            default:
-              return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tahu spesifikasi, harga, dan kredit di SEVA`
-          }
-        } else {
-          // Handle the case when carOTR is null and slug is undefined
-          return null
-        }
-      }
     }
+    if (Array.isArray(slug)) {
+      const descriptions = slug.map((s) => {
+        switch (s) {
+          case 'kredit':
+            return `Hitung simulasi cicilan ${carBrand} ${carModel} ${currentYear}. Beli mobil ${carBrand} secara kredit, proses aman & mudah dengan Instant Approval* di SEVA."`
+          case 'spesifikasi':
+            return `Dapatkan informasi lengkap mengenai spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
+          case 'harga':
+            return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
+
+          default:
+            return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tahu spesifikasi, harga, dan kredit di SEVA`
+        }
+      })
+
+      return descriptions.join(' ')
+    }
+    return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tahu spesifikasi, harga, dan kredit di SEVA`
   }
 
   const modelDetailData =
@@ -255,33 +236,6 @@ export default function index({
     recommendation.length !== 0
       ? recommendation
       : carRecommendationsRes?.carRecommendations
-  const [videoReview, setVideoReview] = useState<MainVideoResponseType>()
-  useEffect(() => {
-    getVideoReview()
-  }, [])
-  const getVideoReview = async () => {
-    const dataVideoReview = carVideoReviewRes
-    const filterVideoReview = dataVideoReview.data.filter(
-      (video: MainVideoResponseType) => video.modelId === modelDetailData?.id,
-    )[0]
-
-    if (filterVideoReview) {
-      const linkVideo = filterVideoReview.link.split(/[=&]/)[1]
-      const idThumbnailVideo = filterVideoReview.thumbnail.substring(
-        filterVideoReview.thumbnail.indexOf('d/') + 2,
-        filterVideoReview.thumbnail.lastIndexOf('/view'),
-      )
-      const thumbnailVideo =
-        'https://drive.google.com/uc?export=view&id=' + idThumbnailVideo
-      const dataMainVideo = {
-        uploadedBy: filterVideoReview.accountName,
-        videoId: linkVideo,
-        title: filterVideoReview.title,
-        thumbnailVideo: thumbnailVideo,
-      }
-      setVideoReview(filterVideoReview)
-    }
-  }
 
   useEffect(() => {
     setTabFromDirectUrl()
@@ -303,15 +257,16 @@ export default function index({
         description={getMetaDescription() ?? ''}
         image={modelDetailData?.images[0] || defaultSeoImage}
       />
-      <script
+      <Script
+        id="product-jsonld"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             jsonLD(
-              carModelDetails,
-              carVariantDetails,
+              dataCombinationOfCarRecomAndModelDetail,
+              carVariantDetailsRes,
               recommendationsDetailData,
-              videoReview,
+              selectedVideoReview ?? null,
             ),
           ),
         }}
@@ -350,6 +305,7 @@ export async function getServerSideProps(context: any) {
         notFound: true,
       }
     }
+
     const [
       carRecommendationsRes,
       metaTagDataRes,
@@ -404,6 +360,12 @@ export async function getServerSideProps(context: any) {
         carModelDetailsRes,
       )
 
+    const selectedVideoReview = carVideoReviewRes.data.find(
+      (video: MainVideoResponseType) => {
+        return video.modelId === carModelDetailsRes?.id
+      },
+    )
+
     return {
       props: {
         carRecommendationsRes,
@@ -418,7 +380,7 @@ export async function getServerSideProps(context: any) {
         dataFooter: footerRes.data,
         dataCities: cityRes,
         dataDesktopMenu: menuDesktopRes.data,
-        isSsrMobileLocal: getIsSsrMobile(context),
+        selectedVideoReview: selectedVideoReview || null,
       },
     }
   } catch (error) {
@@ -436,9 +398,9 @@ export async function getServerSideProps(context: any) {
   }
 }
 
-const getItemListElement = (carModel: CarModelDetailsResponse | null) => {
-  return (
-    carModel?.variants.map((variant, index) => ({
+const getItemListElement = (carModel: CarModelDetailsResponse) => {
+  const resultList = carModel?.variants.map((variant, index) => {
+    return {
       '@type': 'ListItem',
       position: index + 1,
       item: {
@@ -453,8 +415,9 @@ const getItemListElement = (carModel: CarModelDetailsResponse | null) => {
           price: variant.priceValue,
         },
       },
-    })) || []
-  )
+    }
+  })
+  return resultList || []
 }
 
 const getSelectedCar = (
@@ -486,7 +449,7 @@ const handlingCarLogo = (brand: string) => {
 }
 
 const jsonLD = (
-  carModel: CarModelDetailsResponse | null,
+  carModel: CarModelDetailsResponse | undefined,
   carVariant: CarVariantDetails | null,
   recommendationsDetailData?: CarRecommendation[],
   videoReview?: MainVideoResponseType,
@@ -517,7 +480,9 @@ const jsonLD = (
       name: videoReview?.title,
       description: videoReview?.title,
       thumbnailUrl: videoReview?.thumbnail,
-      uploadDate: videoReview?.createdAt,
+      uploadDate: videoReview?.createdAt
+        ? articleDateFormat(new Date(videoReview?.createdAt), 'id')
+        : undefined,
       embedUrl: videoReview?.link,
       publisher: {
         '@type': 'Organization',
@@ -534,7 +499,9 @@ const jsonLD = (
         .replace(' ', '-')
         .toLocaleLowerCase()}`,
       bodyType: carVariant?.variantDetail.bodyType,
-      description: carVariant?.variantDetail.description,
+      description: carVariant?.variantDetail?.description?.id && {
+        id: carVariant?.variantDetail?.description?.id,
+      },
       brand: {
         '@type': 'Brand',
         name: carModel?.brand,
@@ -542,7 +509,7 @@ const jsonLD = (
       },
       vehicleSeatingCapacity: {
         '@type': 'QuantitativeValue',
-        value: carVariant?.variantDetail.carSeats,
+        value: carVariant?.variantDetail.carSeats + ' Kursi',
       },
       fuelType: {
         '@type': 'QualitativeValue',
@@ -567,16 +534,16 @@ const jsonLD = (
         highPrice: carModel?.variants[carModel?.variants.length - 1].priceValue,
         offerCicilan: carModel?.variants[0].monthlyInstallment,
         offerDp: carModel?.variants[0].dpAmount,
-        tenor: carModel?.variants[0].tenure,
+        tenor: carModel?.variants[0].tenure + ' Tahun',
       },
     },
     itemList: {
       '@type': 'ItemList',
       name: `Variant ${carModel?.brand} ${carModel?.model}`,
       description: `Daftar Variant ${carModel?.brand} ${carModel?.model} 2023`,
-      itemListOrder: 'http://schema.org/ItemListOrderDescending',
+      itemListOrder: 'https://schema.org/ItemListOrderDescending',
       numberOfItems: carModel?.variants.length,
-      itemListElement: getItemListElement(carModel),
+      itemListElement: carModel ? getItemListElement(carModel) : [],
     },
     FAQPage: {
       '@type': 'FAQPage',
@@ -619,5 +586,128 @@ const jsonLD = (
         },
       ],
     },
+    SiteNavigationElement: {
+      '@type': 'SiteNavigationElement',
+      name: 'SEVA',
+      potencialAction: [
+        {
+          '@type': 'Action',
+          name: 'Mobil',
+          url: 'https://www.seva.id/mobil-baru',
+        },
+        {
+          '@type': 'Action',
+          name: 'Fasilitas Dana',
+          url: 'https://www.seva.id/fasilitas-dana',
+        },
+        {
+          '@type': 'Action',
+          name: 'Layanan Surat Kendaraan',
+          url: 'https://www.seva.id/layanan-surat-kendaraan',
+        },
+        {
+          '@type': 'Action',
+          name: 'Tentang SEVA',
+          url: 'https://www.seva.id/info/tentang-kami/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Promo',
+          url: 'https://www.seva.id/info/promo/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Teman SEVA',
+          url: 'https://www.seva.id/teman-seva/dashboard',
+        },
+        {
+          '@type': 'Action',
+          name: 'Berita Utama Otomotif',
+          url: 'https://www.seva.id/blog/category/otomotif/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Review Otomotif',
+          url: 'https://www.seva.id/blog/category/otomotif/review-otomotif/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Tips & Rekomendasi',
+          url: 'https://www.seva.id/blog/category/otomotif/tips-rekomendasi-otomotif/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Keuangan',
+          url: 'https://www.seva.id/blog/category/keuangan/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Semua Artikel',
+          url: 'https://www.seva.id/blog/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Akun Saya',
+          url: 'https://www.seva.id/akun/profil',
+        },
+      ],
+    },
+    ImageObject: [
+      {
+        '@type': 'ImageObject',
+        contentUrl:
+          'https://images.prod.seva.id/Toyota/All%20New%20Rush/gallery/main_galery_toyota_all_new_rush_eksterior_1.jpg',
+        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
+        representativeOfPage: 'https://schema.org/True',
+        isFamilyFriendly: 'https://schema.org/True',
+        isAccesibleForFree: 'https://schema.org/False',
+      },
+      {
+        '@type': 'ImageObject',
+        contentUrl:
+          'https://images.prod.seva.id/Toyota/All%20New%20Rush/gallery/main_galery_toyota_all_new_rush_interior_1.jpg',
+        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Interior`,
+        representativeOfPage: 'https://schema.org/True',
+        isFamilyFriendly: 'https://schema.org/True',
+        isAccesibleForFree: 'https://schema.org/False',
+      },
+    ],
+    NewsArticle: [
+      {
+        '@type': 'NewsArticle',
+        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
+        headline: 'Promo Toyota Spektakuler',
+        abstract:
+          'Dapatkan bunga spesial mulai dari 0%, bebas biaya administrasi atau bebas 2 tahun asuransi comprehensive hingga 20 juta rupiah untuk pembelian mobil baru Toyota Veloz, Avanza, Raize, dan Rush secara kredit',
+        image:
+          'https://www.seva.id/info/wp-content/uploads/2023/01/Seva_Promo-Toyota-2_SEVA-TSO-1040x336-1.png.webp',
+        datePublished: '2022-11-22',
+        publisher: {
+          '@type': '-',
+          name: 'Organization SEVA by Astra',
+          logo: {
+            '@type': 'ImageObject',
+            url: 'https://cdn.seva.id/blog/media/2022/07/Seva-LogoxAF_Seva-PrimarybyAstraFinancial3.png',
+          },
+        },
+      },
+      {
+        '@type': 'NewsArticle',
+        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
+        headline: 'Promo Potongan DP & Cashback Daihatsu',
+        abstract:
+          'Dapatkan cashback tambahan trade-in senilai 1 juta rupiah untuk pembelian mobil baru Brand Daihatsu semua tipe (LCGC dan non-LCGC)',
+        image: 'https://www.seva.id/revamp/illustration/PromoTradeIn.webp',
+        datePublished: '2022-11-24',
+        publisher: {
+          '@type': '-',
+          name: 'Organization SEVA by Astra',
+          logo: {
+            '@type': 'ImageObject',
+            url: 'https://cdn.seva.id/blog/media/2022/07/Seva-LogoxAF_Seva-PrimarybyAstraFinancial3.png',
+          },
+        },
+      },
+    ],
   }
 }

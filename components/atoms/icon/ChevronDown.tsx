@@ -5,6 +5,7 @@ export const IconChevronDown: React.FC<PropsIcon> = ({
   width,
   height,
   color = '#05256E',
+  alt,
   className,
 }): JSX.Element => {
   return (
@@ -16,6 +17,7 @@ export const IconChevronDown: React.FC<PropsIcon> = ({
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
+      <title>{alt}</title>
       <path
         fillRule="evenodd"
         clipRule="evenodd"

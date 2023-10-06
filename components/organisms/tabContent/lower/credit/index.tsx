@@ -1084,6 +1084,25 @@ export const CreditTab = () => {
 
     return tempArr
   }
+
+  const saveDefaultTenureCarForLoginPageView = (
+    tenure: string,
+    loanRank: string,
+  ) => {
+    const dataCar: trackDataCarType | null = getSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+    )
+    const dataCarTemp = {
+      ...dataCar,
+      TENOR_OPTION: tenure,
+      TENOR_RESULT: loanRank,
+      INCOME_LC: forms.monthlyIncome,
+    }
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarTemp),
+    )
+  }
   const onClickCalculate = async () => {
     validateFormFields()
 
@@ -1159,7 +1178,10 @@ export const CreditTab = () => {
               ) => b.tenure - a.tenure,
             )[0] ?? null
           setSelectedLoan(selectedLoanInitialValue)
-
+          saveDefaultTenureCarForLoginPageView(
+            selectedLoanInitialValue.tenure,
+            selectedLoanInitialValue.loanRank,
+          )
           setIsDataSubmitted(true)
           setCalculationApiPayload(payload)
           // scrollToResult()
@@ -1712,7 +1734,12 @@ export const CreditTab = () => {
       <div className={styles.formCard}>
         <div className={styles.formCardHeader}>
           <div className={styles.iconWrapper}>
-            <IconCalculator width={24} height={24} color="#B4231E" />
+            <IconCalculator
+              width={24}
+              height={24}
+              color="#B4231E"
+              alt="SEVA Calculator Hitung Kemampuan Icon"
+            />
           </div>
           <h3 className={styles.formCardTitle}>Kredit</h3>
         </div>

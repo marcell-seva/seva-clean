@@ -110,10 +110,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
   const { recommendation, saveRecommendation } = useCar()
-  const collectDaihatsu = recommendation.some(
-    (item) => item.brand === 'Daihatsu',
-  )
-  const [showInformDaihatsu, setShowInformDaihatsu] = useState(collectDaihatsu)
   const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>([])
   const {
     bodyType,
@@ -560,10 +556,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
                   setSampleArray({
                     items: response.carRecommendations.slice(0, 12),
                   })
-                  const collectDaihatsu = response.carRecommendations.some(
-                    (item: { brand: string }) => item.brand === 'Daihatsu',
-                  )
-                  setShowInformDaihatsu(collectDaihatsu)
                 }
                 setShowLoading(false)
               })
@@ -626,7 +618,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
           sticky={sticky}
           resultMinMaxPrice={resultMinMaxPrice}
           isShowAnnouncementBox={showAnnouncementBox}
-          showInformationDaihatsu={showInformDaihatsu}
         />
       )
 
@@ -741,7 +732,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
               isFilterFinancial={isFilterFinancial}
               resultMinMaxPrice={resultMinMaxPrice}
               isShowAnnouncementBox={showAnnouncementBox}
-              showInformationDaihatsu={showInformDaihatsu}
             />
             {stickyFilter()}
             <PLPEmpty
@@ -760,7 +750,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
               isFilterFinancial={isFilterFinancial}
               resultMinMaxPrice={resultMinMaxPrice}
               isShowAnnouncementBox={showAnnouncementBox}
-              showInformationDaihatsu={showInformDaihatsu}
               isOTO={isOTO}
             />
             {stickyFilter()}

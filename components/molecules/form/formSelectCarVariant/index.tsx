@@ -187,7 +187,12 @@ export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
                 onClick={onClickArrowHandler}
                 style={{ cursor: 'pointer' }}
               >
-                <IconChevronDown width={25} height={25} color={'#13131B'} />
+                <IconChevronDown
+                  width={25}
+                  height={25}
+                  color={'#13131B'}
+                  alt="SEVA Dropdown Icon"
+                />
               </div>
             )
           }

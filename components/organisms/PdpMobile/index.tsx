@@ -68,6 +68,7 @@ import { useUtils } from 'services/context/utilsContext'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
 import dynamic from 'next/dynamic'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { Currency } from 'utils/handler/calculation'
 
 const OverlayGallery = dynamic(() =>
   import('components/molecules').then((mod) => mod.OverlayGallery),
@@ -361,9 +362,11 @@ export default function NewCarVariantList({
             dataCar?.PELUANG_KREDIT_BADGE === 'Red'
           ? 'Sulit disetujui'
           : 'Null',
-      TENOR_OPTION: dataCar?.PELUANG_KREDIT_BADGE
-        ? dataCar?.TENOR_OPTION + ' Tahun'
-        : 'Null',
+      TENOR_OPTION:
+        window.location.href.includes('kredit') &&
+        dataCar?.PELUANG_KREDIT_BADGE !== 'Null'
+          ? dataCar?.TENOR_OPTION + ' Tahun'
+          : 'Null',
       TENOR_RESULT:
         dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Green'
           ? 'Mudah disetujui'
@@ -373,7 +376,9 @@ export default function NewCarVariantList({
       KK_RESULT: 'Null',
       IA_RESULT: 'Null',
       TEMAN_SEVA_STATUS: temanSevaStatus,
-      INCOME_LOAN_CALCULATOR: filterStorage?.monthlyIncome,
+      INCOME_LOAN_CALCULATOR: filterStorage?.monthlyIncome
+        ? `Rp${Currency(filterStorage?.monthlyIncome)}`
+        : 'Null',
       INCOME_KUALIFIKASI_KREDIT: 'Null',
       INCOME_CHANGE: 'Null',
       OCCUPATION: 'Null',
