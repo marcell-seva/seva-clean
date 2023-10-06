@@ -12,8 +12,6 @@ import FormDealerSales from 'components/molecules/formUpdateLeadsSevaOTO/formDea
 import { Button, Input } from 'components/atoms'
 import { DatePickerCM } from 'components/atoms/inputDate'
 import { LabelWithTooltip } from 'components/molecules'
-import FormSPKDate from 'components/molecules/formUpdateLeadsSevaOTO/formDate'
-import FormDate from 'components/molecules/formUpdateLeadsSevaOTO/formDate'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { LabelTooltipSevaOTO } from 'components/molecules/label/labelTooltipSevaOTO'
 import dayjs from 'dayjs'
@@ -83,9 +81,7 @@ const UpdateLeadsFormCM = ({
         spkDate: dayjs(value.spkDate).format('YYYY-MM-DD'),
         bstkNo: value.noBSTK || '',
         bstkDate: dayjs(value.bstkDate).format('YYYY-MM-DD'),
-      }).then(() => {
-        console.log('success post')
-      })
+      }).then(() => {})
     },
     validateOnBlur: true,
     validationSchema: cmSchema,
