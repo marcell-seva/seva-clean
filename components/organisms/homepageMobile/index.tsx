@@ -93,7 +93,7 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
 
   const getCarOfTheMonth = async () => {
     try {
-      const carofmonth: any = await api.getCarofTheMonth()
+      const carofmonth: any = await api.getCarofTheMonth('?city=' + getCity().cityCode)
       setCarOfTheMonthData(carofmonth.data)
     } catch (e: any) {
       throw new Error(e)
