@@ -515,26 +515,14 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
               maxPriceValue: response.maxPriceValue,
             })
             const minTemp = priceRangeGroup
-              ? response.data.minPriceValue >
-                Number(
-                  priceRangeGroup && priceRangeGroup?.toString().split('-')[0],
-                )
-                ? Number(
-                    priceRangeGroup &&
-                      priceRangeGroup?.toString().split('-')[0],
-                  )
-                : response.data.minPriceValue
+              ? response.minPriceValue > Number(priceRangeGroup.split('-')[0])
+                ? response.minPriceValue
+                : Number(priceRangeGroup.split('-')[0])
               : ''
             const maxTemp = priceRangeGroup
-              ? response.data.maxPriceValue <
-                Number(
-                  priceRangeGroup && priceRangeGroup?.toString().split('-')[1],
-                )
-                ? response.data.maxPriceValue
-                : Number(
-                    priceRangeGroup &&
-                      priceRangeGroup?.toString().split('-')[1],
-                  )
+              ? response.maxPriceValue < Number(priceRangeGroup.split('-')[1])
+                ? response.maxPriceValue
+                : Number(priceRangeGroup.split('-')[1])
               : ''
 
             const queryParam: any = {

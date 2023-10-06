@@ -85,6 +85,7 @@ export default function PLPDesktop({
   footer,
 }: CarResultPageProps) {
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
+  if (isMobile) return <></>
   const router = useRouter()
   const { bodyType, brand, downPaymentAmount, monthlyInstallment } =
     router.query as FilterParam
