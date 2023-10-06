@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { getCities } from 'services/cities'
 import { LocalStorageKey } from 'utils/enum'
 import { countDaysDifference } from 'utils/handler/date'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
@@ -12,6 +11,7 @@ import {
 import { CityOtrOption } from 'utils/types'
 import CitySelectorModal from '../citySelectorModal'
 import { useRouter } from 'next/router'
+import { api } from 'services/api'
 
 export const CityFirst = () => {
   const router = useRouter()
@@ -50,7 +50,7 @@ export const CityFirst = () => {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0 && showCity) {
-      getCities().then((res) => {
+      api.getCities().then((res) => {
         setCityListApi(res.data)
       })
     }

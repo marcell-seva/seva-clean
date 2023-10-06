@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from 'styles/pages/delete-account-success.module.scss'
-import { getCities } from 'services/cities'
+
 import { AxiosResponse } from 'axios'
 import clsx from 'clsx'
 import {
@@ -68,7 +68,7 @@ export default function index() {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      getCities().then((res) => {
+      api.getCities().then((res) => {
         setCityListApi(res)
       })
     }

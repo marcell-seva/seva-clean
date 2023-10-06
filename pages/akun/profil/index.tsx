@@ -5,7 +5,6 @@ import { useFormik } from 'formik'
 import { object, string, InferType } from 'yup'
 import dayjs from 'dayjs'
 import { fetchCustomerDetails } from 'utils/httpUtils/customerUtils'
-import { useTranslation } from 'react-i18next'
 import {
   MoengageEventName,
   setTrackEventMoEngageWithoutValue,
@@ -21,7 +20,6 @@ import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import { useAmplitudePageView } from 'utils/hooks/useAmplitudePageView'
 import { CustomerInfoSeva } from 'utils/types/utils'
-import { updateProfile } from 'services/customer'
 import { separatePhoneNumber } from 'utils/handler/separatePhoneNumber'
 import {
   getPageBeforeProfile,
@@ -53,15 +51,14 @@ import { ToastV2 } from 'components/atoms/toastV2'
 import PopupError from 'components/organisms/popupError'
 import LabelAccount from 'components/molecules/labelAccount'
 import Image from 'next/image'
+import { updateProfile } from 'utils/handler/customer'
 
 const PromotionBanner = '/revamp/images/profile/card_promotion-banner.webp'
-
 const lostConnectionMessage =
   'Oops, koneksi Anda terputus. Silahkan coba kembali.'
 
 const Profile = () => {
   const history = useRouter()
-  const { t } = useTranslation()
   useAmplitudePageView(trackProfilePageView)
   const [customerDetail, setCustomerDetail] = React.useState<CustomerInfoSeva>()
   const [toast, setToast] = useState('')
@@ -128,7 +125,7 @@ const Profile = () => {
         })
         .catch(() => {
           setIsLoadingSubmit(false)
-          setErrorMessage(t('common.errorMessage'))
+          setErrorMessage(lostConnectionMessage)
           throw new Error('Gagal menyimpan perubahan akun')
         })
     },

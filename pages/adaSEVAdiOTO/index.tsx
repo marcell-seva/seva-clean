@@ -3,11 +3,7 @@ import { createContext, useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { api } from 'services/api'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
-import {
-  HomepageAdaSEVAdiOTO,
-  HomepageDesktop,
-  HomepageMobile,
-} from 'components/organisms'
+import { HomepageAdaSEVAdiOTO } from 'components/organisms'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { getCity } from 'utils/hooks/useGetCity'
 import styles from 'styles/pages/adaOTOdiSEVA.module.scss'
@@ -97,7 +93,7 @@ export default function WithTracker({
 export async function getServerSideProps(context: any) {
   context.res.setHeader(
     'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59',
+    'public, s-maxage=59, stale-while-revalidate=3000',
   )
   const params = `?city=${getCity().cityCode}&cityId=${getCity().id}`
   try {

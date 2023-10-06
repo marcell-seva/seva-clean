@@ -292,9 +292,9 @@ const PromoSection = ({
               <div>
                 <p className={styles.textPromoBanner}>
                   Lihat detail{' '}
-                  <div className={styles.spacingChevronIcon}>
+                  <span className={styles.spacingChevronIcon}>
                     <IconChevronRight width={16} height={16} color="#FFFFFF" />
-                  </div>
+                  </span>
                 </p>
               </div>
             </div>
@@ -338,9 +338,9 @@ const PromoSection = ({
             >
               <p className={styles.textPromoBanner}>
                 Lihat detail
-                <div className={styles.spacingChevronIcon}>
+                <span className={styles.spacingChevronIcon}>
                   <IconChevronRight width={16} height={16} color="#FFFFFF" />
-                </div>
+                </span>
               </p>
             </div>
           </div>
@@ -381,9 +381,9 @@ const PromoSection = ({
             >
               <p className={styles.textPromoBanner}>
                 Lihat detail
-                <div className={styles.spacingChevronIcon}>
+                <span className={styles.spacingChevronIcon}>
                   <IconChevronRight width={16} height={16} color="#FFFFFF" />
-                </div>
+                </span>
               </p>
             </div>
           </div>

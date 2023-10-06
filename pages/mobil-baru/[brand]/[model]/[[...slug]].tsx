@@ -13,7 +13,6 @@ import { useUtils } from 'services/context/utilsContext'
 import { getToken } from 'utils/handler/auth'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
-import { mergeModelDetailsWithLoanRecommendations } from 'services/recommendations'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { formatShortPrice } from 'components/organisms/OldPdpSectionComponents/FAQ/FAQ'
@@ -31,6 +30,7 @@ import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { lowerSectionNavigationTab } from 'config/carVariantList.config'
 import styles from 'styles/pages/pdp.module.scss'
 import Script from 'next/script'
+import { mergeModelDetailsWithLoanRecommendations } from 'utils/handler/carRecommendation'
 interface PdpDataLocalContextType {
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.
@@ -294,7 +294,7 @@ export default function index({
 export async function getServerSideProps(context: any) {
   context.res.setHeader(
     'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59',
+    'public, s-maxage=59, stale-while-revalidate=3000',
   )
   try {
     if (context.query.slug?.length > 1) {

@@ -19,7 +19,6 @@ import {
   trackLeadsFormAction,
 } from 'helpers/amplitude/seva20Tracking'
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
-import { createUnverifiedLeadNew } from 'services/lead'
 import { onlyLettersAndSpaces } from 'utils/handler/regex'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { OTP } from 'components/organisms/otp'
@@ -33,7 +32,8 @@ import {
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getToken } from 'utils/handler/auth'
-import { getCustomerInfoSeva } from 'services/customer'
+import { createUnverifiedLeadNew } from 'utils/handler/lead'
+import { getCustomerInfoSeva } from 'utils/handler/customer'
 
 const SupergraphicSecondarySmall =
   '/revamp/illustration/supergraphic-secondary-small.webp'

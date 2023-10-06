@@ -90,10 +90,7 @@ import { Link } from './link'
 import ErrorMessage from './errorMessage'
 import { TextButton } from './textButton'
 import { CarColorItem } from './carColorItem'
-import { ToggleSwitch } from './ToggleSwitch/ToggleSwitch'
 import { MaxWidthStyle } from './maxWidthStyle'
-import { WebShimmer } from './webShimmer'
-import { MobileShimmer } from './mobileShimmer'
 import { CheckedCircleOutlined } from './icon/CheckedCircleOutlined'
 import { UncheckedSquareOutlined } from './icon/UncheckedSquareOutlined'
 import Button from './button'
@@ -198,12 +195,9 @@ export {
   MenuItem,
   BackIcon,
   DownOutlined,
-  ToggleSwitch,
   CloseOutlined2,
   InfoCircleOutlined,
   MaxWidthStyle,
-  WebShimmer,
-  MobileShimmer,
   CheckedCircleOutlined,
   UncheckedSquareOutlined,
   CardShadow,

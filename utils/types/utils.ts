@@ -9,6 +9,28 @@ import {
 
 export type FormControlValue = string | number | readonly string[] | undefined
 
+export interface CreateProbeTrackRequest {
+  utmCampaign: string
+  campaignId?: number
+  utmContent?: string
+  adsetId?: string
+  utmTerm?: string
+  adId?: number
+  platform?: string
+  fullName?: string
+  email?: string
+  phoneNumber?: string
+  city?: string
+  carVariant?: string
+  loanDownPayment?: number
+  utmSource?: string
+  dmContactable?: string
+  dmDataValidation?: string
+  dmDataValidationAnswerDate?: string
+  dmEndJourneyDate?: string
+  dmValidation?: string
+}
+
 export interface Option<T extends FormControlValue> {
   label: string
   value: T

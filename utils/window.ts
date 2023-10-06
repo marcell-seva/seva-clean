@@ -1,7 +1,4 @@
 import { client } from 'utils/helpers/const'
-import { UAParser } from 'ua-parser-js'
-
-const parser = new UAParser()
 
 const userAgent = client ? window.navigator.userAgent : undefined
 export const isMobileDevice = !!userAgent ? /Mobi/i.test(userAgent) : false
@@ -18,8 +15,6 @@ export const isIphone = browser
   : false
 
 export const isFirefox = browser && browser.firefox
-
-export const usedBrowser = parser.getBrowser()
 
 export const screenSize = {
   mobileS: '320px',

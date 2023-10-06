@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 import React, { useState, useEffect, useRef } from 'react'
 import { api } from 'services/api'
 import { useCar } from 'services/context/carContext'
-import { getCarVariantDetailsById } from 'services/recommendations'
 import styled, { css } from 'styled-components'
 import { colors } from 'styles/colors'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
@@ -11,6 +10,7 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { CarVariantRecommendation, CityOtrOption } from 'utils/types'
 import { getCity } from 'utils/hooks/useGetCity'
+import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
 
 interface SpecificationSelectProps {
   initialValue?: CarVariantRecommendation

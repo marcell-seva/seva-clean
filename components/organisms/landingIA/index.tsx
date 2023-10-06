@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
 import { BottomSheet, BottomSheetProps } from 'react-spring-bottom-sheet'
 import styles from 'styles/components/organisms/landingIA.module.scss'
-import { getCustomerKtpSeva } from 'services/customer'
 import { colors } from 'styles/colors'
 import { SendKualifikasiKreditRequest } from 'utils/types/utils'
 import { useRouter } from 'next/router'
-import { sendKualifikasiKredit } from 'services/KK'
 import { saveLocalStorage } from 'utils/handler/localStorage'
 import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { saveSessionStorage } from 'utils/handler/sessionStorage'
@@ -18,6 +16,9 @@ import { Button, IconLoading } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { FooterStakeholder } from 'components/molecules/footerStakeholder'
 import Image from 'next/image'
+import { api } from 'services/api'
+import { getToken } from 'utils/handler/auth'
+import { getCustomerKtpSeva } from 'utils/handler/customer'
 
 const LandingIAImage = '/revamp/illustration/landing-ia.webp'
 const BGLanding = '/revamp/illustration/bg-landing-ia.webp'
@@ -39,7 +40,9 @@ export const LandingIA = ({
   const gotoIA = async () => {
     setLoading('ia')
     try {
-      const sendKK = await sendKualifikasiKredit(dataToCaasDaas)
+      const sendKK = await api.postCreditQualification(dataToCaasDaas, {
+        headers: { Authorization: getToken()?.idToken },
+      })
       saveLocalStorage(
         LocalStorageKey.CreditQualificationResult,
         JSON.stringify(sendKK.data),
@@ -75,7 +78,10 @@ export const LandingIA = ({
   const rejectToIA = async () => {
     setLoading('reject')
     try {
-      const res = await sendKualifikasiKredit(dataToCaasDaas) // posibility return "creditQualificationStatus": null
+      const res = await api.postCreditQualification(dataToCaasDaas, {
+        headers: { Authorization: getToken()?.idToken },
+      })
+      // posibility return "creditQualificationStatus": null
       saveLocalStorage(
         LocalStorageKey.CreditQualificationLeadPayload,
         JSON.stringify(dataToCaasDaas),

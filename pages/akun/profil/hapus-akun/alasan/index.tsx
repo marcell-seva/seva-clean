@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styles from 'styles/pages/delete-account-reason.module.scss'
-import { getCities } from 'services/cities'
+
 import clsx from 'clsx'
 import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
 import { useRouter } from 'next/router'
@@ -21,7 +21,6 @@ import {
   trackDeleteAccountReasonPageCTAClick,
   trackDeleteAccountReasonPageView,
 } from 'helpers/amplitude/seva20Tracking'
-import { deleteAccount } from 'services/customer'
 import { deleteAccountSuccessUrl } from 'utils/helpers/routes'
 import { HeaderMobile } from 'components/organisms'
 import { reasonOptions } from 'config/deleteAccount.config'
@@ -29,6 +28,7 @@ import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { CitySelectorModal } from 'components/molecules'
 import { ToastType } from 'utils/types/models'
 import { DeleteAccountModal } from 'components/molecules/deleteAccountModal'
+import { deleteAccount } from 'utils/handler/customer'
 
 export default function index() {
   useProtectPage()
@@ -69,7 +69,7 @@ export default function index() {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      getCities().then((res) => {
+      api.getCities().then((res) => {
         setCityListApi(res)
       })
     }

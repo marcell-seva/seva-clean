@@ -6,9 +6,6 @@ import {
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import DOMPurify from 'dompurify'
-import { ZIndex } from 'styles/zIndex'
-import { AxiosResponse } from 'axios'
-
 import {
   trackAnnouncementBoxClick,
   trackAnnouncementBoxClose,
@@ -17,7 +14,7 @@ import { AnnouncementBoxDataType } from 'utils/types/utils'
 import { Close } from 'components/atoms/icon/OldClose'
 import { Shimmer } from 'components/atoms/shimmerOld'
 import { api } from 'services/api'
-import { SessionStorageKey } from 'utils/enum'
+import { SessionStorageKey, ZIndex } from 'utils/enum'
 import { getToken } from 'utils/handler/auth'
 import { useUtils } from 'services/context/utilsContext'
 import Image from 'next/image'

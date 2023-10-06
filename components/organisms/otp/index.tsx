@@ -1,11 +1,9 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react'
-import { sendSMSGeneration, verifyOTPGeneration } from 'services/auth'
 import { useCountDownTimer } from 'utils/hooks/useCountDownTimer/useCountDownTimer'
 import { saveOtpIsSent, saveOtpTimerIsStart } from 'utils/otpUtils'
 import { encryptValue } from 'utils/encryptionUtils'
 import { IconLoading, Modal } from 'components/atoms'
 import styles from '../../../styles/components/organisms/otp.module.scss'
-import { getRecaptchaToken } from 'services/firebase'
 import {
   trackOtpClose,
   trackOtpResendClick,
@@ -17,10 +15,10 @@ import {
   LocalStorageKey,
 } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import { t } from 'config/localization/locales/id'
 import { useUtils } from 'services/context/utilsContext'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { api } from 'services/api'
 
 export const OTP = ({
   phoneNumber,
@@ -31,6 +29,8 @@ export const OTP = ({
   savedTokenAfterVerify,
   pageOrigination,
 }: any): JSX.Element => {
+  const commonErrorText =
+    'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi'
   const { lastOtpSentTime, setLastOtpSentTime } = useUtils()
   const [otp, setOtp] = useState<string>(' ')
   const [isErrorInput, setIsErrorInput] = useState<boolean>(false)
@@ -222,25 +222,12 @@ export const OTP = ({
     }
   }
 
-  const getCaptchaToken = async (): Promise<any> => {
-    try {
-      if (recaptchaWrapperRef) {
-        recaptchaWrapperRef.current.innerHTML = RecaptchaNode
-      }
-      const recaptchaToken = await getRecaptchaToken(
-        LanguageCode.id,
-        RECAPTCHA_CONTAINER,
-      )
-      return recaptchaToken
-    } catch (error) {
-      setCommonErrorMessage(t.common.errorMessage)
-      throw error
-    }
-  }
-
   const handleSubmit = async (payload: string) => {
     try {
-      const res: any = await verifyOTPGeneration(payload, `+62${phoneNumber}`)
+      const res: any = await api.postVerifyOTPGeneration(
+        payload,
+        `+62${phoneNumber}`,
+      )
       isOtpVerified()
       if (savedTokenAfterVerify)
         localStorage.setItem('token', JSON.stringify(res.data))
@@ -253,7 +240,7 @@ export const OTP = ({
       ) {
         setIsErrorInput(true)
       } else {
-        setCommonErrorMessage(t.common.errorMessage)
+        setCommonErrorMessage(commonErrorText)
         onFailed()
         setIsErrorInput(true)
       }
@@ -261,9 +248,8 @@ export const OTP = ({
   }
 
   const sendOtpCode = async () => {
-    const captcha = await getCaptchaToken()
     try {
-      await sendSMSGeneration(captcha, `+62${phoneNumber}`)
+      await api.postSendSMSGeneration(`+62${phoneNumber}`)
       setIsInit(false)
       setCountDownTimeInMilliseconds(0)
       setLastOtpSentTime(Date.now())
@@ -291,7 +277,7 @@ export const OTP = ({
         setIsError(false)
         shouldShowTimer()
       } else {
-        setCommonErrorMessage(t.common.errorMessage)
+        setCommonErrorMessage(commonErrorText)
       }
     }
   }
@@ -301,12 +287,11 @@ export const OTP = ({
     trackEventCountly(CountlyEventNames.WEB_OTP_RESEND_CLICK, {
       PAGE_ORIGINATION: pageOrigination,
     })
-    const captcha = await getCaptchaToken()
     try {
       if (recaptchaWrapperRef) {
         recaptchaWrapperRef.current.innerHTML = RecaptchaNode
       }
-      await sendSMSGeneration(captcha, `+62${phoneNumber}`)
+      await api.postSendSMSGeneration(`+62${phoneNumber}`)
       setLastOtpSentTime(Date.now())
       setLastOptSentPhoneNumber(encryptValue(phoneNumber.toString()))
       saveOtpTimerIsStart('true')
@@ -329,7 +314,7 @@ export const OTP = ({
         shouldShowTimer()
         onFailed()
       } else {
-        setCommonErrorMessage(t.common.errorMessage)
+        setCommonErrorMessage(commonErrorText)
       }
       onFailed()
     }

@@ -1,9 +1,7 @@
 /* eslint-disable react/no-children-prop */
 import React, { useEffect, useState } from 'react'
 // import { useHistory } from 'react-router-dom'
-import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
 
-import { getCities } from 'services/cities'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
 import styles from 'styles/components/organisms/success.module.scss'
 import urls from 'helpers/urls'
@@ -15,7 +13,6 @@ import {
   trackKualifikasiKreditSuccessResultPageView,
   trackKualifikasiKreditWaDirectClick,
 } from 'helpers/amplitude/seva20Tracking'
-import { getCustomerInfoSeva } from 'services/customer'
 import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
 import dayjs from 'dayjs'
 import endpoints from 'helpers/endpoints'
@@ -38,6 +35,8 @@ import { getToken } from 'utils/handler/auth'
 import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import { TrackerFlag } from 'utils/types/models'
 import Image from 'next/image'
+import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
+import { getCustomerInfoSeva } from 'utils/handler/customer'
 
 const ApprovalImageAcc = '/revamp/illustration/approve-acc.webp'
 const ApprovalImageTaf = '/revamp/illustration/approve-taf.webp'
@@ -82,7 +81,7 @@ export const CreditQualificationSuccess = () => {
 
   const checkCitiesData = (): void => {
     if (cityListApi.length === 0) {
-      getCities().then((res) => {
+      api.getCities().then((res) => {
         setCityListApi(res)
       })
     }

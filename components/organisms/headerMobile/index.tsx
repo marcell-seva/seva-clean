@@ -42,8 +42,9 @@ const SearchModal = dynamic(() =>
 const WebAnnouncementBox = dynamic(() =>
   import('components/organisms').then((mod) => mod.WebAnnouncementBox),
 )
-const SidebarMobile = dynamic(() =>
-  import('components/organisms').then((mod) => mod.SidebarMobile),
+const SidebarMobile = dynamic(
+  () => import('components/organisms').then((mod) => mod.SidebarMobile),
+  { ssr: false },
 )
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
@@ -293,7 +294,7 @@ export const HeaderMobile = ({
       <Overlay
         isShow={isActive}
         onClick={() => setIsActive(false)}
-        additionalStyle={styles.overlayAdditionalStyle}
+        additionalstyle={styles.overlayAdditionalStyle}
       />
     </>
   )

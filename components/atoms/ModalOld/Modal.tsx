@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
 import { createPortal } from 'react-dom'
 import { colors } from 'styles/colors'
-// import { ZIndex } from '../../styles/zIndex'
 
 export interface ModalProps {
   children?: React.ReactChild

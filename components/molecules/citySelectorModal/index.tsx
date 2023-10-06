@@ -6,8 +6,6 @@ import {
   trackCitySelectorApply,
   trackCitySelectorCancel,
 } from 'helpers/amplitude/seva20Tracking'
-import { Modal } from 'antd'
-// import 'styles/main.scss'
 import { Button, InputSelect } from 'components/atoms'
 import { sendAmplitudeData } from 'services/amplitude'
 import { AmplitudeEventName } from 'services/amplitude/types'
@@ -35,6 +33,7 @@ import { trackDataCarType } from 'utils/types/utils'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { RouteName } from 'utils/navigate'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
+import dynamic from 'next/dynamic'
 
 const searchOption = {
   keys: ['label'],
@@ -52,6 +51,10 @@ interface Props {
   modelName?: string
   brandName?: string
 }
+
+const Modal = dynamic(() => import('antd').then((mod) => mod.Modal), {
+  ssr: false,
+})
 
 const CitySelectorModal = ({
   onClickCloseButton,

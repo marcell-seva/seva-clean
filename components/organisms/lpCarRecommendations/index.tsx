@@ -36,7 +36,6 @@ import { AdaOTOdiSEVALeadsForm } from '../leadsForm/adaOTOdiSEVA/popUp'
 import { it } from 'node:test'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
-import index from '../PdpDesktop'
 
 type LPCarRecommendationsProps = {
   dataReccomendation: any

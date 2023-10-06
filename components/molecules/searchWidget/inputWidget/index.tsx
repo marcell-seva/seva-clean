@@ -7,7 +7,6 @@ import React, {
   useState,
 } from 'react'
 import styles from '/styles/components/molecules/searchWidget/selectWidget.module.scss'
-// import 'styles/customAnimation.scss'
 import { filterNonDigitCharacters } from 'utils/handler/stringManipulation'
 import { Currency } from 'utils/handler/calculation'
 import { MinAmount } from 'utils/types/models'
@@ -89,7 +88,7 @@ const InputWidget = ({
           <div className={styles.fieldWrapper}>
             <span className={styles.title}>{title}</span>
             <div className={styles.prefixInputWrapper}>
-              {(focus || initialValue.raw > 0) && (
+              {(focus || (initialValue.raw as number) > 0) && (
                 <span
                   className={clsx({
                     [styles.placeholder]: true,

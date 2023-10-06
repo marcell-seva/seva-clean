@@ -5,7 +5,6 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
 import { saveLocalStorage } from 'utils/handler/localStorage'
 import { LocalStorageKey } from 'utils/enum'
-import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
 import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
 import {
   CityOtrOption,
@@ -24,7 +23,8 @@ import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
 import { CarProvider } from 'services/context'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
-import styles from 'styles/pages/plp.module.scss'
+import { getCity } from 'utils/hooks/useGetCity'
+import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 
 const NewCarResultPage = ({
   meta,
@@ -119,7 +119,7 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async (ctx) => {
   ctx.res.setHeader(
     'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59',
+    'public, s-maxage=59, stale-while-revalidate=3000',
   )
   const metabrand = getBrand(ctx.query.brand)
   const metaTagBaseApi =
@@ -182,7 +182,10 @@ export const getServerSideProps: GetServerSideProps<{
     const footerData = fetchFooter.data.data
 
     if (!priceRangeGroup) {
-      const minmaxPriceData = await getMinMaxPrice()
+      const params = new URLSearchParams()
+      getCity().cityCode && params.append('city', getCity().cityCode as string)
+
+      const minmaxPriceData = await api.getMinMaxPrice('', { params })
       meta.MinMaxPrice = {
         minPriceValue: minmaxPriceData.minPriceValue,
         maxPriceValue: minmaxPriceData.maxPriceValue,

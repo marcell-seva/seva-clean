@@ -12,7 +12,6 @@ import { PopupResultInfo } from './popupResultFilter/resultInfo'
 import { PopupResultMudah } from './popupResultFilter/resultMudah'
 import { PopupResultSulit } from './popupResultFilter/resultSulit'
 import SortingMobile from './sortingMobile'
-import PdpDesktop from './PdpDesktop/index'
 import PdpMobile from './PdpMobile'
 import { PdpLowerSection } from './pdpLowerSection'
 import { PdpUpperSection } from './pdpUpperSection'
@@ -34,7 +33,6 @@ import Articles from './articles/index'
 import { CalculationResult } from './calculationResult/index'
 import PDPCarOverviewSkeleton from './pdpCarOverviewSkeleton'
 import SidebarMobile from './sidebarMobile'
-import HomepageDesktop from './homepageDesktop'
 import HomepageMobile from './homepageMobile'
 import LeadsFormTertiary from './leadsForm/tertiary'
 import ArticleWidget from './articleWidget'
@@ -55,9 +53,6 @@ const Exterior360ViewerTab = dynamic(
   () => import('./tabContent/upper/exterior360Viewer'),
 )
 
-// const FilterMobile = dynamic(() => import('./filterMobile'), { ssr: false })
-// const SortingMobile = dynamic(() => import('./sortingMobile'), { ssr: false })
-
 export {
   CarDetailCard,
   FooterMobile,
@@ -73,7 +68,6 @@ export {
   NavigationFilterMobile,
   FilterMobile,
   PLP,
-  PdpDesktop,
   PdpMobile,
   PdpLowerSection,
   PdpUpperSection,
@@ -96,7 +90,6 @@ export {
   CalculationResult,
   PDPCarOverviewSkeleton,
   SidebarMobile,
-  HomepageDesktop,
   HomepageMobile,
   LeadsFormTertiary,
   ArticleWidget,

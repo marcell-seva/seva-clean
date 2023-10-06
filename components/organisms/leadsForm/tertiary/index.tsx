@@ -29,8 +29,8 @@ import {
   valueForUserTypeProperty,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
-import { getCustomerInfoSeva } from 'services/customer'
 import { getToken } from 'utils/handler/auth'
+import { getCustomerInfoSeva } from 'utils/handler/customer'
 
 interface PropsLeadsForm {
   otpStatus?: any

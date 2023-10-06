@@ -53,13 +53,13 @@ import {
   valueForInitialPageProperty,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
-import { getCustomerInfoSeva } from 'services/customer'
 import {
   getSessionStorage,
   removeSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import { RouteName } from 'utils/navigate'
+import { getCustomerInfoSeva } from 'utils/handler/customer'
 
 const HomepageMobile = ({ dataReccomendation }: any) => {
   const { dataCities, dataCarofTheMonth, dataMainArticle } = useContext(
@@ -354,7 +354,7 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
         {!isLeadsFormSectionVisible && (
           <CSAButton
             onClick={scrollToLeadsForm}
-            additionalStyle={'csa-button-homepage'}
+            additionalstyle={'csa-button-homepage'}
           />
         )}
 

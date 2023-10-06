@@ -98,7 +98,7 @@ export default function WithTracker({
 export async function getServerSideProps(context: any) {
   context.res.setHeader(
     'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59',
+    'public, s-maxage=59, stale-while-revalidate=3000',
   )
   const params = `?city=${getCity().cityCode}&cityId=${getCity().id}`
   try {

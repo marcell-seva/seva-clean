@@ -8,30 +8,11 @@ import 'swiper/css/pagination'
 import { initAmplitude } from 'services/amplitude/'
 import TagManager from 'react-gtm-module'
 import { GlobalContextProvider } from 'services/context'
-import { applyPolyfills, defineCustomElements } from 'seva-ui-kit/loader'
 import Script from 'next/script'
-import 'styles/global.scss'
 import 'react-spring-bottom-sheet/dist/style.css'
 import 'react-lazy-load-image-component/src/effects/blur.css'
-import 'styles/bottomSheet.scss'
-import 'styles/customAnimation.scss'
 import 'styles/index.css'
-import 'styles/modal-gallery.scss'
-import 'styles/components/molecules/car-body-types-desktop.scss'
-import 'styles/components/molecules/car-brand-recommendation.scss'
-import 'styles/components/molecules/car-of-month.scss'
-import 'styles/components/molecules/how-to-use.scss'
-import 'styles/components/molecules/image-carousel.scss'
-import 'styles/components/molecules/loan-calculator-widget.scss'
-import 'styles/components/molecules/testimoni-tile.scss'
-import 'styles/components/molecules/advisor-section.scss'
-import 'styles/components/molecules/car-brand-item.scss'
-import 'styles/components/molecules/testimonial.scss'
-import 'styles/components/organisms/funnel-background.scss'
-import 'styles/components/organisms/landingIA.scss'
-import 'styles/CustomAnimationStyle.css'
-import 'styles/pages/multi-kk.scss'
-import 'styles/insuranceTooltip.scss'
+import 'styles/global.scss'
 
 import { FBPixelStandardEvent, FB_PIXEL_ID } from 'helpers/facebookPixel'
 import { client } from 'utils/helpers/const'
@@ -82,9 +63,6 @@ const OpenSansExtraBold = localFont({
 })
 
 initAmplitude()
-applyPolyfills().then(() => {
-  defineCustomElements()
-})
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {

@@ -4,9 +4,8 @@ import styles from 'styles/pages/ktp-review.module.scss'
 import clsx from 'clsx'
 
 import elementId from 'helpers/elementIds'
-import { getCities } from 'services/cities'
+
 import Fuse from 'fuse.js'
-import { useTranslation } from 'react-i18next'
 import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
 import { useRouter } from 'next/router'
 import {
@@ -45,6 +44,7 @@ import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { ToastType } from 'utils/types/models'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import { api } from 'services/api'
 
 const searchOption = {
   keys: ['label'],
@@ -56,7 +56,6 @@ const searchOption = {
 export default function KtpReview() {
   useProtectPage()
   const router = useRouter()
-  const { t } = useTranslation()
   const [allKtpData, setAllKtpData] = useState<GetCustomerKtpSeva[]>([])
   const [isLoadingKtpData, setIsLoadingKtpData] = useState(false)
   const ktpDataPersonalFromStorage: any = getSessionStorage(
@@ -222,7 +221,7 @@ export default function KtpReview() {
 
   const checkCitiesData = () => {
     if (cityListFromApi.length === 0) {
-      getCities().then((res) => {
+      api.getCities().then((res) => {
         setCityListFromApi(res)
       })
     }
@@ -678,7 +677,7 @@ export default function KtpReview() {
 
         <RenderToast
           type={ToastType.Error}
-          message={t('common.errorMessage')}
+          message="Oops.. Sepertinya terjadi kesalahan. Coba lagi nanti"
           overridePositionToBottom={true}
           duration={3}
         />

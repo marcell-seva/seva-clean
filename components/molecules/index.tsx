@@ -1,15 +1,12 @@
 import Footer from './footer'
 import HowToUseSection from './howToUseSection'
 import LoanSection from './loanSection'
-import ContactUs from './contactUs'
-import Banner from './banner'
 import Testimony from './testimony'
 import Article from './article'
 import Floating from './floating'
 import Search from './section/search'
 import { Info } from './section/info'
 import Refinancing from './refinancing'
-import Offering from './modal/offering'
 import Video from './modal/video'
 import Simple from './modal/simple'
 import AnnouncementBox from './announcementBox'
@@ -29,11 +26,7 @@ import { OverlayGallery } from './overlay'
 import { ShareModal } from './shareModal'
 import { CalculationResultItem } from './calculationResultItem'
 import { MenuList } from './menuList'
-import { HomePageShimmer } from './homepageShimmer'
-import { AdvisorSection } from './advisorSection'
-import { useDialogModal } from './dialogModal/DialogModal'
 import { ImageCarousel } from './imageCarousel'
-import { NewDownPaymentAmount } from './newDownPaymentAmount/newDownPaymentAmount'
 import { Tenure } from './tenure'
 
 import PromoSection from '../organisms/promoSection'
@@ -58,14 +51,11 @@ export {
   Footer,
   HowToUseSection,
   LoanSection,
-  ContactUs,
-  Banner,
   Testimony,
   Article,
   Floating,
   Search,
   Refinancing,
-  Offering,
   Video,
   Simple,
   AnnouncementBox,
@@ -85,11 +75,7 @@ export {
   ShareModal,
   CalculationResultItem,
   MenuList,
-  HomePageShimmer,
-  AdvisorSection,
-  useDialogModal,
   ImageCarousel,
-  NewDownPaymentAmount,
   Tenure,
   PromoSection,
   HowToUse,
