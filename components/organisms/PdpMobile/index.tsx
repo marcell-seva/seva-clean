@@ -67,6 +67,7 @@ import { defineRouteName } from 'utils/navigate'
 import { useUtils } from 'services/context/utilsContext'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
 import dynamic from 'next/dynamic'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { Currency } from 'utils/handler/calculation'
 
 const OverlayGallery = dynamic(() =>
@@ -524,7 +525,7 @@ export default function NewCarVariantList({
     }
   }
 
-  useEffect(() => {
+  useAfterInteractive(() => {
     if (!isSentCountlyPageView) {
       const timeoutCountlyTracker = setTimeout(() => {
         if (!isSentCountlyPageView) {
@@ -536,7 +537,7 @@ export default function NewCarVariantList({
     }
   }, [])
 
-  useEffect(() => {
+  useAfterInteractive(() => {
     if (dataAnnouncementBox) {
       const isShowAnnouncement = getSessionStorage(
         getToken()

@@ -1084,6 +1084,25 @@ export const CreditTab = () => {
 
     return tempArr
   }
+
+  const saveDefaultTenureCarForLoginPageView = (
+    tenure: string,
+    loanRank: string,
+  ) => {
+    const dataCar: trackDataCarType | null = getSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+    )
+    const dataCarTemp = {
+      ...dataCar,
+      TENOR_OPTION: tenure,
+      TENOR_RESULT: loanRank,
+      INCOME_LC: forms.monthlyIncome,
+    }
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarTemp),
+    )
+  }
   const onClickCalculate = async () => {
     validateFormFields()
 
@@ -1159,7 +1178,10 @@ export const CreditTab = () => {
               ) => b.tenure - a.tenure,
             )[0] ?? null
           setSelectedLoan(selectedLoanInitialValue)
-
+          saveDefaultTenureCarForLoginPageView(
+            selectedLoanInitialValue.tenure,
+            selectedLoanInitialValue.loanRank,
+          )
           setIsDataSubmitted(true)
           setCalculationApiPayload(payload)
           // scrollToResult()

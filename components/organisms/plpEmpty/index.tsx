@@ -39,6 +39,8 @@ export const PLPEmpty = ({ alternativeCars, onClickLabel }: PLPEmptyProps) => {
           src={PLPEmptyImage}
           className={styles.imageStyle}
           alt={'car empty'}
+          width={250}
+          height={131}
         />
         <div
           className={styles.copy}
