@@ -111,62 +111,6 @@ export default function App({ Component, pageProps }: AppProps) {
           content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
         />
       </Head>
-      <Script
-        type="text/javascript"
-        strategy="afterInteractive"
-        async
-        dangerouslySetInnerHTML={{
-          __html: `
-            !function(f,b,e,v,n,t,s)
-            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window, document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('set', 'debug', false, ${FB_PIXEL_ID});
-            fbq('set', 'autoConfig', true, ${FB_PIXEL_ID});
-            fbq('init', ${FB_PIXEL_ID});
-            
-          `,
-        }}
-      />
-      <Script
-        type="text/javascript"
-        strategy="afterInteractive"
-        async
-        dangerouslySetInnerHTML={{
-          __html: `
-            //some default pre init
-            var Countly = Countly || {};
-            Countly.q = Countly.q || [];
-
-            //provide countly initialization parameters
-            Countly.app_key = ${
-              process.env.NEXT_PUBLIC_ENVIRONMENT === 'production'
-                ? '"b3339752ab6da081b5fabf5e46be80ef26b666ca"'
-                : '"7069fa6ddc5cfc1b456a4eff70bb1314839f8484"'
-            };
-            Countly.url = 'https://push.meshtics.com';
-
-            Countly.q.push(['track_sessions']);
-            Countly.q.push(['track_pageview']);
-            Countly.q.push(['track_clicks']);
-            Countly.q.push(['track_links']);
-
-            //load countly script asynchronously
-            (function() {
-              var cly = document.createElement('script'); cly.type = 'text/javascript';
-              cly.async = true;
-              //enter url of script here
-              cly.src = 'https://cdnjs.cloudflare.com/ajax/libs/countly-sdk-web/20.4.0/countly.min.js';
-              cly.onload = function(){Countly.init()};
-              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
-            })();
-            `,
-        }}
-      />
       <IsSsrMobileContext.Provider value={pageProps.isSsrMobile}>
         <GlobalContextProvider>
           <Script
@@ -209,7 +153,7 @@ export default function App({ Component, pageProps }: AppProps) {
           app_id:"KW8JVVD7VJKF2EQHOHX2YYOA",
           debug_logs: 0
           });
-      }
+      };
 
       Defer(moeevent, 0, true)
       `}</Script>
@@ -223,13 +167,13 @@ export default function App({ Component, pageProps }: AppProps) {
       s.parentNode.insertBefore(t,s)};
 
       function fbevent() {
-        fbfb(window, document,'script','https://connect.facebook.net/en_US/fbevents.js')
+        fbfb(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
         fbq('set', 'debug', false, ${FB_PIXEL_ID});
         fbq('set', 'autoConfig', true, ${FB_PIXEL_ID});
         fbq('init', ${FB_PIXEL_ID});
-      }
+      };
 
-      Defer(fbevent, 0, true)
+      Defer(fbevent, 0, true);
     `}</Script>
       <Script>{`
       //some default pre init
@@ -258,7 +202,7 @@ export default function App({ Component, pageProps }: AppProps) {
         cly.onload = function(){Countly.init()};
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
       };
-      Defer(countly, 0, true)
+      Defer(countly, 0, true);
       `}</Script>
       <Script>{`Defer.all('script[type="deferjs"]', 0, true)`}</Script>
       <Script>{`Defer.lazy = true;`}</Script>
