@@ -152,7 +152,7 @@ export default function index({
   const carOTRValue = dataCombinationOfCarRecomAndModelDetail?.variants[
     dataCombinationOfCarRecomAndModelDetail?.variants.length - 1
   ].priceValue as number
-  const carOTR = `Rp ${carOTRValue / 1000000} Juta`
+  const carOTR = `Rp ${carOTRValue / 1000000} juta`
 
   const getMetaTitle = () => {
     if (isMobile) {
@@ -207,7 +207,7 @@ export default function index({
           return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
 
         default:
-          return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tahu spesifikasi, harga, dan kredit di SEVA`
+          return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, dan kredit di SEVA`
       }
     }
     if (Array.isArray(slug)) {
@@ -221,13 +221,13 @@ export default function index({
             return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
 
           default:
-            return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tahu spesifikasi, harga, dan kredit di SEVA`
+            return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, dan kredit di SEVA`
         }
       })
 
       return descriptions.join(' ')
     }
-    return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tahu spesifikasi, harga, dan kredit di SEVA`
+    return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, dan kredit di SEVA`
   }
 
   const modelDetailData =
