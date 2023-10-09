@@ -62,8 +62,6 @@ const OpenSansExtraBold = localFont({
   display: 'swap',
 })
 
-initAmplitude()
-
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'staging') {
