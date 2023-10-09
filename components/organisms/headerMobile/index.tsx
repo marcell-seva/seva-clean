@@ -62,6 +62,7 @@ type HeaderMobileProps = {
   isOTO?: boolean
   transparent?: boolean
   isRegular?: boolean
+  passCountlyTrackerPageView?: (() => void) | (() => Promise<void>)
 }
 
 export const HeaderMobile = ({
@@ -75,6 +76,7 @@ export const HeaderMobile = ({
   pageOrigination,
   isOTO = false,
   transparent = false,
+  passCountlyTrackerPageView,
 }: HeaderMobileProps): JSX.Element => {
   const enableAnnouncementBoxAleph =
     getCurrentEnvironment.featureToggles.enableAnnouncementBoxAleph
@@ -84,6 +86,8 @@ export const HeaderMobile = ({
 
   const adaSeva = router.asPath.split('/')[1]
   const [isLogin] = useState(!!getToken())
+
+  const redirectHome = adaSeva === 'adaSEVAdiOTO' ? rootOTOUrl : rootUrl
 
   const handleClickCityIcon = () => {
     if (!isActive) {
@@ -104,15 +108,17 @@ export const HeaderMobile = ({
 
   const handleSearch = () => {
     if (!isActive) {
-      trackEventCountly(CountlyEventNames.WEB_CAR_SEARCH_ICON_CLICK, {
-        PAGE_ORIGINATION: pageOrigination.includes('PDP')
-          ? 'PDP - ' + valueMenuTabCategory()
-          : pageOrigination,
-      })
       setIsOpenSearchModal(true)
       trackSearchbarOpen({
         Page_Origination_URL: window.location.href,
       })
+      if (pageOrigination && pageOrigination.length !== 0) {
+        trackEventCountly(CountlyEventNames.WEB_CAR_SEARCH_ICON_CLICK, {
+          PAGE_ORIGINATION: pageOrigination.includes('PDP')
+            ? 'PDP - ' + valueMenuTabCategory()
+            : pageOrigination,
+        })
+      }
     }
   }
 
@@ -149,11 +155,19 @@ export const HeaderMobile = ({
       })
     }
     saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
+    if (window.location.pathname.includes('kalkulator-kredit')) {
+      saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
+    } else if (window.location.pathname === '/') {
+      saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
+      setTimeout(() => {
+        passCountlyTrackerPageView && passCountlyTrackerPageView()
+      }, 1000)
+    } else {
+      saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
+    }
 
     window.location.href = redirectHome
   }
-
-  const redirectHome = adaSeva === 'adaSEVAdiOTO' ? rootOTOUrl : rootUrl
 
   return (
     <>
@@ -270,7 +284,11 @@ export const HeaderMobile = ({
           pageOrigination={pageOrigination}
         />
       </header>
-      <Overlay isShow={isActive} onClick={() => setIsActive(false)} />
+      <Overlay
+        isShow={isActive}
+        onClick={() => setIsActive(false)}
+        additionalStyle={styles.overlayAdditionalStyle}
+      />
     </>
   )
 }
