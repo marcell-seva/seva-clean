@@ -256,29 +256,22 @@ export const CarDetailCard = ({
     saveDataForCountlyTrackerPageViewPDP(PreviousButton.ProductCard, 'PLP')
   }
 
+  const generalImgProps = {
+    src: recommendation.images[0],
+    className: styles.heroImg,
+    alt: `${recommendation.brand} ${recommendation.model}`,
+    'data-testid': elementId.CarImage,
+    width: 279,
+    onClick: navigateToPDP(order),
+  }
+
   return (
     <div className={styles.container}>
       <CardShadow className={styles.cardWrapper}>
-        {order === 0 ? (
-          <Image
-            src={recommendation.images[0]}
-            className={styles.heroImg}
-            alt={`${recommendation.brand} ${recommendation.model}`}
-            onClick={navigateToPDP(order)}
-            data-testid={elementId.CarImage}
-            width={279}
-            height={209}
-            priority
-          />
+        {order === 0 || order === 1 ? (
+          <Image {...generalImgProps} height={209} priority />
         ) : (
-          <LazyLoadImage
-            src={recommendation.images[0]}
-            className={styles.heroImg}
-            alt={`${recommendation.brand} ${recommendation.model}`}
-            onClick={navigateToPDP(order)}
-            data-testid={elementId.CarImage}
-            width={279}
-          />
+          <LazyLoadImage {...generalImgProps} />
         )}
 
         <LabelPromo
