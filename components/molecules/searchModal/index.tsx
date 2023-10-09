@@ -9,12 +9,14 @@ interface Props {
   isOpen: boolean
   handleCloseModal: () => void
   isOTO?: boolean
+  pageOrigination?: string
 }
 
 export const SearchModal = ({
   isOpen,
   handleCloseModal,
   isOTO = false,
+  pageOrigination,
 }: Props) => {
   const closeModal = (e: React.MouseEvent | React.KeyboardEvent) => {
     e.stopPropagation()
@@ -43,6 +45,7 @@ export const SearchModal = ({
                 closeModal={closeModal}
                 hideModal={handleCloseModal}
                 isOTO={isOTO}
+                pageOrigination={pageOrigination}
               />
             </div>
           </div>

@@ -128,15 +128,6 @@ export const MenuList: React.FC<MenuListProps> = ({
                         key={key}
                         className={styles.parentMenu}
                         onClick={() => {
-                          if (sub.menuName === 'Akun Saya') {
-                            trackEventCountly(
-                              CountlyEventNames.WEB_HAMBURGER_ACCOUNT_CLICK,
-                              {
-                                PAGE_ORIGINATION: getPageName(),
-                                SOURCE_SECTION: 'Bottom',
-                              },
-                            )
-                          }
                           handleClickMenu(sub.menuUrl as string, sub.menuName)
                         }}
                       >
