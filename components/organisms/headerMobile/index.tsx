@@ -104,15 +104,17 @@ export const HeaderMobile = ({
 
   const handleSearch = () => {
     if (!isActive) {
-      trackEventCountly(CountlyEventNames.WEB_CAR_SEARCH_ICON_CLICK, {
-        PAGE_ORIGINATION: pageOrigination.includes('PDP')
-          ? 'PDP - ' + valueMenuTabCategory()
-          : pageOrigination,
-      })
       setIsOpenSearchModal(true)
       trackSearchbarOpen({
         Page_Origination_URL: window.location.href,
       })
+      if (pageOrigination && pageOrigination.length !== 0) {
+        trackEventCountly(CountlyEventNames.WEB_CAR_SEARCH_ICON_CLICK, {
+          PAGE_ORIGINATION: pageOrigination.includes('PDP')
+            ? 'PDP - ' + valueMenuTabCategory()
+            : pageOrigination,
+        })
+      }
     }
   }
 
