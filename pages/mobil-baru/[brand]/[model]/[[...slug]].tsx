@@ -149,9 +149,8 @@ export default function index({
   const currentYear = todayDate.getFullYear()
   const currentMonth = monthId(todayDate.getMonth())
 
-  const carOTRValue = dataCombinationOfCarRecomAndModelDetail?.variants[
-    dataCombinationOfCarRecomAndModelDetail?.variants.length - 1
-  ].priceValue as number
+  const carOTRValueArray = dataCombinationOfCarRecomAndModelDetail?.variants.map(item => Number(item.priceValue))
+  const carOTRValue = Math.min(...carOTRValueArray as number[])
   const carOTR = `Rp ${carOTRValue / 1000000} juta`
 
   const getMetaTitle = () => {
