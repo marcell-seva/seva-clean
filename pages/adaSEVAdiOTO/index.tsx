@@ -124,7 +124,7 @@ export async function getServerSideProps(context: any) {
       api.getUsage(),
       api.getMainArticle('65'),
       api.getTypeCar('?city=jakarta'),
-      api.getCarofTheMonth(),
+      api.getCarofTheMonth('?city=' + getCity().cityCode),
     ])
     const [
       dataReccomendation,

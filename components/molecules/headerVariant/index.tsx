@@ -43,6 +43,7 @@ import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
 import { removeCarModel } from 'utils/handler/removeCarModel'
+import { getCity } from 'utils/hooks/useGetCity'
 
 const Loading = dynamic(() =>
   import('components/atoms/loading').then((mod) => mod.Loading),
@@ -285,7 +286,7 @@ export default function HeaderVariant({
 
   useEffect(() => {
     api
-      .getCarofTheMonth()
+      .getCarofTheMonth('?city=' + getCity().cityCode)
       .then((res) => {
         setComDataNew(res.data)
       })
