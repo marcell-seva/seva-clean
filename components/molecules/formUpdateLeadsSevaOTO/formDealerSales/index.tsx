@@ -27,6 +27,7 @@ type FormSelectAgentProps = {
   handleChange: (value: any) => void
   isError?: boolean
   onShowDropdown?: () => void
+  value: number
 }
 
 export default function FormDealerSales({
@@ -34,6 +35,7 @@ export default function FormDealerSales({
   name,
   isError = false,
   onShowDropdown,
+  value,
 }: FormSelectAgentProps) {
   const [agentListApi, setAgentListApi] = useState<Array<SalesAgent>>([])
   const [inputValue, setInputValue] = useState('')
@@ -49,6 +51,16 @@ export default function FormDealerSales({
     const response = await getAgent()
     setAgentListApi(response.data)
   }
+
+  useEffect(() => {
+    if (value !== 0) {
+      const temp = agentListApi.find((agent) => {
+        agent.id === value
+      })
+      setInputValue(`${temp?.salesName} - ${temp?.branchName}`)
+      setLastChoosenValue(`${temp?.salesName} - ${temp?.branchName}`)
+    }
+  }, [value])
 
   useEffect(() => {
     fetchAgent()

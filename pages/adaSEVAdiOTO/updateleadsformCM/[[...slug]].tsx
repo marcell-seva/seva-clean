@@ -137,7 +137,11 @@ const UpdateLeadsFormCM = ({
             <FormDBLeads value={values.dbLeadsId} title="DB Leads ID" />
           </div>
           <div id="update-leads-form-dealer-sales-agent">
-            <FormDealerSales handleChange={handleAgentPick} name="salesId" />
+            <FormDealerSales
+              handleChange={handleAgentPick}
+              name="salesId"
+              value={values?.salesId || 0}
+            />
           </div>
           <div id="update-leads-form-spk" className={styles.inputName}>
             <Input
