@@ -49,4 +49,4 @@ jobs:
             --max-instances 20 \
             --concurrency 80 \
             --cpu 1 \
-            --memory 512Mi
+            --memory 1024Mi
