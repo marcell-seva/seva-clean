@@ -26,6 +26,7 @@ type EnvironmentConfig = {
   temanSevaApiBaseUrl: string
   microservicePreApprovalBaseUrl: string
   probe: string
+  unverifiedLeadApiKey: string
 }
 
 const FirebaseAPIKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY
@@ -54,6 +55,7 @@ const environments = {
     temanSevaApiBaseUrl: 'https://teman.dev.sevaio.xyz',
     microservicePreApprovalBaseUrl: 'https://instant.dev.sevaio.xyz',
     probe: 'https://probe.addpush.com/d/sub/',
+    unverifiedLeadApiKey: 'ed77b4d30d9b921b',
   },
   development: {
     name: 'Development',
@@ -77,6 +79,7 @@ const environments = {
     temanSevaApiBaseUrl: 'https://teman.dev.sevaio.xyz',
     microservicePreApprovalBaseUrl: 'https://instant.dev.sevaio.xyz',
     probe: 'https://probe.addpush.com/d/sub/',
+    unverifiedLeadApiKey: 'ed77b4d30d9b921b',
   },
 
   staging: {
@@ -100,6 +103,7 @@ const environments = {
     temanSevaApiBaseUrl: 'https://teman.staging.sevaio.xyz',
     microservicePreApprovalBaseUrl: 'https://instant.staging.sevaio.xyz',
     probe: 'https://probe.addpush.com/d/sub/',
+    unverifiedLeadApiKey: 'alvin_5f620b335b51d127',
   },
 
   production: {
@@ -123,6 +127,7 @@ const environments = {
     temanSevaApiBaseUrl: 'https://teman.prod.seva.id',
     microservicePreApprovalBaseUrl: 'https://instant.prod.seva.id',
     probe: 'https://probe.addpush.com/d/sub/',
+    unverifiedLeadApiKey: 'alvin_97d106fed751b072',
   } as EnvironmentConfig,
 }
 
