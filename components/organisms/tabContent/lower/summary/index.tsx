@@ -49,7 +49,7 @@ type RingkasanProps = {
   isOTO?: boolean
 }
 
-const formatShortPrice = (price: number) => {
+export const formatShortPrice = (price: number) => {
   return formatNumberByLocalization(price, LanguageCode.id, million, ten)
 }
 

@@ -1,4 +1,3 @@
-import TypeCar from './typeCar'
 import Capsule from './capsule'
 import {
   IconChevronLeft,
@@ -90,7 +89,6 @@ import { Link } from './link'
 import ErrorMessage from './errorMessage'
 import { TextButton } from './textButton'
 import { CarColorItem } from './carColorItem'
-import { MaxWidthStyle } from './maxWidthStyle'
 import { CheckedCircleOutlined } from './icon/CheckedCircleOutlined'
 import { UncheckedSquareOutlined } from './icon/UncheckedSquareOutlined'
 import Button from './button'
@@ -104,7 +102,6 @@ import BottomSheet from './bottomSheet'
 import { SearchInput } from './searchInput'
 export {
   Button,
-  TypeCar,
   Capsule,
   IconBackButton,
   IconNextButton,
@@ -197,7 +194,6 @@ export {
   DownOutlined,
   CloseOutlined2,
   InfoCircleOutlined,
-  MaxWidthStyle,
   CheckedCircleOutlined,
   UncheckedSquareOutlined,
   CardShadow,

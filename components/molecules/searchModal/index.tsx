@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import styles from 'styles/components/molecules/searchModal.module.scss'
 import HeaderVariant from '../headerVariant'
-import { useModal } from 'components/atoms/ModalOld/Modal'
 import { Forward } from 'components/atoms/icon/Forward'
 import { Modal } from 'antd'
 

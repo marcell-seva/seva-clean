@@ -44,10 +44,6 @@ import { getCity } from 'utils/hooks/useGetCity'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
 import { removeCarModel } from 'utils/handler/removeCarModel'
 
-const Loading = dynamic(() =>
-  import('components/atoms/loading').then((mod) => mod.Loading),
-)
-
 interface HeaderVariantProps {
   overrideDisplay?: string
   isOnModal?: boolean
@@ -526,7 +522,6 @@ export default function HeaderVariant({
                 </div>
               </div>
             )}
-            <Loading isShowLoading={isShowLoading} progress={progress} />
           </div>
         </div>
       </div>

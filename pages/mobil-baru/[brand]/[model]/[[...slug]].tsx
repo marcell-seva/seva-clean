@@ -15,7 +15,6 @@ import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
-import { formatShortPrice } from 'components/organisms/OldPdpSectionComponents/FAQ/FAQ'
 import { LanguageCode } from 'utils/enum'
 import {
   formatPriceNumber,
@@ -31,6 +30,7 @@ import { lowerSectionNavigationTab } from 'config/carVariantList.config'
 import styles from 'styles/pages/pdp.module.scss'
 import Script from 'next/script'
 import { mergeModelDetailsWithLoanRecommendations } from 'utils/handler/carRecommendation'
+import { formatShortPrice } from 'components/organisms/tabContent/lower/summary'
 interface PdpDataLocalContextType {
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.
