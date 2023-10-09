@@ -150,7 +150,7 @@ export const HeaderMobile = ({
     }
     saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
 
-    // window.location.href = redirectHome
+    window.location.href = redirectHome
   }
 
   const redirectHome = adaSeva === 'adaSEVAdiOTO' ? rootOTOUrl : rootUrl
