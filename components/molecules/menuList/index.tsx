@@ -99,7 +99,7 @@ export const MenuList: React.FC<MenuListProps> = ({
           )
         }
       }
-      // window.location.href = menuUrl
+      window.location.href = menuUrl
     }
   }
 
