@@ -75,6 +75,7 @@ export const HeaderMobile = ({
   pageOrigination,
   isOTO = false,
   transparent = false,
+  passCountlyTrackerPageView,
 }: HeaderMobileProps): JSX.Element => {
   const enableAnnouncementBoxAleph =
     getCurrentEnvironment.featureToggles.enableAnnouncementBoxAleph
