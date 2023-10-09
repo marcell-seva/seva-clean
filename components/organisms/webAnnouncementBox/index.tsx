@@ -24,6 +24,7 @@ import {
   valueMenuTabCategory,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const CustomRight = '/revamp/images/announcementBox/custom-desktop-right.webp'
 const CustomLeft = '/revamp/images/announcementBox/custom-desktop-left.webp'
@@ -127,7 +128,7 @@ export const WebAnnouncementBox = ({
     getToken(),
   ])
 
-  useEffect(() => {
+  useAfterInteractive(() => {
     if (isOpen && announcement) {
       window.dataLayer.push({
         event: 'view_promotion',
