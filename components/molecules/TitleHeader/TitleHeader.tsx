@@ -55,11 +55,7 @@ export function TitleHeader(props: StickyButtonProps) {
         <OTRWrapper>
           <OTR>OTR</OTR>
           <OTRPrice>Rp {carOtrPrice}</OTRPrice>
-          <OTRCity>{`(OTR ${
-            modelDetailData?.brand === 'Daihatsu'
-              ? 'Jakarta Pusat'
-              : cityOtr?.cityName || 'Jakarta Pusat'
-          })`}</OTRCity>
+          <OTRCity>{`(OTR ${cityOtr?.cityName || 'Jakarta Pusat'})`}</OTRCity>
         </OTRWrapper>
         {sortCarModelVariant.length > 0 && (
           <AdditionalInfoCarVariant

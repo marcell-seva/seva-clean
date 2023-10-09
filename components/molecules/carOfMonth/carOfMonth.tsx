@@ -8,6 +8,7 @@ import { COMData } from 'utils/types/utils'
 import { HomePageDataLocalContext } from 'pages'
 import { api } from 'services/api'
 import { useCar } from 'services/context/carContext'
+import { getCity } from 'utils/hooks/useGetCity'
 
 interface CarOfMonthProps {
   onSendOffer: () => void
@@ -51,7 +52,7 @@ export const CarOfMonth = ({ onSendOffer }: CarOfMonthProps) => {
   useEffect(() => {
     setIsLoading(true)
     api
-      .getCarofTheMonth()
+      .getCarofTheMonth('?city=' + getCity().cityCode)
       .then((res: { messages: string; data: COMData[] }) => {
         setComDataNew(res.data)
         setIsLoading(false)
