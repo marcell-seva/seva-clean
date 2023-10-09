@@ -113,6 +113,15 @@ export default function NewCarVariantList({
   const [isOpenCitySelectorOTRPrice, setIsOpenCitySelectorOTRPrice] =
     useState(false)
 
+  const IsShowBadgeCreditOpportunity = getSessionStorage(
+    SessionStorageKey.IsShowBadgeCreditOpportunity,
+  )
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
+
   const closeLeadsForm = () => {
     setIsModalOpened(false)
   }
@@ -355,12 +364,8 @@ export default function NewCarVariantList({
       CAR_MODEL: carModelDetails?.model,
       CAR_VARIANT: dataCar?.CAR_VARIANT ? dataCar?.CAR_VARIANT : 'Null',
       PELUANG_KREDIT_BADGE:
-        dataCar?.PELUANG_KREDIT_BADGE &&
-        dataCar?.PELUANG_KREDIT_BADGE === 'Green'
-          ? 'Mudah disetujui'
-          : dataCar?.PELUANG_KREDIT_BADGE &&
-            dataCar?.PELUANG_KREDIT_BADGE === 'Red'
-          ? 'Sulit disetujui'
+        isUsingFilterFinancial && IsShowBadgeCreditOpportunity
+          ? dataCar?.PELUANG_KREDIT_BADGE
           : 'Null',
       TENOR_OPTION:
         window.location.href.includes('kredit') &&
