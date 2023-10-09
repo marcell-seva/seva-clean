@@ -38,7 +38,7 @@ const NewCarResultPage = ({
   const todayDate = new Date()
   const brand = router.query.brand
 
-  const metaTitle = `Beli Mobil Terbaru ${todayDate.getFullYear()} Harga OTR dengan Cicilan Kredit & Spesifikasi bulan ${monthId(
+  const metaTitle = `Beli Mobil Terbaru ${todayDate.getFullYear()} - Harga OTR dengan Promo Cicilan bulan ${monthId(
     todayDate.getMonth(),
   )} | SEVA`
   const metaDesc = `Beli mobil  ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`

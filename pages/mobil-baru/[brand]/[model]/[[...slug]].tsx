@@ -465,7 +465,14 @@ const jsonLD = (
     carModel?.variants[0].priceValue ?? 0,
   )
   const selectedCar = getSelectedCar(recommendationsDetailData, carVariant)
-
+  const filterImageBasedOnType = (
+    data: Array<string> | undefined,
+    type: string,
+  ): Array<string> | undefined => {
+    return data?.filter((item: string) => {
+      return item.toLowerCase().includes(type)
+    })
+  }
   const priceRange =
     carModel?.variants[carModel?.variants.length - 1].priceValue ===
     carModel?.variants[0].priceValue
@@ -655,7 +662,7 @@ const jsonLD = (
     ImageObject: [
       {
         '@type': 'ImageObject',
-        contentUrl: carModel?.images[0],
+        contentUrl: filterImageBasedOnType(carModel?.images, 'eksterior')?.[0],
         mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
         representativeOfPage: 'http://schema.org/True',
         isFamilyFriendly: 'http://schema.org/True',
@@ -663,11 +670,11 @@ const jsonLD = (
       },
       {
         '@type': 'ImageObject',
-        contentUrl: carModel?.images[0],
-        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
-        representativeOfPage: 'http://schema.org/True',
-        isFamilyFriendly: 'http://schema.org/True',
-        isAccesibleForFree: 'http://schema.org/False',
+        contentUrl: filterImageBasedOnType(carModel?.images, 'interior')?.[0],
+        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Interior`,
+        representativeOfPage: 'https://schema.org/True',
+        isFamilyFriendly: 'https://schema.org/True',
+        isAccesibleForFree: 'https://schema.org/False',
       },
     ],
     NewsArticle: [
