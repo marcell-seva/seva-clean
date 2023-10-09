@@ -32,7 +32,10 @@ import {
   CarVariantListPageUrlParams,
   trackDataCarType,
 } from 'utils/types/utils'
-import { getSessionStorage } from 'utils/handler/sessionStorage'
+import {
+  getSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
 
 type AlternativeCarCardProps = {
