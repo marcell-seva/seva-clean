@@ -32,12 +32,26 @@ const getSlug = (query: any, index: number) => {
   )
 }
 
+interface CsaInput {
+  salesId: number
+  spkDate: string
+  spkNo: string
+  bstkDate: string
+  bstkNo: string
+}
+
+interface DataResponse {
+  leadId: string
+  csaInput: CsaInput
+}
+
 const UpdateLeadsFormCM = ({
   message,
   isValidz,
   dataAgent,
+  csaInput,
+  leadId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const router = useRouter()
   const { saveAgent } = useUtils()
   const [isRequiredSPK, setIsRequiredSPK] = useState(false)
   const [isRequiredBSTK, setIsRequiredBSTK] = useState(false)
@@ -45,7 +59,6 @@ const UpdateLeadsFormCM = ({
   const [toastMessage, setToastMessage] = useState(
     'Lead berhasil diassign ke dealer & sales agent',
   )
-  const dbLeadsId = getSlug(router.query, 0)
   const cmSchema = object().shape({
     dbLeadsId: string(),
     salesId: number(),
@@ -66,12 +79,12 @@ const UpdateLeadsFormCM = ({
     handleSubmit,
   } = useFormik<CMForm>({
     initialValues: {
-      dbLeadsId: dbLeadsId || '',
-      salesId: 0,
-      noSPK: '',
-      spkDate: '',
-      noBSTK: '',
-      bstkDate: '',
+      dbLeadsId: leadId || '',
+      salesId: csaInput?.salesId || 0,
+      noSPK: csaInput?.spkNo || '',
+      spkDate: csaInput?.spkDate || '',
+      noBSTK: csaInput?.bstkNo || '',
+      bstkDate: csaInput?.bstkDate || '',
     },
     onSubmit: (value) => {
       updateLeadFormCMSEVA({
@@ -121,7 +134,7 @@ const UpdateLeadsFormCM = ({
         </div>
         <div className={styles.formWrapper}>
           <div id="update-leads-form-db-leads">
-            <FormDBLeads value={dbLeadsId} title="DB Leads ID" />
+            <FormDBLeads value={values.dbLeadsId} title="DB Leads ID" />
           </div>
           <div id="update-leads-form-dealer-sales-agent">
             <FormDealerSales handleChange={handleAgentPick} name="salesId" />
@@ -264,13 +277,17 @@ export async function getServerSideProps(context: any) {
   try {
     const salesRes: any = await Promise.all([api.getAgent()])
     const response = await getLeadsDetail(detailId)
-    const data = response.data
+    const data: DataResponse = response.data
+    const csaInput = data.csaInput
+    const leadId = data.leadId
 
     return {
       props: {
         message: 'hello',
         isValidz: valid,
         dataAgent: salesRes,
+        csaInput,
+        leadId,
       },
     }
   } catch (error) {
