@@ -105,8 +105,12 @@ export default function CarRecommendations({
     })
     trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CTA_CLICK, {
       PAGE_ORIGINATION: 'PDP - Kredit',
-      CAR_BRAND: brand ? capitalizeWords(brand.replaceAll('-', ' ')) : 'Null',
-      CAR_MODEL: model ? capitalizeWords(model.replaceAll('-', ' ')) : 'Null',
+      CAR_BRAND: brand
+        ? capitalizeWords(brand.toString().replaceAll('-', ' '))
+        : 'Null',
+      CAR_MODEL: model
+        ? capitalizeWords(model.toString().replaceAll('-', ' '))
+        : 'Null',
       CAR_BRAND_RECOMMENDATION: item.brand,
       CAR_MODEL_RECOMMENDATION: item.model,
       CTA_BUTTON: 'Hitung Kemampuan',
