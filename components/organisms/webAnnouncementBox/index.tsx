@@ -19,7 +19,10 @@ import { api } from 'services/api'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
 import { SessionStorageKey } from 'utils/enum'
 import { useUtils } from 'services/context/utilsContext'
-import { trackEventCountly } from 'helpers/countly/countly'
+import {
+  trackEventCountly,
+  valueMenuTabCategory,
+} from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
@@ -137,10 +140,14 @@ export const WebAnnouncementBox = ({
         eventAction: 'Promotion View',
         eventLabel: announcement.title,
       })
-      trackEventCountly(CountlyEventNames.WEB_ANNOUNCEMENT_VIEW, {
-        ANNOUNCEMENT_TITLE: announcement.title,
-        PAGE_ORIGINATION: pageOrigination,
-      })
+      if (pageOrigination) {
+        trackEventCountly(CountlyEventNames.WEB_ANNOUNCEMENT_VIEW, {
+          ANNOUNCEMENT_TITLE: announcement.title,
+          PAGE_ORIGINATION: pageOrigination.includes('PDP')
+            ? 'PDP - ' + valueMenuTabCategory()
+            : pageOrigination,
+        })
+      }
     }
   }, [isOpen, announcement])
 
@@ -224,7 +231,9 @@ export const WebAnnouncementBox = ({
                 )
                 trackEventCountly(CountlyEventNames.WEB_ANNOUNCEMENT_CLICK, {
                   ANNOUNCEMENT_TITLE: announcement.title,
-                  PAGE_ORIGINATION: pageOrigination,
+                  PAGE_ORIGINATION: pageOrigination?.includes('PDP')
+                    ? 'PDP - ' + valueMenuTabCategory()
+                    : pageOrigination,
                   PAGE_DIRECTION_URL: announcement.url,
                 })
                 announcement.url &&

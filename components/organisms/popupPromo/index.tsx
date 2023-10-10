@@ -10,12 +10,14 @@ import { colors } from 'styles/colors'
 import { IconClose } from 'components/atoms'
 import styles from '../../../styles/components/organisms/popupPromo.module.scss'
 import elementId from 'helpers/elementIds'
-import { PopupPromoDataItemType } from 'utils/types/utils'
+import { PopupPromoDataItemType, trackDataCarType } from 'utils/types/utils'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getLocalStorage } from 'utils/handler/localStorage'
-import { LocalStorageKey } from 'utils/enum'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { LoanRank } from 'utils/types/models'
+import { getSessionStorage } from 'utils/handler/sessionStorage'
+import { getBrandAndModelValue } from 'utils/handler/getBrandAndModel'
 
 const initPromoList: PopupPromoDataItemType[] = [
   // {
@@ -65,6 +67,12 @@ export const PopupPromo = (props: PopupPromo) => {
   const [promoList, setPromoList] = useState(initPromoList)
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
 
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
+  const IsShowBadgeCreditOpportunity = getSessionStorage(
+    SessionStorageKey.IsShowBadgeCreditOpportunity,
+  )
   const isUsingFilterFinancial =
     !!filterStorage?.age &&
     !!filterStorage?.downPaymentAmount &&
@@ -72,31 +80,17 @@ export const PopupPromo = (props: PopupPromo) => {
     !!filterStorage?.tenure
 
   const trackClickPromoSK = (promoDetail: string, promoOrder: number) => {
-    const getCreditBadgeForCountly = () => {
-      let creditBadge = 'Null'
-      if (
-        props.carData.loanRank &&
-        props.carData.loanRank.includes(LoanRank.Green)
-      ) {
-        creditBadge = 'Mudah disetujui'
-      } else if (
-        props.carData.loanRank &&
-        props.carData.loanRank.includes(LoanRank.Red)
-      ) {
-        creditBadge = 'Sulit disetujui'
-      }
-      return creditBadge
-    }
     trackEventCountly(CountlyEventNames.WEB_PROMO_SK_CLICK, {
-      CAR_BRAND: props.carData.brand,
-      CAR_MODEL: props.carData.model,
-      CAR_ORDER: props.carData.carOder,
+      CAR_BRAND: getBrandAndModelValue(props.carData.brand),
+      CAR_MODEL: getBrandAndModelValue(props.carData.model),
+      CAR_ORDER: props.carData.carOrder,
       PROMO_DETAILS: promoDetail,
       PROMO_ORDER: promoOrder + 1,
-      PELUANG_KREDIT_BADGE: isUsingFilterFinancial
-        ? getCreditBadgeForCountly()
-        : 'Null',
-      PAGE_ORIGINATION: 'PDP',
+      PELUANG_KREDIT_BADGE:
+        isUsingFilterFinancial && IsShowBadgeCreditOpportunity
+          ? dataCar?.PELUANG_KREDIT_BADGE
+          : 'Null',
+      PAGE_ORIGINATION: 'PLP',
     })
   }
   useEffect(() => {
