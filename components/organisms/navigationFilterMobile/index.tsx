@@ -32,6 +32,7 @@ type NavFilterMobileProps = {
   setRecommendations: any
   isShowAnnouncementBox?: boolean | null
   isOTO?: boolean
+  isUsed?: boolean
 }
 export const NavigationFilterMobile = ({
   carlist,
@@ -44,6 +45,7 @@ export const NavigationFilterMobile = ({
   setRecommendations,
   isShowAnnouncementBox,
   isOTO,
+  isUsed,
 }: NavFilterMobileProps) => {
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
   const { sortBy } = funnelQuery
@@ -281,7 +283,7 @@ export const NavigationFilterMobile = ({
                 className={styles.carSummaryLabel}
                 data-testid={elementId.PLP.Text.JumlahMobil}
               >
-                {summaryCar} Mobil Baru
+                {summaryCar} {isUsed ? 'Mobil Bekas' : 'Mobil Baru'}
               </div>
             </div>
           </>

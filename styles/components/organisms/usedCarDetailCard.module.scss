@@ -1,0 +1,278 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 343px;
+  width: 100%;
+
+  margin-top: 73px;
+}
+
+.heroImg {
+  position: absolute;
+  z-index: 1;
+  max-width: 279px;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  top: -73px;
+}
+
+.brandModelText {
+  font-family: $font-kanyon-medium;
+  margin-bottom: 16px;
+}
+
+.cardWrapper {
+  padding: 16px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contentWrapper {
+  padding-top: 128px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.labelCard {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  top: 96px;
+  cursor: pointer;
+}
+
+.logoImg {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  margin-right: 16px;
+  top: 96px;
+}
+
+.hargaOtrWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.smallSemibold {
+  font-family: var(--open-sans-semi-bold);
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+}
+
+.smallRegular {
+  font-family: var(--open-sans);
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+}
+
+.locationSmallRegular {
+  font-family: var(--open-sans);
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.priceOtrRange {
+  font-family: var(--kanyon);
+  font-size: 16px;
+  line-height: 24px;
+  color: #{$primary-black};
+  margin-bottom: 4px;
+}
+
+.infoWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 311px;
+  margin-bottom: 16px;
+}
+
+.detailInfoWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.bodyPriceText {
+  font-family: var(--open-sans);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$primary-black};
+}
+
+.linkLihatDetail {
+  font-family: var(--open-sans);
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$secondary-blue};
+  margin-bottom: 24px;
+  cursor: pointer;
+}
+
+.overlayAdditionalStyle {
+  background-color: transparent;
+}
+
+.tooltipWrapper {
+  position: relative;
+}
+
+.tooltipIcon {
+  cursor: pointer;
+}
+
+.tooltipCard {
+  visibility: visible;
+  width: 320px;
+  background-color: #{$secondary-blue};
+  border-radius: 4px;
+  padding: 8px;
+  position: absolute;
+  z-index: 999;
+  bottom: 25px;
+  left: 0;
+  margin-left: -150px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 150px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: #{$secondary-blue} transparent transparent transparent;
+  }
+}
+
+.tooltipContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.tooltipDesc {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  color: #{$primary-white};
+}
+
+.tooltipDescBold {
+  font-family: 'OpenSansBold';
+  font-weight: 700;
+}
+
+.tooltipCloseButton {
+  border: none;
+  background: none;
+  font-family: 'OpenSansBold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 16px;
+  color: #{$primary-white};
+  cursor: pointer;
+}
+
+.overlayAdditionalStyle {
+  background-color: transparent;
+}
+
+.tooltipWrapper {
+  position: relative;
+}
+
+.tooltipIcon {
+  cursor: pointer;
+}
+
+.tooltipCard {
+  visibility: visible;
+  width: 320px;
+  background-color: #{$secondary-blue};
+  border-radius: 4px;
+  padding: 8px;
+  position: absolute;
+  z-index: 999;
+  bottom: 25px;
+  left: 0;
+  margin-left: -150px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 150px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: #{$secondary-blue} transparent transparent transparent;
+  }
+}
+
+.tooltipContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.tooltipDesc {
+  font-family: 'OpenSans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  color: #{$primary-white};
+}
+
+.tooltipDescBold {
+  font-family: 'OpenSansBold';
+  font-weight: 700;
+}
+
+.tooltipCloseButton {
+  border: none;
+  background: none;
+  font-family: 'OpenSansBold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 16px;
+  color: #{$primary-white};
+  cursor: pointer;
+}

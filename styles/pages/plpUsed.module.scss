@@ -1,0 +1,11 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.mobile {
+  display: block;
+  @include lg {
+    width: 60%;
+    margin: 0% 20%;
+    position: relative;
+  }
+}

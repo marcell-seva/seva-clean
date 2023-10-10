@@ -10,6 +10,7 @@ const internalUrls = {
   appDownloadUrl: '/appDownload',
   questionsUrl: '/questions',
   carResultsUrl: '/mobil-baru',
+  usedCarResultsUrl: '/mobil-bekas',
   duplicatedCarResultsUrl: '/adaSEVAdiOTO/mobil-baru',
   carResultsUrlId: '/mobil-baru/:id',
   variantListOldDesignUrl: '/var/mobil-baru/:brand/:model',

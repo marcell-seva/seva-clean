@@ -17,7 +17,7 @@ import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
-import styles from 'styles/pages/plp.module.scss'
+import styles from 'styles/pages/plpUsed.module.scss'
 import { CarProvider } from 'services/context'
 import { generateBlurRecommendations } from 'utils/generateBlur'
 import { monthId } from 'utils/handler/date'
@@ -25,6 +25,7 @@ import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 import { useMediaQuery } from 'react-responsive'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useRouter } from 'next/router'
+import { PLPUsedCar } from 'components/organisms/PLPUsedCar'
 
 const UsedCarResultPage = ({
   meta,
@@ -74,7 +75,7 @@ const UsedCarResultPage = ({
         recommendationToyota={[]}
       >
         <div className={styles.mobile}>
-          <PLP minmaxPrice={meta.MinMaxPrice} />
+          <PLPUsedCar minmaxPrice={meta.MinMaxPrice} />
         </div>
       </CarProvider>
     </>
