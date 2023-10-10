@@ -2,7 +2,7 @@ import { PLP } from 'components/organisms'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { api } from 'services/api'
+
 import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
 import {
   CityOtrOption,
@@ -11,6 +11,7 @@ import {
   NavbarItemResponse,
 } from 'utils/types/utils'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
+import { api } from 'services/api'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { useUtils } from 'services/context/utilsContext'
