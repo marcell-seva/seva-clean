@@ -178,7 +178,9 @@ export default function HeaderVariant({
     const brandValue = item.label.split(' ')[0]
     const modelValue = item.label.split(' ').splice(1).join(' ')
     trackEventCountly(CountlyEventNames.WEB_CAR_SEARCH_ICON_SUGGESTION_CLICK, {
-      PAGE_ORIGINATION: getPageName(),
+      PAGE_ORIGINATION: pageOrigination?.includes('PDP')
+        ? 'PDP - ' + valueMenuTabCategory()
+        : pageOrigination,
       SUGGESTION_CATEGORY: 'Keyword',
       CAR_BRAND: brandValue,
       CAR_MODEL: modelValue,

@@ -148,7 +148,7 @@ export const HeaderMobile = ({
     })
     if (pageOrigination && pageOrigination.length !== 0) {
       trackEventCountly(CountlyEventNames.WEB_SEVA_LOGO_CLICK, {
-        PAGE_ORIGINATION: pageOrigination.includes('PDP')
+        PAGE_ORIGINATION: pageOrigination?.includes('PDP')
           ? 'PDP - ' + valueMenuTabCategory()
           : pageOrigination,
         USER_TYPE: valueForUserTypeProperty(),

@@ -139,14 +139,12 @@ export const WebAnnouncementBox = ({
         eventAction: 'Promotion View',
         eventLabel: announcement.title,
       })
-      if (pageOrigination) {
-        trackEventCountly(CountlyEventNames.WEB_ANNOUNCEMENT_VIEW, {
-          ANNOUNCEMENT_TITLE: announcement.title,
-          PAGE_ORIGINATION: pageOrigination.includes('PDP')
-            ? 'PDP - ' + valueMenuTabCategory()
-            : pageOrigination,
-        })
-      }
+      trackEventCountly(CountlyEventNames.WEB_ANNOUNCEMENT_VIEW, {
+        ANNOUNCEMENT_TITLE: announcement.title,
+        PAGE_ORIGINATION: pageOrigination?.includes('PDP')
+          ? 'PDP - ' + valueMenuTabCategory()
+          : pageOrigination,
+      })
     }
   }, [isOpen, announcement])
 

@@ -32,9 +32,10 @@ import Image from 'next/image'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getLocalStorage } from 'utils/handler/localStorage'
-import { LocalStorageKey } from 'utils/enum'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { LoanRank } from 'utils/types/models'
 import { getBrandAndModelValue } from 'utils/handler/getBrandAndModel'
+import { getSessionStorage } from 'utils/handler/sessionStorage'
 
 type PromoSectionProps = {
   setPromoName?: (value: string) => void
@@ -62,6 +63,9 @@ const PromoSection = ({
   const model = router.query.model as string
   const enablePromoCumaDiSeva = false
 
+  const IsShowBadgeCreditOpportunity = getSessionStorage(
+    SessionStorageKey.IsShowBadgeCreditOpportunity,
+  )
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
 
   const isUsingFilterFinancial =
@@ -95,9 +99,10 @@ const PromoSection = ({
       CAR_MODEL: getBrandAndModelValue(model),
       PROMO_DETAILS: promoDetail,
       PROMO_ORDER: promoOrder,
-      PELUANG_KREDIT_BADGE: isUsingFilterFinancial
-        ? getCreditBadgeForCountly()
-        : 'Null',
+      PELUANG_KREDIT_BADGE:
+        isUsingFilterFinancial && IsShowBadgeCreditOpportunity
+          ? dataCar?.PELUANG_KREDIT_BADGE
+          : 'Null',
       PAGE_ORIGINATION: 'PDP',
     })
   }

@@ -5,7 +5,7 @@ import styles from 'styles/components/organisms/promoPopupPdp.module.scss'
 import { IconClose } from 'components/atoms'
 import { trackCarVariantBannerPromoPopupClose } from 'helpers/amplitude/seva20Tracking'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import { LocalStorageKey } from 'utils/enum'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { CityOtrOption } from 'utils/types/utils'
 import { useCar } from 'services/context/carContext'
 import { trackEventCountly } from 'helpers/countly/countly'
@@ -14,6 +14,7 @@ import { getLocalStorage } from 'utils/handler/localStorage'
 import { useRouter } from 'next/router'
 import { LoanRank } from 'utils/types/models'
 import Image from 'next/image'
+import { getSessionStorage } from 'utils/handler/sessionStorage'
 
 const promoBannerTSO = '/revamp/illustration/PromoTSO.webp'
 const promoBannerCumaDiSEVA = '/revamp/illustration/PromoCumaDiSEVA.webp'
@@ -38,6 +39,9 @@ const PromoPopup = ({
   const router = useRouter()
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
 
+  const IsShowBadgeCreditOpportunity = getSessionStorage(
+    SessionStorageKey.IsShowBadgeCreditOpportunity,
+  )
   const isUsingFilterFinancial =
     !!filterStorage?.age &&
     !!filterStorage?.downPaymentAmount &&
@@ -74,9 +78,10 @@ const PromoPopup = ({
       CAR_MODEL: carModelDetails?.model,
       PROMO_DETAILS: promoDetail,
       PROMO_ORDER: promoOrder,
-      PELUANG_KREDIT_BADGE: isUsingFilterFinancial
-        ? getCreditBadgeForCountly()
-        : 'Null',
+      PELUANG_KREDIT_BADGE:
+        isUsingFilterFinancial && IsShowBadgeCreditOpportunity
+          ? dataCar?.PELUANG_KREDIT_BADGE
+          : 'Null',
       PAGE_ORIGINATION: 'PDP',
     })
   }
