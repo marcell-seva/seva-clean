@@ -34,6 +34,7 @@ import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { LocalStorageKey } from 'utils/enum'
 import { LoanRank } from 'utils/types/models'
+import { getBrandAndModelValue } from 'utils/handler/getBrandAndModel'
 
 type PromoSectionProps = {
   setPromoName?: (value: string) => void
@@ -90,8 +91,8 @@ const PromoSection = ({
   }
   const trackCountlePromoCLick = (promoDetail: string, promoOrder: number) => {
     trackEventCountly(CountlyEventNames.WEB_PROMO_CLICK, {
-      CAR_BRAND: brand,
-      CAR_MODEL: model,
+      CAR_BRAND: getBrandAndModelValue(brand),
+      CAR_MODEL: getBrandAndModelValue(model),
       PROMO_DETAILS: promoDetail,
       PROMO_ORDER: promoOrder,
       PELUANG_KREDIT_BADGE: isUsingFilterFinancial
@@ -278,7 +279,10 @@ const PromoSection = ({
               if (onPage === 'VariantListPage') {
                 onButtonClick && onButtonClick(true)
                 setPromoName && setPromoName('promo2')
-                trackCountlePromoCLick('Toyota Spektakuler', 2)
+                trackCountlePromoCLick(
+                  'Toyota Spektakuler',
+                  enablePromoCumaDiSeva ? 2 : 1,
+                )
                 trackCarVariantBannerPromoClick(dataForAmplitude)
               } else {
                 const Page_Direction_URL =
@@ -317,7 +321,10 @@ const PromoSection = ({
               if (onPage === 'VariantListPage') {
                 onButtonClick && onButtonClick(true)
                 setPromoName && setPromoName('promo3')
-                trackCountlePromoCLick('Promo Trade-In Daihatsu', 3)
+                trackCountlePromoCLick(
+                  'Promo Trade-In Daihatsu',
+                  enablePromoCumaDiSeva ? 3 : 2,
+                )
                 trackCarVariantBannerPromoClick(dataForAmplitude)
               } else {
                 const Page_Direction_URL =

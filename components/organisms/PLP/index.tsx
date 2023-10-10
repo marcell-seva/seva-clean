@@ -782,14 +782,13 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
                       onClickLabel={() => {
                         setOpenLabelPromo(true)
                         trackCountlyPromoBadgeClick(i, index)
-                        if (index) {
-                          setDataCarForPromo({
-                            brand: i.brand,
-                            model: i.model,
-                            carOrder: Number(index) + 1,
-                            loanRank: i.loanRank,
-                          })
-                        }
+
+                        setDataCarForPromo({
+                          brand: i.brand,
+                          model: i.model,
+                          carOrder: Number(index) + 1,
+                          loanRank: i.loanRank,
+                        })
                       }}
                       onClickResultMudah={() => {
                         setOpenLabelResultMudah(true)

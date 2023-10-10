@@ -115,7 +115,8 @@ export const AlternativeCarCard = ({
           : 'Mudah disetujui',
 
       CAR_BRAND:
-        pageOrigination?.toLowerCase() === 'homepage'
+        pageOrigination?.toLowerCase() === 'homepage' ||
+        !pageOrigination?.toLowerCase().includes('pdp')
           ? 'Null'
           : carBrand
           ? getValueBrandAndModel(carBrand)
@@ -194,8 +195,8 @@ export const AlternativeCarCard = ({
   const onClickSeeDetail = () => {
     trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CTA_CLICK, {
       PAGE_ORIGINATION: 'PLP - Empty Page',
-      CAR_BRAND: recommendation.brand,
-      CAR_MODEL: recommendation.model,
+      CAR_BRAND: 'Null',
+      CAR_MODEL: 'Null',
       CAR_BRAND_RECOMMENDATION: recommendation.brand,
       CAR_MODEL_RECOMMENDATION: recommendation.model,
       CTA_BUTTON: 'Lihat Detail',
