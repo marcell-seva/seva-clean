@@ -1,20 +1,7 @@
-import { useEffect } from 'react'
-import urls from 'utils/helpers/url'
+import React from 'react'
 
-const RedirectPage = () => {
-  useEffect(() => {
-    window.location.href = urls.internalUrls.usedCarResultsUrl
-  }, [])
-
-  return null
+const UsedCarResultPage = () => {
+  return <div>Test</div>
 }
 
-export default RedirectPage
-
-export const getServerSideProps = async ({ res }: any) => {
-  res.setHeader('location', urls.internalUrls.usedCarResultsUrl)
-  res.statusCode = 301
-  res.end()
-
-  return { props: {} }
-}
+export default UsedCarResultPage
