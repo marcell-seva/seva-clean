@@ -181,6 +181,16 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   })
   const user: string | null = getLocalStorage(LocalStorageKey.sevaCust)
   const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
+
+  const IsShowBadgeCreditOpportunity = getSessionStorage(
+    SessionStorageKey.IsShowBadgeCreditOpportunity,
+  )
 
   const fetchMoreData = () => {
     if (sampleArray.items.length >= recommendation.length) {
@@ -681,10 +691,8 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       CAR_MODEL: car.model,
       CAR_ORDER: parseInt(index) + 1,
       PELUANG_KREDIT_BADGE:
-        car.loanRank === 'Green'
-          ? 'Mudah disetujui'
-          : car.loanRank === 'Red'
-          ? 'Sulit disetujui'
+        isUsingFilterFinancial && IsShowBadgeCreditOpportunity
+          ? dataCar?.PELUANG_KREDIT_BADGE
           : 'Null',
       PAGE_ORIGINATION: 'PLP',
     })

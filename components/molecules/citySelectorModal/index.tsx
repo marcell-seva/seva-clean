@@ -103,6 +103,16 @@ const CitySelectorModal = ({
     )
   }
 
+  const getPathname = () => {
+    if (window.location.pathname === '/mobil-baru') {
+      return 'PLP'
+    } else if (
+      window.location.pathname !== '/mobil-baru' &&
+      window.location.pathname.includes('/mobil-baru')
+    ) {
+      return 'PDP - ' + valueMenuTabCategory()
+    }
+  }
   const onClickLaterButton = () => {
     if (cityOtr) {
       setInputValue(cityOtr.cityName)
@@ -115,7 +125,7 @@ const CitySelectorModal = ({
       PAGE_ORIGINATION:
         pageOrigination && pageOrigination.toLowerCase().includes('pdp')
           ? 'PDP - ' + valueMenuTabCategory()
-          : pageOrigination,
+          : getPathname(),
     })
     onClickCloseButton()
   }
@@ -230,16 +240,6 @@ const CitySelectorModal = ({
     }
   }
 
-  const getPathname = () => {
-    if (window.location.pathname === '/mobil-baru') {
-      return 'PLP'
-    } else if (
-      window.location.pathname !== '/mobil-baru' &&
-      window.location.pathname.includes('/mobil-baru')
-    ) {
-      return 'PDP - ' + valueMenuTabCategory()
-    }
-  }
   useEffect(() => {
     if (isOpen) {
       trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_BANNER_VIEW, {
