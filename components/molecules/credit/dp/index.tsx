@@ -206,6 +206,7 @@ const DpForm: React.FC<DpFormProps> = ({
   const sliderIconStyle = {
     width: 24,
     height: 24,
+    marginLeft: '10px',
   }
 
   const handleDpPercentageChange = (

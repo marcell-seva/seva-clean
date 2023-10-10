@@ -148,7 +148,7 @@ export interface FormLCState {
   leasingOption?: string
 }
 
-export const getSlug = (query: any, index: number) => {
+const getSlug = (query: any, index: number) => {
   return (
     query.slug && query.slug.length > index && (query.slug[index] as string)
   )
@@ -452,12 +452,15 @@ export default function LoanCalculatorPage() {
   }
 
   const fetchAllCarModels = async () => {
-    const response = await getNewFunnelRecommendationsByCity(
-      defaultCity.id,
-      defaultCity.cityCode,
-    )
+    if (forms?.city?.id) {
+      const params = new URLSearchParams()
+      params.append('cityId', forms?.city?.id as string)
+      params.append('city', forms?.city?.cityCode as string)
 
-    setAllModalCarList(response.carRecommendations)
+      const response = await api.getRecommendation('', { params })
+
+      setAllModalCarList(response.carRecommendations)
+    }
   }
 
   const fetchCarVariant = async () => {
