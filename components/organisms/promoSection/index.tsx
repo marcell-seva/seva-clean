@@ -20,7 +20,7 @@ import {
   IconTransmission,
   IconCar,
 } from 'components/atoms'
-import { CarVariantRecommendation } from 'utils/types/utils'
+import { CarVariantRecommendation, trackDataCarType } from 'utils/types/utils'
 import {
   OTOCarResultsUrl,
   OTOVariantListUrl,
@@ -67,7 +67,9 @@ const PromoSection = ({
     SessionStorageKey.IsShowBadgeCreditOpportunity,
   )
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
-
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
   const isUsingFilterFinancial =
     !!filterStorage?.age &&
     !!filterStorage?.downPaymentAmount &&
