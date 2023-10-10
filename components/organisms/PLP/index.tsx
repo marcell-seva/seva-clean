@@ -59,7 +59,7 @@ import {
   MinMaxPrice,
 } from 'utils/types/context'
 import { MoengageViewCarSearch } from 'utils/types/moengage'
-import { AnnouncementBoxDataType } from 'utils/types/utils'
+import { AnnouncementBoxDataType, trackDataCarType } from 'utils/types/utils'
 import styles from '../../../styles/pages/mobil-baru.module.scss'
 import {
   trackEventCountly,
@@ -187,6 +187,9 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     !!filterStorage?.downPaymentAmount &&
     !!filterStorage?.monthlyIncome &&
     !!filterStorage?.tenure
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
 
   const IsShowBadgeCreditOpportunity = getSessionStorage(
     SessionStorageKey.IsShowBadgeCreditOpportunity,
