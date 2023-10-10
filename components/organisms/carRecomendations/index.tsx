@@ -124,7 +124,7 @@ export default function CarRecommendations({
       PAGE_DIRECTION_URL: window.location.hostname + getDestinationUrl(item),
     })
     saveDataForCountlyTrackerPageViewLC(PreviousButton.CarRecommendation)
-    // window.location.replace(getDestinationUrl(item))
+    window.location.replace(getDestinationUrl(item))
   }
 
   const handleClickDetailCar = (url: string, item: CarRecommendation) => {
