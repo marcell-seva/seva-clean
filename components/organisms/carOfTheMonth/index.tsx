@@ -35,6 +35,9 @@ const CarOfTheMonth = ({
   setSelectedCarOfTheMonth,
 }: CarOfTheMonthProps) => {
   const isMobileSmall = useMediaQuery({ query: '(max-width: 365px)' })
+  const isMobileMedium = useMediaQuery({ query: '(max-width: 385px)' })
+  const isMobileLarge = useMediaQuery({ query: '(max-width: 415px)' })
+  const isMobile = useMediaQuery({ query: '(max-width: 570px)' })
   const [currentSlide, setCurrentSlide] = useState(0)
 
   const carModel = useMemo(() => {
@@ -52,8 +55,11 @@ const CarOfTheMonth = ({
   }, [carOfTheMonthData])
 
   const getVisibleSlides = () => {
-    if (isMobileSmall) return 1
-    return 1.23
+    if (isMobileSmall) return 1.15
+    if (isMobileMedium) return 1.23
+    if (isMobileLarge) return 1.25
+    if (isMobile) return 1.3
+    else return 1.85
   }
 
   return (

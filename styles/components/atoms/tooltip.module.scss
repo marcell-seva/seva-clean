@@ -38,7 +38,7 @@
   border-radius: 8px;
   z-index: 99;
   width: 90%;
-  @include centeredWithMaxWidth(538px);
+  @include centeredWithMaxWidth(343px);
 
   &.show {
     animation: show 0.3s ease-in-out both;
