@@ -7,17 +7,18 @@ import { IconChevronDown } from '../icon'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { navigateToPLP, PreviousButton } from 'utils/navigate'
-import { getPageName } from 'utils/pageName'
 import { OTONewCarUrl } from 'utils/helpers/routes'
 
 type MenuItemProps = {
   item?: MobileWebTopMenuType
   isOTO?: boolean
+  pageOrigination?: string
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({
   item,
   isOTO = false,
+  pageOrigination,
 }): JSX.Element => {
   const [state, setState] = React.useState(false)
 
@@ -72,8 +73,10 @@ const MenuItem: React.FC<MenuItemProps> = ({
           <div
             onClick={() => {
               trackEventCountly(CountlyEventNames.WEB_HAMBURGER_MENU_CLICK, {
-                PAGE_ORIGINATION: getPageName(),
-                PAGE_DIRECTION_URL: window.location.hostname + item?.subMenu,
+                PAGE_ORIGINATION: pageOrigination,
+                PAGE_DIRECTION_URL: item?.subMenu[0].menuUrl?.includes('www')
+                  ? item?.subMenu[0].menuUrl
+                  : window.location.hostname + item?.subMenu[0].menuUrl,
               })
               handleClickMenu(child.menuUrl as string, child.menuName)
             }}
