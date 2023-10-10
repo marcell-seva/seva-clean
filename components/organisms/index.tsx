@@ -57,6 +57,7 @@ import { PopupResultRecommended } from './popupResultFilter/resultRecommended'
 import { InternalServerErrorPageContent } from './internalServerErrorPageContent'
 import { NotFoundErrorPageContent } from './notFoundErrorPageContent'
 
+import { UsedCarDetailCard } from './usedCarDetailCard'
 const Exterior360ViewerTab = dynamic(
   () => import('./tabContent/upper/exterior360Viewer'),
 )
@@ -120,4 +121,5 @@ export {
   PopupResultRecommended,
   InternalServerErrorPageContent,
   NotFoundErrorPageContent,
+  UsedCarDetailCard,
 }
