@@ -11,6 +11,7 @@ interface Props {
   iconWidth?: number
   color?: string
   onOpenTooltip?: () => void
+  additionalStyle?: string
 }
 
 export const Tooltip: React.FC<Props> = ({
@@ -19,6 +20,7 @@ export const Tooltip: React.FC<Props> = ({
   color = '#878D98',
   content,
   onOpenTooltip,
+  additionalStyle = '',
 }) => {
   const [isShowOverlay, setIsShowOverlay] = React.useState(false)
 
@@ -45,6 +47,7 @@ export const Tooltip: React.FC<Props> = ({
             [styles.tooltipWrapper]: true,
             [styles.show]: isShowOverlay,
             [styles.close]: !isShowOverlay,
+            [additionalStyle]: true,
           })}
         >
           <p className={styles.tooltipContent}>{content}</p>

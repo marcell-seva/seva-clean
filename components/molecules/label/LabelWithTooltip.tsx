@@ -21,7 +21,11 @@ export const LabelWithTooltip: React.FC<Props> = ({
     <div className={styles.wrapper} data-testid={datatestid}>
       <Label name={name}>{label}</Label>
       <div className={styles.tooltipWrapper}>
-        <Tooltip content={content} onOpenTooltip={onOpenTooltip} />
+        <Tooltip
+          content={content}
+          onOpenTooltip={onOpenTooltip}
+          additionalStyle={styles.tooltipAdditionalStyle}
+        />
       </div>
     </div>
   )
