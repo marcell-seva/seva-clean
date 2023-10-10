@@ -36,13 +36,13 @@ const NewCarResultPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const todayDate = new Date()
-  const carBrand = meta.carRecommendations.carRecommendations[0]?.brand
-  const metaTitle = `Harga OTR ${carBrand} - Harga OTR dengan Promo Cicilan bulan ${monthId(
+  const brand = router.query.brand
+
+  const metaTitle = `Beli Mobil Terbaru ${todayDate.getFullYear()} - Harga OTR dengan Promo Cicilan bulan ${monthId(
     todayDate.getMonth(),
   )} | SEVA`
-  const metaDesc = `Beli mobil ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
-  const metaBrandDesc = `Beli mobil ${carBrand} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
-  const descTag = router.query.brand ? metaBrandDesc : metaDesc
+  const metaDesc = `Beli mobil  ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
+  const metaDescBrand = `Beli mobil ${brand} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
   const [isMobile, setIsMobile] = useState(isSsrMobileLocal)
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const {
@@ -65,7 +65,15 @@ const NewCarResultPage = ({
 
   return (
     <>
-      <Seo title={metaTitle} description={descTag} image={defaultSeoImage} />
+      {brand ? (
+        <Seo
+          title={metaTitle}
+          description={metaDescBrand}
+          image={defaultSeoImage}
+        />
+      ) : (
+        <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
+      )}
       <CarProvider
         car={null}
         carOfTheMonth={[]}

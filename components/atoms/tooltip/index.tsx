@@ -36,6 +36,7 @@ export const Tooltip: React.FC<Props> = ({
         height={iconHeight}
         color={color}
         onClick={handleOpenTooltip}
+        alt="SEVA Orientation Icon"
       />
 
       <>

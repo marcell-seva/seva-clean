@@ -55,7 +55,9 @@ export function CarHeader({
                 src={modelDetailData.images[0]}
                 width={354}
                 height={265}
-                alt=""
+                alt={`Warna Mobil ${
+                  modelDetailData.brand
+                } ${modelDetailData.model.replace('-', ' ')} Bagian Depan`}
                 priority
               />
             )}

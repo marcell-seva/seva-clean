@@ -54,7 +54,9 @@ export const WarnaTab = ({ isShowAnnouncementBox, isOTO = false }: any) => {
               height="146"
               className={styles.carImage}
               data-testid={elementId.HeroImage}
-              alt={`Warna Mobil ${carModelDetails?.brand} ${carModelDetails?.model} Bagian Depan`}
+              alt={`Warna Mobil ${
+                carModelDetails?.brand
+              } ${carModelDetails?.model.replace('-', ' ')} Bagian Depan`}
               priority
               quality="20"
             />
