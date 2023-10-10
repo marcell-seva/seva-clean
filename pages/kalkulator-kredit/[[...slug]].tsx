@@ -459,15 +459,13 @@ export default function LoanCalculatorPage() {
     )
   }
   const fetchAllCarModels = async () => {
-    if (forms?.city?.id) {
-      const params = new URLSearchParams()
-      params.append('cityId', forms?.city?.id as string)
-      params.append('city', forms?.city?.cityCode as string)
+    const params = new URLSearchParams()
+    params.append('cityId', defaultCity.id as string)
+    params.append('city', defaultCity.cityCode as string)
 
-      const response = await api.getRecommendation('', { params })
+    const response = await api.getRecommendation('', { params })
 
-      setAllModalCarList(response.carRecommendations)
-    }
+    setAllModalCarList(response.carRecommendations)
   }
 
   const fetchCarVariant = async () => {
