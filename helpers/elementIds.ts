@@ -379,6 +379,8 @@ const elementId = {
       CicilanMobil: 'faq-cicilan-mobil',
       HargaMobil: 'faq-harga-mobil',
       PanjangMobil: 'faq-panjang-mobil',
+      KapasitasMobil: 'faq-kapasitas-mobil',
+      TransmisiMobil: 'faq-transmisi-mobil',
     },
   },
   LoanCalculator: {

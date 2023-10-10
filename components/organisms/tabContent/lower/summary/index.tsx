@@ -349,6 +349,16 @@ export const SummaryTab = ({
       answer: `Panjang dimensi ${modelDetail?.brand} ${modelDetail?.model} adalah ${summaryInfo.length} mm dan lebarnya ${summaryInfo.width} mm, dan tinggi ${summaryInfo.height}  mm.`,
       testid: elementId.PDP.FAQ.PanjangMobil,
     },
+    {
+      question: `Berapa kapasitas penumpang dalam ${modelDetail?.brand} ${modelDetail?.model}?`,
+      answer: `${modelDetail?.brand} ${modelDetail?.model} biasanya hadir dalam opsi ${summaryInfo?.seats} kursi penumpang, dengan tempat duduk yang nyaman untuk penumpang di baris depan dan belakang.`,
+      testid: elementId.PDP.FAQ.KapasitasMobil,
+    },
+    {
+      question: `Apa jenis sistem transmisi yang digunakan oleh ${modelDetail?.brand} ${modelDetail?.model}?`,
+      answer: `${modelDetail?.brand} ${modelDetail?.model} umumnya dilengkapi dengan transmisi ${summaryInfo.transmissionDetail}.`,
+      testid: elementId.PDP.FAQ.TransmisiMobil,
+    },
   ]
 
   const getDataForAmplitude = () => {
