@@ -32,5 +32,5 @@ export const useAfterInteractive = (
     if (interactive) {
       executeFunc()
     }
-  }, [...dependencies])
+  }, [interactive, ...dependencies])
 }
