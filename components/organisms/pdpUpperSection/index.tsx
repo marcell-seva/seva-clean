@@ -211,12 +211,12 @@ export const PdpUpperSection = ({
       <div id="pdp-upper-content">
         <>
           <div className={styles.content}>{renderContent()}</div>
-          {/* <CarOverview
+          <CarOverview
             onClickCityOtrCarOverview={onClickCityOtrCarOverview}
             onClickShareButton={onClickShareButton}
             currentTabMenu={selectedTabValue}
             isOTO={isOTO}
-          /> */}
+          />
         </>
       </div>
     </div>
