@@ -80,7 +80,6 @@ export const UsedCarDetailCard = ({
     LocalStorageKey.CityOtr,
     null,
   )
-
   const [, setLoanRankPLP] = useSessionStorage(
     SessionStorageKey.LoanRankFromPLP,
     false,
