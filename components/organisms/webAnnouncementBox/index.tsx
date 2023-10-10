@@ -89,7 +89,7 @@ export const WebAnnouncementBox = ({
   const [isError, setIsError] = useState(false)
   const { dataAnnouncementBox } = useUtils()
 
-  useEffect(() => {
+  useAfterInteractive(() => {
     if (dataAnnouncementBox !== undefined) {
       setIsError(false)
       setAnnouncement(dataAnnouncementBox)
