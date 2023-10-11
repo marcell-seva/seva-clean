@@ -172,7 +172,7 @@ const PromoPopup = ({
             href="https://www.seva.id/info/promo/toyota-spektakuler/"
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackClickPromoSK('Toyota Spektakuler', 2)}
+            onClick={() => trackClickPromoSK('Toyota Spektakuler', 1)} // because promo "cuma di seva" hidden
           >
             {' '}
             Lihat S&K.
@@ -214,7 +214,7 @@ const PromoPopup = ({
             href="https://www.seva.id/info/promo/promo-trade-in-daihatsu/"
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackClickPromoSK('Promo Trade-In Daihatsu', 3)}
+            onClick={() => trackClickPromoSK('Promo Trade-In Daihatsu', 2)} // because promo "cuma di seva" hidden
           >
             {' '}
             Lihat S&K.
