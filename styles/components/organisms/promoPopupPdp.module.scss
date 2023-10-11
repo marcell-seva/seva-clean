@@ -68,6 +68,7 @@
 .imagePromoSpacing {
   margin-top: 16px;
   margin-bottom: 24px;
+  width: 100%;
 }
 .spacingChevronIcon {
   margin-left: 9px;
@@ -79,8 +80,9 @@
   border-radius: 8px;
 }
 .promoBanner {
-  object-fit: contain;
-  width: -webkit-fill-available;
+  position: relative !important;
+  object-fit: cover;
+  width: 100%;
   border-radius: 8px;
 }
 .containerPromoPopup {
