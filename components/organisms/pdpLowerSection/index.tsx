@@ -137,6 +137,9 @@ export const PdpLowerSection = ({
   }
   useEffect(() => {
     setTabFromDirectUrl()
+  }, [])
+
+  useEffect(() => {
     getAnnouncementBox()
   }, [dataAnnouncementBox, isShowAnnouncementBox])
 
