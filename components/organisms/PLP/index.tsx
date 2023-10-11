@@ -476,7 +476,9 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     } else {
       setIsFilter(false)
     }
+  }, [funnelQuery, brand])
 
+  useEffect(() => {
     if (
       funnelQuery.downPaymentAmount &&
       funnelQuery.monthlyIncome &&
@@ -488,7 +490,11 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       setIsFilterFinancial(false)
       patchFunnelQuery({ filterFincap: false })
     }
-  }, [funnelQuery, brand])
+  }, [
+    funnelQuery.downPaymentAmount,
+    funnelQuery.monthlyIncome,
+    funnelQuery.age,
+  ])
 
   useEffect(() => {
     if (
