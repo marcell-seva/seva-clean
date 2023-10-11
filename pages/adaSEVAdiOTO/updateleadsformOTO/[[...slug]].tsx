@@ -8,7 +8,7 @@ import { FormLeadsResponse } from 'components/molecules/formUpdateLeadsSevaOTO/f
 import FormDBLeads from 'components/molecules/formUpdateLeadsSevaOTO/formDBLeads'
 import { FormLeadsQualified } from 'components/molecules/formUpdateLeadsSevaOTO/formLeadsQualified'
 import FormSelectCitySevaOTO from 'components/molecules/formUpdateLeadsSevaOTO/formSelectCitySevaOTO'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { variantEmptyValue } from 'components/molecules/form/formSelectCarVariant'
 import { ModelVariant } from 'utils/types/carVariant'
 import { getCarModelDetailsById } from 'services/recommendations'
@@ -16,7 +16,7 @@ import { CityOtrOption } from 'utils/types'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { CarModel } from 'utils/types/carModel'
-import { Button } from 'components/atoms'
+import { Button, InputPhone } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { FormSelectModelCarSevaOTO } from 'components/molecules/formUpdateLeadsSevaOTO/formSelectModelCarSevaOTO'
 import { FormSelectCarVariantSevaOTO } from 'components/molecules/formUpdateLeadsSevaOTO/formSelectCarVariant'
@@ -24,8 +24,14 @@ import { getLeadsDetail, updateLeadFormOTO } from 'services/leadsSeva'
 import { FormSelectBrandCarSevaOTO } from 'components/molecules/formUpdateLeadsSevaOTO/formSelectBrandCarSevaOTO'
 import { LabelTooltipSevaOTO } from 'components/molecules/label/labelTooltipSevaOTO'
 import { getNewFunnelRecommendationsByCity } from 'services/newFunnel'
-import { capitalizeFirstLetter } from 'utils/stringUtils'
+import { InputVersionType } from 'utils/enum'
+import { Input } from 'antd'
+import {
+  capitalizeFirstLetter,
+  filterNonDigitCharacters,
+} from 'utils/stringUtils'
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 const Toast = dynamic(() => import('components/atoms').then((mod) => mod.Toast))
 
 const CarSillhouete = '/revamp/illustration/car-sillhouete.webp'
@@ -42,6 +48,8 @@ interface FormDataState {
     | undefined
   leadResponse: boolean
   isLeadQualified: boolean
+  name: string
+  phone: string
   model:
     | {
         modelId: string
@@ -63,6 +71,7 @@ interface inputData {
   carModelId: string
   cityId: number
   priceOtr: number
+  notes: string
 }
 
 interface CsaInput {
@@ -77,13 +86,19 @@ interface CsaInput {
 
 interface DataResponse {
   leadId: string
+  phoneNumber: string
+  name: string
   csaInput: CsaInput
 }
+
+const { TextArea } = Input
 
 const UpdateLeadsFormOTO = ({
   isValid,
   csaInput,
   leadId,
+  phoneNumber,
+  name,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [leadRes, setLeadRes] = useState(csaInput.leadResponse)
   const [leadQualified, setLeadQualified] = useState(csaInput.isLeadQualified)
@@ -94,6 +109,7 @@ const UpdateLeadsFormOTO = ({
   const [isCheckedBrand, setIsCheckedBrand] = useState<string[]>([])
   const [carVariantList, setCarVariantList] = useState<ModelVariant[]>([])
   const [allModelCarList, setAllModalCarList] = useState<CarModel[]>([])
+  const [notes, setNotes] = useState('')
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -102,6 +118,10 @@ const UpdateLeadsFormOTO = ({
   const [toastMessage, setToastMessage] = useState(
     'Update form telah berhasil diperbaharui',
   )
+
+  const titleRef = useRef<null | HTMLDivElement>(null)
+
+  const router = useRouter()
 
   const [isUserChooseVariantDropdown, setIsUserChooseVariantDropdown] =
     useState(false)
@@ -115,10 +135,18 @@ const UpdateLeadsFormOTO = ({
     }
   }
 
+  const scrollToTitleRef = () => {
+    setTimeout(() => {
+      titleRef.current?.scrollIntoView({ behavior: 'smooth', inline: 'start' })
+    }, 2000)
+  }
+
   const [forms, setForms] = useState<FormDataState>({
     leadId: leadId,
     leadResponse: leadRes,
     isLeadQualified: leadQualified,
+    name: name,
+    phone: phoneNumber.slice(3),
     city: {
       cityCode: '',
       cityName: '',
@@ -233,6 +261,75 @@ const UpdateLeadsFormOTO = ({
         carVariantId: forms.variant?.variantId,
         cityId: parseInt(forms?.city?.id!),
         priceOtr: parseInt(otr!),
+        notes: notes,
+      }
+
+      if (data.leadResponse == false && data.isLeadQualified == true) {
+        setIsLoading(false)
+        setIsCheckedBrand([])
+        setNotes('')
+        setForms({
+          ...forms,
+          city: {
+            cityCode: '',
+            cityName: '',
+            province: '',
+            id: '',
+          },
+          model: {
+            brandName: '',
+            modelName: '',
+            modelId: '',
+            modelImage: '',
+          },
+          variant: {
+            variantId: '',
+            variantName: '',
+            otr: '',
+            discount: 0,
+          },
+        })
+        setToastMessage('Update form gagal diperbaharui, silahkan coba lagi')
+        setIsOpenToast(true)
+        setTypeToast(false)
+        scrollToTitleRef()
+        return
+      }
+
+      if (
+        data.carModelId === '' &&
+        data.leadResponse === true &&
+        data.isLeadQualified == true
+      ) {
+        setIsCheckedBrand([])
+        setNotes('')
+        setForms({
+          ...forms,
+          city: {
+            cityCode: '',
+            cityName: '',
+            province: '',
+            id: '',
+          },
+          model: {
+            brandName: '',
+            modelName: '',
+            modelId: '',
+            modelImage: '',
+          },
+          variant: {
+            variantId: '',
+            variantName: '',
+            otr: '',
+            discount: 0,
+          },
+        })
+        setToastMessage('Update form gagal diperbaharui, silahkan coba lagi')
+        setIsOpenToast(true)
+        setTypeToast(false)
+        scrollToTitleRef()
+        setIsLoading(false)
+        return
       }
 
       try {
@@ -243,6 +340,7 @@ const UpdateLeadsFormOTO = ({
           setIsLoading(false)
           setTypeToast(true)
           setDisableBtn(true)
+          setNotes('')
           setForms({
             ...forms,
             city: {
@@ -267,6 +365,7 @@ const UpdateLeadsFormOTO = ({
         }
       } catch (error) {
         setIsCheckedBrand([])
+        setNotes('')
         setForms({
           ...forms,
           city: {
@@ -307,8 +406,31 @@ const UpdateLeadsFormOTO = ({
       <div className={styles.container}>
         <InformationSection />
         <div className={styles.titleWrapper}>
-          <h2 className={styles.title}>Update Form SEVA X OTO</h2>
-          <FormDBLeads className={styles.containerInput} value={forms.leadId} />
+          <h2 className={styles.title} ref={titleRef}>
+            Update Form SEVA X OTO
+          </h2>
+          <div className={styles.containerInput}>
+            <FormDBLeads value={forms.leadId} />
+          </div>
+          <div className={styles.containerInput}>
+            <FormDBLeads title="Name" value={forms.name} />
+          </div>
+          <div className={styles.containerInput}>
+            <div
+              className={styles2.textTitle}
+              style={{ marginTop: '8px', marginBottom: '8px' }}
+            >
+              Phone Number
+            </div>
+            <InputPhone
+              version={InputVersionType.Secondary}
+              placeholder="Masukkan nomor HP"
+              disabled={true}
+              title=""
+              value={forms?.phone}
+              onChange={(e: any) => {}}
+            />
+          </div>
           <FormLeadsResponse
             className={styles.containerInput}
             setLeadRes={setLeadRes}
@@ -394,11 +516,17 @@ const UpdateLeadsFormOTO = ({
               selectedModel={forms?.model?.modelId || ''}
             />
           </div>
+          <div className={styles.containerInput}>
+            <div className={styles2.textTitle}>Notes</div>
+            <TextArea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+            />
+          </div>
           <div className={styles.buttonSubmit}>
             <Button
               version={ButtonVersion.PrimaryDarkBlue}
               size={ButtonSize.Big}
-              disabled={forms?.variant?.variantId !== '' ? false : true}
               onClick={handleSubmit}
               loading={isLoading}
             >
@@ -435,14 +563,19 @@ export async function getServerSideProps(context: any) {
   try {
     const response = await getLeadsDetail(detailId)
     const data: DataResponse = response.data
+
     const csaInput = data.csaInput
     const leadId = data.leadId
+    const name = data.name
+    const phoneNumber = data.phoneNumber
 
     return {
       props: {
         isValid: valid,
         csaInput,
         leadId,
+        name,
+        phoneNumber,
       },
     }
   } catch (error) {
