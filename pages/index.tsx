@@ -9,6 +9,7 @@ import { getCity } from 'utils/hooks/useGetCity'
 import { useCar } from 'services/context/carContext'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebTopMenuType, NavbarItemResponse } from 'utils/types/utils'
+import { getToken } from 'utils/handler/auth'
 
 interface HomePageDataLocalContextType {
   dataBanner: any
@@ -57,13 +58,23 @@ export default function WithTracker({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isMobile, setIsMobile] = useState(useIsMobileSSr())
   const { saveTypeCar, saveCarOfTheMonth, saveRecommendationToyota } = useCar()
-  const { saveArticles, saveDesktopWebTopMenu, saveMobileWebTopMenus } =
-    useUtils()
-  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
+  const {
+    saveArticles,
+    saveDesktopWebTopMenu,
+    saveMobileWebTopMenus,
+    saveDataAnnouncementBox,
+  } = useUtils()
 
-  useEffect(() => {
-    setIsMobile(isClientMobile)
-  }, [isClientMobile])
+  const getAnnouncementBox = async () => {
+    try {
+      const res: any = await api.getAnnouncementBox({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
+      })
+      saveDataAnnouncementBox(res.data)
+    } catch (error) {}
+  }
 
   useEffect(() => {
     saveDesktopWebTopMenu(dataDesktopMenu)
@@ -72,6 +83,7 @@ export default function WithTracker({
     saveCarOfTheMonth(dataCarofTheMonth)
     saveTypeCar(dataTypeCar)
     saveRecommendationToyota(dataRecToyota)
+    getAnnouncementBox()
   }, [])
 
   return (

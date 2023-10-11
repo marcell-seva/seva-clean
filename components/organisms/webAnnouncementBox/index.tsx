@@ -74,17 +74,13 @@ export const WebAnnouncementBox = ({
   onCloseAnnouncementBox,
   pageOrigination,
 }: WebAnnouncementBoxProps) => {
-  const [isOpen, setIsOpen] = useState<boolean | null>(
-    getSessionStorage(
-      getToken() === null
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ) ?? true,
-  )
-
-  const [announcement, setAnnouncement] = useState<AnnouncementBoxDataType>()
-  const [isError, setIsError] = useState(false)
+  const [isOpen, setIsOpen] = useState<boolean | null>(true)
   const { dataAnnouncementBox } = useUtils()
+
+  const [announcement, setAnnouncement] = useState<
+    AnnouncementBoxDataType | undefined
+  >(dataAnnouncementBox)
+  const [isError, setIsError] = useState(false)
 
   useAfterInteractive(() => {
     if (dataAnnouncementBox !== undefined) {
@@ -123,6 +119,7 @@ export const WebAnnouncementBox = ({
     getSessionStorage(SessionStorageKey.ShowWebAnnouncementNonLogin),
     getSessionStorage(SessionStorageKey.ShowWebAnnouncementLogin),
     getToken(),
+    dataAnnouncementBox,
   ])
 
   useAfterInteractive(() => {
