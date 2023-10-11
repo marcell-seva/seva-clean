@@ -1,6 +1,20 @@
 @import '../../abstract/colors';
 @import '../../abstract/mixins';
 
+.bottomSheet {
+  [data-rsbs-scroll] {
+    overflow: hidden;
+  }
+
+  [data-rsbs-overlay] {
+    @include centeredWithMaxWidth;
+  }
+
+  [data-rsbs-backdrop] {
+    @include centeredWithMaxWidth;
+  }
+}
+
 .container {
   display: flex;
   flex-direction: column;

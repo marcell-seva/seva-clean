@@ -28,7 +28,7 @@ export const InsuranceTooltip = ({
       title="Asuransi"
       onDismiss={onClose}
       maxHeight={window.innerHeight * 0.93}
-      className={'tooltip'}
+      className={styles.bottomSheet}
       additionalHeaderClassname={styles.bottomSheetHeader}
       {...props}
     >
