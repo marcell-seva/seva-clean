@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { LocalStorageKey } from 'utils/enum'
 import { FunnelQuery } from 'utils/types/context'
@@ -34,10 +34,12 @@ const initData = {
   age: '',
   monthlyIncome: '',
   isDefaultTenureChanged: false,
+  filterFincap: false,
 }
 
 export type FunnelQueryContextType = {
   funnelQuery: FunnelQuery
+  filterFincap: boolean
   setFunnelQueryValue: (data: FunnelQuery) => void
   patchFunnelQuery: (data: FunnelQuery) => void
   clearQueryFilter: () => void
@@ -92,6 +94,7 @@ export const FunnelQueryContextProvider = ({ children }: any) => {
       carModel: '',
       tenure: 5,
       monthlyIncome: '',
+      filterFincap: false,
     }
     setFunnelQuery(initial)
     localStorage.setItem(LocalStorageKey.CarFilter, JSON.stringify(initial))
@@ -129,6 +132,7 @@ export const FunnelQueryContextProvider = ({ children }: any) => {
     <FunnelQueryContext.Provider
       value={{
         funnelQuery,
+        filterFincap: funnelQuery.filterFincap || false,
         setFunnelQueryValue,
         patchFunnelQuery,
         clearQueryFilter,
