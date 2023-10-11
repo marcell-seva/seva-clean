@@ -696,6 +696,7 @@ export default function NewCarVariantList({
               setVariantIdFuelRatio={setVariantIdFuelRatio}
               variantFuelRatio={variantFuelRatio}
               isOTO={isOTO}
+              isShowAnnouncementBox={showAnnouncementBox}
             />
             <PromoPopup
               onButtonClick={setIsButtonClick}
