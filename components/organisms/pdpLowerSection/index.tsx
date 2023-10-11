@@ -8,7 +8,7 @@ import {
   SpecificationTab,
   SummaryTab,
 } from 'components/organisms'
-import { VideoDataType } from 'utils/types/utils'
+import { AnnouncementBoxDataType, VideoDataType } from 'utils/types/utils'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
 import { trackEventCountly } from 'helpers/countly/countly'
@@ -21,6 +21,7 @@ import {
 } from 'utils/navigate'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { LocalStorageKey } from 'utils/enum'
+import { useUtils } from 'services/context/utilsContext'
 
 type pdpLowerSectionProps = {
   onButtonClick: (value: boolean) => void
@@ -30,6 +31,7 @@ type pdpLowerSectionProps = {
   setVariantIdFuelRatio: (value: string) => void
   variantFuelRatio: string | undefined
   isOTO?: boolean
+  isShowAnnouncementBox?: boolean | null // for track annoucnement box every tab
 }
 
 export const PdpLowerSection = ({
@@ -40,6 +42,7 @@ export const PdpLowerSection = ({
   setVariantIdFuelRatio,
   variantFuelRatio,
   isOTO = false,
+  isShowAnnouncementBox,
 }: pdpLowerSectionProps) => {
   const router = useRouter()
   const lowerTab = router.query.slug as string
@@ -51,6 +54,8 @@ export const PdpLowerSection = ({
   )
   const { carModelDetails } = useCar()
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+  const [announcement, setAnnouncement] = useState<AnnouncementBoxDataType>()
+  const { dataAnnouncementBox } = useUtils()
 
   const isUsingFilterFinancial =
     !!filterStorage?.age &&
@@ -60,6 +65,14 @@ export const PdpLowerSection = ({
   const loanRankcr = router.query.loanRankCVL ?? ''
   const upperTab = router.query.tab as string
 
+  const trackAnnouncementBoxView = (value: string) => {
+    if (isShowAnnouncementBox && announcement) {
+      trackEventCountly(CountlyEventNames.WEB_ANNOUNCEMENT_VIEW, {
+        ANNOUNCEMENT_TITLE: announcement?.title,
+        PAGE_ORIGINATION: 'PDP - ' + value,
+      })
+    }
+  }
   const trackClickLowerTabCountly = (value: string) => {
     let creditBadge = 'Null'
     if (loanRankcr && loanRankcr.includes(LoanRank.Green)) {
@@ -85,6 +98,7 @@ export const PdpLowerSection = ({
       saveDataForCountlyTrackerPageViewLC(PreviousButton.undefined)
     }
     trackClickLowerTabCountly(value)
+    trackAnnouncementBoxView(value)
     setSelectedTabValue(value)
     const destinationElm = document.getElementById('pdp-lower-content')
     const urlWithoutSlug = window.location.href
@@ -116,10 +130,15 @@ export const PdpLowerSection = ({
       window.scrollBy({ top: -100, left: 0 })
     }
   }
-
+  const getAnnouncementBox = () => {
+    if (dataAnnouncementBox !== undefined) {
+      setAnnouncement(dataAnnouncementBox)
+    }
+  }
   useEffect(() => {
     setTabFromDirectUrl()
-  }, [])
+    getAnnouncementBox()
+  }, [dataAnnouncementBox, isShowAnnouncementBox])
 
   const setTabFromDirectUrl = () => {
     const slug = router.query.slug
