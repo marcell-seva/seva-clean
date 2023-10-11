@@ -9,7 +9,7 @@ import { CityOtrOption } from 'utils/types'
 import { InstallmentTypeOptions } from 'utils/types/models'
 import { useEffect, useState } from 'react'
 import FormDealerSales from 'components/molecules/formUpdateLeadsSevaOTO/formDealerSales'
-import { Button, Input } from 'components/atoms'
+import { Button, Input, InputPhone } from 'components/atoms'
 import { DatePickerCM } from 'components/atoms/inputDate'
 import { LabelWithTooltip } from 'components/molecules'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
@@ -42,6 +42,8 @@ interface CsaInput {
 
 interface DataResponse {
   leadId: string
+  name: string
+  phone: string
   csaInput: CsaInput
 }
 
@@ -51,6 +53,8 @@ const UpdateLeadsFormCM = ({
   dataAgent,
   csaInput,
   leadId,
+  name,
+  phone,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { saveAgent } = useUtils()
   const [isRequiredSPK, setIsRequiredSPK] = useState(false)
@@ -61,6 +65,8 @@ const UpdateLeadsFormCM = ({
   )
   const cmSchema = object().shape({
     dbLeadsId: string(),
+    name: string(),
+    phone: string(),
     salesId: number(),
     noSPK: string(),
     spkDate: string(),
@@ -80,6 +86,8 @@ const UpdateLeadsFormCM = ({
   } = useFormik<CMForm>({
     initialValues: {
       dbLeadsId: leadId || '',
+      name: name || '',
+      phone: phone || '',
       salesId: csaInput?.salesId || 0,
       noSPK: csaInput?.spkNo || '',
       spkDate: csaInput?.spkDate || '',
@@ -89,6 +97,8 @@ const UpdateLeadsFormCM = ({
     onSubmit: (value) => {
       updateLeadFormCMSEVA({
         leadId: value.dbLeadsId || '',
+        name: value.name || '',
+        phone: value.phone || '',
         salesId: value.salesId || 0,
         spkNo: value.noSPK || '',
         spkDate: dayjs(value.spkDate).format('YYYY-MM-DD'),
@@ -135,6 +145,16 @@ const UpdateLeadsFormCM = ({
         <div className={styles.formWrapper}>
           <div id="update-leads-form-db-leads">
             <FormDBLeads value={values.dbLeadsId} title="DB Leads ID" />
+          </div>
+          <div id="update-leads-form-name" className={styles.inputName}>
+            <FormDBLeads value={values.name} title="Name" />
+          </div>
+          <div id="update-leads-form-phone" className={styles.inputName}>
+            <InputPhone
+              disabled={true}
+              title="Phone Number"
+              value={values.phone}
+            />
           </div>
           <div id="update-leads-form-dealer-sales-agent">
             <FormDealerSales
@@ -284,6 +304,8 @@ export async function getServerSideProps(context: any) {
     const data: DataResponse = response.data
     const csaInput = data.csaInput
     const leadId = data.leadId
+    const name = 'data.name'
+    const phone = 'data.phone'
 
     return {
       props: {
@@ -292,6 +314,8 @@ export async function getServerSideProps(context: any) {
         dataAgent: salesRes,
         csaInput,
         leadId,
+        name,
+        phone,
       },
     }
   } catch (error) {

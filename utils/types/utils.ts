@@ -1097,6 +1097,8 @@ export interface updateLeadFormOTO {
 
 export interface updateLeadFormCM {
   leadId: string
+  name: string
+  phone: string
   salesId: number
   spkDate: string
   spkNo: string
