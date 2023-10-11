@@ -255,7 +255,7 @@ const SearchWidget = () => {
 
     if (expandFinancial) {
       patchFinancialQuery(dataFinancial)
-      patchFunnelQuery({ ...dataFinancial, filterFincap: true })
+      patchFunnelQuery({ ...funnelWidget, filterFincap: true })
     } else {
       patchFunnelQuery({
         brand,
