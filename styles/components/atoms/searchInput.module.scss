@@ -9,9 +9,8 @@
 }
 
 .searchInput {
-  padding-left: 12px;
-  padding-right: 12px;
-  height: 56px;
+  padding: 0 16px;
+  height: 46px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -20,10 +19,6 @@
   border-radius: 16px;
   &:focus {
     outline: none;
-  }
-  @media (max-width: 1024px) {
-    padding: 0 16px;
-    height: 46px;
   }
 }
 
