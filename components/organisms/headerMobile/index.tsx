@@ -165,8 +165,9 @@ export const HeaderMobile = ({
     } else {
       saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
     }
-
-    window.location.href = redirectHome
+    setTimeout(() => {
+      window.location.href = redirectHome
+    }, 1000)
   }
 
   return (
