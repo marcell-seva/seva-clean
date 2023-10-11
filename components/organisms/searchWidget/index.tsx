@@ -257,9 +257,13 @@ const SearchWidget = () => {
       patchFinancialQuery(dataFinancial)
       patchFunnelQuery({ ...dataFinancial, filterFincap: true })
     } else {
-      patchFunnelQuery({ filterFincap: false })
+      patchFunnelQuery({
+        brand,
+        bodyType,
+        priceRangeGroup,
+        filterFincap: false,
+      })
     }
-    patchFunnelQuery({ brand, bodyType, priceRangeGroup })
 
     sendAmplitudeData(AmplitudeEventName.WEB_LP_SEARCHWIDGET_SUBMIT, {
       ...(brand && brand.length > 0 && { Car_Brand: brand.join(', ') }),
