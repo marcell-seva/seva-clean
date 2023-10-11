@@ -68,6 +68,7 @@ export const NavigationFilterMobile = ({
       monthlyIncome: '',
       tenure: 5,
       isDefaultTenureChanged: false,
+      filterFincap: false,
     })
     const filter = {
       ...funnelQuery,

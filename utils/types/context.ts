@@ -65,6 +65,7 @@ export interface FunnelQuery extends Filter {
   priceRangeGroup?: string
   phoneNumber?: string
   isDefaultTenureChanged?: boolean
+  filterFincap?: boolean
 }
 
 export interface UTM {

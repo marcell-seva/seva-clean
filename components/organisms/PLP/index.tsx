@@ -476,8 +476,10 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       funnelQuery.age
     ) {
       setIsFilterFinancial(true)
+      patchFunnelQuery({ filterFincap: true })
     } else {
       setIsFilterFinancial(false)
+      patchFunnelQuery({ filterFincap: false })
     }
   }, [funnelQuery, brand])
 
