@@ -166,7 +166,7 @@ export const HeaderMobile = ({
       saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
     }
 
-    // window.location.href = redirectHome
+    window.location.href = redirectHome
   }
 
   return (
