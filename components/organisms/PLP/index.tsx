@@ -547,6 +547,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     if (!isCurrentCitySameWithSSR() || recommendation.length === 0) {
       const params = new URLSearchParams()
       getCity().cityCode && params.append('city', getCity().cityCode as string)
+      console.log(params)
 
       getMinMaxPrice('', { params })
         .then((response) => {

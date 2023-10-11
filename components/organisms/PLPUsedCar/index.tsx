@@ -34,7 +34,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { api } from 'services/api'
 import { useCar } from 'services/context/carContext'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
-import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
+import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { getConvertFilterIncome } from 'utils/filterUtils'
 import { getToken } from 'utils/handler/auth'
@@ -69,7 +69,7 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getPageName } from 'utils/pageName'
 import { LoanRank } from 'utils/types/models'
-import { temanSevaUrlPath } from 'services/temanseva'
+import { temanSevaUrlPath } from 'utils/types/props'
 import { decryptValue } from 'utils/encryptionUtils'
 import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 import { useUtils } from 'services/context/utilsContext'
@@ -506,7 +506,10 @@ export const PLPUsedCar = ({ minmaxPrice }: PLPProps) => {
     }
 
     if (!isCurrentCitySameWithSSR || recommendation.length === 0) {
-      getMinMaxPrice()
+      const params = new URLSearchParams()
+      getCity().cityCode && params.append('city', getCity().cityCode as string)
+      api
+        .getMinMaxPrice('', { params })
         .then((response) => {
           if (response) {
             setMinMaxPrice({
