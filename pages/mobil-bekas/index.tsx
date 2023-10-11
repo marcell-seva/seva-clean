@@ -2,7 +2,6 @@ import { PLP } from 'components/organisms'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
 import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
 import {
   CityOtrOption,
@@ -18,13 +17,12 @@ import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import styles from 'styles/pages/plpUsed.module.scss'
 import { CarProvider } from 'services/context'
-import { generateBlurRecommendations } from 'utils/generateBlur'
 import { monthId } from 'utils/handler/date'
 import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 import { useMediaQuery } from 'react-responsive'
-import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useRouter } from 'next/router'
 import { PLPUsedCar } from 'components/organisms/PLPUsedCar'
+import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 
 const UsedCarResultPage = ({
   meta,
@@ -171,7 +169,7 @@ export const getServerSideProps: GetServerSideProps<{
     const footerData = fetchFooter.data.data
 
     if (!priceRangeGroup) {
-      const minmax = await getMinMaxPrice()
+      const minmax = await api.getMinMaxPrice('')
       const minmaxPriceData = minmax
       meta.MinMaxPrice = {
         minPriceValue: minmaxPriceData.minPriceValue,
