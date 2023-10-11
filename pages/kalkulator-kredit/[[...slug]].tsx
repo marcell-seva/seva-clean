@@ -77,7 +77,11 @@ import {
 import { CityOtrOption } from 'utils/types'
 import { CarModel } from 'utils/types/carModel'
 import { ModelVariant } from 'utils/types/carVariant'
-import { CarRecommendation, FinalLoan } from 'utils/types/utils'
+import {
+  CarRecommendation,
+  FinalLoan,
+  trackDataCarType,
+} from 'utils/types/utils'
 import {
   Article,
   LoanCalculatorIncludePromoPayloadType,
@@ -247,6 +251,24 @@ export default function LoanCalculatorPage() {
     !!filterStorage?.monthlyIncome &&
     !!filterStorage?.tenure
 
+  const referralCodeFromUrl: string | null = getLocalStorage(
+    LocalStorageKey.referralTemanSeva,
+  )
+  const IsShowBadgeCreditOpportunity = getSessionStorage(
+    SessionStorageKey.IsShowBadgeCreditOpportunity,
+  )
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
+  const {
+    saveMobileWebTopMenus,
+    saveCities,
+    saveDesktopWebTopMenu,
+    saveMobileWebFooterMenus,
+    saveDataAnnouncementBox,
+    dataAnnouncementBox,
+  } = useUtils()
+
   const getAutofilledCityData = () => {
     // related to logic inside component "FormSelectCity"
     if (cityOtr) {
@@ -329,7 +351,6 @@ export default function LoanCalculatorPage() {
     }
   }
 
-  const { saveDataAnnouncementBox, dataAnnouncementBox } = useUtils()
   const [showAnnouncementBox, setShowAnnouncementBox] = useState<boolean>(false)
   const [articles, setArticles] = useState<Article[]>([])
 
