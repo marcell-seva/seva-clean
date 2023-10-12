@@ -167,7 +167,9 @@ export const CarDetailCard = ({
         .replace(':model', modelSlug)
         .replace(':variant', '') + `?loanRankCVL=${recommendation.loanRank}`
     trackCarClick(order + 1, false, destinationUrl)
-    window.location.href = destinationUrl
+    setTimeout(() => {
+      window.location.href = destinationUrl
+    }, 1000)
   }
 
   const getPeluangKredit = (carModel: CarRecommendation) => {
@@ -228,16 +230,17 @@ export const CarDetailCard = ({
     }
 
     setLoanRankPLP(true)
-    setTimeout(() => {
-      if (detailClick) {
+
+    if (detailClick) {
+      setTimeout(() => {
         trackEventCountly(CountlyEventNames.WEB_PLP_CAR_DETAIL_CLICK, datatrack)
-      } else {
-        trackEventCountly(
-          CountlyEventNames.WEB_PLP_PRODUCT_CARD_CTA_CLICK,
-          datatrack,
-        )
-      }
-    }, 500)
+      }, 500)
+    } else {
+      trackEventCountly(
+        CountlyEventNames.WEB_PLP_PRODUCT_CARD_CTA_CLICK,
+        datatrack,
+      )
+    }
   }
 
   const navigateToPDP = (index: number) => () => {

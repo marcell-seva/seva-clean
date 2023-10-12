@@ -50,6 +50,7 @@ import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { LocalStorageKey } from 'utils/enum'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { navigateToPLP, PreviousButton } from 'utils/navigate'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 export const initDataWidget = {
   downPaymentAmount: '',
@@ -80,9 +81,6 @@ const initEmptyDataWidget = {
 
 const SearchWidget = () => {
   const { patchFunnelQuery }: any = useFunnelQueryData()
-  const [state, setState] = useState<FunnelWidget>(initEmptyDataWidget) // assume this state as Context widget, mind about re-render
-  const contextValue = useMemo(() => ({ state, setState }), [state])
-  const router = useRouter()
   const { financialQuery, patchFinancialQuery } = useFinancialQueryData()
   const { funnelWidget, saveFunnelWidget } = useContext(
     SearchWidgetContext,
@@ -258,9 +256,14 @@ const SearchWidget = () => {
 
     if (expandFinancial) {
       patchFinancialQuery(dataFinancial)
-      patchFunnelQuery({ ...state })
+      patchFunnelQuery({ ...funnelWidget, filterFincap: true })
     } else {
-      patchFunnelQuery({ brand, bodyType, priceRangeGroup })
+      patchFunnelQuery({
+        brand,
+        bodyType,
+        priceRangeGroup,
+        filterFincap: false,
+      })
     }
 
     sendAmplitudeData(AmplitudeEventName.WEB_LP_SEARCHWIDGET_SUBMIT, {
@@ -298,8 +301,11 @@ const SearchWidget = () => {
       currentFinancial.downPaymentAmount = storedFilter.downPaymentAmount
 
     saveFunnelWidget({ ...funnelWidget, ...currentFinancial })
-
     fetchMinMaxPrice()
+  }, [])
+
+  useAfterInteractive(() => {
+    patchFunnelQuery({ filterFincap: false })
   }, [])
 
   useEffect(() => {
