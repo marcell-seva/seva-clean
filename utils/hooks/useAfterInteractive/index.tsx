@@ -29,7 +29,7 @@ export const useAfterInteractive = (
   }, [interactive])
 
   useEffect(() => {
-    if (interactive) {
+    if (interactive && dependencies.length > 0) {
       executeFunc()
     }
   }, [interactive, ...dependencies])
