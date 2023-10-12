@@ -169,9 +169,8 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     items: recommendation.slice(0, 12),
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
-  const { cities, saveDataAnnouncementBox } = useUtils()
+  const { cities, dataAnnouncementBox } = useUtils()
   const [showAnnouncementBox, setIsShowAnnouncementBox] = useState(false)
-  const [interactive, setInteractive] = useState(false)
   const [isLogin] = useState(!!getToken())
   const [dataCarForPromo, setDataCarForPromo] = useState({
     brand: '',
@@ -343,29 +342,20 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_SORT_CLICK)
   }
   const getAnnouncementBox = () => {
-    api
-      .getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      .then((res: { data: AnnouncementBoxDataType }) => {
-        if (res.data === undefined) {
-          setIsShowAnnouncementBox(false)
-        } else {
-          saveDataAnnouncementBox(res.data)
-          const sessionAnnouncmentBox = getSessionStorage(
-            getToken()
-              ? SessionStorageKey.ShowWebAnnouncementLogin
-              : SessionStorageKey.ShowWebAnnouncementNonLogin,
-          )
-          if (typeof sessionAnnouncmentBox !== 'undefined') {
-            setIsShowAnnouncementBox(sessionAnnouncmentBox as boolean)
-          } else {
-            setIsShowAnnouncementBox(true)
-          }
-        }
-      })
+    if (dataAnnouncementBox) {
+      const isShowAnnouncement = getSessionStorage(
+        getToken()
+          ? SessionStorageKey.ShowWebAnnouncementLogin
+          : SessionStorageKey.ShowWebAnnouncementNonLogin,
+      )
+      if (typeof isShowAnnouncement !== 'undefined') {
+        setIsShowAnnouncementBox(isShowAnnouncement as boolean)
+      } else {
+        setIsShowAnnouncementBox(true)
+      }
+    } else {
+      setIsShowAnnouncementBox(false)
+    }
   }
 
   const temanSevaStatus = async () => {
@@ -431,7 +421,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
 
   useAfterInteractive(() => {
     getAnnouncementBox()
-  }, [])
+  }, [dataAnnouncementBox])
 
   useAfterInteractive(() => {
     setTimeout(() => {
