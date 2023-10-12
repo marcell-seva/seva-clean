@@ -4,8 +4,9 @@
 .mobile {
   display: block;
   @include lg {
-    width: 60%;
-    margin: 0% 20%;
-    position: relative;
+    max-width: 570px;
+    margin-left: auto;
+    margin-right: auto;
+    position: flex;
   }
 }
