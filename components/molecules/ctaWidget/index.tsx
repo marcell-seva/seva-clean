@@ -90,9 +90,9 @@ const CtaWidget = () => {
         </div>
       </div>
       <div className={styles.foreground}>
-        <p className={styles.textCtaHeader}>
+        <h2 className={styles.textCtaHeader}>
           Yuk, SEVA bantu untuk mewujudkan mobil impian kamu
-        </p>
+        </h2>
         <div className={styles.ctaWrapepr}>
           <Button
             version={ButtonVersion.Default}
