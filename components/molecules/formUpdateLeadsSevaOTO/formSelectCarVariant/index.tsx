@@ -20,6 +20,7 @@ type FormSelectCarVariantProps = {
   selectedModel: string
   handleChange: (name: string, value: any) => void
   name: string
+  disable?: boolean
   carVariantList: ModelVariant[]
   value: {
     variantId: string
@@ -46,6 +47,7 @@ export const FormSelectCarVariantSevaOTO: React.FC<
   FormSelectCarVariantProps
 > = ({
   selectedModel,
+  disable,
   handleChange,
   name,
   carVariantList,
@@ -191,7 +193,7 @@ export const FormSelectCarVariantSevaOTO: React.FC<
             )
           }
         }}
-        disabled={!selectedModel || modelError}
+        disabled={!selectedModel || modelError || disable}
         maxHeightDropdown="365px"
         datatestid={elementId.PDP.Drowpdown.CarVariant}
         onShowDropdown={onShowDropdown}
