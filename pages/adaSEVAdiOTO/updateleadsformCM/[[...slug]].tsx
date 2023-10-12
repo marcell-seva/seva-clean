@@ -305,7 +305,7 @@ export async function getServerSideProps(context: any) {
   let valid = true
 
   // TODO: Check Token
-  if (TokenStatic !== 'SEv4Uh4Y') {
+  if (TokenStatic !== 'c2V2YQ==') {
     valid = false
   }
   // TODO: getDetail ID
@@ -318,7 +318,6 @@ export async function getServerSideProps(context: any) {
     const leadId = data.leadId
     const name = data.name
     const phone = data.phoneNumber.slice(3)
-    console.log('data: ', data)
 
     return {
       props: {
