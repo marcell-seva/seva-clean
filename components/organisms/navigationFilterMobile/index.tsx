@@ -48,8 +48,11 @@ export const NavigationFilterMobile = ({
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
   const { sortBy } = funnelQuery
   const router = useRouter()
-  const filterSortOption = sortOptions.filter((x) => x.value === sortBy)[0]
-  const sortFilter = filterSortOption?.label || ''
+
+  const sortFilter = useMemo(() => {
+    const filterSortOption = sortOptions.filter((x) => x.value === sortBy)[0]
+    return filterSortOption?.label || ''
+  }, [funnelQuery])
   const summaryCar = carlist?.length || 0
   const onClickOK = () => {
     onButtonClick && onButtonClick(true)
