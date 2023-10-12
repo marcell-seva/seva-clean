@@ -236,6 +236,7 @@ const HomepageAdaSEVAdiOTO = ({ dataReccomendation }: any) => {
             setShowAnnouncementBox={setShowAnnouncementBox}
             isShowAnnouncementBox={showAnnouncementBox}
             isOTO={true}
+            isRegular={false}
           />
           <div className={styles.banner}>
             <Image
