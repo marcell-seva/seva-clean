@@ -201,36 +201,97 @@ export const HeaderMobile = ({
             />
           )}
           {isOTO ? (
-            <div className={styles.newContainer}>
-              <Link
-                data-testid={elementId.Homepage.GlobalHeader.HamburgerMenu}
-                className={styles.icons}
-                href={redirectHome}
-              >
-                <IconChevronLeft width={24} height={24} alt="SEVA back Icon" />
-              </Link>
-              <div role="navigation" onClick={handleLogoClick}>
-                <Image
-                  src={LogoPrimary}
-                  height={30}
-                  width={50}
-                  alt="Logo SEVA"
-                  className={styles.logoImg}
-                  data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
-                  priority={true}
-                />
-              </div>
-              <div
-                className={styles.icons}
-                data-testid={elementId.Homepage.GlobalHeader.IconSearch}
-              >
-                <IconSearch
-                  width={24}
-                  height={24}
-                  onClick={handleSearch}
-                  alt="SEVA search Icon"
-                />
-              </div>
+            <div>
+              {isRegular ? (
+                <div className={styles.newContainer}>
+                  <Link
+                    data-testid={elementId.Homepage.GlobalHeader.HamburgerMenu}
+                    className={styles.icons}
+                    href={redirectHome}
+                  >
+                    <IconChevronLeft
+                      width={24}
+                      height={24}
+                      alt="SEVA back Icon"
+                    />
+                  </Link>
+                  <div role="navigation" onClick={handleLogoClick}>
+                    <Image
+                      src={LogoPrimary}
+                      height={30}
+                      width={50}
+                      alt="Logo SEVA"
+                      className={styles.logoImg}
+                      data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+                      priority={true}
+                    />
+                  </div>
+                  <div
+                    className={styles.icons}
+                    data-testid={elementId.Homepage.GlobalHeader.IconSearch}
+                  >
+                    <IconSearch
+                      width={24}
+                      height={24}
+                      onClick={handleSearch}
+                      alt="SEVA search Icon"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className={styles.container}>
+                  <div
+                    data-testid={elementId.Homepage.GlobalHeader.HamburgerMenu}
+                  >
+                    <IconHamburger
+                      width={24}
+                      height={24}
+                      alt="SEVA burger menu Icon"
+                      onClick={handleToggleBurgerMenu}
+                    />
+                  </div>
+
+                  <div role="navigation" onClick={handleLogoClick}>
+                    <Image
+                      src={LogoPrimary}
+                      height={30}
+                      width={50}
+                      alt="Logo SEVA"
+                      className={styles.logoImg}
+                      data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+                      priority={true}
+                    />
+                  </div>
+                  <SidebarMobile
+                    showSidebar={isActive}
+                    isShowAnnouncementBox={isShowAnnouncementBox}
+                    isOTO={isOTO}
+                  />
+                  <div
+                    className={styles.right}
+                    data-testid={elementId.Homepage.GlobalHeader.IconSearch}
+                  >
+                    <IconSearch
+                      width={24}
+                      height={24}
+                      onClick={handleSearch}
+                      alt="SEVA search Icon"
+                    />
+                    <div
+                      onClick={handleClickCityIcon}
+                      data-testid={
+                        elementId.Homepage.GlobalHeader.IconCitySelector
+                      }
+                    >
+                      <IconLocationLine
+                        width={24}
+                        height={24}
+                        alt="SEVA location Icon"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <div className={styles.container}>

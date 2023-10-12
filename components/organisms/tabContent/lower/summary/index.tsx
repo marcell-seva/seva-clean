@@ -432,7 +432,7 @@ export const SummaryTab = ({
         />
         <Gap height={32} />
       </div>
-      <LeadsFormSecondary />
+      <LeadsFormSecondary isOTO={isOTO} />
       <div className={styles.wrapper}>
         <Gap height={24} />
         <Info isWithIcon headingText="Tentang Mobil" descText={getInfoText()} />

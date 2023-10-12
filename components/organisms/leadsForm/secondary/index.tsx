@@ -59,9 +59,12 @@ interface PropsLeadsForm {
   otpStatus?: any
   onVerify?: (e: any) => void
   onFailed?: (e: any) => void
+  isOTO?: boolean
 }
 
-export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
+export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({
+  isOTO = false,
+}) => {
   const platform = 'web'
   const toastSuccessInfo = 'Agen kami akan segera menghubungimu dalam 1x24 jam.'
   const [name, setName] = useState<string>('')
@@ -378,7 +381,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
   }
   return (
     <div>
-      <div className={styles.wrapper}>
+      <div className={isOTO ? styles.wrapperOTO : styles.wrapper}>
         <div className={styles.background}>
           <div className={styles.wrapperSupergraphicLeft}>
             <Image
@@ -451,15 +454,19 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
                 'Kirim'
               )}
             </Button>
-            <p className={styles.textSuggestion}>atau</p>
-            <Button
-              version={ButtonVersion.SecondaryDark}
-              size={ButtonSize.Big}
-              onClick={onClickCalculateCta}
-              data-testid={elementId.PDP.Button.HitungKemampuan}
-            >
-              Hitung Kemampuan
-            </Button>
+            {isOTO === false && (
+              <div>
+                <p className={styles.textSuggestion}>atau</p>
+                <Button
+                  version={ButtonVersion.SecondaryDark}
+                  size={ButtonSize.Big}
+                  onClick={onClickCalculateCta}
+                  data-testid={elementId.PDP.Button.HitungKemampuan}
+                >
+                  Hitung Kemampuan
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

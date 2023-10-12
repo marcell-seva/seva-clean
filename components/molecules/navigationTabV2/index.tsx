@@ -7,6 +7,7 @@ import { upperSectionNavigationTab } from 'utils/config/carVariantList.config'
 import { alephArticleCategoryList } from 'utils/config/articles.config'
 import { TabV2 } from 'components/atoms'
 import { useRouter } from 'next/router'
+import brandList from 'utils/config'
 
 interface Props {
   itemList: TabItemData[]
@@ -41,6 +42,11 @@ const NavigationTabV2 = ({
       )
       setSelectedTabIndex(index)
       onSelectTab && onSelectTab(value)
+    } else if (onPage === 'OTO') {
+      setSelectedTabValue(value)
+      const index = brandList.findIndex((item: any) => item.value === value)
+      setSelectedTabIndex(index)
+      onSelectTab && onSelectTab(value)
     } else {
       setSelectedTabValue(value)
       const index = alephArticleCategoryList.findIndex(
@@ -54,10 +60,43 @@ const NavigationTabV2 = ({
   useEffect(() => {
     if (onPage === 'LC') {
       autoScroll && checkActiveTabLC()
+    } else if (onPage === 'OTO') {
+      autoScroll && checkActiveTabOTO()
     } else {
       autoScroll && checkActiveTab()
     }
   }, [selectedTabValue])
+
+  const scrollOTO = (scrollOffset: number) => {
+    if (containerRef && containerRef.current) {
+      containerRef.current.scrollTo({
+        left: scrollOffset,
+        behavior: 'smooth',
+      })
+    }
+  }
+
+  const checkActiveTabOTO = () => {
+    let positionValue = 0
+    if (selectedTabIndex >= 1) {
+      if (selectedTabIndex === 1) {
+        positionValue = 70
+      } else if (selectedTabIndex === 2) {
+        positionValue = 170
+      } else if (selectedTabIndex === 3) {
+        positionValue = 250
+      } else if (selectedTabIndex >= 4) {
+        positionValue = 350
+        // if (containerRef.current.scrollLeft >= 160) {
+        // } else {
+        //   positionValue = 90
+        // }
+      }
+    } else if (selectedTabIndex < 1) {
+      positionValue = -200
+    }
+    scrollOTO(positionValue)
+  }
 
   const scroll = (scrollOffset: number) => {
     if (containerRef && containerRef.current) {
