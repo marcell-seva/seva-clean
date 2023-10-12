@@ -18,6 +18,7 @@ import {
   valueMenuTabCategory,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import clsx from 'clsx'
 
 export interface PropsInfo {
   isWithIcon?: boolean
@@ -98,9 +99,14 @@ export const Info: React.FC<PropsInfo> = ({
         </h3>
       </div>
       <div className={styles.desc}>
-        <p className={`${styles.textDesc} ${!isExpanded && styles.elipsed}`}>
+        <span
+          className={clsx({
+            [styles.textDesc]: true,
+            [styles.elipsed]: !isExpanded,
+          })}
+        >
           {descText}
-        </p>
+        </span>
         <br />
         <button
           className={styles.button}
