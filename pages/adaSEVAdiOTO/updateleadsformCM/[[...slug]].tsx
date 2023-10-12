@@ -60,6 +60,7 @@ const UpdateLeadsFormCM = ({
   const [isRequiredSPK, setIsRequiredSPK] = useState(false)
   const [isRequiredBSTK, setIsRequiredBSTK] = useState(false)
   const [isOpenToast, setIsOpenToast] = useState(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [toastMessage, setToastMessage] = useState(
     'Lead berhasil diassign ke dealer & sales agent',
   )
@@ -127,6 +128,45 @@ const UpdateLeadsFormCM = ({
     const target = document.getElementById(elementId)
     if (target) {
       target.scrollIntoView({ block: 'center' })
+    }
+  }
+
+  const handleClick = async () => {
+    setIsLoading(true)
+
+    if (values.noSPK !== '') {
+      if (values.spkDate === '') {
+        setIsRequiredSPK(true)
+        scrollToElement('update-leads-form-spk-date')
+        setIsLoading(false)
+        return
+      } else {
+        setToastMessage('SPK berhasil diperbaharui')
+      }
+    }
+    if (values.noBSTK !== '') {
+      if (values.bstkDate === '') {
+        setIsRequiredBSTK(true)
+        scrollToElement('update-leads-form-bstk-date')
+        setIsLoading(false)
+        return
+      } else {
+        setToastMessage('BSTK berhasil diperbaharui')
+      }
+    }
+    setIsRequiredBSTK(false)
+    setIsRequiredSPK(false)
+    setIsOpenToast(true)
+    try {
+      handleSubmit()
+      setIsLoading(false)
+      setTimeout(() => {
+        setIsOpenToast(false)
+      }, 3000)
+    } catch (error) {
+      setTimeout(() => {
+        setIsOpenToast(false)
+      }, 3000)
     }
   }
 
@@ -244,29 +284,9 @@ const UpdateLeadsFormCM = ({
             }
             size={ButtonSize.Big}
             disabled={values.salesId === 0}
+            loading={isLoading}
             onClick={() => {
-              if (values.noSPK !== '') {
-                if (values.spkDate === '') {
-                  setIsRequiredSPK(true)
-                  scrollToElement('update-leads-form-spk-date')
-                  return
-                } else {
-                  setToastMessage('SPK berhasil diperbaharui')
-                }
-              }
-              if (values.noBSTK !== '') {
-                if (values.bstkDate === '') {
-                  setIsRequiredBSTK(true)
-                  scrollToElement('update-leads-form-bstk-date')
-                  return
-                } else {
-                  setToastMessage('BSTK berhasil diperbaharui')
-                }
-              }
-              setIsRequiredBSTK(false)
-              setIsRequiredSPK(false)
-              setIsOpenToast(true)
-              handleSubmit()
+              handleClick()
             }}
           >
             Submit
