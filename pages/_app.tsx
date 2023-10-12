@@ -38,8 +38,13 @@ import { client } from 'utils/helpers/const'
 import { IsSsrMobileContext } from 'services/context/isSsrMobileContext'
 import { useAddUtmTagsToApiCall } from 'utils/hooks/useAddUtmTagsToApiCall/useAddUtmTagsToApiCall'
 import Head from 'next/head'
-import { CityFirst } from 'components/molecules/cityFirst'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import dynamic from 'next/dynamic'
+
+const CityFirst = dynamic(
+  () => import('components/molecules/cityFirst').then((comp) => comp.CityFirst),
+  { ssr: true },
+)
 
 const kanyonLight = localFont({
   src: '../public/revamp/fonts/Kanyon/Kanyon-Light.otf',
