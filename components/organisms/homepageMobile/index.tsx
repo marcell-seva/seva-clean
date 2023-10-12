@@ -47,6 +47,7 @@ import { LoginModalMultiKK } from '../loginModalMultiKK'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { LocalStorageKey } from 'utils/enum'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 
 const HomepageMobile = ({ dataReccomendation }: any) => {
   useEffect(() => {
@@ -93,7 +94,9 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
 
   const getCarOfTheMonth = async () => {
     try {
-      const carofmonth: any = await api.getCarofTheMonth('?city=' + getCity().cityCode)
+      const carofmonth: any = await api.getCarofTheMonth(
+        '?city=' + getCity().cityCode,
+      )
       setCarOfTheMonthData(carofmonth.data)
     } catch (e: any) {
       throw new Error(e)

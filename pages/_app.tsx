@@ -141,7 +141,11 @@ export default function App({ Component, pageProps }: AppProps) {
             Countly.q = Countly.q || [];
 
             //provide countly initialization parameters
-            Countly.app_key = 'b3339752ab6da081b5fabf5e46be80ef26b666ca';
+            Countly.app_key = ${
+              process.env.NEXT_PUBLIC_ENVIRONMENT === 'production'
+                ? '"b3339752ab6da081b5fabf5e46be80ef26b666ca"'
+                : '"7069fa6ddc5cfc1b456a4eff70bb1314839f8484"'
+            };
             Countly.url = 'https://push.meshtics.com';
 
             Countly.q.push(['track_sessions']);

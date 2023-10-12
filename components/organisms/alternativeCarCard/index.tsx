@@ -32,7 +32,10 @@ import {
   CarVariantListPageUrlParams,
   trackDataCarType,
 } from 'utils/types/utils'
-import { getSessionStorage } from 'utils/handler/sessionStorage'
+import {
+  getSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
 
 type AlternativeCarCardProps = {
@@ -112,7 +115,8 @@ export const AlternativeCarCard = ({
           : 'Mudah disetujui',
 
       CAR_BRAND:
-        pageOrigination?.toLowerCase() === 'homepage'
+        pageOrigination?.toLowerCase() === 'homepage' ||
+        !pageOrigination?.toLowerCase().includes('pdp')
           ? 'Null'
           : carBrand
           ? getValueBrandAndModel(carBrand)
@@ -160,6 +164,16 @@ export const AlternativeCarCard = ({
 
   const navigateToPDP = () => {
     trackCarRecommendation()
+
+    trackCountlyCarRecommendation()
+    const dataCarTemp = {
+      ...dataCar,
+      PELUANG_KREDIT_BADGE: 'Mudah disetujui',
+    }
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarTemp),
+    )
     if (window.location.pathname.includes('kalkulator-kredit')) {
       saveDataForCountlyTrackerPageViewPDP(
         PreviousButton.CarRecommendation,
@@ -168,9 +182,7 @@ export const AlternativeCarCard = ({
     } else {
       saveDataForCountlyTrackerPageViewPDP(PreviousButton.CarRecommendation)
     }
-    if (!label) {
-      trackCountlyCarRecommendation()
-    }
+
     window.location.href = detailCarRoute
   }
 
@@ -183,8 +195,8 @@ export const AlternativeCarCard = ({
   const onClickSeeDetail = () => {
     trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CTA_CLICK, {
       PAGE_ORIGINATION: 'PLP - Empty Page',
-      CAR_BRAND: recommendation.brand,
-      CAR_MODEL: recommendation.model,
+      CAR_BRAND: 'Null',
+      CAR_MODEL: 'Null',
       CAR_BRAND_RECOMMENDATION: recommendation.brand,
       CAR_MODEL_RECOMMENDATION: recommendation.model,
       CTA_BUTTON: 'Lihat Detail',

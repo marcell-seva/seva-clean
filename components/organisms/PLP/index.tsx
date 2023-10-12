@@ -59,7 +59,7 @@ import {
   MinMaxPrice,
 } from 'utils/types/context'
 import { MoengageViewCarSearch } from 'utils/types/moengage'
-import { AnnouncementBoxDataType } from 'utils/types/utils'
+import { AnnouncementBoxDataType, trackDataCarType } from 'utils/types/utils'
 import styles from '../../../styles/pages/mobil-baru.module.scss'
 import {
   trackEventCountly,
@@ -180,6 +180,19 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   })
   const user: string | null = getLocalStorage(LocalStorageKey.sevaCust)
   const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
+
+  const IsShowBadgeCreditOpportunity = getSessionStorage(
+    SessionStorageKey.IsShowBadgeCreditOpportunity,
+  )
 
   const fetchMoreData = () => {
     if (sampleArray.items.length >= recommendation.length) {
@@ -469,17 +482,25 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     } else {
       setIsFilter(false)
     }
+  }, [funnelQuery, brand])
 
+  useEffect(() => {
     if (
       funnelQuery.downPaymentAmount &&
       funnelQuery.monthlyIncome &&
       funnelQuery.age
     ) {
       setIsFilterFinancial(true)
+      patchFunnelQuery({ filterFincap: true })
     } else {
       setIsFilterFinancial(false)
+      patchFunnelQuery({ filterFincap: false })
     }
-  }, [funnelQuery, brand])
+  }, [
+    funnelQuery.downPaymentAmount,
+    funnelQuery.monthlyIncome,
+    funnelQuery.age,
+  ])
 
   useEffect(() => {
     if (
@@ -515,26 +536,14 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
               maxPriceValue: response.maxPriceValue,
             })
             const minTemp = priceRangeGroup
-              ? response.data.minPriceValue >
-                Number(
-                  priceRangeGroup && priceRangeGroup?.toString().split('-')[0],
-                )
-                ? Number(
-                    priceRangeGroup &&
-                      priceRangeGroup?.toString().split('-')[0],
-                  )
-                : response.data.minPriceValue
+              ? response.minPriceValue > Number(priceRangeGroup.split('-')[0])
+                ? response.minPriceValue
+                : Number(priceRangeGroup.split('-')[0])
               : ''
             const maxTemp = priceRangeGroup
-              ? response.data.maxPriceValue <
-                Number(
-                  priceRangeGroup && priceRangeGroup?.toString().split('-')[1],
-                )
-                ? response.data.maxPriceValue
-                : Number(
-                    priceRangeGroup &&
-                      priceRangeGroup?.toString().split('-')[1],
-                  )
+              ? response.maxPriceValue < Number(priceRangeGroup.split('-')[1])
+                ? response.maxPriceValue
+                : Number(priceRangeGroup.split('-')[1])
               : ''
 
             const queryParam: any = {
@@ -705,10 +714,8 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       CAR_MODEL: car.model,
       CAR_ORDER: parseInt(index) + 1,
       PELUANG_KREDIT_BADGE:
-        car.loanRank === 'Green'
-          ? 'Mudah disetujui'
-          : car.loanRank === 'Red'
-          ? 'Sulit disetujui'
+        isUsingFilterFinancial && IsShowBadgeCreditOpportunity
+          ? dataCar?.PELUANG_KREDIT_BADGE
           : 'Null',
       PAGE_ORIGINATION: 'PLP',
     })
@@ -794,14 +801,13 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
                       onClickLabel={() => {
                         setOpenLabelPromo(true)
                         trackCountlyPromoBadgeClick(i, index)
-                        if (index) {
-                          setDataCarForPromo({
-                            brand: i.brand,
-                            model: i.model,
-                            carOrder: Number(index) + 1,
-                            loanRank: i.loanRank,
-                          })
-                        }
+
+                        setDataCarForPromo({
+                          brand: i.brand,
+                          model: i.model,
+                          carOrder: Number(index) + 1,
+                          loanRank: i.loanRank,
+                        })
                       }}
                       onClickResultMudah={() => {
                         setOpenLabelResultMudah(true)

@@ -5,8 +5,8 @@ import styles from 'styles/components/organisms/promoPopupPdp.module.scss'
 import { IconClose } from 'components/atoms'
 import { trackCarVariantBannerPromoPopupClose } from 'helpers/amplitude/seva20Tracking'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import { LocalStorageKey } from 'utils/enum'
-import { CityOtrOption } from 'utils/types/utils'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { CityOtrOption, trackDataCarType } from 'utils/types/utils'
 import { useCar } from 'services/context/carContext'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
@@ -14,6 +14,7 @@ import { getLocalStorage } from 'utils/handler/localStorage'
 import { useRouter } from 'next/router'
 import { LoanRank } from 'utils/types/models'
 import Image from 'next/image'
+import { getSessionStorage } from 'utils/handler/sessionStorage'
 
 const promoBannerTSO = '/revamp/illustration/PromoTSO.webp'
 const promoBannerCumaDiSEVA = '/revamp/illustration/PromoCumaDiSEVA.webp'
@@ -37,7 +38,12 @@ const PromoPopup = ({
 
   const router = useRouter()
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
-
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
+  const IsShowBadgeCreditOpportunity = getSessionStorage(
+    SessionStorageKey.IsShowBadgeCreditOpportunity,
+  )
   const isUsingFilterFinancial =
     !!filterStorage?.age &&
     !!filterStorage?.downPaymentAmount &&
@@ -74,9 +80,10 @@ const PromoPopup = ({
       CAR_MODEL: carModelDetails?.model,
       PROMO_DETAILS: promoDetail,
       PROMO_ORDER: promoOrder,
-      PELUANG_KREDIT_BADGE: isUsingFilterFinancial
-        ? getCreditBadgeForCountly()
-        : 'Null',
+      PELUANG_KREDIT_BADGE:
+        isUsingFilterFinancial && IsShowBadgeCreditOpportunity
+          ? dataCar?.PELUANG_KREDIT_BADGE
+          : 'Null',
       PAGE_ORIGINATION: 'PDP',
     })
   }
@@ -93,6 +100,8 @@ const PromoPopup = ({
           src={promoBannerCumaDiSEVA}
           alt="promo banner cuma di seva"
           className={styles.promoBanner}
+          width={373}
+          height={280}
         />
       </div>
       <div>
@@ -142,6 +151,8 @@ const PromoPopup = ({
           src={promoBannerTSO}
           alt="promo banner TSO"
           className={styles.promoBanner}
+          width={373}
+          height={280}
         />
       </div>
       <div>
@@ -161,7 +172,7 @@ const PromoPopup = ({
             href="https://www.seva.id/info/promo/toyota-spektakuler/"
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackClickPromoSK('Toyota Spektakuler', 2)}
+            onClick={() => trackClickPromoSK('Toyota Spektakuler', 1)} // because promo "cuma di seva" hidden
           >
             {' '}
             Lihat S&K.
@@ -183,6 +194,8 @@ const PromoPopup = ({
           src={promoBannerTradeIn}
           alt="promo banner trade In"
           className={styles.promoBanner}
+          width={373}
+          height={280}
         />
       </div>
       <div>
@@ -201,7 +214,7 @@ const PromoPopup = ({
             href="https://www.seva.id/info/promo/promo-trade-in-daihatsu/"
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackClickPromoSK('Promo Trade-In Daihatsu', 3)}
+            onClick={() => trackClickPromoSK('Promo Trade-In Daihatsu', 2)} // because promo "cuma di seva" hidden
           >
             {' '}
             Lihat S&K.

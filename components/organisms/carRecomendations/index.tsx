@@ -27,7 +27,12 @@ import {
 } from 'utils/navigate'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
-import { getSessionStorage } from 'utils/handler/sessionStorage'
+import {
+  getSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
+import { getSlug } from 'pages/kalkulator-kredit/[[...slug]]'
+import { capitalizeWords } from 'utils/stringUtils'
 
 type CarRecommendationsPropss = {
   title: string
@@ -45,6 +50,9 @@ export default function CarRecommendations({
   additionalContainerStyle,
 }: CarRecommendationsPropss) {
   const router = useRouter()
+
+  const brand = router.query.brand
+  const model = router.query.model
   const dataCar: trackDataCarType | null = getSessionStorage(
     SessionStorageKey.PreviousCarDataBeforeLogin,
   )
@@ -80,7 +88,14 @@ export default function CarRecommendations({
       lowestInstallment,
       LanguageCode.id,
     )
-
+    const dataCarTemp = {
+      ...dataCar,
+      PELUANG_KREDIT_BADGE: 'Mudah disetujui',
+    }
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarTemp),
+    )
     trackLCCarRecommendationCTAClick({
       Car_Brand: item.brand,
       Car_Model: item.model,
@@ -88,14 +103,24 @@ export default function CarRecommendations({
       Monthly_Installment: `Rp${formatLowestInstallment}`,
       Page_Origination: window.location.href,
     })
-
     trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CTA_CLICK, {
       PAGE_ORIGINATION: 'PDP - Kredit',
-      CAR_BRAND: item.brand,
-      CAR_MODEL: item.model,
+      CAR_BRAND: brand
+        ? capitalizeWords(brand.toString().replaceAll('-', ' '))
+        : 'Null',
+      CAR_MODEL: model
+        ? capitalizeWords(model.toString().replaceAll('-', ' '))
+        : 'Null',
       CAR_BRAND_RECOMMENDATION: item.brand,
       CAR_MODEL_RECOMMENDATION: item.model,
       CTA_BUTTON: 'Hitung Kemampuan',
+      TENOR_OPTION: dataCar?.TENOR_OPTION,
+      TENOR_RESULT:
+        dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Green'
+          ? 'Mudah disetujui'
+          : dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
       PAGE_DIRECTION_URL: window.location.hostname + getDestinationUrl(item),
     })
     saveDataForCountlyTrackerPageViewLC(PreviousButton.CarRecommendation)
@@ -177,6 +202,7 @@ export default function CarRecommendations({
             recommendation={item}
             onClickLabel={onClick}
             label={<LabelMudah style={{ left: 0 }} />}
+            pageOrigination="PDP - Kredit"
           >
             <div
               className={styles.alternativeCarLink}
