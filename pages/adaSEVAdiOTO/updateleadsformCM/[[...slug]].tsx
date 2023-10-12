@@ -26,13 +26,7 @@ import dynamic from 'next/dynamic'
 
 const Toast = dynamic(() => import('components/atoms').then((mod) => mod.Toast))
 
-const getSlug = (query: any, index: number) => {
-  return (
-    query.slug && query.slug.length > index && (query.slug[index] as string)
-  )
-}
-
-interface CsaInput {
+interface CMInput {
   salesId: number
   spkDate: string
   spkNo: string
@@ -43,15 +37,15 @@ interface CsaInput {
 interface DataResponse {
   leadId: string
   name: string
-  phone: string
-  csaInput: CsaInput
+  phoneNumber: string
+  cmInput: CMInput
 }
 
 const UpdateLeadsFormCM = ({
   message,
   isValidz,
   dataAgent,
-  csaInput,
+  cmInput,
   leadId,
   name,
   phone,
@@ -89,17 +83,15 @@ const UpdateLeadsFormCM = ({
       dbLeadsId: leadId || '',
       name: name || '',
       phone: phone || '',
-      salesId: csaInput?.salesId || 0,
-      noSPK: csaInput?.spkNo || '',
-      spkDate: csaInput?.spkDate || '',
-      noBSTK: csaInput?.bstkNo || '',
-      bstkDate: csaInput?.bstkDate || '',
+      salesId: cmInput?.salesId || 0,
+      noSPK: cmInput?.spkNo || '',
+      spkDate: cmInput?.spkDate || '',
+      noBSTK: cmInput?.bstkNo || '',
+      bstkDate: cmInput?.bstkDate || '',
     },
     onSubmit: (value) => {
       updateLeadFormCMSEVA({
         leadId: value.dbLeadsId || '',
-        name: value.name || '',
-        phone: value.phone || '',
         salesId: value.salesId || 0,
         spkNo: value.noSPK || '',
         spkDate: dayjs(value.spkDate).format('YYYY-MM-DD'),
@@ -322,17 +314,18 @@ export async function getServerSideProps(context: any) {
     const salesRes: any = await Promise.all([api.getAgent()])
     const response = await getLeadsDetail(detailId)
     const data: DataResponse = response.data
-    const csaInput = data.csaInput
+    const cmInput = data.cmInput
     const leadId = data.leadId
-    const name = 'data.name'
-    const phone = 'data.phone'
+    const name = data.name
+    const phone = data.phoneNumber.slice(3)
+    console.log('data: ', data)
 
     return {
       props: {
         message: 'hello',
         isValidz: valid,
         dataAgent: salesRes,
-        csaInput,
+        cmInput,
         leadId,
         name,
         phone,

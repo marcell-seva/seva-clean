@@ -42,7 +42,7 @@ export default function FormDealerSales({
   const [lastChoosenValue, setLastChoosenValue] = useState('')
 
   const [agentListOptionsFull, setAgentListOptionsFull] = useState<
-    Option<string>[]
+    Option<any>[]
   >([])
   const [suggestionsLists, setSuggestionsLists] = useState<any>([])
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
@@ -53,16 +53,6 @@ export default function FormDealerSales({
   }
 
   useEffect(() => {
-    if (value !== 0) {
-      const temp = agentListApi.find((agent) => {
-        agent.id === value
-      })
-      setInputValue(`${temp?.salesName} - ${temp?.branchName}`)
-      setLastChoosenValue(`${temp?.salesName} - ${temp?.branchName}`)
-    }
-  }, [value])
-
-  useEffect(() => {
     fetchAgent()
   }, [])
 
@@ -71,14 +61,24 @@ export default function FormDealerSales({
     setAgentListOptionsFull(options)
   }, [agentListApi])
 
+  const fetchExistValue = () => {
+    const filterAgent = agentListOptionsFull.find(
+      (agent) => agent.value === value,
+    )
+    if (filterAgent) {
+      setInputValue(filterAgent.label)
+      setLastChoosenValue(filterAgent.label)
+    }
+  }
+
   const getAgentListOption = (agentList: SalesAgent[]) => {
-    const tempArray: Option<string>[] = []
+    const tempArray: Option<any>[] = []
     for (const item of agentList) {
-      const tempObj: Option<string> = {
+      const tempObj: Option<any> = {
         label: '',
-        value: '',
+        value: 0,
       }
-      tempObj.value = item?.salesName
+      tempObj.value = item?.id
       tempObj.label = `${item?.salesName} - ${item?.branchName}`
       tempArray.push(tempObj)
     }
@@ -130,6 +130,7 @@ export default function FormDealerSales({
   }
 
   useEffect(() => {
+    fetchExistValue()
     if (inputValue === '') {
       setSuggestionsLists(agentListOptionsFull)
 
