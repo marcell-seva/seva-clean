@@ -23,13 +23,8 @@ import { FormSelectCarVariantSevaOTO } from 'components/molecules/formUpdateLead
 import { getLeadsDetail, updateLeadFormOTO } from 'services/leadsSeva'
 import { FormSelectBrandCarSevaOTO } from 'components/molecules/formUpdateLeadsSevaOTO/formSelectBrandCarSevaOTO'
 import { LabelTooltipSevaOTO } from 'components/molecules/label/labelTooltipSevaOTO'
-import { getNewFunnelRecommendationsByCity } from 'services/newFunnel'
 import { InputVersionType } from 'utils/enum'
 import { Input } from 'antd'
-import {
-  capitalizeFirstLetter,
-  filterNonDigitCharacters,
-} from 'utils/stringUtils'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 const Toast = dynamic(() => import('components/atoms').then((mod) => mod.Toast))
@@ -82,6 +77,7 @@ interface CsaInput {
   cityId: number
   carVariant: string
   carModel: string
+  notes: string
 }
 
 interface DataResponse {
@@ -100,8 +96,14 @@ const UpdateLeadsFormOTO = ({
   phoneNumber,
   name,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [leadRes, setLeadRes] = useState(csaInput.leadResponse)
-  const [leadQualified, setLeadQualified] = useState(csaInput.isLeadQualified)
+  const [leadRes, setLeadRes] = useState(
+    csaInput?.leadResponse == null || undefined ? true : csaInput?.leadResponse,
+  )
+  const [leadQualified, setLeadQualified] = useState(
+    csaInput?.isLeadQualified == null || undefined
+      ? true
+      : csaInput?.isLeadQualified,
+  )
   const [modelError, setModelError] = useState<boolean>(false)
   const [disableBtn, setDisableBtn] = useState<boolean>(false)
   const [typeToast, setTypeToast] = useState(true)
@@ -109,7 +111,9 @@ const UpdateLeadsFormOTO = ({
   const [isCheckedBrand, setIsCheckedBrand] = useState<string[]>([])
   const [carVariantList, setCarVariantList] = useState<ModelVariant[]>([])
   const [allModelCarList, setAllModalCarList] = useState<CarModel[]>([])
-  const [notes, setNotes] = useState('')
+  const [notes, setNotes] = useState(
+    csaInput?.notes == null ? '' : csaInput?.notes,
+  )
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -136,9 +140,7 @@ const UpdateLeadsFormOTO = ({
   }
 
   const scrollToTitleRef = () => {
-    setTimeout(() => {
-      titleRef.current?.scrollIntoView({ behavior: 'smooth', inline: 'start' })
-    }, 2000)
+    titleRef.current?.scrollIntoView({ behavior: 'smooth', inline: 'start' })
   }
 
   const [forms, setForms] = useState<FormDataState>({
@@ -151,17 +153,17 @@ const UpdateLeadsFormOTO = ({
       cityCode: '',
       cityName: '',
       province: '',
-      id: '',
+      id: csaInput?.cityId == null ? '' : csaInput?.cityId.toString(),
     },
     model: {
       brandName: '',
-      modelName: '',
-      modelId: '',
+      modelName: csaInput?.carModel == null ? '' : csaInput?.carModel,
+      modelId: csaInput?.carModelId == null ? '' : csaInput?.carModelId,
       modelImage: '',
     },
     variant: {
-      variantId: '',
-      variantName: '',
+      variantId: csaInput?.carVariantId == null ? '' : csaInput?.carVariantId,
+      variantName: csaInput?.carVariant == null ? '' : csaInput?.carVariant,
       otr: '',
       discount: 0,
     },
@@ -244,6 +246,12 @@ const UpdateLeadsFormOTO = ({
     if (forms.model?.modelId !== '' && forms.city?.id !== '') fetchCarVariant()
   }, [forms.model?.modelId, forms.city])
 
+  useEffect(() => {
+    if (csaInput !== null) setDisableBtn(true)
+
+    // setDisableBtn(true)
+  }, [csaInput])
+
   const handleSubmit = async () => {
     setIsLoading(true)
     const otr = forms.variant?.otr.replace(/[^0-9]/g, '')
@@ -292,7 +300,10 @@ const UpdateLeadsFormOTO = ({
         setToastMessage('Update form gagal diperbaharui, silahkan coba lagi')
         setIsOpenToast(true)
         setTypeToast(false)
-        scrollToTitleRef()
+        setTimeout(() => {
+          scrollToTitleRef()
+          setIsOpenToast(false)
+        }, 3000)
         return
       }
 
@@ -324,10 +335,15 @@ const UpdateLeadsFormOTO = ({
             discount: 0,
           },
         })
-        setToastMessage('Update form gagal diperbaharui, silahkan coba lagi')
+        setToastMessage(
+          'Update form gagal diperbaharui, silahkan lengkapi form terlebih dahulu',
+        )
         setIsOpenToast(true)
         setTypeToast(false)
-        scrollToTitleRef()
+        setTimeout(() => {
+          scrollToTitleRef()
+          setIsOpenToast(false)
+        }, 3000)
         setIsLoading(false)
         return
       }
@@ -362,6 +378,9 @@ const UpdateLeadsFormOTO = ({
               discount: 0,
             },
           })
+          setTimeout(() => {
+            setIsOpenToast(false)
+          }, 3000)
         }
       } catch (error) {
         setIsCheckedBrand([])
@@ -465,7 +484,13 @@ const UpdateLeadsFormOTO = ({
               />
             </div>
             <FormSelectBrandCarSevaOTO
-              isSelected={forms.city?.id !== '' ? true : false}
+              isSelected={
+                forms.city?.cityName !== ''
+                  ? true
+                  : false || disableBtn == true
+                  ? false
+                  : true
+              }
               setIsCheckedBrand={setIsCheckedBrand}
               isButtonClick={false}
               isResetFilter={isOpenToast}
@@ -494,6 +519,7 @@ const UpdateLeadsFormOTO = ({
               valueId={isCheckedBrand[0] || ''}
               allModelCarList={allModelCarList}
               setModelError={setModelError}
+              overrideDisabled={disableBtn}
             />
           </div>
           <div className={styles.containerInput}>
@@ -510,6 +536,7 @@ const UpdateLeadsFormOTO = ({
             <FormSelectCarVariantSevaOTO
               carVariantList={carVariantList}
               handleChange={handleChange}
+              disable={disableBtn}
               name="variant"
               modelError={false}
               value={forms.variant || variantEmptyValue}
@@ -521,6 +548,7 @@ const UpdateLeadsFormOTO = ({
             <TextArea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
+              disabled={disableBtn}
             />
           </div>
           <div className={styles.buttonSubmit}>
@@ -529,6 +557,7 @@ const UpdateLeadsFormOTO = ({
               size={ButtonSize.Big}
               onClick={handleSubmit}
               loading={isLoading}
+              disabled={disableBtn}
             >
               Submit
             </Button>
