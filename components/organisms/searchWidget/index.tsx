@@ -50,7 +50,6 @@ import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { LocalStorageKey } from 'utils/enum'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { navigateToPLP, PreviousButton } from 'utils/navigate'
-import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 export const initDataWidget = {
   downPaymentAmount: '',
@@ -302,9 +301,6 @@ const SearchWidget = () => {
 
     saveFunnelWidget({ ...funnelWidget, ...currentFinancial })
     fetchMinMaxPrice()
-  }, [])
-
-  useAfterInteractive(() => {
     patchFunnelQuery({ filterFincap: false })
   }, [])
 
