@@ -148,7 +148,7 @@ const SearchWidget = () => {
     trackEventCountly(
       CountlyEventNames.WEB_HOMEPAGE_FILTER_DP_ADJUST_PRICE_CLICK,
       {
-        DP_INPUT: `Rp${Currency(state.downPaymentAmount)}`,
+        DP_INPUT: `Rp${Currency(funnelWidget.downPaymentAmount)}`,
         DP_SUGGESTION: `Rp${Currency(limitMinimumDp)}`,
       },
     )
@@ -241,16 +241,21 @@ const SearchWidget = () => {
         ? `Rp${Currency(tempPriceRange.split('-')[1])}`
         : 'Null',
       DP_AMOUNT:
-        expandFinancial && !!state.downPaymentAmount
-          ? `Rp${Currency(state.downPaymentAmount)}`
+        expandFinancial && !!funnelWidget.downPaymentAmount
+          ? `Rp${Currency(funnelWidget.downPaymentAmount)}`
           : 'Null',
       TENOR_OPTION:
-        expandFinancial && !!state.tenure ? `${state.tenure} tahun` : 'Null',
-      INCOME_AMOUNT:
-        expandFinancial && !!state.monthlyIncome
-          ? `Rp${Currency(state.monthlyIncome)}`
+        expandFinancial && !!funnelWidget.tenure
+          ? `${funnelWidget.tenure} tahun`
           : 'Null',
-      AGE_RANGE: expandFinancial && !!state.age ? `${state.age} Tahun` : 'Null',
+      INCOME_AMOUNT:
+        expandFinancial && !!funnelWidget.monthlyIncome
+          ? `Rp${Currency(funnelWidget.monthlyIncome)}`
+          : 'Null',
+      AGE_RANGE:
+        expandFinancial && !!funnelWidget.age
+          ? `${funnelWidget.age} Tahun`
+          : 'Null',
     }
   }
 
@@ -451,7 +456,8 @@ const SearchWidget = () => {
       FILTER_TYPE: 'Car Brand',
       ...dataForCountlyTrackerOnClick(),
       CAR_BRAND: checkedOption.join(', '),
-      AGE_RANGE: expandFinancial && !!state.age ? `${state.age}` : 'Null',
+      AGE_RANGE:
+        expandFinancial && !!funnelWidget.age ? `${funnelWidget.age}` : 'Null',
     })
   }
 
@@ -460,7 +466,8 @@ const SearchWidget = () => {
       FILTER_TYPE: 'Car Type',
       ...dataForCountlyTrackerOnClick(),
       CAR_TYPE: checkedOption.join(', '),
-      AGE_RANGE: expandFinancial && !!state.age ? `${state.age}` : 'Null',
+      AGE_RANGE:
+        expandFinancial && !!funnelWidget.age ? `${funnelWidget.age}` : 'Null',
     })
   }
 
@@ -470,7 +477,8 @@ const SearchWidget = () => {
       ...dataForCountlyTrackerOnClick(),
       MIN_PRICE: `Rp${Currency(min)}`,
       MAX_PRICE: `Rp${Currency(max)}`,
-      AGE_RANGE: expandFinancial && !!state.age ? `${state.age}` : 'Null',
+      AGE_RANGE:
+        expandFinancial && !!funnelWidget.age ? `${funnelWidget.age}` : 'Null',
     })
   }
 

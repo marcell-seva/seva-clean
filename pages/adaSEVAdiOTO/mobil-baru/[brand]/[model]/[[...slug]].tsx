@@ -110,12 +110,7 @@ export default function index({
           carArticleReviewRes: carArticleReviewRes,
         }}
       >
-        <div className={styles.mobile}>
-          <PdpMobile isOTO={true} />
-        </div>
-        <div className={styles.desktop}>
-          <PdpDesktop metaTagDataRes={metaTagDataRes} />
-        </div>
+        <PdpMobile isOTO={true} />
       </PdpDataOTOLocalContext.Provider>
     </>
   )
