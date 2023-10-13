@@ -54,11 +54,13 @@ const kanyonMedium = localFont({
   src: '../public/revamp/fonts/Kanyon/Kanyon-Medium.otf',
   style: 'normal',
   display: 'swap',
+  weight: '600',
 })
 const kanyonBold = localFont({
   src: '../public/revamp/fonts/Kanyon/Kanyon-Bold.otf',
   style: 'normal',
   display: 'swap',
+  weight: '700',
 })
 const OpenSans = localFont({
   src: '../public/revamp/fonts/OpenSans/OpenSans-Regular.woff2',
@@ -69,11 +71,13 @@ const OpenSansSemiBold = localFont({
   src: '../public/revamp/fonts/OpenSans/OpenSans-SemiBold.woff2',
   style: 'normal',
   display: 'swap',
+  weight: '600',
 })
 const OpenSansBold = localFont({
   src: '../public/revamp/fonts/OpenSans/OpenSans-Bold.woff2',
   style: 'normal',
   display: 'swap',
+  weight: '700',
 })
 const OpenSansExtraBold = localFont({
   src: '../public/revamp/fonts/OpenSans/OpenSans-ExtraBold.woff2',
