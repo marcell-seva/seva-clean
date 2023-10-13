@@ -5,21 +5,21 @@ interface OverlayProps {
   isShow: boolean
   onClick: () => void
   zIndex?: number
-  additionalStyle?: string
+  additionalstyle?: string
 }
 
 const Overlay = ({
   isShow,
   onClick,
   zIndex,
-  additionalStyle,
+  additionalstyle,
 }: OverlayProps) => {
   return (
     <div
       style={{ zIndex }}
       className={`${styles.overlay} ${
         isShow ? styles.showOverlay : ''
-      } ${additionalStyle}`}
+      } ${additionalstyle}`}
       onClick={onClick}
     />
   )

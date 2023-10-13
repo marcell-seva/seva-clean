@@ -1,20 +1,8 @@
-import Footer from './footer'
 import HowToUseSection from './howToUseSection'
-import LoanSection from './loanSection'
-import ContactUs from './contactUs'
-import Banner from './banner'
 import Testimony from './testimony'
-import Article from './article'
-import Floating from './floating'
 import Search from './section/search'
 import { Info } from './section/info'
 import Refinancing from './refinancing'
-import Offering from './modal/offering'
-import Video from './modal/video'
-import Simple from './modal/simple'
-import AnnouncementBox from './announcementBox'
-import Widget from './widget'
-import LoginModal from './modal/loginModal'
 import { LabelWithTooltip } from './label/LabelWithTooltip'
 import { NavigationTabV1 } from './navigationTabV1'
 import NavigationTabV2 from './navigationTabV2'
@@ -29,11 +17,6 @@ import { OverlayGallery } from './overlay'
 import { ShareModal } from './shareModal'
 import { CalculationResultItem } from './calculationResultItem'
 import { MenuList } from './menuList'
-import { HomePageShimmer } from './homepageShimmer'
-import { AdvisorSection } from './advisorSection'
-import { useDialogModal } from './dialogModal/DialogModal'
-import { ImageCarousel } from './imageCarousel'
-import { NewDownPaymentAmount } from './newDownPaymentAmount/newDownPaymentAmount'
 import { Tenure } from './tenure'
 
 import PromoSection from '../organisms/promoSection'
@@ -55,22 +38,10 @@ import PriceRangeWidget from './searchWidget/option/priceRangeWidget'
 import TenureOptionWidget from './searchWidget/option/tenureOptionWidget'
 import { SearchModal } from './searchModal'
 export {
-  Footer,
   HowToUseSection,
-  LoanSection,
-  ContactUs,
-  Banner,
   Testimony,
-  Article,
-  Floating,
   Search,
   Refinancing,
-  Offering,
-  Video,
-  Simple,
-  AnnouncementBox,
-  Widget,
-  LoginModal,
   LabelWithTooltip,
   NavigationTabV1,
   Info,
@@ -85,11 +56,6 @@ export {
   ShareModal,
   CalculationResultItem,
   MenuList,
-  HomePageShimmer,
-  AdvisorSection,
-  useDialogModal,
-  ImageCarousel,
-  NewDownPaymentAmount,
   Tenure,
   PromoSection,
   HowToUse,

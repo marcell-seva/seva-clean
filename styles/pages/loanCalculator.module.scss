@@ -4,6 +4,7 @@
 
 .container {
   background: #{$primary-white};
+  @include centeredWithMaxWidth;
 }
 
 .content {

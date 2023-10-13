@@ -1,9 +1,7 @@
 /* eslint-disable react/no-children-prop */
 import React, { useEffect, useState } from 'react'
 import styles from 'styles/components/organisms/rejected.module.scss'
-import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
 
-import { getCities } from 'services/cities'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
 import clsx from 'clsx'
 
@@ -13,7 +11,6 @@ import {
   trackKualifikasiKreditRejectResultPageView,
   trackKualifikasiKreditWaDirectClick,
 } from 'helpers/amplitude/seva20Tracking'
-import { getCustomerInfoSeva } from 'services/customer'
 import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
 import { AxiosResponse } from 'axios'
 import { useRouter } from 'next/router'
@@ -39,6 +36,8 @@ import {
   saveDataForCountlyTrackerPageViewHomepage,
 } from 'utils/navigate'
 import Image from 'next/image'
+import { getCustomerInfoSeva } from 'utils/handler/customer'
+import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 
 const RejectedImage = '/revamp/illustration/rejected-approval.webp'
 
@@ -66,7 +65,7 @@ export const CreditQualificationRejected = () => {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      getCities().then((res) => {
+      api.getCities().then((res) => {
         setCityListApi(res)
       })
     }

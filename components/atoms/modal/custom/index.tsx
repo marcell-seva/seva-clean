@@ -1,7 +1,6 @@
 import React, { TextareaHTMLAttributes } from 'react'
 import styles from 'styles/components/atoms/modal.module.scss'
 import { Modal } from 'antd'
-// import 'styles/main.scss'
 import clsx from 'clsx'
 import { PropsModal } from 'utils/types/props'
 import { colors } from 'utils/helpers/style/colors'

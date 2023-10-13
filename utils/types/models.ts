@@ -202,6 +202,7 @@ export type COMDataModel = {
     price_formatted_value_sby: string | null
     status: boolean
   }
+  priceValue: number
   priceValueJkt: number
   price: number | null
 }

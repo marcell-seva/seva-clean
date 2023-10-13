@@ -22,16 +22,12 @@
   align-items: center;
   position: relative;
   margin: 0 auto;
-  @media (max-width: 1024px) {
-    width: 100%;
-  }
+  width: 100%;
 }
 
 .forwardWrapper {
   position: absolute;
   transform: rotate(180deg);
   left: 10px;
-  @media (max-width: 1024px) {
-    top: 8px;
-  }
+  top: 8px;
 }

@@ -22,21 +22,14 @@
   background: #{$primary-white};
   font-family: var(--kanyon);
   margin: 5px 0;
-  width: 300px;
-  height: 64px;
+  width: 100%;
+  height: 56px;
   border-radius: 8px;
   text-align: left;
   border: 1.5px solid #{$shades-grey-10};
   &.is-clicked {
     background: #{$shades-sky-blue-5};
     border: 1.5px solid #{$secondary-sky-blue};
-  }
-  @media (max-width: 1279px) {
-    height: 34px;
-  }
-  @media (max-width: 1024px) {
-    width: 100%;
-    height: 56px;
   }
 }
 
@@ -51,9 +44,6 @@
   &.is-clicked {
     font-family: var(--open-sans-semi-bold);
     color: #{$secondary-sky-blue};
-  }
-  @media (max-width: 1024px) {
-    font-size: 14px;
   }
 }
 

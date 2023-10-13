@@ -16,9 +16,14 @@ import { useUtils } from 'services/context/utilsContext'
 type MainHeroLPProps = {
   onCityIconClick: () => void
   onCtaClick: () => void
+  passCountlyTrackerPageView?: (() => void) | (() => Promise<void>)
 }
 
-const MainHeroLP = ({ onCityIconClick, onCtaClick }: MainHeroLPProps) => {
+const MainHeroLP = ({
+  onCityIconClick,
+  onCtaClick,
+  passCountlyTrackerPageView,
+}: MainHeroLPProps) => {
   const { cities } = useUtils()
   const [showSidebar, setShowSidebar] = useState(false)
   const [cityListApi, setCityListApi] = useState<Array<CityOtrOption>>(cities)
@@ -44,6 +49,9 @@ const MainHeroLP = ({ onCityIconClick, onCtaClick }: MainHeroLPProps) => {
             setIsActive={setShowSidebar}
             emitClickCityIcon={onCityIconClick}
             pageOrigination="Homepage"
+            passCountlyTrackerPageView={() =>
+              passCountlyTrackerPageView && passCountlyTrackerPageView()
+            }
           />
           <div className={styles.mainWrapper}>
             <h1 className={`${styles.mainTitle} ${styles.bold}`}>

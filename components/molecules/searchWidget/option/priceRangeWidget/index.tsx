@@ -12,9 +12,16 @@ import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 interface PriceRangeWidgetProps {
   onClose: () => void
   limitPrice: { min: number; max: number }
+  trackCountlyOnSubmit?: (min: number, max: number) => void
+  trackCountlyOnReset?: () => void
 }
 
-const PriceRangeWidget = ({ limitPrice, onClose }: PriceRangeWidgetProps) => {
+const PriceRangeWidget = ({
+  limitPrice,
+  onClose,
+  trackCountlyOnSubmit,
+  trackCountlyOnReset,
+}: PriceRangeWidgetProps) => {
   const overMaxWarning = 'Harga yang kamu masukkan terlalu tinggi'
   const underMinWarning = 'Harga yang kamu masukkan terlalu rendah'
   const overMaxTwoWarning = 'Harga harus lebih kecil dari harga maksimum'
@@ -112,6 +119,7 @@ const PriceRangeWidget = ({ limitPrice, onClose }: PriceRangeWidgetProps) => {
   }
 
   const clear = () => {
+    trackCountlyOnReset && trackCountlyOnReset()
     setErrorMinField(initErrorField)
     setErrorMaxField(initErrorField)
     setErrorMinTwoField(false)
@@ -121,6 +129,7 @@ const PriceRangeWidget = ({ limitPrice, onClose }: PriceRangeWidgetProps) => {
   }
 
   const submit = () => {
+    trackCountlyOnSubmit && trackCountlyOnSubmit(rawPrice.min, rawPrice.max)
     saveFunnelWidget({
       ...funnelWidget,
       priceRangeGroup: `${rawPrice.min}-${rawPrice.max}`,

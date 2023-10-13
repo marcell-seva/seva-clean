@@ -26,3 +26,11 @@
     color: #{$primary-black};
   }
 }
+
+.bottomSheet [data-rsbs-overlay] {
+  @include centeredWithMaxWidth;
+}
+
+.bottomSheet [data-rsbs-backdrop] {
+  @include centeredWithMaxWidth;
+}

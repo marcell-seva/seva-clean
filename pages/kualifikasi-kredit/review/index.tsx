@@ -3,7 +3,6 @@ import styles from 'styles/pages/kualifikasi-kredit-review.module.scss'
 import { Modal, Progress, Tooltip } from 'antd'
 import { Button, IconInfo } from '../../../components/atoms'
 import { ButtonSize, ButtonVersion } from '../../../components/atoms/button'
-import { getNewFunnelRecommendations } from 'services/newFunnel'
 import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
 import { useRouter } from 'next/router'
 import { getLocalStorage } from 'utils/handler/localStorage'
@@ -33,13 +32,11 @@ import {
   trackKualifikasiKreditReviewPageView,
 } from 'helpers/amplitude/seva20Tracking'
 import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
-import { getCustomerInfoSeva } from 'services/customer'
 import { getToken } from 'utils/handler/auth'
 import {
   creditQualificationUrl,
   loanCalculatorDefaultUrl,
 } from 'utils/helpers/routes'
-import { getCarVariantDetailsById } from 'services/recommendations'
 import HeaderCreditClasificationMobile from 'components/organisms/headerCreditClasificationMobile'
 import { getOptionLabel } from 'utils/handler/optionLabel'
 import { occupations } from 'utils/occupations'
@@ -55,6 +52,9 @@ import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { navigateToKK } from 'utils/navigate'
 import Image from 'next/image'
+import { getCustomerInfoSeva } from 'utils/handler/customer'
+import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
+import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 
 const CreditQualificationReviewPage = () => {
   useProtectPage()

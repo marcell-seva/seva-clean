@@ -26,39 +26,21 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
-const CustomRight = '/revamp/images/announcementBox/custom-desktop-right.webp'
-const CustomLeft = '/revamp/images/announcementBox/custom-desktop-left.webp'
 const CustomMobile = '/revamp/images/announcementBox/custom-mobile-right.webp'
-const ChristmasLeft =
-  '/revamp/images/announcementBox/christmas-desktop-left.webp'
-const ChristmasRight =
-  '/revamp/images/announcementBox/christmas-desktop-right.webp'
 const ChristmasMobileRight =
   '/revamp/images/announcementBox/christmas-mobile-right.webp'
 const ChristmasMobileLeft =
   '/revamp/images/announcementBox/christmas-mobile-left.webp'
-const NewYearLeft = '/revamp/images/announcementBox/newyear-desktop-left.webp'
-const NewYearRight = '/revamp/images/announcementBox/newyear-desktop-right.webp'
 const NewYearMobileRight =
   '/revamp/images/announcementBox/newyear-mobile-right.webp'
 const NewYearMobileLeft =
   '/revamp/images/announcementBox/newyear-mobile-left.webp'
-const CNYDesktopLeft = '/revamp/images/announcementBox/cny-desktop-left.svg'
-const CNYDesktopRight = '/revamp/images/announcementBox/cny-desktop-right.svg'
 const CNYMobileRight = '/revamp/images/announcementBox/cny-mobile-right.svg'
 const CNYMobileLeft = '/revamp/images/announcementBox/cny-mobile-left.svg'
-const RamadhanDesktopLeft =
-  '/revamp/images/announcementBox/ramadhan-desktop-left.svg'
-const RamadhanDesktopRight =
-  '/revamp/images/announcementBox/ramadhan-desktop-right.svg'
 const RamadhanMobileRight =
   '/revamp/images/announcementBox/ramadhan-mobile-right.svg'
 const RamadhanMobileLeft =
   '/revamp/images/announcementBox/ramadhan-mobile-left.svg'
-const IdulFitriDesktopLeft =
-  '/revamp/images/announcementBox/idulfitri2023-desktop-left.svg'
-const IdulFitriDesktopRight =
-  '/revamp/images/announcementBox/idulfitri2023-desktop-right.svg'
 const IdulFitriMobileRight =
   '/revamp/images/announcementBox/idulfitri2023-mobile-right.svg'
 const IdulFitriMobileLeft =
@@ -268,97 +250,58 @@ export const WebAnnouncementBox = ({
 }
 
 const bgChristmas = css`
-  background-image: url(${ChristmasLeft as any}), url(${ChristmasRight as any}),
+  background-image: url(${ChristmasMobileLeft as any}),
+    url(${ChristmasMobileRight as any}),
     linear-gradient(74.94deg, #c82120 0.54%, #f23a5c 83.1%);
   background-repeat: no-repeat, no-repeat, no-repeat;
-  background-position: 8.3% 50%, 92.63% 0%, center;
-  @media (max-width: 1024px) {
-    background-image: url(${ChristmasMobileLeft as any}),
-      url(${ChristmasMobileRight as any}),
-      linear-gradient(74.94deg, #c82120 0.54%, #f23a5c 83.1%);
-    background-repeat: no-repeat, no-repeat, no-repeat;
-    background-position: 0% 100%, 95% 8px, center;
-    padding-left: 78px;
-    padding-right: 58px;
-  }
-  padding-left: 268px;
-  padding-right: 268px;
+  background-position: 0% 100%, 95% 8px, center;
+  padding-left: 78px;
+  padding-right: 58px;
 `
 
 const bgCustom = (bgColor: string) => css`
   background-color: red;
-  background-image: url(${CustomRight as any}), url(${CustomLeft as any});
-  background-repeat: no-repeat, no-repeat;
-  background-position: right, left;
-  @media (max-width: 1024px) {
-    background-image: url(${CustomMobile as any});
-    background-repeat: no-repeat;
-    background-position: right;
-    justify-content: start;
-    padding-left: 15px;
-    padding-right: 58px;
-  }
-  padding-left: 135px;
-  padding-right: 165px;
+  background-image: url(${CustomMobile as any});
+  background-repeat: no-repeat;
+  background-position: right;
+  justify-content: start;
+  padding-left: 15px;
+  padding-right: 58px;
 `
 
 const bgNewYear = css`
-  background-image: url(${NewYearLeft as any}), url(${NewYearRight as any}),
+  background-image: url(${NewYearMobileLeft as any}),
+    url(${NewYearMobileRight as any}),
     linear-gradient(74.94deg, #002d95 0.54%, #2797ff 83.1%);
   background-repeat: no-repeat, no-repeat, no-repeat;
-  background-position: 0% 100%, 96.25% 100%, center;
-  @media (max-width: 1024px) {
-    background-image: url(${NewYearMobileLeft as any}),
-      url(${NewYearMobileRight as any}),
-      linear-gradient(74.94deg, #002d95 0.54%, #2797ff 83.1%);
-    background-repeat: no-repeat, no-repeat, no-repeat;
-    background-position: 0% 50%, 100% 100%, center;
-    padding-left: 66px;
-    padding-right: 43px;
-  }
-  padding-left: 260px;
-  padding-right: 240px;
+  background-position: 0% 50%, 100% 100%, center;
+  padding-left: 66px;
+  padding-right: 43px;
 `
 const bgCNY2023 = css`
-  background-image: url(${CNYDesktopLeft}), url(${CNYDesktopRight}),
-    radial-gradient(113.82% 1061.3% at 69.2% -139.84%, #fd3230 0%, #c82120 100%);
+  background-image: url(${CNYMobileLeft}), url(${CNYMobileRight}),
+    radial-gradient(
+      177.93% 1046.33% at 82.92% -169.53%,
+      #fd3230 0%,
+      #c82120 100%
+    );
   background-repeat: no-repeat, no-repeat, no-repeat;
-  background-position: 0% 100%, 97.57% 100%, center;
-  @media (max-width: 1024px) {
-    background-image: url(${CNYMobileLeft}), url(${CNYMobileRight}),
-      radial-gradient(
-        177.93% 1046.33% at 82.92% -169.53%,
-        #fd3230 0%,
-        #c82120 100%
-      );
-    background-repeat: no-repeat, no-repeat, no-repeat;
-    background-position: 0% 0%, 100% 100%, center;
-    padding-left: 64px;
-    padding-right: 52px;
-  }
-  padding-left: 325px;
-  padding-right: 347px;
+  background-position: 0% 0%, 100% 100%, center;
+  padding-left: 64px;
+  padding-right: 52px;
 `
 
 const bgRamadhan2023 = css`
-  background-image: url(${RamadhanDesktopLeft}), url(${RamadhanDesktopRight}),
-    radial-gradient(113.82% 1061.3% at 69.2% -139.84%, #17a17d 0%, #0b7663 100%);
+  background-image: url(${RamadhanMobileLeft}), url(${RamadhanMobileRight}),
+    radial-gradient(
+      177.93% 1046.33% at 82.92% -169.53%,
+      #17a27d 0%,
+      #0b7663 100%
+    );
   background-repeat: no-repeat, no-repeat, no-repeat;
-  background-position: 43px 100%, 97% 100%, center;
-  @media (max-width: 1024px) {
-    background-image: url(${RamadhanMobileLeft}), url(${RamadhanMobileRight}),
-      radial-gradient(
-        177.93% 1046.33% at 82.92% -169.53%,
-        #17a27d 0%,
-        #0b7663 100%
-      );
-    background-repeat: no-repeat, no-repeat, no-repeat;
-    background-position: 7px 0%, 92.5% 100%, center;
-    padding-left: 69px;
-    padding-right: calc(7.5% + 47px);
-  }
-  padding-left: 316px;
-  padding-right: 316px;
+  background-position: 7px 0%, 92.5% 100%, center;
+  padding-left: 69px;
+  padding-right: calc(7.5% + 47px);
 `
 
 const bgIdulFitri2023 = css`
@@ -366,24 +309,16 @@ const bgIdulFitri2023 = css`
   --mobile-width-img-left: 63px;
   --mobile-width-img-right: 69px;
 
-  background-image: url(${IdulFitriDesktopLeft}), url(${IdulFitriDesktopRight}),
-    radial-gradient(113.82% 1061.3% at 69.2% -139.84%, #17a15f 0%, #0b7643 100%);
+  background-image: url(${IdulFitriMobileLeft}), url(${IdulFitriMobileRight}),
+    radial-gradient(
+      177.93% 1046.33% at 82.92% -169.53%,
+      #17a15f 0%,
+      #0b7643 100%
+    );
   background-repeat: no-repeat, no-repeat, no-repeat;
-  background-position: 0px 100%, 100% 100%, center;
-  @media (max-width: 1024px) {
-    background-image: url(${IdulFitriMobileLeft}), url(${IdulFitriMobileRight}),
-      radial-gradient(
-        177.93% 1046.33% at 82.92% -169.53%,
-        #17a15f 0%,
-        #0b7643 100%
-      );
-    background-repeat: no-repeat, no-repeat, no-repeat;
-    background-position: 0px 0%, 100% 100%, center;
-    padding-left: var(--mobile-width-img-left);
-    padding-right: var(--mobile-width-img-right);
-  }
-  padding-left: calc(8px + var(--desktop-width-img));
-  padding-right: calc(8px + var(--desktop-width-img));
+  background-position: 0px 0%, 100% 100%, center;
+  padding-left: var(--mobile-width-img-left);
+  padding-right: var(--mobile-width-img-right);
 `
 
 const Wrapper = styled.div<{
@@ -394,6 +329,9 @@ const Wrapper = styled.div<{
   position: -webkit-sticky;
   top: 0;
   width: 100%;
+  max-width: 570px;
+  margin-left: auto;
+  margin-right: auto;
   height: 64px;
   display: flex;
   align-items: center;

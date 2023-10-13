@@ -31,34 +31,35 @@ import {
   loanCalculatorDefaultUrl,
   waitingCreditQualificationUrl,
 } from 'utils/helpers/routes'
-import { getNewFunnelRecommendations } from 'services/newFunnel'
 import {
   CreditQualificationReviewParam,
   trackKualifikasiKreditCarDetailClick,
   trackKualifikasiKreditCarDetailClose,
   trackKualifikasiKreditReviewPageView,
 } from 'helpers/amplitude/seva20Tracking'
-import {
-  getCustomerInfoSeva,
-  getCustomerKtpSeva,
-  saveKtp,
-  saveKtpSpouse,
-} from 'services/customer'
+
 import { isIsoDateFormat } from 'utils/handler/regex'
 import { getToken } from 'utils/handler/auth'
-import { getCarVariantDetailsById } from 'services/recommendations'
 import TooltipDaihatsu from 'components/molecules/tooltipDaihatsu'
 import { Currency } from 'utils/handler/calculation'
 import PopupCarDetail from 'components/organisms/popupCarDetail'
 import PopupCreditDetail from 'components/organisms/popupCreditDetail'
 import { useBadgePromo } from 'utils/hooks/usebadgePromo'
 import { monthId } from 'utils/handler/date'
-import { sendInstantApproval } from 'services/KK'
 import HeaderCreditClasificationMobile from 'components/organisms/headerCreditClasificationMobile'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { navigateToKK } from 'utils/navigate'
 import Image from 'next/image'
+import { api } from 'services/api'
+import {
+  getCustomerInfoSeva,
+  getCustomerKtpSeva,
+  saveKtp,
+  saveKtpSpouse,
+} from 'utils/handler/customer'
+import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
+import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 
 const CreditQualificationReviewPage = () => {
   useProtectPage()
@@ -178,7 +179,9 @@ const CreditQualificationReviewPage = () => {
         cityDom: mainKtpDomicileOptionData.lastChoosenDomicile,
         leadName: mainKTP === 'spouse' ? ktpData[1].name : ktpData[0].name,
       }
-      const res = await sendInstantApproval(dataBodyIA)
+      const res = await api.postInstantApproval(dataBodyIA, {
+        headers: { Authorization: getToken()?.idToken },
+      })
       if (res) {
         setIsLoading(false)
         sessionStorage.removeItem(SessionStorageKey.KTPUploaded)

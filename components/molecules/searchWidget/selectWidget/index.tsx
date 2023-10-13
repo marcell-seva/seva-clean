@@ -14,6 +14,8 @@ import { BottomSheet, IconChevronDown } from 'components/atoms'
 import { BottomSheetList } from 'components/molecules'
 import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
 import { FormControlValue, Option } from 'utils/types'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 type ContentSheetProps = {
   onClose: () => void
@@ -66,6 +68,20 @@ const forwardSelectWidget = (
     onClose()
   }
 
+  const getFilterType = () => {
+    if (title === 'Merek') {
+      return 'Car Brand'
+    } else if (title === 'Tipe') {
+      return 'Car Type'
+    } else if (title === 'Estimasi Harga') {
+      return 'Price Range'
+    } else if (title === 'Tenor (tahun)') {
+      return 'Tenure'
+    } else if (title === 'Kategori Umur') {
+      return 'Age'
+    }
+  }
+
   return (
     <>
       <div
@@ -74,7 +90,15 @@ const forwardSelectWidget = (
           [styles.container]: true,
           ['shake-animation-X']: errorText,
         })}
-        onClick={() => setOpenOption(true)}
+        onClick={() => {
+          trackEventCountly(
+            CountlyEventNames.WEB_HOMEPAGE_SMART_SEARCH_FIELD_CLICK,
+            {
+              FILTER_TYPE: getFilterType(),
+            },
+          )
+          setOpenOption(true)
+        }}
         data-testid={datatestid}
       >
         <div className={styles.fieldContainer}>

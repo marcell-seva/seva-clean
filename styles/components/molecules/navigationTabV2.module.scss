@@ -24,17 +24,3 @@
 .container::-webkit-scrollbar {
   display: none;
 }
-
-@include lg {
-  .container {
-    background: #{$primary-white};
-    display: flex;
-    align-items: center;
-    gap: 0;
-    overflow-x: scroll;
-  }
-
-  .container::-webkit-scrollbar {
-    display: none;
-  }
-}

@@ -16,7 +16,7 @@
 }
 .background {
   position: absolute;
-  width: 100%;
+  width: inherit;
   height: 276px;
   background-color: #{$primary-dark-blue};
   z-index: 1;

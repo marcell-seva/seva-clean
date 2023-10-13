@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styles from 'styles/pages/credit-qualification-result.module.scss'
-import { getCities } from 'services/cities'
+
 import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import { AxiosResponse } from 'axios'
 import clsx from 'clsx'
-import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
-import { getCarVariantDetailsById } from 'services/recommendations'
-import { getCustomerInfoSeva, getCustomerKtpSeva } from 'services/customer'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
 import { useRouter } from 'next/router'
@@ -45,6 +42,9 @@ import {
   saveDataForCountlyTrackerPageViewLC,
 } from 'utils/navigate'
 import Image from 'next/image'
+import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
+import { getCustomerInfoSeva, getCustomerKtpSeva } from 'utils/handler/customer'
+import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 
 const MainImageGreenMale = '/revamp/illustration/credit-result-green-male.webp'
 const MainImageGreenFemale =
@@ -92,7 +92,7 @@ export default function CreditQualificationResultPage() {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      getCities().then((res) => {
+      api.getCities().then((res) => {
         setCityListApi(res)
       })
     }

@@ -16,9 +16,79 @@ import {
   PreviousButton,
   saveDataForCountlyTrackerPageViewLC,
 } from 'utils/navigate'
+import { trackLPHowToUseSevaClick } from 'helpers/amplitude/seva20Tracking'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getToken } from 'utils/handler/auth'
+import { carResultsUrl, loanCalculatorDefaultUrl } from 'utils/helpers/routes'
 
 const HowToUse = () => {
   const router = useRouter()
+
+  const onClickDreamCar = () => {
+    sendAmplitudeData(AmplitudeEventName.WEB_LP_HOW_TO_USE_SEVA_CLICK, {
+      Page_Direction_URL:
+        'https://' + window.location.host + urls.internalUrls.carResultsUrl,
+    })
+    trackEventCountly(CountlyEventNames.WEB_HOMEPAGE_CAR_SEARCH_BUTTON_CLICK, {
+      SOURCE_SECTION: 'SEVA Steps',
+      CAR_BRAND: 'Null',
+      CAR_TYPE: 'Null',
+      MIN_PRICE: 'Null',
+      MAX_PRICE: 'Null',
+      DP_AMOUNT: 'Null',
+      TENOR_OPTION: 'Null',
+      INCOME_AMOUNT: 'Null',
+      AGE_RANGE: 'Null',
+    })
+    trackLPHowToUseSevaClick({
+      Page_Direction_URL: 'https://' + window.location.host + carResultsUrl,
+    })
+    navigateToPLP(PreviousButton.SevaSteps, history)
+  }
+
+  const onClickCalculate = () => {
+    trackEventCountly(CountlyEventNames.WEB_HOMEPAGE_LOAN_CALCULATOR_CLICK, {
+      SOURCE_SECTION: 'SEVA steps',
+      CAR_BRAND: 'Null',
+      CAR_MODEL: 'Null',
+      CAR_ORDER: 'Null',
+    })
+    trackLPHowToUseSevaClick({
+      Page_Direction_URL:
+        'https://' + window.location.host + loanCalculatorDefaultUrl,
+    })
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.SevaStepsCalculate)
+    router.push({
+      pathname: loanCalculatorDefaultUrl,
+      search: '?from=homepageHitung',
+    })
+  }
+
+  const onClickCreditQualification = () => {
+    sendAmplitudeData(AmplitudeEventName.WEB_LP_HOW_TO_USE_SEVA_CLICK, {
+      Page_Direction_URL:
+        'https://' +
+        window.location.host +
+        urls.internalUrls.loanCalculatorDefaultUrl,
+    })
+    trackEventCountly(
+      CountlyEventNames.WEB_HOMEPAGE_CHECK_CREDIT_QUALIFICATION_CLICK,
+      {
+        SOURCE_SECTION: 'SEVA steps',
+        LOGIN_STATUS: !!getToken() ? 'Yes' : 'No',
+      },
+    )
+    trackLPHowToUseSevaClick({
+      Page_Direction_URL:
+        'https://' + window.location.host + loanCalculatorDefaultUrl,
+    })
+    saveDataForCountlyTrackerPageViewLC(PreviousButton.SevaStepsQualification)
+    router.push({
+      pathname: loanCalculatorDefaultUrl,
+      search: '?from=homepageKualifikasi',
+    })
+  }
   return (
     <div className={styles.wrapper}>
       <h2 className={styles.headerText} style={{ width: '75%' }}>
@@ -27,15 +97,7 @@ const HowToUse = () => {
       <div className={styles.cardSpacing}>
         <div
           className={styles.cardHowToUse}
-          onClick={() => {
-            sendAmplitudeData(AmplitudeEventName.WEB_LP_HOW_TO_USE_SEVA_CLICK, {
-              Page_Direction_URL:
-                'https://' +
-                window.location.host +
-                urls.internalUrls.carResultsUrl,
-            })
-            navigateToPLP(PreviousButton.SevaSteps)
-          }}
+          onClick={onClickDreamCar}
           data-testid={elementId.Homepage.PilihMobilImpian}
         >
           <div>
@@ -57,23 +119,7 @@ const HowToUse = () => {
         </div>
         <div
           className={styles.cardHowToUse}
-          onClick={() => {
-            sendAmplitudeData(AmplitudeEventName.WEB_LP_HOW_TO_USE_SEVA_CLICK, {
-              Page_Direction_URL:
-                'https://' +
-                window.location.host +
-                urls.internalUrls.loanCalculatorDefaultUrl,
-            })
-            saveDataForCountlyTrackerPageViewLC(
-              PreviousButton.SevaStepsCalculate,
-            )
-            router.push({
-              pathname: urls.internalUrls.loanCalculatorDefaultUrl,
-              query: {
-                from: 'homepageHitung',
-              },
-            })
-          }}
+          onClick={onClickCalculate}
           data-testid={elementId.Homepage.HitungKemampuan}
         >
           <div>
@@ -95,23 +141,7 @@ const HowToUse = () => {
         </div>
         <div
           className={styles.cardHowToUse}
-          onClick={() => {
-            sendAmplitudeData(AmplitudeEventName.WEB_LP_HOW_TO_USE_SEVA_CLICK, {
-              Page_Direction_URL:
-                'https://' +
-                window.location.host +
-                urls.internalUrls.loanCalculatorDefaultUrl,
-            })
-            saveDataForCountlyTrackerPageViewLC(
-              PreviousButton.SevaStepsQualification,
-            )
-            router.push({
-              pathname: urls.internalUrls.loanCalculatorDefaultUrl,
-              query: {
-                from: 'homepageKualifikasi',
-              },
-            })
-          }}
+          onClick={onClickCreditQualification}
           data-testid={elementId.Homepage.KualifikasiKredit}
         >
           <div>

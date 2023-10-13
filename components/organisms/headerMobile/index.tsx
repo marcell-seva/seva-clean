@@ -42,8 +42,9 @@ const SearchModal = dynamic(() =>
 const WebAnnouncementBox = dynamic(() =>
   import('components/organisms').then((mod) => mod.WebAnnouncementBox),
 )
-const SidebarMobile = dynamic(() =>
-  import('components/organisms').then((mod) => mod.SidebarMobile),
+const SidebarMobile = dynamic(
+  () => import('components/organisms').then((mod) => mod.SidebarMobile),
+  { ssr: false },
 )
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
@@ -76,10 +77,12 @@ export const HeaderMobile = ({
   pageOrigination,
   isOTO = false,
   transparent = false,
+  isRegular = true,
   passCountlyTrackerPageView,
 }: HeaderMobileProps): JSX.Element => {
   const enableAnnouncementBoxAleph =
     getCurrentEnvironment.featureToggles.enableAnnouncementBoxAleph
+
   const [isOpenSearchModal, setIsOpenSearchModal] = useState(false)
 
   const router = useRouter()
@@ -156,7 +159,10 @@ export const HeaderMobile = ({
     }
     saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
     if (window.location.pathname.includes('kalkulator-kredit')) {
-      saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
+      saveDataForCountlyTrackerPageViewHomepage(
+        PreviousButton.SevaLogo,
+        pageOrigination,
+      )
     } else if (window.location.pathname === '/') {
       saveDataForCountlyTrackerPageViewHomepage(PreviousButton.SevaLogo)
       setTimeout(() => {
@@ -288,7 +294,7 @@ export const HeaderMobile = ({
       <Overlay
         isShow={isActive}
         onClick={() => setIsActive(false)}
-        additionalStyle={styles.overlayAdditionalStyle}
+        additionalstyle={styles.overlayAdditionalStyle}
       />
     </>
   )

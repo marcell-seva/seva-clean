@@ -111,6 +111,7 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
+  @include centeredWithMaxWidth(343px);
 }
 
 .jumpa-pay-modal .ant-modal-content {
@@ -193,6 +194,15 @@ button {
   }
 }
 
+.csa-button-homepage {
+  @media (min-width: 570px) {
+    &.ant-float-btn {
+      left: calc(50% + 240px);
+      transform: translateX(-50%);
+    }
+  }
+}
+
 .whatsapp-floating-button {
   z-index: 5;
   &.ant-float-btn {
@@ -214,6 +224,13 @@ button {
 
   .ant-float-btn-icon {
     width: 100% !important;
+  }
+
+  @media (min-width: 570px) {
+    &.ant-float-btn {
+      left: calc(50% + 240px);
+      transform: translateX(-50%);
+    }
   }
 }
 
@@ -296,8 +313,8 @@ button {
 
 .search-custom-modal {
   width: 100vw !important;
-  max-width: unset;
   top: 0;
+  @include centeredWithMaxWidth;
 }
 
 .search-custom-modal .ant-modal-content {
@@ -307,7 +324,94 @@ button {
   top: 0;
   border-radius: 0;
   padding: 0;
-  @media (max-width: 1024px) {
-    height: 0;
+  @include centeredWithMaxWidth;
+}
+
+.adm-picker {
+  height: 200px !important;
+}
+.adm-picker-view-column-item-label {
+  height: 18px !important;
+}
+
+.adm-mask {
+  right: 0;
+  @include centeredWithMaxWidth;
+}
+
+.adm-popup-body-position-bottom {
+  right: 0;
+  @include centeredWithMaxWidth;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
   }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shake-animation-X {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(8px);
+  }
+  75% {
+    transform: translateX(-8px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.rotateAnimation {
+  animation: rotate 1s linear infinite;
+}
+
+.shake-animation-X {
+  animation: shake-animation-X 0.2s ease-in-out 0s 2;
+}
+
+.shake-animation-X-2 {
+  animation: shake-animation-X 0.2s ease-in-out 0s 5;
+}
+
+.multiKKSliderError {
+  .ant-slider-handle:focus::after {
+    box-shadow: 0 0 0 2px #{$primary-red};
+  }
+  .ant-slider-handle::after {
+    box-shadow: 0 0 0 2px #{$primary-red};
+  }
+}
+
+[data-rsbs-overlay] {
+  z-index: 99 !important;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+}
+
+[data-rsbs-header] {
+  padding: 0;
+}
+
+[data-rsbs-has-header='false'] [data-rsbs-header] {
+  padding-top: 24px;
+}
+
+[data-rsbs-header]:before {
+  height: 0;
+}
+
+[data-rsbs-backdrop] {
+  z-index: 98;
+}
+
+.qualification-custom-modal .ant-modal-content {
+  @include centeredWithMaxWidth(343.33px);
 }

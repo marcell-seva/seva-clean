@@ -12,6 +12,8 @@ import { TestimonialData } from 'utils/types/props'
 import { CardShadow } from 'components/atoms'
 import { api } from 'services/api'
 import PopupTestimony from '../popupTestimony'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 const TestimonyWidget = () => {
   const [testimony, setTestimony] = useState<Array<TestimonialData>>([])
@@ -69,6 +71,12 @@ const TestimonyWidget = () => {
                   sendAmplitudeData(AmplitudeEventName.WEB_LP_TESTIMONY_CLICK, {
                     Order: String(indexCard),
                   })
+                  trackEventCountly(
+                    CountlyEventNames.WEB_HOMEPAGE_TESTIMONY_CLICK,
+                    {
+                      TESTIMONY_ORDER: index + 1,
+                    },
+                  )
                 }}
               >
                 <h3 className={styles.nameAge}>

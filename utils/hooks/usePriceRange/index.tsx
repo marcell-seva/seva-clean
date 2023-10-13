@@ -1,9 +1,10 @@
 import { AxiosResponse } from 'axios'
 import { ChangeEvent, useEffect, useState } from 'react'
-import { getMinMaxPrice } from 'services/newFunnel'
+import { api } from 'services/api'
 import { Currency } from 'utils/handler/calculation'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { MinMaxPrice } from 'utils/types/props'
+import { getCity } from '../useGetCity'
 
 export const usePriceRange = () => {
   const initErrorField = { min: false, max: false }
@@ -17,7 +18,10 @@ export const usePriceRange = () => {
   const [errorMaxTwoField, setErrorMaxTwoField] = useState(false)
 
   const fetchMinMaxPrice = () => {
-    getMinMaxPrice().then((response) => {
+    const params = new URLSearchParams()
+    getCity().cityCode && params.append('city', getCity().cityCode as string)
+
+    api.getMinMaxPrice('', { params }).then((response) => {
       setLimitPrice({
         min: response.minPriceValue,
         max: response.maxPriceValue,

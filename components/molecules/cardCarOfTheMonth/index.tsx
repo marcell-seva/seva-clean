@@ -32,6 +32,7 @@ type carOfTheMonthData = {
   brand: string
   price: number
   imageUrl: string
+  priceValue: number
   priceValueJkt: number
 }
 interface CarOfTheMonthProps {
@@ -111,6 +112,7 @@ const CardCarOfTheMonth = ({
         return null
     }
   }
+  const price = item.priceValue ?? item.priceValueJkt ?? 0
   return (
     <div className={styles.cardContainer}>
       <Image
@@ -133,7 +135,7 @@ const CardCarOfTheMonth = ({
               >
                 {'Harga mulai dari '}
                 <span>
-                  {item.priceValueJkt.toString().length <= 9
+                  {price.toString().length <= 9
                     ? item.price !== 0
                       ? 'Rp' +
                         formatNumberByLocalization(
@@ -145,7 +147,7 @@ const CardCarOfTheMonth = ({
                         ' Jt'
                       : 'Rp' +
                         formatNumberByLocalization(
-                          item.priceValueJkt,
+                          price,
                           LanguageCode.id,
                           1000000,
                           1,
@@ -154,7 +156,7 @@ const CardCarOfTheMonth = ({
                     : 'Rp' +
                       formatBillionPoint(
                         formatNumberByLocalization(
-                          item.priceValueJkt,
+                          price,
                           LanguageCode.id,
                           1000000,
                           1,

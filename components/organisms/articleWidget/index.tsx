@@ -12,6 +12,8 @@ import { NavigationTabV2 } from 'components/molecules'
 import { alephArticleCategoryList } from 'utils/config/articles.config'
 import ArticleWidgetCard from './card'
 import ArticleWidgetListCard from './list'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 type ArticlesWidgetProps = {
   articles: Article[]
@@ -24,6 +26,17 @@ const ArticleWidget = ({
   articlesTabList,
 }: ArticlesWidgetProps) => {
   const [category, setCategory] = useState(alephArticleCategoryList[0].value)
+  const trackCountlyClickSeeAll = () => {
+    trackEventCountly(CountlyEventNames.WEB_ARTICLE_ALL_CLICK, {
+      PAGE_ORIGINATION: 'Homepage',
+    })
+  }
+  const trackCountlyClickTab = (articleTab: string) => {
+    trackEventCountly(CountlyEventNames.WEB_ARTICLE_TAB_CLICK, {
+      PAGE_ORIGINATION: 'Homepage',
+      ARTICLE_TAB: articleTab.replace('&', 'dan'),
+    })
+  }
   return (
     <div>
       <div className={styles.wrapperTop}>
@@ -38,6 +51,7 @@ const ArticleWidget = ({
                 AmplitudeEventName.WEB_LP_ARTICLE_SEE_ALL_CLICK,
                 { Article_Category: category },
               )
+              trackCountlyClickSeeAll()
             }}
             data-testid={elementId.Homepage.Article.SeeAllButton}
           >
@@ -59,7 +73,11 @@ const ArticleWidget = ({
           {articles
             .map((article, index) => (
               <SwiperSlide key={index} className={styles.content}>
-                <ArticleWidgetCard currentTab={category} article={article} />
+                <ArticleWidgetCard
+                  currentTab={category}
+                  article={article}
+                  articleOrder={index}
+                />
               </SwiperSlide>
             ))
             .slice(0, 3)}
@@ -73,6 +91,7 @@ const ArticleWidget = ({
           sendAmplitudeData(AmplitudeEventName.WEB_LP_ARTICLE_CATEGORY_CLICK, {
             Article_Category: value,
           })
+          trackCountlyClickTab(value)
         }}
         isShowAnnouncementBox={false}
         onPage={'LC'}
@@ -87,6 +106,7 @@ const ArticleWidget = ({
                     article={article}
                     key={index}
                     currentTab={category}
+                    articleOrder={index}
                   />
                 )
               })

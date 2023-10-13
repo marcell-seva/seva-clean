@@ -1,7 +1,6 @@
 import Fuse from 'fuse.js'
 import elementId from 'helpers/elementIds'
 import React, { useEffect, useRef, useState } from 'react'
-import { getNewFunnelAllRecommendations } from 'services/newFunnel'
 import { FormControlValue, Option, OptionWithImage } from 'utils/types'
 import {
   ErrorMessage,
@@ -13,6 +12,8 @@ import {
 import styles from 'styles/components/molecules/form/formSelectModelCar.module.scss'
 import { CarModel } from 'utils/types/carModel'
 import Image from 'next/image'
+import { api } from 'services/api'
+import { getCity } from 'utils/hooks/useGetCity'
 
 const CarSillhouete = '/revamp/illustration/car-sillhouete.webp'
 
@@ -79,10 +80,14 @@ export const FormSelectModelCar = ({
   }, [value, valueImage])
 
   const fetchCarModels = async () => {
-    const response = await getNewFunnelAllRecommendations(
-      undefined,
-      selectedCity,
-    )
+    const params = new URLSearchParams()
+
+    getCity().cityCode && params.append('city', getCity().cityCode as string)
+    getCity().id && params.append('cityId', getCity().id as string)
+    if (selectedCity) {
+      params.set('city', selectedCity as string)
+    }
+    const response = await api.getRecommendation('', { params })
     setModelCarList(response.carRecommendations)
   }
 

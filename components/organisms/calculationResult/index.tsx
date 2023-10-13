@@ -335,6 +335,7 @@ export const CalculationResult = ({
                   isShow={isTooltipOpen}
                   onClick={handleCloseTooltip}
                   zIndex={998}
+                  additionalstyle={styles.overlayAdditionalStyle}
                 />
                 <div style={{ width: '100%' }}>
                   <Tooltip

@@ -7,11 +7,12 @@ import React, {
   useState,
 } from 'react'
 import styles from '/styles/components/molecules/searchWidget/selectWidget.module.scss'
-// import 'styles/customAnimation.scss'
 import { filterNonDigitCharacters } from 'utils/handler/stringManipulation'
 import { Currency } from 'utils/handler/calculation'
 import { MinAmount } from 'utils/types/models'
 import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 interface InputWidgetProps {
   title: string
@@ -56,8 +57,19 @@ const InputWidget = ({
     return true
   }, [inputValue.raw])
 
+  const getFilterType = () => {
+    if (name === 'downPaymentAmount') {
+      return 'DP'
+    } else if (name === 'monthlyIncome') {
+      return 'Income'
+    }
+  }
+
   const onFocus = () => {
     setFocus(true)
+    trackEventCountly(CountlyEventNames.WEB_HOMEPAGE_SMART_SEARCH_FIELD_CLICK, {
+      FILTER_TYPE: getFilterType(),
+    })
   }
 
   const onBlur = () => {
@@ -76,7 +88,7 @@ const InputWidget = ({
           <div className={styles.fieldWrapper}>
             <span className={styles.title}>{title}</span>
             <div className={styles.prefixInputWrapper}>
-              {(focus || initialValue.raw > 0) && (
+              {(focus || (initialValue.raw as number) > 0) && (
                 <span
                   className={clsx({
                     [styles.placeholder]: true,

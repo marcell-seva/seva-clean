@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from 'styles/pages/delete-account.module.scss'
-import { getCities } from 'services/cities'
+
 import clsx from 'clsx'
 import {
   trackDeleteAccountPageView,
@@ -52,7 +52,7 @@ export default function index() {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      getCities().then((res) => {
+      api.getCities().then((res) => {
         setCityListApi(res)
       })
     }

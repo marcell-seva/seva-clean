@@ -2,135 +2,95 @@
 
 .styledWrapper {
   background: #{white};
-  width: 632px;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  @media only screen and (max-width: 1024px) {
-    width: 100%;
-  }
 }
 
 .styledContentWrapper {
   display: flex;
-  padding-left: 4vw;
-  padding-right: 4vw;
   justify-content: center;
-  @media only screen and (max-width: 1024px) {
-    max-width: 100%;
-    width: 100%;
-    padding-left: 0;
-    padding-right: 0;
-  }
+  max-width: 100%;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .styledDataSuggest {
   margin-top: 7px;
-  width: 632px;
+  width: 100%;
   margin-left: 0vw;
   border-radius: 16px;
   height: auto;
-  max-height: 200px;
+  max-height: 600px;
   background-color: #{white};
   overflow-x: hidden;
   overflow-y: auto;
   position: absolute;
-  box-shadow: 0px 1px 16px rgba(3, 24, 56, 0.1);
+  box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
   z-index: 99;
+
   &::-webkit-scrollbar {
     display: none;
-  }
-  @media only screen and (max-width: 1024px) {
-    position: absolute;
-    z-index: 99;
-    border-radius: 16px;
-    max-height: 600px;
-    height: auto;
-    background-color: #{white};
-    box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
-    overflow-x: hidden;
-    overflow-y: auto;
   }
 }
 
 .styledDataResult {
   margin-top: 7px;
-  width: 632px;
+  width: 100%;
   margin-left: 0vw;
   border-radius: 16px;
   height: auto;
-  max-height: 200px;
+  max-height: 600px;
   background-color: #{white};
   overflow-x: hidden;
   overflow-y: auto;
   position: absolute;
-  box-shadow: 0px 1px 16px rgba(3, 24, 56, 0.1);
+  box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
   z-index: 99;
+
   &::-webkit-scrollbar {
     display: none;
-  }
-  @media only screen and (max-width: 1024px) {
-    position: absolute;
-    z-index: 99;
-    width: 100%;
-    border-radius: 16px;
-    max-height: 600px;
-    height: auto;
-    background-color: #{white};
-    box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
-    overflow-x: hidden;
-    overflow-y: auto;
   }
 }
 
 .styledLink {
   width: auto;
-  height: 50px;
+  height: auto;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
   color: black;
   margin: 8px;
+  line-height: 22px;
+  margin-bottom: 1vh;
+  margin-top: 1vh;
+  padding: 8px;
+
   &:hover {
     border-radius: 8px;
     background-color: #{$shades-sky-blue-30};
-  }
-  @media only screen and (max-width: 1024px) {
-    display: flex;
-    height: auto;
-    width: auto;
-    align-items: flex-start;
-    line-height: 22px;
-    justify-content: center;
-    flex-direction: column;
-    margin-bottom: 1vh;
-    margin-top: 1vh;
-    padding: 8px;
   }
 }
 
 .styledItem {
   width: auto;
-  height: 50px;
+  height: auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  flex-direction: column;
   color: black;
   margin: 8px;
+  line-height: 22px;
+  margin-bottom: 1vh;
+  margin-top: 1vh;
+  padding: 8px;
+
   &:hover {
     border-radius: 8px;
-  }
-  @media only screen and (max-width: 1024px) {
-    display: flex;
-    height: auto;
-    width: auto;
-    align-items: flex-start;
-    line-height: 22px;
-    justify-content: center;
-    flex-direction: column;
-    margin-bottom: 1vh;
-    margin-top: 1vh;
-    padding: 8px;
   }
 }
 
@@ -144,30 +104,21 @@
 }
 
 .styledCarName {
-  margin-left: 1vw;
   text-align: start;
   padding-top: 7px;
   padding-bottom: 14px;
   color: black;
-  @media only screen and (max-width: 1024px) {
-    margin-left: 0;
-    margin-right: 20px;
-  }
+  margin-left: 0;
+  margin-right: 20px;
 }
 
 .styledSearchWrapper {
   margin: 0;
-  width: 632px;
-  @media only screen and (max-width: 1024px) {
-    width: 100%;
-  }
+  width: 100%;
 }
 
 .inputWrapper {
   width: 100%;
-  @media only screen and (max-width: 1024px) {
-    width: 100%;
-  }
 }
 
 .styledSearchInput {

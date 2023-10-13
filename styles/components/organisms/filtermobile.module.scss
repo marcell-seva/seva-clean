@@ -114,6 +114,11 @@
   max-height: 88%;
   min-height: 280px;
   z-index: 100;
+  @include centeredWithMaxWidth;
+}
+
+.wrapper [data-rsbs-backdrop] {
+  @include centeredWithMaxWidth;
 }
 
 .marginTop {

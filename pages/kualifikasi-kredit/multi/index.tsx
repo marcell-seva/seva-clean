@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { getCities } from 'services/cities'
+
 import { getSessionStorage } from 'utils/handler/sessionStorage'
 import styles from 'styles/pages/multi-kk.module.scss'
 import stylex from 'styles/components/molecules/searchWidget/tenureOptionWidget.module.scss'
@@ -16,7 +16,6 @@ import { colors } from 'styles/colors'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
-import { getCustomerInfoSeva } from 'services/customer'
 import dayjs from 'dayjs'
 import elementId from 'helpers/elementIds'
 import { AxiosResponse } from 'axios'
@@ -50,7 +49,6 @@ import {
   underMinWarning,
 } from 'utils/config/funnel.config'
 import { Currency } from 'utils/handler/calculation'
-import { sendMultiKualifikasiKredit } from 'services/KK'
 import { getOptionValue } from 'utils/handler/optionLabel'
 import { multiResultCreditQualificationPageUrl } from 'utils/helpers/routes'
 import { HeaderMobile } from 'components/organisms'
@@ -68,6 +66,7 @@ import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { NotFoundMultiUnit } from 'components/organisms/NotFoundMultiUnitModal'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import { getCustomerInfoSeva } from 'utils/handler/customer'
 
 const initErrorFinancial = {
   downPaymentAmount: '' as any,
@@ -165,7 +164,7 @@ const MultiKK = () => {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      getCities().then((res) => {
+      api.getCities().then((res) => {
         setCityListApi(res)
       })
     }
@@ -347,7 +346,10 @@ const MultiKK = () => {
       }),
     }
 
-    sendMultiKualifikasiKredit(sendData)
+    api
+      .postMultiCreditQualification(sendData, {
+        headers: { Authorization: getToken()?.idToken },
+      })
       .then((result) => {
         const carListNonSulit = filteredCarList(result.carRecommendations)
         if (

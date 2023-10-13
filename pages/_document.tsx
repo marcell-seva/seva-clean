@@ -42,10 +42,6 @@ export default class MyDocument extends Document {
           <link rel="preconnect" href="https://images.prod.seva.id" />
           <link rel="dns-prefetch" href="https://images.prod.seva.id" />
           <meta name="theme-color" content="#fff" />
-          <meta
-            name="viewport"
-            content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
-          />
         </Head>
         <body>
           <Main />

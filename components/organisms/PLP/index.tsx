@@ -31,10 +31,9 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { api } from 'services/api'
-import { getCities } from 'services/cities'
+
 import { useCar } from 'services/context/carContext'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
-import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { getConvertFilterIncome } from 'utils/filterUtils'
 import { getToken } from 'utils/handler/auth'
@@ -69,11 +68,12 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getPageName } from 'utils/pageName'
 import { LoanRank } from 'utils/types/models'
-import { temanSevaUrlPath } from 'services/temanseva'
 import { decryptValue } from 'utils/encryptionUtils'
 import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 import { useUtils } from 'services/context/utilsContext'
 import dynamic from 'next/dynamic'
+import { temanSevaUrlPath } from 'utils/types/props'
+import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const LeadsFormPrimary = dynamic(() =>
@@ -512,7 +512,11 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     }
 
     if (!isCurrentCitySameWithSSR || recommendation.length === 0) {
-      getMinMaxPrice()
+      const params = new URLSearchParams()
+      getCity().cityCode && params.append('city', getCity().cityCode as string)
+
+      api
+        .getMinMaxPrice('', { params })
         .then((response) => {
           if (response) {
             setMinMaxPrice({

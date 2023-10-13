@@ -3,12 +3,13 @@ import { CitySelectorModal } from 'components/molecules'
 import { FooterMobile, HeaderMobile } from 'components/organisms'
 import React, { useState, useEffect } from 'react'
 import { api } from 'services/api'
-import { getCities } from 'services/cities'
+
 import { SessionStorageKey } from 'utils/enum'
 import { getToken } from 'utils/handler/auth'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { CityOtrOption } from 'utils/types'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
+import styles from 'styles/components/templates/pageLayout.module.scss'
 
 type PageLayoutProps = {
   children: React.ReactNode
@@ -31,7 +32,7 @@ const PageLayout = ({ children, footer = true }: PageLayoutProps) => {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      getCities().then((res) => {
+      api.getCities().then((res) => {
         setCityListApi(res)
       })
     }
@@ -58,16 +59,18 @@ const PageLayout = ({ children, footer = true }: PageLayoutProps) => {
 
   return (
     <>
-      <HeaderMobile
-        isActive={isActive}
-        setIsActive={setIsActive}
-        emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
-        style={{ withBoxShadow: true, position: 'sticky' }}
-        isShowAnnouncementBox={showAnnouncementBox}
-        setShowAnnouncementBox={setShowAnnouncementBox}
-      />
-      {children}
-      {footer && <FooterMobile />}
+      <div className={styles.container}>
+        <HeaderMobile
+          isActive={isActive}
+          setIsActive={setIsActive}
+          emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
+          style={{ withBoxShadow: true, position: 'sticky' }}
+          isShowAnnouncementBox={showAnnouncementBox}
+          setShowAnnouncementBox={setShowAnnouncementBox}
+        />
+        {children}
+        {footer && <FooterMobile />}
+      </div>
       <CitySelectorModal
         isOpen={isOpenCitySelectorModal}
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}

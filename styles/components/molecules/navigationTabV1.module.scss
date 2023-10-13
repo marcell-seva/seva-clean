@@ -20,20 +20,3 @@
 .container::-webkit-scrollbar {
   display: none;
 }
-
-@include lg {
-  .container {
-    background: #{$primary-white};
-    border-bottom: 1px solid #{$shades-grey-10};
-    box-shadow: 0px 6px 14px 1px rgba(76, 82, 95, 0.08);
-    padding: 8px 0;
-    display: flex;
-    align-items: center;
-    gap: 33px;
-    overflow-x: scroll;
-  }
-
-  .container::-webkit-scrollbar {
-    display: none;
-  }
-}

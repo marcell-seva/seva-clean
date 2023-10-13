@@ -46,13 +46,22 @@ import { savePageBeforeLogin } from 'utils/loginUtils'
 import { LoginModalMultiKK } from '../loginModalMultiKK'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
-import { LocalStorageKey } from 'utils/enum'
-import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import {
+  trackEventCountly,
+  valueForUserTypeProperty,
+  valueForInitialPageProperty,
+} from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import {
+  getSessionStorage,
+  removeSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
+import { RouteName } from 'utils/navigate'
+import { getCustomerInfoSeva } from 'utils/handler/customer'
 
 const HomepageMobile = ({ dataReccomendation }: any) => {
-  useEffect(() => {
-    sendAmplitudeData(AmplitudeEventName.WEB_LANDING_PAGE_VIEW, {})
-  }, [])
   const { dataCities, dataCarofTheMonth, dataMainArticle } = useContext(
     HomePageDataLocalContext,
   )
@@ -60,7 +69,6 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
   const [openCitySelectorModal, setOpenCitySelectorModal] = useState(false)
   const [cityListApi, setCityListApi] =
     useState<Array<CityOtrOption>>(dataCities)
-  const [loadLP, setLoadLP] = useState(true)
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -85,6 +93,8 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
   } = useInView({
     threshold: 0.5,
   })
+  const [isSentCountlyPageView, setIsSentCountlyPageView] = useState(false)
+  const [sourceButton, setSourceButton] = useState('Null')
 
   const checkCitiesData = () => {
     api.getCities().then((res: any) => {
@@ -153,8 +163,8 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
     }
   }
 
-  const cleanEffect = () => {
-    setLoadLP(true)
+  const cleanEffect = (timeout: NodeJS.Timeout) => {
+    clearTimeout(timeout)
   }
 
   const closeLeadsForm = () => {
@@ -174,23 +184,67 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
         AmplitudeEventName.WEB_LEADS_FORM_OPEN,
         trackLeadsLPForm(),
       )
+
+      trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_BUTTON_CLICK, {
+        PAGE_ORIGINATION: 'Homepage - Floating Icon',
+      })
+    }
+  }
+
+  const trackCountlyPageView = async () => {
+    const pageReferrer = getSessionStorage(
+      SessionStorageKey.PageReferrerHomepage,
+    )
+    const previousSourceButton = getSessionStorage(
+      SessionStorageKey.PreviousSourceButtonHomepage,
+    )
+    const referralCodeFromUrl: string | null = getLocalStorage(
+      LocalStorageKey.referralTemanSeva,
+    )
+
+    let temanSevaStatus = 'No'
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
+
+    if (!!window?.Countly?.q) {
+      trackEventCountly(CountlyEventNames.WEB_HOMEPAGE_VIEW, {
+        PAGE_REFERRER: pageReferrer ?? 'Null',
+        PREVIOUS_SOURCE_BUTTON: previousSourceButton ?? 'Null',
+        USER_TYPE: valueForUserTypeProperty(),
+        INITIAL_PAGE: pageReferrer ? 'No' : valueForInitialPageProperty(),
+        TEMAN_SEVA_STATUS: temanSevaStatus,
+      })
+
+      setIsSentCountlyPageView(true)
+      removeSessionStorage(SessionStorageKey.PageReferrerHomepage)
+      removeSessionStorage(SessionStorageKey.PreviousSourceButtonHomepage)
     }
   }
 
   useEffect(() => {
+    sendAmplitudeData(AmplitudeEventName.WEB_LANDING_PAGE_VIEW, {})
     cityHandler()
     setTrackEventMoEngageWithoutValue(EventName.view_homepage)
-    Promise.all([
-      loadCarRecommendation(),
-      getCarOfTheMonth(),
-      checkCitiesData(),
-      getArticles(),
-    ]).then(() => {
-      setLoadLP(false)
-    })
+
+    loadCarRecommendation()
+    getCarOfTheMonth()
+    checkCitiesData()
+    getArticles()
+
+    const timeoutCountlyTracker = setTimeout(() => {
+      if (!isSentCountlyPageView) {
+        trackCountlyPageView()
+      }
+    }, 1000)
 
     return () => {
-      cleanEffect()
+      cleanEffect(timeoutCountlyTracker)
     }
   }, [])
   const trackLeadsLPForm = (): LeadsActionParam => {
@@ -209,6 +263,14 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
   }
 
   const onClickMainHeroLP = () => {
+    saveSessionStorage(SessionStorageKey.PageReferrerMultiKK, 'Homepage')
+    trackEventCountly(
+      CountlyEventNames.WEB_HOMEPAGE_CHECK_CREDIT_QUALIFICATION_CLICK,
+      {
+        SOURCE_SECTION: 'Upper section',
+        LOGIN_STATUS: !!getToken() ? 'Yes' : 'No',
+      },
+    )
     trackLPKualifikasiKreditTopCtaClick()
     if (!!getToken()) {
       router.push(multiCreditQualificationPageUrl)
@@ -233,8 +295,12 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
 
         <div className={styles.container}>
           <MainHeroLP
-            onCityIconClick={() => setOpenCitySelectorModal(true)}
+            onCityIconClick={() => {
+              setOpenCitySelectorModal(true)
+              setSourceButton('Location Icon (Navbar)')
+            }}
             onCtaClick={onClickMainHeroLP}
+            passCountlyTrackerPageView={trackCountlyPageView}
           />
           <SearchWidget />
           <div className={styles.line} />
@@ -248,6 +314,9 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
             carOfTheMonthData={carOfTheMonthData}
             onSendOffer={() => {
               setIsModalOpened(true)
+              trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_BUTTON_CLICK, {
+                PAGE_ORIGINATION: 'Homepage - Car of The Month',
+              })
             }}
             cityOtr={cityOtr}
             setSelectedCarOfTheMonth={setSelectedCarOfTheMonth}
@@ -272,6 +341,8 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
           isOpen={openCitySelectorModal}
           onClickCloseButton={() => setOpenCitySelectorModal(false)}
           cityListFromApi={cityListApi}
+          pageOrigination={RouteName.Homepage}
+          sourceButton={sourceButton}
         />
         {isModalOpenend && (
           <LeadsFormPrimary
@@ -281,7 +352,10 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
           />
         )}
         {!isLeadsFormSectionVisible && (
-          <CSAButton onClick={scrollToLeadsForm} />
+          <CSAButton
+            onClick={scrollToLeadsForm}
+            additionalstyle={'csa-button-homepage'}
+          />
         )}
 
         {isLoginModalOpened && (

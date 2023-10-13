@@ -26,6 +26,7 @@ export type carOfTheMonthData = {
   brand: string
   price: number
   imageUrl: string
+  priceValue: number
   priceValueJkt: number
 }
 const CarOfTheMonth = ({
@@ -35,6 +36,9 @@ const CarOfTheMonth = ({
   setSelectedCarOfTheMonth,
 }: CarOfTheMonthProps) => {
   const isMobileSmall = useMediaQuery({ query: '(max-width: 365px)' })
+  const isMobileMedium = useMediaQuery({ query: '(max-width: 385px)' })
+  const isMobileLarge = useMediaQuery({ query: '(max-width: 415px)' })
+  const isMobile = useMediaQuery({ query: '(max-width: 570px)' })
   const [currentSlide, setCurrentSlide] = useState(0)
 
   const carModel = useMemo(() => {
@@ -45,6 +49,7 @@ const CarOfTheMonth = ({
       brand: item.brand ?? '',
       price: item.model?.price ?? 0,
       imageUrl: item.model?.data.image ?? '',
+      priceValue: item.model?.priceValue ?? item.model?.priceValueJkt ?? 0,
       priceValueJkt: item.model?.priceValueJkt ?? 0,
     }))
 
@@ -52,8 +57,11 @@ const CarOfTheMonth = ({
   }, [carOfTheMonthData])
 
   const getVisibleSlides = () => {
-    if (isMobileSmall) return 1
-    return 1.23
+    if (isMobileSmall) return 1.15
+    if (isMobileMedium) return 1.23
+    if (isMobileLarge) return 1.25
+    if (isMobile) return 1.3
+    else return 1.85
   }
 
   return (

@@ -1,0 +1,5 @@
+@import '../../abstract/mixins';
+
+.container {
+  @include centeredWithMaxWidth;
+}

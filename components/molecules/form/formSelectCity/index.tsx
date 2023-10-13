@@ -1,12 +1,12 @@
 import Fuse from 'fuse.js'
 import elementId from 'helpers/elementIds'
 import React, { useEffect, useRef, useState } from 'react'
-import { getCities } from 'services/cities'
 import { IconChevronDown, IconRemove, InputSelect } from 'components/atoms'
 import { LabelWithTooltip } from 'components/molecules'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { FormControlValue, Location, Option } from 'utils/types'
 import { LocalStorageKey } from 'utils/enum'
+import { api } from 'services/api'
 
 const searchOption = {
   keys: ['label'],
@@ -58,7 +58,7 @@ export default function FormSelectCity({
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
 
   const fetchCities = async () => {
-    const response = await getCities()
+    const response = await api.getCities()
     setCityListApi(response)
   }
 
