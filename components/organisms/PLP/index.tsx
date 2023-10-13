@@ -74,6 +74,7 @@ import { useUtils } from 'services/context/utilsContext'
 import dynamic from 'next/dynamic'
 import { temanSevaUrlPath } from 'utils/types/props'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
@@ -168,9 +169,8 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     items: recommendation.slice(0, 12),
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
-  const { cities, saveDataAnnouncementBox } = useUtils()
+  const { cities, dataAnnouncementBox } = useUtils()
   const [showAnnouncementBox, setIsShowAnnouncementBox] = useState(false)
-  const [interactive, setInteractive] = useState(false)
   const [isLogin] = useState(!!getToken())
   const [dataCarForPromo, setDataCarForPromo] = useState({
     brand: '',
@@ -342,31 +342,19 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_SORT_CLICK)
   }
   const getAnnouncementBox = () => {
-    if (!interactive) {
-      setInteractive(true)
-      api
-        .getAnnouncementBox({
-          headers: {
-            'is-login': getToken() ? 'true' : 'false',
-          },
-        })
-        .then((res: { data: AnnouncementBoxDataType }) => {
-          if (res.data === undefined) {
-            setIsShowAnnouncementBox(false)
-          } else {
-            saveDataAnnouncementBox(res.data)
-            const sessionAnnouncmentBox = getSessionStorage(
-              getToken()
-                ? SessionStorageKey.ShowWebAnnouncementLogin
-                : SessionStorageKey.ShowWebAnnouncementNonLogin,
-            )
-            if (typeof sessionAnnouncmentBox !== 'undefined') {
-              setIsShowAnnouncementBox(sessionAnnouncmentBox as boolean)
-            } else {
-              setIsShowAnnouncementBox(true)
-            }
-          }
-        })
+    if (dataAnnouncementBox) {
+      const isShowAnnouncement = getSessionStorage(
+        getToken()
+          ? SessionStorageKey.ShowWebAnnouncementLogin
+          : SessionStorageKey.ShowWebAnnouncementNonLogin,
+      )
+      if (typeof isShowAnnouncement !== 'undefined') {
+        setIsShowAnnouncementBox(isShowAnnouncement as boolean)
+      } else {
+        setIsShowAnnouncementBox(true)
+      }
+    } else {
+      setIsShowAnnouncementBox(false)
     }
   }
 
@@ -431,31 +419,27 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     }
   }
 
+  useAfterInteractive(() => {
+    getAnnouncementBox()
+  }, [dataAnnouncementBox])
+
+  useAfterInteractive(() => {
+    setTimeout(() => {
+      checkFincapBadge(recommendation.slice(0, 12))
+    }, 1000)
+  }, [recommendation])
+
   //handle scrolling
   useEffect(() => {
     window.scrollTo(0, 0)
     moengageViewPLP()
 
-    window.addEventListener('touchstart', getAnnouncementBox)
     window.addEventListener('scroll', handleScroll)
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('touchstart', getAnnouncementBox)
     }
   }, [])
-
-  useEffect(() => {
-    ;['scroll', 'touchstart'].forEach((ev) =>
-      window.addEventListener(ev, getAnnouncementBox),
-    )
-
-    return () => {
-      ;['scroll', 'touchstart'].forEach((ev) =>
-        window.removeEventListener(ev, getAnnouncementBox),
-      )
-    }
-  }, [interactive])
 
   useEffect(() => {
     if (funnelQuery.age && funnelQuery.monthlyIncome) {
@@ -575,9 +559,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
                   setSampleArray({
                     items: response.carRecommendations.slice(0, 12),
                   })
-                  setTimeout(() => {
-                    checkFincapBadge(response.carRecommendations.slice(0, 12))
-                  }, 1000)
                 }
                 setShowLoading(false)
               })
@@ -610,9 +591,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
         sortBy: sortBy || 'lowToHigh',
       }
       patchFunnelQuery(queryParam)
-      setTimeout(() => {
-        checkFincapBadge(recommendation.slice(0, 12))
-      }, 1000)
     }
     return () => cleanEffect()
   }, [])

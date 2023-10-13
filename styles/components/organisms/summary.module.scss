@@ -101,22 +101,19 @@
 
 .kanyonMedium {
   font-family: var(--kanyon-medium);
-  font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   color: #13131b;
 }
 
 .openSansSemiBold {
-  font-family: var(--open-sans-semi-bold);
-  font-weight: 600;
+  font-family: $font-openSans-semiBold;
   font-size: 14px;
   line-height: 20px;
   color: #000000;
 }
 .openSans {
   font-family: var(--open-sans);
-  font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   color: #000000;
@@ -129,7 +126,6 @@
 }
 .openSansBoldGrey {
   font-family: var(--open-sans-bold);
-  font-weight: 700;
   font-size: 11px;
   line-height: 16px;
   color: #878d98;
@@ -220,7 +216,6 @@
 .videoSectionHeaderText {
   font-family: var(--kanyon-medium);
   font-style: normal;
-  font-weight: 500;
   font-size: 16px;
   line-height: 24px;
   color: #{$primary-black};
@@ -268,7 +263,6 @@
 .kanyonMediumBlue {
   font-family: var(--kanyon);
   font-style: normal;
-  font-weight: 400;
   font-size: 20px;
   line-height: 28px;
   color: #05256e;

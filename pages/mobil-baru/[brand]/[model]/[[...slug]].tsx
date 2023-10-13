@@ -27,8 +27,8 @@ import { getCity } from 'utils/hooks/useGetCity'
 import { useCar } from 'services/context/carContext'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { lowerSectionNavigationTab } from 'config/carVariantList.config'
-import styles from 'styles/pages/pdp.module.scss'
 import Script from 'next/script'
+import styles from 'styles/pages/pdp.module.scss'
 import { mergeModelDetailsWithLoanRecommendations } from 'utils/handler/carRecommendation'
 import { formatShortPrice } from 'components/organisms/tabContent/lower/summary'
 interface PdpDataLocalContextType {
@@ -545,7 +545,7 @@ const jsonLD = (
       '@type': 'ItemList',
       name: `Variant ${carModel?.brand} ${carModel?.model}`,
       description: `Daftar Variant ${carModel?.brand} ${carModel?.model} 2023`,
-      itemListOrder: 'http://schema.org/ItemListOrderDescending',
+      itemListOrder: 'https://schema.org/ItemListOrderDescending',
       numberOfItems: carModel?.variants.length,
       itemListElement: carModel ? getItemListElement(carModel) : [],
     },
@@ -665,9 +665,9 @@ const jsonLD = (
           ? filterImageBasedOnType(carModel?.images, 'eksterior')?.[0]
           : carModel?.images?.[0],
         mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
-        representativeOfPage: 'http://schema.org/True',
-        isFamilyFriendly: 'http://schema.org/True',
-        isAccesibleForFree: 'http://schema.org/False',
+        representativeOfPage: 'https://schema.org/True',
+        isFamilyFriendly: 'https://schema.org/True',
+        isAccesibleForFree: 'https://schema.org/False',
       },
       {
         '@type': 'ImageObject',

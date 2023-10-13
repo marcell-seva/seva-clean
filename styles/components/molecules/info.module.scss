@@ -27,12 +27,13 @@
 }
 
 .textDesc {
-  display: inline;
+  display: -webkit-box;
   font-size: 12px;
   line-height: 18px;
   height: auto;
   color: #{$primary-black};
   overflow: auto;
+  font-family: $font-openSans;
 }
 
 .elipsed {

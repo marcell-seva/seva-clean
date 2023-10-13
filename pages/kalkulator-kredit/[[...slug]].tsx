@@ -100,6 +100,7 @@ import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { getCarModelDetailsById } from 'utils/handler/carRecommendation'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -149,7 +150,7 @@ export interface FormLCState {
   leasingOption?: string
 }
 
-const getSlug = (query: any, index: number) => {
+export const getSlug = (query: any, index: number) => {
   return (
     query.slug && query.slug.length > index && (query.slug[index] as string)
   )
@@ -261,6 +262,7 @@ export default function LoanCalculatorPage() {
     saveDesktopWebTopMenu,
     saveMobileWebFooterMenus,
     saveDataAnnouncementBox,
+    dataAnnouncementBox,
   } = useUtils()
 
   const getAutofilledCityData = () => {
@@ -345,15 +347,7 @@ export default function LoanCalculatorPage() {
     }
   }
 
-  const [showAnnouncementBox, setShowAnnouncementBox] = useState<
-    boolean | null
-  >(
-    getSessionStorage(
-      getToken()
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ) ?? true,
-  )
+  const [showAnnouncementBox, setShowAnnouncementBox] = useState<boolean>(false)
   const [articles, setArticles] = useState<Article[]>([])
 
   const fetchArticles = async () => {
@@ -372,31 +366,17 @@ export default function LoanCalculatorPage() {
     }
   }
 
-  const getAnnouncementBox = () => {
-    api
-      .getAnnouncementBox({
+  const getAnnouncementBox = async () => {
+    try {
+      const res: any = await api.getAnnouncementBox({
         headers: {
           'is-login': getToken() ? 'true' : 'false',
         },
       })
-      .then((res: { data: AnnouncementBoxDataType }) => {
-        if (res.data === undefined) {
-          setShowAnnouncementBox(false)
-        } else {
-          saveDataAnnouncementBox(res.data)
-          const sessionAnnouncmentBox = getSessionStorage(
-            getToken()
-              ? SessionStorageKey.ShowWebAnnouncementLogin
-              : SessionStorageKey.ShowWebAnnouncementNonLogin,
-          )
-          if (typeof sessionAnnouncmentBox !== 'undefined') {
-            setShowAnnouncementBox(sessionAnnouncmentBox as boolean)
-          } else {
-            setShowAnnouncementBox(true)
-          }
-        }
-      })
+      saveDataAnnouncementBox(res.data)
+    } catch (error) {}
   }
+
   const checkPromoCode = async () => {
     if (!forms.promoCode) {
       setPromoCodeSessionStorage('')
@@ -706,6 +686,23 @@ export default function LoanCalculatorPage() {
     autofillCarVariantData()
     checkReffcode()
   }, [carVariantList])
+
+  useAfterInteractive(() => {
+    if (dataAnnouncementBox) {
+      const isShowAnnouncement = getSessionStorage(
+        getToken()
+          ? SessionStorageKey.ShowWebAnnouncementLogin
+          : SessionStorageKey.ShowWebAnnouncementNonLogin,
+      )
+      if (typeof isShowAnnouncement !== 'undefined') {
+        setShowAnnouncementBox(isShowAnnouncement as boolean)
+      } else {
+        setShowAnnouncementBox(true)
+      }
+    } else {
+      setShowAnnouncementBox(false)
+    }
+  }, [dataAnnouncementBox])
 
   const AgeList: Option<string>[] = [
     {

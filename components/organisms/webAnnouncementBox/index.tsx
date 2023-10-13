@@ -24,6 +24,7 @@ import {
   valueMenuTabCategory,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const CustomMobile = '/revamp/images/announcementBox/custom-mobile-right.webp'
 const ChristmasMobileRight =
@@ -58,19 +59,15 @@ export const WebAnnouncementBox = ({
   onCloseAnnouncementBox,
   pageOrigination,
 }: WebAnnouncementBoxProps) => {
-  const [isOpen, setIsOpen] = useState<boolean | null>(
-    getSessionStorage(
-      getToken() === null
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ) ?? true,
-  )
-
-  const [announcement, setAnnouncement] = useState<AnnouncementBoxDataType>()
-  const [isError, setIsError] = useState(false)
+  const [isOpen, setIsOpen] = useState<boolean | null>(true)
   const { dataAnnouncementBox } = useUtils()
 
-  useEffect(() => {
+  const [announcement, setAnnouncement] = useState<
+    AnnouncementBoxDataType | undefined
+  >(dataAnnouncementBox)
+  const [isError, setIsError] = useState(false)
+
+  useAfterInteractive(() => {
     if (dataAnnouncementBox !== undefined) {
       setIsError(false)
       setAnnouncement(dataAnnouncementBox)
@@ -107,9 +104,10 @@ export const WebAnnouncementBox = ({
     getSessionStorage(SessionStorageKey.ShowWebAnnouncementNonLogin),
     getSessionStorage(SessionStorageKey.ShowWebAnnouncementLogin),
     getToken(),
+    dataAnnouncementBox,
   ])
 
-  useEffect(() => {
+  useAfterInteractive(() => {
     if (isOpen && announcement) {
       window.dataLayer.push({
         event: 'view_promotion',

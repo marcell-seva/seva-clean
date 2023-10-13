@@ -22,6 +22,7 @@ import { useMediaQuery } from 'react-responsive'
 import { useRouter } from 'next/router'
 import { getCity } from 'utils/hooks/useGetCity'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
+import { getToken } from 'utils/handler/auth'
 
 const NewCarResultPage = ({
   meta,
@@ -47,13 +48,26 @@ const NewCarResultPage = ({
     saveMobileWebTopMenus,
     saveMobileWebFooterMenus,
     saveCities,
+    saveDataAnnouncementBox,
   } = useUtils()
+
+  const getAnnouncementBox = async () => {
+    try {
+      const res: any = await api.getAnnouncementBox({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
+      })
+      saveDataAnnouncementBox(res.data)
+    } catch (error) {}
+  }
 
   useEffect(() => {
     saveDesktopWebTopMenu(dataDesktopMenu)
     saveMobileWebTopMenus(dataMobileMenu)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
+    getAnnouncementBox()
   }, [])
 
   useEffect(() => {

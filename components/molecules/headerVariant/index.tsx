@@ -40,9 +40,9 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
-import { getCity } from 'utils/hooks/useGetCity'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
 import { removeCarModel } from 'utils/handler/removeCarModel'
+import { getCity } from 'utils/hooks/useGetCity'
 
 interface HeaderVariantProps {
   overrideDisplay?: string
