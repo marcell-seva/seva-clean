@@ -265,13 +265,16 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({
       platform,
       name,
       phoneNumber: phone,
-      origination: UnverifiedLeadSubCategory.SEVA_NEW_CAR_PDP_LEADS_FORM,
+      origination: isOTO
+        ? UnverifiedLeadSubCategory.OTO_NEW_CAR_PDP_LEADS_FORM
+        : UnverifiedLeadSubCategory.SEVA_NEW_CAR_PDP_LEADS_FORM,
       ...(cityOtr?.id && { cityId: cityOtr.id }),
       dp: getDp(),
       tenure: getTenure(),
       monthlyInstallment: sortedCarModelVariant[0].monthlyInstallment,
       carBrand: carModelDetails?.brand,
       carModelText: carModelDetails?.model,
+      carVariantText: carVariantDetails?.variantDetail.name,
     }
     try {
       await createUnverifiedLeadNew(data)
