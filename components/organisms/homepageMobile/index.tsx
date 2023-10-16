@@ -257,16 +257,6 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
     loadCarRecommendation()
     getCarOfTheMonth()
     getArticles()
-
-    const timeoutCountlyTracker = setTimeout(() => {
-      if (!isSentCountlyPageView) {
-        trackCountlyPageView()
-      }
-    }, 1000)
-
-    return () => {
-      cleanEffect(timeoutCountlyTracker)
-    }
   }, [])
 
   useAfterInteractive(() => {
@@ -275,6 +265,11 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
 
   useAfterInteractive(() => {
     cityHandler()
+    setTimeout(() => {
+      if (!isSentCountlyPageView) {
+        trackCountlyPageView()
+      }
+    }, 1000)
   }, [])
 
   const trackLeadsLPForm = (): LeadsActionParam => {
