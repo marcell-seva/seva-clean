@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export const useAfterInteractive = (
   executeFunc: () => void,
@@ -6,24 +6,20 @@ export const useAfterInteractive = (
 ) => {
   const [interactive, setInteractive] = useState(false)
 
-  const onInteractive = () => {
+  const onInteractive = useCallback(() => {
     if (!interactive) {
-      setInteractive(true)
       executeFunc()
       ;['scroll', 'touchstart'].forEach((ev) =>
         window.removeEventListener(ev, onInteractive),
       )
+      setInteractive(true)
     }
-  }
+  }, [])
 
   useEffect(() => {
-    ;['scroll', 'touchstart'].forEach((ev) =>
-      window.addEventListener(ev, onInteractive),
-    )
-
-    return () => {
+    if (!interactive) {
       ;['scroll', 'touchstart'].forEach((ev) =>
-        window.removeEventListener(ev, onInteractive),
+        window.addEventListener(ev, onInteractive),
       )
     }
   }, [interactive])
@@ -32,5 +28,5 @@ export const useAfterInteractive = (
     if (interactive && dependencies.length > 0) {
       executeFunc()
     }
-  }, [interactive, ...dependencies])
+  }, [...dependencies])
 }
