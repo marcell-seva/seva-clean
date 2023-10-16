@@ -204,23 +204,24 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
   useEffect(() => {
     cityHandler()
     setTrackEventMoEngageWithoutValue(EventName.view_homepage)
-    Promise.all([
-      loadCarRecommendation(),
-      getCarOfTheMonth(),
-      checkCitiesData(),
-      getArticles(),
-    ]).then(() => {
-      setLoadLP(false)
-    })
-
-    return () => {
-      cleanEffect()
-    }
+    checkCitiesData()
+    loadCarRecommendation()
+    getCarOfTheMonth()
+    getArticles()
   }, [])
 
   useAfterInteractive(() => {
     getAnnouncementBox()
   }, [dataAnnouncementBox])
+
+  useAfterInteractive(() => {
+    cityHandler()
+    setTimeout(() => {
+      if (!isSentCountlyPageView) {
+        // trackCountlyPageView()
+      }
+    }, 1000)
+  }, [])
 
   const trackLeadsLPForm = (): LeadsActionParam => {
     return {
