@@ -101,6 +101,7 @@ import { getCarModelDetailsById } from 'utils/handler/carRecommendation'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { useCityFirst } from 'utils/hooks/useCityFirst'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -163,7 +164,7 @@ export default function LoanCalculatorPage() {
   const model = getSlug(router.query, 2)
   const variant = getSlug(router.query, 3)
   const loanRankcr = router.query.loanRankCVL ?? ''
-
+  const { showCity, onCloseCity } = useCityFirst()
   const { financialQuery, patchFinancialQuery } = useFinancialQueryData()
   const [isActive, setIsActive] = useState(false)
   const [isHasCarParameter] = useState(
@@ -1938,8 +1939,11 @@ Kemampuan Finansialmu"
         <FooterMobile pageOrigination={'PDP - ' + valueMenuTabCategory()} />
 
         <CitySelectorModal
-          isOpen={isOpenCitySelectorModal}
-          onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
+          isOpen={showCity || isOpenCitySelectorModal}
+          onClickCloseButton={() => {
+            onCloseCity()
+            setIsOpenCitySelectorModal(false)
+          }}
           cityListFromApi={cityListApi}
         />
 
