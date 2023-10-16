@@ -10,7 +10,7 @@ interface PropsIncomeInput extends React.ComponentProps<'input'> {
   title?: string
   name?: string
   handleChange: (name: string, value: any) => void
-  isErrorTooLow: boolean
+  isError: boolean
   emitOnBlurInput: () => void
 }
 
@@ -20,7 +20,7 @@ const IncomeForm = ({
   name,
   handleChange,
   defaultValue,
-  isErrorTooLow,
+  isError,
   emitOnBlurInput,
   ...inputProps
 }: PropsIncomeInput): JSX.Element => {
@@ -65,12 +65,13 @@ const IncomeForm = ({
         value={formattedValue}
         onChange={handleInputChange}
         title={title}
-        placeholder="Masukkan pendapatan bulanan anda"
+        placeholder="Masukkan pendapatan"
         type="tel"
         maxLength={14} // include symbol and thousand separator
-        className={clsx(styles.input, isErrorTooLow && styles.error)}
+        className={styles.input}
         onBlur={emitOnBlurInput}
         dataTestId={elementId.Field.Income}
+        isError={isError}
       />
     </div>
   )

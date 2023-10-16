@@ -29,6 +29,7 @@ type FormSelectCarVariantProps = {
   }
   modelError: boolean
   onShowDropdown?: () => void
+  isError?: boolean
 }
 
 type optionItemType = OptionWithText<FormControlValue> & {
@@ -50,6 +51,7 @@ export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
   value,
   modelError,
   onShowDropdown,
+  isError = false,
 }) => {
   const [inputValue, setInputValue] = useState(value)
   const [lastChoosenValue, setLastChoosenValue] = useState(value)
@@ -201,6 +203,8 @@ export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
         maxHeightDropdown="365px"
         datatestid={elementId.PDP.Drowpdown.CarVariant}
         onShowDropdown={onShowDropdown}
+        isError={isError}
+        isAnimateShakeOnError={true}
       />
     </>
   )

@@ -1730,6 +1730,7 @@ export default function LoanCalculatorPage() {
                 name="city"
                 onOpenTooltip={onOpenTooltipCityField}
                 onShowDropdown={onShowDropdownCityField}
+                isError={isValidatingEmptyField && !forms.city}
               />
               {isValidatingEmptyField && !forms.city
                 ? renderErrorMessageEmpty()
@@ -1749,6 +1750,10 @@ export default function LoanCalculatorPage() {
                 allModelCarList={allModelCarList}
                 setModelError={setModelError}
                 onShowDropdown={onShowDropdownModelField}
+                overrideIsErrorFieldOnly={
+                  isValidatingEmptyField &&
+                  (!forms.model?.modelId || !forms.model.modelName)
+                }
               />
               {isValidatingEmptyField &&
               (!forms.model?.modelId || !forms.model.modelName)
@@ -1764,6 +1769,10 @@ export default function LoanCalculatorPage() {
                 value={forms.variant || variantEmptyValue}
                 modelError={modelError}
                 onShowDropdown={onShowDropdownVariantField}
+                isError={
+                  isValidatingEmptyField &&
+                  (!forms.variant?.variantId || !forms.variant.variantName)
+                }
               />
               {isValidatingEmptyField &&
               (!forms.variant?.variantId || !forms.variant.variantName)
@@ -1777,7 +1786,10 @@ export default function LoanCalculatorPage() {
                 value={Number(forms.monthlyIncome)}
                 defaultValue={Number(forms.monthlyIncome)}
                 handleChange={handleChange}
-                isErrorTooLow={isIncomeTooLow}
+                isError={
+                  isIncomeTooLow ||
+                  (isValidatingEmptyField && !forms.monthlyIncome)
+                }
                 emitOnBlurInput={onBlurIncomeInput}
                 onFocus={onFocusIncomeField}
               />
@@ -1842,6 +1854,7 @@ export default function LoanCalculatorPage() {
                 handleChange={handleChange}
                 defaultValue={forms.age}
                 onShowDropdown={onShowDropdownAgeField}
+                isError={isValidatingEmptyField && !forms.age}
               />
               {isValidatingEmptyField && !forms.age
                 ? renderErrorMessageEmpty()
@@ -1867,17 +1880,8 @@ export default function LoanCalculatorPage() {
             <Button
               // not using "disabled" attrib because some func need to be run
               // when disabled button is clicked
-              version={
-                isDisableCtaCalculate
-                  ? ButtonVersion.Disable
-                  : ButtonVersion.PrimaryDarkBlue
-              }
+              version={ButtonVersion.PrimaryDarkBlue}
               secondaryClassName={styles.buttonSubmit}
-              disabled={
-                isDisableCtaCalculate ||
-                isLoadingCalculation ||
-                isLoadingInsuranceAndPromo
-              }
               size={ButtonSize.Big}
               onClick={onClickCalculate}
               data-testid={elementId.LoanCalculator.Button.HitungKemampuan}

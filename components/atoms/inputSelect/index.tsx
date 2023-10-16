@@ -168,6 +168,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
           [styles.inputArea]: true,
           [styles.disabled]: disabled,
           [styles.error]: !isFocused && isError,
+          ['shake-animation-X']: isError,
         })}
       >
         {prefix && <span className={styles.prefix}>{prefix}</span>}

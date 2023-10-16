@@ -38,6 +38,7 @@ interface Props<T extends FormControlValue> {
   highlightSelectedOption?: boolean
   datatestid?: string
   onShowDropdown?: () => void
+  isAnimateShakeOnError?: boolean
 }
 
 const forwardedInputSelect = <T extends FormControlValue>(
@@ -66,6 +67,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
     highlightSelectedOption = false,
     datatestid,
     onShowDropdown,
+    isAnimateShakeOnError = false,
   }: Props<T>,
   ref?: ForwardedRef<HTMLInputElement>,
 ) => {
@@ -143,6 +145,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
           [styles.hasNotSelectedValue]: isFocused || !value,
           [styles.disabled]: disabled,
           [styles.error]: !isFocused && isError,
+          ['shake-animation-X']: isError && isAnimateShakeOnError,
         })}
       >
         {renderValue()}

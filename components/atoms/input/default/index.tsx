@@ -33,11 +33,16 @@ const Input = ({
         value={value}
         onChange={onChange}
         disabled={disabled}
-        className={clsx(styles.input, isError && styles.error, className)}
+        className={clsx({
+          [styles.input]: true,
+          [styles.error]: isError,
+          ['shake-animation-X']: isError,
+          ...(className && [className]),
+        })}
         placeholder={placeholder}
         {...props}
       />
-      {isError && <p className={styles.errorText}>{message}</p>}
+      {isError && message && <p className={styles.errorText}>{message}</p>}
     </div>
   )
 }

@@ -2,15 +2,15 @@
 @import '../../../abstract/mixins';
 @import '../../../abstract/animations';
 
-@mixin borderColor($type) {
+@mixin borderColor($type, $isImportant: '') {
   @if $type==default {
-    border: 1px solid #{$shades-grey-10};
+    border: 1px solid #{$shades-grey-10} $isImportant;
   } @else if $type==focus {
-    border: 1px solid #{$secondary-blue};
+    border: 1px solid #{$secondary-blue} $isImportant;
   } @else if $type==error {
-    border: 1px solid #{$secondary-brick-red};
+    border: 1px solid #{$secondary-brick-red} $isImportant;
   } @else {
-    border: 1px solid #{$shades-grey-10};
+    border: 1px solid #{$shades-grey-10} $isImportant;
   }
 }
 
@@ -61,7 +61,7 @@
 }
 
 .error {
-  @include borderColor(error);
+  @include borderColor(error, !important);
 }
 
 .disabled {

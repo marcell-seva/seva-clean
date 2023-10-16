@@ -1750,7 +1750,10 @@ export const CreditTab = () => {
               isHasCarParameter={false}
               handleChange={handleChange}
               name="city"
-              isError={forms?.city?.cityCode ? modelError : false}
+              isError={
+                (modelError && !!forms.city?.cityCode) ||
+                (isValidatingEmptyField && !forms.city)
+              }
               onOpenTooltip={onOpenTooltipCityField}
               onShowDropdown={onShowDropdownCityField}
             />
@@ -1772,6 +1775,10 @@ export const CreditTab = () => {
               isCheckForError={false}
               isShowArrow={false}
               onShowDropdown={onShowDropdownModelField}
+              overrideIsErrorFieldOnly={
+                isValidatingEmptyField &&
+                (!forms.model?.modelId || !forms.model.modelName)
+              }
             />
             {isValidatingEmptyField &&
             (!forms.model?.modelId || !forms.model.modelName)
@@ -1787,6 +1794,10 @@ export const CreditTab = () => {
               value={forms.variant || variantEmptyValue}
               modelError={modelError}
               onShowDropdown={onShowDropdownVariantField}
+              isError={
+                isValidatingEmptyField &&
+                (!forms.variant?.variantId || !forms.variant.variantName)
+              }
             />
             {isValidatingEmptyField &&
             (!forms.variant?.variantId || !forms.variant.variantName)
@@ -1800,7 +1811,10 @@ export const CreditTab = () => {
               value={Number(forms.monthlyIncome)}
               defaultValue={Number(forms.monthlyIncome)}
               handleChange={handleChange}
-              isErrorTooLow={isIncomeTooLow}
+              isError={
+                isIncomeTooLow ||
+                (isValidatingEmptyField && !forms.monthlyIncome)
+              }
               emitOnBlurInput={onBlurIncomeInput}
               onFocus={onFocusIncomeField}
             />
@@ -1858,6 +1872,7 @@ export const CreditTab = () => {
               handleChange={handleChange}
               defaultValue={forms.age}
               onShowDropdown={onShowDropdownAgeField}
+              isError={isValidatingEmptyField && !forms.age}
             />
             {isValidatingEmptyField && !forms.age
               ? renderErrorMessageEmpty()
@@ -1882,18 +1897,9 @@ export const CreditTab = () => {
           <Button
             // not using "disabled" attrib because some func need to be run
             // when disabled button is clicked
-            version={
-              isDisableCtaCalculate
-                ? ButtonVersion.Disable
-                : ButtonVersion.PrimaryDarkBlue
-            }
+            version={ButtonVersion.PrimaryDarkBlue}
             size={ButtonSize.Big}
             onClick={onClickCalculate}
-            disabled={
-              isDisableCtaCalculate ||
-              isLoadingCalculation ||
-              isLoadingInsuranceAndPromo
-            }
             style={{ marginTop: 32 }}
             data-testid={elementId.PDP.Button.HitungKemampuan}
           >

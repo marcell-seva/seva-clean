@@ -249,7 +249,11 @@ const DpForm: React.FC<DpFormProps> = ({
         <Col span={18}>
           <Input
             type="tel"
-            className={styles.input}
+            className={clsx({
+              [styles.input]: true,
+              [styles.error]:
+                isErrorEmptyField || isDpTooLow || isDpExceedLimit,
+            })}
             value={formattedValue}
             onChange={handleValueChange}
             onBlur={handleValueBlur}
