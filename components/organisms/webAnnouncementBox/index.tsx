@@ -14,8 +14,6 @@ import { AmplitudeEventName } from 'services/amplitude/types'
 import { colors } from 'utils/helpers/style/colors'
 import { Close } from './Close'
 import { getToken } from 'utils/handler/auth'
-import endpoints from 'utils/helpers/endpoints'
-import { api } from 'services/api'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
 import { SessionStorageKey } from 'utils/enum'
 import { useUtils } from 'services/context/utilsContext'
@@ -25,6 +23,7 @@ import {
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 
 const CustomRight = '/revamp/images/announcementBox/custom-desktop-right.webp'
 const CustomLeft = '/revamp/images/announcementBox/custom-desktop-left.webp'
@@ -77,7 +76,8 @@ export const WebAnnouncementBox = ({
   onCloseAnnouncementBox,
   pageOrigination,
 }: WebAnnouncementBoxProps) => {
-  const [isOpen, setIsOpen] = useState<boolean | null>(true)
+  const { showAnnouncementBox, saveShowAnnouncementBox } =
+    useAnnouncementBoxContext()
   const { dataAnnouncementBox } = useUtils()
 
   const [announcement, setAnnouncement] = useState<
@@ -100,9 +100,7 @@ export const WebAnnouncementBox = ({
         getSessionStorage(SessionStorageKey.ShowWebAnnouncementLogin) === null
       ) {
         saveSessionStorage(SessionStorageKey.ShowWebAnnouncementLogin, 'true')
-        setIsOpen(true)
       }
-      setIsOpen(getSessionStorage(SessionStorageKey.ShowWebAnnouncementLogin))
     } else {
       if (
         getSessionStorage(SessionStorageKey.ShowWebAnnouncementNonLogin) ===
@@ -112,21 +110,16 @@ export const WebAnnouncementBox = ({
           SessionStorageKey.ShowWebAnnouncementNonLogin,
           'true',
         )
-        setIsOpen(true)
       }
-      setIsOpen(
-        getSessionStorage(SessionStorageKey.ShowWebAnnouncementNonLogin),
-      )
     }
   }, [
     getSessionStorage(SessionStorageKey.ShowWebAnnouncementNonLogin),
     getSessionStorage(SessionStorageKey.ShowWebAnnouncementLogin),
     getToken(),
-    dataAnnouncementBox,
   ])
 
   useAfterInteractive(() => {
-    if (isOpen && announcement) {
+    if (showAnnouncementBox && announcement) {
       window.dataLayer.push({
         event: 'view_promotion',
         creative_name: announcement.title,
@@ -144,7 +137,7 @@ export const WebAnnouncementBox = ({
           : pageOrigination,
       })
     }
-  }, [isOpen, announcement])
+  }, [showAnnouncementBox, announcement])
 
   const handleClose = () => {
     window.dataLayer.push({
@@ -170,7 +163,7 @@ export const WebAnnouncementBox = ({
     trackEventCountly(CountlyEventNames.WEB_ANNOUNCEMENT_CLOSE_CLICK, {
       ANNOUNCEMENT_TITLE: announcement?.title,
     })
-    setIsOpen(false)
+    saveShowAnnouncementBox(false)
     onCloseAnnouncementBox && onCloseAnnouncementBox(false)
   }
 
@@ -178,7 +171,7 @@ export const WebAnnouncementBox = ({
 
   return (
     <>
-      {isOpen && announcement ? (
+      {showAnnouncementBox && announcement ? (
         <Wrapper
           bgColor={announcement.backgroundColor}
           bannerDesign={announcement.bannerDesign}

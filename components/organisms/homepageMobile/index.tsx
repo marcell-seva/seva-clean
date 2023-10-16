@@ -46,8 +46,11 @@ import { savePageBeforeLogin } from 'utils/loginUtils'
 import { LoginModalMultiKK } from '../loginModalMultiKK'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
-import { LocalStorageKey } from 'utils/enum'
-import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { getSessionStorage } from 'utils/handler/sessionStorage'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import { useUtils } from 'services/context/utilsContext'
 
 const HomepageMobile = ({ dataReccomendation }: any) => {
   useEffect(() => {
@@ -85,6 +88,10 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
   } = useInView({
     threshold: 0.5,
   })
+  const [isSentCountlyPageView, setIsSentCountlyPageView] = useState(false)
+  const [sourceButton, setSourceButton] = useState('Null')
+  const { dataAnnouncementBox } = useUtils()
+  const { saveShowAnnouncementBox } = useAnnouncementBoxContext()
 
   const checkCitiesData = () => {
     api.getCities().then((res: any) => {
@@ -177,6 +184,23 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
     }
   }
 
+  const getAnnouncementBox = () => {
+    if (dataAnnouncementBox) {
+      const isShowAnnouncement = getSessionStorage(
+        getToken()
+          ? SessionStorageKey.ShowWebAnnouncementLogin
+          : SessionStorageKey.ShowWebAnnouncementNonLogin,
+      )
+      if (typeof isShowAnnouncement !== 'undefined') {
+        saveShowAnnouncementBox(Boolean(isShowAnnouncement))
+      } else {
+        saveShowAnnouncementBox(true)
+      }
+    } else {
+      saveShowAnnouncementBox(false)
+    }
+  }
+
   useEffect(() => {
     cityHandler()
     setTrackEventMoEngageWithoutValue(EventName.view_homepage)
@@ -193,6 +217,11 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
       cleanEffect()
     }
   }, [])
+
+  useAfterInteractive(() => {
+    getAnnouncementBox()
+  }, [dataAnnouncementBox])
+
   const trackLeadsLPForm = (): LeadsActionParam => {
     return {
       Page_Origination: PageOriginationName.LPFloatingIcon,
