@@ -75,7 +75,6 @@ import dynamic from 'next/dynamic'
 import { temanSevaUrlPath } from 'utils/types/props'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
-import { useCityFirst } from 'utils/hooks/useCityFirst'
 
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
@@ -122,7 +121,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     age,
     sortBy,
   } = router.query as FilterParam
-  const { showCity, onCloseCity } = useCityFirst()
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
 
   const [cityOtr] = useLocalStorage<Location | null>(
@@ -886,9 +884,8 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
           onOk={onCloseResultInfo}
         />
         <CitySelectorModal
-          isOpen={showCity || isOpenCitySelectorModal}
+          isOpen={isOpenCitySelectorModal}
           onClickCloseButton={() => {
-            onCloseCity()
             setIsOpenCitySelectorModal(false)
           }}
           cityListFromApi={cities}
