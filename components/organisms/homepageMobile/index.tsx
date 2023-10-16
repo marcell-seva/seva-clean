@@ -60,6 +60,7 @@ import {
 } from 'utils/handler/sessionStorage'
 import { RouteName } from 'utils/navigate'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const HomepageMobile = ({ dataReccomendation }: any) => {
   const { dataCities, dataCarofTheMonth, dataMainArticle } = useContext(
@@ -229,12 +230,11 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
 
   useEffect(() => {
     sendAmplitudeData(AmplitudeEventName.WEB_LANDING_PAGE_VIEW, {})
-    cityHandler()
-    setTrackEventMoEngageWithoutValue(EventName.view_homepage)
 
+    setTrackEventMoEngageWithoutValue(EventName.view_homepage)
+    checkCitiesData()
     loadCarRecommendation()
     getCarOfTheMonth()
-    checkCitiesData()
     getArticles()
 
     const timeoutCountlyTracker = setTimeout(() => {
@@ -247,6 +247,11 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
       cleanEffect(timeoutCountlyTracker)
     }
   }, [])
+
+  useAfterInteractive(() => {
+    cityHandler()
+  }, [])
+
   const trackLeadsLPForm = (): LeadsActionParam => {
     return {
       Page_Origination: PageOriginationName.LPFloatingIcon,
