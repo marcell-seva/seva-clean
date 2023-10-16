@@ -46,16 +46,6 @@ export const useCityFirst = () => {
   const showCondition =
     filterCity.length > 0 && !currentCity && !isIn30DaysInterval()
 
-  const [cityListApi, setCityListApi] = useState<Array<CityOtrOption>>([])
-
-  const checkCitiesData = () => {
-    if (cityListApi.length === 0 && showCity) {
-      api.getCities().then((res) => {
-        setCityListApi(res.data)
-      })
-    }
-  }
-
   const showConditionCity = () => {
     if (!interactive) {
       setInteractive(true)
@@ -71,10 +61,6 @@ export const useCityFirst = () => {
     setInteractive(true)
     setShowCity(false)
   }
-
-  useEffect(() => {
-    checkCitiesData()
-  }, [])
 
   useEffect(() => {
     ;['scroll'].forEach((ev) => window.addEventListener(ev, showConditionCity))
