@@ -49,10 +49,8 @@ export default function FormSelectCitySevaOTO({
     null,
   )
 
-  const [inputValue, setInputValue] = useState(cityOtr?.cityName ?? '')
-  const [lastChoosenValue, setLastChoosenValue] = useState(
-    cityOtr?.cityName ?? '',
-  )
+  const [inputValue, setInputValue] = useState('')
+  const [lastChoosenValue, setLastChoosenValue] = useState('')
 
   const [cityListOptionsFull, setCityListOptionsFull] = useState<
     Option<string>[]
@@ -68,23 +66,6 @@ export default function FormSelectCitySevaOTO({
   React.useEffect(() => {
     fetchCities()
   }, [])
-
-  React.useEffect(() => {
-    const selectedCity = cityOtr ? cityOtr : defaultCity
-    if (selectedCity) {
-      setInputValue(selectedCity?.cityName)
-      setLastChoosenValue(selectedCity?.cityName)
-    }
-  }, [cityOtr, isHasCarParameter, defaultCity])
-
-  React.useEffect(() => {
-    if (isHasCarParameter && cityListApi.length > 0) {
-      const city = cityListApi.find((city) => city.cityName === 'Jakarta Pusat')
-      if (city) {
-        setDefaultCity(city)
-      }
-    }
-  }, [isHasCarParameter, cityListApi])
 
   const getCityListOption = (cityList: any) => {
     const tempArray: Option<string>[] = []
