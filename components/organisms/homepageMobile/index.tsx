@@ -251,12 +251,11 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
 
   useEffect(() => {
     sendAmplitudeData(AmplitudeEventName.WEB_LANDING_PAGE_VIEW, {})
-    cityHandler()
-    setTrackEventMoEngageWithoutValue(EventName.view_homepage)
 
+    setTrackEventMoEngageWithoutValue(EventName.view_homepage)
+    checkCitiesData()
     loadCarRecommendation()
     getCarOfTheMonth()
-    checkCitiesData()
     getArticles()
 
     const timeoutCountlyTracker = setTimeout(() => {
@@ -273,6 +272,10 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
   useAfterInteractive(() => {
     getAnnouncementBox()
   }, [dataAnnouncementBox])
+
+  useAfterInteractive(() => {
+    cityHandler()
+  }, [])
 
   const trackLeadsLPForm = (): LeadsActionParam => {
     return {

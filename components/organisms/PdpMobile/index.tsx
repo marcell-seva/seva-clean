@@ -759,7 +759,9 @@ export default function NewCarVariantList({
       )}
       <CitySelectorModal
         isOpen={isOpenCitySelectorModal}
-        onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
+        onClickCloseButton={() => {
+          setIsOpenCitySelectorModal(false)
+        }}
         cityListFromApi={cities}
         pageOrigination="PDP"
         sourceButton={isOpenCitySelectorOTRPrice ? 'OTR Price (PDP)' : ''}
