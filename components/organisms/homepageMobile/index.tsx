@@ -202,8 +202,6 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
   }
 
   useEffect(() => {
-    cityHandler()
-    setTrackEventMoEngageWithoutValue(EventName.view_homepage)
     checkCitiesData()
     loadCarRecommendation()
     getCarOfTheMonth()
@@ -216,6 +214,8 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
 
   useAfterInteractive(() => {
     cityHandler()
+    sendAmplitudeData(AmplitudeEventName.WEB_LANDING_PAGE_VIEW, {})
+    setTrackEventMoEngageWithoutValue(EventName.view_homepage)
     setTimeout(() => {
       if (!isSentCountlyPageView) {
         // trackCountlyPageView()
