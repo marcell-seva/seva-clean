@@ -101,6 +101,7 @@ import { getCarModelDetailsById } from 'utils/handler/carRecommendation'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -347,7 +348,8 @@ export default function LoanCalculatorPage() {
     }
   }
 
-  const [showAnnouncementBox, setShowAnnouncementBox] = useState<boolean>(false)
+  const { showAnnouncementBox, saveShowAnnouncementBox } =
+    useAnnouncementBoxContext()
   const [articles, setArticles] = useState<Article[]>([])
 
   const fetchArticles = async () => {
@@ -695,12 +697,12 @@ export default function LoanCalculatorPage() {
           : SessionStorageKey.ShowWebAnnouncementNonLogin,
       )
       if (typeof isShowAnnouncement !== 'undefined') {
-        setShowAnnouncementBox(isShowAnnouncement as boolean)
+        saveShowAnnouncementBox(isShowAnnouncement as boolean)
       } else {
-        setShowAnnouncementBox(true)
+        saveShowAnnouncementBox(true)
       }
     } else {
-      setShowAnnouncementBox(false)
+      saveShowAnnouncementBox(false)
     }
   }, [dataAnnouncementBox])
 
@@ -1694,7 +1696,7 @@ export default function LoanCalculatorPage() {
             position: 'fixed',
           }}
           emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
-          setShowAnnouncementBox={setShowAnnouncementBox}
+          setShowAnnouncementBox={saveShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
         />
         <div
