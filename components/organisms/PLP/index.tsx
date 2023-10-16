@@ -53,12 +53,11 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { Location } from 'utils/types'
 import {
   CarRecommendation,
-  CarRecommendationResponse,
   FilterParam,
   MinMaxPrice,
 } from 'utils/types/context'
 import { MoengageViewCarSearch } from 'utils/types/moengage'
-import { AnnouncementBoxDataType, trackDataCarType } from 'utils/types/utils'
+import { trackDataCarType } from 'utils/types/utils'
 import styles from '../../../styles/pages/mobil-baru.module.scss'
 import {
   trackEventCountly,
@@ -75,6 +74,7 @@ import dynamic from 'next/dynamic'
 import { temanSevaUrlPath } from 'utils/types/props'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
@@ -169,7 +169,9 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const { cities, dataAnnouncementBox } = useUtils()
-  const [showAnnouncementBox, setIsShowAnnouncementBox] = useState(false)
+  // const [showAnnouncementBox, setIsShowAnnouncementBox] = useState(false)
+  const { showAnnouncementBox, saveShowAnnouncementBox } =
+    useAnnouncementBoxContext()
   const [isLogin] = useState(!!getToken())
   const [dataCarForPromo, setDataCarForPromo] = useState({
     brand: '',
@@ -348,12 +350,12 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
           : SessionStorageKey.ShowWebAnnouncementNonLogin,
       )
       if (typeof isShowAnnouncement !== 'undefined') {
-        setIsShowAnnouncementBox(isShowAnnouncement as boolean)
+        saveShowAnnouncementBox(isShowAnnouncement as boolean)
       } else {
-        setIsShowAnnouncementBox(true)
+        saveShowAnnouncementBox(true)
       }
     } else {
-      setIsShowAnnouncementBox(false)
+      saveShowAnnouncementBox(false)
     }
   }
 
@@ -715,7 +717,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
           isActive={isActive}
           setIsActive={setIsActive}
           emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
-          setShowAnnouncementBox={setIsShowAnnouncementBox}
+          setShowAnnouncementBox={saveShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
           pageOrigination={'PLP'}
           isOTO={isOTO}

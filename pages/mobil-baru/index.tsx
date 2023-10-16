@@ -18,7 +18,6 @@ import { MobileWebFooterMenuType } from 'utils/types/props'
 import { CarProvider } from 'services/context'
 import { monthId } from 'utils/handler/date'
 import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
-import { useMediaQuery } from 'react-responsive'
 import { useRouter } from 'next/router'
 import { getCity } from 'utils/hooks/useGetCity'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
@@ -30,7 +29,6 @@ const NewCarResultPage = ({
   dataFooter,
   dataCities,
   dataDesktopMenu,
-  isSsrMobileLocal,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const todayDate = new Date()
@@ -41,8 +39,6 @@ const NewCarResultPage = ({
   )} | SEVA`
   const metaDesc = `Beli mobil  ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
   const metaDescBrand = `Beli mobil ${brand} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
-  const [isMobile, setIsMobile] = useState(isSsrMobileLocal)
-  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const {
     saveDesktopWebTopMenu,
     saveMobileWebTopMenus,
@@ -69,10 +65,6 @@ const NewCarResultPage = ({
     saveCities(dataCities)
     getAnnouncementBox()
   }, [])
-
-  useEffect(() => {
-    setIsMobile(isClientMobile)
-  }, [isClientMobile])
 
   return (
     <>
