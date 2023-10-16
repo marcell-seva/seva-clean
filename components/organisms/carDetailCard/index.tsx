@@ -151,6 +151,7 @@ export const CarDetailCard = ({
 
   const navigateToLoanCalculator = () => {
     saveDataForCountlyTrackerPageViewLC(PreviousButton.ProductCardCalculate)
+    saveDataCarForLoginPageView()
     const cityNameSlug = cityName.toLowerCase().trim().replace(/ +/g, '-')
     const brandSlug = recommendation.brand
       .toLowerCase()
@@ -254,6 +255,7 @@ export const CarDetailCard = ({
 
   const onClickSeeDetail = () => {
     saveDataForCountlyTrackerPageViewPDP(PreviousButton.ProductCard, 'PLP')
+    saveDataCarForLoginPageView()
   }
 
   return (
