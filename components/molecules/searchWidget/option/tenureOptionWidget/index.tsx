@@ -18,7 +18,7 @@ const TenureOptionWidget = ({ onClose }: TenureOptionWidgetProps) => {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.containerTenure}>
       {[1, 2, 3, 4, 5].map((item, index) => (
         <div
           className={clsx({
