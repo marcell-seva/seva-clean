@@ -235,8 +235,6 @@ export const FormSelectModelCarSevaOTO = ({
     }
   }, [isError])
 
-  console.log(suggestionsLists)
-
   return (
     <>
       <InputSelect
