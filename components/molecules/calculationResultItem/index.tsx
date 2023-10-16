@@ -218,7 +218,9 @@ export const CalculationResultItem = ({
               currentLanguage,
             )}`}
           </span>
-          {insuranceAndPromoData.tdpAfterPromo ? (
+          {insuranceAndPromoData.tdpAfterPromo &&
+          insuranceAndPromoData.tdpAfterPromo !==
+            insuranceAndPromoData.tdpBeforePromo ? (
             <span className={styles.oldPriceText}>
               {`Rp${replacePriceSeparatorByLocalization(
                 insuranceAndPromoData.tdpBeforePromo,
