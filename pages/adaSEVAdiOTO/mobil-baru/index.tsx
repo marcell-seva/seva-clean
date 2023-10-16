@@ -47,12 +47,8 @@ const NewCarResultPage = ({
 
   const todayDate = new Date()
 
-  const metaTitle =
-    meta.title.slice(0, 23) +
-    ` - Harga OTR dengan Promo Cicilan bulan ${monthId(
-      todayDate.getMonth(),
-    )} | SEVA`
-  const metaDesc = `Temukan beragam mobil ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
+  const metaTitle = `Beli mobil terbaru ${todayDate.getFullYear()} dengan promo cicilan menarik dari SEVA di OTO.com`
+  const metaDesc = `Temukan beragam mobil Astra ${todayDate.getFullYear()} dari SEVA di OTO.com. Beli mobil secara kredit dengan Instant Approval*.`
 
   return (
     <>

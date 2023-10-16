@@ -27,6 +27,8 @@ import {
   getAnnouncementBox as gab,
 } from 'services/api'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
+import { useRouter } from 'next/router'
+import { monthId } from 'utils/handler/date'
 
 interface PdpDataOTOLocalContextType {
   /**
@@ -75,6 +77,8 @@ export default function index({
   dataFooter,
   dataCities,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const router = useRouter()
+  const { brand, model } = router.query
   const [isMobile, setIsMobile] = useState(useIsMobileSSr())
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const {
@@ -95,6 +99,23 @@ export default function index({
     getAnnouncementBox()
   }, [])
 
+  const capitalizeWord = (word: string) =>
+    word.charAt(0).toUpperCase() + word.slice(1)
+
+  const capitalizeIfString = (value: string) =>
+    typeof value === 'string'
+      ? value.split('-').map(capitalizeWord).join(' ')
+      : ''
+
+  const carBrand = capitalizeIfString(brand as string)
+  const carModel = capitalizeIfString(model as string)
+  const todayDate = new Date()
+
+  const metaTitle = `Ringkasan Produk ${carBrand} ${carModel} ${todayDate.getFullYear()} - Harga OTR Promo Bulan ${monthId(
+    todayDate.getMonth(),
+  )} dari SEVA di OTO.com`
+  const metaDesc = `Beli mobil ${carBrand} ${carModel} terbaru ${todayDate.getFullYear()} secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, dan hitung simulasi kredit melalui SEVA di OTO.com`
+
   const getAnnouncementBox = () => {
     try {
       const res: any = gab({
@@ -108,6 +129,7 @@ export default function index({
 
   return (
     <>
+      <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
       <PdpDataOTOLocalContext.Provider
         value={{
           carRecommendationsResDefaultCity: carRecommendationsRes,
