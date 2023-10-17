@@ -3,8 +3,8 @@ import { IconInfo, Overlay } from 'components/atoms'
 import clsx from 'clsx'
 import styles from 'styles/components/atoms/tooltipSevaOTO.module.scss'
 import dynamic from 'next/dynamic'
-const Col = dynamic(() => import('antd').then((mod) => mod.Col))
-const Row = dynamic(() => import('antd').then((mod) => mod.Row))
+const Col = dynamic(() => import('antd/lib/col').then((mod) => mod.default))
+const Row = dynamic(() => import('antd/lib/row').then((mod) => mod.default))
 
 interface Props {
   content: string
