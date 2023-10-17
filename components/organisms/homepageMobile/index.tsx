@@ -63,12 +63,13 @@ import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 import { useUtils } from 'services/context/utilsContext'
+import { useCar } from 'services/context/carContext'
 
 const HomepageMobile = ({ dataReccomendation }: any) => {
   const { dataCities, dataCarofTheMonth, dataMainArticle } = useContext(
     HomePageDataLocalContext,
   )
-  const { saveRecommendation } = useContext(CarContext) as CarContextType
+  const { saveRecommendation } = useCar()
   const [openCitySelectorModal, setOpenCitySelectorModal] = useState(false)
   const [cityListApi, setCityListApi] =
     useState<Array<CityOtrOption>>(dataCities)
@@ -124,7 +125,7 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
       const recommendation: any = await api.getRecommendation(params)
       saveRecommendation(recommendation.carRecommendations)
     } catch {
-      saveRecommendation([])
+      saveRecommendation(dataReccomendation)
     }
   }
 
@@ -250,10 +251,14 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
   }
 
   useEffect(() => {
-    checkCitiesData()
-    loadCarRecommendation()
-    getCarOfTheMonth()
-    getArticles()
+    if (getCity().cityCode !== 'jakarta') {
+      loadCarRecommendation()
+      getCarOfTheMonth()
+      checkCitiesData()
+      getArticles()
+    } else {
+      saveRecommendation(dataReccomendation)
+    }
   }, [])
 
   useAfterInteractive(() => {
@@ -314,7 +319,10 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
 
       <main className={styles.main}>
         {enableAnnouncementBoxAleph && (
-          <WebAnnouncementBox onCloseAnnouncementBox={() => null} />
+          <WebAnnouncementBox
+            onCloseAnnouncementBox={() => null}
+            pageOrigination="Homepage"
+          />
         )}
 
         <div className={styles.container}>

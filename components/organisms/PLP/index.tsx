@@ -169,7 +169,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const { cities, dataAnnouncementBox } = useUtils()
-  // const [showAnnouncementBox, setIsShowAnnouncementBox] = useState(false)
   const { showAnnouncementBox, saveShowAnnouncementBox } =
     useAnnouncementBoxContext()
   const [isLogin] = useState(!!getToken())

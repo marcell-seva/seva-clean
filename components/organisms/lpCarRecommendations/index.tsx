@@ -36,6 +36,7 @@ import { AdaOTOdiSEVALeadsForm } from '../leadsForm/adaOTOdiSEVA/popUp'
 import { it } from 'node:test'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { useCar } from 'services/context/carContext'
 
 type LPCarRecommendationsProps = {
   dataReccomendation: any
@@ -50,8 +51,7 @@ const LpCarRecommendations = ({
 }: LPCarRecommendationsProps) => {
   const router = useRouter()
   const swiperRef = useRef<SwiperType>()
-  const { recommendation } = useContext(CarContext) as CarContextType
-
+  const { recommendation } = useCar()
   const [recommendationList, setRecommendationList] =
     useState<CarRecommendation[]>(dataReccomendation)
   const [city] = useLocalStorage(LocalStorageKey.CityOtr, null)
@@ -127,16 +127,15 @@ const LpCarRecommendations = ({
   const handleClickLabel = () => {
     setOpenPromo(true)
   }
-
   const handleShowRecommendation = () => {
     if (!selectedBrand) {
-      const mainRecommendation: any = dataReccomendation?.sort(
+      const mainRecommendation: any = recommendation?.sort(
         (a: any, b: any) => a.lowestAssetPrice - b.lowestAssetPrice,
       )
 
       setRecommendationList(mainRecommendation)
     } else {
-      const filterCar: any = dataReccomendation?.filter(
+      const filterCar: any = recommendation?.filter(
         (x: any) => x.brand === selectedBrand,
       )
       if (filterCar.length > 0) {
@@ -197,7 +196,7 @@ const LpCarRecommendations = ({
     return () => {
       setRecommendationList([])
     }
-  }, [selectedBrand])
+  }, [selectedBrand, recommendation])
 
   if (load) return <LPCRSkeleton />
 
