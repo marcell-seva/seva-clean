@@ -373,6 +373,7 @@ const UpdateLeadsFormOTO = ({
         const res = await updateLeadFormOTO(data)
 
         if (res.code === 'SUCCESS') {
+          setToastMessage('Update form telah berhasil diperbaharui')
           setIsOpenToast(true)
           setIsLoading(false)
           setTypeToast(true)
