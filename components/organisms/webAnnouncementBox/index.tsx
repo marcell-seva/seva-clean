@@ -24,6 +24,7 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import { useRouter } from 'next/router'
 
 const CustomMobile = '/revamp/images/announcementBox/custom-mobile-right.webp'
 const ChristmasMobileRight =
@@ -58,6 +59,7 @@ export const WebAnnouncementBox = ({
   onCloseAnnouncementBox,
   pageOrigination,
 }: WebAnnouncementBoxProps) => {
+  const router = useRouter()
   const { showAnnouncementBox, saveShowAnnouncementBox } =
     useAnnouncementBoxContext()
   const { dataAnnouncementBox } = useUtils()
@@ -67,7 +69,7 @@ export const WebAnnouncementBox = ({
   >(dataAnnouncementBox)
   const [isError, setIsError] = useState(false)
 
-  useAfterInteractive(() => {
+  useEffect(() => {
     if (dataAnnouncementBox !== undefined) {
       setIsError(false)
       setAnnouncement(dataAnnouncementBox)
@@ -101,25 +103,27 @@ export const WebAnnouncementBox = ({
   ])
 
   useAfterInteractive(() => {
-    if (showAnnouncementBox && announcement) {
-      window.dataLayer.push({
-        event: 'view_promotion',
-        creative_name: announcement.title,
-        creative_slot: null,
-        promotion_id: null,
-        promotion_name: 'announcement_box',
-        eventCategory: 'Announcement Box',
-        eventAction: 'Promotion View',
-        eventLabel: announcement.title,
-      })
-      trackEventCountly(CountlyEventNames.WEB_ANNOUNCEMENT_VIEW, {
-        ANNOUNCEMENT_TITLE: announcement.title,
-        PAGE_ORIGINATION: pageOrigination?.includes('PDP')
-          ? 'PDP - ' + valueMenuTabCategory()
-          : pageOrigination,
-      })
+    if (announcement) {
+      setTimeout(() => {
+        window.dataLayer.push({
+          event: 'view_promotion',
+          creative_name: announcement.title,
+          creative_slot: null,
+          promotion_id: null,
+          promotion_name: 'announcement_box',
+          eventCategory: 'Announcement Box',
+          eventAction: 'Promotion View',
+          eventLabel: announcement.title,
+        })
+        trackEventCountly(CountlyEventNames.WEB_ANNOUNCEMENT_VIEW, {
+          ANNOUNCEMENT_TITLE: announcement.title,
+          PAGE_ORIGINATION: pageOrigination?.includes('PDP')
+            ? 'PDP - ' + valueMenuTabCategory()
+            : pageOrigination,
+        })
+      }, 1000)
     }
-  }, [showAnnouncementBox, announcement])
+  }, [announcement])
 
   const handleClose = () => {
     window.dataLayer.push({
