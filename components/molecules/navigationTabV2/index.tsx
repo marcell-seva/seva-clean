@@ -87,10 +87,6 @@ const NavigationTabV2 = ({
         positionValue = 250
       } else if (selectedTabIndex >= 4) {
         positionValue = 350
-        // if (containerRef.current.scrollLeft >= 160) {
-        // } else {
-        //   positionValue = 90
-        // }
       }
     } else if (selectedTabIndex < 1) {
       positionValue = -200
@@ -137,10 +133,6 @@ const NavigationTabV2 = ({
         positionValue = 290
       } else if (selectedTabIndex >= 4) {
         positionValue = 450
-        // if (containerRef.current.scrollLeft >= 160) {
-        // } else {
-        //   positionValue = 90
-        // }
       }
     } else if (selectedTabIndex < 1) {
       positionValue = -200
