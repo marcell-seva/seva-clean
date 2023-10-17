@@ -139,7 +139,7 @@ const LeadsFormAdaOTOdiSEVA: React.FC<PropsLeadsForm> = ({}: any) => {
       platform,
       name,
       phoneNumber: phone,
-      origination: UnverifiedLeadSubCategory.SEVA_NEW_CAR_LP_LEADS_FORM,
+      origination: UnverifiedLeadSubCategory.OTO_NEW_CAR_LP_LEADS_FORM,
       ...(cityOtr?.id && { cityId: cityOtr.id }),
       ...(funnelQuery.downPaymentAmount && {
         dp: parseInt(funnelQuery.downPaymentAmount as string),

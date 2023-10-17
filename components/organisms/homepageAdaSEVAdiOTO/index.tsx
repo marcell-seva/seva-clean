@@ -280,8 +280,9 @@ const HomepageAdaSEVAdiOTO = ({ dataReccomendation }: any) => {
           onClickCloseButton={() => setOpenCitySelectorModal(false)}
           cityListFromApi={cityListApi}
         />
-        {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
-
+        {isModalOpenend && (
+          <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} onPage="LP" />
+        )}
         <CSAButton onClick={showLeadsForm} />
 
         {isLoginModalOpened && (
