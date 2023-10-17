@@ -114,7 +114,7 @@ const NavigationTabV2 = ({
       className={clsx({
         [styles.container]: true,
         [styles.showAAnnouncementBox]: isShowAnnouncementBox,
-        [className ?? '']: true,
+        [className as string]: className,
       })}
       ref={containerRef}
       data-testid={elementId.PDP.NavigationTab.V2}
