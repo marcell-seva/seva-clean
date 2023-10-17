@@ -1,9 +1,10 @@
 import React from 'react'
-
-import { Col, Row } from 'antd'
 import { IconInfo, Overlay } from 'components/atoms'
 import clsx from 'clsx'
 import styles from 'styles/components/atoms/tooltipSevaOTO.module.scss'
+import dynamic from 'next/dynamic'
+const Col = dynamic(() => import('antd').then((mod) => mod.Col))
+const Row = dynamic(() => import('antd').then((mod) => mod.Row))
 
 interface Props {
   content: string
