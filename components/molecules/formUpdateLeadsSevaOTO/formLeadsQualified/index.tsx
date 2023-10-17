@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import styles from 'styles/components/molecules/formUpdateLeadsSevaOTO/formLeadsResponse.module.scss'
-import { Space } from 'antd'
+import dynamic from 'next/dynamic'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
+
+const Space = dynamic(() => import('antd').then((mod) => mod.Space))
 
 interface FilterMobileProps extends React.ComponentProps<'div'> {
   setLeadQualified?: any
