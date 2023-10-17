@@ -121,9 +121,6 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
   }
 
   const loadCarRecommendation = async () => {
-    if (getCity().cityName === 'Jakarta Pusat')
-      return saveRecommendation(dataReccomendation)
-
     try {
       const params = `?city=${getCity().cityCode}&cityId=${getCity().id}`
       const recommendation: any = await api.getRecommendation(params)
@@ -255,10 +252,14 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
   }
 
   useEffect(() => {
-    checkCitiesData()
-    loadCarRecommendation()
-    getCarOfTheMonth()
-    getArticles()
+    if (getCity().cityCode !== 'jakarta') {
+      loadCarRecommendation()
+      getCarOfTheMonth()
+      checkCitiesData()
+      getArticles()
+    } else {
+      saveRecommendation(dataReccomendation)
+    }
   }, [])
 
   useAfterInteractive(() => {
