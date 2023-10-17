@@ -33,15 +33,6 @@ export const FormLeadsResponse = ({
     },
   ]
 
-  //   useEffect(() => {
-  //     if (isResetFilter) {
-  //       setTenureFilter(5)
-  //     }
-  //     if (tenureQuery === 5 && !isApplied) {
-  //       setTenureQuery(funnelQuery.tenure)
-  //     }
-  //   }, [isResetFilter, isApplied])
-
   return (
     <div {...divProps}>
       <div className={styles.wrapperHeader}>
