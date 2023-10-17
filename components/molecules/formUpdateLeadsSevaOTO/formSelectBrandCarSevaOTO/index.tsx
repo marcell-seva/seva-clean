@@ -13,6 +13,7 @@ const Peugeot = '/revamp/icon/logo-peugeot.webp'
 
 export interface FilterMobileProps {
   setIsCheckedBrand: any
+  isCheckedBrand: any
   isResetFilter?: boolean
   isApplied?: boolean
   brand?: any
@@ -29,6 +30,7 @@ interface CarButtonProps {
 
 export const FormSelectBrandCarSevaOTO = ({
   setIsCheckedBrand,
+  isCheckedBrand,
   isResetFilter,
   isApplied,
   isSelected,
@@ -37,8 +39,9 @@ export const FormSelectBrandCarSevaOTO = ({
   isButtonClick,
 }: FilterMobileProps) => {
   const { funnelQuery } = useFunnelQueryData()
-  const [isCheckedBrandQuery, setIsCheckedBrandQuery] = useState<string[]>([])
-  console.log(isSelected)
+
+  const [isCheckedBrandQuery, setIsCheckedBrandQuery] =
+    useState<string[]>(isCheckedBrand)
 
   // setIsCheckedBrand(isCheckedBrandQuery)
   const carList: CarButtonProps[] = [
@@ -125,6 +128,9 @@ export const FormSelectBrandCarSevaOTO = ({
     }
   }
   useEffect(() => {
+    if (isCheckedBrand) {
+      setIsCheckedBrandQuery(isCheckedBrand)
+    }
     if (isResetFilter) {
       setIsCheckedBrandQuery([])
       // setResetTmp(false)
@@ -158,7 +164,13 @@ export const FormSelectBrandCarSevaOTO = ({
     ) {
       setIsCheckedBrandQuery([])
     }
-  }, [isResetFilter, isApplied, isButtonClick])
+  }, [
+    isResetFilter,
+    isApplied,
+    isButtonClick,
+    isCheckedBrand,
+    setIsCheckedBrand,
+  ])
   const paramQuery = funnelQuery
 
   return (
