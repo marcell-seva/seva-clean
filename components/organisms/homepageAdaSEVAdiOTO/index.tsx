@@ -235,7 +235,6 @@ const HomepageAdaSEVAdiOTO = ({ dataReccomendation }: any) => {
             emitClickCityIcon={() => setOpenCitySelectorModal(true)}
             setShowAnnouncementBox={setShowAnnouncementBox}
             isShowAnnouncementBox={showAnnouncementBox}
-            isOTO={true}
           />
           <div className={styles.banner}>
             <Image

@@ -167,7 +167,7 @@ export const PdpLowerSection = ({
           />
         )
       case 'Spesifikasi':
-        return <SpecificationTab />
+        return <SpecificationTab isOTO={isOTO} />
 
       case 'Harga':
         return (

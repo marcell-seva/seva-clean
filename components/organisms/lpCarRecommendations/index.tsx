@@ -47,7 +47,7 @@ type LPCarRecommendationsProps = {
 const LpCarRecommendations = ({
   dataReccomendation,
   onClickOpenCityModal,
-  isOTO,
+  isOTO = false,
 }: LPCarRecommendationsProps) => {
   const router = useRouter()
   const swiperRef = useRef<SwiperType>()
@@ -208,7 +208,7 @@ const LpCarRecommendations = ({
         </h2>
         <NavigationTabV2
           itemList={brandList}
-          onPage={'PDP'}
+          onPage={isOTO ? 'OTO' : 'PDP'}
           onSelectTab={(value: any) => {
             sendAmplitudeData(
               AmplitudeEventName.WEB_LP_BRANDRECOMMENDATION_LOGO_CLICK,
@@ -220,7 +220,7 @@ const LpCarRecommendations = ({
           }}
           isShowAnnouncementBox={false}
           className={stylep.tab}
-          autoScroll={false}
+          autoScroll={isOTO}
         />
         <div>
           {recommendationList.length === 0 ? (

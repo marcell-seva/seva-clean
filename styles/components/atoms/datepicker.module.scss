@@ -52,8 +52,8 @@
     @include borderColor(focus);
   }
 
-  &[disabled] {
-    background-color: #{$shades-grey-5};
+  &.disabled {
+    background-color: #{$shades-grey-10};
     color: #{$shades-grey-25};
     border: 1px solid #{$shades-grey-10};
   }
@@ -89,4 +89,10 @@
   color: #{$shades-grey-75};
   padding-bottom: 8px;
   display: block;
+}
+
+.disabled {
+  background-color: #{$shades-grey-5};
+  color: #{$shades-grey-25};
+  border: 1px solid #{$shades-grey-10};
 }

@@ -25,6 +25,9 @@ export enum UnverifiedLeadSubCategory {
   SEVA_NEW_CAR_SEARCH_WIDGET = 'SEVNCSWG',
   SEVA_NEW_CAR_OFFLINE_EVENT_FORM_COLD = 'SEVNCOEC',
   SEVA_NEW_CAR_OFFLINE_EVENT_FORM_HOT = 'SEVNCOEH',
+  OTO_NEW_CAR_PDP_LEADS_FORM = 'OTONCPDP',
+  OTO_NEW_CAR_PLP_LEADS_FORM = 'OTONCPLP',
+  OTO_NEW_CAR_LP_LEADS_FORM = 'OTONCLPF',
 }
 
 interface GetCustomerAssistantResponse {
@@ -53,6 +56,7 @@ export interface CreateUnverifiedLeadRequestNew {
   promo?: string
   carBrand?: string
   carModelText?: string
+  carVariantText?: string
   cityId?: number
   platform?: string
 }

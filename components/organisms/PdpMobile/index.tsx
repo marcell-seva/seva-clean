@@ -660,7 +660,7 @@ export default function NewCarVariantList({
               message={`${brandModel}  tersedia di`}
             />
             {isOTO ? (
-              <CSAButton onClick={showLeadsForm} />
+              !isPreviewGalleryOpened && <CSAButton onClick={showLeadsForm} />
             ) : (
               <WhatsappButton
                 onClick={onClickFloatingWhatsapp}
@@ -703,7 +703,7 @@ export default function NewCarVariantList({
               promoName={promoName}
             />
             {isOTO ? (
-              <CSAButton onClick={showLeadsForm} />
+              !isPreviewGalleryOpened && <CSAButton onClick={showLeadsForm} />
             ) : (
               <WhatsappButton
                 onClick={onClickFloatingWhatsapp}
@@ -720,7 +720,7 @@ export default function NewCarVariantList({
               message={`${brandModel}  tersedia di`}
             />
             {isOTO ? (
-              <CSAButton onClick={showLeadsForm} />
+              !isPreviewGalleryOpened && <CSAButton onClick={showLeadsForm} />
             ) : (
               <WhatsappButton
                 onClick={onClickFloatingWhatsapp}
