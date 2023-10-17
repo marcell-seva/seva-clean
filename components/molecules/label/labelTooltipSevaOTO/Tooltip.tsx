@@ -15,7 +15,6 @@ interface Props {
 
 const TooltipSevaOTO = ({ content, onClick, onOpenTooltip }: Props) => {
   return (
-    <>
       <div>
         <Row>
           <Col span={3}>
@@ -48,7 +47,6 @@ const TooltipSevaOTO = ({ content, onClick, onOpenTooltip }: Props) => {
           </Col>
         </Row>
       </div>
-    </>
   )
 }
 
