@@ -766,7 +766,9 @@ export default function NewCarVariantList({
         pageOrigination="PDP"
         sourceButton={isOpenCitySelectorOTRPrice ? 'OTR Price (PDP)' : ''}
       />
-      {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
+      {isModalOpenend && (
+        <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} onPage="PDP" />
+      )}
       <ShareModal
         open={isOpenShareModal}
         onCancel={() => setIsOpenShareModal(false)}
