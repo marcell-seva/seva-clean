@@ -43,7 +43,7 @@ interface DataResponse {
 
 const UpdateLeadsFormCM = ({
   message,
-  isValidz,
+  isValidated,
   dataAgent,
   cmInput,
   leadId,
@@ -108,7 +108,7 @@ const UpdateLeadsFormCM = ({
     saveAgent(dataAgent)
   })
 
-  if (!isValidz) {
+  if (!isValidated) {
     return <div className="blank"></div>
   }
 
@@ -322,7 +322,7 @@ export async function getServerSideProps(context: any) {
     return {
       props: {
         message: 'hello',
-        isValidz: valid,
+        isValidated: valid,
         dataAgent: salesRes,
         cmInput,
         leadId,
