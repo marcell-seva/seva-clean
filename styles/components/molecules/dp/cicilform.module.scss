@@ -17,7 +17,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
 }
 
 .buttonOption {
@@ -27,7 +27,7 @@
   height: 64px;
   border-radius: 8px;
   text-align: left;
-  border: 1px solid #{$shades-grey-10};
+  border: 1.5px solid #{$shades-grey-10};
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -56,5 +56,5 @@
 
 .selectedStyle {
   background: rgba(243, 249, 253, 0.50) !important;
-  border: 2px solid #{$secondary-sky-blue} !important;
+  border: 1.5px solid #{$secondary-sky-blue} !important;
 }
