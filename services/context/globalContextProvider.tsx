@@ -13,6 +13,7 @@ import { SideMenuListContextProvider } from './sideMenuListContext'
 import { SideMenuContextProvider } from './sideMenuContext'
 import { MultiUnitQueryContextProvider } from './multiUnitQueryContext'
 import { GalleryContextProvider } from './galleryContext'
+import { AnnouncementBoxProvider } from './announcementBoxContext'
 
 const providers: Array<
   React.JSXElementConstructor<React.PropsWithChildren<any>>
@@ -32,6 +33,7 @@ const providers: Array<
   SideMenuContextProvider,
   MultiUnitQueryContextProvider,
   GalleryContextProvider,
+  AnnouncementBoxProvider,
 ]
 
 export const GlobalContextProvider = (props: HTMLAttributes<HTMLElement>) => {

@@ -69,6 +69,7 @@ import {
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 
 const OverlayGallery = dynamic(() =>
   import('components/molecules').then((mod) => mod.OverlayGallery),
@@ -217,10 +218,8 @@ export default function NewCarVariantList({
   const [isActive, setIsActive] = useState(false)
 
   const loanRankcr = router.query.loanRankCVL ?? ''
-
-  const [showAnnouncementBox, setShowAnnouncementBox] = useState<
-    boolean | null
-  >(false)
+  const { showAnnouncementBox, saveShowAnnouncementBox } =
+    useAnnouncementBoxContext()
   const [variantIdFuel, setVariantIdFuelRatio] = useState<string | undefined>()
   const [variantFuelRatio, setVariantFuelRatio] = useState<string | undefined>()
   // for disable promo popup after change route
@@ -550,12 +549,12 @@ export default function NewCarVariantList({
           : SessionStorageKey.ShowWebAnnouncementNonLogin,
       )
       if (typeof isShowAnnouncement !== 'undefined') {
-        setShowAnnouncementBox(isShowAnnouncement as boolean)
+        saveShowAnnouncementBox(isShowAnnouncement as boolean)
       } else {
-        setShowAnnouncementBox(true)
+        saveShowAnnouncementBox(true)
       }
     } else {
-      setShowAnnouncementBox(false)
+      saveShowAnnouncementBox(false)
     }
   }, [dataAnnouncementBox])
 
@@ -742,13 +741,13 @@ export default function NewCarVariantList({
             position: 'fixed',
           }}
           emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
-          setShowAnnouncementBox={setShowAnnouncementBox}
+          setShowAnnouncementBox={saveShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
           pageOrigination={'PDP - ' + valueMenuTabCategory()}
           isOTO={isOTO}
         />
         <div className={styles.content}>{renderContent()}</div>
-        <FooterMobile pageOrigination="PDP" />
+        <FooterMobile pageOrigination="PDP - " />
       </div>
 
       {isPreviewGalleryOpened && (
@@ -760,7 +759,9 @@ export default function NewCarVariantList({
       )}
       <CitySelectorModal
         isOpen={isOpenCitySelectorModal}
-        onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
+        onClickCloseButton={() => {
+          setIsOpenCitySelectorModal(false)
+        }}
         cityListFromApi={cities}
         pageOrigination="PDP"
         sourceButton={isOpenCitySelectorOTRPrice ? 'OTR Price (PDP)' : ''}

@@ -31,13 +31,13 @@ const MenuItem: React.FC<MenuItemProps> = ({
         false,
         isOTO ? OTONewCarUrl : menuUrl,
       )
+    } else {
+      sendAmplitudeData(AmplitudeEventName.WEB_BURGER_MENU_CLICK, {
+        Page_Origination_URL: window.location.href,
+        Menu: menuName,
+      })
+      window.location.href = menuUrl
     }
-
-    sendAmplitudeData(AmplitudeEventName.WEB_BURGER_MENU_CLICK, {
-      Page_Origination_URL: window.location.href,
-      Menu: menuName,
-    })
-    window.location.href = menuUrl
   }
 
   return (

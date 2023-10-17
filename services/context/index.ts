@@ -26,6 +26,10 @@ import {
   FinancialQueryContextType,
 } from './finnancialQueryContext'
 import { GlobalContextProvider } from './globalContextProvider'
+import {
+  AnnouncementBoxContextType,
+  AnnouncementBoxProvider,
+} from './announcementBoxContext'
 
 export {
   AuthContext,
@@ -43,6 +47,7 @@ export {
   FinancialQueryContext,
   FinancialQueryContextProvider,
   GlobalContextProvider,
+  AnnouncementBoxProvider,
 }
 
 export type {
@@ -53,4 +58,5 @@ export type {
   UtilsContextType,
   FunnelQueryContextType,
   FinancialQueryContextType,
+  AnnouncementBoxContextType,
 }
