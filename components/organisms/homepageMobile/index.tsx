@@ -60,12 +60,13 @@ import {
 } from 'utils/handler/sessionStorage'
 import { RouteName } from 'utils/navigate'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
+import { useCar } from 'services/context/carContext'
 
 const HomepageMobile = ({ dataReccomendation }: any) => {
   const { dataCities, dataCarofTheMonth, dataMainArticle } = useContext(
     HomePageDataLocalContext,
   )
-  const { saveRecommendation } = useContext(CarContext) as CarContextType
+  const { saveRecommendation } = useCar()
   const [openCitySelectorModal, setOpenCitySelectorModal] = useState(false)
   const [cityListApi, setCityListApi] =
     useState<Array<CityOtrOption>>(dataCities)
@@ -114,12 +115,15 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
   }
 
   const loadCarRecommendation = async () => {
+    if (getCity().cityName === 'Jakarta Pusat')
+      return saveRecommendation(dataReccomendation)
+
     try {
       const params = `?city=${getCity().cityCode}&cityId=${getCity().id}`
       const recommendation: any = await api.getRecommendation(params)
       saveRecommendation(recommendation.carRecommendations)
     } catch {
-      saveRecommendation([])
+      saveRecommendation(dataReccomendation)
     }
   }
 
