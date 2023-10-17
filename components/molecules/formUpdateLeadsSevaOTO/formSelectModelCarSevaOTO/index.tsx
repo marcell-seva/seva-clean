@@ -272,16 +272,10 @@ export const FormSelectModelCarSevaOTO = ({
         }}
         isClearable={false}
         disableDropdownText="Tidak tersedia di kota pilihan kamu"
-        isError={isError && !selectedCity && isCheckForError}
         disabled={!valueId || overrideDisabled}
         datatestid={elementId.Field.CarMobil}
         onShowDropdown={onShowDropdown}
       />
-      {isError && !selectedCity && isCheckForError && (
-        <ErrorMessage>
-          Mobil tidak tersedia di kotamu. Silakan pilih mobil lain.
-        </ErrorMessage>
-      )}
     </>
   )
 }

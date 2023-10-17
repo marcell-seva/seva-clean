@@ -150,7 +150,7 @@ const UpdateLeadsFormOTO = ({
     name: name,
     phone: phoneNumber.slice(3),
     city: {
-      cityCode: '',
+      cityCode: csaInput?.cityId.toString() ? csaInput?.cityId.toString() : '',
       cityName: '',
       province: '',
       id: csaInput?.cityId == null ? '' : csaInput?.cityId.toString(),
@@ -312,8 +312,6 @@ const UpdateLeadsFormOTO = ({
         data.leadResponse === true &&
         data.isLeadQualified == true
       ) {
-        setIsCheckedBrand([])
-        setNotes('')
         setForms({
           ...forms,
           city: {
@@ -328,6 +326,29 @@ const UpdateLeadsFormOTO = ({
             modelId: '',
             modelImage: '',
           },
+          variant: {
+            variantId: '',
+            variantName: '',
+            otr: '',
+            discount: 0,
+          },
+        })
+        setToastMessage(
+          'Update form gagal diperbaharui, silahkan lengkapi form terlebih dahulu',
+        )
+        setIsOpenToast(true)
+        setTypeToast(false)
+        setTimeout(() => {
+          scrollToTitleRef()
+          setIsOpenToast(false)
+        }, 3000)
+        setIsLoading(false)
+        return
+      }
+
+      if (data.carVariantId === '') {
+        setForms({
+          ...forms,
           variant: {
             variantId: '',
             variantName: '',
@@ -491,6 +512,7 @@ const UpdateLeadsFormOTO = ({
                   ? false
                   : true
               }
+              isCheckedBrand={isCheckedBrand}
               setIsCheckedBrand={setIsCheckedBrand}
               isButtonClick={false}
               isResetFilter={isOpenToast}
@@ -529,7 +551,7 @@ const UpdateLeadsFormOTO = ({
                 name="carVariant"
                 required={true}
                 content={
-                  'Sebelum mengisi car variant wajib mengisi city name terlebih dahulu'
+                  'Sebelum mengisi car variant wajib mengisi car model terlebih dahulu'
                 }
               />
             </div>
