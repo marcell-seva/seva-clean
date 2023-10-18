@@ -163,16 +163,11 @@ const LpCarRecommendations = ({
     trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_ALL_CLICK, {
       CAR_BRAND: selectedBrand || 'Semua',
     })
-    if (!selectedBrand)
+    if (!selectedBrand) {
       return isOTO
-        ? navigateToPLP(
-            PreviousButton.undefined,
-            '',
-            true,
-            false,
-            urls.internalUrls.duplicatedCarResultsUrl,
-          )
+        ? router.push(urls.internalUrls.duplicatedCarResultsUrl)
         : navigateToPLP(PreviousButton.undefined)
+    }
 
     const path = router.asPath.split('/')[1]
     if (path === 'adaSEVAdiOTO') {

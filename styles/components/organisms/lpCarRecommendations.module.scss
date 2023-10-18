@@ -2,7 +2,7 @@
 @import '../../abstract/mixins';
 
 .tab {
-  background-color: #{$shades-grey-5};
+  background-color: #{$shades-grey-5} !important;
 }
 
 .tabBrand {
