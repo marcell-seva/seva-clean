@@ -305,7 +305,9 @@ const LpCarRecommendations = ({
             </Swiper>
           )}
         </div>
-        {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
+        {isModalOpenend && (
+          <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} onPage="LP" />
+        )}
       </div>
       <PopupPromo open={openPromo} onCancel={() => setOpenPromo(false)} />
     </>
