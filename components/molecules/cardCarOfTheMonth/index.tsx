@@ -37,25 +37,9 @@ type carOfTheMonthData = {
 }
 interface CarOfTheMonthProps {
   item: carOfTheMonthData
-  onCurrentSlide: (slide: number, maxSlide: number) => void
   onSendOffer: () => void
 }
-const CardCarOfTheMonth = ({
-  item,
-  onCurrentSlide,
-  onSendOffer,
-}: CarOfTheMonthProps) => {
-  const carouselContext = useContext(CarouselContext)
-
-  useEffect(() => {
-    function onChange() {
-      const currentSlide = carouselContext.state.currentSlide
-      const maxSlide = carouselContext.state.totalSlides
-      onCurrentSlide(currentSlide, maxSlide)
-    }
-    carouselContext.subscribe(onChange)
-    return () => carouselContext.unsubscribe(onChange)
-  }, [carouselContext])
+const CardCarOfTheMonth = ({ item, onSendOffer }: CarOfTheMonthProps) => {
   const renderBrandLogo = (carBrand: string) => {
     switch (carBrand) {
       case 'Toyota':

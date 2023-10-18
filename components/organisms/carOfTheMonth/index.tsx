@@ -1,6 +1,4 @@
-import React, { useMemo, useState } from 'react'
-import { CarouselProvider, Slider, Slide } from 'pure-react-carousel'
-import { useMediaQuery } from 'react-responsive'
+import React, { useMemo, useRef, useState } from 'react'
 import 'pure-react-carousel/dist/react-carousel.es.css'
 import styles from 'styles/components/organisms/carOfTheMonth.module.scss'
 import clsx from 'clsx'
@@ -11,6 +9,8 @@ import CardCarOfTheMonth from 'components/molecules/cardCarOfTheMonth'
 import elementId from 'utils/helpers/trackerId'
 import { CityOtrOption } from 'utils/types'
 import { PageOriginationName } from 'utils/types/props'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Swiper as SwiperType } from 'swiper'
 
 type CarOfTheMonthProps = {
   carOfTheMonthData: COMData[]
@@ -35,10 +35,7 @@ const CarOfTheMonth = ({
   cityOtr,
   setSelectedCarOfTheMonth,
 }: CarOfTheMonthProps) => {
-  const isMobileSmall = useMediaQuery({ query: '(max-width: 365px)' })
-  const isMobileMedium = useMediaQuery({ query: '(max-width: 385px)' })
-  const isMobileLarge = useMediaQuery({ query: '(max-width: 415px)' })
-  const isMobile = useMediaQuery({ query: '(max-width: 570px)' })
+  const swiperRef = useRef<SwiperType>()
   const [currentSlide, setCurrentSlide] = useState(0)
 
   const carModel = useMemo(() => {
@@ -56,14 +53,6 @@ const CarOfTheMonth = ({
     return model ?? []
   }, [carOfTheMonthData])
 
-  const getVisibleSlides = () => {
-    if (isMobileSmall) return 1.15
-    if (isMobileMedium) return 1.23
-    if (isMobileLarge) return 1.25
-    if (isMobile) return 1.3
-    else return 1.85
-  }
-
   return (
     <div
       className={styles.container}
@@ -72,63 +61,43 @@ const CarOfTheMonth = ({
       <div className={styles.wrapper}>
         <h2 className={styles.textHeaderSection}>SEVA Car of The Month</h2>
       </div>
-      <div
-        className={styles.containerCarousel}
-        // style={{
-        //   paddingRight: Math.round(currentSlide) === 0 ? '16px' : '0px',
-        // }}
-      >
-        <CarouselProvider
-          naturalSlideWidth={288}
-          naturalSlideHeight={454}
-          totalSlides={Array.isArray(carModel) ? carModel.length : 0}
-          visibleSlides={getVisibleSlides()}
-          currentSlide={currentSlide}
-          orientation="horizontal"
+      <div className={styles.containerCarousel}>
+        <Swiper
+          slidesPerView={'auto'}
+          spaceBetween={16}
+          onBeforeInit={(swiper) => (swiperRef.current = swiper)}
+          onSlideChange={(swiper) => {
+            setCurrentSlide(swiper.realIndex)
+          }}
+          style={{ padding: '0 16px ' }}
         >
-          <Slider>
-            {carModel.map((item: carOfTheMonthData, index: number) => {
-              return (
-                <Slide
-                  index={index}
-                  key={index}
-                  // "className" attribute wont work in this component
-                  style={{
-                    width: '288px',
-                    height: '454px',
-                    marginLeft: '16px',
-                    marginBottom: '16px',
-                  }}
-                >
-                  <CardCarOfTheMonth
-                    item={item}
-                    onCurrentSlide={(slide: any) => setCurrentSlide(slide)}
-                    onSendOffer={() => {
-                      sendAmplitudeData(
-                        AmplitudeEventName.WEB_LEADS_FORM_OPEN,
-                        {
-                          Page_Origination: PageOriginationName.COTMLeadsForm,
-                          ...(cityOtr && { City: cityOtr.cityName }),
-                          Car_Brand: item.brand,
-                          Car_Model: item.name,
-                        },
-                      )
-                      setSelectedCarOfTheMonth({
-                        Car_Brand: item.brand,
-                        Car_Model: item.name,
-                      })
-                      onSendOffer()
-                    }}
-                  />
-                </Slide>
-              )
-            })}
-          </Slider>
-
-          {/* <div className="controls">
-            <DotGroup className="dot-group" />
-          </div> */}
-        </CarouselProvider>
+          {carModel.map((item, index) => (
+            <SwiperSlide
+              key={index}
+              style={{
+                width: '288px',
+              }}
+            >
+              <CardCarOfTheMonth
+                item={item}
+                onSendOffer={() => {
+                  sendAmplitudeData(AmplitudeEventName.WEB_LEADS_FORM_OPEN, {
+                    Page_Origination: PageOriginationName.COTMLeadsForm,
+                    ...(cityOtr && { City: cityOtr.cityName }),
+                    Car_Brand: item.brand,
+                    Car_Model: item.name,
+                  })
+                  setSelectedCarOfTheMonth({
+                    Car_Brand: item.brand,
+                    Car_Model: item.name,
+                  })
+                  onSendOffer()
+                }}
+              />
+            </SwiperSlide>
+          ))}
+          <SwiperSlide style={{ width: 100 }}></SwiperSlide>
+        </Swiper>
       </div>
       <div className={styles.dotsCarouselWrapper}>
         {carModel.map((item: carOfTheMonthData, index: number) => {
