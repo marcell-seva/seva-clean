@@ -200,41 +200,41 @@ export const HeaderMobile = ({
           )}
           {isOTO ? (
             <div>
-                <div className={styles.newContainer}>
-                  <Link
-                    data-testid={elementId.Homepage.GlobalHeader.HamburgerMenu}
-                    className={styles.icons}
-                    href={redirectHome}
-                  >
-                    <IconChevronLeft
-                      width={24}
-                      height={24}
-                      alt="SEVA back Icon"
-                    />
-                  </Link>
-                  <div role="navigation" onClick={handleLogoClick}>
-                    <Image
-                      src={LogoPrimary}
-                      height={30}
-                      width={50}
-                      alt="Logo SEVA"
-                      className={styles.logoImg}
-                      data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
-                      priority={true}
-                    />
-                  </div>
-                  <div
-                    className={styles.icons}
-                    data-testid={elementId.Homepage.GlobalHeader.IconSearch}
-                  >
-                    <IconSearch
-                      width={24}
-                      height={24}
-                      onClick={handleSearch}
-                      alt="SEVA search Icon"
-                    />
-                  </div>
+              <div className={styles.newContainer}>
+                <Link
+                  data-testid={elementId.Homepage.GlobalHeader.HamburgerMenu}
+                  className={styles.icons}
+                  href={redirectHome}
+                >
+                  <IconChevronLeft
+                    width={24}
+                    height={24}
+                    alt="SEVA back Icon"
+                  />
+                </Link>
+                <div role="navigation" onClick={handleLogoClick}>
+                  <Image
+                    src={LogoPrimary}
+                    height={30}
+                    width={50}
+                    alt="Logo SEVA"
+                    className={styles.logoImg}
+                    data-testid={elementId.Homepage.GlobalHeader.IconLogoSeva}
+                    priority={true}
+                  />
                 </div>
+                <div
+                  className={styles.icons}
+                  data-testid={elementId.Homepage.GlobalHeader.IconSearch}
+                >
+                  <IconSearch
+                    width={24}
+                    height={24}
+                    onClick={handleSearch}
+                    alt="SEVA search Icon"
+                  />
+                </div>
+              </div>
             </div>
           ) : (
             <div className={styles.container}>
@@ -291,7 +291,7 @@ export const HeaderMobile = ({
         <SearchModal
           isOpen={isOpenSearchModal}
           handleCloseModal={() => setIsOpenSearchModal(false)}
-          isOTO={isOTO}
+          isOTO={adaSeva === 'adaSEVAdiOTO' ? true : false}
           pageOrigination={pageOrigination}
         />
       </header>
