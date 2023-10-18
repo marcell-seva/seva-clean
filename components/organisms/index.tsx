@@ -47,6 +47,7 @@ import CarOfTheMonth from './carOfTheMonth'
 import dynamic from 'next/dynamic'
 import HomepageAdaSEVAdiOTO from './homepageAdaSEVAdiOTO'
 import { InsuranceTooltip } from './insuranceTooltip'
+import InformationSection from './InformationSection'
 import LeadsFormAdaOTOdiSEVA from './leadsForm/adaOTOdiSEVA'
 import { AdaOTOdiSEVALeadsForm } from './leadsForm/adaOTOdiSEVA/popUp'
 const Exterior360ViewerTab = dynamic(
@@ -105,4 +106,5 @@ export {
   HomepageAdaSEVAdiOTO,
   LeadsFormAdaOTOdiSEVA,
   AdaOTOdiSEVALeadsForm,
+  InformationSection,
 }

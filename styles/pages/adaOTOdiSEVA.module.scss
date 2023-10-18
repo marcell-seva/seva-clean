@@ -4,13 +4,9 @@
 .mobile {
   display: block;
   @include lg {
-    display: none;
-  }
-}
-
-.desktop {
-  display: none;
-  @include lg {
-    display: block;
+    max-width: 570px;
+    margin-left: auto;
+    margin-right: auto;
+    position: flex;
   }
 }

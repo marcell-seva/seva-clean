@@ -235,7 +235,6 @@ const HomepageAdaSEVAdiOTO = ({ dataReccomendation }: any) => {
             emitClickCityIcon={() => setOpenCitySelectorModal(true)}
             setShowAnnouncementBox={setShowAnnouncementBox}
             isShowAnnouncementBox={showAnnouncementBox}
-            isOTO={true}
           />
           <div className={styles.banner}>
             <Image
@@ -281,8 +280,9 @@ const HomepageAdaSEVAdiOTO = ({ dataReccomendation }: any) => {
           onClickCloseButton={() => setOpenCitySelectorModal(false)}
           cityListFromApi={cityListApi}
         />
-        {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
-
+        {isModalOpenend && (
+          <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} onPage="LP" />
+        )}
         <CSAButton onClick={showLeadsForm} />
 
         {isLoginModalOpened && (

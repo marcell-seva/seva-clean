@@ -1,0 +1,32 @@
+@import '../../../abstract/colors';
+@import '../../../abstract/mixins';
+@import '../../../abstract/animations';
+
+@mixin borderColor($type) {
+  @if $type==default {
+    border: 1px solid #{$shades-grey-10};
+  } @else if $type==focus {
+    border: 1px solid #{$secondary-blue};
+  } @else if $type==error {
+    border: 1px solid #{$secondary-brick-red};
+  } @else {
+    border: 1px solid #{$shades-grey-10};
+  }
+}
+
+.input {
+  @include borderColor(default);
+  padding: 12px 16px;
+  width: 100%;
+  font-family: var(--kanyon);
+  font-size: 14px;
+  color: #{$primary-black};
+  border-radius: 8px;
+  outline: none;
+  background-color: #{$shades-grey-10};
+
+  font-family: var(--open-sans);
+  &::placeholder {
+    color: #{$shades-grey-50};
+  }
+}

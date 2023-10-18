@@ -12,6 +12,7 @@ import {
   AnnouncementBoxDataType,
   ArticleData,
   NavbarItemResponse,
+  SalesAgent,
 } from 'utils/types/utils'
 
 export type UtilsContextType = {
@@ -19,6 +20,8 @@ export type UtilsContextType = {
   saveDataAnnouncementBox: (data: AnnouncementBoxDataType | undefined) => void
   cities: CityOtrOption[]
   saveCities: (data: CityOtrOption[]) => void
+  agent: SalesAgent[]
+  saveAgent: (data: SalesAgent[]) => void
   articles: ArticleData[]
   saveArticles: (data: ArticleData[]) => void
   mobileWebTopMenus: MobileWebTopMenuType[] | []
@@ -38,6 +41,7 @@ export const UtilsContext = createContext<UtilsContextType | []>([])
 
 export const UtilsContextProvider = ({ children }: any) => {
   const [cities, setCities] = useState<CityOtrOption[] | []>([])
+  const [agent, setAgent] = useState<SalesAgent[] | []>([])
   const [articles, setArticles] = useState<ArticleData[] | []>([])
   const [dataAnnouncementBox, setIsShowAnnouncementBox] = useState<
     AnnouncementBoxDataType | undefined
@@ -65,6 +69,8 @@ export const UtilsContextProvider = ({ children }: any) => {
   )
 
   const saveCities = (citiesData: CityOtrOption[] | []) => setCities(citiesData)
+
+  const saveAgent = (agentData: SalesAgent[] | []) => setAgent(agentData)
 
   const saveArticles = (articlesData: ArticleData[] | []) =>
     setArticles(articlesData)
@@ -98,6 +104,8 @@ export const UtilsContextProvider = ({ children }: any) => {
         saveDataAnnouncementBox,
         cities,
         saveCities,
+        agent,
+        saveAgent,
         articles,
         saveArticles,
         mobileWebTopMenus,
