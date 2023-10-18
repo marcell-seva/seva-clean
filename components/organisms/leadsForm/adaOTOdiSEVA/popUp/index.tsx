@@ -219,6 +219,14 @@ export const AdaOTOdiSEVALeadsForm: React.FC<PropsLeadsForm> = ({
         phoneNumber: phone,
         ...(cityOtr?.id && { cityId: cityOtr.id }),
         platform,
+      }
+    } else if (onPage === 'PDP') {
+      data = {
+        origination: UnverifiedLeadSubCategory.OTO_NEW_CAR_PDP_LEADS_FORM,
+        name,
+        phoneNumber: phone,
+        ...(cityOtr?.id && { cityId: cityOtr.id }),
+        platform,
         carBrand: carModelDetails?.brand,
         carModelText: carModelDetails?.model,
         carVariantText: carVariantDetails?.variantDetail.name,
