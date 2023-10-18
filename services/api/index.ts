@@ -273,6 +273,9 @@ const getMinMaxYearsUsedCar = (params: string, config?: AxiosRequestConfig) =>
 const getMinMaxMileageUsedCar = (params: string, config?: AxiosRequestConfig) =>
   get(collections.usedCar.mileage + params, config)
 
+const getBrandList = (params: string, config?: AxiosRequestConfig) =>
+  get(collections.usedCar.brandList + params, config)
+
 const getUsedCarBySKU = (
   id: string,
   params: string,
@@ -317,6 +320,7 @@ export const api = {
   getMinMaxYearsUsedCar,
   getMinMaxMileageUsedCar,
   getUsedCarBySKU,
+  getBrandList,
 
   postUnverifiedLeadsNew,
   postRefreshToken,
