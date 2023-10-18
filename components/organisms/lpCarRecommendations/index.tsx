@@ -165,7 +165,7 @@ const LpCarRecommendations = ({
     })
     if (!selectedBrand) {
       return isOTO
-        ? router.push('/adaSEVAdiOTO/mobil-baru')
+        ? router.push(urls.internalUrls.duplicatedCarResultsUrl)
         : navigateToPLP(PreviousButton.undefined)
     }
 
