@@ -6,7 +6,6 @@ import LogoDaihatsu from '/public/revamp/icon/Logo-Potrait-Daihatsu.webp'
 import LogoIsuzu from '/public/revamp/icon/Logo-Potrait-Isuzu.webp'
 import LogoBmw from '/public/revamp/icon/Logo-Potrait-BMW.webp'
 import LogoPeugeot from '/public/revamp/icon/Logo-Potrait-Peugeot.webp'
-import { CarouselContext } from 'pure-react-carousel'
 import elementId from 'utils/helpers/trackerId'
 import {
   formatBillionPoint,

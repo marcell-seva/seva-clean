@@ -1,5 +1,4 @@
 import React, { useMemo, useRef, useState } from 'react'
-import 'pure-react-carousel/dist/react-carousel.es.css'
 import styles from 'styles/components/organisms/carOfTheMonth.module.scss'
 import clsx from 'clsx'
 import { sendAmplitudeData } from 'services/amplitude'
