@@ -23,7 +23,9 @@
 }
 
 .brandModelText {
-  font-family: $font-kanyon-medium;
+  font-family: var(--kanyon-medium);
+  font-weight: 500;
+  color: #333333;
   font-size: 20px;
   line-height: 28px;
   margin-bottom: 16px;
