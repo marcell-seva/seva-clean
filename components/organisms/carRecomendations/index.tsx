@@ -4,7 +4,7 @@ import {
 } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
 import { LanguageCode, SessionStorageKey } from 'utils/enum'
-import React from 'react'
+import React, { useRef } from 'react'
 import {
   carResultsUrl,
   loanCalculatorWithCityBrandModelUrl,
@@ -32,6 +32,8 @@ import {
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import { capitalizeWords } from 'utils/stringUtils'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Swiper as SwiperType } from 'swiper'
 
 type CarRecommendationsPropss = {
   title: string
@@ -49,7 +51,7 @@ export default function CarRecommendations({
   additionalContainerStyle,
 }: CarRecommendationsPropss) {
   const router = useRouter()
-
+  const swiperRef = useRef<SwiperType>()
   const brand = router.query.brand
   const model = router.query.model
   const dataCar: trackDataCarType | null = getSessionStorage(
@@ -194,33 +196,43 @@ export default function CarRecommendations({
       >
         {title}
       </h3>
-      <div className={styles.alternativeCarWrapper}>
-        {carRecommendationList?.map((item, index) => (
-          <AlternativeCarCard
-            key={index}
-            recommendation={item}
-            onClickLabel={onClick}
-            label={<LabelMudah style={{ left: 0 }} />}
-            pageOrigination="PDP - Kredit"
-          >
-            <div
-              className={styles.alternativeCarLink}
-              onClick={() =>
-                handleClickDetailCar(`${carResultsUrl}/${item.id}`, item)
-              }
-              data-testid={elementId.LoanCalculator.Button.LihatDetail}
-            >
-              Lihat Detail
-            </div>
-            <Button
-              version={ButtonVersion.Secondary}
-              size={ButtonSize.Big}
-              onClick={() => handleCalculateAbility(item)}
-            >
-              Hitung Kemampuan
-            </Button>
-          </AlternativeCarCard>
-        ))}
+      <div>
+        <Swiper
+          slidesPerView={'auto'}
+          spaceBetween={16}
+          className={styles.alternativeCarWrapper}
+          onBeforeInit={(swiper) => (swiperRef.current = swiper)}
+          style={{ paddingRight: 16 }}
+        >
+          {carRecommendationList?.map((item, index) => (
+            <SwiperSlide key={index} style={{ width: 212 }}>
+              <AlternativeCarCard
+                key={index}
+                recommendation={item}
+                onClickLabel={onClick}
+                label={<LabelMudah style={{ left: 0 }} />}
+                pageOrigination="PDP - Kredit"
+              >
+                <div
+                  className={styles.alternativeCarLink}
+                  onClick={() =>
+                    handleClickDetailCar(`${carResultsUrl}/${item.id}`, item)
+                  }
+                  data-testid={elementId.LoanCalculator.Button.LihatDetail}
+                >
+                  Lihat Detail
+                </div>
+                <Button
+                  version={ButtonVersion.Secondary}
+                  size={ButtonSize.Big}
+                  onClick={() => handleCalculateAbility(item)}
+                >
+                  Hitung Kemampuan
+                </Button>
+              </AlternativeCarCard>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </div>
   )
