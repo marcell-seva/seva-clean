@@ -262,7 +262,9 @@ const Profile = () => {
                     }
                   />
                   <div className={styles.info__phoneName}>
-                    <h3 className="medium">{customerDetail?.fullName}</h3>
+                    <h3 className={styles.fullnameText}>
+                      {customerDetail?.fullName}
+                    </h3>
                     <span>
                       {phoneNumber?.code} | {phoneNumber?.number}
                     </span>
