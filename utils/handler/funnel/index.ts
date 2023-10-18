@@ -62,6 +62,48 @@ export const getNewFunnelRecommendations = (
   return getRecommendation('', { params })
 }
 
+export const getUsedCarFunnelRecommendations = (
+  funnelQuery: FunnelQuery,
+  surveyForm = false,
+  useKeySearch = true,
+) => {
+  const params = new URLSearchParams()
+  const {
+    brand,
+    bodyType,
+    sortBy,
+    mileageRangeGroup,
+    yearRangeGroup,
+    transmission,
+    tenure,
+    location,
+    priceRangeGroup,
+  } = funnelQuery
+
+  brand && brand.length > 0 && params.append('brand', brand.join('/'))
+  bodyType &&
+    bodyType.length > 0 &&
+    params.append('bodyType', bodyType.join('/'))
+
+  sortBy && params.append('sortBy', sortBy as string)
+
+  location &&
+    location.length > 0 &&
+    params.append('location', location.join('/'))
+
+  tenure && params.append('tenure', String(tenure))
+  transmission && params.append('transmission', String(transmission))
+  priceRangeGroup && params.append('priceRangeGroup', priceRangeGroup as string)
+  mileageRangeGroup &&
+    params.append('mileageRangeGroup', mileageRangeGroup as string)
+  yearRangeGroup && params.append('yearRangeGroup', yearRangeGroup as string)
+
+  getCity().cityCode && params.append('city', getCity().cityCode as string)
+  getCity().id && params.append('cityId', getCity().id as string)
+
+  return api.getUsedCars('', { params })
+}
+
 export const getNewFunnelLoanSpecialRate = (
   {
     otr,

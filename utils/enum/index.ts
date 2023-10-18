@@ -54,6 +54,7 @@ export enum LocalStorageKey {
   CityOtr = 'cityOtr',
   SelectedLoanPermutation = 'SelectedLoanPermutation',
   CarFilter = 'filter',
+  UsedCarFilter = 'usedCarFilter',
   FinancialData = 'financialData',
   PageBeforeLogin = 'pageBeforeLogin',
   PageBeforeLoginExternal = 'pageBeforeLoginExternal',

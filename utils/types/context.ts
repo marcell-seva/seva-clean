@@ -62,6 +62,14 @@ export interface FunnelQuery extends Filter {
   category?: string[]
   minPrice?: string
   maxPrice?: string
+  minYear?: string
+  maxYear?: string
+  minMileage?: string
+  maxMileage?: string
+  yearRangeGroup?: string
+  mileageRangeGroup?: string
+  transmission?: string
+  location?: string[]
   priceRangeGroup?: string
   phoneNumber?: string
   isDefaultTenureChanged?: boolean
@@ -138,6 +146,16 @@ export interface CarVariant {
 export interface MinMaxPrice {
   maxPriceValue: number
   minPriceValue: number
+}
+
+export interface MinMaxYear {
+  maxYearValue: number
+  minYearValue: number
+}
+
+export interface MinMaxMileage {
+  maxMileageValue: number
+  minMileageValue: number
 }
 
 export interface CarButtonProps {
