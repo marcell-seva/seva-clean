@@ -34,7 +34,10 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { api } from 'services/api'
 import { useCar } from 'services/context/carContext'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
-import { getNewFunnelRecommendations } from 'utils/handler/funnel'
+import {
+  getNewFunnelRecommendations,
+  getUsedCarFunnelRecommendations,
+} from 'utils/handler/funnel'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { getConvertFilterIncome } from 'utils/filterUtils'
 import { getToken } from 'utils/handler/auth'
@@ -44,7 +47,11 @@ import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { hundred, million } from 'utils/helpers/const'
-import { OTONewCarUrl, carResultsUrl } from 'utils/helpers/routes'
+import {
+  OTONewCarUrl,
+  carResultsUrl,
+  usedCarResultUrl,
+} from 'utils/helpers/routes'
 import { useAmplitudePageView } from 'utils/hooks/useAmplitudePageView'
 import {
   defaultCity,
@@ -86,18 +93,6 @@ const FilterMobileUsedCar = dynamic(() =>
 const SortingMobileUsedCar = dynamic(() =>
   import('components/organisms').then((mod) => mod.SortingMobileUsedCar),
 )
-const PopupPromo = dynamic(() =>
-  import('components/organisms').then((mod) => mod.PopupPromo),
-)
-const PopupResultSulit = dynamic(() =>
-  import('components/organisms').then((mod) => mod.PopupResultSulit),
-)
-const PopupResultMudah = dynamic(() =>
-  import('components/organisms').then((mod) => mod.PopupResultMudah),
-)
-const PopupResultInfo = dynamic(() =>
-  import('components/organisms').then((mod) => mod.PopupResultInfo),
-)
 const CitySelectorModal = dynamic(() =>
   import('components/molecules').then((mod) => mod.CitySelectorModal),
 )
@@ -117,7 +112,12 @@ export const PLPUsedCar = ({
 }: PLPProps) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
-  const { recommendation, saveRecommendation } = useCar()
+  const {
+    recommendation,
+    saveRecommendation,
+    usedRecommendation,
+    saveUsedRecommendation,
+  } = useCar()
   const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>([])
   const {
     bodyType,
@@ -177,7 +177,7 @@ export const PLPUsedCar = ({
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
   const [page, setPage] = useState<any>(1)
   const [sampleArray, setSampleArray] = useState({
-    items: recommendation.slice(0, 12),
+    items: usedRecommendation.slice(0, 10),
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const { cities, saveDataAnnouncementBox } = useUtils()
@@ -194,20 +194,20 @@ export const PLPUsedCar = ({
   const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
 
   const fetchMoreData = () => {
-    if (sampleArray.items.length >= recommendation.length) {
+    if (sampleArray.items.length >= usedRecommendation.length) {
       return setHasMore(false)
     }
     const timeout = setTimeout(() => {
-      if (sampleArray.items.length >= 12 * page) {
+      if (sampleArray.items.length >= 10 * page) {
         const pagePlus = page + 1
         setPage(pagePlus)
         setSampleArray({
           items: sampleArray.items.concat(
-            recommendation.slice(
-              12 * page,
-              sampleArray.items.length > 12 * page + 12
-                ? recommendation.length
-                : 12 * page + 12,
+            usedRecommendation.slice(
+              10 * page,
+              sampleArray.items.length > 10 * page + 10
+                ? usedRecommendation.length
+                : 10 * page + 10,
             ),
           ),
         })
@@ -501,9 +501,9 @@ export const PLPUsedCar = ({
   useEffect(() => {
     setPage(1)
     setHasMore(true)
-    setSampleArray({ items: recommendation.slice(0, 12) })
-    saveRecommendation(recommendation)
-  }, [recommendation])
+    setSampleArray({ items: usedRecommendation.slice(0, 10) })
+    saveUsedRecommendation(usedRecommendation)
+  }, [usedRecommendation])
 
   useEffect(() => {
     if (isActive) {
@@ -514,7 +514,7 @@ export const PLPUsedCar = ({
       })
     }
 
-    if (!isCurrentCitySameWithSSR || recommendation.length === 0) {
+    if (!isCurrentCitySameWithSSR || usedRecommendation.length === 0) {
       const params = new URLSearchParams()
       getCity().cityCode && params.append('city', getCity().cityCode as string)
       api
@@ -560,21 +560,21 @@ export const PLPUsedCar = ({
               sortBy: sortBy || 'lowToHigh',
             }
 
-            getNewFunnelRecommendations(queryParam)
+            getUsedCarFunnelRecommendations(queryParam)
               .then((response) => {
                 if (response) {
                   patchFunnelQuery(queryParam)
-                  saveRecommendation(response.carRecommendations)
+                  saveUsedRecommendation(response.carData)
                   setResultMinMaxPrice({
                     resultMinPrice: response.lowestCarPrice || 0,
                     resultMaxPrice: response.highestCarPrice || 0,
                   })
                   setPage(1)
                   setSampleArray({
-                    items: response.carRecommendations.slice(0, 12),
+                    items: response.carData.slice(0, 10),
                   })
                   setTimeout(() => {
-                    checkFincapBadge(response.carRecommendations.slice(0, 12))
+                    checkFincapBadge(response.carData.slice(0, 10))
                   }, 1000)
                 }
                 setShowLoading(false)
@@ -582,19 +582,19 @@ export const PLPUsedCar = ({
               .catch(() => {
                 setShowLoading(false)
                 router.push({
-                  pathname: carResultsUrl,
+                  pathname: usedCarResultUrl,
                 })
               })
-            getNewFunnelRecommendations({ ...queryParam, brand: [] }).then(
+            getUsedCarFunnelRecommendations({ ...queryParam, brand: [] }).then(
               (response: any) => {
-                if (response) setAlternativeCar(response.carRecommendations)
+                if (response) setAlternativeCar(response.carData)
               },
             )
           }
         })
         .catch()
     } else {
-      saveRecommendation(recommendation)
+      saveUsedRecommendation(usedRecommendation)
       const queryParam: any = {
         downPaymentAmount: downPaymentAmount || '',
         brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
@@ -607,7 +607,7 @@ export const PLPUsedCar = ({
       }
       patchFunnelQuery(queryParam)
       setTimeout(() => {
-        checkFincapBadge(recommendation.slice(0, 12))
+        // checkFincapBadge(usedRecommendation.slice(0, 10))
       }, 1000)
     }
     return () => cleanEffect()
@@ -629,10 +629,10 @@ export const PLPUsedCar = ({
     if (sticky && !isActive)
       return (
         <NavigationFilterMobileUsedCar
-          setRecommendations={saveRecommendation}
+          setRecommendations={saveUsedRecommendation}
           onButtonClick={handleShowFilter}
           onSortClick={handleShowSort(true)}
-          carlist={recommendation || []}
+          carlist={usedRecommendation || []}
           isFilter={isFilter}
           isFilterFinancial={isFilterFinancial}
           startScroll={startScroll}
@@ -655,7 +655,7 @@ export const PLPUsedCar = ({
     getNewFunnelRecommendations(queryParam).then((response) => {
       if (response) {
         patchFunnelQuery(queryParam)
-        saveRecommendation(response.carRecommendations)
+        saveUsedRecommendation(response.carData)
         setResultMinMaxPrice({
           resultMinPrice: response.lowestCarPrice || 0,
           resultMaxPrice: response.highestCarPrice || 0,
@@ -663,13 +663,13 @@ export const PLPUsedCar = ({
         setPage(1)
 
         setSampleArray({
-          items: response.carRecommendations.slice(0, 12),
+          items: response.carData.slice(0, 10),
         })
       }
       setShowLoading(false)
 
       router.replace({
-        pathname: carResultsUrl,
+        pathname: usedCarResultUrl,
         query: {
           ...(age && { age }),
           ...(downPaymentAmount && { downPaymentAmount }),
@@ -746,10 +746,10 @@ export const PLPUsedCar = ({
         {!showLoading && sampleArray.items.length === 0 ? (
           <>
             <NavigationFilterMobileUsedCar
-              setRecommendations={saveRecommendation}
+              setRecommendations={saveUsedRecommendation}
               onButtonClick={handleShowFilter}
               onSortClick={handleShowSort(true)}
-              carlist={recommendation || []}
+              carlist={usedRecommendation || []}
               isFilter={isFilter}
               isFilterFinancial={isFilterFinancial}
               resultMinMaxPrice={resultMinMaxPrice}
@@ -765,10 +765,10 @@ export const PLPUsedCar = ({
         ) : (
           <>
             <NavigationFilterMobileUsedCar
-              setRecommendations={saveRecommendation}
+              setRecommendations={saveUsedRecommendation}
               onButtonClick={handleShowFilter}
               onSortClick={handleShowSort(true)}
-              carlist={recommendation || []}
+              carlist={usedRecommendation || []}
               isFilter={isFilter}
               isFilterFinancial={isFilterFinancial}
               resultMinMaxPrice={resultMinMaxPrice}
@@ -881,30 +881,6 @@ export const PLPUsedCar = ({
               SORT_VALUE: label,
             })
           }}
-        />
-        <PopupPromo
-          open={openLabelPromo}
-          onCancel={() => setOpenLabelPromo(false)}
-          carData={dataCarForPromo}
-        />
-        <PopupResultSulit
-          open={openLabelResultSulit}
-          onCancel={() => {
-            setOpenLabelResultSulit(false)
-            trackPeluangSulitPopUpCloseClick(getDataForAmplitude())
-          }}
-        />
-        <PopupResultMudah
-          open={openLabelResultMudah}
-          onCancel={() => {
-            setOpenLabelResultMudah(false)
-            trackPeluangMudahPopUpCloseClick(getDataForAmplitude())
-          }}
-        />
-        <PopupResultInfo
-          open={openLabelResultInfo}
-          onCancel={onCloseResultInfoClose}
-          onOk={onCloseResultInfo}
         />
         <CitySelectorModal
           isOpen={isOpenCitySelectorModal}

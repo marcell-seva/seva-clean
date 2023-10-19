@@ -165,3 +165,32 @@ export interface CarButtonProps {
   isChecked?: boolean
   hide?: boolean
 }
+
+export interface UsedCarMedia {
+  media_code: string
+  order: number
+  url: string
+}
+
+export interface UsedCarSpecification {
+  spec_code: string
+  value: string
+}
+
+export interface UsedCarRecommendation {
+  car_id: string
+  car_gallery: UsedCarMedia[]
+  car_specifications: UsedCarSpecification[]
+  city_code: number
+  city_id: number
+  city_name: string
+  model: string
+  price_formated_value: string
+  seva_url: string
+  sku_code: string
+  variant_name: string
+}
+
+export interface UsedCarRecommendationResponse {
+  usedCarRecommendations: UsedCarRecommendation[]
+}

@@ -7,6 +7,7 @@ import {
   MinMaxMileage,
   MinMaxPrice,
   MinMaxYear,
+  UsedCarRecommendationResponse,
 } from 'utils/types/context'
 import {
   CityOtrOption,
@@ -39,8 +40,8 @@ const UsedCarResultPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const todayDate = new Date()
-
-  const carBrand = meta.carRecommendations.carData[0]?.model
+  const carBrand =
+    meta.carRecommendations.usedCarRecommendations[0]?.variant_name
   const metaTitle = `Harga OTR ${carBrand} - Harga OTR dengan Promo Cicilan bulan ${monthId(
     todayDate.getMonth(),
   )} | SEVA`
@@ -75,8 +76,9 @@ const UsedCarResultPage = ({
         carModel={null}
         carModelDetails={null}
         carVariantDetails={null}
-        recommendation={meta.carRecommendations.carRecommendations}
+        recommendation={[]}
         recommendationToyota={[]}
+        usedRecommendation={meta.carRecommendations.usedCarRecommendations}
       >
         <div className={styles.mobile}>
           <PLPUsedCar
@@ -99,7 +101,7 @@ type PLPProps = {
   MinMaxPrice: MinMaxPrice
   MinMaxYear: MinMaxYear
   MinMaxMileage: MinMaxMileage
-  carRecommendations: any
+  carRecommendations: UsedCarRecommendationResponse
 }
 
 const getBrand = (brand: string | string[] | undefined) => {
@@ -149,9 +151,7 @@ export const getServerSideProps: GetServerSideProps<{
     MinMaxYear: { maxYearValue: 0, minYearValue: 0 },
     MinMaxMileage: { maxMileageValue: 0, minMileageValue: 0 },
     carRecommendations: {
-      carRecommendations: [],
-      lowestCarPrice: 0,
-      highestCarPrice: 0,
+      usedCarRecommendations: [],
     },
   }
 
