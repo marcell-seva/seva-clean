@@ -39,7 +39,8 @@ const UsedCarResultPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const todayDate = new Date()
-  const carBrand = meta.carRecommendations.carRecommendations[0]?.brand
+
+  const carBrand = meta.carRecommendations.carData[0]?.model
   const metaTitle = `Harga OTR ${carBrand} - Harga OTR dengan Promo Cicilan bulan ${monthId(
     todayDate.getMonth(),
   )} | SEVA`
@@ -98,7 +99,7 @@ type PLPProps = {
   MinMaxPrice: MinMaxPrice
   MinMaxYear: MinMaxYear
   MinMaxMileage: MinMaxMileage
-  carRecommendations: CarRecommendationResponse
+  carRecommendations: any
 }
 
 const getBrand = (brand: string | string[] | undefined) => {
@@ -162,6 +163,7 @@ export const getServerSideProps: GetServerSideProps<{
     mileageRangeGroup,
     tenure,
     transmission,
+    location,
     sortBy,
   } = ctx.query
 
