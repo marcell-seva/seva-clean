@@ -1918,15 +1918,17 @@ export default function LoanCalculatorPage() {
                 setFinalLoan={setFinalLoan}
                 pageOrigination={getPageOriginationForCountlyTracker()}
               />
-              <CarRecommendations
-                carRecommendationList={carRecommendations}
-                title="Rekomendasi Sesuai
+              {carRecommendations.length > 0 && (
+                <CarRecommendations
+                  carRecommendationList={carRecommendations}
+                  title="Rekomendasi Sesuai
 Kemampuan Finansialmu"
-                onClick={() => {
-                  return
-                }}
-                selectedCity={forms?.city?.cityName}
-              />
+                  onClick={() => {
+                    return
+                  }}
+                  selectedCity={forms?.city?.cityName}
+                />
+              )}
               <CreditCualificationBenefit />
               <Articles
                 articles={articles}
