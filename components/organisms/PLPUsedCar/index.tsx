@@ -501,7 +501,7 @@ export const PLPUsedCar = ({
       })
     }
 
-    if (!isCurrentCitySameWithSSR || recommendation.length === 0) {
+    if (!isCurrentCitySameWithSSR || usedRecommendation.length === 0) {
       const params = new URLSearchParams()
       getCity().cityCode && params.append('city', getCity().cityCode as string)
       api.getMinMaxYearsUsedCar('').then((response) => {

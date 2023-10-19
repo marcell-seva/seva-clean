@@ -7,6 +7,7 @@ import {
   MinMaxMileage,
   MinMaxPrice,
   MinMaxYear,
+  UsedCarRecommendationResponse,
 } from 'utils/types/context'
 import {
   CityOtrOption,
@@ -75,8 +76,9 @@ const UsedCarResultPage = ({
         carModel={null}
         carModelDetails={null}
         carVariantDetails={null}
-        recommendation={meta.carRecommendations.carRecommendations}
+        recommendation={[]}
         recommendationToyota={[]}
+        usedRecommendation={meta.carRecommendations.usedCarRecommendations}
       >
         <div className={styles.mobile}>
           <PLPUsedCar
@@ -149,9 +151,7 @@ export const getServerSideProps: GetServerSideProps<{
     MinMaxYear: { maxYearValue: 0, minYearValue: 0 },
     MinMaxMileage: { maxMileageValue: 0, minMileageValue: 0 },
     carRecommendations: {
-      carRecommendations: [],
-      lowestCarPrice: 0,
-      highestCarPrice: 0,
+      usedCarRecommendations: [],
     },
   }
 
