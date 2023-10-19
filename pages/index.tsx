@@ -367,5 +367,10 @@ const jsonLD = (
         },
       },
     })),
+    Website: {
+      '@type': 'Website',
+      name: 'SEVA by Astra',
+      url: 'https://www.seva.id/',
+    },
   }
 }
