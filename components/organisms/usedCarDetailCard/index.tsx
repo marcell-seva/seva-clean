@@ -44,6 +44,8 @@ import {
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { LocationRed } from 'components/atoms/icon/LocationRed'
 
+const CarSkeleton = '/revamp/illustration/car-skeleton.webp'
+
 type CarDetailCardProps = {
   order?: number
   recommendation: UsedCarRecommendation
@@ -241,29 +243,25 @@ export const UsedCarDetailCard = ({
     saveDataForCountlyTrackerPageViewPDP(PreviousButton.ProductCard, 'PLP')
   }
 
-  const mainImage = recommendation?.car_gallery?.find(
-    (item) => item.media_code === 'main-image',
-  )
-
   const kilometer = recommendation?.car_specifications?.find(
-    (item) => item.spec_code === 'engine_capacity',
+    (item) => item.specCode === 'engine_capacity',
   )
 
   const transmisi = recommendation?.car_specifications?.find(
-    (item) => item.spec_code === 'transmission',
+    (item) => item.specCode === 'transmission',
   )
 
   const bahan = recommendation?.car_specifications?.find(
-    (item) => item.spec_code === 'fuel_type',
+    (item) => item.specCode === 'fuel_type',
   )
   return (
     <div className={styles.container}>
       <CardShadow className={styles.cardWrapper}>
         {order === 0 ? (
           <Image
-            src={mainImage?.url || ''}
+            src={recommendation.mainImage || CarSkeleton}
             className={styles.heroImg}
-            alt={`${recommendation.variant_name}`}
+            alt={`${recommendation.variantName}`}
             // onClick={navigateToPDP(order)}
             data-testid={elementId.CarImage}
             width={279}
@@ -272,9 +270,9 @@ export const UsedCarDetailCard = ({
           />
         ) : (
           <LazyLoadImage
-            src={mainImage?.url}
+            src={recommendation.mainImage || CarSkeleton}
             className={styles.heroImg}
-            alt={`${recommendation.variant_name}`}
+            alt={`${recommendation.variantName}`}
             // onClick={navigateToPDP(order)}
             data-testid={elementId.CarImage}
             width={279}
@@ -289,17 +287,17 @@ export const UsedCarDetailCard = ({
             className={styles.brandModelText}
             data-testid={elementId.PLP.Text + 'brand-model-mobil'}
           >
-            {recommendation.variant_name}
+            {recommendation.variantName}
           </h2>
           <span
             className={styles.priceOtrRange}
             data-testid={elementId.PLP.Text + 'range-harga'}
           >
-            {recommendation.price_formated_value}
+            {recommendation.priceFormatedValue}
           </span>
           <span className={styles.locationSmallRegular}>
             <LocationRed />
-            {recommendation.city_name}
+            {recommendation.cityName}
           </span>
           <div className={styles.infoWrapper}>
             <div

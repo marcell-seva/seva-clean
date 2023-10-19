@@ -167,28 +167,28 @@ export interface CarButtonProps {
 }
 
 export interface UsedCarMedia {
-  media_code: string
+  mediaCode: string
   order: number
   url: string
 }
 
 export interface UsedCarSpecification {
-  spec_code: string
+  specCode: string
   value: string
 }
 
 export interface UsedCarRecommendation {
-  car_id: string
-  car_gallery: UsedCarMedia[]
+  carId: string
+  mainImage: string
   car_specifications: UsedCarSpecification[]
-  city_code: number
-  city_id: number
-  city_name: string
+  cityCcode: number
+  cityId: number
+  cityName: string
   model: string
-  price_formated_value: string
-  seva_url: string
-  sku_code: string
-  variant_name: string
+  priceFormatedValue: string
+  sevaUrl: string
+  skuCode: string
+  variantName: string
 }
 
 export interface UsedCarRecommendationResponse {

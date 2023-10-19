@@ -112,12 +112,7 @@ export const PLPUsedCar = ({
 }: PLPProps) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
-  const {
-    recommendation,
-    saveRecommendation,
-    usedRecommendation,
-    saveUsedRecommendation,
-  } = useCar()
+  const { recommendation, saveRecommendation } = useCar()
   const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>([])
   const {
     bodyType,
@@ -177,7 +172,7 @@ export const PLPUsedCar = ({
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
   const [page, setPage] = useState<any>(1)
   const [sampleArray, setSampleArray] = useState({
-    items: usedRecommendation.slice(0, 10),
+    items: recommendation.slice(0, 10),
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const { cities, saveDataAnnouncementBox } = useUtils()
@@ -194,7 +189,7 @@ export const PLPUsedCar = ({
   const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
 
   const fetchMoreData = () => {
-    if (sampleArray.items.length >= usedRecommendation.length) {
+    if (sampleArray.items.length >= recommendation.length) {
       return setHasMore(false)
     }
     const timeout = setTimeout(() => {
@@ -203,10 +198,10 @@ export const PLPUsedCar = ({
         setPage(pagePlus)
         setSampleArray({
           items: sampleArray.items.concat(
-            usedRecommendation.slice(
+            recommendation.slice(
               10 * page,
               sampleArray.items.length > 10 * page + 10
-                ? usedRecommendation.length
+                ? recommendation.length
                 : 10 * page + 10,
             ),
           ),
@@ -501,9 +496,9 @@ export const PLPUsedCar = ({
   useEffect(() => {
     setPage(1)
     setHasMore(true)
-    setSampleArray({ items: usedRecommendation.slice(0, 10) })
-    saveUsedRecommendation(usedRecommendation)
-  }, [usedRecommendation])
+    setSampleArray({ items: recommendation.slice(0, 10) })
+    saveRecommendation(recommendation)
+  }, [recommendation])
 
   useEffect(() => {
     if (isActive) {
@@ -514,7 +509,7 @@ export const PLPUsedCar = ({
       })
     }
 
-    if (!isCurrentCitySameWithSSR || usedRecommendation.length === 0) {
+    if (!isCurrentCitySameWithSSR || recommendation.length === 0) {
       const params = new URLSearchParams()
       getCity().cityCode && params.append('city', getCity().cityCode as string)
       api
@@ -564,7 +559,7 @@ export const PLPUsedCar = ({
               .then((response) => {
                 if (response) {
                   patchFunnelQuery(queryParam)
-                  saveUsedRecommendation(response.carData)
+                  saveRecommendation(response.carData)
                   setResultMinMaxPrice({
                     resultMinPrice: response.lowestCarPrice || 0,
                     resultMaxPrice: response.highestCarPrice || 0,
@@ -594,7 +589,7 @@ export const PLPUsedCar = ({
         })
         .catch()
     } else {
-      saveUsedRecommendation(usedRecommendation)
+      saveRecommendation(recommendation)
       const queryParam: any = {
         downPaymentAmount: downPaymentAmount || '',
         brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
@@ -607,7 +602,7 @@ export const PLPUsedCar = ({
       }
       patchFunnelQuery(queryParam)
       setTimeout(() => {
-        // checkFincapBadge(usedRecommendation.slice(0, 10))
+        // checkFincapBadge(recommendation.slice(0, 10))
       }, 1000)
     }
     return () => cleanEffect()
@@ -629,10 +624,10 @@ export const PLPUsedCar = ({
     if (sticky && !isActive)
       return (
         <NavigationFilterMobileUsedCar
-          setRecommendations={saveUsedRecommendation}
+          setRecommendations={saveRecommendation}
           onButtonClick={handleShowFilter}
           onSortClick={handleShowSort(true)}
-          carlist={usedRecommendation || []}
+          carlist={recommendation || []}
           isFilter={isFilter}
           isFilterFinancial={isFilterFinancial}
           startScroll={startScroll}
@@ -655,7 +650,7 @@ export const PLPUsedCar = ({
     getNewFunnelRecommendations(queryParam).then((response) => {
       if (response) {
         patchFunnelQuery(queryParam)
-        saveUsedRecommendation(response.carData)
+        saveRecommendation(response.carData)
         setResultMinMaxPrice({
           resultMinPrice: response.lowestCarPrice || 0,
           resultMaxPrice: response.highestCarPrice || 0,
@@ -746,10 +741,10 @@ export const PLPUsedCar = ({
         {!showLoading && sampleArray.items.length === 0 ? (
           <>
             <NavigationFilterMobileUsedCar
-              setRecommendations={saveUsedRecommendation}
+              setRecommendations={saveRecommendation}
               onButtonClick={handleShowFilter}
               onSortClick={handleShowSort(true)}
-              carlist={usedRecommendation || []}
+              carlist={recommendation || []}
               isFilter={isFilter}
               isFilterFinancial={isFilterFinancial}
               resultMinMaxPrice={resultMinMaxPrice}
@@ -765,10 +760,10 @@ export const PLPUsedCar = ({
         ) : (
           <>
             <NavigationFilterMobileUsedCar
-              setRecommendations={saveUsedRecommendation}
+              setRecommendations={saveRecommendation}
               onButtonClick={handleShowFilter}
               onSortClick={handleShowSort(true)}
-              carlist={usedRecommendation || []}
+              carlist={recommendation || []}
               isFilter={isFilter}
               isFilterFinancial={isFilterFinancial}
               resultMinMaxPrice={resultMinMaxPrice}

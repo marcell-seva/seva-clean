@@ -37,11 +37,15 @@ import {
   AnnouncementBoxProvider,
 } from './announcementBoxContext'
 
+import { UsedCarContext, UsedCarProvider } from './usedCarContext'
+
 export {
   AuthContext,
   AuthProvider,
   CarContext,
   CarProvider,
+  UsedCarContext,
+  UsedCarProvider,
   ConfigContext,
   ConfigProvider,
   SearchWidgetContext,
