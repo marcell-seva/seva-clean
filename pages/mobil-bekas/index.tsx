@@ -7,6 +7,7 @@ import {
   MinMaxMileage,
   MinMaxPrice,
   MinMaxYear,
+  UsedCarRecommendation,
   UsedCarRecommendationResponse,
 } from 'utils/types/context'
 import {
@@ -75,7 +76,7 @@ const UsedCarResultPage = ({
         carModel={null}
         carModelDetails={null}
         carVariantDetails={null}
-        recommendation={meta.carRecommendations.usedCarRecommendations}
+        recommendation={meta.carRecommendations.carRecommendations}
         recommendationToyota={[]}
       >
         <div className={styles.mobile}>
@@ -149,7 +150,7 @@ export const getServerSideProps: GetServerSideProps<{
     MinMaxYear: { maxYearValue: 0, minYearValue: 0 },
     MinMaxMileage: { maxMileageValue: 0, minMileageValue: 0 },
     carRecommendations: {
-      usedCarRecommendations: [],
+      carRecommendations: [],
     },
   }
 

@@ -177,11 +177,11 @@ export interface UsedCarSpecification {
   value: string
 }
 
-export interface UsedCarRecommendation {
+export type UsedCarRecommendation = {
   carId: string
   mainImage: string
-  car_specifications: UsedCarSpecification[]
-  cityCcode: number
+  carSpecifications: UsedCarSpecification[]
+  cityCode: number
   cityId: number
   cityName: string
   model: string
@@ -189,8 +189,10 @@ export interface UsedCarRecommendation {
   sevaUrl: string
   skuCode: string
   variantName: string
+  mileage: number
+  year: number
 }
 
 export interface UsedCarRecommendationResponse {
-  usedCarRecommendations: UsedCarRecommendation[]
+  carRecommendations: UsedCarRecommendation[]
 }

@@ -243,15 +243,11 @@ export const UsedCarDetailCard = ({
     saveDataForCountlyTrackerPageViewPDP(PreviousButton.ProductCard, 'PLP')
   }
 
-  const kilometer = recommendation?.car_specifications?.find(
-    (item) => item.specCode === 'engine_capacity',
-  )
-
-  const transmisi = recommendation?.car_specifications?.find(
+  const transmisi = recommendation?.carSpecifications?.find(
     (item) => item.specCode === 'transmission',
   )
 
-  const bahan = recommendation?.car_specifications?.find(
+  const bahanBakar = recommendation?.carSpecifications?.find(
     (item) => item.specCode === 'fuel_type',
   )
   return (
@@ -305,7 +301,9 @@ export const UsedCarDetailCard = ({
               data-testid={elementId.PLP.Text + 'nominal-cicilan'}
             >
               <span className={styles.smallRegular}>Kilometer</span>
-              <span className={styles.bodyPriceText}>{kilometer?.value}</span>
+              <span className={styles.bodyPriceText}>
+                {recommendation.mileage.toLocaleString('id-ID')}km
+              </span>
             </div>
             <div
               className={styles.detailInfoWrapper}
@@ -319,7 +317,7 @@ export const UsedCarDetailCard = ({
               data-testid={elementId.PLP.Text + 'lama-tenor'}
             >
               <span className={styles.smallRegular}>Bahan Bakar</span>
-              <span className={styles.bodyPriceText}>{bahan?.value}</span>
+              <span className={styles.bodyPriceText}>{bahanBakar?.value}</span>
             </div>
           </div>
 

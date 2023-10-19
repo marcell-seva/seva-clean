@@ -55,7 +55,7 @@ export const NavigationFilterMobileUsedCar = ({
   const router = useRouter()
   const filterSortOption = sortOptions.filter((x) => x.value === sortBy)[0]
   const sortFilter = filterSortOption?.label || ''
-  const summaryCar = carlist?.length || 0
+  const summaryCar = carlist || 0
   const onClickOK = () => {
     onButtonClick && onButtonClick(true)
   }
@@ -166,7 +166,7 @@ export const NavigationFilterMobileUsedCar = ({
   }
   const newFunnel = async (filter: any) => {
     getUsedCarFunnelRecommendations(filter).then((response: any) => {
-      setRecommendations(response.carRecommendations)
+      setRecommendations(response.carData)
       const paramUrl = {
         priceRangeGroup: filter.priceRangeGroup,
         yearRangeGroup: filter.yearRangeGroup,

@@ -83,6 +83,7 @@ import { decryptValue } from 'utils/encryptionUtils'
 import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 import { useUtils } from 'services/context/utilsContext'
 import dynamic from 'next/dynamic'
+import { usedCar } from 'services/context/usedCarContext'
 
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
@@ -112,7 +113,7 @@ export const PLPUsedCar = ({
 }: PLPProps) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
-  const { recommendation, saveRecommendation } = useCar()
+  const { recommendation, saveRecommendation } = usedCar()
   const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>([])
   const {
     bodyType,
@@ -171,6 +172,7 @@ export const PLPUsedCar = ({
   const [showLoading, setShowLoading] = useState(true)
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
   const [page, setPage] = useState<any>(1)
+  const [totalItems, setTotalItems] = useState(0)
   const [sampleArray, setSampleArray] = useState({
     items: recommendation.slice(0, 10),
   })
@@ -189,22 +191,19 @@ export const PLPUsedCar = ({
   const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
 
   const fetchMoreData = () => {
-    if (sampleArray.items.length >= recommendation.length) {
+    if (sampleArray.items.length >= totalItems) {
       return setHasMore(false)
     }
     const timeout = setTimeout(() => {
       if (sampleArray.items.length >= 10 * page) {
         const pagePlus = page + 1
         setPage(pagePlus)
-        setSampleArray({
-          items: sampleArray.items.concat(
-            recommendation.slice(
-              10 * page,
-              sampleArray.items.length > 10 * page + 10
-                ? recommendation.length
-                : 10 * page + 10,
-            ),
-          ),
+        api.getUsedCars(`?page=${pagePlus}`).then((response) => {
+          if (response) {
+            setSampleArray({
+              items: sampleArray.items.concat(response.carData),
+            })
+          }
         })
       }
       clearTimeout(timeout)
@@ -559,6 +558,7 @@ export const PLPUsedCar = ({
               .then((response) => {
                 if (response) {
                   patchFunnelQuery(queryParam)
+                  setTotalItems(response.totalItems)
                   saveRecommendation(response.carData)
                   setResultMinMaxPrice({
                     resultMinPrice: response.lowestCarPrice || 0,
@@ -627,7 +627,7 @@ export const PLPUsedCar = ({
           setRecommendations={saveRecommendation}
           onButtonClick={handleShowFilter}
           onSortClick={handleShowSort(true)}
-          carlist={recommendation || []}
+          carlist={totalItems || 0}
           isFilter={isFilter}
           isFilterFinancial={isFilterFinancial}
           startScroll={startScroll}
@@ -744,7 +744,7 @@ export const PLPUsedCar = ({
               setRecommendations={saveRecommendation}
               onButtonClick={handleShowFilter}
               onSortClick={handleShowSort(true)}
-              carlist={recommendation || []}
+              carlist={totalItems || 0}
               isFilter={isFilter}
               isFilterFinancial={isFilterFinancial}
               resultMinMaxPrice={resultMinMaxPrice}
@@ -763,7 +763,7 @@ export const PLPUsedCar = ({
               setRecommendations={saveRecommendation}
               onButtonClick={handleShowFilter}
               onSortClick={handleShowSort(true)}
-              carlist={recommendation || []}
+              carlist={totalItems || 0}
               isFilter={isFilter}
               isFilterFinancial={isFilterFinancial}
               resultMinMaxPrice={resultMinMaxPrice}
