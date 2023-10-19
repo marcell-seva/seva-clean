@@ -349,7 +349,11 @@ const UpdateLeadsFormOTO = ({
         return
       }
 
-      if (data.carVariantId === '') {
+      if (
+        data.carVariantId === '' &&
+        data.leadResponse === true &&
+        data.isLeadQualified == true
+      ) {
         setForms({
           ...forms,
           variant: {
