@@ -22,7 +22,7 @@ import { defaultSeoImage } from 'utils/helpers/const'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import styles from 'styles/pages/plpUsed.module.scss'
-import { CarProvider } from 'services/context'
+import { CarProvider, UsedCarProvider } from 'services/context'
 import { monthId } from 'utils/handler/date'
 import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 import { useMediaQuery } from 'react-responsive'
@@ -46,7 +46,7 @@ const UsedCarResultPage = ({
     todayDate.getMonth(),
   )} | SEVA`
   const metaDesc = `Beli mobil ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
-  const metaBrandDesc = `Beli mobil ${carBrand} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
+  const metaBrandDesc = `Beli mobil ${brand} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
   const descTag = router.query.brand ? metaBrandDesc : metaDesc
   const [isMobile, setIsMobile] = useState(isSsrMobileLocal)
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
@@ -69,16 +69,15 @@ const UsedCarResultPage = ({
   return (
     <>
       <Seo title={metaTitle} description={descTag} image={defaultSeoImage} />
-      <CarProvider
+      <UsedCarProvider
         car={null}
         carOfTheMonth={[]}
         typeCar={null}
         carModel={null}
         carModelDetails={null}
         carVariantDetails={null}
-        recommendation={[]}
+        recommendation={meta.carRecommendations.usedCarRecommendations}
         recommendationToyota={[]}
-        usedRecommendation={meta.carRecommendations.usedCarRecommendations}
       >
         <div className={styles.mobile}>
           <PLPUsedCar
@@ -87,7 +86,7 @@ const UsedCarResultPage = ({
             minmaxYear={meta.MinMaxYear}
           />
         </div>
-      </CarProvider>
+      </UsedCarProvider>
     </>
   )
 }

@@ -50,6 +50,8 @@ import { usedCar } from 'services/context/usedCarContext'
 
 const CarSkeleton = '/revamp/illustration/car-skeleton.webp'
 
+const CarSkeleton = '/revamp/illustration/car-skeleton.webp'
+
 type CarDetailCardProps = {
   order?: number
   recommendation: UsedCarRecommendation
