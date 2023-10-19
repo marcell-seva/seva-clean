@@ -1,9 +1,11 @@
 import { CarDetailCard } from './carDetailCard'
 import FilterMobile from './filterMobile'
+import FilterMobileUsedCar from './filterMobileUsedCar'
 import { FooterMobile } from './footerMobile'
 import { HeaderMobile } from './headerMobile'
 import { LeadsFormPrimary } from './leadsForm/primary'
 import { NavigationFilterMobile } from './navigationFilterMobile'
+import { NavigationFilterMobileUsedCar } from './navigationFilterMobileUsedCar'
 import { PLP } from './PLP'
 import { PLPEmpty } from './plpEmpty'
 import { PLPSkeleton } from './plpSkeleton'
@@ -12,6 +14,7 @@ import { PopupResultInfo } from './popupResultFilter/resultInfo'
 import { PopupResultMudah } from './popupResultFilter/resultMudah'
 import { PopupResultSulit } from './popupResultFilter/resultSulit'
 import SortingMobile from './sortingMobile'
+import SortingMobileUsedCar from './sortingMobileUsedCar'
 import PdpMobile from './PdpMobile'
 import { PdpLowerSection } from './pdpLowerSection'
 import { PdpUpperSection } from './pdpUpperSection'
@@ -74,8 +77,11 @@ export {
   PopupResultMudah,
   PopupResultInfo,
   SortingMobile,
+  SortingMobileUsedCar,
   NavigationFilterMobile,
+  NavigationFilterMobileUsedCar,
   FilterMobile,
+  FilterMobileUsedCar,
   PLP,
   PdpMobile,
   PdpLowerSection,

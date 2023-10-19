@@ -5,8 +5,7 @@
   display: block;
   @include lg {
     max-width: 570px;
-    margin-left: auto;
-    margin-right: auto;
-    position: flex;
+    margin: 0% auto;
+    position: relative;
   }
 }

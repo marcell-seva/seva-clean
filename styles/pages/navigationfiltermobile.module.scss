@@ -9,7 +9,7 @@
 .stickycontainer {
   position: fixed;
   z-index: 5;
-  width: 100%;
+  max-width: 570px;
   transition: top 700ms;
   padding: 0 16px;
   box-shadow: 0px 4px 4px 1px rgba(108, 112, 133, 0.2);

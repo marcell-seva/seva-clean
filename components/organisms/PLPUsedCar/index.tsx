@@ -7,7 +7,7 @@ import {
   CarDetailCard,
   FooterMobile,
   HeaderMobile,
-  NavigationFilterMobile,
+  NavigationFilterMobileUsedCar,
   PLPEmpty,
   UsedCarDetailCard,
 } from 'components/organisms'
@@ -33,7 +33,7 @@ import React, { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { api } from 'services/api'
 import { useCar } from 'services/context/carContext'
-import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { getConvertFilterIncome } from 'utils/filterUtils'
@@ -56,7 +56,9 @@ import {
   CarRecommendation,
   CarRecommendationResponse,
   FilterParam,
+  MinMaxMileage,
   MinMaxPrice,
+  MinMaxYear,
 } from 'utils/types/context'
 import { MoengageViewCarSearch } from 'utils/types/moengage'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
@@ -78,11 +80,11 @@ import dynamic from 'next/dynamic'
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
 )
-const FilterMobile = dynamic(() =>
-  import('components/organisms').then((mod) => mod.FilterMobile),
+const FilterMobileUsedCar = dynamic(() =>
+  import('components/organisms').then((mod) => mod.FilterMobileUsedCar),
 )
-const SortingMobile = dynamic(() =>
-  import('components/organisms').then((mod) => mod.SortingMobile),
+const SortingMobileUsedCar = dynamic(() =>
+  import('components/organisms').then((mod) => mod.SortingMobileUsedCar),
 )
 const PopupPromo = dynamic(() =>
   import('components/organisms').then((mod) => mod.PopupPromo),
@@ -102,9 +104,17 @@ const CitySelectorModal = dynamic(() =>
 
 interface PLPProps {
   minmaxPrice: MinMaxPrice
+  minmaxYear: MinMaxYear
+  minmaxMileage: MinMaxMileage
+  isOTO?: boolean
 }
 
-export const PLPUsedCar = ({ minmaxPrice }: PLPProps) => {
+export const PLPUsedCar = ({
+  minmaxPrice,
+  minmaxMileage,
+  minmaxYear,
+  isOTO = false,
+}: PLPProps) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
   const { recommendation, saveRecommendation } = useCar()
@@ -121,6 +131,9 @@ export const PLPUsedCar = ({ minmaxPrice }: PLPProps) => {
   } = router.query as FilterParam
 
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
+  const [minMaxYear, setMinMaxYear] = useState<MinMaxYear>(minmaxYear)
+  const [minMaxMileage, setMinMaxMileage] =
+    useState<MinMaxMileage>(minmaxMileage)
 
   const [cityOtr] = useLocalStorage<Location | null>(
     LocalStorageKey.CityOtr,
@@ -130,7 +143,7 @@ export const PLPUsedCar = ({ minmaxPrice }: PLPProps) => {
     resultMinPrice: 0,
     resultMaxPrice: 0,
   })
-  const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
+  const { funnelQuery, patchFunnelQuery } = useFunnelQueryUsedCarData()
   const [isButtonClick, setIsButtonClick] = useState(false)
   const [isResetFilter, setIsResetFilter] = useState(false)
   const showFilter =
@@ -452,31 +465,27 @@ export const PLPUsedCar = ({ minmaxPrice }: PLPProps) => {
     if (
       (funnelQuery.brand && funnelQuery.brand.length > 0) ||
       (funnelQuery.bodyType && funnelQuery.bodyType.length > 0) ||
+      (funnelQuery.location && funnelQuery.location.length > 0) ||
       (funnelQuery.priceRangeGroup !==
         minMaxPrice.minPriceValue.toString() +
           '-' +
           minMaxPrice.maxPriceValue.toString() &&
         funnelQuery.priceRangeGroup !== '' &&
         funnelQuery.priceRangeGroup !== undefined) ||
-      // funnelQuery.downPaymentAmount ||
-      funnelQuery.monthlyIncome ||
-      funnelQuery.age ||
+      (funnelQuery.yearRangeGroup !==
+        minmaxYear.minYearValue.toString() +
+          '-' +
+          minMaxYear.maxYearValue.toString() &&
+        funnelQuery.yearRangeGroup !== '' &&
+        funnelQuery.yearRangeGroup !== undefined) ||
       funnelQuery.tenure !== 5 ||
+      (funnelQuery.transmission !== '' &&
+        funnelQuery.transmission !== undefined) ||
       (brand && brand.length > 0)
     ) {
       setIsFilter(true)
     } else {
       setIsFilter(false)
-    }
-
-    if (
-      funnelQuery.downPaymentAmount &&
-      funnelQuery.monthlyIncome &&
-      funnelQuery.age
-    ) {
-      setIsFilterFinancial(true)
-    } else {
-      setIsFilterFinancial(false)
     }
   }, [funnelQuery, brand])
 
@@ -517,7 +526,7 @@ export const PLPUsedCar = ({ minmaxPrice }: PLPProps) => {
               maxPriceValue: response.maxPriceValue,
             })
             const minTemp = priceRangeGroup
-              ? response.data.minPriceValue >
+              ? response?.data?.minPriceValue >
                 Number(
                   priceRangeGroup && priceRangeGroup?.toString().split('-')[0],
                 )
@@ -525,10 +534,10 @@ export const PLPUsedCar = ({ minmaxPrice }: PLPProps) => {
                     priceRangeGroup &&
                       priceRangeGroup?.toString().split('-')[0],
                   )
-                : response.data.minPriceValue
+                : response?.data?.minPriceValue
               : ''
             const maxTemp = priceRangeGroup
-              ? response.data.maxPriceValue <
+              ? response?.data?.maxPriceValue <
                 Number(
                   priceRangeGroup && priceRangeGroup?.toString().split('-')[1],
                 )
@@ -619,7 +628,7 @@ export const PLPUsedCar = ({ minmaxPrice }: PLPProps) => {
   const stickyFilter = () => {
     if (sticky && !isActive)
       return (
-        <NavigationFilterMobile
+        <NavigationFilterMobileUsedCar
           setRecommendations={saveRecommendation}
           onButtonClick={handleShowFilter}
           onSortClick={handleShowSort(true)}
@@ -731,11 +740,12 @@ export const PLPUsedCar = ({ minmaxPrice }: PLPProps) => {
           setShowAnnouncementBox={setIsShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
           pageOrigination={'PLP'}
+          isOTO={isOTO}
         />
 
         {!showLoading && sampleArray.items.length === 0 ? (
           <>
-            <NavigationFilterMobile
+            <NavigationFilterMobileUsedCar
               setRecommendations={saveRecommendation}
               onButtonClick={handleShowFilter}
               onSortClick={handleShowSort(true)}
@@ -754,7 +764,7 @@ export const PLPUsedCar = ({ minmaxPrice }: PLPProps) => {
           </>
         ) : (
           <>
-            <NavigationFilterMobile
+            <NavigationFilterMobileUsedCar
               setRecommendations={saveRecommendation}
               onButtonClick={handleShowFilter}
               onSortClick={handleShowSort(true)}
@@ -847,7 +857,7 @@ export const PLPUsedCar = ({ minmaxPrice }: PLPProps) => {
             onPage="LP"
           />
         )}
-        <FilterMobile
+        <FilterMobileUsedCar
           onButtonClick={(
             value: boolean | ((prevState: boolean) => boolean),
           ) => {
@@ -857,11 +867,12 @@ export const PLPUsedCar = ({ minmaxPrice }: PLPProps) => {
           isResetFilter={isResetFilter}
           setIsResetFilter={setIsResetFilter}
           minMaxPrice={minMaxPrice}
+          minMaxYear={minMaxYear}
+          minMaxMileage={minMaxMileage}
           isFilter={isFilter}
-          isFilterFinancial={isFilterFinancial}
           setIsFilter={setIsFilter}
         />
-        <SortingMobile
+        <SortingMobileUsedCar
           open={openSorting}
           onClose={handleShowSort(false)}
           onPickClose={(value: any, label) => {

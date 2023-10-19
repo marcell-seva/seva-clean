@@ -93,13 +93,36 @@ export const getUsedCarFunnelRecommendations = (
 
   tenure && params.append('tenure', String(tenure))
   transmission && params.append('transmission', String(transmission))
-  priceRangeGroup && params.append('priceRangeGroup', priceRangeGroup as string)
+  priceRangeGroup &&
+    params.append(
+      'priceStart',
+      priceRangeGroup?.toString().split('-')[0] as string,
+    )
+  priceRangeGroup &&
+    params.append(
+      'priceEnd',
+      priceRangeGroup?.toString().split('-')[1] as string,
+    )
   mileageRangeGroup &&
-    params.append('mileageRangeGroup', mileageRangeGroup as string)
-  yearRangeGroup && params.append('yearRangeGroup', yearRangeGroup as string)
+    params.append(
+      'mileageStart',
+      mileageRangeGroup?.toString().split('-')[0] as string,
+    )
+  mileageRangeGroup &&
+    params.append(
+      'mileageEnd',
+      mileageRangeGroup?.toString().split('-')[1] as string,
+    )
+  yearRangeGroup &&
+    params.append(
+      'yearStart',
+      yearRangeGroup?.toString().split('-')[0] as string,
+    )
+  yearRangeGroup &&
+    params.append('yearEnd', yearRangeGroup?.toString().split('-')[1] as string)
 
-  getCity().cityCode && params.append('city', getCity().cityCode as string)
-  getCity().id && params.append('cityId', getCity().id as string)
+  // getCity().cityCode && params.append('city', getCity().cityCode as string)
+  // getCity().id && params.append('cityId', getCity().id as string)
 
   return api.getUsedCars('', { params })
 }

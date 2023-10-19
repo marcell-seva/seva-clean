@@ -11,6 +11,34 @@ export const sortOptions = [
   },
 ]
 
+export const sortOptionsUsedCar = [
+  {
+    label: 'Relevansi',
+    value: 'relevance',
+    testid: 'sorting-relevansi',
+  },
+  {
+    label: 'Harga Terendah',
+    value: 'lowToHigh',
+    testid: 'sorting-harga-terendah',
+  },
+  {
+    label: 'Harga Tertinggi',
+    value: 'highToLow',
+    testid: 'sorting-harga-tertinggi',
+  },
+  {
+    label: 'Mobil Terbaru',
+    value: 'latestCar',
+    testid: 'sorting-mobil-terbaru',
+  },
+  {
+    label: 'Mobil Terlama',
+    value: 'oldestCar',
+    testid: 'sorting-mobil-terlama',
+  },
+]
+
 export const ageOptions = [
   { label: '18-27', value: '18-27', testid: '18-27' },
   { label: '28-34', value: '28-34', testid: '28-34' },
