@@ -133,6 +133,9 @@ export const PLPUsedCar = ({
     sortBy,
   } = router.query as FilterParam
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
+  const [minMaxYear, setMinMaxYear] = useState<MinMaxYear>(minmaxYear)
+  const [minMaxMileage, setMinMaxMileage] =
+    useState<MinMaxMileage>(minmaxMileage)
 
   const [minMaxYear, setMinMaxYear] = useState<MinMaxYear>(minmaxYear)
   const [minMaxMileage, setMinMaxMileage] =
