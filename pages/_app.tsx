@@ -78,7 +78,7 @@ export default function App({ Component, pageProps }: AppProps) {
     if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'production') {
       if (client) {
         setTimeout(() => {
-          window.fbq('track', FBPixelStandardEvent.PageView)
+          window?.fbq('track', FBPixelStandardEvent.PageView)
         }, 1000)
       }
     }

@@ -32,7 +32,6 @@ import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { api } from 'services/api'
-
 import { useCar } from 'services/context/carContext'
 import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
@@ -97,11 +96,11 @@ import dynamic from 'next/dynamic'
 import { Currency } from 'utils/handler/calculation'
 import { useUtils } from 'services/context/utilsContext'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
+import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 import { getCarModelDetailsById } from 'utils/handler/carRecommendation'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
-import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
-import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -151,7 +150,7 @@ export interface FormLCState {
   leasingOption?: string
 }
 
-export const getSlug = (query: any, index: number) => {
+const getSlug = (query: any, index: number) => {
   return (
     query.slug && query.slug.length > index && (query.slug[index] as string)
   )
@@ -625,6 +624,7 @@ export default function LoanCalculatorPage() {
     fetchArticles()
     getAnnouncementBox()
     fetchDataContext()
+    fetchMobileTopMenus()
     const timeoutCountlyTracker = setTimeout(() => {
       if (!isSentCountlyPageView) {
         trackCountlyPageView()
@@ -1423,6 +1423,10 @@ export default function LoanCalculatorPage() {
     saveMobileWebFooterMenus(footerRes.data)
     saveCities(cityRes)
   }
+  const fetchMobileTopMenus = async () => {
+    const menus = await api.getMobileHeaderMenu()
+    saveMobileWebTopMenus(menus.data)
+  }
 
   useEffect(() => {
     if (modelError) {
@@ -1914,15 +1918,17 @@ export default function LoanCalculatorPage() {
                 setFinalLoan={setFinalLoan}
                 pageOrigination={getPageOriginationForCountlyTracker()}
               />
-              <CarRecommendations
-                carRecommendationList={carRecommendations}
-                title="Rekomendasi Sesuai
+              {carRecommendations.length > 0 && (
+                <CarRecommendations
+                  carRecommendationList={carRecommendations}
+                  title="Rekomendasi Sesuai
 Kemampuan Finansialmu"
-                onClick={() => {
-                  return
-                }}
-                selectedCity={forms?.city?.cityName}
-              />
+                  onClick={() => {
+                    return
+                  }}
+                  selectedCity={forms?.city?.cityName}
+                />
+              )}
               <CreditCualificationBenefit />
               <Articles
                 articles={articles}

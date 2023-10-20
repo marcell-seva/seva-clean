@@ -52,7 +52,6 @@ const LpCarRecommendations = ({
   const router = useRouter()
   const swiperRef = useRef<SwiperType>()
   const { recommendation } = useCar()
-
   const [recommendationList, setRecommendationList] =
     useState<CarRecommendation[]>(dataReccomendation)
   const [city] = useLocalStorage(LocalStorageKey.CityOtr, null)
@@ -128,7 +127,6 @@ const LpCarRecommendations = ({
   const handleClickLabel = () => {
     setOpenPromo(true)
   }
-
   const handleShowRecommendation = () => {
     if (!selectedBrand) {
       const mainRecommendation: any = recommendation?.sort(
