@@ -203,4 +203,5 @@ export type UsedCarRecommendation = {
 
 export interface UsedCarRecommendationResponse {
   carRecommendations: UsedCarRecommendation[]
+  totalItems: number
 }

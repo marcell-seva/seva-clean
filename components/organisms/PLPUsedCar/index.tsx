@@ -114,7 +114,8 @@ export const PLPUsedCar = ({
 }: PLPProps) => {
   useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
-  const { recommendation, saveRecommendation } = usedCar()
+  const { recommendation, saveRecommendation, totalItems, saveTotalItems } =
+    usedCar()
   const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>([])
   const {
     bodyType,
@@ -178,9 +179,9 @@ export const PLPUsedCar = ({
   const [showLoading, setShowLoading] = useState(true)
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
   const [page, setPage] = useState<any>(1)
-  const [totalItems, setTotalItems] = useState(0)
+  // const [totalItems, setTotalItems] = useState(0)
   const [sampleArray, setSampleArray] = useState({
-    items: recommendation?.slice(0, 10),
+    items: recommendation,
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const { cities, saveDataAnnouncementBox } = useUtils()
@@ -198,7 +199,7 @@ export const PLPUsedCar = ({
   const [cityListPLP, setCityListPLP] = useState([])
 
   const fetchMoreData = () => {
-    if (sampleArray.items.length >= totalItems) {
+    if (sampleArray.items.length >= totalItems!) {
       return setHasMore(false)
     }
     const timeout = setTimeout(() => {
@@ -505,7 +506,7 @@ export const PLPUsedCar = ({
   useEffect(() => {
     setPage(1)
     setHasMore(true)
-    setSampleArray({ items: recommendation?.slice(0, 10) })
+    setSampleArray({ items: recommendation })
     saveRecommendation(recommendation)
   }, [recommendation])
 
@@ -555,18 +556,18 @@ export const PLPUsedCar = ({
               .then((response) => {
                 if (response) {
                   patchFunnelQuery(queryParam)
-                  setTotalItems(response.totalItems)
                   saveRecommendation(response.carData)
                   setResultMinMaxPrice({
                     resultMinPrice: response.lowestCarPrice || 0,
                     resultMaxPrice: response.highestCarPrice || 0,
                   })
+                  saveTotalItems(response.totalItems)
                   setPage(1)
                   setSampleArray({
-                    items: response.carData?.slice(0, 10),
+                    items: response.carData,
                   })
                   setTimeout(() => {
-                    checkFincapBadge(response.carData?.slice(0, 10))
+                    checkFincapBadge(response.carData)
                   }, 1000)
                 }
                 setShowLoading(false)
@@ -586,6 +587,7 @@ export const PLPUsedCar = ({
         })
         .catch()
     } else {
+      saveTotalItems(totalItems!)
       saveRecommendation(recommendation)
       const queryParam: any = {
         brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
@@ -621,6 +623,7 @@ export const PLPUsedCar = ({
       return (
         <NavigationFilterMobileUsedCar
           setRecommendations={saveRecommendation}
+          setTotalItems={saveTotalItems}
           onButtonClick={handleShowFilter}
           onSortClick={handleShowSort(true)}
           carlist={totalItems || 0}
@@ -646,7 +649,9 @@ export const PLPUsedCar = ({
     }
     getUsedCarFunnelRecommendations(queryParam).then((response) => {
       if (response) {
+        console.log(response)
         patchFunnelQuery(queryParam)
+        saveTotalItems(response.totalItems)
         saveRecommendation(response.carData)
         setResultMinMaxPrice({
           resultMinPrice: response.lowestCarPrice || 0,
@@ -655,7 +660,7 @@ export const PLPUsedCar = ({
         setPage(1)
 
         setSampleArray({
-          items: response.carData?.slice(0, 10),
+          items: response.carData,
         })
       }
       setShowLoading(false)
@@ -739,6 +744,7 @@ export const PLPUsedCar = ({
           <>
             <NavigationFilterMobileUsedCar
               setRecommendations={saveRecommendation}
+              setTotalItems={saveTotalItems}
               onButtonClick={handleShowFilter}
               onSortClick={handleShowSort(true)}
               carlist={totalItems || 0}
@@ -760,6 +766,7 @@ export const PLPUsedCar = ({
           <>
             <NavigationFilterMobileUsedCar
               setRecommendations={saveRecommendation}
+              setTotalItems={saveTotalItems}
               onButtonClick={handleShowFilter}
               onSortClick={handleShowSort(true)}
               carlist={totalItems || 0}

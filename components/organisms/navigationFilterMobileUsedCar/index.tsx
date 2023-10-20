@@ -22,6 +22,7 @@ import {
   getNewFunnelRecommendations,
   getUsedCarFunnelRecommendations,
 } from 'utils/handler/funnel'
+import { usedCar } from 'services/context/usedCarContext'
 
 type NavFilterMobileUsedCarProps = {
   carlist?: any
@@ -33,6 +34,7 @@ type NavFilterMobileUsedCarProps = {
   isFilterFinancial?: boolean
   resultMinMaxPrice?: any
   setRecommendations: any
+  setTotalItems: any
   isShowAnnouncementBox?: boolean | null
   cityList?: any
   isOTO?: boolean
@@ -47,6 +49,7 @@ export const NavigationFilterMobileUsedCar = ({
   isFilter,
   isFilterFinancial,
   setRecommendations,
+  setTotalItems,
   isShowAnnouncementBox,
   cityList,
   isOTO,
@@ -174,6 +177,7 @@ export const NavigationFilterMobileUsedCar = ({
   }, [funnelQuery.city_id])
   const newFunnel = async (filter: any) => {
     getUsedCarFunnelRecommendations(filter).then((response: any) => {
+      setTotalItems(response.totalItems)
       setRecommendations(response.carData)
       const paramUrl = {
         priceStart: filter.priceStart,
