@@ -605,7 +605,7 @@ const MultiKK = ({
             trxCode: sendData.tsTrxCode ?? '',
           })
           removeSessionStorage(SessionStorageKey.KKIAFlowType)
-          router.push(multiResultCreditQualificationPageUrl)
+          window.location.href = multiResultCreditQualificationPageUrl
         }
         setLoadSubmit(false)
       })
