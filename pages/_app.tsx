@@ -76,7 +76,11 @@ export default function App({ Component, pageProps }: AppProps) {
       TagManager.initialize({ gtmId: 'GTM-TV9J5JM' })
     }
     if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'production') {
-      client && window.fbq('track', FBPixelStandardEvent.PageView)
+      if (client) {
+        setTimeout(() => {
+          window.fbq('track', FBPixelStandardEvent.PageView)
+        }, 1000)
+      }
     }
   }, [])
 
