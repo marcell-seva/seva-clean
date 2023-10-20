@@ -29,12 +29,12 @@ export const sortOptionsUsedCar = [
   },
   {
     label: 'Mobil Terbaru',
-    value: 'latestCar',
+    value: 'newest',
     testid: 'sorting-mobil-terbaru',
   },
   {
     label: 'Mobil Terlama',
-    value: 'oldestCar',
+    value: 'oldest',
     testid: 'sorting-mobil-terlama',
   },
 ]

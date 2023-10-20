@@ -1,4 +1,4 @@
-import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
 import React from 'react'
 import { BottomSheetProps } from 'react-spring-bottom-sheet'
 import { BottomSheet } from 'components/atoms'
@@ -25,7 +25,7 @@ const SortingMobileUsedCar = ({
   selectedSortMultiKK = 'highToLow',
   ...props
 }: SortingMobileUsedCarProps) => {
-  const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
+  const { funnelQuery, patchFunnelQuery } = useFunnelQueryUsedCarData()
 
   const onChooseOption = (value: FormControlValue, label: FormControlValue) => {
     patchFunnelQuery({ sortBy: value as string })
