@@ -26,7 +26,7 @@ import elementId from 'helpers/elementIds'
 import urls from 'utils/helpers/url'
 import { useRouter } from 'next/router'
 import { CarRecommendationResponse, FunnelQuery } from 'utils/types/context'
-import { useCar } from 'services/context/carContext'
+import { usedCar } from 'services/context/usedCarContext'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { PreviousButton, navigateToPLP } from 'utils/navigate'
 import { trackEventCountly } from 'helpers/countly/countly'
@@ -137,7 +137,7 @@ const FilterMobileUsedCar = ({
   const [isCheckedType, setIsCheckedType] = useState<string[]>(
     funnelQuery.bodyType ? funnelQuery.bodyType : [],
   )
-  const { saveRecommendation } = useCar()
+  const { saveRecommendation } = usedCar()
   const [isApplied, setIsApplied] = useState(false)
   const [resetTmp, setResetTmp] = useState(false)
 
