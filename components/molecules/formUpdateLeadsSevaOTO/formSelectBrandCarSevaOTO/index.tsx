@@ -174,7 +174,7 @@ export const FormSelectBrandCarSevaOTO = ({
   const paramQuery = funnelQuery
 
   return (
-    <div className={styles.container}>
+    <div style={{ paddingTop: '16px', paddingBottom: '16px' }}>
       <Space size={[16, 16]} wrap>
         {carList.map(({ key, icon, value, isChecked }) => {
           return (
