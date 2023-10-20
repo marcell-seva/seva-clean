@@ -37,6 +37,8 @@ export const PopupResultInfo = (props: PopupResultInfo) => {
             src={PLPEmpty}
             className={styles.imageStyle}
             alt={'image-result-info'}
+            width={250}
+            height={131}
           />
         </div>
         <p className={styles.titleStyle}>
