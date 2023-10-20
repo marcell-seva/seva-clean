@@ -282,7 +282,7 @@ export const CreditTab = () => {
       (storedFilter?.downPaymentAmount &&
         storedFilter?.downPaymentAmount.toString()) ||
       '',
-    paymentOption: InstallmentTypeOptions.ADDM,
+    paymentOption: InstallmentTypeOptions.ADDB,
     isValidPromoCode: true,
   })
 
@@ -1028,6 +1028,7 @@ export const CreditTab = () => {
           subsidiDp: isAppliedSDD01Promo
             ? currentTenurePermutation[0]?.subsidiDp
             : 0,
+          dpDiscount: currentTenurePermutation[0]?.dpDiscount,
         })
       } catch (e: any) {
         if (e?.response?.data?.message) {
@@ -1154,6 +1155,7 @@ export const CreditTab = () => {
         dpAmount: dpValue,
         monthlyIncome: forms.monthlyIncome,
         otr: getCarOtrNumber() - getCarDiscountNumber(),
+        variantId: forms.variant?.variantId,
       }
 
       api
@@ -1242,9 +1244,7 @@ export const CreditTab = () => {
     }
   }
 
-  const handleRedirectToWhatsapp = async (
-    loan: SpecialRateListWithPromoType,
-  ) => {
+  const trackCountlyDirectToWhatsapp = async (tenure: number) => {
     let temanSevaStatus = 'No'
     if (referralCodeFromUrl) {
       temanSevaStatus = 'Yes'
@@ -1269,7 +1269,7 @@ export const CreditTab = () => {
           : carModelLoanRankPLP && carModelLoanRankPLP === 'Red'
           ? 'Sulit disetujui'
           : 'Null',
-      TENOR_OPTION: loan?.tenure ? loan?.tenure + ' Tahun' : 'Null',
+      TENOR_OPTION: tenure ? tenure + ' Tahun' : 'Null',
       TENOR_RESULT:
         dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Green'
           ? 'Mudah disetujui'
@@ -1284,8 +1284,59 @@ export const CreditTab = () => {
       INCOME_CHANGE: 'Null',
       OCCUPATION: 'Null',
     })
-    const { model, variant, downPaymentAmount } = forms
-    const message = `Halo, saya tertarik dengan ${model?.modelName} ${variant?.variantName} dengan DP sebesar Rp ${downPaymentAmount}, cicilan per bulannya Rp ${loan?.installment}, dan tenor ${loan?.tenure} tahun.`
+  }
+
+  const handleRedirectToWhatsapp = async (
+    loan: SpecialRateListWithPromoType,
+  ) => {
+    trackCountlyDirectToWhatsapp(loan.tenure)
+
+    const { model, variant } = forms
+
+    const selectedLoanData = insuranceAndPromoForAllTenure.filter(
+      (x) => x.tenure === loan.tenure,
+    )[0]
+
+    const getPromoListForWhatsapp = (): string => {
+      const allParentPromoTitle = selectedLoanData.selectedPromo.map((item) => {
+        return item.promo
+      })
+      if (allParentPromoTitle.length > 1) {
+        return allParentPromoTitle.join(', ') + ','
+      } else {
+        return allParentPromoTitle.join()
+      }
+    }
+
+    const getLastSentenceMessage = (): string => {
+      if (getPromoListForWhatsapp().length > 0 && loan.dpDiscount !== 0) {
+        return `Saya juga ingin menggunakan promo ${getPromoListForWhatsapp()} dan diskon unit sebesar Rp${replacePriceSeparatorByLocalization(
+          loan.dpDiscount,
+          LanguageCode.id,
+        )}.`
+      } else if (getPromoListForWhatsapp().length > 0) {
+        return `Saya juga ingin menggunakan promo ${getPromoListForWhatsapp()}.`
+      } else if (loan.dpDiscount !== 0) {
+        return `Saya juga ingin menggunakan diskon unit sebesar Rp${replacePriceSeparatorByLocalization(
+          loan.dpDiscount,
+          LanguageCode.id,
+        )}.`
+      } else {
+        return ''
+      }
+    }
+
+    const message = `Halo saya tertarik dengan ${model?.modelName} ${
+      variant?.variantName
+    } dengan DP sebesar Rp${replacePriceSeparatorByLocalization(
+      selectedLoanData.tdpAfterPromo !== 0
+        ? selectedLoanData.tdpAfterPromo
+        : selectedLoanData.tdpBeforePromo,
+      LanguageCode.id,
+    )}, cicilan per bulannya Rp${replacePriceSeparatorByLocalization(
+      loan?.installment,
+      LanguageCode.id,
+    )}, dan tenor ${loan?.tenure} tahun. ${getLastSentenceMessage()}`
 
     const whatsAppUrl = await getCustomerAssistantWhatsAppNumber()
     window.open(`${whatsAppUrl}?text=${encodeURI(message)}`, '_blank')
@@ -1823,7 +1874,7 @@ export const CreditTab = () => {
           {/* TODO : Implement carPrice by Car Variant Price */}
           <div id="loan-calculator-form-dp">
             <DpForm
-              label="Kemampuan DP (Min. 20%)"
+              label="Kemampuan DP"
               value={dpValue}
               percentage={dpPercentage}
               onChange={handleDpChange}

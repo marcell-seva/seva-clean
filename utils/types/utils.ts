@@ -862,6 +862,7 @@ export interface SpecialRateListWithPromoType {
   promoArr: PromoItemType[]
   loanRank: string
   subsidiDp: number
+  dpDiscount: number
 }
 
 export interface LoanCalculatorInsuranceAndPromoType {
@@ -882,6 +883,7 @@ export interface LoanCalculatorInsuranceAndPromoType {
   interestRateWithPromo?: number // temp value for Interest Rate With promo before click submit(on pop up promo list)
   interestRateAfterPromo?: number
   subsidiDp: number //value subsidi dp
+  dpDiscount: number
 }
 
 export interface LoanCalculatorIncludePromoPayloadType {
@@ -895,6 +897,7 @@ export interface LoanCalculatorIncludePromoPayloadType {
   dpAmount: number
   monthlyIncome: string
   otr: number
+  variantId?: string
 }
 
 export interface LoanCalculatorInsuranceParams {

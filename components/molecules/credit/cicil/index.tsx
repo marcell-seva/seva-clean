@@ -20,7 +20,7 @@ export function CicilOptionForm({
   value,
 }: CicilOptionFormProps) {
   return (
-    <div>
+    <div style={{ marginTop: '24px' }}>
       <p className={styles.titleText}>Pembayaran cicilan pertama</p>
       <div className={styles.cicilOptionForm}>
         <Row>

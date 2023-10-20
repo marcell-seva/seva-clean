@@ -129,6 +129,7 @@ const FormSelectAssurance = ({
             interestRateAfterPromo:
               getInterestRateAffectedByPromo(responseData),
             subsidiDp: isAppliedSDD01Promo ? responseData.subsidiDp : 0,
+            dpDiscount: responseData.dpDiscount,
           }
         }
 

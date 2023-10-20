@@ -307,7 +307,7 @@ export default function LoanCalculatorPage() {
     downPaymentAmount: getAutofilledDownPayment(),
     paymentOption: kkForm?.paymentOption
       ? kkForm?.paymentOption
-      : InstallmentTypeOptions.ADDM,
+      : InstallmentTypeOptions.ADDB,
     isValidPromoCode: true,
   })
 
@@ -989,6 +989,7 @@ export default function LoanCalculatorPage() {
           subsidiDp: isAppliedSDD01Promo
             ? currentTenurePermutation[0]?.subsidiDp
             : 0,
+          dpDiscount: currentTenurePermutation[0]?.dpDiscount,
         })
       } catch (error: any) {
         if (error?.response?.data?.message) {
@@ -1094,6 +1095,7 @@ export default function LoanCalculatorPage() {
         dpAmount: dpValue,
         monthlyIncome: forms.monthlyIncome,
         otr: getCarOtrNumber() - getCarDiscountNumber(),
+        variantId: forms.variant?.variantId,
       }
 
       api
@@ -1388,8 +1390,52 @@ export default function LoanCalculatorPage() {
     if (selectedLoan) {
       trackCountlyDirectToWhatsapp(selectedLoan.tenure)
     }
-    const { model, variant, downPaymentAmount } = forms
-    const message = `Halo, saya tertarik dengan ${model?.modelName} ${variant?.variantName} dengan DP sebesar Rp ${downPaymentAmount}, cicilan per bulannya Rp ${loan?.installment}, dan tenor ${loan?.tenure} tahun.`
+    const { model, variant } = forms
+
+    const selectedLoanData = insuranceAndPromoForAllTenure.filter(
+      (x) => x.tenure === loan.tenure,
+    )[0]
+
+    const getPromoListForWhatsapp = (): string => {
+      const allParentPromoTitle = selectedLoanData.selectedPromo.map((item) => {
+        return item.promo
+      })
+      if (allParentPromoTitle.length > 1) {
+        return allParentPromoTitle.join(', ') + ','
+      } else {
+        return allParentPromoTitle.join()
+      }
+    }
+
+    const getLastSentenceMessage = (): string => {
+      if (getPromoListForWhatsapp().length > 0 && loan.dpDiscount !== 0) {
+        return `Saya juga ingin menggunakan promo ${getPromoListForWhatsapp()} dan diskon unit sebesar Rp${replacePriceSeparatorByLocalization(
+          loan.dpDiscount,
+          LanguageCode.id,
+        )}.`
+      } else if (getPromoListForWhatsapp().length > 0) {
+        return `Saya juga ingin menggunakan promo ${getPromoListForWhatsapp()}.`
+      } else if (loan.dpDiscount !== 0) {
+        return `Saya juga ingin menggunakan diskon unit sebesar Rp${replacePriceSeparatorByLocalization(
+          loan.dpDiscount,
+          LanguageCode.id,
+        )}.`
+      } else {
+        return ''
+      }
+    }
+
+    const message = `Halo saya tertarik dengan ${model?.modelName} ${
+      variant?.variantName
+    } dengan DP sebesar Rp${replacePriceSeparatorByLocalization(
+      selectedLoanData.tdpAfterPromo !== 0
+        ? selectedLoanData.tdpAfterPromo
+        : selectedLoanData.tdpBeforePromo,
+      LanguageCode.id,
+    )}, cicilan per bulannya Rp${replacePriceSeparatorByLocalization(
+      loan?.installment,
+      LanguageCode.id,
+    )}, dan tenor ${loan?.tenure} tahun. ${getLastSentenceMessage()}`
 
     const whatsAppUrl = await getCustomerAssistantWhatsAppNumber()
     window.open(`${whatsAppUrl}?text=${encodeURI(message)}`, '_blank')
@@ -1797,7 +1843,7 @@ export default function LoanCalculatorPage() {
             </div>
             <div id="loan-calculator-form-dp">
               <DpForm
-                label="Kemampuan DP (Min. 20%)"
+                label="Kemampuan DP"
                 value={dpValue}
                 percentage={dpPercentage}
                 onChange={handleDpChange}
