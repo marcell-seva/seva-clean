@@ -372,7 +372,7 @@ const MultiKK = () => {
             multikkResponse: result,
             filteredCarList: carListNonSulit,
           })
-          router.push(multiResultCreditQualificationPageUrl)
+          window.location.href = multiResultCreditQualificationPageUrl
         }
         setLoadSubmit(false)
       })
