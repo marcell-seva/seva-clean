@@ -101,6 +101,7 @@ import { getCarModelDetailsById } from 'utils/handler/carRecommendation'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -163,7 +164,6 @@ export default function LoanCalculatorPage() {
   const model = getSlug(router.query, 2)
   const variant = getSlug(router.query, 3)
   const loanRankcr = router.query.loanRankCVL ?? ''
-
   const { financialQuery, patchFinancialQuery } = useFinancialQueryData()
   const [isActive, setIsActive] = useState(false)
   const [isHasCarParameter] = useState(
@@ -347,7 +347,8 @@ export default function LoanCalculatorPage() {
     }
   }
 
-  const [showAnnouncementBox, setShowAnnouncementBox] = useState<boolean>(false)
+  const { showAnnouncementBox, saveShowAnnouncementBox } =
+    useAnnouncementBoxContext()
   const [articles, setArticles] = useState<Article[]>([])
 
   const fetchArticles = async () => {
@@ -695,12 +696,12 @@ export default function LoanCalculatorPage() {
           : SessionStorageKey.ShowWebAnnouncementNonLogin,
       )
       if (typeof isShowAnnouncement !== 'undefined') {
-        setShowAnnouncementBox(isShowAnnouncement as boolean)
+        saveShowAnnouncementBox(isShowAnnouncement as boolean)
       } else {
-        setShowAnnouncementBox(true)
+        saveShowAnnouncementBox(true)
       }
     } else {
-      setShowAnnouncementBox(false)
+      saveShowAnnouncementBox(false)
     }
   }, [dataAnnouncementBox])
 
@@ -1694,7 +1695,7 @@ export default function LoanCalculatorPage() {
             position: 'fixed',
           }}
           emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
-          setShowAnnouncementBox={setShowAnnouncementBox}
+          setShowAnnouncementBox={saveShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
         />
         <div
@@ -1939,7 +1940,9 @@ Kemampuan Finansialmu"
 
         <CitySelectorModal
           isOpen={isOpenCitySelectorModal}
-          onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
+          onClickCloseButton={() => {
+            setIsOpenCitySelectorModal(false)
+          }}
           cityListFromApi={cityListApi}
         />
 

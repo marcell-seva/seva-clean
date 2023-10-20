@@ -1,36 +1,39 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export const useAfterInteractive = (
   executeFunc: () => void,
   dependencies: any[],
+  options?: {
+    id?: string
+    unmountFunc?: () => void
+  },
 ) => {
   const [interactive, setInteractive] = useState(false)
 
-  const onInteractive = () => {
-    if (!interactive) {
-      setInteractive(true)
-      executeFunc()
-      ;['scroll', 'touchstart'].forEach((ev) =>
-        window.removeEventListener(ev, onInteractive),
-      )
-    }
-  }
+  const onInteractive = useCallback(() => {
+    ;['scroll', 'touchstart'].forEach((ev) =>
+      window.removeEventListener(ev, onInteractive),
+    )
+    setInteractive(true)
+  }, [...dependencies])
 
   useEffect(() => {
-    ;['scroll', 'touchstart'].forEach((ev) =>
-      window.addEventListener(ev, onInteractive),
-    )
-
-    return () => {
+    if (!interactive) {
       ;['scroll', 'touchstart'].forEach((ev) =>
-        window.removeEventListener(ev, onInteractive),
+        window.addEventListener(ev, onInteractive),
       )
+
+      return () => setInteractive(false)
+    }
+  }, [...dependencies])
+
+  useEffect(() => {
+    if (interactive) {
+      executeFunc()
+
+      return () => {
+        options?.unmountFunc && options.unmountFunc()
+      }
     }
   }, [interactive])
-
-  useEffect(() => {
-    if (interactive && dependencies.length > 0) {
-      executeFunc()
-    }
-  }, [interactive, ...dependencies])
 }
