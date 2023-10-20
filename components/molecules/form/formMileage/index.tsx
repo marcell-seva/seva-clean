@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import styles from '../../../../styles/components/molecules/form/formYear.module.scss'
+import styles from 'styles/components/molecules/form/formYear.module.scss'
 import { Input, Slider } from 'antd'
 import { addSeparator, filterNonDigitCharacters } from 'utils/stringUtils'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
