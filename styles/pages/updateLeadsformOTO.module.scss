@@ -4,6 +4,9 @@
 
 .container {
   background: #{$primary-white};
+  max-width: 570px;
+  margin: 0 auto;
+  border: 1px solid #{$shades-grey-25};
 }
 
 .content {
