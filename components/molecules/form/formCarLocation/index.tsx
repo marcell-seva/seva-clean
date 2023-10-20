@@ -1,7 +1,7 @@
 import { Divider, Select, Space, ConfigProvider } from 'antd'
 import type { SelectProps } from 'antd'
 import { useEffect, useState } from 'react'
-import styles from '../../../../styles/components/molecules/form/formCarLocation.module.scss'
+import styles from 'styles/components/molecules/form/formCarLocation.module.scss'
 import { CloseOutlined2 } from 'components/atoms/icon/CloseOutlined2'
 import { IconChevronDown, IconChevronUp } from 'components/atoms'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
