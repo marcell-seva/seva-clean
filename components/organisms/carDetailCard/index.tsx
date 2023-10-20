@@ -267,15 +267,6 @@ export const CarDetailCard = ({
     onClick: navigateToPDP(order),
   }
 
-  const generalImgProps = {
-    src: recommendation.images[0],
-    className: styles.heroImg,
-    alt: `${recommendation.brand} ${recommendation.model}`,
-    'data-testid': elementId.CarImage,
-    width: 279,
-    onClick: navigateToPDP(order),
-  }
-
   return (
     <div className={styles.container}>
       <CardShadow className={styles.cardWrapper}>
