@@ -79,6 +79,7 @@ const UsedCarResultPage = ({
         carVariantDetails={null}
         recommendation={meta.carRecommendations.carRecommendations}
         recommendationToyota={[]}
+        totalItems={meta.carRecommendations.totalItems}
       >
         <div className={styles.mobile}>
           <PLPUsedCar
@@ -152,6 +153,7 @@ export const getServerSideProps: GetServerSideProps<{
     MinMaxMileage: { maxMileageValue: 0, minMileageValue: 0 },
     carRecommendations: {
       carRecommendations: [],
+      totalItems: 0,
     },
   }
 

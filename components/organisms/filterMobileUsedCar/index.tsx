@@ -135,7 +135,7 @@ const FilterMobileUsedCar = ({
   const [isCheckedType, setIsCheckedType] = useState<string[]>(
     funnelQuery.bodyType ? funnelQuery.bodyType : [],
   )
-  const { saveRecommendation } = usedCar()
+  const { saveRecommendation, saveTotalItems } = usedCar()
   const [isApplied, setIsApplied] = useState(false)
   const [resetTmp, setResetTmp] = useState(false)
 
@@ -302,6 +302,7 @@ const FilterMobileUsedCar = ({
     }
 
     patchFunnelQuery(dataFunnelQuery)
+    saveTotalItems(response?.totalItems || 0)
     saveRecommendation(response?.carData || [])
     setResetTmp(false)
     navigateToPLP(

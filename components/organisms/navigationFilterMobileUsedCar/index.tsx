@@ -193,6 +193,7 @@ export const NavigationFilterMobileUsedCar = ({
   }, [funnelQuery.city_id])
   const newFunnel = async (filter: any) => {
     getUsedCarFunnelRecommendations(filter).then((response: any) => {
+      setTotalItems(response.totalItems)
       setRecommendations(response.carData)
       const paramUrl = {
         priceStart: filter.priceStart,
