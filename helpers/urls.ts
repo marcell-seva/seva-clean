@@ -24,6 +24,8 @@ const urls = {
   promoCumaDiSeva: 'https://seva.id/microsite/promo',
   strapiBaseUrl: 'https://api.sslpots.com',
   facebookTemanSeva: 'https://bit.ly/KomunitasTemanSEVA',
+  linkedin: 'https://id.linkedin.com/company/seva-by-astra',
+  youtube: 'https://www.youtube.com/@Sevaidofficial',
 }
 
 export default urls

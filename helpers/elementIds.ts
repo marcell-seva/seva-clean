@@ -97,6 +97,8 @@ const elementId = {
     LogoFacebook: 'footer-logo-facebook',
     LogoTwitter: 'footer-logo-twitter',
     LogoInstagram: 'footer-logo-instagram',
+    LogoYoutube: 'footer-logo-youtube',
+    LogoLinkedin: 'footer-logo-linkedin',
     TextAboutSeva: 'text-about-seva',
     LogoISO: 'logo-iso',
   },
