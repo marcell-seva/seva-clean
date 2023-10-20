@@ -34,7 +34,7 @@ export const PLPEmptyUsedCar = ({ onClickLabel }: PLPEmptyUsedCarProps) => {
   }, [])
   return (
     <>
-      <div className={styles.wrapperEmpty}>
+      <div className={styles.wrapperEmptyUsedCar}>
         <Image
           src={PLPEmptyImage}
           className={styles.imageStyle}
@@ -46,7 +46,7 @@ export const PLPEmptyUsedCar = ({ onClickLabel }: PLPEmptyUsedCarProps) => {
           className={styles.copy}
           data-testid={elementId.PLP.Text.CarNotFound}
         >
-          <div className={styles.titleCopy}>
+          <div className={styles.titleCopyUsedCar}>
             Tidak Ada Mobil Bekas yang Ditemukan
           </div>
           <div className={styles.textCopy}>
