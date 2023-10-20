@@ -1,10 +1,12 @@
 @import '../../abstract/colors';
+@import '../../abstract/mixins';
 
 .container {
   display: flex;
   flex-direction: column;
   width: 100%;
   background-color: #{$primary-white};
+  @include centeredWithMaxWidth;
 }
 
 .mainHero {

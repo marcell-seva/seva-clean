@@ -105,12 +105,16 @@ type GridOptionWidgetProps = {
   type: 'brand' | 'bodyType'
   errorToastMessage: string
   onClose: () => void
+  trackCountlyOnSubmit?: (checkedOption: string[]) => void
+  trackCountlyOnReset?: () => void
 }
 
 const GridOptionWidget = ({
   type,
   onClose,
   errorToastMessage,
+  trackCountlyOnSubmit,
+  trackCountlyOnReset,
 }: GridOptionWidgetProps) => {
   const optionslist =
     type === 'bodyType' ? typeList : type === 'brand' ? brandList : []
@@ -143,10 +147,12 @@ const GridOptionWidget = ({
   }
 
   const clear = () => {
+    trackCountlyOnReset && trackCountlyOnReset()
     setCheckedOption(initDataWidget[type])
   }
 
   const submit = () => {
+    trackCountlyOnSubmit && trackCountlyOnSubmit(checkedOption)
     saveFunnelWidget({ ...funnelWidget, [type]: checkedOption })
     onClose()
   }

@@ -1,5 +1,6 @@
 @import '../../abstract/colors';
 @import '../../abstract/mixins';
+
 .container {
   width: 100%;
   background-color: #{$primary-white};
@@ -123,4 +124,8 @@
   z-index: 999;
   border: 4px solid white;
   scroll-margin-bottom: 40px;
+}
+
+.overlayAdditionalStyle {
+  @include centeredWithMaxWidth;
 }

@@ -25,7 +25,6 @@ import { LeadsFormSecondary } from 'components/organisms'
 import { setTrackEventMoEngage } from 'helpers/moengage'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import PromoSection from 'components/organisms/promoSection/index'
-import { getNewFunnelLoanSpecialRate } from 'services/newFunnel'
 import elementId from 'helpers/elementIds'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useRouter } from 'next/router'
@@ -33,6 +32,7 @@ import { useCar } from 'services/context/carContext'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { TrackerFlag, InstallmentTypeOptions } from 'utils/types/models'
 import dynamic from 'next/dynamic'
+import { getNewFunnelLoanSpecialRate } from 'utils/handler/funnel'
 
 const Modal = dynamic(() => import('antd').then((mod) => mod.Modal))
 const PopupVariantDetail = dynamic(
@@ -49,7 +49,7 @@ type RingkasanProps = {
   isOTO?: boolean
 }
 
-const formatShortPrice = (price: number) => {
+export const formatShortPrice = (price: number) => {
   return formatNumberByLocalization(price, LanguageCode.id, million, ten)
 }
 

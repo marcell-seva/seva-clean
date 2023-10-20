@@ -2,7 +2,7 @@ import {
   getCustomerInfoWrapperSeva,
   getCustomerKtpSeva,
   getCustomerSpouseKtpSeva,
-} from 'services/customer'
+} from 'utils/handler/customer'
 
 export const fetchCustomerDetails = async (): Promise<any | null> => {
   try {

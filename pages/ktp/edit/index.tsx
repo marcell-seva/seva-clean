@@ -3,7 +3,7 @@ import styles from 'styles/pages/ktp-edit.module.scss'
 import inputDateStyles from 'styles/components/atoms/inputDate.module.scss'
 import elementId from 'helpers/elementIds'
 import dayjs from 'dayjs'
-import { getCities } from 'services/cities'
+
 import Fuse from 'fuse.js'
 import { useRouter } from 'next/router'
 import { useQuery } from 'utils/hooks/useQuery'
@@ -37,7 +37,6 @@ import { DatePicker } from 'components/atoms/inputDate'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { ToastV2 } from 'components/atoms/toastV2'
 import { ToastType } from 'utils/types/models'
-import { checkNIKAvailable } from 'services/customer'
 
 import { trackProfileSaveKtpChanges } from 'helpers/amplitude/seva20Tracking'
 import PopupError from 'components/organisms/popupError'
@@ -45,6 +44,8 @@ import { getLocalStorage } from 'utils/handler/localStorage'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import Image from 'next/image'
+import { api } from 'services/api'
+import { checkNIKAvailable } from 'utils/handler/customer'
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
@@ -213,7 +214,7 @@ const KtpForm = () => {
 
   const checkCitiesData = (city: string) => {
     if (cityListFromApi.length === 0) {
-      getCities().then((res) => {
+      api.getCities().then((res) => {
         if (res) {
           const cityOptions = res.map((item: any) => ({
             label: item.cityName,

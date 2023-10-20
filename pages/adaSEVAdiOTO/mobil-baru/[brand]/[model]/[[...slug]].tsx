@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react'
-import { PdpDesktop, PdpMobile } from 'components/organisms'
+import { PdpMobile } from 'components/organisms'
 import { api } from 'services/api'
 import { AnnouncementBoxDataType, CarRecommendation } from 'utils/types/utils'
 import { InferGetServerSidePropsType } from 'next'
@@ -16,7 +16,7 @@ import { useUtils } from 'services/context/utilsContext'
 import styles from 'styles/pages/plp.module.scss'
 import { getToken } from 'utils/handler/auth'
 import { AxiosResponse } from 'axios'
-import { mergeModelDetailsWithLoanRecommendations } from 'services/recommendations'
+import { mergeModelDetailsWithLoanRecommendations } from 'utils/handler/carRecommendation'
 
 interface PdpDataOTOLocalContextType {
   /**
@@ -110,12 +110,7 @@ export default function index({
           carArticleReviewRes: carArticleReviewRes,
         }}
       >
-        <div className={styles.mobile}>
-          <PdpMobile isOTO={true} />
-        </div>
-        <div className={styles.desktop}>
-          <PdpDesktop metaTagDataRes={metaTagDataRes} />
-        </div>
+        <PdpMobile isOTO={true} />
       </PdpDataOTOLocalContext.Provider>
     </>
   )
@@ -123,7 +118,7 @@ export default function index({
 export async function getServerSideProps(context: any) {
   context.res.setHeader(
     'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59',
+    'public, s-maxage=59, stale-while-revalidate=3000',
   )
   try {
     if (context.query.slug?.length > 1) {

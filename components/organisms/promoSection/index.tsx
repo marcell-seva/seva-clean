@@ -95,6 +95,24 @@ const PromoSection = ({
       .replace(':model', model)
       .replace(':tab?', 'spesifikasi')
   }
+  const trackCountlyClickSeeAll = () => {
+    trackEventCountly(CountlyEventNames.WEB_HOMEPAGE_PROMO_BANNER_ALL_CLICK)
+  }
+  const trackCountlyClicPromo = (promoUrl: string, promoOrder: number) => {
+    trackEventCountly(CountlyEventNames.WEB_HOMEPAGE_PROMO_BANNER_CLICK, {
+      PAGE_DIRECTION_URL: promoUrl,
+      PROMO_ORDER: promoOrder,
+    })
+  }
+
+  const getValueBrandAndModel = (value: string) => {
+    return value
+      .replaceAll('-', ' ')
+      .toLowerCase()
+      .split(' ')
+      .map((s: any) => s.charAt(0).toUpperCase() + s.substring(1))
+      .join(' ')
+  }
   const trackCountlePromoCLick = (promoDetail: string, promoOrder: number) => {
     trackEventCountly(CountlyEventNames.WEB_PROMO_CLICK, {
       CAR_BRAND: getBrandAndModelValue(brand),
@@ -230,7 +248,10 @@ const PromoSection = ({
               rel="noopener noreferrer"
               className={styles.openSansMedium}
               style={{ color: '#246ED4', paddingRight: '16px' }}
-              onClick={() => trackPromoBannerSeeAllClick()}
+              onClick={() => {
+                trackPromoBannerSeeAllClick()
+                trackCountlyClickSeeAll()
+              }}
               data-testid={elementId.Homepage.Promo.LihatSemua}
             >
               Lihat semua
@@ -271,9 +292,9 @@ const PromoSection = ({
               <div>
                 <p className={styles.textPromoBanner}>
                   Lihat detail{' '}
-                  <div className={styles.spacingChevronIcon}>
+                  <span className={styles.spacingChevronIcon}>
                     <IconChevronRight width={16} height={16} color="#FFFFFF" />
-                  </div>
+                  </span>
                 </p>
               </div>
             </div>
@@ -295,6 +316,7 @@ const PromoSection = ({
                 const Page_Direction_URL =
                   'https://www.seva.id/info/promo/toyota-spektakuler/'
                 trackPromoBannerClick({ Page_Direction_URL })
+                trackCountlyClicPromo(Page_Direction_URL, 1)
                 window.open(Page_Direction_URL, '_blank')
               }
             }}
@@ -316,9 +338,9 @@ const PromoSection = ({
             >
               <p className={styles.textPromoBanner}>
                 Lihat detail
-                <div className={styles.spacingChevronIcon}>
+                <span className={styles.spacingChevronIcon}>
                   <IconChevronRight width={16} height={16} color="#FFFFFF" />
-                </div>
+                </span>
               </p>
             </div>
           </div>
@@ -337,6 +359,7 @@ const PromoSection = ({
                 const Page_Direction_URL =
                   'https://www.seva.id/info/promo/promo-trade-in-daihatsu/'
                 trackPromoBannerClick({ Page_Direction_URL })
+                trackCountlyClicPromo(Page_Direction_URL, 1)
                 window.open(Page_Direction_URL, '_blank')
               }
             }}
@@ -358,9 +381,9 @@ const PromoSection = ({
             >
               <p className={styles.textPromoBanner}>
                 Lihat detail
-                <div className={styles.spacingChevronIcon}>
+                <span className={styles.spacingChevronIcon}>
                   <IconChevronRight width={16} height={16} color="#FFFFFF" />
-                </div>
+                </span>
               </p>
             </div>
           </div>

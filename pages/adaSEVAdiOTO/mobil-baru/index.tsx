@@ -2,7 +2,6 @@ import { PLP } from 'components/organisms'
 import React, { useEffect } from 'react'
 import axios from 'axios'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
 import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
 import {
   CityOtrOption,
@@ -10,7 +9,6 @@ import {
   MobileWebTopMenuType,
   NavbarItemResponse,
 } from 'utils/types/utils'
-import PLPDesktop from 'components/organisms/PLPDesktop'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { api } from 'services/api'
 import Seo from 'components/atoms/seo'
@@ -21,6 +19,8 @@ import styles from 'styles/pages/plp.module.scss'
 import { CarProvider } from 'services/context'
 import { generateBlurRecommendations } from 'utils/generateBlur'
 import { monthId } from 'utils/handler/date'
+import { getCity } from 'utils/hooks/useGetCity'
+import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 
 const NewCarResultPage = ({
   meta,
@@ -60,15 +60,7 @@ const NewCarResultPage = ({
         recommendation={meta.carRecommendations.carRecommendations}
         recommendationToyota={[]}
       >
-        <div className={styles.mobile}>
-          <PLP minmaxPrice={meta.MinMaxPrice} isOTO={true} />
-        </div>
-        <div className={styles.desktop}>
-          <PLPDesktop
-            carRecommendation={meta.carRecommendations}
-            footer={meta.footer}
-          />
-        </div>
+        <PLP minmaxPrice={meta.MinMaxPrice} isOTO={true} />
       </CarProvider>
     </>
   )
@@ -104,7 +96,7 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async (ctx) => {
   ctx.res.setHeader(
     'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59',
+    'public, s-maxage=59, stale-while-revalidate=3000',
   )
   const metabrand = getBrand(ctx.query.brand)
   const metaTagBaseApi =
@@ -160,7 +152,10 @@ export const getServerSideProps: GetServerSideProps<{
     const footerData = fetchFooter.data.data
 
     if (!priceRangeGroup) {
-      const minmax = await getMinMaxPrice()
+      const params = new URLSearchParams()
+      getCity().cityCode && params.append('city', getCity().cityCode as string)
+
+      const minmax = await api.getMinMaxPrice('', { params })
       const minmaxPriceData = minmax
       meta.MinMaxPrice = {
         minPriceValue: minmaxPriceData.minPriceValue,

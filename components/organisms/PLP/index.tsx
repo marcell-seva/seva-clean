@@ -31,10 +31,9 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { api } from 'services/api'
-import { getCities } from 'services/cities'
+
 import { useCar } from 'services/context/carContext'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
-import { getMinMaxPrice, getNewFunnelRecommendations } from 'services/newFunnel'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { getConvertFilterIncome } from 'utils/filterUtils'
 import { getToken } from 'utils/handler/auth'
@@ -54,12 +53,11 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { Location } from 'utils/types'
 import {
   CarRecommendation,
-  CarRecommendationResponse,
   FilterParam,
   MinMaxPrice,
 } from 'utils/types/context'
 import { MoengageViewCarSearch } from 'utils/types/moengage'
-import { AnnouncementBoxDataType } from 'utils/types/utils'
+import { trackDataCarType } from 'utils/types/utils'
 import styles from '../../../styles/pages/mobil-baru.module.scss'
 import {
   trackEventCountly,
@@ -69,11 +67,14 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getPageName } from 'utils/pageName'
 import { LoanRank } from 'utils/types/models'
-import { temanSevaUrlPath } from 'services/temanseva'
 import { decryptValue } from 'utils/encryptionUtils'
 import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 import { useUtils } from 'services/context/utilsContext'
 import dynamic from 'next/dynamic'
+import { temanSevaUrlPath } from 'utils/types/props'
+import { getNewFunnelRecommendations } from 'utils/handler/funnel'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
@@ -120,7 +121,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     age,
     sortBy,
   } = router.query as FilterParam
-
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
 
   const [cityOtr] = useLocalStorage<Location | null>(
@@ -168,9 +168,9 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     items: recommendation.slice(0, 12),
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
-  const { cities, saveDataAnnouncementBox } = useUtils()
-  const [showAnnouncementBox, setIsShowAnnouncementBox] = useState(false)
-  const [interactive, setInteractive] = useState(false)
+  const { cities, dataAnnouncementBox } = useUtils()
+  const { showAnnouncementBox, saveShowAnnouncementBox } =
+    useAnnouncementBoxContext()
   const [isLogin] = useState(!!getToken())
   const [dataCarForPromo, setDataCarForPromo] = useState({
     brand: '',
@@ -339,31 +339,19 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_SORT_CLICK)
   }
   const getAnnouncementBox = () => {
-    if (!interactive) {
-      setInteractive(true)
-      api
-        .getAnnouncementBox({
-          headers: {
-            'is-login': getToken() ? 'true' : 'false',
-          },
-        })
-        .then((res: { data: AnnouncementBoxDataType }) => {
-          if (res.data === undefined) {
-            setIsShowAnnouncementBox(false)
-          } else {
-            saveDataAnnouncementBox(res.data)
-            const sessionAnnouncmentBox = getSessionStorage(
-              getToken()
-                ? SessionStorageKey.ShowWebAnnouncementLogin
-                : SessionStorageKey.ShowWebAnnouncementNonLogin,
-            )
-            if (typeof sessionAnnouncmentBox !== 'undefined') {
-              setIsShowAnnouncementBox(sessionAnnouncmentBox as boolean)
-            } else {
-              setIsShowAnnouncementBox(true)
-            }
-          }
-        })
+    if (dataAnnouncementBox) {
+      const isShowAnnouncement = getSessionStorage(
+        getToken()
+          ? SessionStorageKey.ShowWebAnnouncementLogin
+          : SessionStorageKey.ShowWebAnnouncementNonLogin,
+      )
+      if (typeof isShowAnnouncement !== 'undefined') {
+        saveShowAnnouncementBox(isShowAnnouncement as boolean)
+      } else {
+        saveShowAnnouncementBox(true)
+      }
+    } else {
+      saveShowAnnouncementBox(false)
     }
   }
 
@@ -428,31 +416,27 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     }
   }
 
+  useAfterInteractive(() => {
+    getAnnouncementBox()
+  }, [dataAnnouncementBox])
+
+  useAfterInteractive(() => {
+    setTimeout(() => {
+      checkFincapBadge(recommendation.slice(0, 12))
+    }, 1000)
+  }, [recommendation])
+
   //handle scrolling
   useEffect(() => {
     window.scrollTo(0, 0)
     moengageViewPLP()
 
-    window.addEventListener('touchstart', getAnnouncementBox)
     window.addEventListener('scroll', handleScroll)
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('touchstart', getAnnouncementBox)
     }
   }, [])
-
-  useEffect(() => {
-    ;['scroll', 'touchstart'].forEach((ev) =>
-      window.addEventListener(ev, getAnnouncementBox),
-    )
-
-    return () => {
-      ;['scroll', 'touchstart'].forEach((ev) =>
-        window.removeEventListener(ev, getAnnouncementBox),
-      )
-    }
-  }, [interactive])
 
   useEffect(() => {
     if (funnelQuery.age && funnelQuery.monthlyIncome) {
@@ -525,7 +509,11 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     }
 
     if (!isCurrentCitySameWithSSR || recommendation.length === 0) {
-      getMinMaxPrice()
+      const params = new URLSearchParams()
+      getCity().cityCode && params.append('city', getCity().cityCode as string)
+
+      api
+        .getMinMaxPrice('', { params })
         .then((response) => {
           if (response) {
             setMinMaxPrice({
@@ -568,9 +556,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
                   setSampleArray({
                     items: response.carRecommendations.slice(0, 12),
                   })
-                  setTimeout(() => {
-                    checkFincapBadge(response.carRecommendations.slice(0, 12))
-                  }, 1000)
                 }
                 setShowLoading(false)
               })
@@ -603,9 +588,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
         sortBy: sortBy || 'lowToHigh',
       }
       patchFunnelQuery(queryParam)
-      setTimeout(() => {
-        checkFincapBadge(recommendation.slice(0, 12))
-      }, 1000)
     }
     return () => cleanEffect()
   }, [])
@@ -737,7 +719,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
           isActive={isActive}
           setIsActive={setIsActive}
           emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
-          setShowAnnouncementBox={setIsShowAnnouncementBox}
+          setShowAnnouncementBox={saveShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
           pageOrigination={'PLP'}
           isOTO={isOTO}
@@ -907,7 +889,9 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
         />
         <CitySelectorModal
           isOpen={isOpenCitySelectorModal}
-          onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
+          onClickCloseButton={() => {
+            setIsOpenCitySelectorModal(false)
+          }}
           cityListFromApi={cities}
           pageOrigination="PLP"
         />

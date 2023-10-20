@@ -114,7 +114,7 @@ const sidebarMobile = ({
         pageOrigination,
       )
     }
-    // window.location.href = url
+    window.location.href = url
   }
 
   return (

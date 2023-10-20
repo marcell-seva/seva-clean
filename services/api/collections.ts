@@ -1,5 +1,5 @@
 import getCurrentEnvironment from 'helpers/environments'
-import { temanSevaUrlPath } from 'services/temanseva'
+import { temanSevaUrlPath } from 'utils/types/props'
 const baseUrl = getCurrentEnvironment.apiBaseUrl
 
 const utils = {

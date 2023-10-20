@@ -102,12 +102,18 @@ export const QualificationCreditModal: React.FC<
   return (
     <Modal
       centered
-      className={styles.qualificationModal}
+      className={'qualification-custom-modal'}
       open={isOpen}
       footer={null}
       onCancel={onClickCloseButton}
       closeIcon={<IconClose color="#13131B" width={24} height={24} />}
       data-testid={elementId.LoanCalculator.Popup.KualifikasiKredit}
+      maskStyle={{
+        background: 'rgba(19, 19, 27, 0.5)',
+        maxWidth: '570px',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+      }}
     >
       <div>
         <Image

@@ -9,6 +9,7 @@ import { FormControlValue } from 'utils/types'
 import { sortOptions } from 'utils/config/funnel.config'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import styles from 'styles/components/organisms/sortingMobile.module.scss'
 
 interface SortingMobileProps extends Omit<BottomSheetProps, 'children'> {
   onClose: () => void
@@ -36,6 +37,7 @@ const SortingMobile = ({
       title="Urutkan"
       onDismiss={onClose}
       closeDatatestid={elementId.PLP.Close.Button.PopupSorting}
+      className={styles.bottomSheet}
       {...props}
     >
       <BottomSheetList

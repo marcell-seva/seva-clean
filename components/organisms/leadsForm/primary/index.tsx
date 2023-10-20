@@ -19,8 +19,6 @@ import {
   trackLeadsFormAction,
 } from 'helpers/amplitude/seva20Tracking'
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
-import { useMediaQuery } from 'react-responsive'
-import { createUnverifiedLeadNew } from 'services/lead'
 import { onlyLettersAndSpaces } from 'utils/handler/regex'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { OTP } from 'components/organisms/otp'
@@ -34,7 +32,8 @@ import {
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getToken } from 'utils/handler/auth'
-import { getCustomerInfoSeva } from 'services/customer'
+import { createUnverifiedLeadNew } from 'utils/handler/lead'
+import { getCustomerInfoSeva } from 'utils/handler/customer'
 
 const SupergraphicSecondarySmall =
   '/revamp/illustration/supergraphic-secondary-small.webp'
@@ -65,7 +64,6 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
     'leads-form' | 'otp' | 'success-toast' | 'none'
   >('leads-form')
   const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false)
-  const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -110,6 +108,20 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
     sendUnverifiedLeads()
   }
 
+  const trackCountlySendLeads = async (verifiedPhone: string) => {
+    let pageOrigination = 'Homepage - Car of The Month'
+
+    if (onPage !== 'LP') {
+      pageOrigination = 'PLP'
+    }
+    trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SEND_CLICK, {
+      PAGE_ORIGINATION: pageOrigination,
+      LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
+      PHONE_VERIFICATION_STATUS: verifiedPhone,
+      PHONE_NUMBER: '+62' + phone,
+    })
+  }
+
   const sendOtpCode = async () => {
     setIsLoading(true)
     if (trackerProperties)
@@ -118,6 +130,11 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
         trackerProperties,
       )
     const dataLeads = checkDataFlagLeads()
+    let pageOrigination = 'Homepage - Car of The Month'
+
+    if (onPage !== 'LP') {
+      pageOrigination = 'PLP'
+    }
     if (dataLeads) {
       if (phone === dataLeads.phone && name === dataLeads.name) {
         trackCountlySendLeads('Yes')
@@ -129,7 +146,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
       } else {
         trackCountlySendLeads('No')
         trackEventCountly(CountlyEventNames.WEB_OTP_VIEW, {
-          PAGE_ORIGINATION: 'PLP',
+          PAGE_ORIGINATION: pageOrigination,
         })
         setModalOpened('otp')
       }
@@ -138,7 +155,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
     } else {
       trackCountlySendLeads('No')
       trackEventCountly(CountlyEventNames.WEB_OTP_VIEW, {
-        PAGE_ORIGINATION: 'PLP',
+        PAGE_ORIGINATION: pageOrigination,
       })
       setModalOpened('otp')
     }
@@ -160,20 +177,6 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
     saveLocalStorage(LocalStorageKey.flagLeads, encryptedData)
   }
 
-  const trackCountlySendLeads = async (verifiedPhone: string) => {
-    let temanSevaStatus = 'No'
-    let pageOrigination = 'PLP'
-
-    if (onPage === 'LP') {
-      pageOrigination = 'PLP'
-    }
-    trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SEND_CLICK, {
-      PAGE_ORIGINATION: 'PLP',
-      LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
-      PHONE_VERIFICATION_STATUS: verifiedPhone,
-      PHONE_NUMBER: '+62' + phone,
-    })
-  }
   const onClose = () => {
     if (trackerProperties)
       trackLeadsFormAction(
@@ -227,7 +230,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
           trackerProperties,
         )
       trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SUCCESS_VIEW, {
-        PAGE_ORIGINATION: 'PLP',
+        PAGE_ORIGINATION: pageOrigination,
         LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
         TEMAN_SEVA_STATUS: temanSevaStatus,
         PHONE_NUMBER: '+62' + phone,
@@ -278,6 +281,11 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
   const onClickNameField = () => {
     if (onPage === 'LP') {
       trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_NAME_CLICK, {
+        PAGE_ORIGINATION: 'Homepage - Car of The Month',
+        USER_TYPE: valueForUserTypeProperty(),
+      })
+    } else {
+      trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_NAME_CLICK, {
         PAGE_ORIGINATION: 'PLP',
         USER_TYPE: valueForUserTypeProperty(),
       })
@@ -286,6 +294,11 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
 
   const onClickPhoneField = () => {
     if (onPage === 'LP') {
+      trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_PHONE_NUMBER_CLICK, {
+        PAGE_ORIGINATION: 'Homepage - Car of The Month',
+        USER_TYPE: valueForUserTypeProperty(),
+      })
+    } else {
       trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_PHONE_NUMBER_CLICK, {
         PAGE_ORIGINATION: 'PLP',
         USER_TYPE: valueForUserTypeProperty(),
@@ -381,7 +394,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
       )}
       <Toast
         text={toastSuccessInfo}
-        width={isMobile ? 339 : 428}
+        width={343}
         open={modalOpened === 'success-toast'}
         data-testid={elementId.PLP.Text.SuccessToastMessageLeads}
       />

@@ -17,11 +17,11 @@ import { hundred, million } from 'utils/helpers/const'
 import { availableList, availableListColors } from 'config/AvailableListColors'
 import { setTrackEventMoEngage } from 'helpers/moengage'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
-import { getNewFunnelLoanSpecialRate } from 'services/newFunnel'
 import { useCar } from 'services/context/carContext'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { TrackerFlag, InstallmentTypeOptions } from 'utils/types/models'
 import dynamic from 'next/dynamic'
+import { getNewFunnelLoanSpecialRate } from 'utils/handler/funnel'
 
 const Modal = dynamic(() => import('antd').then((mod) => mod.Modal))
 const PopupVariantDetail = dynamic(

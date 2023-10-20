@@ -1,6 +1,6 @@
 import { BottomSheet } from 'react-spring-bottom-sheet'
 import 'react-spring-bottom-sheet/dist/style.css'
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from 'styles/components/organisms/promoPopupPdp.module.scss'
 import { IconClose } from 'components/atoms'
 import { trackCarVariantBannerPromoPopupClose } from 'helpers/amplitude/seva20Tracking'
@@ -15,6 +15,7 @@ import { useRouter } from 'next/router'
 import { LoanRank } from 'utils/types/models'
 import Image from 'next/image'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
+import { isIphone } from 'utils/window'
 
 const promoBannerTSO = '/revamp/illustration/PromoTSO.webp'
 const promoBannerCumaDiSEVA = '/revamp/illustration/PromoCumaDiSEVA.webp'
@@ -151,8 +152,7 @@ const PromoPopup = ({
           src={promoBannerTSO}
           alt="promo banner TSO"
           className={styles.promoBanner}
-          width={373}
-          height={280}
+          fill={true}
         />
       </div>
       <div>
@@ -194,8 +194,7 @@ const PromoPopup = ({
           src={promoBannerTradeIn}
           alt="promo banner trade In"
           className={styles.promoBanner}
-          width={373}
-          height={280}
+          fill={true}
         />
       </div>
       <div>
@@ -236,11 +235,25 @@ const PromoPopup = ({
         return <PromoCumanDiSeva />
     }
   }
+
+  useEffect(() => {
+    window.addEventListener('popstate', () => {
+      onButtonClick && onButtonClick(false)
+    })
+
+    return () => {
+      window.removeEventListener('popstate', () => {
+        onButtonClick && onButtonClick(false)
+      })
+    }
+  }, [])
   return (
     <div>
       <BottomSheet
         open={isButtonClick || false}
         onDismiss={() => onClickClose()}
+        className={styles.bottomSheet}
+        scrollLocking={!isIphone}
       >
         {renderPromoSection(promoName)}
       </BottomSheet>

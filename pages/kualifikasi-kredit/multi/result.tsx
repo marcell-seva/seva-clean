@@ -16,10 +16,8 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { api } from 'services/api'
-import { getCities } from 'services/cities'
+
 import { useMultiUnitQueryContext } from 'services/context/multiUnitQueryContext'
-import { getCustomerInfoSeva } from 'services/customer'
-import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
 import { SessionStorageKey } from 'utils/enum'
 import { getToken } from 'utils/handler/auth'
 import { Currency } from 'utils/handler/calculation'
@@ -37,6 +35,8 @@ import styles from 'styles/pages/multi-kk-result.module.scss'
 import CarDetailCardMultiCredit from 'components/organisms/carDetailCardMultiCredit'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
+import { getCustomerInfoSeva } from 'utils/handler/customer'
+import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 
 const discountedDp = undefined // for current promo, it will not affect DP
 
@@ -154,7 +154,7 @@ const MultiKKResult = () => {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      getCities().then((res) => {
+      api.getCities().then((res) => {
         setCityListApi(res)
       })
     }
@@ -432,7 +432,7 @@ const MultiKKResult = () => {
         </div>
       )}
 
-      <CSAButton onClick={sendToWhatsapp} additionalStyle={'csa-button-plp'} />
+      <CSAButton onClick={sendToWhatsapp} additionalstyle={'csa-button-plp'} />
       <PopupMultiCreditQualificationResult
         isOpen={isPopUpOpened}
         onDismissPopup={onDismissPopup}

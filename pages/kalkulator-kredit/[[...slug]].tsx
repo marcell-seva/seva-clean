@@ -32,20 +32,10 @@ import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { api } from 'services/api'
-import { getCities } from 'services/cities'
+
 import { useCar } from 'services/context/carContext'
 import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
-import { getCustomerInfoSeva } from 'services/customer'
-import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
-import {
-  getLoanCalculatorInsurance,
-  getNewFunnelRecommendations,
-  getNewFunnelRecommendationsByCity,
-  postLoanPermutationIncludePromo,
-} from 'services/newFunnel'
-import { checkPromoCodeGias } from 'services/preApproval'
-import { getCarModelDetailsById } from 'services/recommendations'
 import { getToken } from 'utils/handler/auth'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import {
@@ -77,7 +67,12 @@ import {
 import { CityOtrOption } from 'utils/types'
 import { CarModel } from 'utils/types/carModel'
 import { ModelVariant } from 'utils/types/carVariant'
-import { CarRecommendation, FinalLoan } from 'utils/types/utils'
+import {
+  AnnouncementBoxDataType,
+  CarRecommendation,
+  FinalLoan,
+  trackDataCarType,
+} from 'utils/types/utils'
 import {
   Article,
   LoanCalculatorIncludePromoPayloadType,
@@ -99,6 +94,14 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
 import dynamic from 'next/dynamic'
+import { Currency } from 'utils/handler/calculation'
+import { useUtils } from 'services/context/utilsContext'
+import { getCustomerInfoSeva } from 'utils/handler/customer'
+import { getCarModelDetailsById } from 'utils/handler/carRecommendation'
+import { getNewFunnelRecommendations } from 'utils/handler/funnel'
+import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -161,7 +164,6 @@ export default function LoanCalculatorPage() {
   const model = getSlug(router.query, 2)
   const variant = getSlug(router.query, 3)
   const loanRankcr = router.query.loanRankCVL ?? ''
-
   const { financialQuery, patchFinancialQuery } = useFinancialQueryData()
   const [isActive, setIsActive] = useState(false)
   const [isHasCarParameter] = useState(
@@ -245,6 +247,24 @@ export default function LoanCalculatorPage() {
     !!filterStorage?.monthlyIncome &&
     !!filterStorage?.tenure
 
+  const referralCodeFromUrl: string | null = getLocalStorage(
+    LocalStorageKey.referralTemanSeva,
+  )
+  const IsShowBadgeCreditOpportunity = getSessionStorage(
+    SessionStorageKey.IsShowBadgeCreditOpportunity,
+  )
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
+  const {
+    saveMobileWebTopMenus,
+    saveCities,
+    saveDesktopWebTopMenu,
+    saveMobileWebFooterMenus,
+    saveDataAnnouncementBox,
+    dataAnnouncementBox,
+  } = useUtils()
+
   const getAutofilledCityData = () => {
     // related to logic inside component "FormSelectCity"
     if (cityOtr) {
@@ -327,15 +347,8 @@ export default function LoanCalculatorPage() {
     }
   }
 
-  const [showAnnouncementBox, setShowAnnouncementBox] = useState<
-    boolean | null
-  >(
-    getSessionStorage(
-      getToken()
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ) ?? true,
-  )
+  const { showAnnouncementBox, saveShowAnnouncementBox } =
+    useAnnouncementBoxContext()
   const [articles, setArticles] = useState<Article[]>([])
 
   const fetchArticles = async () => {
@@ -348,25 +361,23 @@ export default function LoanCalculatorPage() {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      getCities().then((res) => {
+      api.getCities().then((res) => {
         setCityListApi(res)
       })
     }
   }
 
-  const getAnnouncementBox = () => {
-    api
-      .getAnnouncementBox({
+  const getAnnouncementBox = async () => {
+    try {
+      const res: any = await api.getAnnouncementBox({
         headers: {
           'is-login': getToken() ? 'true' : 'false',
         },
       })
-      .then((res) => {
-        if (res.data === undefined) {
-          setShowAnnouncementBox(false)
-        }
-      })
+      saveDataAnnouncementBox(res.data)
+    } catch (error) {}
   }
+
   const checkPromoCode = async () => {
     if (!forms.promoCode) {
       setPromoCodeSessionStorage('')
@@ -376,7 +387,7 @@ export default function LoanCalculatorPage() {
 
     try {
       setIsLoadingPromoCode(true)
-      const result: any = await checkPromoCodeGias(forms.promoCode)
+      const result: any = await api.postCheckPromoGiias(forms.promoCode)
       setIsLoadingPromoCode(false)
 
       if (result.message === 'valid promo code') {
@@ -450,12 +461,12 @@ export default function LoanCalculatorPage() {
       objData,
     )
   }
-
   const fetchAllCarModels = async () => {
-    const response = await getNewFunnelRecommendationsByCity(
-      defaultCity.id,
-      defaultCity.cityCode,
-    )
+    const params = new URLSearchParams()
+    params.append('cityId', defaultCity.id as string)
+    params.append('city', defaultCity.cityCode as string)
+
+    const response = await api.getRecommendation('', { params })
 
     setAllModalCarList(response.carRecommendations)
   }
@@ -613,6 +624,7 @@ export default function LoanCalculatorPage() {
     fetchAllCarModels()
     fetchArticles()
     getAnnouncementBox()
+    fetchDataContext()
     const timeoutCountlyTracker = setTimeout(() => {
       if (!isSentCountlyPageView) {
         trackCountlyPageView()
@@ -675,6 +687,23 @@ export default function LoanCalculatorPage() {
     autofillCarVariantData()
     checkReffcode()
   }, [carVariantList])
+
+  useAfterInteractive(() => {
+    if (dataAnnouncementBox) {
+      const isShowAnnouncement = getSessionStorage(
+        getToken()
+          ? SessionStorageKey.ShowWebAnnouncementLogin
+          : SessionStorageKey.ShowWebAnnouncementNonLogin,
+      )
+      if (typeof isShowAnnouncement !== 'undefined') {
+        saveShowAnnouncementBox(isShowAnnouncement as boolean)
+      } else {
+        saveShowAnnouncementBox(true)
+      }
+    } else {
+      saveShowAnnouncementBox(false)
+    }
+  }, [dataAnnouncementBox])
 
   const AgeList: Option<string>[] = [
     {
@@ -908,7 +937,7 @@ export default function LoanCalculatorPage() {
       )
 
       try {
-        const responseInsurance = await getLoanCalculatorInsurance({
+        const responseInsurance = await api.getLoanCalculatorInsurance({
           modelId: forms.model?.modelId ?? '',
           cityCode: forms.city.cityCode,
           tenure: allTenure[i],
@@ -1067,7 +1096,8 @@ export default function LoanCalculatorPage() {
         otr: getCarOtrNumber() - getCarDiscountNumber(),
       }
 
-      postLoanPermutationIncludePromo(payload)
+      api
+        .postLoanPermutationIncludePromo(payload)
         .then((response) => {
           const result = response.data.reverse()
           const filteredResult = getFilteredCalculationResults(result)
@@ -1308,11 +1338,56 @@ export default function LoanCalculatorPage() {
   const handleTooltipClose = () => {
     setIsTooltipOpen(false)
   }
+  const trackCountlyDirectToWhatsapp = async (tenure: number) => {
+    let temanSevaStatus = 'No'
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response.data[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
+
+    trackEventCountly(CountlyEventNames.WEB_WA_DIRECT_CLICK, {
+      PAGE_ORIGINATION:
+        router.query.from && router.query.from === 'homepageKualifikasi'
+          ? 'Loan Calculator - Kualifikasi Kredit'
+          : 'Loan Calculator',
+      SOURCE_BUTTON: 'CTA button Hubungi Agen SEVA',
+      CAR_BRAND: forms.model?.brandName,
+      CAR_MODEL: removeCarBrand(forms.model?.modelName ?? 'Null'),
+      CAR_VARIANT: forms.variant?.variantName
+        ? forms.variant?.variantName
+        : 'Null',
+      PELUANG_KREDIT_BADGE:
+        isUsingFilterFinancial && IsShowBadgeCreditOpportunity
+          ? dataCar?.PELUANG_KREDIT_BADGE
+          : 'Null',
+      TENOR_OPTION: tenure ? tenure + ' Tahun' : 'Null',
+      TENOR_RESULT:
+        selectedLoan?.loanRank && selectedLoan?.loanRank === 'Green'
+          ? 'Mudah disetujui'
+          : selectedLoan?.loanRank && selectedLoan?.loanRank === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      KK_RESULT: 'Null',
+      IA_RESULT: 'Null',
+      TEMAN_SEVA_STATUS: temanSevaStatus,
+      INCOME_LOAN_CALCULATOR: `Rp${Currency(forms.monthlyIncome)}`,
+      INCOME_KUALIFIKASI_KREDIT: 'Null',
+      INCOME_CHANGE: 'Null',
+      OCCUPATION: 'Null',
+    })
+  }
 
   const handleRedirectToWhatsapp = async (
     loan: SpecialRateListWithPromoType,
   ) => {
     trackLCCtaWaDirectClick(getDataForAmplitudeQualification(loan))
+    if (selectedLoan) {
+      trackCountlyDirectToWhatsapp(selectedLoan.tenure)
+    }
     const { model, variant, downPaymentAmount } = forms
     const message = `Halo, saya tertarik dengan ${model?.modelName} ${variant?.variantName} dengan DP sebesar Rp ${downPaymentAmount}, cicilan per bulannya Rp ${loan?.installment}, dan tenor ${loan?.tenure} tahun.`
 
@@ -1332,6 +1407,21 @@ export default function LoanCalculatorPage() {
       (car: any) => car.loanRank === LoanRank.Green,
     )
     setCarRecommendations(filteredCarRecommendations.slice(0, 10))
+  }
+
+  const fetchDataContext = async () => {
+    const [menuDesktopRes, menuMobileRes, footerRes, cityRes]: any =
+      await Promise.all([
+        api.getMenu(),
+        api.getMobileHeaderMenu(),
+        api.getMobileFooterMenu(),
+        api.getCities(),
+      ])
+
+    saveMobileWebTopMenus(menuMobileRes.data)
+    saveDesktopWebTopMenu(menuDesktopRes.data)
+    saveMobileWebFooterMenus(footerRes.data)
+    saveCities(cityRes)
   }
 
   useEffect(() => {
@@ -1605,7 +1695,7 @@ export default function LoanCalculatorPage() {
             position: 'fixed',
           }}
           emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
-          setShowAnnouncementBox={setShowAnnouncementBox}
+          setShowAnnouncementBox={saveShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
         />
         <div
@@ -1850,7 +1940,9 @@ Kemampuan Finansialmu"
 
         <CitySelectorModal
           isOpen={isOpenCitySelectorModal}
-          onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
+          onClickCloseButton={() => {
+            setIsOpenCitySelectorModal(false)
+          }}
           cityListFromApi={cityListApi}
         />
 

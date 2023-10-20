@@ -31,7 +31,6 @@ import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
-import { getSlug } from 'pages/kalkulator-kredit/[[...slug]]'
 import { capitalizeWords } from 'utils/stringUtils'
 
 type CarRecommendationsPropss = {

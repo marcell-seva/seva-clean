@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react'
-import { PdpDesktop, PdpMobile } from 'components/organisms'
+import { PdpMobile } from 'components/organisms'
 import { api } from 'services/api'
 import {
   CarModelDetailsResponse,
@@ -13,10 +13,8 @@ import { useUtils } from 'services/context/utilsContext'
 import { getToken } from 'utils/handler/auth'
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
-import { mergeModelDetailsWithLoanRecommendations } from 'services/recommendations'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
-import { formatShortPrice } from 'components/organisms/OldPdpSectionComponents/FAQ/FAQ'
 import { LanguageCode } from 'utils/enum'
 import {
   formatPriceNumber,
@@ -29,8 +27,10 @@ import { getCity } from 'utils/hooks/useGetCity'
 import { useCar } from 'services/context/carContext'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { lowerSectionNavigationTab } from 'config/carVariantList.config'
-import styles from 'styles/pages/pdp.module.scss'
 import Script from 'next/script'
+import styles from 'styles/pages/pdp.module.scss'
+import { mergeModelDetailsWithLoanRecommendations } from 'utils/handler/carRecommendation'
+import { formatShortPrice } from 'components/organisms/tabContent/lower/summary'
 interface PdpDataLocalContextType {
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.
@@ -149,8 +149,11 @@ export default function index({
   const currentYear = todayDate.getFullYear()
   const currentMonth = monthId(todayDate.getMonth())
 
-  const carOTRValueArray = dataCombinationOfCarRecomAndModelDetail?.variants.map(item => Number(item.priceValue))
-  const carOTRValue = Math.min(...carOTRValueArray as number[])
+  const carOTRValueArray =
+    dataCombinationOfCarRecomAndModelDetail?.variants.map((item) =>
+      Number(item.priceValue),
+    )
+  const carOTRValue = Math.min(...(carOTRValueArray as number[]))
   const carOTR = `Rp ${carOTRValue / 1000000} juta`
 
   const getMetaTitle = () => {
@@ -283,12 +286,7 @@ export default function index({
           carArticleReviewRes: carArticleReviewRes,
         }}
       >
-        <div className={styles.mobile}>
-          <PdpMobile />
-        </div>
-        <div className={styles.desktop}>
-          <PdpDesktop metaTagDataRes={metaTagDataRes} />
-        </div>
+        <PdpMobile />
       </PdpDataLocalContext.Provider>
     </>
   )
@@ -296,7 +294,7 @@ export default function index({
 export async function getServerSideProps(context: any) {
   context.res.setHeader(
     'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59',
+    'public, s-maxage=59, stale-while-revalidate=3000',
   )
   try {
     if (context.query.slug?.length > 1) {
@@ -547,7 +545,7 @@ const jsonLD = (
       '@type': 'ItemList',
       name: `Variant ${carModel?.brand} ${carModel?.model}`,
       description: `Daftar Variant ${carModel?.brand} ${carModel?.model} 2023`,
-      itemListOrder: 'http://schema.org/ItemListOrderDescending',
+      itemListOrder: 'https://schema.org/ItemListOrderDescending',
       numberOfItems: carModel?.variants.length,
       itemListElement: carModel ? getItemListElement(carModel) : [],
     },
@@ -661,17 +659,23 @@ const jsonLD = (
     ImageObject: [
       {
         '@type': 'ImageObject',
-        contentUrl: (filterImageBasedOnType(carModel?.images, 'eksterior') as string[])?.length ?
-          filterImageBasedOnType(carModel?.images, 'eksterior')?.[0] : carModel?.images?.[0],
+        contentUrl: (
+          filterImageBasedOnType(carModel?.images, 'eksterior') as string[]
+        )?.length
+          ? filterImageBasedOnType(carModel?.images, 'eksterior')?.[0]
+          : carModel?.images?.[0],
         mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
-        representativeOfPage: 'http://schema.org/True',
-        isFamilyFriendly: 'http://schema.org/True',
-        isAccesibleForFree: 'http://schema.org/False',
+        representativeOfPage: 'https://schema.org/True',
+        isFamilyFriendly: 'https://schema.org/True',
+        isAccesibleForFree: 'https://schema.org/False',
       },
       {
         '@type': 'ImageObject',
-        contentUrl: (filterImageBasedOnType(carModel?.images, 'eksterior') as string[])?.length ?
-          filterImageBasedOnType(carModel?.images, 'interior')?.[0] : carModel?.images?.[0],
+        contentUrl: (
+          filterImageBasedOnType(carModel?.images, 'eksterior') as string[]
+        )?.length
+          ? filterImageBasedOnType(carModel?.images, 'interior')?.[0]
+          : carModel?.images?.[0],
         mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Interior`,
         representativeOfPage: 'https://schema.org/True',
         isFamilyFriendly: 'https://schema.org/True',

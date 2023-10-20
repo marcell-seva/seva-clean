@@ -26,21 +26,3 @@ export const screenHeight = client ? document.documentElement.clientHeight : 700
 export const screenWidth = client
   ? document.documentElement.clientWidth
   : '700px'
-
-// export const GlobalStyle = createGlobalStyle`
-//   * {
-//     box-sizing: border-box;
-//     margin: 0;
-//     padding: 0;
-//     font-family: var(--open-sans);
-//     -webkit-font-smoothing: antialiased;
-//     -moz-osx-font-smoothing: grayscale;
-//   }
-
-//   html body {
-//     background: ${colors.offWhite};
-//     margin: 0 auto;
-//     max-width: ${maxPageWidth};
-//     overflow-x: hidden;
-//   }
-// `

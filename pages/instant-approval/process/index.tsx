@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import styles from 'styles/pages/kk-waiting-result.module.scss'
-import { getCities } from 'services/cities'
+
 import { fetchCustomerDetails } from 'utils/httpUtils/customerUtils'
 
 import urls from 'helpers/urls'
@@ -12,8 +12,6 @@ import {
   trackKualifikasiKreditDownloadIosClick,
   trackKualifikasiKreditWaitingResultPageView,
 } from 'helpers/amplitude/seva20Tracking'
-import { getCarVariantDetailsById } from 'services/recommendations'
-import { getCustomerInfoSeva } from 'services/customer'
 import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
 import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
 import { useRouter } from 'next/router'
@@ -41,6 +39,9 @@ import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { PreviousButton, navigateToPLP } from 'utils/navigate'
 import Image from 'next/image'
+import { api } from 'services/api'
+import { getCustomerInfoSeva } from 'utils/handler/customer'
+import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
 
 const KualifikasiKreditImage = '/revamp/illustration/kualifikasi-kredit.webp'
 const PlayStoreImage = '/revamp/images/profile/google-play.webp'
@@ -76,7 +77,7 @@ const CreditQualificationProcess = () => {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      getCities().then((res) => {
+      api.getCities().then((res) => {
         setCityListApi(res)
       })
     }

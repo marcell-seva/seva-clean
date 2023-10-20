@@ -68,6 +68,7 @@
 .imagePromoSpacing {
   margin-top: 16px;
   margin-bottom: 24px;
+  width: 100%;
 }
 .spacingChevronIcon {
   margin-left: 9px;
@@ -79,14 +80,16 @@
   border-radius: 8px;
 }
 .promoBanner {
-  object-fit: contain;
-  width: -webkit-fill-available;
+  position: relative !important;
+  object-fit: cover;
+  width: 100%;
   border-radius: 8px;
 }
 .containerPromoPopup {
   height: 550px;
   display: flex;
   flex-direction: column;
+  -webkit-overflow-scrolling: touch;
   overflow-y: auto;
   &::-webkit-scrollbar {
     width: 4px;
@@ -104,6 +107,7 @@
   display: flex;
   flex-direction: column;
   overflow: scroll;
+  -webkit-overflow-scrolling: touch;
   padding: 0px 24px;
   padding-bottom: 20px;
   padding-top: 8px;
@@ -122,10 +126,11 @@
   display: flex;
   flex-direction: column;
 }
-@include lg {
-  .container {
-  }
 
-  .content {
-  }
+.bottomSheet [data-rsbs-overlay] {
+  @include centeredWithMaxWidth;
+}
+
+.bottomSheet [data-rsbs-backdrop] {
+  @include centeredWithMaxWidth;
 }

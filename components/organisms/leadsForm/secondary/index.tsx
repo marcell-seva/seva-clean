@@ -14,10 +14,6 @@ import { capitalizeWords, filterNonDigitCharacters } from 'utils/stringUtils'
 import { onlyLettersAndSpaces } from 'utils/handler/regex'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
-import {
-  UnverifiedLeadSubCategory,
-  createUnverifiedLeadNew,
-} from 'services/lead'
 import elementId from 'helpers/elementIds'
 import { OTP } from '../../otp'
 import {
@@ -28,13 +24,16 @@ import {
 } from 'helpers/amplitude/seva20Tracking'
 import { TrackingEventName } from 'helpers/amplitude/eventTypes'
 import { useSessionStorage } from 'utils/hooks/useSessionStorage/useSessionStorage'
-import { useMediaQuery } from 'react-responsive'
 import { variantListUrl } from 'utils/helpers/routes'
 import { getConvertFilterIncome } from 'utils/filterUtils'
 import { useRouter } from 'next/router'
 import { useCar } from 'services/context/carContext'
 import { ButtonVersion, ButtonSize } from 'components/atoms/button'
-import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import {
+  LocalStorageKey,
+  SessionStorageKey,
+  UnverifiedLeadSubCategory,
+} from 'utils/enum'
 import { Currency } from 'utils/handler/calculation'
 import { CityOtrOption } from 'utils/types'
 import { LoanRank } from 'utils/types/models'
@@ -45,12 +44,13 @@ import {
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getToken } from 'utils/handler/auth'
-import { getCustomerInfoSeva } from 'services/customer'
 import {
   PreviousButton,
   saveDataForCountlyTrackerPageViewLC,
 } from 'utils/navigate'
 import Image from 'next/image'
+import { createUnverifiedLeadNew } from 'utils/handler/lead'
+import { getCustomerInfoSeva } from 'utils/handler/customer'
 
 const SupergraphicLeft = '/revamp/illustration/supergraphic-small.webp'
 const SupergraphicRight = '/revamp/illustration/supergraphic-large.webp'
@@ -74,7 +74,6 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
   >('none')
   const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false)
   const { carModelDetails, carVariantDetails } = useCar()
-  const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -477,7 +476,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({}: any) => {
         />
       )}
       <Toast
-        width={isMobile ? 339 : 428}
+        width={343}
         text={toastSuccessInfo}
         open={modalOpened === 'success-toast'}
       />

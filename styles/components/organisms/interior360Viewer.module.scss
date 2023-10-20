@@ -22,16 +22,3 @@
   bottom: 0;
   right: 0;
 }
-
-@include lg {
-  .container {
-    position: relative;
-    width: 100%;
-    height: 552px;
-  }
-
-  .styledIframe {
-    width: 100%;
-    height: 552px;
-  }
-}

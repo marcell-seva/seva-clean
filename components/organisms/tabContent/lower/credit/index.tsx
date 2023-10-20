@@ -52,22 +52,12 @@ import DpForm from 'components/molecules/credit/dp'
 import { CicilOptionForm } from 'components/molecules/credit/cicil'
 import { FormAgeCredit } from 'components/molecules/credit/age'
 import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
-import { checkPromoCodeGias } from 'services/preApproval'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
-import {
-  getLoanCalculatorInsurance,
-  getNewFunnelLoanSpecialRate,
-  getNewFunnelRecommendations,
-  getNewFunnelRecommendationsByCity,
-  postLoanPermutationIncludePromo,
-} from 'services/newFunnel'
-import { getCarModelDetailsById } from 'services/recommendations'
 import {
   CarRecommendation,
   SimpleCarVariantDetail,
   SpecialRateListType,
 } from 'utils/types/utils'
-import { getCustomerAssistantWhatsAppNumber } from 'services/lead'
 import { variantEmptyValue } from 'components/molecules/form/formSelectCarVariant'
 import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
@@ -81,7 +71,6 @@ import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { ageOptions } from 'utils/config/funnel.config'
 import { formatPriceNumberThousandDivisor } from 'utils/numberUtils/numberUtils'
 import { getToken } from 'utils/handler/auth'
-import { getCustomerInfoSeva } from 'services/customer'
 import {
   generateAllBestPromoList,
   getInstallmentAffectedByPromo,
@@ -102,6 +91,11 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
 import dynamic from 'next/dynamic'
+import { api } from 'services/api'
+import { getCarModelDetailsById } from 'utils/handler/carRecommendation'
+import { getCustomerInfoSeva } from 'utils/handler/customer'
+import { getNewFunnelRecommendations } from 'utils/handler/funnel'
+import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -734,10 +728,11 @@ export const CreditTab = () => {
   }
 
   const fetchAllCarModels = async () => {
-    const response = await getNewFunnelRecommendationsByCity(
-      defaultCity.id,
-      defaultCity.cityCode,
-    )
+    const params = new URLSearchParams()
+    params.append('cityId', defaultCity.id as string)
+    params.append('city', defaultCity.cityCode as string)
+
+    const response = await api.getRecommendation('', { params })
 
     setAllModalCarList(response.carRecommendations)
   }
@@ -923,7 +918,7 @@ export const CreditTab = () => {
 
     try {
       setIsLoadingPromoCode(true)
-      const result: any = await checkPromoCodeGias(forms.promoCode)
+      const result: any = await api.postCheckPromoGiias(forms.promoCode)
       setIsLoadingPromoCode(false)
 
       if (result.message === 'valid promo code') {
@@ -981,7 +976,7 @@ export const CreditTab = () => {
       )
 
       try {
-        const responseInsurance = await getLoanCalculatorInsurance({
+        const responseInsurance = await api.getLoanCalculatorInsurance({
           modelId: forms.model?.modelId ?? '',
           cityCode: forms.city.cityCode,
           tenure: allTenure[i],
@@ -1161,7 +1156,8 @@ export const CreditTab = () => {
         otr: getCarOtrNumber() - getCarDiscountNumber(),
       }
 
-      postLoanPermutationIncludePromo(payload)
+      api
+        .postLoanPermutationIncludePromo(payload)
         .then((response) => {
           const result = response.data.reverse()
           const filteredResult = getFilteredCalculationResults(result)

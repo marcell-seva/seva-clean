@@ -104,3 +104,9 @@
     @content;
   }
 }
+
+@mixin centeredWithMaxWidth($maxWidth: 570px) {
+  max-width: $maxWidth;
+  margin-left: auto;
+  margin-right: auto;
+}
