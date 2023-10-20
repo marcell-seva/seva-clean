@@ -70,56 +70,33 @@ export const getUsedCarFunnelRecommendations = (
   const params = new URLSearchParams()
   const {
     brand,
-    bodyType,
     sortBy,
-    mileageRangeGroup,
-    yearRangeGroup,
+    mileageStart,
+    mileageEnd,
+    yearStart,
+    yearEnd,
     transmission,
     tenure,
-    location,
-    priceRangeGroup,
+    city_id,
+    priceStart,
+    priceEnd,
   } = funnelQuery
 
   brand && brand.length > 0 && params.append('brand', brand.join('/'))
-  bodyType &&
-    bodyType.length > 0 &&
-    params.append('bodyType', bodyType.join('/'))
 
   sortBy && params.append('sortBy', sortBy as string)
 
-  location &&
-    location.length > 0 &&
-    params.append('location', location.join('/'))
+  city_id && city_id.length > 0 && params.append('city_id', city_id.join('/'))
 
   tenure && params.append('tenure', String(tenure))
   transmission && params.append('transmission', String(transmission))
-  priceRangeGroup &&
-    params.append(
-      'priceStart',
-      priceRangeGroup?.toString().split('-')[0] as string,
-    )
-  priceRangeGroup &&
-    params.append(
-      'priceEnd',
-      priceRangeGroup?.toString().split('-')[1] as string,
-    )
-  mileageRangeGroup &&
-    params.append(
-      'mileageStart',
-      mileageRangeGroup?.toString().split('-')[0] as string,
-    )
-  mileageRangeGroup &&
-    params.append(
-      'mileageEnd',
-      mileageRangeGroup?.toString().split('-')[1] as string,
-    )
-  yearRangeGroup &&
-    params.append(
-      'yearStart',
-      yearRangeGroup?.toString().split('-')[0] as string,
-    )
-  yearRangeGroup &&
-    params.append('yearEnd', yearRangeGroup?.toString().split('-')[1] as string)
+  priceStart && params.append('priceStart', priceStart?.toString() as string)
+  priceEnd && params.append('priceEnd', priceEnd?.toString() as string)
+  mileageStart &&
+    params.append('mileageStart', mileageStart?.toString() as string)
+  mileageEnd && params.append('mileageEnd', mileageEnd?.toString() as string)
+  yearStart && params.append('yearStart', yearStart?.toString() as string)
+  yearEnd && params.append('yearEnd', yearEnd?.toString() as string)
 
   // getCity().cityCode && params.append('city', getCity().cityCode as string)
   // getCity().id && params.append('cityId', getCity().id as string)

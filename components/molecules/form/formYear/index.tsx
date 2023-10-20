@@ -30,13 +30,13 @@ export const FormYear = ({
   const [minDefault] = useState(minMaxYear.minYearValue)
   const [maxDefault] = useState(minMaxYear.maxYearValue)
   const [minTemp, setMinTemp] = useState(
-    funnelQuery.yearRangeGroup
-      ? funnelQuery.yearRangeGroup?.toString().split('-')[0]
+    funnelQuery.yearStart
+      ? funnelQuery.yearStart?.toString()
       : minMaxYear.minYearValue,
   )
   const [maxTemp, setMaxTemp] = useState(
-    funnelQuery.yearRangeGroup
-      ? funnelQuery.yearRangeGroup?.toString().split('-')[1]
+    funnelQuery.yearEnd
+      ? funnelQuery.yearEnd?.toString()
       : minMaxYear.maxYearValue,
   )
   const [isErrorMin, setIsErrorMin] = useState(false)
@@ -44,13 +44,13 @@ export const FormYear = ({
   const [isErrorMinTwo, setIsErrorMinTwo] = useState(false)
   const [isErrorMaxTwo, setIsErrorMaxTwo] = useState(false)
   const [minTempCurrency, setMinTempCurrency] = useState(
-    funnelQuery.yearRangeGroup
-      ? funnelQuery.yearRangeGroup?.toString().split('-')[0]
+    funnelQuery.yearStart
+      ? funnelQuery.yearStart?.toString().split('-')[0]
       : minMaxYear.minYearValue,
   )
   const [maxTempCurrency, setMaxTempCurrency] = useState(
-    funnelQuery.yearRangeGroup
-      ? funnelQuery.yearRangeGroup?.toString().split('-')[1]
+    funnelQuery.yearEnd
+      ? funnelQuery.yearEnd?.toString().split('-')[1]
       : minMaxYear.maxYearValue,
   )
 
@@ -131,14 +131,14 @@ export const FormYear = ({
       setMinTempCurrency(minMaxYear.minYearValue)
       setMaxTempCurrency(minMaxYear.maxYearValue)
     }
-    if (funnelQuery.yearRangeGroup && !isApplied) {
+    if (funnelQuery.yearStart && funnelQuery.yearEnd && !isApplied) {
       if (maxTemp === minMaxYear.maxYearValue) {
-        setMaxTemp(funnelQuery.yearRangeGroup?.toString().split('-')[1])
-        setMaxTempCurrency(funnelQuery.yearRangeGroup?.toString().split('-')[1])
+        setMaxTemp(funnelQuery.yearEnd?.toString())
+        setMaxTempCurrency(funnelQuery.yearEnd?.toString())
       }
       if (minTemp === minMaxYear.minYearValue) {
-        setMinTemp(funnelQuery.yearRangeGroup?.toString().split('-')[0])
-        setMinTempCurrency(funnelQuery.yearRangeGroup?.toString().split('-')[0])
+        setMinTemp(funnelQuery.yearStart?.toString())
+        setMinTempCurrency(funnelQuery.yearStart?.toString())
       }
     }
   }, [isResetFilter, isApplied, isButtonClick])
@@ -159,13 +159,13 @@ export const FormYear = ({
   }
   useEffect(() => {
     setMinYearFilter(
-      funnelQuery.yearRangeGroup
-        ? funnelQuery.yearRangeGroup?.toString().split('-')[0]
+      funnelQuery.yearStart
+        ? funnelQuery.yearStart?.toString()
         : minMaxYear.minYearValue,
     )
     setMaxYearFilter(
-      funnelQuery.yearRangeGroup
-        ? funnelQuery.yearRangeGroup?.toString().split('-')[1]
+      funnelQuery.yearEnd
+        ? funnelQuery.yearEnd?.toString()
         : minMaxYear.maxYearValue,
     )
   }, [])

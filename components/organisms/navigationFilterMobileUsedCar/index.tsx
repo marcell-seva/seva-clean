@@ -34,6 +34,7 @@ type NavFilterMobileUsedCarProps = {
   resultMinMaxPrice?: any
   setRecommendations: any
   isShowAnnouncementBox?: boolean | null
+  cityList?: any
   isOTO?: boolean
   isUsed?: boolean
 }
@@ -47,6 +48,7 @@ export const NavigationFilterMobileUsedCar = ({
   isFilterFinancial,
   setRecommendations,
   isShowAnnouncementBox,
+  cityList,
   isOTO,
   isUsed,
 }: NavFilterMobileUsedCarProps) => {
@@ -59,6 +61,7 @@ export const NavigationFilterMobileUsedCar = ({
   const onClickOK = () => {
     onButtonClick && onButtonClick(true)
   }
+  const [location, setLocation] = useState([])
   const Currency = (value: any) => {
     return replacePriceSeparatorByLocalization(
       filterNonDigitCharacters(value.toString()),
@@ -82,11 +85,13 @@ export const NavigationFilterMobileUsedCar = ({
   }
   const removePriceRangeFilter = () => {
     patchFunnelQuery({
-      priceRangeGroup: '',
+      priceStart: '',
+      priceEnd: '',
     })
     const filter = {
       ...funnelQuery,
-      priceRangeGroup: '',
+      priceStart: '',
+      priceEnd: '',
     }
     newFunnel(filter)
   }
@@ -104,39 +109,30 @@ export const NavigationFilterMobileUsedCar = ({
 
   const removeYearRangeFilter = () => {
     patchFunnelQuery({
-      yearRangeGroup: '',
+      yearStart: '',
+      yearEnd: '',
     })
     const filter = {
       ...funnelQuery,
-      yearRangeGroup: '',
+      yearStart: '',
+      yearEnd: '',
     }
     newFunnel(filter)
   }
   const removeMileageRangeFilter = () => {
     patchFunnelQuery({
-      mileageRangeGroup: '',
+      mileageStart: '',
+      mileageEnd: '',
     })
     const filter = {
       ...funnelQuery,
-      mileageRangeGroup: '',
+      mileageStart: '',
+      mileageEnd: '',
     }
     newFunnel(filter)
   }
   const removeFilter = (type: any, key: any) => {
-    if (type === 'bodyType') {
-      patchFunnelQuery({
-        bodyType:
-          funnelQuery.bodyType &&
-          funnelQuery.bodyType.filter((item: any) => item !== key),
-      })
-      const filter = {
-        ...funnelQuery,
-        bodyType:
-          funnelQuery.bodyType &&
-          funnelQuery.bodyType.filter((item: any) => item !== key),
-      }
-      newFunnel(filter)
-    } else if (type === 'brand') {
+    if (type === 'brand') {
       patchFunnelQuery({
         brand:
           funnelQuery.brand &&
@@ -151,32 +147,41 @@ export const NavigationFilterMobileUsedCar = ({
       newFunnel(filter)
     } else {
       patchFunnelQuery({
-        location:
-          funnelQuery.location &&
-          funnelQuery.location.filter((item: any) => item !== key),
+        city_id:
+          funnelQuery.city_id &&
+          funnelQuery.city_id.filter((item: any) => {
+            return item !== key
+          }),
       })
       const filter = {
         ...funnelQuery,
-        location:
-          funnelQuery.location &&
-          funnelQuery.location.filter((item: any) => item !== key),
+        city_id:
+          funnelQuery.city_id &&
+          funnelQuery.city_id.filter((item: any) => item !== key),
       }
       newFunnel(filter)
     }
   }
+
+  useEffect(() => {
+    const resultFilter = cityList?.filter((item: any) => {
+      return funnelQuery.city_id?.includes(item.cityId)
+    })
+
+    setLocation(resultFilter)
+  }, [funnelQuery.city_id])
   const newFunnel = async (filter: any) => {
     getUsedCarFunnelRecommendations(filter).then((response: any) => {
       setRecommendations(response.carData)
       const paramUrl = {
-        priceRangeGroup: filter.priceRangeGroup,
-        yearRangeGroup: filter.yearRangeGroup,
-        mileageRangeGroup: filter.yearRangeGroup,
-        location: filter.location,
+        priceStart: filter.priceStart,
+        priceEnd: filter.priceEnd,
+        yearStart: filter.yearStart,
+        yearEnd: filter.yearEnd,
+        mileageStart: filter.mileageStart,
+        mileageEnd: filter.mileageEnd,
+        city_id: filter.city_id,
         transmission: filter.transmission,
-        bodyType:
-          filter.bodyType.length > 0
-            ? String(filter.bodyType).replace(' ', ',')
-            : '',
         // sortBy: sortBy,
         brand:
           filter.brand.length > 0 ? String(filter.brand).replace(' ', ',') : '',
@@ -198,13 +203,19 @@ export const NavigationFilterMobileUsedCar = ({
             false,
             urls.internalUrls.duplicatedCarResultsUrl,
           )
-        : navigateToPLP(PreviousButton.SmartSearch, {
-            search: new URLSearchParams(
-              Object.entries(paramUrl).filter(([, v]) => v !== ''),
-            )
-              .toString()
-              .replace('%2C', ','),
-          })
+        : navigateToPLP(
+            PreviousButton.SmartSearch,
+            {
+              search: new URLSearchParams(
+                Object.entries(paramUrl).filter(([, v]) => v !== ''),
+              )
+                .toString()
+                .replace('%2C', ','),
+            },
+            true,
+            false,
+            urls.internalUrls.usedCarResultsUrl,
+          )
     })
   }
 
@@ -254,35 +265,21 @@ export const NavigationFilterMobileUsedCar = ({
                   </div>
                 </div>
               ))}
-            {funnelQuery.bodyType &&
-              funnelQuery.bodyType.map((item: any) => (
+            {location &&
+              location.map((item: any) => (
                 <div key={item} className={styles.navOuter}>
                   <div
                     className={styles.navFrame}
-                    onClick={() => removeFilter('bodyType', item)}
+                    onClick={() => removeFilter('location', item.cityId)}
                   >
-                    <span className={styles.text}>{item}</span>{' '}
+                    <span className={styles.text}>{item.cityName}</span>{' '}
                     <div className={styles.onClick}>
                       <IconRemove width={16} height={16} color="#878D98" />
                     </div>
                   </div>
                 </div>
               ))}
-            {funnelQuery.location &&
-              funnelQuery.location.map((item: any) => (
-                <div key={item} className={styles.navOuter}>
-                  <div
-                    className={styles.navFrame}
-                    onClick={() => removeFilter('location', item)}
-                  >
-                    <span className={styles.text}>{item}</span>{' '}
-                    <div className={styles.onClick}>
-                      <IconRemove width={16} height={16} color="#878D98" />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            {funnelQuery.priceRangeGroup && (
+            {funnelQuery.priceStart && funnelQuery.priceEnd && (
               <div className={styles.navOuter}>
                 <div
                   className={styles.navFrame}
@@ -290,13 +287,8 @@ export const NavigationFilterMobileUsedCar = ({
                 >
                   <span className={styles.text}>
                     Rp
-                    {Currency(
-                      funnelQuery.priceRangeGroup?.toString().split('-')[0],
-                    )}{' '}
-                    - Rp
-                    {Currency(
-                      funnelQuery.priceRangeGroup?.toString().split('-')[1],
-                    )}
+                    {Currency(funnelQuery.priceStart?.toString())} - Rp
+                    {Currency(funnelQuery.priceEnd?.toString())}
                   </span>{' '}
                   <div className={styles.onClick}>
                     <IconRemove width={16} height={16} color="#878D98" />
@@ -319,15 +311,15 @@ export const NavigationFilterMobileUsedCar = ({
                 </div>
               </div>
             )}
-            {funnelQuery.yearRangeGroup && (
+            {funnelQuery.yearStart && funnelQuery.yearEnd && (
               <div className={styles.navOuter}>
                 <div
                   className={styles.navFrame}
                   onClick={removeYearRangeFilter}
                 >
                   <span className={styles.text}>
-                    {funnelQuery.yearRangeGroup?.toString().split('-')[0]} -
-                    {funnelQuery.yearRangeGroup?.toString().split('-')[1]}
+                    {funnelQuery.yearStart?.toString()} -
+                    {funnelQuery.yearEnd?.toString()}
                   </span>{' '}
                   <div className={styles.onClick}>
                     <IconRemove width={16} height={16} color="#878D98" />
@@ -335,20 +327,15 @@ export const NavigationFilterMobileUsedCar = ({
                 </div>
               </div>
             )}
-            {funnelQuery.mileageRangeGroup && (
+            {funnelQuery.mileageStart && funnelQuery.mileageEnd && (
               <div className={styles.navOuter}>
                 <div
                   className={styles.navFrame}
                   onClick={removeMileageRangeFilter}
                 >
                   <span className={styles.text}>
-                    {addSeparator(
-                      funnelQuery.mileageRangeGroup?.toString().split('-')[0],
-                    )}
-                    km -
-                    {addSeparator(
-                      funnelQuery.mileageRangeGroup?.toString().split('-')[1],
-                    )}
+                    {addSeparator(funnelQuery.mileageStart?.toString())}
+                    km - {addSeparator(funnelQuery.mileageEnd?.toString())}
                     km
                   </span>{' '}
                   <div className={styles.onClick}>

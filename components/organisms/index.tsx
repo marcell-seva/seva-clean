@@ -8,6 +8,7 @@ import { NavigationFilterMobile } from './navigationFilterMobile'
 import { NavigationFilterMobileUsedCar } from './navigationFilterMobileUsedCar'
 import { PLP } from './PLP'
 import { PLPEmpty } from './plpEmpty'
+import { PLPEmptyUsedCar } from './plpEmptyUsedCar'
 import { PLPSkeleton } from './plpSkeleton'
 import { PopupPromo } from './popupPromo'
 import { PopupResultInfo } from './popupResultFilter/resultInfo'
@@ -71,6 +72,7 @@ export {
   HeaderMobile,
   LeadsFormPrimary,
   PLPEmpty,
+  PLPEmptyUsedCar,
   PLPSkeleton,
   PopupPromo,
   PopupResultSulit,

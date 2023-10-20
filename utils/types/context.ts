@@ -51,6 +51,10 @@ export interface FilterParam extends NextParsedUrlQuery {
   monthlyIncome: string
   tenure: string
   priceRangeGroup: string
+  priceStart?: string
+  priceEnd?: string
+  yearStart?: string
+  yearEnd?: string
   age: string
   sortBy: string
 }
@@ -66,10 +70,14 @@ export interface FunnelQuery extends Filter {
   maxYear?: string
   minMileage?: string
   maxMileage?: string
-  yearRangeGroup?: string
-  mileageRangeGroup?: string
+  yearStart?: string
+  yearEnd?: string
+  mileageStart?: string
+  mileageEnd?: string
   transmission?: string
-  location?: string[]
+  city_id?: string[]
+  priceStart?: string
+  priceEnd?: string
   priceRangeGroup?: string
   phoneNumber?: string
   isDefaultTenureChanged?: boolean

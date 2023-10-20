@@ -37,13 +37,13 @@ export const FormPriceUsedCar = ({
   const [minDefault] = useState(minMaxPrice.minPriceValue)
   const [maxDefault] = useState(minMaxPrice.maxPriceValue)
   const [minTemp, setMinTemp] = useState(
-    funnelQuery.priceRangeGroup
-      ? funnelQuery.priceRangeGroup?.toString().split('-')[0]
+    funnelQuery.priceStart
+      ? funnelQuery.priceStart?.toString()
       : minMaxPrice.minPriceValue,
   )
   const [maxTemp, setMaxTemp] = useState(
-    funnelQuery.priceRangeGroup
-      ? funnelQuery.priceRangeGroup?.toString().split('-')[1]
+    funnelQuery.priceEnd
+      ? funnelQuery.priceEnd?.toString()
       : minMaxPrice.maxPriceValue,
   )
   const [isErrorMin, setIsErrorMin] = useState(false)
@@ -51,13 +51,13 @@ export const FormPriceUsedCar = ({
   const [isErrorMinTwo, setIsErrorMinTwo] = useState(false)
   const [isErrorMaxTwo, setIsErrorMaxTwo] = useState(false)
   const [minTempCurrency, setMinTempCurrency] = useState(
-    funnelQuery.priceRangeGroup
-      ? Currency(funnelQuery.priceRangeGroup?.toString().split('-')[0])
+    funnelQuery.priceStart
+      ? Currency(funnelQuery.priceStart?.toString())
       : Currency(minMaxPrice.minPriceValue),
   )
   const [maxTempCurrency, setMaxTempCurrency] = useState(
-    funnelQuery.priceRangeGroup
-      ? Currency(funnelQuery.priceRangeGroup?.toString().split('-')[1])
+    funnelQuery.priceEnd
+      ? Currency(funnelQuery.priceEnd?.toString())
       : Currency(minMaxPrice.maxPriceValue),
   )
   const onChangeInputMinimum = (event: ChangeEvent<HTMLInputElement>) => {
@@ -137,18 +137,14 @@ export const FormPriceUsedCar = ({
       setMinTempCurrency(Currency(minMaxPrice.minPriceValue))
       setMaxTempCurrency(Currency(minMaxPrice.maxPriceValue))
     }
-    if (funnelQuery.priceRangeGroup && !isApplied) {
+    if (funnelQuery.priceStart && funnelQuery.priceEnd && !isApplied) {
       if (maxTemp === minMaxPrice.maxPriceValue) {
-        setMaxTemp(funnelQuery.priceRangeGroup?.toString().split('-')[1])
-        setMaxTempCurrency(
-          Currency(funnelQuery.priceRangeGroup?.toString().split('-')[1]),
-        )
+        setMaxTemp(funnelQuery.priceEnd?.toString())
+        setMaxTempCurrency(Currency(funnelQuery.priceEnd?.toString()))
       }
       if (minTemp === minMaxPrice.minPriceValue) {
-        setMinTemp(funnelQuery.priceRangeGroup?.toString().split('-')[0])
-        setMinTempCurrency(
-          Currency(funnelQuery.priceRangeGroup?.toString().split('-')[0]),
-        )
+        setMinTemp(funnelQuery.priceStart?.toString())
+        setMinTempCurrency(Currency(funnelQuery.priceStart?.toString()))
       }
     }
   }, [isResetFilter, isApplied, isButtonClick])
@@ -169,13 +165,13 @@ export const FormPriceUsedCar = ({
   }
   useEffect(() => {
     setMinPriceFilter(
-      funnelQuery.priceRangeGroup
-        ? funnelQuery.priceRangeGroup?.toString().split('-')[0]
+      funnelQuery.priceStart
+        ? funnelQuery.priceStart?.toString()
         : minMaxPrice.minPriceValue,
     )
     setMaxPriceFilter(
-      funnelQuery.priceRangeGroup
-        ? funnelQuery.priceRangeGroup?.toString().split('-')[1]
+      funnelQuery.priceEnd
+        ? funnelQuery.priceEnd?.toString()
         : minMaxPrice.maxPriceValue,
     )
   }, [])

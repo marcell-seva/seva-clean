@@ -7,8 +7,7 @@ import {
   Button,
   // Overlay,
 } from 'components/atoms'
-import { FormSelectBrandCar } from '../../molecules/form/formSelectBrandCar'
-import { FormSelectTypeCar } from '../../molecules/form/formSelectTypeCar'
+import { FormSelectBrandUsedCar } from '../../molecules/form/formSelectBrandUsedCar'
 import { FormYear } from '../../molecules/form/formYear'
 import { FormPriceUsedCar } from '../../molecules/form/formPriceUsedCar'
 import { FormMileage } from 'components/molecules/form/formMileage'
@@ -41,11 +40,14 @@ interface ParamsUrl {
   brand?: string
   sortBy?: string
   tenure?: string | number
-  priceRangeGroup?: string
-  mileageRangeGroup?: string | number
-  yearRangeGroup?: string | number
+  priceStart?: string
+  priceEnd?: string
+  mileageStart?: string | number
+  mileageEnd?: string | number
+  yearStart?: string | number
+  yearEnd?: string | number
   transmission?: string
-  location?: string
+  city_id?: string
 }
 
 type FilterMobileProps = {
@@ -57,6 +59,7 @@ type FilterMobileProps = {
   isFilter?: any
   setIsFilter?: any
   isResetFilter?: boolean
+  setCityListPLP?: any
   setIsResetFilter?: (value: boolean) => void
   isErrorIncome?: boolean
   setIsErrorIncome?: (value: boolean) => void
@@ -69,6 +72,7 @@ const FilterMobileUsedCar = ({
   minMaxMileage,
   isFilter,
   setIsFilter,
+  setCityListPLP,
   isResetFilter,
   setIsResetFilter,
 }: FilterMobileProps) => {
@@ -90,39 +94,39 @@ const FilterMobileUsedCar = ({
   const [, setLoading] = useState(false)
 
   const [minPriceFilter, setMinPriceFilter] = useState(
-    funnelQuery.priceRangeGroup
-      ? funnelQuery.priceRangeGroup?.toString().split('-')[0]
+    funnelQuery.priceStart
+      ? funnelQuery.priceStart?.toString()
       : minMaxPrice.minPriceValue,
   )
   const [maxPriceFilter, setMaxPriceFilter] = useState(
-    funnelQuery.priceRangeGroup
-      ? funnelQuery.priceRangeGroup?.toString().split('-')[1]
+    funnelQuery.priceEnd
+      ? funnelQuery.priceEnd?.toString()
       : minMaxPrice.maxPriceValue,
   )
   // Year
   const [minYearFilter, setMinYearFilter] = useState(
-    funnelQuery.yearRangeGroup
-      ? funnelQuery.yearRangeGroup?.toString().split('-')[0]
+    funnelQuery.yearStart
+      ? funnelQuery.yearStart?.toString()
       : minMaxYear.minYearValue,
   )
   const [maxYearFilter, setMaxYearFilter] = useState(
-    funnelQuery.yearRangeGroup
-      ? funnelQuery.yearRangeGroup?.toString().split('-')[1]
+    funnelQuery.yearEnd
+      ? funnelQuery.yearEnd?.toString()
       : minMaxYear.maxYearValue,
   )
   const [minMileageFilter, setMinMileageFilter] = useState(
-    funnelQuery.mileageRangeGroup
-      ? funnelQuery.mileageRangeGroup?.toString().split('-')[0]
+    funnelQuery.mileageStart
+      ? funnelQuery.mileageStart?.toString()
       : minMaxMileage.minMileageValue,
   )
   const [maxMileageFilter, setMaxMileageFilter] = useState(
-    funnelQuery.mileageRangeGroup
-      ? funnelQuery.mileageRangeGroup?.toString().split('-')[1]
+    funnelQuery.mileageEnd
+      ? funnelQuery.mileageEnd?.toString()
       : minMaxMileage.maxMileageValue,
   )
 
   const [locationSelected, setLocationSelected] = useState(
-    funnelQuery.location ? funnelQuery.location : [],
+    funnelQuery.city_id ? funnelQuery.city_id : [],
   )
 
   const [cityList, setCityList] = useState([])
@@ -140,6 +144,7 @@ const FilterMobileUsedCar = ({
   const getCiyList = async () => {
     const response = await api.getUsedCarCityList()
     setCityList(response.data)
+    setCityListPLP(response.data)
   }
 
   useEffect(() => {
@@ -154,7 +159,7 @@ const FilterMobileUsedCar = ({
       const resetBrandAndBodyType: FunnelQuery = {
         bodyType: [],
         brand: [],
-        location: [],
+        city_id: [],
       }
       setIsFilter(false)
       setIsCheckedBrand([])
@@ -173,10 +178,8 @@ const FilterMobileUsedCar = ({
     setLoading(true)
     const paramUpdate = {
       ...paramQuery,
-      bodyType: !resetTmp && isCheckedType.length > 0 ? isCheckedType : [],
       brand: !resetTmp && isCheckedBrand.length > 0 ? isCheckedBrand : [],
-      location:
-        !resetTmp && locationSelected.length > 0 ? locationSelected : [],
+      city_id: !resetTmp && locationSelected.length > 0 ? locationSelected : [],
       tenure: tenureFilter,
       transmission: transmissionFilter,
       sortBy: funnelQuery.sortBy,
@@ -188,7 +191,8 @@ const FilterMobileUsedCar = ({
         minPriceFilter !== 0 &&
         maxPriceFilter !== 0
       ) {
-        paramUpdate.priceRangeGroup = minPriceFilter + '-' + maxPriceFilter
+        paramUpdate.priceStart = minPriceFilter
+        paramUpdate.priceStart = maxPriceFilter
       }
       if (
         (minYearFilter != minMaxYear.minYearValue ||
@@ -196,7 +200,8 @@ const FilterMobileUsedCar = ({
         minYearFilter !== 0 &&
         maxYearFilter !== 0
       ) {
-        paramUpdate.yearRangeGroup = minYearFilter + '-' + maxYearFilter
+        paramUpdate.yearStart = minYearFilter
+        paramUpdate.yearEnd = maxYearFilter
       }
       if (
         (minMileageFilter != minMaxMileage.minMileageValue ||
@@ -204,8 +209,8 @@ const FilterMobileUsedCar = ({
         minMileageFilter !== 0 &&
         maxMileageFilter !== 0
       ) {
-        paramUpdate.mileageRangeGroup =
-          minMileageFilter + '-' + maxMileageFilter
+        paramUpdate.mileageStart = minMileageFilter
+        paramUpdate.mileageEnd = maxMileageFilter
       }
     }
 
@@ -222,22 +227,18 @@ const FilterMobileUsedCar = ({
 
   const handleSuccess = async (response: any) => {
     const dataFunnelQuery: FunnelQuery = {
-      bodyType: !resetTmp && isCheckedType.length > 0 ? isCheckedType : [],
       brand: !resetTmp && isCheckedBrand.length > 0 ? isCheckedBrand : [],
-      location:
-        !resetTmp && locationSelected.length > 0 ? locationSelected : [],
+      city_id: !resetTmp && locationSelected.length > 0 ? locationSelected : [],
       tenure: tenureFilter,
       transmission: transmissionFilter,
       sortBy: funnelQuery.sortBy || 'lowToHigh',
     }
     const paramUrl: ParamsUrl = {
       ...(!resetTmp &&
-        isCheckedType.length > 0 && { bodyType: String(isCheckedType) }),
-      ...(!resetTmp &&
         isCheckedBrand.length > 0 && { brand: String(isCheckedBrand) }),
       ...(!resetTmp &&
         locationSelected.length > 0 && {
-          location: String(locationSelected),
+          city_id: String(locationSelected),
         }),
       ...(funnelQuery.sortBy && { sortBy: String(funnelQuery.sortBy) }),
       ...(transmissionFilter && { transmission: String(transmissionFilter) }),
@@ -249,19 +250,23 @@ const FilterMobileUsedCar = ({
         minPriceFilter !== 0 &&
         maxPriceFilter !== 0
       ) {
-        paramUrl.priceRangeGroup = minPriceFilter + '-' + maxPriceFilter
-        dataFunnelQuery.priceRangeGroup = minPriceFilter + '-' + maxPriceFilter
+        paramUrl.priceStart = minPriceFilter
+        paramUrl.priceEnd = maxPriceFilter
+        dataFunnelQuery.priceStart = minPriceFilter
+        dataFunnelQuery.priceEnd = maxPriceFilter
       }
     }
     if (!resetTmp) {
       if (
         (minYearFilter != minMaxYear.minYearValue ||
-          maxYearFilter != minMaxPrice.maxYearValue) &&
+          maxYearFilter != minMaxYear.maxYearValue) &&
         minYearFilter !== 0 &&
         maxYearFilter !== 0
       ) {
-        paramUrl.yearRangeGroup = minYearFilter + '-' + maxYearFilter
-        dataFunnelQuery.yearRangeGroup = minYearFilter + '-' + maxYearFilter
+        paramUrl.yearStart = minYearFilter
+        paramUrl.yearEnd = maxYearFilter
+        dataFunnelQuery.yearStart = minYearFilter
+        dataFunnelQuery.yearEnd = maxYearFilter
       }
     }
     if (!resetTmp) {
@@ -271,15 +276,16 @@ const FilterMobileUsedCar = ({
         minMileageFilter !== 0 &&
         maxMileageFilter !== 0
       ) {
-        paramUrl.mileageRangeGroup = minMileageFilter + '-' + maxMileageFilter
-        dataFunnelQuery.mileageRangeGroup =
-          minMileageFilter + '-' + maxMileageFilter
+        paramUrl.mileageStart = minMileageFilter
+        paramUrl.mileageEnd = maxMileageFilter
+        dataFunnelQuery.mileageStart = minMileageFilter
+        dataFunnelQuery.mileageEnd = maxMileageFilter
       }
     }
 
     patchFunnelQuery(dataFunnelQuery)
 
-    saveRecommendation(response?.carRecommendations || [])
+    saveRecommendation(response?.carData || [])
     setResetTmp(false)
     navigateToPLP(
       PreviousButton.SmartSearch,
@@ -337,20 +343,11 @@ const FilterMobileUsedCar = ({
           <div ref={topDiv} />
           <div className={styles.enhanceMargin}>
             <div className={styles.labelForm}>Merek Mobil</div>
-            <FormSelectBrandCar
+            <FormSelectBrandUsedCar
               setIsCheckedBrand={setIsCheckedBrand}
               isResetFilter={isResetFilter || resetTmp}
               isApplied={isButtonClick && isFilter && isApplied}
               brand={brand}
-              setResetTmp={setResetTmp}
-              isButtonClick={isButtonClick}
-            />
-            <div className={styles.labelForm}>Tipe Mobil</div>
-            <FormSelectTypeCar
-              setIsCheckedType={setIsCheckedType}
-              isResetFilter={isResetFilter || resetTmp}
-              isApplied={isButtonClick && isFilter && isApplied}
-              bodyType={bodyType}
               setResetTmp={setResetTmp}
               isButtonClick={isButtonClick}
             />

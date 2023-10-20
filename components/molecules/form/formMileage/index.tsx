@@ -28,13 +28,13 @@ export const FormMileage = ({
   const [minDefault] = useState(minMaxMileage.minMileageValue)
   const [maxDefault] = useState(minMaxMileage.maxMileageValue)
   const [minTemp, setMinTemp] = useState(
-    funnelQuery.mileageRangeGroup
-      ? funnelQuery.mileageRangeGroup?.toString().split('-')[0]
+    funnelQuery.mileageStart
+      ? funnelQuery.mileageStart?.toString()
       : minMaxMileage.minMileageValue,
   )
   const [maxTemp, setMaxTemp] = useState(
-    funnelQuery.mileageRangeGroup
-      ? funnelQuery.mileageRangeGroup?.toString().split('-')[1]
+    funnelQuery.mileageEnd
+      ? funnelQuery.mileageEnd?.toString()
       : minMaxMileage.maxMileageValue,
   )
   const [isErrorMin, setIsErrorMin] = useState(false)
@@ -42,13 +42,13 @@ export const FormMileage = ({
   const [isErrorMinTwo, setIsErrorMinTwo] = useState(false)
   const [isErrorMaxTwo, setIsErrorMaxTwo] = useState(false)
   const [minTempCurrency, setMinTempCurrency] = useState(
-    funnelQuery.mileageRangeGroup
-      ? funnelQuery.mileageRangeGroup?.toString().split('-')[0]
+    funnelQuery.mileageStart
+      ? funnelQuery.mileageStart?.toString()
       : minMaxMileage.minMileageValue,
   )
   const [maxTempCurrency, setMaxTempCurrency] = useState(
-    funnelQuery.mileageRangeGroup
-      ? funnelQuery.mileageRangeGroup?.toString().split('-')[1]
+    funnelQuery.mileageEnd
+      ? funnelQuery.mileageEnd?.toString()
       : minMaxMileage.maxMileageValue,
   )
 
@@ -129,12 +129,14 @@ export const FormMileage = ({
       setMinTempCurrency(minMaxMileage.minMileageValue)
       setMaxTempCurrency(minMaxMileage.maxMileageValue)
     }
-    if (funnelQuery.mileageRangeGroup && !isApplied) {
+    if (funnelQuery.mileageEnd && !isApplied) {
       if (maxTemp === minMaxMileage.maxMileageValue) {
-        setMaxTemp(funnelQuery.mileageRangeGroup?.toString().split('-')[1])
+        setMaxTemp(funnelQuery.mileageEnd?.toString())
+        setMaxTempCurrency(funnelQuery.mileageEnd?.toString())
       }
       if (minTemp === minMaxMileage.minMileageValue) {
-        setMinTemp(funnelQuery.mileageRangeGroup?.toString().split('-')[0])
+        setMinTemp(funnelQuery.mileageStart?.toString())
+        setMinTempCurrency(funnelQuery.mileageStart?.toString())
       }
     }
   }, [isResetFilter, isApplied, isButtonClick])
@@ -154,15 +156,14 @@ export const FormMileage = ({
     }
   }
   useEffect(() => {
-    console.log(funnelQuery.mileageRangeGroup?.toString().split('-')[0])
     setMinMileageFilter(
-      funnelQuery.mileageRangeGroup
-        ? funnelQuery.mileageRangeGroup.toString().split('-')[0]
+      funnelQuery.mileageStart
+        ? funnelQuery.mileageStart.toString()
         : minMaxMileage.minMileageValue,
     )
     setMaxMileageFilter(
-      funnelQuery.mileageRangeGroup
-        ? funnelQuery.mileageRangeGroup.toString().split('-')[1]
+      funnelQuery.mileageEnd
+        ? funnelQuery.mileageEnd.toString()
         : minMaxMileage.maxMileageValue,
     )
   }, [])
