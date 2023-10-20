@@ -34,6 +34,7 @@ interface ParamsUrl {
   bodyType?: string
   brand?: string
   sortBy?: string
+  tenure?: string | number
   priceStart?: string
   priceEnd?: string
   mileageStart?: string | number
@@ -142,11 +143,6 @@ const FilterMobileUsedCar = ({
     setCityListPLP(response.data)
   }
 
-  const getListBrand = async () => {
-    const response = await api.getBrandList('')
-    setBrandList(response.data)
-  }
-
   useEffect(() => {
     if (!isButtonClick && resetTmp) {
       setResetTmp(false)
@@ -161,15 +157,7 @@ const FilterMobileUsedCar = ({
     if (resetTmp) {
       const resetBrandAndBodyType: FunnelQuery = {
         brand: [],
-        cityId: [],
-        transmission: [],
-        plate: [],
-        yearEnd: '',
-        yearStart: '',
-        mileageEnd: '',
-        mileageStart: '',
-        priceEnd: '',
-        priceStart: '',
+        city_id: [],
       }
       setIsFilter(false)
       setIsCheckedBrand([])
@@ -208,7 +196,7 @@ const FilterMobileUsedCar = ({
         maxPriceFilter !== 0
       ) {
         paramUpdate.priceStart = minPriceFilter
-        paramUpdate.priceEnd = maxPriceFilter
+        paramUpdate.priceStart = maxPriceFilter
       }
     }
     if (!resetTmp) {
@@ -312,7 +300,6 @@ const FilterMobileUsedCar = ({
     }
 
     patchFunnelQuery(dataFunnelQuery)
-    saveTotalItems(response?.totalItems || 0)
     saveRecommendation(response?.carData || [])
     setResetTmp(false)
     navigateToPLP(
@@ -377,7 +364,6 @@ const FilterMobileUsedCar = ({
               isResetFilter={isResetFilter || resetTmp}
               isApplied={isButtonClick && isFilter && isApplied}
               brand={brand}
-              brandList={brandList}
               setResetTmp={setResetTmp}
               isButtonClick={isButtonClick}
             />

@@ -45,12 +45,12 @@ export const FormYear = ({
   const [isErrorMaxTwo, setIsErrorMaxTwo] = useState(false)
   const [minTempCurrency, setMinTempCurrency] = useState(
     funnelQuery.yearStart
-      ? funnelQuery.yearStart?.toString()
+      ? funnelQuery.yearStart?.toString().split('-')[0]
       : minMaxYear.minYearValue,
   )
   const [maxTempCurrency, setMaxTempCurrency] = useState(
     funnelQuery.yearEnd
-      ? funnelQuery.yearEnd?.toString()
+      ? funnelQuery.yearEnd?.toString().split('-')[1]
       : minMaxYear.maxYearValue,
   )
 

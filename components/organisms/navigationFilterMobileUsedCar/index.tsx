@@ -87,6 +87,17 @@ export const NavigationFilterMobileUsedCar = ({
     newFunnel(filter)
   }
 
+  const removeTransmissionFilter = () => {
+    patchFunnelQuery({
+      transmission: '',
+    })
+    const filter = {
+      ...funnelQuery,
+      transmission: '',
+    }
+    newFunnel(filter)
+  }
+
   const removeYearRangeFilter = () => {
     patchFunnelQuery({
       yearStart: '',
@@ -157,17 +168,17 @@ export const NavigationFilterMobileUsedCar = ({
       newFunnel(filter)
     } else {
       patchFunnelQuery({
-        transmission:
-          funnelQuery.transmission &&
-          funnelQuery.transmission.filter((item: any) => {
+        city_id:
+          funnelQuery.city_id &&
+          funnelQuery.city_id.filter((item: any) => {
             return item !== key
           }),
       })
       const filter = {
         ...funnelQuery,
-        transmission:
-          funnelQuery.transmission &&
-          funnelQuery.transmission.filter((item: any) => item !== key),
+        city_id:
+          funnelQuery.city_id &&
+          funnelQuery.city_id.filter((item: any) => item !== key),
       }
       newFunnel(filter)
     }
@@ -182,7 +193,6 @@ export const NavigationFilterMobileUsedCar = ({
   }, [funnelQuery.city_id])
   const newFunnel = async (filter: any) => {
     getUsedCarFunnelRecommendations(filter).then((response: any) => {
-      setTotalItems(response.totalItems)
       setRecommendations(response.carData)
       const paramUrl = {
         priceStart: filter.priceStart,

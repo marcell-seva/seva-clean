@@ -122,13 +122,11 @@ export const PLPUsedCar = ({
     brand,
     downPaymentAmount,
     monthlyIncome,
+    tenure,
     priceStart,
     priceEnd,
     yearStart,
     yearEnd,
-    mileageEnd,
-    mileageStart,
-    transmission,
     age,
     sortBy,
   } = router.query as FilterParam
@@ -158,9 +156,10 @@ export const PLPUsedCar = ({
     priceEnd ||
     yearStart ||
     yearEnd ||
-    mileageStart ||
-    mileageEnd ||
-    transmission
+    tenure ||
+    age ||
+    downPaymentAmount ||
+    monthlyIncome
       ? true
       : false
 
@@ -186,7 +185,7 @@ export const PLPUsedCar = ({
   const [page, setPage] = useState<any>(1)
   // const [totalItems, setTotalItems] = useState(0)
   const [sampleArray, setSampleArray] = useState({
-    items: recommendation,
+    items: recommendation?.slice(0, 10),
   })
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const { cities, dataAnnouncementBox } = useUtils()
@@ -212,15 +211,15 @@ export const PLPUsedCar = ({
       if (sampleArray.items.length >= 10 * page) {
         const pagePlus = page + 1
         setPage(pagePlus)
-        getUsedCarFunnelRecommendations({
-          ...tempQuery,
-          page: pagePlus,
-        }).then((response) => {
-          if (response) {
-            setSampleArray({
-              items: sampleArray.items.concat(response.carData),
-            })
-          }
+        setSampleArray({
+          items: sampleArray.items.concat(
+            recommendation?.slice(
+              10 * page,
+              sampleArray.items.length > 10 * page + 10
+                ? recommendation.length
+                : 10 * page + 10,
+            ),
+          ),
         })
       }
       clearTimeout(timeout)
@@ -388,7 +387,8 @@ export const PLPUsedCar = ({
     const prevPage = getSessionStorage(SessionStorageKey.PreviousPage) as any
     const filterUsage =
       brand || bodyType || (priceStart && priceEnd) ? 'Yes' : 'No'
-    const fincapUsage = downPaymentAmount && age && monthlyIncome ? 'Yes' : 'No'
+    const fincapUsage =
+      downPaymentAmount && tenure && age && monthlyIncome ? 'Yes' : 'No'
     const initialPage = valueForInitialPageProperty()
     const track = {
       CAR_FILTER_USAGE: filterUsage,
@@ -456,9 +456,7 @@ export const PLPUsedCar = ({
     if (
       (funnelQuery.brand && funnelQuery.brand.length > 0) ||
       (funnelQuery.bodyType && funnelQuery.bodyType.length > 0) ||
-      (funnelQuery.transmission && funnelQuery.transmission.length > 0) ||
-      (funnelQuery.cityId && funnelQuery.cityId.length > 0) ||
-      (funnelQuery.plate && funnelQuery.plate.length > 0) ||
+      (funnelQuery.city_id && funnelQuery.city_id.length > 0) ||
       (funnelQuery.priceStart !== minMaxPrice.minPriceValue.toString() &&
         funnelQuery.priceStart !== '' &&
         funnelQuery.priceStart !== undefined) ||
@@ -477,6 +475,9 @@ export const PLPUsedCar = ({
       (funnelQuery.mileageEnd !== minMaxMileage.maxMileageValue.toString() &&
         funnelQuery.mileageEnd !== '' &&
         funnelQuery.mileageEnd !== undefined) ||
+      funnelQuery.tenure !== 5 ||
+      (funnelQuery.transmission !== '' &&
+        funnelQuery.transmission !== undefined) ||
       (brand && brand.length > 0)
     ) {
       setIsFilter(true)
@@ -488,7 +489,7 @@ export const PLPUsedCar = ({
   useEffect(() => {
     setPage(1)
     setHasMore(true)
-    setSampleArray({ items: recommendation })
+    setSampleArray({ items: recommendation?.slice(0, 10) })
     saveRecommendation(recommendation)
   }, [recommendation])
 
@@ -590,6 +591,10 @@ export const PLPUsedCar = ({
         .getMinMaxPrice('', { params })
         .then((response) => {
           if (response) {
+            setMinMaxPrice({
+              minPriceValue: response.minPriceValue,
+              maxPriceValue: response.maxPriceValue,
+            })
             const minTemp = priceStart
               ? response?.data?.minPriceValue >
                 Number(priceStart && priceStart?.toString())
@@ -607,12 +612,10 @@ export const PLPUsedCar = ({
               brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
               priceStart: priceStart ? minTemp : '',
               priceEnd: priceEnd ? maxTemp : '',
-              sortBy: 'lowToHigh',
-              page: page || '1',
-              perPage: '10',
+              tenure: Number(tenure) || 5,
+              monthlyIncome: monthlyIncome || '',
+              sortBy: sortBy || 'lowToHigh',
             }
-
-            setTempQuery(queryParam)
 
             getUsedCarFunnelRecommendations(queryParam)
               .then((response) => {
@@ -623,13 +626,12 @@ export const PLPUsedCar = ({
                     resultMinPrice: response.lowestCarPrice || 0,
                     resultMaxPrice: response.highestCarPrice || 0,
                   })
-                  saveTotalItems(response.totalItems)
                   setPage(1)
                   setSampleArray({
-                    items: response.carData,
+                    items: response.carData?.slice(0, 10),
                   })
                   setTimeout(() => {
-                    checkFincapBadge(response.carData)
+                    checkFincapBadge(response.carData?.slice(0, 10))
                   }, 1000)
                 }
                 setShowLoading(false)
@@ -657,6 +659,7 @@ export const PLPUsedCar = ({
         priceEnd: priceEnd,
         yearStart: yearStart,
         yearEnd: yearEnd,
+        tenure: Number(tenure) || 5,
         sortBy: sortBy || 'lowToHigh',
       }
       patchFunnelQuery(queryParam)
@@ -710,7 +713,6 @@ export const PLPUsedCar = ({
       page: page || '1',
       perPage: '10',
     }
-    setTempQuery(queryParam)
     getUsedCarFunnelRecommendations(queryParam).then((response) => {
       if (response) {
         patchFunnelQuery(queryParam)
@@ -723,7 +725,7 @@ export const PLPUsedCar = ({
         setPage(1)
 
         setSampleArray({
-          items: response.carData,
+          items: response.carData?.slice(0, 10),
         })
       }
       setShowLoading(false)

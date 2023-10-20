@@ -157,13 +157,15 @@ export const getServerSideProps: GetServerSideProps<{
 
   const {
     brand,
-    bodyType,
-    priceRangeGroup,
-    yearRangeGroup,
-    mileageRangeGroup,
+    priceStart,
+    priceEnd,
+    yearStart,
+    yearEnd,
+    mileageStart,
+    mileageEnd,
     tenure,
     transmission,
-    location,
+    city_id,
     sortBy,
   } = ctx.query
 
@@ -184,36 +186,26 @@ export const getServerSideProps: GetServerSideProps<{
 
     const footerData = fetchFooter.data.data
 
-    const cityId = '11'
-    if (!priceRangeGroup) {
-      const params = new URLSearchParams()
-      params.append('city', cityId as string)
-
-      const minmax = await api.getMinMaxPriceUsedCar('', { params })
+    if (!priceStart && !priceEnd) {
+      const minmax = await api.getMinMaxPriceUsedCar('')
       const minmaxPriceData = minmax.data
       meta.MinMaxPrice = {
         minPriceValue: minmaxPriceData.minPrice,
         maxPriceValue: minmaxPriceData.maxPrice,
       }
     }
-    if (!yearRangeGroup) {
-      const params = new URLSearchParams()
-      params.append('city', cityId as string)
-
-      const minmax = await api.getMinMaxYearsUsedCar('', { params })
+    if (!yearStart && !yearEnd) {
+      const minmax = await api.getMinMaxYearsUsedCar('')
       const minmaxYearData = minmax.data
+
       meta.MinMaxYear = {
         minYearValue: minmaxYearData.minYears,
         maxYearValue: minmaxYearData.maxYears,
       }
     }
 
-    if (!mileageRangeGroup) {
-      const params = new URLSearchParams()
-      params.append('city', cityId as string)
-
-      const minmax = await api.getMinMaxMileageUsedCar('', { params })
-
+    if (!mileageStart && !mileageEnd) {
+      const minmax = await api.getMinMaxMileageUsedCar('')
       const minmaxMileageData = minmax.data
       meta.MinMaxMileage = {
         minMileageValue: minmaxMileageData.minMileages,
@@ -227,25 +219,27 @@ export const getServerSideProps: GetServerSideProps<{
           ?.split(',')
           .map((item) => getCarBrand(item)),
       }),
-      ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
-      ...(priceRangeGroup
-        ? { priceRangeGroup }
+      ...(priceStart && priceEnd
+        ? { priceStart, priceEnd }
         : {
-            priceRangeGroup: `${meta.MinMaxPrice.minPriceValue}-${meta.MinMaxPrice.maxPriceValue}`,
+            priceStart: meta.MinMaxPrice.minPriceValue,
+            priceEnd: meta.MinMaxPrice.maxPriceValue,
           }),
-      ...(yearRangeGroup
-        ? { yearRangeGroup }
+      ...(yearStart && yearEnd
+        ? { yearStart, yearEnd }
         : {
-            yearRangeGroup: `${meta.MinMaxYear.minYearValue}-${meta.MinMaxYear.maxYearValue}`,
+            yearStart: meta.MinMaxYear.minYearValue,
+            yearEnd: meta.MinMaxYear.maxYearValue,
           }),
-      ...(mileageRangeGroup
-        ? { mileageRangeGroup }
+      ...(mileageStart && mileageEnd
+        ? { mileageStart, mileageEnd }
         : {
-            mileageRangeGroup: `${meta.MinMaxMileage.minMileageValue}-${meta.MinMaxMileage.maxMileageValue}`,
+            mileageStart: meta.MinMaxMileage.minMileageValue,
+            mileageEnd: meta.MinMaxMileage.maxMileageValue,
           }),
       ...(tenure && { tenure }),
       ...(transmission && { transmission }),
-      ...(location && { location }),
+      ...(city_id && { city_id }),
       ...(sortBy && { sortBy }),
     }
 
