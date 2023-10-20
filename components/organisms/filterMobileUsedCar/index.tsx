@@ -132,8 +132,10 @@ const FilterMobileUsedCar = ({
   const [isCheckedBrand, setIsCheckedBrand] = useState<string[]>(
     funnelQuery.brand ? funnelQuery.brand : [],
   )
-
-  const { saveRecommendation, saveTotalItems } = usedCar()
+  const [isCheckedType, setIsCheckedType] = useState<string[]>(
+    funnelQuery.bodyType ? funnelQuery.bodyType : [],
+  )
+  const { saveRecommendation } = usedCar()
   const [isApplied, setIsApplied] = useState(false)
   const [resetTmp, setResetTmp] = useState(false)
 
