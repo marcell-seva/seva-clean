@@ -53,7 +53,6 @@ import {
   carResultsUrl,
   usedCarResultUrl,
 } from 'utils/helpers/routes'
-import { useAmplitudePageView } from 'utils/hooks/useAmplitudePageView'
 import {
   defaultCity,
   getCity,
@@ -70,7 +69,7 @@ import {
 } from 'utils/types/context'
 import { MoengageViewCarSearch } from 'utils/types/moengage'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
-import styles from '../../../styles/pages/mobil-bekas.module.scss'
+import styles from 'styles/pages/mobil-bekas.module.scss'
 import {
   trackEventCountly,
   valueForInitialPageProperty,
@@ -112,7 +111,6 @@ export const PLPUsedCar = ({
   minmaxYear,
   isOTO = false,
 }: PLPProps) => {
-  useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
   const { recommendation, saveRecommendation, totalItems, saveTotalItems } =
     usedCar()

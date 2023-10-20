@@ -27,7 +27,7 @@ import { formatBillionPoint } from 'utils/numberUtils/numberUtils'
 import { Location } from 'utils/types'
 import { CarRecommendation, UsedCarRecommendation } from 'utils/types/context'
 import { LoanRank } from 'utils/types/models'
-import styles from '../../../styles/components/organisms/usedCarDetailCard.module.scss'
+import styles from 'styles/components/organisms/usedCarDetailCard.module.scss'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import {

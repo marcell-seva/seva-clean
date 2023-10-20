@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styles from '../../../../styles/components/molecules/form/formTransmission.module.scss'
+import styles from 'styles/components/molecules/form/formTransmission.module.scss'
 import { Space } from 'antd'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
 import elementId from 'helpers/elementIds'

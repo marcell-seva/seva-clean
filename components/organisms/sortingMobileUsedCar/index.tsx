@@ -3,7 +3,6 @@ import React from 'react'
 import { BottomSheetProps } from 'react-spring-bottom-sheet'
 import { BottomSheet } from 'components/atoms'
 import { BottomSheetList } from 'components/molecules'
-import { trackPLPSortClick } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
 import { FormControlValue } from 'utils/types'
 import { sortOptionsUsedCar } from 'utils/config/funnel.config'
@@ -29,7 +28,6 @@ const SortingMobileUsedCar = ({
 
   const onChooseOption = (value: FormControlValue, label: FormControlValue) => {
     patchFunnelQuery({ sortBy: value as string })
-    trackPLPSortClick(label as string)
     onPickClose(value, label as string)
   }
   return (

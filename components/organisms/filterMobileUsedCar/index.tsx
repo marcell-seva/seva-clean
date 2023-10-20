@@ -16,12 +16,6 @@ import { FormCarLocation } from '../../molecules/form/formCarLocation'
 import { toNumber } from 'utils/stringUtils'
 import { AxiosResponse } from 'axios'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
-import {
-  CarResultPageFilterParam,
-  trackPLPClearFilter,
-  trackPLPFilterShow,
-  trackPLPSubmitFilter,
-} from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
 import urls from 'utils/helpers/url'
 import { useRouter } from 'next/router'
@@ -333,7 +327,7 @@ const FilterMobileUsedCar = ({
         className={`${styles.wrapper} ${styles.headerContent}`}
         open={isButtonClick || false}
         onDismiss={() => {
-          !isResetFilter && trackPLPFilterShow(false)
+          !isResetFilter
           onClickClose()
         }}
         title="Filter"

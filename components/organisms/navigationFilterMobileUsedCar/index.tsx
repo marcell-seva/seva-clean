@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import styles from '../../../styles/pages/navigationfiltermobile.module.scss'
+import styles from 'styles/pages/navigationfiltermobile.module.scss'
 import {
   IconFilter,
   IconStrawberry,
