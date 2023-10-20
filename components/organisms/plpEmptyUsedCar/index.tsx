@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { CitySelectorModal } from 'components/molecules'
 
-import styles from '../../../styles/components/organisms/plpEmpty.module.scss'
+import styles from 'styles/components/organisms/plpEmpty.module.scss'
 import elementId from 'helpers/elementIds'
 import { CarRecommendation } from 'utils/types/context'
 import { Location } from 'utils/types'
@@ -46,9 +46,11 @@ export const PLPEmptyUsedCar = ({ onClickLabel }: PLPEmptyUsedCarProps) => {
           className={styles.copy}
           data-testid={elementId.PLP.Text.CarNotFound}
         >
-          <div className={styles.titleCopy}>Tidak Ada Mobil yang Ditemukan</div>
+          <div className={styles.titleCopy}>
+            Tidak Ada Mobil Bekas yang Ditemukan
+          </div>
           <div className={styles.textCopy}>
-            Silakan coba ganti filter untuk menemukan mobil yang mendekati
+            Silakan coba ganti filter untuk menemukan mobil bekas yang mendekati
             kriteriamu atau <br />{' '}
             <p
               onClick={() => {
