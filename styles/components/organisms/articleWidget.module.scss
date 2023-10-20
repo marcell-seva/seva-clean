@@ -1,5 +1,10 @@
 @import '../../abstract/colors';
 @import '../../abstract/mixins';
+
+.tab {
+  z-index: 2 !important;
+}
+
 .wrapperTop {
   background-color: #ffffff;
   padding: 32px 16px 0px 16px;
