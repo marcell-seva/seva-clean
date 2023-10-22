@@ -132,9 +132,6 @@ const FilterMobileUsedCar = ({
   const [isCheckedBrand, setIsCheckedBrand] = useState<string[]>(
     funnelQuery.brand ? funnelQuery.brand : [],
   )
-  const [isCheckedType, setIsCheckedType] = useState<string[]>(
-    funnelQuery.bodyType ? funnelQuery.bodyType : [],
-  )
   const { saveRecommendation, saveTotalItems } = usedCar()
   const [isApplied, setIsApplied] = useState(false)
   const [resetTmp, setResetTmp] = useState(false)
@@ -143,6 +140,11 @@ const FilterMobileUsedCar = ({
     const response = await api.getUsedCarCityList()
     setCityList(response.data)
     setCityListPLP(response.data)
+  }
+
+  const getListBrand = async () => {
+    const response = await api.getBrandList('')
+    setBrandList(response.data)
   }
 
   useEffect(() => {
@@ -367,6 +369,7 @@ const FilterMobileUsedCar = ({
               isResetFilter={isResetFilter || resetTmp}
               isApplied={isButtonClick && isFilter && isApplied}
               brand={brand}
+              brandList={brandList}
               setResetTmp={setResetTmp}
               isButtonClick={isButtonClick}
             />

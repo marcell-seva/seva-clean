@@ -82,11 +82,11 @@ export const getUsedCarFunnelRecommendations = (
     priceEnd,
   } = funnelQuery
 
-  brand && brand.length > 0 && params.append('brand', brand.join('/'))
+  brand && brand.length > 0 && params.append('brand', brand.join(','))
 
   sortBy && params.append('sortBy', sortBy as string)
 
-  city_id && city_id.length > 0 && params.append('city_id', city_id.join('/'))
+  city_id && city_id.length > 0 && params.append('city_id', city_id.join(','))
 
   tenure && params.append('tenure', String(tenure))
   transmission && params.append('transmission', String(transmission))

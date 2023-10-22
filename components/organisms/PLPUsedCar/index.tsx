@@ -127,6 +127,9 @@ export const PLPUsedCar = ({
     priceEnd,
     yearStart,
     yearEnd,
+    mileageEnd,
+    mileageStart,
+    transmission,
     age,
     sortBy,
   } = router.query as FilterParam
@@ -157,9 +160,9 @@ export const PLPUsedCar = ({
     yearStart ||
     yearEnd ||
     tenure ||
-    age ||
-    downPaymentAmount ||
-    monthlyIncome
+    mileageStart ||
+    mileageEnd ||
+    transmission
       ? true
       : false
 
