@@ -55,6 +55,9 @@ export interface FilterParam extends NextParsedUrlQuery {
   priceEnd?: string
   yearStart?: string
   yearEnd?: string
+  mileageStart?: string
+  mileageEnd?: string
+  transmission?: string
   age: string
   sortBy: string
 }

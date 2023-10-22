@@ -13,6 +13,7 @@ const Peugeot = '/revamp/icon/logo-peugeot.webp'
 
 export interface FilterMobileProps {
   setIsCheckedBrand: any
+  brandList: any
   isResetFilter?: boolean
   isApplied?: boolean
   brand?: any
@@ -26,8 +27,16 @@ interface CarButtonProps {
   isChecked: boolean
 }
 
+interface BrandList {
+  makeId: number | null
+  makeCode: string
+  makeName: string
+  logoUrl: string | null
+}
+
 export const FormSelectBrandUsedCar = ({
   setIsCheckedBrand,
+  brandList,
   isResetFilter,
   isApplied,
   brand,
@@ -39,84 +48,39 @@ export const FormSelectBrandUsedCar = ({
     funnelQuery.brand ? funnelQuery.brand : [],
   )
   // setIsCheckedBrand(isCheckedBrandQuery)
-  const carList: CarButtonProps[] = [
-    {
-      key: 'Toyota',
+  const logoList = {
+    Toyota: LogoToyota,
+    Daihatsu: LogoDaihatsu,
+    Isuzu: Isuzu,
+    BMW: LogoBmw,
+    Peugeot: Peugeot,
+  }
+  const sizeLogo = {
+    Toyota: '21,18',
+    Daihatsu: '21.6,15',
+    Isuzu: '21.6,7.2',
+    BMW: '19.2,19.2',
+    Peugeot: '17.49,19.2',
+  }
+  const carList: CarButtonProps[] = brandList.map((obj: BrandList) => {
+    return {
+      key: obj.makeName,
       icon: (
         <Image
-          src={LogoToyota}
-          alt="Toyota"
-          style={{ width: 21, height: 18 }}
-          width={21}
-          height={18}
+          src={logoList[obj.makeName as keyof typeof logoList]}
+          alt={obj.makeName}
+          width={parseInt(
+            sizeLogo[obj.makeName as keyof typeof sizeLogo]?.split(',')[0],
+          )}
+          height={parseInt(
+            sizeLogo[obj.makeName as keyof typeof sizeLogo]?.split(',')[1],
+          )}
         />
       ),
-      value: 'Toyota',
-      isChecked: isCheckedBrandQuery.includes('Toyota'),
-    },
-    {
-      key: 'Daihatsu',
-      icon: (
-        <Image
-          src={LogoDaihatsu}
-          alt="Daihatsu"
-          style={{ width: 21.6, height: 15 }}
-          width={21.6}
-          height={15}
-        />
-      ),
-      value: 'Daihatsu',
-      isChecked: isCheckedBrandQuery.includes('Daihatsu'),
-    },
-    {
-      key: 'Isuzu',
-      icon: (
-        <Image
-          src={Isuzu}
-          alt="Isuzu"
-          style={{ width: 21.6, height: 7.2 }}
-          width={21.6}
-          height={7.2}
-        />
-      ),
-      value: 'Isuzu',
-      isChecked: isCheckedBrandQuery.includes('Isuzu'),
-    },
-    {
-      key: 'BMW',
-      icon: (
-        <Image
-          src={LogoBmw}
-          alt="BMW"
-          style={{ width: 19.2, height: 19.2 }}
-          width={19.2}
-          height={19.2}
-        />
-      ),
-      value: 'BMW',
-      isChecked: isCheckedBrandQuery.includes('BMW'),
-    },
-    {
-      key: 'Peugeot',
-      icon: (
-        <Image
-          src={Peugeot}
-          alt="Peugeot"
-          style={{ width: 17.49, height: 19.2 }}
-          width={17.49}
-          height={19.2}
-        />
-      ),
-      value: 'Peugeot',
-      isChecked: isCheckedBrandQuery.includes('Peugeot'),
-    },
-    {
-      key: 'Merek Lainnya',
-      icon: <div></div>,
-      value: 'Merek Lainnya',
-      isChecked: isCheckedBrandQuery.includes('Merek Lainnya'),
-    },
-  ]
+      value: obj.makeCode,
+      isChecked: isCheckedBrandQuery.includes(obj.makeCode),
+    }
+  })
   const onClick = (key: string) => {
     if (isCheckedBrandQuery.includes(key)) {
       setIsCheckedBrand(isCheckedBrandQuery.filter((item) => item !== key))
@@ -171,18 +135,25 @@ export const FormSelectBrandUsedCar = ({
         {carList.map(({ key, icon, value, isChecked }) => {
           return (
             <>
-              <div
-                onClick={() => onClick(value)}
-                key={key}
-                className={!isChecked ? styles.box : styles.boxOnclick}
-                data-testid={`${elementId.Logo}${
-                  key === 'BMW' ? key : key.toLowerCase()
-                }`}
-              >
-                <div className={styles.content}>
-                  {icon} {key}
+              {value === 'other' ? (
+                <div
+                  onClick={() => onClick(value)}
+                  key={key}
+                  className={!isChecked ? styles.box : styles.boxOnclick}
+                >
+                  <div className={styles.content}>{key}</div>
                 </div>
-              </div>
+              ) : (
+                <div
+                  onClick={() => onClick(value)}
+                  key={key}
+                  className={!isChecked ? styles.box : styles.boxOnclick}
+                >
+                  <div className={styles.content}>
+                    {icon} {key}
+                  </div>
+                </div>
+              )}
             </>
           )
         })}

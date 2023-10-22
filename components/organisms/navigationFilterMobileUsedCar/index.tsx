@@ -258,13 +258,15 @@ export const NavigationFilterMobileUsedCar = ({
               </div>
             )}
             {funnelQuery.brand &&
-              funnelQuery.brand.map((item: any) => (
+              funnelQuery.brand.map((item: string) => (
                 <div key={item} className={styles.navOuter}>
                   <div
                     className={styles.navFrame}
                     onClick={() => removeFilter('brand', item)}
                   >
-                    <span className={styles.text}>{item}</span>{' '}
+                    <span className={styles.text}>
+                      {item.charAt(0).toUpperCase() + item.slice(1)}
+                    </span>{' '}
                     <div className={styles.onClick}>
                       <IconRemove width={16} height={16} color="#878D98" />
                     </div>
