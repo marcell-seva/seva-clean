@@ -240,9 +240,9 @@ export const AlternativeCarCard = ({
           onClick={navigateToPDP}
           data-testid={elementId.CarRecommendation.BrandModel}
         >
-          <h3 className={styles.brandModelText}>
+          <h4 className={styles.brandModelText}>
             {recommendation.brand} {recommendation.model}
-          </h3>
+          </h4>
           <div
             className={styles.infoWrapper}
             data-testid={elementId.CarRecommendation.NominalCicilan}
