@@ -271,7 +271,7 @@ const HomepageMobile = ({ dataReccomendation }: any) => {
     setTrackEventMoEngageWithoutValue(EventName.view_homepage)
     setTimeout(() => {
       if (!isSentCountlyPageView) {
-        // trackCountlyPageView()
+        trackCountlyPageView()
       }
     }, 1000)
   }, [])
