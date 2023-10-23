@@ -250,6 +250,8 @@ export const getServerSideProps: GetServerSideProps<{
             priceStart: meta.MinMaxPrice.minPriceValue,
             priceEnd: meta.MinMaxPrice.maxPriceValue,
           }),
+      ...(tenure && { tenure }),
+      ...(transmission && { transmission }),
       ...(city_id && { city_id }),
       ...(sortBy && { sortBy: 'lowToHigh' }),
       ...{ sortBy: 'lowToHigh' },
