@@ -11,6 +11,7 @@ import { CityOtrOption } from 'utils/types'
 import {
   AnnouncementBoxDataType,
   ArticleData,
+  CarRecommendation,
   NavbarItemResponse,
   SalesAgent,
 } from 'utils/types/utils'
@@ -35,6 +36,8 @@ export type UtilsContextType = {
   isSsrMobile: boolean
   dekstopWebTopMenu: NavbarItemResponse[]
   saveDesktopWebTopMenu: (data: NavbarItemResponse[] | []) => void
+  dataLeads: CarRecommendation | undefined
+  saveDataLeads: (data: CarRecommendation) => void
 }
 
 export const UtilsContext = createContext<UtilsContextType | []>([])
@@ -43,6 +46,7 @@ export const UtilsContextProvider = ({ children }: any) => {
   const [cities, setCities] = useState<CityOtrOption[] | []>([])
   const [agent, setAgent] = useState<SalesAgent[] | []>([])
   const [articles, setArticles] = useState<ArticleData[] | []>([])
+  const [dataLeads, setDataLeads] = useState<CarRecommendation | undefined>()
   const [dataAnnouncementBox, setIsShowAnnouncementBox] = useState<
     AnnouncementBoxDataType | undefined
   >()
@@ -69,6 +73,9 @@ export const UtilsContextProvider = ({ children }: any) => {
   )
 
   const saveCities = (citiesData: CityOtrOption[] | []) => setCities(citiesData)
+
+  const saveDataLeads = (leadsData: CarRecommendation | undefined) =>
+    setDataLeads(leadsData)
 
   const saveAgent = (agentData: SalesAgent[] | []) => setAgent(agentData)
 
@@ -119,6 +126,8 @@ export const UtilsContextProvider = ({ children }: any) => {
         isSsrMobile: false,
         dekstopWebTopMenu,
         saveDesktopWebTopMenu,
+        dataLeads,
+        saveDataLeads,
       }}
     >
       {children}

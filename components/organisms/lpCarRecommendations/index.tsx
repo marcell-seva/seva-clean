@@ -37,6 +37,7 @@ import { it } from 'node:test'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { useCar } from 'services/context/carContext'
+import { useUtils } from 'services/context/utilsContext'
 
 type LPCarRecommendationsProps = {
   dataReccomendation: any
@@ -50,6 +51,7 @@ const LpCarRecommendations = ({
   isOTO = false,
 }: LPCarRecommendationsProps) => {
   const router = useRouter()
+  const { saveDataLeads } = useUtils()
   const swiperRef = useRef<SwiperType>()
   const { recommendation } = useCar()
   const [recommendationList, setRecommendationList] =
@@ -185,6 +187,11 @@ const LpCarRecommendations = ({
     })
   }
 
+  const onClickInterested = (item: CarRecommendation) => {
+    saveDataLeads(item)
+    setIsModalOpened(true)
+  }
+
   useEffect(() => {
     handleShowRecommendation()
 
@@ -276,7 +283,7 @@ const LpCarRecommendations = ({
                           },
                         )
                         isOTO
-                          ? setIsModalOpened(true)
+                          ? onClickInterested(item)
                           : handleCalculateAbility(item, index)
                       }}
                       data-testid={elementId.PLP.Button.HitungKemampuan}
