@@ -307,7 +307,7 @@ const jsonLD = (
         {
           '@type': 'Action',
           name: 'Teman SEVA',
-          url: 'https://www.seva.id/teman-seva/dashboard',
+          url: 'https://www.seva.id/teman-seva/onboarding',
         },
         {
           '@type': 'Action',
