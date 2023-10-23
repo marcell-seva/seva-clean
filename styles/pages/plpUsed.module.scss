@@ -2,10 +2,7 @@
 @import '../abstract/mixins';
 
 .mobile {
-  display: block;
-  @include lg {
-    max-width: 570px;
-    margin: 0% auto;
-    position: relative;
-  }
+  max-width: 570px;
+  margin: 0% auto;
+  position: relative;
 }
