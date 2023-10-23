@@ -96,36 +96,21 @@ export const FooterMobile = ({ pageOrigination }: FooterProps) => {
           pembiayaan dan dealer resmi dari Astra Group
         </span>
         <div className={styles.linkedTextWrapper}>
-          <span className={styles.gap}>
-            <Link
-              href={urls.about}
-              onClick={() => {
-                trackCountlyFooter(urls.about)
-              }}
-            >
-              Tentang Kami
-            </Link>
-            <Link
-              href={urls.termsAndConditionsSeva}
-              onClick={() => trackCountlyFooter(urls.termsAndConditionsSeva)}
-            >
-              Syarat & Ketentuan
-            </Link>
-          </span>
-          <span className={styles.gap}>
-            <Link
-              href={urls.privacyPolicySeva}
-              onClick={() => trackCountlyFooter(urls.privacyPolicySeva)}
-            >
-              Kebijakan Privasi
-            </Link>
-            <Link
-              href={urls.contactUs}
-              onClick={() => trackCountlyFooter(urls.contactUs)}
-            >
-              Hubungi Kami
-            </Link>
-          </span>
+          {mobileWebFooterMenus?.length > 0 &&
+            mobileWebFooterMenus.map((item, index) => (
+              <Link
+                key={index}
+                href={formatMenuUrl(item.menuUrl)}
+                rel="noreferrer noopener"
+                target="_blank"
+                onClick={() => {
+                  trackCountlyFooter(item.menuUrl)
+                }}
+                data-testid={dataTestId(item.menuCode)}
+              >
+                {item.menuName}
+              </Link>
+            ))}
         </div>
         <div className={styles.socialWrapper}>
           <a
