@@ -11,6 +11,7 @@ const internalUrls = {
   questionsUrl: '/questions',
   carResultsUrl: '/mobil-baru',
   usedCarResultsUrl: '/mobil-bekas/c',
+  usedCarDetailUrl: '/mobil-bekas/p',
   duplicatedCarResultsUrl: '/adaSEVAdiOTO/mobil-baru',
   carResultsUrlId: '/mobil-baru/:id',
   variantListOldDesignUrl: '/var/mobil-baru/:brand/:model',

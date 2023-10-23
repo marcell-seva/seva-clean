@@ -2,6 +2,7 @@ export const rootUrl = '/'
 export const rootOTOUrl = '/adaSEVAdiOTO'
 export const carResultsUrl = '/mobil-baru'
 export const usedCarResultUrl = '/mobil-bekas/c'
+export const usedCarDetailUrl = '/mobil-bekas/p'
 export const OTONewCarUrl = '/adaSEVAdiOTO/mobil-baru'
 export const OTOCarResultsUrl = '/adaSEVAdiOTO/mobil-baru/:brand/:model'
 export const loanCalculatorWithCityBrandModelVariantUrl =
