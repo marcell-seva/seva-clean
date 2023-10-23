@@ -31,6 +31,7 @@ import { useRouter } from 'next/router'
 import { getCity } from 'utils/hooks/useGetCity'
 import { PLPUsedCar } from 'components/organisms/PLPUsedCar'
 import { getUsedCarFunnelRecommendations } from 'utils/handler/funnel'
+import { getToken } from 'utils/handler/auth'
 
 const UsedCarResultPage = ({
   meta,
@@ -55,12 +56,25 @@ const UsedCarResultPage = ({
     saveMobileWebTopMenus,
     saveMobileWebFooterMenus,
     saveCities,
+    saveDataAnnouncementBox,
   } = useUtils()
+
+  const getAnnouncementBox = async () => {
+    try {
+      const res: any = await api.getAnnouncementBox({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
+      })
+      saveDataAnnouncementBox(res.data)
+    } catch (error) {}
+  }
 
   useEffect(() => {
     saveMobileWebTopMenus(dataMobileMenu)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
+    getAnnouncementBox()
   }, [])
 
   useEffect(() => {
@@ -164,7 +178,6 @@ export const getServerSideProps: GetServerSideProps<{
     yearEnd,
     mileageStart,
     mileageEnd,
-    tenure,
     transmission,
     city_id,
     sortBy,
@@ -190,6 +203,12 @@ export const getServerSideProps: GetServerSideProps<{
     if (!priceStart && !priceEnd) {
       const minmax = await api.getMinMaxPriceUsedCar('')
       const minmaxPriceData = minmax.data
+      minmaxPriceData.minPrice = parseInt(
+        minmaxPriceData.minPrice.replace(/^0+/, ''),
+      )
+      minmaxPriceData.maxPrice = parseInt(
+        minmaxPriceData.maxPrice.replace(/^0+/, ''),
+      )
       meta.MinMaxPrice = {
         minPriceValue: minmaxPriceData.minPrice,
         maxPriceValue: minmaxPriceData.maxPrice,
@@ -226,7 +245,6 @@ export const getServerSideProps: GetServerSideProps<{
             priceStart: meta.MinMaxPrice.minPriceValue,
             priceEnd: meta.MinMaxPrice.maxPriceValue,
           }),
-      ...(tenure && { tenure }),
       ...(transmission && { transmission }),
       ...(city_id && { city_id }),
       ...(sortBy && { sortBy }),

@@ -52,15 +52,13 @@ export const FormTransmission = ({
             <>
               <div
                 onClick={() => {
-                  setTransmissionFilter(value.toLowerCase())
-                  setTenureQuery(value.toLowerCase())
+                  setTransmissionFilter(value)
+                  setTenureQuery(value)
                   patchFunnelQuery({ isDefaultTenureChanged: true })
                 }}
                 key={value}
                 className={
-                  tenureQuery === value.toLowerCase()
-                    ? styles.boxOnclick
-                    : styles.box
+                  tenureQuery === value ? styles.boxOnclick : styles.box
                 }
                 data-testid={elementId.Field.TenurePopup + value + '-th'}
               >

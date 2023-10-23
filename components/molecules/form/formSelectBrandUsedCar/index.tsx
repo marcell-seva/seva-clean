@@ -45,7 +45,7 @@ export const FormSelectBrandUsedCar = ({
 }: FilterMobileProps) => {
   const { funnelQuery } = useFunnelQueryData()
   const [isCheckedBrandQuery, setIsCheckedBrandQuery] = useState<string[]>(
-    funnelQuery.brand ? funnelQuery.brand : [],
+    brand ? brand : [],
   )
   // setIsCheckedBrand(isCheckedBrandQuery)
   const logoList = {

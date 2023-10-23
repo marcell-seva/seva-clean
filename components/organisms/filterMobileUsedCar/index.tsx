@@ -33,7 +33,6 @@ interface ParamsUrl {
   bodyType?: string
   brand?: string
   sortBy?: string
-  tenure?: string | number
   priceStart?: string
   priceEnd?: string
   mileageStart?: string | number
@@ -71,10 +70,9 @@ const FilterMobileUsedCar = ({
   setIsResetFilter,
 }: FilterMobileProps) => {
   const router = useRouter()
-  const { bodyType, brand } = router.query
-  const { funnelQuery, patchFunnelQuery } = useFunnelQueryUsedCarData()
+  const { brand } = router.query
 
-  const [tenureFilter, setTenureFilter] = useState(funnelQuery.tenure)
+  const { funnelQuery, patchFunnelQuery } = useFunnelQueryUsedCarData()
   const [transmissionFilter, setTransmissionFilter] = useState(
     funnelQuery?.transmission ? funnelQuery?.transmission : 'manual',
   )
@@ -176,7 +174,6 @@ const FilterMobileUsedCar = ({
       ...paramQuery,
       brand: !resetTmp && isCheckedBrand.length > 0 ? isCheckedBrand : [],
       city_id: !resetTmp && locationSelected.length > 0 ? locationSelected : [],
-      tenure: tenureFilter,
       transmission: transmissionFilter,
       sortBy: funnelQuery.sortBy,
     }
@@ -225,7 +222,6 @@ const FilterMobileUsedCar = ({
     const dataFunnelQuery: FunnelQuery = {
       brand: !resetTmp && isCheckedBrand.length > 0 ? isCheckedBrand : [],
       city_id: !resetTmp && locationSelected.length > 0 ? locationSelected : [],
-      tenure: tenureFilter,
       transmission: transmissionFilter,
       sortBy: funnelQuery.sortBy || 'lowToHigh',
     }
@@ -385,11 +381,6 @@ const FilterMobileUsedCar = ({
               setIsErrorForm={setIsErrorForm}
               isApplied={isButtonClick && isFilter && isApplied}
               isButtonClick={isButtonClick}
-            />
-            <FormTenure
-              setTenureFilter={setTenureFilter}
-              isResetFilter={isResetFilter || resetTmp}
-              isApplied={isApplied}
             />
             <div ref={priceRef} className={styles.labelForm}>
               Kisaran Harga

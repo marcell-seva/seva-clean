@@ -74,20 +74,6 @@ export const NavigationFilterMobileUsedCar = ({
     )
   }
 
-  const removeFinancialFilter = () => {
-    patchFunnelQuery({
-      tenure: 5,
-      isDefaultTenureChanged: false,
-      transmission: '',
-    })
-    const filter = {
-      ...funnelQuery,
-      tenure: 5,
-      isDefaultTenureChanged: false,
-      transmission: '',
-    }
-    newFunnel(filter)
-  }
   const removePriceRangeFilter = () => {
     patchFunnelQuery({
       priceStart: '',
@@ -191,7 +177,6 @@ export const NavigationFilterMobileUsedCar = ({
         // sortBy: sortBy,
         brand:
           filter.brand.length > 0 ? String(filter.brand).replace(' ', ',') : '',
-        tenure: String(filter.tenure),
         sortBy: String(funnelQuery.sortBy) || 'lowToHigh',
       }
 
@@ -244,19 +229,6 @@ export const NavigationFilterMobileUsedCar = ({
               <IconFilter width={24} height={24} /> Filter
             </div>
             <div className={styles.verticalLine} />
-            {isFilterFinancial && (
-              <div className={styles.navOuter}>
-                <div
-                  className={styles.navFrame}
-                  onClick={removeFinancialFilter}
-                >
-                  <span className={styles.text}>Finansial</span>{' '}
-                  <div className={styles.onClick}>
-                    <IconRemove width={16} height={16} color="#878D98" />
-                  </div>
-                </div>
-              </div>
-            )}
             {funnelQuery.brand &&
               funnelQuery.brand.map((item: string) => (
                 <div key={item} className={styles.navOuter}>
