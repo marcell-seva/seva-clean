@@ -157,6 +157,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   const [openLabelResultInfo, setOpenLabelResultInfo] = useState(false)
   const [openSorting, setOpenSorting] = useState(false)
   const [openInterestingModal, setOpenInterestingModal] = useState(false)
+  const [isProduct, setIsProduct] = useState(false)
   const [startScroll, setStartScroll] = useState(false)
   const [hasMore, setHasMore] = useState(true)
   const [sticky, setSticky] = useState(false)
@@ -314,7 +315,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
 
   const showLeadsForm = () => {
     setOpenInterestingModal(true)
-    trackLeadsFormAction(TrackingEventName.WEB_LEADS_FORM_OPEN, trackLeads())
+    setIsProduct(true)
     trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_BUTTON_CLICK, {
       PAGE_ORIGINATION: 'PLP',
     })
@@ -326,6 +327,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
 
   const closeInterestingBtn = () => {
     setOpenInterestingModal(false)
+    setIsProduct(false)
   }
 
   const handleShowFilter = () => {
@@ -897,6 +899,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
             onCancel={closeInterestingBtn}
             trackerProperties={trackLeads()}
             onPage="PLP"
+            isProduct={isProduct}
           />
         )}
       </div>
