@@ -4,7 +4,6 @@ import { PdpMobile } from 'components/organisms'
 import { CarRecommendation } from 'utils/types/utils'
 import { InferGetServerSidePropsType } from 'next'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
-import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { useMediaQuery } from 'react-responsive'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
@@ -29,6 +28,8 @@ import {
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 import { useRouter } from 'next/router'
 import { monthId } from 'utils/handler/date'
+import { lowerSectionNavigationTab } from 'config/carVariantList.config'
+import { capitalizeFirstLetter } from 'utils/stringUtils'
 
 interface PdpDataOTOLocalContextType {
   /**
@@ -78,19 +79,23 @@ export default function index({
   dataCities,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter()
-  const { brand, model } = router.query
-  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
-  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
+  const { model, brand, slug } = router.query
+  const [upperTabSlug, lowerTabSlug] = slug?.length
+    ? (slug as Array<string>)
+    : []
+
+  const path = lowerTabSlug ? capitalizeFirstLetter(lowerTabSlug) : ''
+  const [selectedTabValue, setSelectedTabValue] = useState(
+    path ||
+      lowerSectionNavigationTab.filter((item) => item.label !== 'Kredit')[0]
+        .value,
+  )
   const {
     saveDataAnnouncementBox,
     saveMobileWebTopMenus,
     saveMobileWebFooterMenus,
     saveCities,
   } = useUtils()
-
-  useEffect(() => {
-    setIsMobile(isClientMobile)
-  }, [isClientMobile])
 
   useEffect(() => {
     saveMobileWebTopMenus(dataHeader)
@@ -111,10 +116,31 @@ export default function index({
   const carModel = capitalizeIfString(model as string)
   const todayDate = new Date()
 
-  const metaTitle = `Ringkasan Produk ${carBrand} ${carModel} ${todayDate.getFullYear()} - Harga OTR Promo Bulan ${monthId(
-    todayDate.getMonth(),
-  )} dari SEVA di OTO.com`
-  const metaDesc = `Beli mobil ${carBrand} ${carModel} terbaru ${todayDate.getFullYear()} secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, dan hitung simulasi kredit melalui SEVA di OTO.com`
+  const getMetaTitle = () => {
+    switch (selectedTabValue?.toLocaleLowerCase()) {
+      case 'spesifikasi':
+        return `Spesifikasi ${carBrand} ${carModel} ${todayDate.getFullYear()} - Harga OTR Promo Bulan ${monthId(
+          todayDate.getMonth(),
+        )} ${todayDate.getFullYear()} | SEVA x OTO`
+      case 'harga':
+        return `Harga OTR ${carBrand} ${carModel} ${todayDate.getFullYear()} - Simulasi Kredit dan Cicilan dengan Loan Calculator | SEVA x OTO`
+      default:
+        return `${carBrand} ${carModel} ${todayDate.getFullYear()} - Harga OTR Promo Bulan ${monthId(
+          todayDate.getMonth(),
+        )} ${todayDate.getFullYear()} | SEVA x OTO`
+    }
+  }
+
+  const getMetaDescription = () => {
+    switch (selectedTabValue?.toLocaleLowerCase()) {
+      case 'spesifikasi':
+        return `Temukan spesifikasi ${carBrand} ${carModel} terbaru ${todayDate.getFullYear()}. Dapatkan informasi fitur, dimensi, mesin, kapasitas tempat duduk & keamanan hanya di SEVA`
+      case 'harga':
+        return `Dapatkan simulasi cicilan mobil ${carBrand} ${carModel} ${todayDate.getFullYear()} dengan Loan Calculator. Beli mobil baru secara kredit dengan Instant Approval hanya di SEVA`
+      default:
+        return `Beli mobil ${carBrand} ${carModel} terbaru ${todayDate.getFullYear()} secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, dan hitung simulasi kredit melalui SEVA`
+    }
+  }
 
   const getAnnouncementBox = () => {
     try {
@@ -127,9 +153,20 @@ export default function index({
     } catch (error) {}
   }
 
+  useEffect(() => {
+    if (lowerTabSlug) {
+      const path = capitalizeFirstLetter(lowerTabSlug)
+      setSelectedTabValue(path)
+    }
+  }, [])
+
   return (
     <>
-      <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
+      <Seo
+        title={getMetaTitle()}
+        description={getMetaDescription()}
+        image={defaultSeoImage}
+      />
       <PdpDataOTOLocalContext.Provider
         value={{
           carRecommendationsResDefaultCity: carRecommendationsRes,

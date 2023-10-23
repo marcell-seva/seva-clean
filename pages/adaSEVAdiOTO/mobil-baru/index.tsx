@@ -47,8 +47,8 @@ const NewCarResultPage = ({
 
   const todayDate = new Date()
 
-  const metaTitle = `Beli mobil terbaru ${todayDate.getFullYear()} dengan promo cicilan menarik dari SEVA di OTO.com`
-  const metaDesc = `Temukan beragam mobil Astra ${todayDate.getFullYear()} dari SEVA di OTO.com. Beli mobil secara kredit dengan Instant Approval*.`
+  const metaTitle = `Beli mobil terbaru ${todayDate.getFullYear()} dengan promo cicilan menarik dari SEVA | SEVA x OTO`
+  const metaDesc = `Temukan beragam mobil Astra dari SEVA. Mulai dari Toyota, Daihatsu, Isuzu, BMW, higga Peugeot. Beli mobil secara kredit dengan Instant Approval*`
 
   return (
     <>

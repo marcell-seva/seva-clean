@@ -224,8 +224,8 @@ const HomepageAdaSEVAdiOTO = ({ dataReccomendation }: any) => {
   return (
     <>
       <Seo
-        title={`Temukan mobil baru Astra ${currentYear} jaminan kualitas dari SEVA di OTO.com`}
-        description={`Beli mobil Toyota, Daihatsu, BMW dan mobil Astra lainnya ${currentYear} secara kredit dengan Instant Approval* dari SEVA di OTO.com, proses aman & mudah`}
+        title={`Temukan mobil baru Astra ${currentYear} jaminan kualitas dari SEVA | SEVA x OTO`}
+        description={`Beli mobil Toyota, Daihatsu, Isuzu, BMW, dan Peugeot secara kredit dengan Instant Approval* dari SEVA proses mudah, aman dan nyaman`}
         image={defaultSeoImage}
       />
 
