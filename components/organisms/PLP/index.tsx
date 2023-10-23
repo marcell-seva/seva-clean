@@ -310,7 +310,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   }
 
   const showLeadsForm = () => {
-    setIsModalOpened(true)
+    setOpenInterestingModal(true)
     trackLeadsFormAction(TrackingEventName.WEB_LEADS_FORM_OPEN, trackLeads())
     trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_BUTTON_CLICK, {
       PAGE_ORIGINATION: 'PLP',
