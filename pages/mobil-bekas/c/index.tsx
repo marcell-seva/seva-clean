@@ -226,29 +226,15 @@ export const getServerSideProps: GetServerSideProps<{
             priceStart: meta.MinMaxPrice.minPriceValue,
             priceEnd: meta.MinMaxPrice.maxPriceValue,
           }),
-      ...(yearStart && yearEnd
-        ? { yearStart, yearEnd }
-        : {
-            yearStart: meta.MinMaxYear.minYearValue,
-            yearEnd: meta.MinMaxYear.maxYearValue,
-          }),
-      ...(mileageStart && mileageEnd
-        ? { mileageStart, mileageEnd }
-        : {
-            mileageStart: meta.MinMaxMileage.minMileageValue,
-            mileageEnd: meta.MinMaxMileage.maxMileageValue,
-          }),
       ...(tenure && { tenure }),
       ...(transmission && { transmission }),
       ...(city_id && { city_id }),
       ...(sortBy && { sortBy }),
     }
 
-    const [funnel] = await Promise.all([
-      getUsedCarFunnelRecommendations({ ...queryParam }),
-    ])
+    const response = await getUsedCarFunnelRecommendations({ ...queryParam })
 
-    const recommendation = funnel
+    const recommendation = response.data
 
     if (footerData && footerData.length > 0) {
       meta.footer = footerData[0].attributes
