@@ -122,7 +122,6 @@ export const PLPUsedCar = ({
     brand,
     downPaymentAmount,
     monthlyIncome,
-    tenure,
     priceStart,
     priceEnd,
     yearStart,
@@ -134,6 +133,7 @@ export const PLPUsedCar = ({
     sortBy,
   } = router.query as FilterParam
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
+
   const [minMaxYear, setMinMaxYear] = useState<MinMaxYear>(minmaxYear)
   const [minMaxMileage, setMinMaxMileage] =
     useState<MinMaxMileage>(minmaxMileage)
@@ -159,7 +159,6 @@ export const PLPUsedCar = ({
     priceEnd ||
     yearStart ||
     yearEnd ||
-    tenure ||
     mileageStart ||
     mileageEnd ||
     transmission
@@ -390,8 +389,7 @@ export const PLPUsedCar = ({
     const prevPage = getSessionStorage(SessionStorageKey.PreviousPage) as any
     const filterUsage =
       brand || bodyType || (priceStart && priceEnd) ? 'Yes' : 'No'
-    const fincapUsage =
-      downPaymentAmount && tenure && age && monthlyIncome ? 'Yes' : 'No'
+    const fincapUsage = downPaymentAmount && age && monthlyIncome ? 'Yes' : 'No'
     const initialPage = valueForInitialPageProperty()
     const track = {
       CAR_FILTER_USAGE: filterUsage,
@@ -478,7 +476,6 @@ export const PLPUsedCar = ({
       (funnelQuery.mileageEnd !== minMaxMileage.maxMileageValue.toString() &&
         funnelQuery.mileageEnd !== '' &&
         funnelQuery.mileageEnd !== undefined) ||
-      funnelQuery.tenure !== 5 ||
       (funnelQuery.transmission !== '' &&
         funnelQuery.transmission !== undefined) ||
       (brand && brand.length > 0)
@@ -594,10 +591,6 @@ export const PLPUsedCar = ({
         .getMinMaxPrice('', { params })
         .then((response) => {
           if (response) {
-            setMinMaxPrice({
-              minPriceValue: response.minPriceValue,
-              maxPriceValue: response.maxPriceValue,
-            })
             const minTemp = priceStart
               ? response?.data?.minPriceValue >
                 Number(priceStart && priceStart?.toString())
@@ -615,9 +608,6 @@ export const PLPUsedCar = ({
               brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
               priceStart: priceStart ? minTemp : '',
               priceEnd: priceEnd ? maxTemp : '',
-              tenure: Number(tenure) || 5,
-              monthlyIncome: monthlyIncome || '',
-              sortBy: sortBy || 'lowToHigh',
             }
 
             getUsedCarFunnelRecommendations(queryParam)
@@ -663,7 +653,6 @@ export const PLPUsedCar = ({
         priceEnd: priceEnd,
         yearStart: yearStart,
         yearEnd: yearEnd,
-        tenure: Number(tenure) || 5,
         sortBy: sortBy || 'lowToHigh',
       }
       patchFunnelQuery(queryParam)

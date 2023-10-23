@@ -34,7 +34,6 @@ interface ParamsUrl {
   bodyType?: string
   brand?: string
   sortBy?: string
-  tenure?: string | number
   priceStart?: string
   priceEnd?: string
   mileageStart?: string | number
@@ -72,7 +71,7 @@ const FilterMobileUsedCar = ({
   setIsResetFilter,
 }: FilterMobileProps) => {
   const router = useRouter()
-  const { brand, transmission, plate } = router.query
+  const { brand } = router.query
 
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryUsedCarData()
   const [transmissionFilter, setTransmissionFilter] = useState(
