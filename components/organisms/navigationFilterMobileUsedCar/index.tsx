@@ -87,17 +87,6 @@ export const NavigationFilterMobileUsedCar = ({
     newFunnel(filter)
   }
 
-  const removeTransmissionFilter = () => {
-    patchFunnelQuery({
-      transmission: '',
-    })
-    const filter = {
-      ...funnelQuery,
-      transmission: '',
-    }
-    newFunnel(filter)
-  }
-
   const removeYearRangeFilter = () => {
     patchFunnelQuery({
       yearStart: '',
@@ -136,7 +125,7 @@ export const NavigationFilterMobileUsedCar = ({
           funnelQuery.brand.filter((item: any) => item !== key),
       }
       newFunnel(filter)
-    } else {
+    } else if (type === 'city') {
       patchFunnelQuery({
         city_id:
           funnelQuery.city_id &&
@@ -149,6 +138,21 @@ export const NavigationFilterMobileUsedCar = ({
         city_id:
           funnelQuery.city_id &&
           funnelQuery.city_id.filter((item: any) => item !== key),
+      }
+      newFunnel(filter)
+    } else {
+      patchFunnelQuery({
+        transmission:
+          funnelQuery.transmission &&
+          funnelQuery.transmission.filter((item: any) => {
+            return item !== key
+          }),
+      })
+      const filter = {
+        ...funnelQuery,
+        transmission:
+          funnelQuery.transmission &&
+          funnelQuery.transmission.filter((item: any) => item !== key),
       }
       newFunnel(filter)
     }
@@ -276,21 +280,20 @@ export const NavigationFilterMobileUsedCar = ({
                 </div>
               </div>
             )}
-            {funnelQuery.transmission && (
-              <div className={styles.navOuter}>
-                <div
-                  className={styles.navFrame}
-                  onClick={removeTransmissionFilter}
-                >
-                  <span className={styles.text}>
-                    {funnelQuery.transmission}
-                  </span>{' '}
-                  <div className={styles.onClick}>
-                    <IconRemove width={16} height={16} color="#878D98" />
+            {funnelQuery.transmission &&
+              funnelQuery.transmission.map((item: string) => (
+                <div key={item} className={styles.navOuter}>
+                  <div
+                    className={styles.navFrame}
+                    onClick={() => removeFilter('transmission', item)}
+                  >
+                    <span className={styles.text}>{item}</span>{' '}
+                    <div className={styles.onClick}>
+                      <IconRemove width={16} height={16} color="#878D98" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              ))}
             {funnelQuery.yearStart && funnelQuery.yearEnd && (
               <div className={styles.navOuter}>
                 <div

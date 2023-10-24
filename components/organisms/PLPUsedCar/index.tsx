@@ -449,6 +449,7 @@ export const PLPUsedCar = ({
     if (
       (funnelQuery.brand && funnelQuery.brand.length > 0) ||
       (funnelQuery.bodyType && funnelQuery.bodyType.length > 0) ||
+      (funnelQuery.transmission && funnelQuery.transmission.length > 0) ||
       (funnelQuery.city_id && funnelQuery.city_id.length > 0) ||
       (funnelQuery.priceStart !== minMaxPrice.minPriceValue.toString() &&
         funnelQuery.priceStart !== '' &&
@@ -468,8 +469,6 @@ export const PLPUsedCar = ({
       (funnelQuery.mileageEnd !== minMaxMileage.maxMileageValue.toString() &&
         funnelQuery.mileageEnd !== '' &&
         funnelQuery.mileageEnd !== undefined) ||
-      (funnelQuery.transmission !== '' &&
-        funnelQuery.transmission !== undefined) ||
       (brand && brand.length > 0)
     ) {
       setIsFilter(true)
@@ -518,6 +517,7 @@ export const PLPUsedCar = ({
               brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
               priceStart: priceStart ? minTemp : '',
               priceEnd: priceEnd ? maxTemp : '',
+              sortBy: 'lowToHigh',
             }
 
             getUsedCarFunnelRecommendations(queryParam)

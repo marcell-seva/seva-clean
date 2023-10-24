@@ -71,10 +71,11 @@ const FilterMobileUsedCar = ({
 }: FilterMobileProps) => {
   const router = useRouter()
   const { brand } = router.query
+  const { transmission } = router.query
 
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryUsedCarData()
   const [transmissionFilter, setTransmissionFilter] = useState(
-    funnelQuery?.transmission ? funnelQuery?.transmission : 'manual',
+    funnelQuery?.transmission ? funnelQuery?.transmission : [],
   )
   const onClickClose = () => {
     setTimeout(() => {
@@ -174,7 +175,8 @@ const FilterMobileUsedCar = ({
       ...paramQuery,
       brand: !resetTmp && isCheckedBrand.length > 0 ? isCheckedBrand : [],
       city_id: !resetTmp && locationSelected.length > 0 ? locationSelected : [],
-      transmission: transmissionFilter,
+      transmission:
+        !resetTmp && transmissionFilter.length > 0 ? transmissionFilter : [],
       sortBy: funnelQuery.sortBy,
     }
     if (!resetTmp) {
@@ -222,7 +224,8 @@ const FilterMobileUsedCar = ({
     const dataFunnelQuery: FunnelQuery = {
       brand: !resetTmp && isCheckedBrand.length > 0 ? isCheckedBrand : [],
       city_id: !resetTmp && locationSelected.length > 0 ? locationSelected : [],
-      transmission: transmissionFilter,
+      transmission:
+        !resetTmp && transmissionFilter.length > 0 ? transmissionFilter : [],
       sortBy: funnelQuery.sortBy || 'lowToHigh',
     }
     const paramUrl: ParamsUrl = {
@@ -231,9 +234,12 @@ const FilterMobileUsedCar = ({
       ...(!resetTmp &&
         locationSelected.length > 0 && {
           city_id: String(locationSelected),
+          ...(!resetTmp &&
+            transmissionFilter.length > 0 && {
+              transmission: String(transmissionFilter),
+            }),
         }),
       ...(funnelQuery.sortBy && { sortBy: String(funnelQuery.sortBy) }),
-      ...(transmissionFilter && { transmission: String(transmissionFilter) }),
     }
     if (!resetTmp) {
       if (
@@ -362,6 +368,9 @@ const FilterMobileUsedCar = ({
               setTransmissionFilter={setTransmissionFilter}
               isResetFilter={isResetFilter || resetTmp}
               isApplied={isApplied}
+              transmission={transmission}
+              transmissionFilter={transmissionFilter}
+              isButtonClick={isButtonClick}
             />
             <div className={styles.labelForm}>Lokasi Mobil</div>
             <FormCarLocation
