@@ -267,7 +267,7 @@ const jsonLD = (
       mainEntityOfPage: banner.attribute.web_mobile,
       representativeOfPage: 'https://schema.org/True',
       isFamilyFriendly: 'https://schema.org/True',
-      isAccesibleForFree: 'https://schema.org/True',
+      isAccesibleForFree: 'https://schema.org/False',
     })),
     Review: dataReviews.map((review) => ({
       '@type': 'Review',
@@ -289,7 +289,7 @@ const jsonLD = (
     SiteNavigationElement: {
       '@type': 'SiteNavigationElement',
       name: 'SEVA',
-      potencialAction: [
+      potentialAction: [
         {
           '@type': 'Action',
           name: 'Mobil',
