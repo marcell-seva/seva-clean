@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Col, Input, Row, Slider } from 'antd'
+import { Input } from 'antd'
 import styles from 'styles/components/molecules/dp/dpform.module.scss'
 import { dpRateCollectionNewCalculator } from 'utils/helpers/const'
 import {
@@ -38,6 +38,8 @@ interface DpFormProps {
   emitOnFocusDpAmountField?: () => void
   emitOnFocusDpPercentageField?: () => void
   emitOnAfterChangeDpSlider?: () => void
+  finalMinInputDp: number
+  finalMaxInputDp: number
 }
 
 const DpForm: React.FC<DpFormProps> = ({
@@ -55,6 +57,8 @@ const DpForm: React.FC<DpFormProps> = ({
   setIsDpExceedLimit,
   isAutofillValueFromCreditQualificationData = false,
   emitOnFocusDpAmountField,
+  finalMinInputDp,
+  finalMaxInputDp,
 }) => {
   const formatCurrency = (value: number): string => {
     return `Rp${value.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`
@@ -69,6 +73,8 @@ const DpForm: React.FC<DpFormProps> = ({
   )
 
   useEffect(() => {
+    setIsDpTooLow(false)
+    setIsDpExceedLimit(false)
     if (isAutofillValueFromCreditQualificationData) {
       const initialDpValue = kkForm?.downPaymentAmount
         ? parseInt(kkForm?.downPaymentAmount)
@@ -104,40 +110,19 @@ const DpForm: React.FC<DpFormProps> = ({
 
     if (!isNaN(numericValue)) {
       setFormattedValue(formatCurrency(numericValue))
-      if (
-        numericValue >= carPriceMinusDiscount * 0.2 &&
-        numericValue <= carPriceMinusDiscount * 0.9
-      ) {
-        setIsDpTooLow(false)
-        setIsDpExceedLimit(false)
-        onChange(
-          numericValue,
-          calculatePercentage(numericValue, carPriceMinusDiscount),
-          getDpPercentageByMapping(numericValue),
-        )
-        handleChange(name, numericValue)
-      } else if (numericValue < carPriceMinusDiscount * 0.2) {
-        setIsDpTooLow(true)
-        setIsDpExceedLimit(false)
-      } else if (numericValue > carPriceMinusDiscount * 0.9) {
-        setIsDpTooLow(false)
-        setIsDpExceedLimit(true)
-      }
+      setIsDpTooLow(false)
+      setIsDpExceedLimit(false)
+      onChange(
+        numericValue,
+        calculatePercentage(numericValue, carPriceMinusDiscount),
+        getDpPercentageByMapping(numericValue),
+      )
+      handleChange(name, numericValue)
     }
   }
 
   const handleValueBlur = () => {
     setFormattedValue(formatCurrency(value))
-    if (value < carPriceMinusDiscount * 0.2) {
-      setIsDpTooLow(true)
-      setIsDpExceedLimit(false)
-    } else if (value > carPriceMinusDiscount * 0.9) {
-      setIsDpTooLow(false)
-      setIsDpExceedLimit(true)
-    } else {
-      setIsDpTooLow(false)
-      setIsDpExceedLimit(false)
-    }
   }
 
   const calculatePercentage = (dpValue: number, carPrice: number): number => {
@@ -197,14 +182,16 @@ const DpForm: React.FC<DpFormProps> = ({
       {isDpTooLow && (
         <div className={`${styles.errorMessageWrapper} shake-animation-X`}>
           <span className={styles.errorMessage}>
-            Berdasarkan harga mobil yang Anda pilih, min. DP RpXXX.XXX.XXX
+            Berdasarkan harga mobil yang Anda pilih, min. DP{' '}
+            {formatCurrency(finalMinInputDp)}
           </span>
         </div>
       )}
       {isDpExceedLimit && (
         <div className={styles.errorMessageWrapper}>
           <span className={styles.errorMessage}>
-            Berdasarkan harga mobil yang Anda pilih, maks. DP RpXXX.XXX.XXX
+            Berdasarkan harga mobil yang Anda pilih, maks. DP{' '}
+            {formatCurrency(finalMaxInputDp)}
           </span>
         </div>
       )}

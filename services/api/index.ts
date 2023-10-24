@@ -136,6 +136,12 @@ const getCustomerSpouseKtpSeva = (config: AxiosRequestConfig) =>
   get(collections.ktp.customerSpouse, config)
 const getAvailableNIK = (config?: AxiosRequestConfig) =>
   get(collections.utils.checkNIKAvailable, config)
+const getFinalDpRangeValidation = (variantId: string, cityCode: string) =>
+  get(
+    collections.loanCalculator.finalDpValidation
+      .replace(':variantId', variantId)
+      .replace(':cityCode', cityCode),
+  )
 
 // post request
 const postUnverifiedLeadsNew = (body: any) => {
@@ -268,6 +274,8 @@ export const api = {
   getCustomerSpouseKtpSeva,
   getAvailableNIK,
   getLeadsDetail,
+  getFinalDpRangeValidation,
+
   postUpdateLeadsOTO,
 
   postUnverifiedLeadsNew,

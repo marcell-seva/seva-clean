@@ -58,6 +58,7 @@ const loanCalculator = {
   insurance: `${baseUrl}/loan-calculator-v2/insurance/:modelId/:cityCode/:tenure`,
   loanPermutationIncludePromo: `${baseUrl}/loan-calculator-v2/calculate-included-promo`,
   loanPermutationAsuransiKombinasi: `${baseUrl}/loan-calculator-v2/calculate-asuransi-kombinasi`,
+  finalDpValidation: `${baseUrl}/loan-calculator-v2/final-dp-validation/:variantId/:cityCode`,
 }
 
 const article = {

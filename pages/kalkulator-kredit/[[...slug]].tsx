@@ -263,6 +263,8 @@ export default function LoanCalculatorPage() {
     saveDataAnnouncementBox,
     dataAnnouncementBox,
   } = useUtils()
+  const [finalMinInputDp, setFinalMinInputDp] = useState(0)
+  const [finalMaxInputDp, setFinalMaxInputDp] = useState(0)
 
   const getAutofilledCityData = () => {
     // related to logic inside component "FormSelectCity"
@@ -1040,6 +1042,64 @@ export default function LoanCalculatorPage() {
     return tempArr
   }
 
+  const validateDpInputRange = async () => {
+    if (!!forms.variant?.variantId && !!forms.city.cityCode) {
+      try {
+        const finalDpRange = await api.getFinalDpRangeValidation(
+          forms.variant?.variantId,
+          forms.city.cityCode,
+        )
+
+        if (finalDpRange?.minAmount !== 0 && finalDpRange?.maxAmount !== 0) {
+          setFinalMinInputDp(finalDpRange?.minAmount)
+          setFinalMaxInputDp(finalDpRange?.maxAmount)
+          if (forms.downPaymentAmount < finalDpRange?.minAmount) {
+            setIsDpTooLow(true)
+            setIsDpExceedLimit(false)
+            scrollToElement('loan-calculator-form-dp')
+            return false
+          } else if (forms.downPaymentAmount > finalDpRange?.maxAmount) {
+            setIsDpTooLow(false)
+            setIsDpExceedLimit(true)
+            scrollToElement('loan-calculator-form-dp')
+            return false
+          } else {
+            setIsDpTooLow(false)
+            setIsDpExceedLimit(false)
+            return true
+          }
+        } else {
+          const minDp20Percent = getCarOtrNumber() * 0.2
+          const maxDp90Percent = getCarOtrNumber() * 0.9
+          setFinalMinInputDp(minDp20Percent)
+          setFinalMaxInputDp(maxDp90Percent)
+          if (
+            parseInt(forms.downPaymentAmount) >= minDp20Percent &&
+            parseInt(forms.downPaymentAmount) <= maxDp90Percent
+          ) {
+            setIsDpTooLow(false)
+            setIsDpExceedLimit(false)
+            return true
+          } else if (parseInt(forms.downPaymentAmount) < minDp20Percent) {
+            setIsDpTooLow(true)
+            setIsDpExceedLimit(false)
+            scrollToElement('loan-calculator-form-dp')
+            return false
+          } else if (parseInt(forms.downPaymentAmount) > maxDp90Percent) {
+            setIsDpTooLow(false)
+            setIsDpExceedLimit(true)
+            scrollToElement('loan-calculator-form-dp')
+            return false
+          }
+        }
+      } catch {
+        return false
+      }
+    } else {
+      return false
+    }
+  }
+
   const onClickCalculate = async () => {
     validateFormFields()
 
@@ -1047,94 +1107,87 @@ export default function LoanCalculatorPage() {
       return
     }
 
-    const promoCodeValidity = await checkPromoCode()
+    setIsLoadingCalculation(true)
 
-    if (promoCodeValidity) {
-      setIsLoadingCalculation(true)
-
-      trackLCCTAHitungKemampuanClick({
-        Age: `${forms.age} Tahun`,
-        Angsuran_Type: forms.paymentOption,
-        Car_Brand: forms?.model?.brandName || '',
-        Car_Model: forms?.model?.modelName || '',
-        Car_Variant: forms.variant?.variantName || '',
-        City: forms.city.cityName,
-        DP: `Rp${replacePriceSeparatorByLocalization(
-          forms.downPaymentAmount,
-          LanguageCode.id,
-        )}`,
-        Page_Origination: window.location.href,
-        Promo: forms.promoCode,
-      })
-
-      const dataFinancial = {
-        ...financialQuery,
-        downPaymentAmount: dpValue,
-        age: forms.age ? String(forms.age) : financialQuery.age,
-        monthlyIncome: forms.monthlyIncome
-          ? forms.monthlyIncome
-          : financialQuery.monthlyIncome,
-      }
-      patchFinancialQuery(dataFinancial)
-      patchFunnelQuery({
-        age: forms.age,
-        monthlyIncome: forms.monthlyIncome,
-        downPaymentAmount: forms.downPaymentAmount,
-      })
-
-      fetchCarRecommendations()
-
-      const payload: LoanCalculatorIncludePromoPayloadType = {
-        brand: forms.model?.brandName ?? '',
-        model: removeFirstWordFromString(forms.model?.modelName ?? ''),
-        age: forms.age,
-        angsuranType: forms.paymentOption,
-        city: forms.city.cityCode,
-        discount: getCarDiscountNumber(),
-        dp: mappedDpPercentage,
-        dpAmount: dpValue,
-        monthlyIncome: forms.monthlyIncome,
-        otr: getCarOtrNumber() - getCarDiscountNumber(),
-        variantId: forms.variant?.variantId,
-      }
-
-      api
-        .postLoanPermutationIncludePromo(payload)
-        .then((response) => {
-          const result = response.data.reverse()
-          const filteredResult = getFilteredCalculationResults(result)
-          setCalculationResult(filteredResult)
-          generateSelectedInsuranceAndPromo(filteredResult)
-          trackCountlyResult(filteredResult)
-
-          // select loan with the longest tenure as default
-          const selectedLoanInitialValue =
-            filteredResult.sort(
-              (
-                a: SpecialRateListWithPromoType,
-                b: SpecialRateListWithPromoType,
-              ) => b.tenure - a.tenure,
-            )[0] ?? null
-          setSelectedLoan(selectedLoanInitialValue)
-
-          setIsDataSubmitted(true)
-          setCalculationApiPayload(payload)
-          // scrollToResult()
-        })
-        .catch((error: any) => {
-          if (error?.response?.data?.message) {
-            setToastMessage(`${error?.response?.data?.message}`)
-          } else {
-            setToastMessage(
-              'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
-            )
-          }
-          setIsOpenToast(true)
-        })
-        .finally(() => {
-          setIsLoadingCalculation(false)
-        })
+    const dpInputRangeValidity = await validateDpInputRange()
+    if (!dpInputRangeValidity) {
+      setIsLoadingCalculation(false)
+      return
     }
+
+    const promoCodeValidity = await checkPromoCode()
+    if (!promoCodeValidity) {
+      setIsLoadingCalculation(false)
+      return
+    }
+
+    const dataFinancial = {
+      ...financialQuery,
+      downPaymentAmount: dpValue,
+      age: forms.age ? String(forms.age) : financialQuery.age,
+      monthlyIncome: forms.monthlyIncome
+        ? forms.monthlyIncome
+        : financialQuery.monthlyIncome,
+    }
+    patchFinancialQuery(dataFinancial)
+    patchFunnelQuery({
+      age: forms.age,
+      monthlyIncome: forms.monthlyIncome,
+      downPaymentAmount: forms.downPaymentAmount,
+    })
+
+    fetchCarRecommendations()
+
+    const payload: LoanCalculatorIncludePromoPayloadType = {
+      brand: forms.model?.brandName ?? '',
+      model: removeFirstWordFromString(forms.model?.modelName ?? ''),
+      age: forms.age,
+      angsuranType: forms.paymentOption,
+      city: forms.city.cityCode,
+      discount: getCarDiscountNumber(),
+      dp: mappedDpPercentage,
+      dpAmount: dpValue,
+      monthlyIncome: forms.monthlyIncome,
+      otr: getCarOtrNumber() - getCarDiscountNumber(),
+      variantId: forms.variant?.variantId,
+    }
+
+    api
+      .postLoanPermutationIncludePromo(payload)
+      .then((response) => {
+        const result = response.data.reverse()
+        const filteredResult = getFilteredCalculationResults(result)
+        setCalculationResult(filteredResult)
+        generateSelectedInsuranceAndPromo(filteredResult)
+        trackCountlyResult(filteredResult)
+
+        // select loan with the longest tenure as default
+        const selectedLoanInitialValue =
+          filteredResult.sort(
+            (
+              a: SpecialRateListWithPromoType,
+              b: SpecialRateListWithPromoType,
+            ) => b.tenure - a.tenure,
+          )[0] ?? null
+        setSelectedLoan(selectedLoanInitialValue)
+
+        setIsDataSubmitted(true)
+        setCalculationApiPayload(payload)
+        // scrollToResult()
+      })
+      .catch((error: any) => {
+        if (error?.response?.data?.message) {
+          setToastMessage(`${error?.response?.data?.message}`)
+        } else {
+          setToastMessage(
+            'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+          )
+        }
+        setIsOpenToast(true)
+      })
+      .finally(() => {
+        setIsLoadingCalculation(false)
+      })
   }
 
   const renderErrorMessageEmpty = () => {
@@ -1871,6 +1924,8 @@ export default function LoanCalculatorPage() {
                 emitOnFocusDpAmountField={onFocusDpAmountField}
                 emitOnFocusDpPercentageField={onFocusDpPercentageField}
                 emitOnAfterChangeDpSlider={onAfterChangeDpSlider}
+                finalMinInputDp={finalMinInputDp}
+                finalMaxInputDp={finalMaxInputDp}
               />
             </div>
             <div id="loan-calculator-form-installment-type">
