@@ -157,17 +157,17 @@ export const NavigationFilterMobileUsedCar = ({
       newFunnel(filter)
     } else if (type === 'city') {
       patchFunnelQuery({
-        city_id:
-          funnelQuery.city_id &&
-          funnelQuery.city_id.filter((item: any) => {
+        cityId:
+          funnelQuery.cityId &&
+          funnelQuery.cityId.filter((item: any) => {
             return item !== key
           }),
       })
       const filter = {
         ...funnelQuery,
-        city_id:
-          funnelQuery.city_id &&
-          funnelQuery.city_id.filter((item: any) => item !== key),
+        cityId:
+          funnelQuery.cityId &&
+          funnelQuery.cityId.filter((item: any) => item !== key),
       }
       newFunnel(filter)
     } else {
@@ -190,11 +190,11 @@ export const NavigationFilterMobileUsedCar = ({
 
   useEffect(() => {
     const resultFilter = cityList?.filter((item: any) => {
-      return funnelQuery.city_id?.includes(item.cityId)
+      return funnelQuery.cityId?.includes(item.cityId)
     })
 
     setLocation(resultFilter)
-  }, [funnelQuery.city_id])
+  }, [funnelQuery.cityId])
   const newFunnel = async (filter: any) => {
     getUsedCarFunnelRecommendations(filter).then((response: any) => {
       setTotalItems(response.totalItems)
@@ -206,8 +206,11 @@ export const NavigationFilterMobileUsedCar = ({
         yearEnd: filter.yearEnd,
         mileageStart: filter.mileageStart,
         mileageEnd: filter.mileageEnd,
-        city_id: filter.city_id,
-        transmission: filter.transmission,
+        cityId: filter.cityId,
+        transmission:
+          filter.transmission.length > 0
+            ? String(filter.transmission).replace(' ', ',')
+            : '',
         // sortBy: sortBy,
         brand:
           filter.brand.length > 0 ? String(filter.brand).replace(' ', ',') : '',
@@ -284,7 +287,7 @@ export const NavigationFilterMobileUsedCar = ({
                 <div key={item} className={styles.navOuter}>
                   <div
                     className={styles.navFrame}
-                    onClick={() => removeFilter('location', item.cityId)}
+                    onClick={() => removeFilter('city', item.cityId)}
                   >
                     <span className={styles.text}>{item.cityName}</span>{' '}
                     <div className={styles.onClick}>

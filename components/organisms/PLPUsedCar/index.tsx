@@ -458,7 +458,7 @@ export const PLPUsedCar = ({
       (funnelQuery.brand && funnelQuery.brand.length > 0) ||
       (funnelQuery.bodyType && funnelQuery.bodyType.length > 0) ||
       (funnelQuery.transmission && funnelQuery.transmission.length > 0) ||
-      (funnelQuery.city_id && funnelQuery.city_id.length > 0) ||
+      (funnelQuery.cityId && funnelQuery.cityId.length > 0) ||
       (funnelQuery.priceStart !== minMaxPrice.minPriceValue.toString() &&
         funnelQuery.priceStart !== '' &&
         funnelQuery.priceStart !== undefined) ||
@@ -602,12 +602,20 @@ export const PLPUsedCar = ({
                 ? response.data.maxPriceValue
                 : Number(priceEnd && priceEnd?.toString())
               : ''
-
             const queryParam: any = {
-              brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
-              priceStart: priceStart ? minTemp : '',
-              priceEnd: priceEnd ? maxTemp : '',
-              sortBy: 'lowToHigh',
+              brand:
+                brand
+                  ?.split(',')
+                  ?.map((item) => getCarBrand(item).toLowerCase()) || '',
+              priceStart: priceStart ? priceStart : '',
+              priceEnd: priceEnd ? priceEnd : '',
+              yearEnd: yearEnd ? yearEnd : '',
+              yearStart: yearStart ? yearStart : '',
+              mileageEnd: mileageEnd ? mileageEnd : '',
+              mileageStart: mileageStart ? mileageStart : '',
+              transmission: transmission ? transmission?.split(',') : [],
+              // cityId: cityId ? cityId?.split(',') : [],
+              sortBy: sortBy || 'lowToHigh',
               page: page || '1',
               perPage: '10',
             }

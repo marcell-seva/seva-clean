@@ -179,7 +179,7 @@ export const getServerSideProps: GetServerSideProps<{
     mileageStart,
     mileageEnd,
     transmission,
-    city_id,
+    cityId,
     sortBy,
   } = ctx.query
 
@@ -250,7 +250,7 @@ export const getServerSideProps: GetServerSideProps<{
             priceStart: meta.MinMaxPrice.minPriceValue,
             priceEnd: meta.MinMaxPrice.maxPriceValue,
           }),
-      ...(city_id && { city_id }),
+      ...(cityId && { cityId }),
       ...(sortBy && { sortBy: 'lowToHigh' }),
       ...{ sortBy: 'lowToHigh' },
       ...{ page: '1' },

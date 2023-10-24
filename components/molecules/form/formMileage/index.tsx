@@ -43,13 +43,13 @@ export const FormMileage = ({
   const [isErrorMaxTwo, setIsErrorMaxTwo] = useState(false)
   const [minTempCurrency, setMinTempCurrency] = useState(
     funnelQuery.mileageStart
-      ? funnelQuery.mileageStart?.toString()
-      : minMaxMileage.minMileageValue,
+      ? separatorThousand(funnelQuery.mileageStart?.toString())
+      : separatorThousand(minMaxMileage.minMileageValue),
   )
   const [maxTempCurrency, setMaxTempCurrency] = useState(
     funnelQuery.mileageEnd
-      ? funnelQuery.mileageEnd?.toString()
-      : minMaxMileage.maxMileageValue,
+      ? separatorThousand(funnelQuery.mileageEnd?.toString())
+      : separatorThousand(minMaxMileage.maxMileageValue),
   )
 
   const onChangeInputMinimum = (event: ChangeEvent<HTMLInputElement>) => {
@@ -132,11 +132,15 @@ export const FormMileage = ({
     if (funnelQuery.mileageEnd && !isApplied) {
       if (maxTemp === minMaxMileage.maxMileageValue) {
         setMaxTemp(funnelQuery.mileageEnd?.toString())
-        setMaxTempCurrency(funnelQuery.mileageEnd?.toString())
+        setMaxTempCurrency(
+          separatorThousand(funnelQuery.mileageEnd?.toString()),
+        )
       }
       if (minTemp === minMaxMileage.minMileageValue) {
         setMinTemp(funnelQuery.mileageStart?.toString())
-        setMinTempCurrency(funnelQuery.mileageStart?.toString())
+        setMinTempCurrency(
+          separatorThousand(funnelQuery.mileageStart?.toString()),
+        )
       }
     }
   }, [isResetFilter, isApplied, isButtonClick])

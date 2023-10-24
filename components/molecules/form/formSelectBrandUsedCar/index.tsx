@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from 'styles/components/molecules/form/formSelectBrandCar.module.scss'
 import { Space } from 'antd'
-import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
 import elementId from 'helpers/elementIds'
 import Image from 'next/image'
 
@@ -43,9 +43,9 @@ export const FormSelectBrandUsedCar = ({
   // setResetTmp,
   isButtonClick,
 }: FilterMobileProps) => {
-  const { funnelQuery } = useFunnelQueryData()
+  const { funnelQuery } = useFunnelQueryUsedCarData()
   const [isCheckedBrandQuery, setIsCheckedBrandQuery] = useState<string[]>(
-    brand ? brand : [],
+    funnelQuery.brand ? funnelQuery.brand : [],
   )
   // setIsCheckedBrand(isCheckedBrandQuery)
   const logoList = {

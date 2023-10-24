@@ -76,7 +76,7 @@ export const getUsedCarFunnelRecommendations = (
     yearStart,
     yearEnd,
     transmission,
-    city_id,
+    cityId,
     priceStart,
     priceEnd,
     page,
@@ -87,9 +87,9 @@ export const getUsedCarFunnelRecommendations = (
 
   sortBy && params.append('sortBy', sortBy as string)
 
-  city_id &&
-    city_id.length > 0 &&
-    city_id.map((item) => params.append('city_id', item))
+  cityId &&
+    cityId.length > 0 &&
+    cityId.map((item) => params.append('cityId', item))
   transmission &&
     transmission.length > 0 &&
     transmission.map((item) => params.append('transmission', item))
