@@ -93,15 +93,9 @@ export const FormTransmission = ({
           return (
             <>
               <div
-                onClick={() => {
-                  setTransmissionFilter(value)
-                  setTenureQuery(value)
-                  patchFunnelQuery({ isDefaultTenureChanged: true })
-                }}
+                onClick={() => onClick(value)}
                 key={value}
-                className={
-                  tenureQuery === value ? styles.boxOnclick : styles.box
-                }
+                className={isChecked ? styles.boxOnclick : styles.box}
                 data-testid={elementId.Field.TenurePopup + value + '-th'}
               >
                 <div className={styles.content}>{value}</div>

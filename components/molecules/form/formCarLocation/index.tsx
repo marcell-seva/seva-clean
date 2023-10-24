@@ -90,7 +90,7 @@ export const FormCarLocation = ({
                 <IconChevronDown color="#13131B" width={33} height={27} />
               )
             }
-            optionFilterProp="value"
+            optionFilterProp="label"
             dropdownStyle={{ padding: '4px 0' }}
             getPopupContainer={() =>
               document.getElementById('formCarLocation')!

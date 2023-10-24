@@ -88,7 +88,9 @@ export const getUsedCarFunnelRecommendations = (
   city_id &&
     city_id.length > 0 &&
     city_id.map((item) => params.append('city_id', item))
-  transmission && params.append('transmission', String(transmission))
+  transmission &&
+    transmission.length > 0 &&
+    transmission.map((item) => params.append('transmission', item))
   priceStart && params.append('priceStart', priceStart?.toString() as string)
   priceEnd && params.append('priceEnd', priceEnd?.toString() as string)
   mileageStart &&
@@ -96,6 +98,8 @@ export const getUsedCarFunnelRecommendations = (
   mileageEnd && params.append('mileageEnd', mileageEnd?.toString() as string)
   yearStart && params.append('yearStart', yearStart?.toString() as string)
   yearEnd && params.append('yearEnd', yearEnd?.toString() as string)
+  params.append('page', '1')
+  params.append('perPage', '10')
 
   // getCity().cityCode && params.append('city', getCity().cityCode as string)
   // getCity().id && params.append('cityId', getCity().id as string)
