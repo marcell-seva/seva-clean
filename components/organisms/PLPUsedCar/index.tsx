@@ -213,15 +213,15 @@ export const PLPUsedCar = ({
       if (sampleArray.items.length >= 10 * page) {
         const pagePlus = page + 1
         setPage(pagePlus)
-        setSampleArray({
-          items: sampleArray.items.concat(
-            recommendation?.slice(
-              10 * page,
-              sampleArray.items.length > 10 * page + 10
-                ? recommendation.length
-                : 10 * page + 10,
-            ),
-          ),
+        getUsedCarFunnelRecommendations({
+          ...tempQuery,
+          page: pagePlus,
+        }).then((response) => {
+          if (response) {
+            setSampleArray({
+              items: sampleArray.items.concat(response.carData),
+            })
+          }
         })
       }
       clearTimeout(timeout)
@@ -608,7 +608,11 @@ export const PLPUsedCar = ({
               priceStart: priceStart ? minTemp : '',
               priceEnd: priceEnd ? maxTemp : '',
               sortBy: 'lowToHigh',
+              page: page || '1',
+              perPage: '10',
             }
+
+            setTempQuery(queryParam)
 
             getUsedCarFunnelRecommendations(queryParam)
               .then((response) => {
@@ -706,6 +710,7 @@ export const PLPUsedCar = ({
       page: page || '1',
       perPage: '10',
     }
+    setTempQuery(queryParam)
     getUsedCarFunnelRecommendations(queryParam).then((response) => {
       if (response) {
         console.log(response)

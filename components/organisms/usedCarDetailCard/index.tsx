@@ -284,7 +284,6 @@ export const UsedCarDetailCard = ({
             className={styles.brandModelText}
             data-testid={elementId.PLP.Text + 'brand-model-mobil'}
           >
-            {recommendation.brandName} {recommendation.modelName}{' '}
             {recommendation.variantName} {recommendation.year}
           </h2>
           <span
