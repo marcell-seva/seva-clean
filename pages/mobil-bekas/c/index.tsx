@@ -252,6 +252,9 @@ export const getServerSideProps: GetServerSideProps<{
           }),
       ...(city_id && { city_id }),
       ...(sortBy && { sortBy: 'lowToHigh' }),
+      ...{ sortBy: 'lowToHigh' },
+      ...{ page: '1' },
+      ...{ perPage: '10' },
     }
 
     const response = await getUsedCarFunnelRecommendations({ ...queryParam })
