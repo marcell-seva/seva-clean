@@ -177,7 +177,7 @@ button {
 
 .csa-button {
   &.ant-float-btn {
-    left: calc(50% + 240px);
+    left: calc(50% + 142px);
     transform: translateX(-50%);
     inset-block-end: 32px;
     inset-inline-end: 17px;
@@ -191,6 +191,12 @@ button {
   .ant-float-btn-icon {
     margin-right: 12px !important;
     margin-top: 3px !important;
+  }
+  @media (min-width: 570px) {
+    &.ant-float-btn {
+      left: calc(50% + 240px);
+      transform: translateX(-50%);
+    }
   }
 }
 
