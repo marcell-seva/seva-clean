@@ -85,6 +85,8 @@ export interface FunnelQuery extends Filter {
   phoneNumber?: string
   isDefaultTenureChanged?: boolean
   filterFincap?: boolean
+  page?: string
+  perPage?: string
 }
 
 export interface UTM {

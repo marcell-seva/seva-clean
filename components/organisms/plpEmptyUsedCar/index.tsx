@@ -32,6 +32,7 @@ export const PLPEmptyUsedCar = ({ onClickLabel }: PLPEmptyUsedCarProps) => {
   useEffect(() => {
     checkCitiesData()
   }, [])
+
   return (
     <>
       <div className={styles.wrapperEmptyUsedCar}>
@@ -63,8 +64,6 @@ export const PLPEmptyUsedCar = ({ onClickLabel }: PLPEmptyUsedCarProps) => {
           </div>
         </div>
       </div>
-
-      <FooterMobile />
       <CitySelectorModal
         isOpen={isOpenCitySelectorModal}
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
