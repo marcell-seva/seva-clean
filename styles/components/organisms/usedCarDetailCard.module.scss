@@ -18,7 +18,7 @@
   max-width: 279px;
   width: 100%;
   aspect-ratio: 4 / 3;
-  object-fit: contain;
+  object-fit: cover;
   top: -72px;
   border-radius: 8px;
 }
@@ -42,7 +42,7 @@
 }
 
 .contentWrapper {
-  padding-top: 128px;
+  padding-top: 148px;
   width: 100%;
   display: flex;
   flex-direction: column;
