@@ -355,7 +355,9 @@ export const SummaryTab = ({
       testid: elementId.PDP.FAQ.KapasitasMobil,
     },
     {
-      question: `Apa jenis sistem transmisi yang digunakan oleh ${modelDetail?.brand} ${modelDetail?.model}?`,
+      question: `Apa jenis sistem transmisi yang digunakan oleh ${
+        modelDetail?.brand
+      } ${modelDetail?.model} ${new Date().getFullYear()}?`,
       answer: `${modelDetail?.brand} ${modelDetail?.model} umumnya dilengkapi dengan transmisi ${summaryInfo.transmissionDetail}.`,
       testid: elementId.PDP.FAQ.TransmisiMobil,
     },
