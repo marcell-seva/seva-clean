@@ -71,7 +71,7 @@ const FilterMobileUsedCar = ({
   setIsResetFilter,
 }: FilterMobileProps) => {
   const router = useRouter()
-  const { brand, transmission } = router.query
+  const { brand, transmission, plate } = router.query
 
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryUsedCarData()
   const [transmissionFilter, setTransmissionFilter] = useState(
@@ -163,6 +163,7 @@ const FilterMobileUsedCar = ({
         brand: [],
         cityId: [],
         transmission: [],
+        plate: [],
         yearEnd: '',
         yearStart: '',
         mileageEnd: '',

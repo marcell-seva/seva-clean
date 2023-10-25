@@ -170,6 +170,21 @@ export const NavigationFilterMobileUsedCar = ({
           funnelQuery.cityId.filter((item: any) => item !== key),
       }
       newFunnel(filter)
+    } else if (type === 'plate') {
+      patchFunnelQuery({
+        plate:
+          funnelQuery.plate &&
+          funnelQuery.plate.filter((item: any) => {
+            return item !== key
+          }),
+      })
+      const filter = {
+        ...funnelQuery,
+        plate:
+          funnelQuery.plate &&
+          funnelQuery.plate.filter((item: any) => item !== key),
+      }
+      newFunnel(filter)
     } else {
       patchFunnelQuery({
         transmission:
@@ -319,6 +334,20 @@ export const NavigationFilterMobileUsedCar = ({
                   <div
                     className={styles.navFrame}
                     onClick={() => removeFilter('transmission', item)}
+                  >
+                    <span className={styles.text}>{item}</span>{' '}
+                    <div className={styles.onClick}>
+                      <IconRemove width={16} height={16} color="#878D98" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            {funnelQuery.plate &&
+              funnelQuery.plate.map((item: string) => (
+                <div key={item} className={styles.navOuter}>
+                  <div
+                    className={styles.navFrame}
+                    onClick={() => removeFilter('plate', item)}
                   >
                     <span className={styles.text}>{item}</span>{' '}
                     <div className={styles.onClick}>

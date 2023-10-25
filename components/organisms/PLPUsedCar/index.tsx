@@ -459,6 +459,7 @@ export const PLPUsedCar = ({
       (funnelQuery.bodyType && funnelQuery.bodyType.length > 0) ||
       (funnelQuery.transmission && funnelQuery.transmission.length > 0) ||
       (funnelQuery.cityId && funnelQuery.cityId.length > 0) ||
+      (funnelQuery.plate && funnelQuery.plate.length > 0) ||
       (funnelQuery.priceStart !== minMaxPrice.minPriceValue.toString() &&
         funnelQuery.priceStart !== '' &&
         funnelQuery.priceStart !== undefined) ||
