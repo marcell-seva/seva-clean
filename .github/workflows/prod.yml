@@ -50,3 +50,22 @@ jobs:
             --concurrency 80 \
             --cpu 1 \
             --memory 1024Mi
+
+  clear-cdn:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref_name == 'prod' }}
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Auth Cloud SDK
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.PROD_SERVICE_ACCOUNT_KEY }}'
+
+      - name: Set up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v0'
+
+      - name: Clear Cache CDN
+        run: |
+          gcloud compute url-maps invalidate-cdn-cache seva-prod-web-urlmap --path "/*"
