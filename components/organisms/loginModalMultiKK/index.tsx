@@ -11,13 +11,19 @@ const IlustrationLoginModal =
 
 interface PropsLoginModalMultiKK {
   onCancel: () => void
+  overrideOnClickCta?: () => void
 }
 
 export const LoginModalMultiKK: React.FC<PropsLoginModalMultiKK> = ({
   onCancel,
+  overrideOnClickCta,
 }: PropsLoginModalMultiKK) => {
   const router = useRouter()
   const onClickCta = () => {
+    if (!!overrideOnClickCta) {
+      overrideOnClickCta()
+      return
+    }
     router.push(LoginSevaUrl)
   }
   const onClose = () => {

@@ -159,6 +159,8 @@ export enum SessionStorageKey {
   IsShowBadgeCreditOpportunity = 'IsShowBadgeCreditOpportunity',
   PageReferrerProfilePage = 'pageReferrerProfilePage',
   PageReferrerMultiKK = 'pageReferrerMultiKK',
+  prevLoginPath = 'prevLoginPath',
+  PAAmbassadorError = 'PAAmbassadorError',
 }
 
 export enum HTTPResponseStatusCode {

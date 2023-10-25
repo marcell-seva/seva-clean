@@ -4,6 +4,7 @@ import styles from 'styles/components/atoms/inputWithIcon.module.scss'
 interface Props {
   value: string
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
+  onFocus?: (event: ChangeEvent<HTMLInputElement>) => void
   inputType?: string
   placeholderText?: string
   isAutoFocus?: boolean
@@ -20,6 +21,7 @@ const forwardedInputWithIcon = (
   {
     value,
     onChange,
+    onFocus,
     inputType = 'text',
     placeholderText = '',
     isAutoFocus = false,
@@ -46,6 +48,7 @@ const forwardedInputWithIcon = (
       <div className={`${styles.inputArea} ${isError && styles.errorArea}`}>
         {prefix && prefix()}
         <input
+          onFocus={onFocus}
           ref={ref}
           value={value}
           type={inputType}

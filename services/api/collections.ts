@@ -1,4 +1,5 @@
 import getCurrentEnvironment from 'helpers/environments'
+import urls from 'utils/helpers/url'
 import { temanSevaUrlPath } from 'utils/types/props'
 const baseUrl = getCurrentEnvironment.apiBaseUrl
 
@@ -38,6 +39,7 @@ const product = {
 const leads = {
   unverifiedLeadNew: `${baseUrl}/unverifiedLeads/new`,
   customerAssistantDetails: `${baseUrl}/unverifiedLeads/csaDetails`,
+  paIaInfo: `${baseUrl}${urls.internalUrls.paaIAInfo}`,
 }
 
 const omnicom = {
@@ -51,6 +53,8 @@ const auth = {
   refresh: `${baseUrl}/auth/token`,
   otp: `${baseUrl}/auth/otp`,
   otpVerification: `${baseUrl}/auth/verification`,
+  checkRegistered: `${baseUrl}${urls.internalUrls.checkRegistered}`,
+  createCustomer: `${baseUrl}${urls.internalUrls.createCustomerSeva}`,
 }
 
 const loanCalculator = {

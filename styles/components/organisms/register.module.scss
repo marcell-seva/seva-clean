@@ -1,0 +1,92 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.information {
+  display: none;
+}
+
+.banner {
+  display: none;
+}
+
+.wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 57px 16px 32px;
+}
+
+.form {
+  margin: 32px 0px;
+}
+
+.imageLogo {
+  width: 111px;
+  height: 68px;
+}
+
+.headerText {
+  font-family: 'Kanyon';
+  font-size: 28px;
+  line-height: 40px;
+  color: #{$primary-black};
+  margin-top: 32px;
+}
+
+.descText {
+  font-size: 16px;
+  line-height: 24px;
+  color: #{$primary-black};
+  margin-top: 8px;
+}
+
+.spacing {
+  margin-top: 24px;
+}
+
+.descFooter {
+  color: #{$shades-grey-75};
+  font-size: 11px;
+  line-height: 16px;
+  text-align: center;
+  padding: 32px 0px;
+}
+
+.textOption {
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$primary-black};
+  margin-left: 8px;
+}
+
+.textRedirect {
+  color: #{$secondary-blue};
+}
+
+.agreementSubscription {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+}
+
+.agreementTerms {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  margin-top: 16px;
+}
+
+.checkedBox {
+  width: 20px;
+}
+
+.button {
+  margin-top: 20px;
+}

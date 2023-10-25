@@ -1,0 +1,8 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+@import '../abstract/animations';
+
+.container {
+  width: 100%;
+  @include centeredWithMaxWidth;
+}

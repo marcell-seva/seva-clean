@@ -1,0 +1,9 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+@import '../abstract/animations';
+
+.container {
+  display: flex;
+  width: 100%;
+  @include centeredWithMaxWidth;
+}

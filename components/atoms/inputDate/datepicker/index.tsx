@@ -18,6 +18,7 @@ type PropsDatePicker = DatePickerProps & {
   title?: string
   placeholder?: string
   name?: string
+  onOpenDate?: (open: boolean) => void
   onBlurInput?: (e: React.FocusEvent<HTMLButtonElement>) => void
   customStyle?: {
     iconCalendar?: Partial<Pick<PropsIcon, 'width' | 'height' | 'color'>>
@@ -50,20 +51,23 @@ const DatePicker = (props: PropsDatePicker) => {
     renderLabel = defaultRenderLabel,
     titleDatePicker = 'Pilih Tanggal',
     onClose,
+    onOpenDate,
     ...datePickerProps
   } = props
 
   const [datePickerOpen, setDatePickerOpen] = useState(false)
   const isValueDate = value instanceof Date && !isNaN(value.valueOf())
 
+  const onDatePickerOpen = () => {
+    setDatePickerOpen(true)
+    onOpenDate && onOpenDate(true)
+  }
+
   return (
     <>
       <div className={styles.datePickerContainer}>
         {title ? <span className={styles.titleText}>{title}</span> : null}
-        <div
-          className={styles.btnContainer}
-          onClick={() => setDatePickerOpen(true)}
-        >
+        <div className={styles.btnContainer} onClick={onDatePickerOpen}>
           <button
             type="button"
             name={name}
