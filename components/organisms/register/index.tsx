@@ -4,10 +4,6 @@ import { encryptValue } from 'utils/encryptionUtils'
 import { setTrackEventMoEngageWithoutValue } from 'helpers/moengage'
 import Image from 'next/image'
 import { getPageBeforeLogin } from 'utils/loginUtils'
-import {
-  trackRegisterPageCtaClick,
-  trackRegistrationPageView,
-} from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
 import dayjs from 'dayjs'
 import { trackEventCountly } from 'helpers/countly/countly'
@@ -118,7 +114,6 @@ export const Register = () => {
     if (phoneNumber === undefined) {
       router.push('/masuk-akun')
     } else {
-      trackRegistrationPageView()
       trackCountlyRegistrationPageView()
       setTrackEventMoEngageWithoutValue('view_registration_page')
     }
@@ -186,19 +181,6 @@ export const Register = () => {
     return isEmailValidated
   }
 
-  const sendDataTracker = (
-    referralCode: string,
-    subscription: boolean,
-    path: string,
-  ): void => {
-    const data = {
-      Teman_SEVA_Code: referralCode || '',
-      Promotional_Checkbox: subscription ? 'yes' : 'no',
-      Page_Direction: path || '',
-    }
-    trackRegisterPageCtaClick(data)
-  }
-
   const createCustomer = async (isRefCodeValidated: boolean): Promise<void> => {
     try {
       setIsLoading(true)
@@ -210,12 +192,6 @@ export const Register = () => {
         promoSubscription: form.subscription,
         referralCode: isRefCodeValidated ? tempRefCode : '',
       })
-
-      sendDataTracker(
-        isRefCodeValidated ? tempRefCode : '',
-        form.subscription,
-        pathDirection,
-      )
 
       setModalOpened('success-toast')
       trackEventCountly(CountlyEventNames.WEB_REGISTRATION_PAGE_SUCCESS_VIEW)

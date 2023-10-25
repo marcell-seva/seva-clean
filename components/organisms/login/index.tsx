@@ -8,13 +8,6 @@ import {
   setTrackEventMoEngageWithoutValue,
 } from 'helpers/moengage'
 import { getPageBeforeLogin } from 'utils/loginUtils'
-import {
-  trackLoginPageCtaClick,
-  trackLoginPageSuccess,
-  trackLoginPageView,
-  trackRefinancingFirstLeadsFormSubmit,
-  trackRefinancingFirstQuestionFormSubmit,
-} from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
 import {
   trackEventCountly,
@@ -143,7 +136,6 @@ export const Login = () => {
   }
 
   useEffect(() => {
-    trackLoginPageView()
     setTrackEventMoEngageWithoutValue('view_login_page')
     trackCountlyPageView()
 
@@ -162,7 +154,6 @@ export const Login = () => {
   }, [])
 
   const sendOtpCode = async () => {
-    trackLoginPageCtaClick()
     trackEventCountly(CountlyEventNames.WEB_OTP_VIEW, {
       PAGE_ORIGINATION: 'Login',
     })
@@ -241,7 +232,6 @@ export const Login = () => {
         'SEVA_REFINANCING_DEFAULT',
         true,
       ).then((result: { data: { data: { id: string } } }) => {
-        trackRefinancingFirstLeadsFormSubmit()
         saveLocalStorage(
           LocalStorageKey.IdCustomerRefi,
           encryptValue(result?.data.data.id),
@@ -258,7 +248,6 @@ export const Login = () => {
         'SEVA_REFINANCING_QUESTION',
         true,
       ).then((result) => {
-        trackRefinancingFirstQuestionFormSubmit()
         saveLocalStorage(
           LocalStorageKey.IdCustomerRefi,
           encryptValue(result?.data.data.id),
@@ -328,7 +317,6 @@ export const Login = () => {
         nextPage ?? rootUrl,
       )
       const dataRedirectPath = window.location.origin + nextPage ?? rootUrl
-      trackLoginPageSuccess({ Page_Direction: dataRedirectPath })
       localStorage.removeItem(LocalStorageKey.PageBeforeLogin)
       router.push(nextPage ?? rootUrl)
     }
