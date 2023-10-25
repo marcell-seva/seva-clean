@@ -154,6 +154,38 @@ export const FormMileage = ({
       setMaxTemp(Number(filterNonDigitCharacters(maxDefault.toString())))
       setIsErrorMax(false)
     }
+    if (isErrorMin) {
+      setTimeout(() => {
+        setMinTempCurrency(minDefault)
+        setMinMileageFilter(filterNonDigitCharacters(minDefault.toString()))
+        setMinTemp(Number(filterNonDigitCharacters(minDefault.toString())))
+        setIsErrorMin(false)
+      }, 2000)
+    }
+    if (isErrorMinTwo) {
+      setTimeout(() => {
+        setMinTempCurrency(minDefault)
+        setMinMileageFilter(filterNonDigitCharacters(minDefault.toString()))
+        setMinTemp(Number(filterNonDigitCharacters(minDefault.toString())))
+        setIsErrorMinTwo(false)
+      }, 2000)
+    }
+    if (isErrorMax) {
+      setTimeout(() => {
+        setMaxTempCurrency(maxDefault)
+        setMaxMileageFilter(filterNonDigitCharacters(maxDefault.toString()))
+        setMaxTemp(Number(filterNonDigitCharacters(maxDefault.toString())))
+        setIsErrorMax(false)
+      }, 2000)
+    }
+    if (isErrorMaxTwo) {
+      setTimeout(() => {
+        setMaxTempCurrency(maxDefault)
+        setMaxMileageFilter(filterNonDigitCharacters(maxDefault.toString()))
+        setMaxTemp(Number(filterNonDigitCharacters(maxDefault.toString())))
+        setIsErrorMaxTwo(false)
+      }, 2000)
+    }
   }
   useEffect(() => {
     setMinMileageFilter(
