@@ -26,6 +26,7 @@ import { PreviousButton, navigateToPLP } from 'utils/navigate'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { FormTransmission } from 'components/molecules/form/formTransmission'
+import { FormPlate } from 'components/molecules/form/formPlate'
 import { getUsedCarFunnelRecommendations } from 'utils/handler/funnel'
 import { api } from 'services/api'
 
@@ -70,11 +71,14 @@ const FilterMobileUsedCar = ({
   setIsResetFilter,
 }: FilterMobileProps) => {
   const router = useRouter()
-  const { brand, transmission } = router.query
+  const { brand, transmission, plate } = router.query
 
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryUsedCarData()
   const [transmissionFilter, setTransmissionFilter] = useState(
     funnelQuery?.transmission ? funnelQuery?.transmission : [],
+  )
+  const [plateFilter, setPlateFilter] = useState(
+    funnelQuery?.plate ? funnelQuery?.plate : [],
   )
   const onClickClose = () => {
     setTimeout(() => {
@@ -157,7 +161,15 @@ const FilterMobileUsedCar = ({
     if (resetTmp) {
       const resetBrandAndBodyType: FunnelQuery = {
         brand: [],
-        city_id: [],
+        cityId: [],
+        transmission: [],
+        plate: [],
+        yearEnd: '',
+        yearStart: '',
+        mileageEnd: '',
+        mileageStart: '',
+        priceEnd: '',
+        priceStart: '',
       }
       setIsFilter(false)
       setIsCheckedBrand([])
@@ -179,6 +191,7 @@ const FilterMobileUsedCar = ({
       city_id: !resetTmp && locationSelected.length > 0 ? locationSelected : [],
       transmission:
         !resetTmp && transmissionFilter.length > 0 ? transmissionFilter : [],
+      plate: !resetTmp && plateFilter.length > 0 ? plateFilter : [],
       sortBy: funnelQuery.sortBy,
       yearEnd: '',
       yearStart: '',
@@ -238,6 +251,7 @@ const FilterMobileUsedCar = ({
       city_id: !resetTmp && locationSelected.length > 0 ? locationSelected : [],
       transmission:
         !resetTmp && transmissionFilter.length > 0 ? transmissionFilter : [],
+      plate: !resetTmp && plateFilter.length > 0 ? plateFilter : [],
       sortBy: funnelQuery.sortBy || 'lowToHigh',
     }
     const paramUrl: ParamsUrl = {
@@ -250,6 +264,10 @@ const FilterMobileUsedCar = ({
             transmissionFilter.length > 0 && {
               transmission: String(transmissionFilter),
             }),
+        }),
+      ...(!resetTmp &&
+        plateFilter.length > 0 && {
+          plate: String(plateFilter),
         }),
       ...(funnelQuery.sortBy && { sortBy: String(funnelQuery.sortBy) }),
     }
@@ -382,6 +400,14 @@ const FilterMobileUsedCar = ({
               isApplied={isApplied}
               transmission={transmission}
               transmissionFilter={transmissionFilter}
+              isButtonClick={isButtonClick}
+            />
+            <div className={styles.labelForm}>Plat Nomor</div>
+            <FormPlate
+              setPlateFilter={setPlateFilter}
+              isResetFilter={isResetFilter || resetTmp}
+              isApplied={isApplied}
+              plate={plate}
               isButtonClick={isButtonClick}
             />
             <div className={styles.labelForm}>Lokasi Mobil</div>

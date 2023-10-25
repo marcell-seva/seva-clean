@@ -78,7 +78,8 @@ export interface FunnelQuery extends Filter {
   mileageStart?: string
   mileageEnd?: string
   transmission?: string[]
-  city_id?: string[]
+  plate?: string[]
+  cityId?: string[]
   priceStart?: string
   priceEnd?: string
   priceRangeGroup?: string
