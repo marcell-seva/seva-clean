@@ -156,6 +156,39 @@ export const FormYear = ({
       setMaxTemp(Number(filterNonDigitCharacters(maxDefault.toString())))
       setIsErrorMax(false)
     }
+    if (isErrorMin) {
+      setTimeout(() => {
+        setMinTempCurrency(minDefault)
+        setMinYearFilter(filterNonDigitCharacters(minDefault.toString()))
+        setMinTemp(Number(filterNonDigitCharacters(minDefault.toString())))
+        setIsErrorMin(false)
+      }, 2000)
+    }
+    if (isErrorMinTwo) {
+      setTimeout(() => {
+        setMinTempCurrency(minDefault)
+        setMinYearFilter(filterNonDigitCharacters(minDefault.toString()))
+        setMinTemp(Number(filterNonDigitCharacters(minDefault.toString())))
+        setIsErrorMinTwo(false)
+      }, 2000)
+    }
+
+    if (isErrorMax) {
+      setTimeout(() => {
+        setMaxTempCurrency(maxDefault)
+        setMaxYearFilter(filterNonDigitCharacters(maxDefault.toString()))
+        setMaxTemp(Number(filterNonDigitCharacters(maxDefault.toString())))
+        setIsErrorMax(false)
+      }, 2000)
+    }
+    if (isErrorMaxTwo) {
+      setTimeout(() => {
+        setMaxTempCurrency(maxDefault)
+        setMaxYearFilter(filterNonDigitCharacters(maxDefault.toString()))
+        setMaxTemp(Number(filterNonDigitCharacters(maxDefault.toString())))
+        setIsErrorMaxTwo(false)
+      }, 2000)
+    }
   }
   useEffect(() => {
     setMinYearFilter(

@@ -464,6 +464,9 @@ span.ant-select-selection-item {
   border-radius: 8px !important;
   font-weight: 600 !important;
   color: #{$shades-grey-75} !important;
+  padding: 4px 8px !important;
+  border: 0 !important;
+  margin: 8px 0px 8px 8px !important;
   display: flex;
   align-items: center;
 }

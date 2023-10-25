@@ -162,6 +162,38 @@ export const FormPriceUsedCar = ({
       setMaxTemp(Number(filterNonDigitCharacters(maxDefault.toString())))
       setIsErrorMax(false)
     }
+    if (isErrorMin) {
+      setTimeout(() => {
+        setMinTempCurrency(Currency(minDefault))
+        setMinPriceFilter(filterNonDigitCharacters(minDefault.toString()))
+        setMinTemp(Number(filterNonDigitCharacters(minDefault.toString())))
+        setIsErrorMin(false)
+      }, 2000)
+    }
+    if (isErrorMinTwo) {
+      setTimeout(() => {
+        setMinTempCurrency(Currency(minDefault))
+        setMinPriceFilter(filterNonDigitCharacters(minDefault.toString()))
+        setMinTemp(Number(filterNonDigitCharacters(minDefault.toString())))
+        setIsErrorMinTwo(false)
+      }, 2000)
+    }
+    if (isErrorMax) {
+      setTimeout(() => {
+        setMaxTempCurrency(Currency(maxDefault))
+        setMaxPriceFilter(filterNonDigitCharacters(maxDefault.toString()))
+        setMaxTemp(Number(filterNonDigitCharacters(maxDefault.toString())))
+        setIsErrorMax(false)
+      }, 2000)
+    }
+    if (isErrorMaxTwo) {
+      setTimeout(() => {
+        setMaxTempCurrency(Currency(maxDefault))
+        setMaxPriceFilter(filterNonDigitCharacters(maxDefault.toString()))
+        setMaxTemp(Number(filterNonDigitCharacters(maxDefault.toString())))
+        setIsErrorMaxTwo(false)
+      }, 2000)
+    }
   }
   useEffect(() => {
     setMinPriceFilter(
