@@ -71,6 +71,15 @@ export const FormSelectModelCar = ({
     OptionWithImage<FormControlValue>[]
   >([])
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
+  const [isDisabledField, setIsDisabledField] = useState(false)
+
+  useEffect(() => {
+    if (!selectedCity || overrideDisabled) {
+      setIsDisabledField(true)
+    } else {
+      setIsDisabledField(false)
+    }
+  }, [selectedCity, overrideDisabled])
 
   useEffect(() => {
     setInputValue(value)
@@ -289,7 +298,7 @@ export const FormSelectModelCar = ({
         showDropdownImage
         disableDropdownText="Tidak tersedia di kota pilihan kamu"
         isError={isError && !!selectedCity && isCheckForError}
-        disabled={!selectedCity || overrideDisabled}
+        disabled={isDisabledField}
         datatestid={elementId.Field.CarMobil}
         onShowDropdown={onShowDropdown}
       />
