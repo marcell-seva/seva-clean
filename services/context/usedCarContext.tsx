@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from 'react'
 import { CarDetail, CarModelResponse, CarVariantDetails } from 'utils/types'
 import { BodyTypes } from 'utils/types/carModel'
-import { UsedCarRecommendation } from 'utils/types/context'
+import { UsedCarDetail, UsedCarRecommendation } from 'utils/types/context'
 import { COMData } from 'utils/types/models'
 import { CarModelDetailsResponse, CarRecommendation } from 'utils/types/props'
 
@@ -22,6 +22,8 @@ export interface UsedCarContextType {
   saveRecommendation: (data: UsedCarRecommendation[] | []) => void
   recommendationToyota: CarRecommendation[] | []
   saveRecommendationToyota: (data: CarRecommendation[] | []) => void
+  detail: UsedCarDetail | null
+  saveDetail: (data: UsedCarDetail) => void
   totalItems: number | null
   saveTotalItems: (data: number) => void
 }
@@ -38,6 +40,7 @@ export interface UsedCarContextProps
     | 'recommendation'
     | 'recommendationToyota'
     | 'totalItems'
+    | 'detail'
   > {
   children: React.ReactNode
 }
@@ -59,6 +62,8 @@ export const UsedCarContext = createContext<UsedCarContextType>({
   saveRecommendation: () => {},
   recommendationToyota: [],
   saveRecommendationToyota: () => {},
+  detail: null,
+  saveDetail: () => {},
   totalItems: null,
   saveTotalItems: () => {},
 })
@@ -72,6 +77,7 @@ export const UsedCarProvider = ({
   carModelDetails = null,
   carVariantDetails = null,
   recommendation = [],
+  detail = null,
   recommendationToyota = [],
   totalItems = null,
 }: UsedCarContextProps) => {
@@ -90,6 +96,7 @@ export const UsedCarProvider = ({
   const [currentRecommendation, setRecommendation] = useState<
     UsedCarRecommendation[] | []
   >(recommendation)
+  const [currentDetail, setDetail] = useState<UsedCarDetail | null>(detail)
   const [currentRecommendationToyota, setRecommendationToyota] = useState<
     CarRecommendation[] | []
   >(recommendationToyota)
@@ -123,6 +130,10 @@ export const UsedCarProvider = ({
     setRecommendation(recommendationData)
   }
 
+  const saveDetail = (detailData: UsedCarDetail | null) => {
+    setDetail(detailData)
+  }
+
   const saveRecommendationToyota = (
     recommendationData: CarRecommendation[] | [],
   ) => {
@@ -150,6 +161,8 @@ export const UsedCarProvider = ({
         saveCarVariantDetails,
         recommendation: currentRecommendation,
         saveRecommendation,
+        detail: currentDetail,
+        saveDetail,
         recommendationToyota: currentRecommendationToyota,
         saveRecommendationToyota,
         totalItems: currentTotalItems,

@@ -18,6 +18,7 @@ import { hundred, million, ten } from 'utils/helpers/const'
 import {
   OTOVariantListUrl,
   loanCalculatorWithCityBrandModelVariantUrl,
+  usedCarDetailUrl,
   variantListUrl,
 } from 'utils/helpers/routes'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
@@ -44,6 +45,8 @@ import {
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { LocationRed } from 'components/atoms/icon/LocationRed'
 import urls from 'utils/helpers/url'
+import { api } from 'services/api'
+import { usedCar } from 'services/context/usedCarContext'
 
 const CarSkeleton = '/revamp/illustration/car-skeleton.webp'
 
@@ -71,6 +74,7 @@ export const UsedCarDetailCard = ({
   setOpenInterestingModal,
 }: CarDetailCardProps) => {
   const router = useRouter()
+  const { saveDetail } = usedCar()
   const { funnelQuery } = useFunnelQueryData()
   const [cityOtr] = useLocalStorage<Location | null>(
     LocalStorageKey.CityOtr,
@@ -128,15 +132,10 @@ export const UsedCarDetailCard = ({
   //   !!filterStorage?.monthlyIncome &&
   //   !!filterStorage?.tenure
 
-  // const detailCarRoute = variantListUrl
-  //   .replace(
-  //     ':brand/:model',
-  //     (recommendation.brand + '/' + recommendation.model.replace(/ +/g, '-'))
-  //       .replace(/ +/g, '')
-  //       .toLowerCase(),
-  //   )
-  //   .replace(':tab', '')
-  //   .replace('?', `?loanRankCVL=${recommendation.loanRank}&source=plp`)
+  const detailCarRoute = usedCarDetailUrl.replace(
+    ':id',
+    recommendation.sevaUrl.replace(/ +/g, '').toLowerCase(),
+  )
 
   const cityName = getCity()?.cityName || 'Jakarta Pusat'
 
@@ -241,7 +240,11 @@ export const UsedCarDetailCard = ({
   // }
 
   const onClickSeeDetail = () => {
-    router.push(urls.internalUrls.usedCarDetailUrl)
+    // router.push(urls.internalUrls.usedCarDetailUrl)
+    api
+      .getUsedCarBySKU(recommendation.skuCode, '')
+      .then((data) => saveDetail(data.data[0]))
+    router.push(detailCarRoute)
   }
 
   const transmisi = recommendation?.carSpecifications?.find(

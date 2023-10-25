@@ -92,6 +92,7 @@ const UsedCarResultPage = ({
         carVariantDetails={null}
         recommendation={meta.carRecommendations.carRecommendations}
         recommendationToyota={[]}
+        detail={null}
         totalItems={meta.carRecommendations.totalItems}
       >
         <div className={styles.mobile}>

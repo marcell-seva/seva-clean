@@ -14,6 +14,7 @@ const internalUrls = {
   usedCarDetailUrl: '/mobil-bekas/p',
   duplicatedCarResultsUrl: '/adaSEVAdiOTO/mobil-baru',
   carResultsUrlId: '/mobil-baru/:id',
+  usedCarResultUrlId: 'mobil-bekas/p/:id',
   variantListOldDesignUrl: '/var/mobil-baru/:brand/:model',
   variantListUrlId: '/mobil-baru/:brand/:model/:id/:tab?',
   variantListPriceUrl: '/mobil-baru/:brand/:model/:tab',
