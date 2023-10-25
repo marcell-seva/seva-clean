@@ -22,6 +22,8 @@ export interface UsedCarContextType {
   saveRecommendation: (data: UsedCarRecommendation[] | []) => void
   recommendationToyota: CarRecommendation[] | []
   saveRecommendationToyota: (data: CarRecommendation[] | []) => void
+  detail: UsedCarDetail | null
+  saveDetail: (data: UsedCarDetail) => void
   totalItems: number | null
   saveTotalItems: (data: number) => void
 }
@@ -38,6 +40,7 @@ export interface UsedCarContextProps
     | 'recommendation'
     | 'recommendationToyota'
     | 'totalItems'
+    | 'detail'
   > {
   children: React.ReactNode
 }
@@ -59,6 +62,8 @@ export const UsedCarContext = createContext<UsedCarContextType>({
   saveRecommendation: () => {},
   recommendationToyota: [],
   saveRecommendationToyota: () => {},
+  detail: null,
+  saveDetail: () => {},
   totalItems: null,
   saveTotalItems: () => {},
 })
