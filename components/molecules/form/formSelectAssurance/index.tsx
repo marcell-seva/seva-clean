@@ -184,6 +184,7 @@ const FormSelectAssurance = ({
             otr: calculationApiPayload.otr,
             tenure: selectedTenure,
             asuransiKombinasi: item.value,
+            variantId: calculationApiPayload.variantId,
           })
           .then((response) => {
             updateDataInsuranceAndPromo(response.data[0], item)

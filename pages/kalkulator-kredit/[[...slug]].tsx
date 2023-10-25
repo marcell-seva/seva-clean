@@ -1399,7 +1399,7 @@ export default function LoanCalculatorPage() {
       temanSevaStatus = 'Yes'
     } else if (!!getToken()) {
       const response = await getCustomerInfoSeva()
-      if (response.data[0].temanSevaTrxCode) {
+      if (response[0].temanSevaTrxCode) {
         temanSevaStatus = 'Yes'
       }
     }
@@ -1486,7 +1486,10 @@ export default function LoanCalculatorPage() {
         : selectedLoanData.tdpBeforePromo,
       LanguageCode.id,
     )}, cicilan per bulannya Rp${replacePriceSeparatorByLocalization(
-      loan?.installment,
+      !!selectedLoanData.installmentAfterPromo &&
+        selectedLoanData.installmentAfterPromo !== 0
+        ? selectedLoanData.installmentAfterPromo
+        : selectedLoanData.installmentBeforePromo,
       LanguageCode.id,
     )}, dan tenor ${loan?.tenure} tahun. ${getLastSentenceMessage()}`
 
