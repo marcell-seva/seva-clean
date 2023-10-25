@@ -71,7 +71,7 @@ const FilterMobileUsedCar = ({
   setIsResetFilter,
 }: FilterMobileProps) => {
   const router = useRouter()
-  const { brand } = router.query
+  const { brand, transmission } = router.query
 
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryUsedCarData()
   const [transmissionFilter, setTransmissionFilter] = useState(
@@ -131,6 +131,7 @@ const FilterMobileUsedCar = ({
   const [isCheckedBrand, setIsCheckedBrand] = useState<string[]>(
     funnelQuery.brand ? funnelQuery.brand : [],
   )
+
   const { saveRecommendation, saveTotalItems } = usedCar()
   const [isApplied, setIsApplied] = useState(false)
   const [resetTmp, setResetTmp] = useState(false)
@@ -206,7 +207,7 @@ const FilterMobileUsedCar = ({
         maxPriceFilter !== 0
       ) {
         paramUpdate.priceStart = minPriceFilter
-        paramUpdate.priceStart = maxPriceFilter
+        paramUpdate.priceEnd = maxPriceFilter
       }
     }
     if (!resetTmp) {

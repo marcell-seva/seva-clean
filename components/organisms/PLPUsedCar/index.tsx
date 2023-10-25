@@ -590,69 +590,6 @@ export const PLPUsedCar = ({
         .getMinMaxPrice('', { params })
         .then((response) => {
           if (response) {
-            const minTemp = priceStart
-              ? response?.data?.minPriceValue >
-                Number(priceStart && priceStart?.toString())
-                ? Number(priceStart && priceStart?.toString())
-                : response?.data?.minPriceValue
-              : ''
-            const maxTemp = priceEnd
-              ? response?.data?.maxPriceValue <
-                Number(priceEnd && priceEnd?.toString())
-                ? response.data.maxPriceValue
-                : Number(priceEnd && priceEnd?.toString())
-              : ''
-            const queryParam: any = {
-              brand:
-                brand
-                  ?.split(',')
-                  ?.map((item) => getCarBrand(item).toLowerCase()) || '',
-              priceStart: priceStart ? priceStart : '',
-              priceEnd: priceEnd ? priceEnd : '',
-              yearEnd: yearEnd ? yearEnd : '',
-              yearStart: yearStart ? yearStart : '',
-              mileageEnd: mileageEnd ? mileageEnd : '',
-              mileageStart: mileageStart ? mileageStart : '',
-              transmission: transmission ? transmission?.split(',') : [],
-              // cityId: cityId ? cityId?.split(',') : [],
-              sortBy: sortBy || 'lowToHigh',
-              page: page || '1',
-              perPage: '10',
-            }
-
-            setTempQuery(queryParam)
-
-            getUsedCarFunnelRecommendations(queryParam)
-              .then((response) => {
-                if (response) {
-                  patchFunnelQuery(queryParam)
-                  saveRecommendation(response.carData)
-                  setResultMinMaxPrice({
-                    resultMinPrice: response.lowestCarPrice || 0,
-                    resultMaxPrice: response.highestCarPrice || 0,
-                  })
-                  saveTotalItems(response.totalItems)
-                  setPage(1)
-                  setSampleArray({
-                    items: response.carData,
-                  })
-                  setTimeout(() => {
-                    checkFincapBadge(response.carData)
-                  }, 1000)
-                }
-                setShowLoading(false)
-              })
-              .catch(() => {
-                setShowLoading(false)
-                router.push({
-                  pathname: usedCarResultUrl,
-                })
-              })
-            getUsedCarFunnelRecommendations({ ...queryParam, brand: [] }).then(
-              (response: any) => {
-                if (response) setAlternativeCar(response.carData)
-              },
-            )
           }
         })
         .catch()
@@ -721,7 +658,6 @@ export const PLPUsedCar = ({
     setTempQuery(queryParam)
     getUsedCarFunnelRecommendations(queryParam).then((response) => {
       if (response) {
-        console.log(response)
         patchFunnelQuery(queryParam)
         saveTotalItems(response.totalItems)
         saveRecommendation(response.carData)
