@@ -280,7 +280,7 @@ const getUsedCarBySKU = (
   id: string,
   params: string,
   config?: AxiosRequestConfig,
-) => get(collections.usedCar.skuCode.replace(':sku_code', id) + params, config)
+) => get(collections.usedCar.uuid.replace(':uuid', id) + params, config)
 
 export const api = {
   getMenu,

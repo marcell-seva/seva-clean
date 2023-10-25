@@ -198,7 +198,8 @@ export type UsedCarRecommendation = {
   cityCode: number
   cityId: number
   cityName: string
-  model: string
+  brandName: string
+  modelName: string
   priceFormatedValue: string
   sevaUrl: string
   skuCode: string
