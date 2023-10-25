@@ -127,6 +127,7 @@ export const FormSelectBrandUsedCar = ({
       setIsCheckedBrandQuery([])
     }
   }, [isResetFilter, isApplied, isButtonClick])
+
   const paramQuery = funnelQuery
 
   return (

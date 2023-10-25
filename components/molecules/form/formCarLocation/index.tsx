@@ -104,7 +104,9 @@ export const FormCarLocation = ({
             dropdownRender={(menu) => (
               <>
                 <div className={styles.dropdownDivider}>
-                  <div>{totalChosen} Kota dipilih</div>
+                  <div className={styles.totalChosen}>
+                    {totalChosen} Kota dipilih
+                  </div>
                   <div
                     onClick={() => {
                       handleClearFilter()

@@ -70,8 +70,7 @@ const FilterMobileUsedCar = ({
   setIsResetFilter,
 }: FilterMobileProps) => {
   const router = useRouter()
-  const { brand } = router.query
-  const { transmission } = router.query
+  const { brand, transmission } = router.query
 
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryUsedCarData()
   const [transmissionFilter, setTransmissionFilter] = useState(
@@ -128,6 +127,7 @@ const FilterMobileUsedCar = ({
   const [isCheckedBrand, setIsCheckedBrand] = useState<string[]>(
     funnelQuery.brand ? funnelQuery.brand : [],
   )
+
   const { saveRecommendation, saveTotalItems } = usedCar()
   const [isApplied, setIsApplied] = useState(false)
   const [resetTmp, setResetTmp] = useState(false)
@@ -147,13 +147,15 @@ const FilterMobileUsedCar = ({
     if (!isButtonClick && resetTmp) {
       setResetTmp(false)
     }
+    if (funnelQuery.brand !== isCheckedBrand) {
+      setIsCheckedBrand(funnelQuery.brand ? funnelQuery.brand : [])
+    }
   }, [isFilter, isButtonClick])
 
   const onSubmitFilter = () => {
     setIsApplied(true)
     if (resetTmp) {
       const resetBrandAndBodyType: FunnelQuery = {
-        bodyType: [],
         brand: [],
         city_id: [],
       }
@@ -178,6 +180,12 @@ const FilterMobileUsedCar = ({
       transmission:
         !resetTmp && transmissionFilter.length > 0 ? transmissionFilter : [],
       sortBy: funnelQuery.sortBy,
+      yearEnd: '',
+      yearStart: '',
+      mileageEnd: '',
+      mileageStart: '',
+      priceEnd: '',
+      priceStart: '',
     }
     if (!resetTmp) {
       if (
@@ -187,8 +195,10 @@ const FilterMobileUsedCar = ({
         maxPriceFilter !== 0
       ) {
         paramUpdate.priceStart = minPriceFilter
-        paramUpdate.priceStart = maxPriceFilter
+        paramUpdate.priceEnd = maxPriceFilter
       }
+    }
+    if (!resetTmp) {
       if (
         (minYearFilter != minMaxYear.minYearValue ||
           maxYearFilter != minMaxPrice.maxYearValue) &&
@@ -198,6 +208,8 @@ const FilterMobileUsedCar = ({
         paramUpdate.yearStart = minYearFilter
         paramUpdate.yearEnd = maxYearFilter
       }
+    }
+    if (!resetTmp) {
       if (
         (minMileageFilter != minMaxMileage.minMileageValue ||
           maxMileageFilter != minMaxMileage.maxMileageValue) &&

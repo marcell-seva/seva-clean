@@ -500,6 +500,88 @@ export const PLPUsedCar = ({
     if (!isCurrentCitySameWithSSR || recommendation.length === 0) {
       const params = new URLSearchParams()
       getCity().cityCode && params.append('city', getCity().cityCode as string)
+      api.getMinMaxYearsUsedCar('').then((response) => {
+        if (response.data) {
+          setMinMaxYear({
+            minYearValue: response.data.minYears,
+            maxYearValue: response.data.maxYears,
+          })
+        }
+      })
+      api.getMinMaxMileageUsedCar('').then((response) => {
+        if (response.data) {
+          setMinMaxMileage({
+            minMileageValue: response.data.minMileages,
+            maxMileageValue: response.data.maxMileages,
+          })
+        }
+      })
+      api.getMinMaxPriceUsedCar('').then((response) => {
+        if (response.data) {
+          const minmaxPriceData = response.data
+          minmaxPriceData.minPrice = parseInt(
+            minmaxPriceData.minPrice.replace(/^0+/, ''),
+          )
+          minmaxPriceData.maxPrice = parseInt(
+            minmaxPriceData.maxPrice.replace(/^0+/, ''),
+          )
+          setMinMaxPrice({
+            minPriceValue: minmaxPriceData.minPrice,
+            maxPriceValue: minmaxPriceData.maxPrice,
+          })
+          const queryParam: any = {
+            brand:
+              brand
+                ?.split(',')
+                ?.map((item) => getCarBrand(item).toLowerCase()) || '',
+            priceStart: priceStart ? priceStart : '',
+            priceEnd: priceEnd ? priceEnd : '',
+            yearEnd: yearEnd ? yearEnd : '',
+            yearStart: yearStart ? yearStart : '',
+            mileageEnd: mileageEnd ? mileageEnd : '',
+            mileageStart: mileageStart ? mileageStart : '',
+            transmission: transmission ? transmission?.split(',') : [],
+            // cityId: cityId ? cityId?.split(',') : [],
+            sortBy: sortBy || 'lowToHigh',
+            page: page || '1',
+            perPage: '10',
+          }
+
+          setTempQuery(queryParam)
+
+          getUsedCarFunnelRecommendations(queryParam)
+            .then((response) => {
+              if (response) {
+                patchFunnelQuery(queryParam)
+                saveRecommendation(response.carData)
+                setResultMinMaxPrice({
+                  resultMinPrice: response.lowestCarPrice || 0,
+                  resultMaxPrice: response.highestCarPrice || 0,
+                })
+                saveTotalItems(response.totalItems)
+                setPage(1)
+                setSampleArray({
+                  items: response.carData,
+                })
+                setTimeout(() => {
+                  checkFincapBadge(response.carData)
+                }, 1000)
+              }
+              setShowLoading(false)
+            })
+            .catch(() => {
+              setShowLoading(false)
+              router.push({
+                pathname: usedCarResultUrl,
+              })
+            })
+          getUsedCarFunnelRecommendations({ ...queryParam, brand: [] }).then(
+            (response: any) => {
+              if (response) setAlternativeCar(response.carData)
+            },
+          )
+        }
+      })
       api
         .getMinMaxPrice('', { params })
         .then((response) => {
@@ -627,7 +709,6 @@ export const PLPUsedCar = ({
     setTempQuery(queryParam)
     getUsedCarFunnelRecommendations(queryParam).then((response) => {
       if (response) {
-        console.log(response)
         patchFunnelQuery(queryParam)
         saveTotalItems(response.totalItems)
         saveRecommendation(response.carData)
