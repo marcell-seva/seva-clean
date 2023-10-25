@@ -4,7 +4,9 @@ import {
   DeleteAccountRequestType,
   SendInstantApproval,
   UpdateProfileType,
-} from 'utils/types/utils'
+  updateLeadFormCM,
+  updateLeadFormOTO,
+} from './../../utils/types/utils'
 import get from './get'
 import post from './post'
 import { collections } from './collections'
@@ -77,6 +79,7 @@ const getConfigToken = () => {
 // get request
 const getMenu = () => get(collections.utils.menu)
 const getCities = () => get(collections.utils.cities)
+const getAgent = () => get(collections.utils.salesAgent)
 const getTestimony = () => get(collections.utils.testimonials)
 const getRecommendation = (params?: string, config?: AxiosRequestConfig) =>
   get(collections.product.recommendation + params, config)
@@ -222,9 +225,23 @@ const postUpdateProfile = (
   config: AxiosRequestConfig,
 ) => post(collections.profile.updateProfile, body, config)
 
+const getLeadsDetail = (id: string) =>
+  get(collections.omnicom.check.replace(':id', id))
+
+const postUpdateLeadsOTO = (
+  body: updateLeadFormOTO,
+  config: AxiosRequestConfig,
+) => post(collections.omnicom.updateLeads, body, config)
+
+const postUpdateLeadsCM = (
+  body: updateLeadFormCM,
+  config: AxiosRequestConfig,
+) => post(collections.omnicom.updateLeadsCM, body, config)
+
 export const api = {
   getMenu,
   getCities,
+  getAgent,
   getTestimony,
   getRecommendation,
   getUsage,
@@ -250,6 +267,8 @@ export const api = {
   getCustomerKtpSeva,
   getCustomerSpouseKtpSeva,
   getAvailableNIK,
+  getLeadsDetail,
+  postUpdateLeadsOTO,
 
   postUnverifiedLeadsNew,
   postRefreshToken,
@@ -273,4 +292,5 @@ export const api = {
   postSaveKtpSpouse,
   postDeleteAccount,
   postUpdateProfile,
+  postUpdateLeadsCM,
 }

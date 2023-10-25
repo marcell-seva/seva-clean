@@ -192,6 +192,12 @@ button {
     margin-right: 12px !important;
     margin-top: 3px !important;
   }
+  @media (min-width: 570px) {
+    &.ant-float-btn {
+      left: calc(50% + 240px);
+      transform: translateX(-50%);
+    }
+  }
 }
 
 .csa-button-homepage {

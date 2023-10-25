@@ -271,7 +271,7 @@ export const PriceTab = ({
           </Modal>
         )}
       </div>
-      <LeadsFormSecondary />
+      <LeadsFormSecondary isOTO={isOTO} />
 
       <div className={styles.wrapper}>
         <div className={styles.gap} />

@@ -37,6 +37,7 @@ import { it } from 'node:test'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { useCar } from 'services/context/carContext'
+import { useUtils } from 'services/context/utilsContext'
 
 type LPCarRecommendationsProps = {
   dataReccomendation: any
@@ -47,9 +48,10 @@ type LPCarRecommendationsProps = {
 const LpCarRecommendations = ({
   dataReccomendation,
   onClickOpenCityModal,
-  isOTO,
+  isOTO = false,
 }: LPCarRecommendationsProps) => {
   const router = useRouter()
+  const { saveDataLeads } = useUtils()
   const swiperRef = useRef<SwiperType>()
   const { recommendation } = useCar()
   const [recommendationList, setRecommendationList] =
@@ -163,16 +165,11 @@ const LpCarRecommendations = ({
     trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_ALL_CLICK, {
       CAR_BRAND: selectedBrand || 'Semua',
     })
-    if (!selectedBrand)
+    if (!selectedBrand) {
       return isOTO
-        ? navigateToPLP(
-            PreviousButton.undefined,
-            '',
-            true,
-            false,
-            urls.internalUrls.duplicatedCarResultsUrl,
-          )
+        ? router.push(urls.internalUrls.duplicatedCarResultsUrl)
         : navigateToPLP(PreviousButton.undefined)
+    }
 
     const path = router.asPath.split('/')[1]
     if (path === 'adaSEVAdiOTO') {
@@ -188,6 +185,11 @@ const LpCarRecommendations = ({
     trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_TAB_CLICK, {
       CAR_BRAND_TAB: brand.length !== 0 ? brand : 'Semua',
     })
+  }
+
+  const onClickInterested = (item: CarRecommendation) => {
+    saveDataLeads(item)
+    setIsModalOpened(true)
   }
 
   useEffect(() => {
@@ -208,7 +210,7 @@ const LpCarRecommendations = ({
         </h2>
         <NavigationTabV2
           itemList={brandList}
-          onPage={'PDP'}
+          onPage={isOTO ? 'OTO' : 'PDP'}
           onSelectTab={(value: any) => {
             sendAmplitudeData(
               AmplitudeEventName.WEB_LP_BRANDRECOMMENDATION_LOGO_CLICK,
@@ -220,7 +222,7 @@ const LpCarRecommendations = ({
           }}
           isShowAnnouncementBox={false}
           className={stylep.tab}
-          autoScroll={false}
+          autoScroll={isOTO}
         />
         <div>
           {recommendationList.length === 0 ? (
@@ -281,7 +283,7 @@ const LpCarRecommendations = ({
                           },
                         )
                         isOTO
-                          ? setIsModalOpened(true)
+                          ? onClickInterested(item)
                           : handleCalculateAbility(item, index)
                       }}
                       data-testid={elementId.PLP.Button.HitungKemampuan}
@@ -310,7 +312,9 @@ const LpCarRecommendations = ({
             </Swiper>
           )}
         </div>
-        {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
+        {isModalOpenend && (
+          <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} onPage="LP" />
+        )}
       </div>
       <PopupPromo open={openPromo} onCancel={() => setOpenPromo(false)} />
     </>

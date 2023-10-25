@@ -35,6 +35,8 @@ import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getToken } from 'utils/handler/auth'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { createUnverifiedLeadNew } from 'utils/handler/lead'
+import { useCar } from 'services/context/carContext'
+import { useUtils } from 'services/context/utilsContext'
 
 const SupergraphicSecondarySmall =
   '/revamp/illustration/supergraphic-secondary-small.webp'
@@ -48,12 +50,14 @@ interface PropsLeadsForm {
   onCancel?: () => void
   trackerProperties?: LeadsActionParam
   onPage?: string
+  isProduct?: boolean
 }
 
 export const AdaOTOdiSEVALeadsForm: React.FC<PropsLeadsForm> = ({
   onCancel,
   trackerProperties,
   onPage,
+  isProduct = false,
 }: PropsLeadsForm) => {
   const platform = 'web'
   const toastSuccessInfo = 'Agen kami akan segera menghubungimu dalam 1x24 jam.'
@@ -66,6 +70,8 @@ export const AdaOTOdiSEVALeadsForm: React.FC<PropsLeadsForm> = ({
   >('leads-form')
   const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false)
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
+  const { carModelDetails, carVariantDetails } = useCar()
+  const { dataLeads } = useUtils()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -202,21 +208,55 @@ export const AdaOTOdiSEVALeadsForm: React.FC<PropsLeadsForm> = ({
         temanSevaStatus = 'Yes'
       }
     }
-    if (onPage === 'LP') {
+    if (onPage === 'LP' && isProduct) {
       data = {
-        origination: UnverifiedLeadSubCategory.SEVA_NEW_CAR_CAR_OF_THE_MONTH,
+        origination: UnverifiedLeadSubCategory.OTO_NEW_CAR_LP_LEADS_FORM,
         name,
         phoneNumber: phone,
         ...(cityOtr?.id && { cityId: cityOtr.id }),
         platform,
       }
-    } else {
+    } else if (onPage === 'LP') {
       data = {
-        origination: UnverifiedLeadSubCategory.SEVA_NEW_CAR_PLP_LEADS_FORM,
+        origination: UnverifiedLeadSubCategory.OTO_NEW_CAR_PLP_LEADS_FORM,
         name,
         phoneNumber: phone,
         ...(cityOtr?.id && { cityId: cityOtr.id }),
         platform,
+        carBrand: dataLeads?.brand,
+        carModelText: dataLeads?.model,
+      }
+    } else if (onPage === 'PLP' && isProduct) {
+      data = {
+        origination: UnverifiedLeadSubCategory.OTO_NEW_CAR_PLP_LEADS_FORM,
+        name,
+        phoneNumber: phone,
+        ...(cityOtr?.id && { cityId: cityOtr.id }),
+        platform,
+      }
+    } else if (onPage === 'PLP') {
+      data = {
+        origination: UnverifiedLeadSubCategory.OTO_NEW_CAR_PLP_LEADS_FORM,
+        name,
+        phoneNumber: phone,
+        ...(cityOtr?.id && { cityId: cityOtr.id }),
+        platform,
+        carBrand: dataLeads?.brand,
+        carModelText: dataLeads?.model,
+      }
+    } else if (onPage === 'PDP') {
+      const variants = carModelDetails?.variants
+        .map((variant) => variant.name)
+        .join(', ')
+      data = {
+        origination: UnverifiedLeadSubCategory.OTO_NEW_CAR_PDP_LEADS_FORM,
+        name,
+        phoneNumber: phone,
+        ...(cityOtr?.id && { cityId: cityOtr.id }),
+        platform,
+        carBrand: carModelDetails?.brand,
+        carModelText: carModelDetails?.model,
+        carVariantText: variants,
       }
     }
     try {

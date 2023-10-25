@@ -53,6 +53,7 @@ const HomepageAdaSEVAdiOTO = ({ dataReccomendation }: any) => {
   )
   const { saveDataAnnouncementBox } = useUtils()
   const [isActive, setIsActive] = useState(false)
+  const [isProduct, setIsProduct] = useState(false)
   const { saveRecommendation } = useContext(CarContext) as CarContextType
   const [openCitySelectorModal, setOpenCitySelectorModal] = useState(false)
   const [cityListApi, setCityListApi] =
@@ -158,10 +159,12 @@ const HomepageAdaSEVAdiOTO = ({ dataReccomendation }: any) => {
 
   const closeLeadsForm = () => {
     setIsModalOpened(false)
+    setIsProduct(false)
   }
 
   const showLeadsForm = () => {
     setIsModalOpened(true)
+    setIsProduct(true)
   }
 
   useEffect(() => {
@@ -235,7 +238,6 @@ const HomepageAdaSEVAdiOTO = ({ dataReccomendation }: any) => {
             emitClickCityIcon={() => setOpenCitySelectorModal(true)}
             setShowAnnouncementBox={setShowAnnouncementBox}
             isShowAnnouncementBox={showAnnouncementBox}
-            isOTO={true}
           />
           <div className={styles.banner}>
             <Image
@@ -281,8 +283,13 @@ const HomepageAdaSEVAdiOTO = ({ dataReccomendation }: any) => {
           onClickCloseButton={() => setOpenCitySelectorModal(false)}
           cityListFromApi={cityListApi}
         />
-        {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
-
+        {isModalOpenend && (
+          <AdaOTOdiSEVALeadsForm
+            onCancel={closeLeadsForm}
+            onPage="LP"
+            isProduct={isProduct}
+          />
+        )}
         <CSAButton onClick={showLeadsForm} />
 
         {isLoginModalOpened && (

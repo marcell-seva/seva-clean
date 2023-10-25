@@ -110,6 +110,7 @@ export default function NewCarVariantList({
     isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext,
   )
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
+  const [isProduct, setIsProduct] = useState(false)
 
   const [isOpenCitySelectorOTRPrice, setIsOpenCitySelectorOTRPrice] =
     useState(false)
@@ -125,10 +126,12 @@ export default function NewCarVariantList({
 
   const closeLeadsForm = () => {
     setIsModalOpened(false)
+    setIsProduct(false)
   }
 
   const showLeadsForm = () => {
     setIsModalOpened(true)
+    setIsProduct(true)
   }
 
   const handlePreviewOpened = (payload: number) => {
@@ -660,7 +663,7 @@ export default function NewCarVariantList({
               message={`${brandModel}  tersedia di`}
             />
             {isOTO ? (
-              <CSAButton onClick={showLeadsForm} />
+              !isPreviewGalleryOpened && <CSAButton onClick={showLeadsForm} />
             ) : (
               <WhatsappButton
                 onClick={onClickFloatingWhatsapp}
@@ -703,7 +706,7 @@ export default function NewCarVariantList({
               promoName={promoName}
             />
             {isOTO ? (
-              <CSAButton onClick={showLeadsForm} />
+              !isPreviewGalleryOpened && <CSAButton onClick={showLeadsForm} />
             ) : (
               <WhatsappButton
                 onClick={onClickFloatingWhatsapp}
@@ -720,7 +723,7 @@ export default function NewCarVariantList({
               message={`${brandModel}  tersedia di`}
             />
             {isOTO ? (
-              <CSAButton onClick={showLeadsForm} />
+              !isPreviewGalleryOpened && <CSAButton onClick={showLeadsForm} />
             ) : (
               <WhatsappButton
                 onClick={onClickFloatingWhatsapp}
@@ -766,7 +769,13 @@ export default function NewCarVariantList({
         pageOrigination="PDP"
         sourceButton={isOpenCitySelectorOTRPrice ? 'OTR Price (PDP)' : ''}
       />
-      {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
+      {isModalOpenend && (
+        <AdaOTOdiSEVALeadsForm
+          onCancel={closeLeadsForm}
+          onPage="PDP"
+
+        />
+      )}
       <ShareModal
         open={isOpenShareModal}
         onCancel={() => setIsOpenShareModal(false)}
