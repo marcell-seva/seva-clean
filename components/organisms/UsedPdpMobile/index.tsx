@@ -66,6 +66,7 @@ import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { UsedPdpDataLocalContext } from 'pages/mobil-bekas/p/[[...slug]]'
 import { usedCar } from 'services/context/usedCarContext'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
+import { UsedCarGallery, UsedCarOverlayGallery } from 'components/molecules'
 
 const OverlayGallery = dynamic(() =>
   import('components/molecules').then((mod) => mod.OverlayGallery),
@@ -94,17 +95,18 @@ interface UsedCarVariantListProps {
 export default function UsedCarVariantList({
   isOTO = false,
 }: UsedCarVariantListProps) {
-  // const [isPreviewGalleryOpened, setIsPreviewGalleryOpened] =
-  //   useState<boolean>(false)
+  const [isPreviewGalleryOpened, setIsPreviewGalleryOpened] =
+    useState<boolean>(false)
   const [status, setStatus] = useState<'loading' | 'empty' | 'exist'>('exist')
-  // const [galleryIndexActive, setGalleryIndexActive] = useState<number>(0)
-  // const [dataPreviewImages, setDataPreviewImages] = useState<Array<string>>([])
+  const [galleryIndexActive, setGalleryIndexActive] = useState<number>(0)
+  const [dataPreviewImages, setDataPreviewImages] = useState<Array<string>>([])
   // const { source }: { source: string } = useQuery(['source'])
   // const [isSentCountlyPageView, setIsSentCountlyPageView] = useState(false)
   // const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
   // const { carVideoReviewRes: dataVideoReview } = useContext(
   //   isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext,
   // )
+  const { usedCarModelDetailsRes } = useContext(UsedPdpDataLocalContext)
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
 
   // const [isOpenCitySelectorOTRPrice, setIsOpenCitySelectorOTRPrice] =
@@ -114,6 +116,13 @@ export default function UsedCarVariantList({
     SessionStorageKey.IsShowBadgeCreditOpportunity,
   )
 
+  useEffect(() => {
+    setDataPreviewImages(
+      usedCarModelDetailsRes.carGallery.map((items: any) => {
+        return items.url
+      }),
+    )
+  }, [usedCarModelDetailsRes])
   const { detail } = usedCar()
 
   // const isUsingFilterFinancial =
@@ -130,15 +139,15 @@ export default function UsedCarVariantList({
     setIsModalOpened(true)
   }
 
-  // const handlePreviewOpened = (payload: number) => {
-  //   setGalleryIndexActive(payload)
-  //   setIsPreviewGalleryOpened(true)
-  // }
+  const handlePreviewOpened = (payload: number) => {
+    setGalleryIndexActive(payload)
+    setIsPreviewGalleryOpened(true)
+  }
 
-  // const handlePreviewClosed = (payload: number) => {
-  //   setGalleryIndexActive(payload)
-  //   setIsPreviewGalleryOpened(false)
-  // }
+  const handlePreviewClosed = (payload: number) => {
+    setGalleryIndexActive(payload)
+    setIsPreviewGalleryOpened(false)
+  }
 
   // const router = useRouter()
 
@@ -653,15 +662,17 @@ export default function UsedCarVariantList({
               model={''}
               message={`${''}  tersedia di`}
             />
-            <CSAButton onClick={showLeadsForm} />
+            {!isPreviewGalleryOpened && <CSAButton onClick={showLeadsForm} />}
           </>
         )
       case 'exist':
         return (
           <>
-            <ProductDetailEmptyState
-              model={''}
-              message={`${''}  tersedia di`}
+            <UsedCarGallery
+              items={dataPreviewImages}
+              activeIndex={galleryIndexActive}
+              emitActiveIndex={(e: number) => handlePreviewOpened(e)}
+              emitDataImages={(e: Array<string>) => setDataPreviewImages(e)}
             />
             {/* <PdpUpperSection
               isPreviewOpened={isPreviewGalleryOpened}
@@ -696,14 +707,14 @@ export default function UsedCarVariantList({
               isButtonClick={isButtonClick}
               promoName={promoName}
             /> */}
-            <CSAButton onClick={showLeadsForm} />
+            {!isPreviewGalleryOpened && <CSAButton onClick={showLeadsForm} />}
           </>
         )
       default:
         return (
           <>
             <ProductDetailEmptyState model={''} message={''} />
-            <CSAButton onClick={showLeadsForm} />
+            {!isPreviewGalleryOpened && <CSAButton onClick={showLeadsForm} />}
           </>
         )
     }
@@ -727,13 +738,13 @@ export default function UsedCarVariantList({
         <FooterMobile pageOrigination="PDP - " />
       </div>
 
-      {/* {isPreviewGalleryOpened && (
-        <OverlayGallery
+      {isPreviewGalleryOpened && (
+        <UsedCarOverlayGallery
           items={dataPreviewImages}
           emitActiveIndex={(e: number) => handlePreviewClosed(e)}
           activeIndex={galleryIndexActive}
         />
-      )} */}
+      )}
       <CitySelectorModal
         isOpen={isOpenCitySelectorModal}
         onClickCloseButton={() => {

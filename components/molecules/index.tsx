@@ -13,7 +13,9 @@ import FormSelectCity from './form/formSelectCity'
 import { FormSelectModelCar } from './form/formSelectModelCar'
 import InfoCard from './card/infoCard'
 import { Gallery } from './gallery/index'
+import { UsedCarGallery } from './gallery/usedCarGallery'
 import { OverlayGallery } from './overlay'
+import { UsedCarOverlayGallery } from './overlay/usedCarOverlay'
 import { ShareModal } from './shareModal'
 import { CalculationResultItem } from './calculationResultItem'
 import { MenuList } from './menuList'
@@ -53,6 +55,8 @@ export {
   FormSelectModelCar,
   InfoCard,
   Gallery,
+  UsedCarGallery,
+  UsedCarOverlayGallery,
   OverlayGallery,
   ShareModal,
   CalculationResultItem,
