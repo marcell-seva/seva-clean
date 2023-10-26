@@ -898,6 +898,7 @@ export interface LoanCalculatorIncludePromoPayloadType {
   monthlyIncome: string
   otr: number
   variantId?: string
+  calculateIncludeSubsidi?: boolean // if undefined, BE will assume its "true"
 }
 
 export interface LoanCalculatorInsuranceParams {

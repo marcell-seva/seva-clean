@@ -5,6 +5,7 @@ import { articleDateFormat } from 'utils/handler/date'
 import { PromoItemType } from 'utils/types/utils'
 import { LanguageCode } from 'utils/enum'
 import {
+  IconLoading,
   IconSquareCheckBox,
   IconSquareCheckedBox,
   IconTime,
@@ -17,6 +18,7 @@ type SelectablePromoProps = {
   groupPromo: 'best-promo' | 'additional-promo' | ''
   onSelect?: (item: PromoItemType) => void
   onClickSnK?: () => void
+  isLoading?: boolean
 }
 
 export const SelectablePromo = ({
@@ -24,6 +26,7 @@ export const SelectablePromo = ({
   selected,
   onSelect,
   onClickSnK,
+  isLoading = false,
 }: // groupPromo,
 SelectablePromoProps) => {
   const {
@@ -61,6 +64,20 @@ SelectablePromoProps) => {
   // const disable =
   //   (groupPromo === 'best-promo' && !is_Best_Promo) ||
   //   (groupPromo === 'additional-promo' && is_Best_Promo)
+
+  const renderIcon = () => {
+    if (isLoading) {
+      return (
+        <div className="rotateAnimation">
+          <IconLoading width={16} height={16} />
+        </div>
+      )
+    } else if (selected) {
+      return <IconSquareCheckedBox width={16} height={16} />
+    } else {
+      return <IconSquareCheckBox width={16} height={16} />
+    }
+  }
 
   const enableSnK = false
 
@@ -136,13 +153,7 @@ SelectablePromoProps) => {
           </span>
         </div>
         {is_Available && (
-          <div className={styles.iconWrapper}>
-            {selected ? (
-              <IconSquareCheckedBox width={16} height={16} />
-            ) : (
-              <IconSquareCheckBox width={16} height={16} />
-            )}
-          </div>
+          <div className={styles.iconWrapper}>{renderIcon()}</div>
         )}
       </div>
       {is_Available && (
