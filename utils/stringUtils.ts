@@ -1,5 +1,3 @@
-import dayjs from 'dayjs'
-
 export const DOT = '.'
 export const COMMA = ','
 
@@ -136,7 +134,8 @@ export const getMaskingEmail = (email: string) => {
   return emailArray.join('@')
 }
 
-export const getMaskingDob = (dob: string) => {
+export const getMaskingDob = async (dob: string) => {
+  const dayjs = (await import('dayjs')).default
   const convertedDob = dayjs(dob).format('DD MMMM YYYY')
   const convertedDobArray = convertedDob.split(' ')
   convertedDobArray[0] = convertedDobArray[0].substring(0, 2)

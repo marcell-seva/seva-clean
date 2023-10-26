@@ -37,6 +37,7 @@ import GridOptionWidget from './searchWidget/option/gridOptionWidget'
 import PriceRangeWidget from './searchWidget/option/priceRangeWidget'
 import TenureOptionWidget from './searchWidget/option/tenureOptionWidget'
 import { SearchModal } from './searchModal'
+import { ProfileUploadKtp } from './profileUploadKtp'
 export {
   HowToUseSection,
   Testimony,
@@ -76,4 +77,5 @@ export {
   GridOptionWidget,
   PriceRangeWidget,
   TenureOptionWidget,
+  ProfileUploadKtp,
 }

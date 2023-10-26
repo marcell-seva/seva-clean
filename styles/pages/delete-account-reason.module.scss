@@ -49,6 +49,9 @@
   flex-direction: column;
   align-items: center;
   gap: 24px;
+  @include centeredWithMaxWidth;
+  left: 0;
+  right: 0;
 }
 
 .toastMessage {

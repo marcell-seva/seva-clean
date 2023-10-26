@@ -160,7 +160,7 @@
   gap: 12px;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: start;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -251,7 +251,7 @@
 .titleText {
   font-size: 20px;
   line-height: 28px;
-  font-family: var(--kanyon);
+  font-family: 'Kanyon', sans-serif;
   font-weight: 400;
   margin-bottom: 8px;
 }
@@ -338,7 +338,7 @@
 
 .checkbox__wrapper {
   display: flex;
-  align-items: flex-start;
+  align-items: start;
   margin: 20px auto;
   .checkbox__list {
     border-radius: 4px;
@@ -370,6 +370,6 @@
 .fullnameText {
   font-size: 16px;
   line-height: 24px;
-  font-family: "KanyonMedium";
+  font-family: 'KanyonMedium';
   font-weight: 500;
 }

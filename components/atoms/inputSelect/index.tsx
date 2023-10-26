@@ -19,6 +19,7 @@ interface Props<T extends FormControlValue> {
   placeholderText?: string
   isAutoFocus?: boolean
   noOptionsText?: string
+  onFocusInput?: React.FocusEventHandler<HTMLInputElement>
   onBlurInput?: React.FocusEventHandler<HTMLInputElement>
   onReset?: () => void
   rightIcon?:
@@ -54,6 +55,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
     placeholderText = '',
     isAutoFocus = false,
     noOptionsText = '',
+    onFocusInput,
     onBlurInput,
     onReset,
     rightIcon,
@@ -179,9 +181,10 @@ const forwardedInputSelect = <T extends FormControlValue>(
           onChange={onChangeHandler}
           className={styles.inputField}
           placeholder={placeholderText}
-          onFocus={() => {
+          onFocus={(e) => {
             setIsFocused(true)
             openDropdown().onOpen(true)
+            onFocusInput && onFocusInput(e)
             onShowDropdown && onShowDropdown()
           }}
           onBlur={onBlurHandler}

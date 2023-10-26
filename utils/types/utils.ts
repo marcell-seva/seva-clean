@@ -1062,6 +1062,7 @@ export interface UpdateProfileType {
   gender: string
   marital: string
   email: string | null
+  phoneNumber: string
 }
 
 export interface FinalLoan {

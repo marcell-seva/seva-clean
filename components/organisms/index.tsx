@@ -52,6 +52,8 @@ import LeadsFormAdaOTOdiSEVA from './leadsForm/adaOTOdiSEVA'
 import { AdaOTOdiSEVALeadsForm } from './leadsForm/adaOTOdiSEVA/popUp'
 import { Login } from './login'
 import { Register } from './register'
+import Profile from './profile'
+
 const Exterior360ViewerTab = dynamic(
   () => import('./tabContent/upper/exterior360Viewer'),
 )
@@ -111,4 +113,5 @@ export {
   InformationSection,
   Login,
   Register,
+  Profile,
 }
