@@ -13,7 +13,6 @@ import { getLocalStorage } from 'utils/handler/localStorage'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import getCurrentEnvironment from 'utils/handler/getCurrentEnvironment'
 import { alephArticleCategoryList } from 'utils/config/articles.config'
-
 import { countDaysDifference } from 'utils/handler/date'
 import {
   CtaWidget,

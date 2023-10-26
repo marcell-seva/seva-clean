@@ -121,8 +121,7 @@ export const ShareModal = (props: Props) => {
       centered
       className="share-custom-modal"
       footer={null}
-      maskStyle={{ background: 'rgba(19, 19, 27, 0.5)' }}
-      afterClose={afterCloseModalHandler}
+      styles={{ mask: { background: 'rgba(19, 19, 27, 0.5)' } }}
       {...props}
     >
       <h2 className={styles.title}>Bagikan ke Temanmu:</h2>

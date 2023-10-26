@@ -356,11 +356,13 @@ export const OTP = ({
         width={343}
         open={isOpened}
         onCancel={() => handleCloseModal()}
-        maskStyle={{
-          background: 'rgba(19, 19, 27, 0.5)',
-          maxWidth: '570px',
-          marginLeft: 'auto',
-          marginRight: 'auto',
+        styles={{
+          mask: {
+            background: 'rgba(19, 19, 27, 0.5)',
+            maxWidth: '570px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          },
         }}
       >
         <div className={styles.content}>

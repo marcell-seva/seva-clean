@@ -1,7 +1,7 @@
 import { Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import Image from 'next/image'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from 'styles/components/organisms/mainHeroLp.module.scss'
 import elementId from 'utils/helpers/trackerId'
 import { CityOtrOption } from 'utils/types'
@@ -86,13 +86,13 @@ const MainHeroLP = ({
           className={styles.mainCar}
           src={MainHeroImage}
           alt="raize"
-          loading="lazy"
+          priority
         />
         <Image
           className={styles.supergraphicBg}
           src={SupergraphicImage}
           alt="supergraphic"
-          loading="lazy"
+          priority
         />
       </div>
     </>

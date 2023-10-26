@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react'
 import { PdpMobile } from 'components/organisms'
-
 import {
   CarModelDetailsResponse,
   CarRecommendation,
@@ -109,18 +108,6 @@ export default function index({
       lowerSectionNavigationTab.filter((item) => item.label !== 'Kredit')[0]
         .value,
   )
-
-  const meta = useMemo(() => {
-    const title =
-      metaTagDataRes.data && metaTagDataRes.data.length > 0
-        ? metaTagDataRes.data[0].attributes.meta_title
-        : 'SEVA'
-    const description =
-      metaTagDataRes.data && metaTagDataRes.data.length > 0
-        ? metaTagDataRes.data[0].attributes.meta_description
-        : ''
-    return { title, description }
-  }, [metaTagDataRes])
 
   useEffect(() => {
     saveDesktopWebTopMenu(dataDesktopMenu)

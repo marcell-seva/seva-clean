@@ -607,11 +607,13 @@ export const Register = () => {
           open={modalOpened === 'success-toast'}
           width={343}
           text={templateToastMessage + pathDirection}
-          maskStyle={{
-            background: 'rgba(19, 19, 27, 0.5)',
-            maxWidth: '570px',
-            marginLeft: 'auto',
-            marginRight: 'auto',
+          styles={{
+            mask: {
+              background: 'rgba(19, 19, 27, 0.5)',
+              maxWidth: '570px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+            },
           }}
         />
         <Toast
@@ -621,11 +623,13 @@ export const Register = () => {
           typeToast={'error'}
           onCancel={() => setIsOpenToast(false)}
           closeOnToastClick
-          maskStyle={{
-            background: 'rgba(19, 19, 27, 0.5)',
-            maxWidth: '570px',
-            marginLeft: 'auto',
-            marginRight: 'auto',
+          styles={{
+            mask: {
+              background: 'rgba(19, 19, 27, 0.5)',
+              maxWidth: '570px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+            },
           }}
         />
       </div>

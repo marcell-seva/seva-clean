@@ -398,11 +398,13 @@ export const Login = () => {
             width={343}
             open={modalOpened === 'success-toast'}
             text={toastSuccessInfo}
-            maskStyle={{
-              background: 'rgba(19, 19, 27, 0.5)',
-              maxWidth: '570px',
-              marginLeft: 'auto',
-              marginRight: 'auto',
+            styles={{
+              mask: {
+                background: 'rgba(19, 19, 27, 0.5)',
+                maxWidth: '570px',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              },
             }}
           />
         </div>
