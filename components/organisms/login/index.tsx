@@ -107,7 +107,6 @@ export const Login = () => {
       temanSevaStatus = 'Yes'
     } else if (!!getToken()) {
       const response = await getCustomerInfoSeva()
-      console.log(response)
       if (response[0].temanSevaTrxCode) {
         temanSevaStatus = 'Yes'
       }
@@ -231,10 +230,10 @@ export const Login = () => {
         data.name,
         'SEVA_REFINANCING_DEFAULT',
         true,
-      ).then((result: { data: { data: { id: string } } }) => {
+      ).then((result) => {
         saveLocalStorage(
           LocalStorageKey.IdCustomerRefi,
-          encryptValue(result?.data.data.id),
+          encryptValue(result?.data.id),
         )
       })
     }
@@ -250,7 +249,7 @@ export const Login = () => {
       ).then((result) => {
         saveLocalStorage(
           LocalStorageKey.IdCustomerRefi,
-          encryptValue(result?.data.data.id),
+          encryptValue(result?.data.id),
         )
       })
     }
@@ -316,7 +315,6 @@ export const Login = () => {
         SessionStorageKey.prevLoginPath,
         nextPage ?? rootUrl,
       )
-      const dataRedirectPath = window.location.origin + nextPage ?? rootUrl
       localStorage.removeItem(LocalStorageKey.PageBeforeLogin)
       router.push(nextPage ?? rootUrl)
     }
