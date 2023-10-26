@@ -265,9 +265,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({
       platform,
       name,
       phoneNumber: phone,
-      origination: isOTO
-        ? UnverifiedLeadSubCategory.OTO_NEW_CAR_PDP_LEADS_FORM
-        : UnverifiedLeadSubCategory.SEVA_NEW_CAR_PDP_LEADS_FORM,
+      origination: UnverifiedLeadSubCategory.SEVA_NEW_CAR_PDP_LEADS_FORM,
       ...(cityOtr?.id && { cityId: cityOtr.id }),
       dp: getDp(),
       tenure: getTenure(),
@@ -276,8 +274,20 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({
       carModelText: carModelDetails?.model,
       carVariantText: carVariantDetails?.variantDetail.name,
     }
+    const dataOTO = {
+      platform,
+      name,
+      phoneNumber: phone,
+      origination: UnverifiedLeadSubCategory.OTO_NEW_CAR_PDP_LEADS_FORM,
+      ...(cityOtr?.id && { cityId: cityOtr.id }),
+      dp: getDp(),
+      tenure: getTenure(),
+      monthlyInstallment: sortedCarModelVariant[0].monthlyInstallment,
+      carBrand: carModelDetails?.brand,
+      carModelText: carModelDetails?.model,
+    }
     try {
-      await createUnverifiedLeadNew(data)
+      await createUnverifiedLeadNew(isOTO ? dataOTO : data)
       setModalOpened('success-toast')
       trackLeadsFormAction(
         TrackingEventName.WEB_LEADS_FORM_SUCCESS,
