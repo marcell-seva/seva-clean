@@ -13,10 +13,9 @@ import { getLocalStorage } from 'utils/handler/localStorage'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import getCurrentEnvironment from 'utils/handler/getCurrentEnvironment'
 import { alephArticleCategoryList } from 'utils/config/articles.config'
-import { api } from 'services/api'
+
 import { countDaysDifference } from 'utils/handler/date'
 import {
-  CitySelectorModal,
   CtaWidget,
   FooterMobile,
   HowToUse,
@@ -24,7 +23,6 @@ import {
 } from 'components/molecules'
 import {
   LeadsFormTertiary,
-  LeadsFormPrimary,
   ArticleWidget,
   SearchWidget,
   WebAnnouncementBox,
@@ -43,7 +41,6 @@ import { getToken } from 'utils/handler/auth'
 import { useRouter } from 'next/router'
 import { multiCreditQualificationPageUrl } from 'utils/helpers/routes'
 import { savePageBeforeLogin } from 'utils/loginUtils'
-import { LoginModalMultiKK } from '../loginModalMultiKK'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
@@ -60,10 +57,30 @@ import {
 } from 'utils/handler/sessionStorage'
 import { RouteName } from 'utils/navigate'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
-import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 import { useUtils } from 'services/context/utilsContext'
 import { useCar } from 'services/context/carContext'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import dynamic from 'next/dynamic'
+import { getCarofTheMonth, getCities, getRecommendation } from 'services/api'
+
+const CitySelectorModal = dynamic(
+  () => import('components/molecules').then((mod) => mod.CitySelectorModal),
+  { ssr: false },
+)
+
+const LeadsFormPrimary = dynamic(
+  () => import('components/organisms').then((mod) => mod.LeadsFormPrimary),
+  { ssr: false },
+)
+
+const LoginModalMultiKK = dynamic(
+  () =>
+    import('components/organisms/loginModalMultiKK').then(
+      (mod) => mod.LoginModalMultiKK,
+    ),
+  { ssr: false },
+)
 
 const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
   const { dataCities, dataCarofTheMonth } = useContext(HomePageDataLocalContext)
@@ -104,14 +121,14 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
   const { saveShowAnnouncementBox } = useAnnouncementBoxContext()
 
   const checkCitiesData = () => {
-    api.getCities().then((res: any) => {
+    getCities().then((res: any) => {
       setCityListApi(res)
     })
   }
 
   const getCarOfTheMonth = async () => {
     try {
-      const carofmonth: any = await api.getCarofTheMonth(
+      const carofmonth: any = await getCarofTheMonth(
         '?city=' + getCity().cityCode,
       )
       setCarOfTheMonthData(carofmonth.data)
@@ -123,7 +140,7 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
   const loadCarRecommendation = async () => {
     try {
       const params = `?city=${getCity().cityCode}&cityId=${getCity().id}`
-      const recommendation: any = await api.getRecommendation(params)
+      const recommendation: any = await getRecommendation(params)
       saveRecommendation(recommendation.carRecommendations)
     } catch {
       saveRecommendation(dataReccomendation)

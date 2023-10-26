@@ -168,7 +168,7 @@ export const PriceTab = ({
       rateType: 'REGULAR',
       angsuranType: InstallmentTypeOptions.ADDM,
     })
-      .then((res) => {
+      .then((res: { data: any[] }) => {
         const result = res.data.reverse()
         const selectedLoanInitialValue =
           result.filter((item: SpecialRateListType) => item.tenure === 5)[0] ??

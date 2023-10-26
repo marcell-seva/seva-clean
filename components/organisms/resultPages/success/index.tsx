@@ -30,13 +30,14 @@ import { HeaderMobile } from 'components/organisms'
 import { BannerCard } from 'components/molecules/card/bannerCard'
 import { Gap, IconCSA, IconDownload } from 'components/atoms'
 import { CitySelectorModal, FooterMobile } from 'components/molecules'
-import { api } from 'services/api'
 import { getToken } from 'utils/handler/auth'
 import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import { TrackerFlag } from 'utils/types/models'
 import Image from 'next/image'
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
+import dynamic from 'next/dynamic'
+import { getCities, getAnnouncementBox as gab } from 'services/api'
 
 const ApprovalImageAcc = '/revamp/illustration/approve-acc.webp'
 const ApprovalImageTaf = '/revamp/illustration/approve-taf.webp'
@@ -81,24 +82,22 @@ export const CreditQualificationSuccess = () => {
 
   const checkCitiesData = (): void => {
     if (cityListApi.length === 0) {
-      api.getCities().then((res) => {
+      getCities().then((res) => {
         setCityListApi(res)
       })
     }
   }
 
   const getAnnouncementBox = () => {
-    api
-      .getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      .then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-        if (res.data === undefined) {
-          setShowAnnouncementBox(false)
-        }
-      })
+    gab({
+      headers: {
+        'is-login': getToken() ? 'true' : 'false',
+      },
+    }).then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
+      if (res.data === undefined) {
+        setShowAnnouncementBox(false)
+      }
+    })
   }
 
   const checkDataResultPreApproval = () => {

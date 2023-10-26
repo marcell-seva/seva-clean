@@ -32,7 +32,7 @@ import { useDownPayment } from 'utils/hooks/useDownPayment'
 import { getToken } from 'utils/handler/auth'
 import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { occupations } from 'utils/occupations'
-import { api } from 'services/api'
+
 import {
   AnnouncementBoxDataType,
   FormControlValue,
@@ -59,14 +59,33 @@ import {
   Input,
   InputSelect,
 } from 'components/atoms'
-import { CitySelectorModal, FooterMobile } from 'components/molecules'
 import { MobileView } from 'components/atoms/mobileView'
-import { DatePicker } from 'components/atoms/inputDate'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { NotFoundMultiUnit } from 'components/organisms/NotFoundMultiUnitModal'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
+import dynamic from 'next/dynamic'
+import {
+  getCities,
+  postMultiCreditQualification,
+  getAnnouncementBox as gab,
+} from 'services/api'
+
+const DatePicker = dynamic(
+  () => import('components/atoms/inputDate/datepicker'),
+  { ssr: false },
+)
+
+const FooterMobile = dynamic(
+  () => import('components/organisms').then((mod) => mod.FooterMobile),
+  { ssr: false },
+)
+
+const CitySelectorModal = dynamic(
+  () => import('components/molecules').then((mod) => mod.CitySelectorModal),
+  { ssr: false },
+)
 
 const initErrorFinancial = {
   downPaymentAmount: '' as any,
@@ -149,22 +168,20 @@ const MultiKK = () => {
   }, [multiForm.priceRangeGroup, limitPrice.max])
 
   const getAnnouncementBox = () => {
-    api
-      .getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      .then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-        if (res.data === undefined) {
-          setIsShowAnnouncementBox(false)
-        }
-      })
+    gab({
+      headers: {
+        'is-login': getToken() ? 'true' : 'false',
+      },
+    }).then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
+      if (res.data === undefined) {
+        setIsShowAnnouncementBox(false)
+      }
+    })
   }
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      api.getCities().then((res) => {
+      getCities().then((res) => {
         setCityListApi(res)
       })
     }
@@ -346,10 +363,9 @@ const MultiKK = () => {
       }),
     }
 
-    api
-      .postMultiCreditQualification(sendData, {
-        headers: { Authorization: getToken()?.idToken },
-      })
+    postMultiCreditQualification(sendData, {
+      headers: { Authorization: getToken()?.idToken },
+    })
       .then((result) => {
         const carListNonSulit = filteredCarList(result.carRecommendations)
         if (

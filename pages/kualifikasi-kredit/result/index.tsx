@@ -13,7 +13,7 @@ import { useRouter } from 'next/router'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { CityOtrOption, NewFunnelCarVariantDetails } from 'utils/types'
 import { getToken } from 'utils/handler/auth'
-import { api } from 'services/api'
+
 import { AnnouncementBoxDataType } from 'utils/types/utils'
 import { Triangle } from 'components/atoms/icon/Triangle'
 import { Star } from 'components/atoms/icon/Star'
@@ -45,6 +45,7 @@ import Image from 'next/image'
 import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
 import { getCustomerInfoSeva, getCustomerKtpSeva } from 'utils/handler/customer'
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
+import { getCities, getAnnouncementBox as gab } from 'services/api'
 
 const MainImageGreenMale = '/revamp/illustration/credit-result-green-male.webp'
 const MainImageGreenFemale =
@@ -92,24 +93,22 @@ export default function CreditQualificationResultPage() {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      api.getCities().then((res) => {
+      getCities().then((res) => {
         setCityListApi(res)
       })
     }
   }
 
   const getAnnouncementBox = () => {
-    api
-      .getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      .then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-        if (res.data === undefined) {
-          setShowAnnouncementBox(false)
-        }
-      })
+    gab({
+      headers: {
+        'is-login': getToken() ? 'true' : 'false',
+      },
+    }).then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
+      if (res.data === undefined) {
+        setShowAnnouncementBox(false)
+      }
+    })
   }
 
   const getCarDetails = () => {

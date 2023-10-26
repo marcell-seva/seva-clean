@@ -8,7 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export": "next build && next export"
+    "export": "next build && next export",
+    "analyze": "ANALYZE=true next build",
+    "tsc": "bash -c tsc"
   },
   "resolutions": {
     "styled-components": "^5"

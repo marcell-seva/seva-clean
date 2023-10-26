@@ -1,12 +1,12 @@
 import { AxiosRequestConfig } from 'axios'
-import { api } from './api'
 import { updateLeadFormCM } from 'utils/types/utils'
+import { postUpdateLeadsCM } from './api'
 
 export const updateLeadFormCMSEVA = (
   data: updateLeadFormCM,
   config?: AxiosRequestConfig,
 ) => {
-  return api.postUpdateLeadsCM(data, {
+  return postUpdateLeadsCM(data, {
     ...config,
     headers: {
       'Content-Type': 'application/json',

@@ -1,12 +1,18 @@
 import React, { useEffect } from 'react'
 import { Profile } from 'components/organisms'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { api } from 'services/api'
+
 import { CityOtrOption } from 'utils/types'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import { MobileWebTopMenuType } from 'utils/types/utils'
 import { useUtils } from 'services/context/utilsContext'
 import { getToken } from 'utils/handler/auth'
+import {
+  getMobileHeaderMenu,
+  getMobileFooterMenu,
+  getCities,
+  getAnnouncementBox as gab,
+} from 'services/api'
 
 const ProfilePage = ({
   dataMobileMenu,
@@ -21,7 +27,7 @@ const ProfilePage = ({
   } = useUtils()
   const getAnnouncementBox = async () => {
     try {
-      const res: any = await api.getAnnouncementBox({
+      const res: any = await gab({
         headers: {
           'is-login': getToken() ? 'true' : 'false',
         },
@@ -58,9 +64,9 @@ export const getServerSideProps: GetServerSideProps<{
 
   try {
     const [menuMobileRes, footerRes, cityRes]: any = await Promise.all([
-      api.getMobileHeaderMenu(),
-      api.getMobileFooterMenu(),
-      api.getCities(),
+      getMobileHeaderMenu(),
+      getMobileFooterMenu(),
+      getCities(),
     ])
 
     return {

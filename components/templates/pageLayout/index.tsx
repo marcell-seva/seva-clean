@@ -2,8 +2,6 @@ import { AxiosResponse } from 'axios'
 import { CitySelectorModal } from 'components/molecules'
 import { FooterMobile, HeaderMobile } from 'components/organisms'
 import React, { useState, useEffect } from 'react'
-import { api } from 'services/api'
-
 import { SessionStorageKey } from 'utils/enum'
 import { getToken } from 'utils/handler/auth'
 import { getSessionStorage } from 'utils/handler/sessionStorage'

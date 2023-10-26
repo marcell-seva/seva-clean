@@ -6,7 +6,7 @@ import { defaultSeoImage } from 'utils/helpers/const'
 import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
 import styles from 'styles/pages/kualifikasi-kredit-result.module.scss'
 import { InferGetServerSidePropsType } from 'next'
-import { api } from 'services/api'
+import { getMetaTagData } from 'services/api'
 
 export interface Params {
   brand: string
@@ -52,7 +52,7 @@ export const getServerSideProps = async (ctx: any) => {
   const model = (ctx.query.model as string)?.replaceAll('-', '')
 
   try {
-    const [meta]: any = await Promise.all([api.getMetaTagData(model as string)])
+    const [meta]: any = await Promise.all([getMetaTagData(model as string)])
     return { props: { meta: meta.data } }
   } catch (e) {
     return { props: { meta: {} } }

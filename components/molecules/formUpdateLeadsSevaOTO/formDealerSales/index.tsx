@@ -13,7 +13,7 @@ import { FormControlValue, Location, Option } from 'utils/types'
 import { LocalStorageKey } from 'utils/enum'
 import styles from 'styles/components/molecules/formUpdateLeadsSevaOTO/formDealerSales.module.scss'
 import { SalesAgent } from 'utils/types/utils'
-import { getAgent } from 'services/agents'
+import { getAgent } from 'services/api'
 
 const searchOption = {
   keys: ['label'],

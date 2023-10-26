@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from 'axios'
-import { api } from 'services/api'
+import { postUpdateLeadsOTO } from './api'
 
 interface inputData {
   leadId: string
@@ -11,15 +11,11 @@ interface inputData {
   priceOtr: number
 }
 
-export const getLeadsDetail = (id: string) => {
-  return api.getLeadsDetail(id)
-}
-
 export const updateLeadFormOTO = (
   data: inputData,
   config?: AxiosRequestConfig,
 ) => {
-  return api.postUpdateLeadsOTO(data, {
+  return postUpdateLeadsOTO(data, {
     ...config,
     headers: {
       'Content-Type': 'application/json',

@@ -1,7 +1,29 @@
 import React from 'react'
-import { FloatButtonProps } from 'antd'
 import { IconCSA } from 'components/atoms/icon'
+import type {
+  FloatButtonBadgeProps,
+  FloatButtonShape,
+  FloatButtonType,
+} from 'antd/lib/float-button/interface'
+import type { TooltipProps } from 'antd/lib/tooltip'
 import dynamic from 'next/dynamic'
+
+export interface FloatButtonProps {
+  prefixCls?: string
+  className?: string
+  rootClassName?: string
+  style?: React.CSSProperties
+  icon?: React.ReactNode
+  description?: React.ReactNode
+  type?: FloatButtonType
+  shape?: FloatButtonShape
+  tooltip?: TooltipProps['title']
+  href?: string
+  target?: React.HTMLAttributeAnchorTarget
+  badge?: FloatButtonBadgeProps
+  onClick?: React.MouseEventHandler<HTMLElement>
+  ['aria-label']?: React.HtmlHTMLAttributes<HTMLButtonElement>['aria-label']
+}
 
 type CSAButtonProps = Omit<FloatButtonProps, 'icon'> & {
   additionalstyle?: string

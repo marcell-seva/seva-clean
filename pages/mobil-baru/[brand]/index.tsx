@@ -15,7 +15,7 @@ import {
 import { defaultSeoImage } from 'utils/helpers/const'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
-import { api } from 'services/api'
+
 import Seo from 'components/atoms/seo'
 import { monthId } from 'utils/handler/date'
 import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
@@ -25,6 +25,13 @@ import { CarProvider } from 'services/context'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { getCity } from 'utils/hooks/useGetCity'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
+import {
+  getMenu,
+  getMobileHeaderMenu,
+  getMobileFooterMenu,
+  getCities,
+  getMinMaxPrice,
+} from 'services/api'
 
 const NewCarResultPage = ({
   meta,
@@ -123,9 +130,9 @@ export const getServerSideProps: GetServerSideProps<{
   )
   const metabrand = getBrand(ctx.query.brand)
   const metaTagBaseApi =
-    'https://api.sslpots.com/api/meta-seos/?filters[location_page3][$eq]=CarSearchResult'
+    'https://sslpots.com/api/meta-seos/?filters[location_page3][$eq]=CarSearchResult'
   const footerTagBaseApi =
-    'https://api.sslpots.com/api/footer-seos/?filters[location_page2][$eq]=CarSearchResult'
+    'https://sslpots.com/api/footer-seos/?filters[location_page2][$eq]=CarSearchResult'
   const meta = {
     title: 'SEVA',
     description: '',
@@ -172,10 +179,10 @@ export const getServerSideProps: GetServerSideProps<{
     ] = await Promise.all([
       axios.get(metaTagBaseApi + metabrand),
       axios.get(footerTagBaseApi + metabrand),
-      api.getMenu(),
-      api.getMobileHeaderMenu(),
-      api.getMobileFooterMenu(),
-      api.getCities(),
+      getMenu(),
+      getMobileHeaderMenu(),
+      getMobileFooterMenu(),
+      getCities(),
     ])
 
     const metaData = fetchMeta.data.data
@@ -185,7 +192,7 @@ export const getServerSideProps: GetServerSideProps<{
       const params = new URLSearchParams()
       getCity().cityCode && params.append('city', getCity().cityCode as string)
 
-      const minmaxPriceData = await api.getMinMaxPrice('', { params })
+      const minmaxPriceData = await getMinMaxPrice('', { params })
       meta.MinMaxPrice = {
         minPriceValue: minmaxPriceData.minPriceValue,
         maxPriceValue: minmaxPriceData.maxPriceValue,

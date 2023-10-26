@@ -11,7 +11,7 @@ import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { getToken } from 'utils/handler/auth'
 import { SessionStorageKey } from 'utils/enum'
 import { CityOtrOption } from 'utils/types'
-import { api } from 'services/api'
+
 import { MobileWebTopMenuType } from 'utils/types/utils'
 import { deleteAccountReasonUrl } from 'utils/helpers/routes'
 import { HeaderMobile } from 'components/organisms'
@@ -24,6 +24,12 @@ import { useAnnouncementBoxContext } from 'services/context/announcementBoxConte
 import { useUtils } from 'services/context/utilsContext'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import dynamic from 'next/dynamic'
+import {
+  getMobileHeaderMenu,
+  getMobileFooterMenu,
+  getCities,
+  getAnnouncementBox as gab,
+} from 'services/api'
 
 const CitySelectorModal = dynamic(
   () => import('components/molecules').then((mod) => mod.CitySelectorModal),
@@ -52,7 +58,7 @@ export default function HapusAkun({
 
   const getAnnouncementBox = async () => {
     try {
-      const res: any = await api.getAnnouncementBox({
+      const res: any = await gab({
         headers: {
           'is-login': getToken() ? 'true' : 'false',
         },
@@ -191,9 +197,9 @@ export const getServerSideProps: GetServerSideProps<{
 
   try {
     const [menuMobileRes, footerRes, cityRes]: any = await Promise.all([
-      api.getMobileHeaderMenu(),
-      api.getMobileFooterMenu(),
-      api.getCities(),
+      getMobileHeaderMenu(),
+      getMobileFooterMenu(),
+      getCities(),
     ])
 
     return {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { colors } from 'styles/colors'
 import {
   IconInstagram,
@@ -14,7 +14,6 @@ import { trackFooterClick } from 'helpers/amplitude/seva20Tracking'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { UTMTagsData } from 'utils/types/utils'
 import { LocalStorageKey } from 'utils/enum'
-import { api } from 'services/api'
 import { useUtils } from 'services/context/utilsContext'
 import {
   trackEventCountly,

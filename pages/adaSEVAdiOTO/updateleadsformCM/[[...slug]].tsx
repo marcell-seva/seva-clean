@@ -18,11 +18,9 @@ import dayjs from 'dayjs'
 import { InferType, number, object, string } from 'yup'
 import { useFormik } from 'formik'
 import { updateLeadFormCMSEVA } from 'services/leadsCM'
-import { api } from 'services/api'
 import { useUtils } from 'services/context/utilsContext'
-import FormSelectCitySevaOTO from 'components/molecules/formUpdateLeadsSevaOTO/formSelectCitySevaOTO'
-import { getLeadsDetail } from 'services/leadsSeva'
 import dynamic from 'next/dynamic'
+import { getAgent, getLeadsDetail } from 'services/api'
 
 const Toast = dynamic(() => import('components/atoms').then((mod) => mod.Toast))
 
@@ -319,7 +317,7 @@ export async function getServerSideProps(context: any) {
   // TODO: getDetail ID
 
   try {
-    const salesRes: any = await Promise.all([api.getAgent()])
+    const salesRes: any = await Promise.all([getAgent()])
     const response = await getLeadsDetail(detailId)
     const data: DataResponse = response.data
     const cmInput = data.cmInput

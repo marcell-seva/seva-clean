@@ -1,5 +1,6 @@
 import { AxiosRequestConfig } from 'axios'
-import { api } from 'services/api'
+import { getRecommendation, postNewFunnelLoanSpecialRate } from 'services/api'
+
 import { PaymentType } from 'utils/enum'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import { FunnelQuery } from 'utils/types/context'
@@ -58,7 +59,7 @@ export const getNewFunnelRecommendations = (
   getCity().cityCode && params.append('city', getCity().cityCode as string)
   getCity().id && params.append('cityId', getCity().id as string)
 
-  return api.getRecommendation('', { params })
+  return getRecommendation('', { params })
 }
 
 export const getNewFunnelLoanSpecialRate = (
@@ -78,7 +79,7 @@ export const getNewFunnelLoanSpecialRate = (
 ) => {
   const params = new URLSearchParams()
   getCity().cityCode && params.append('city', getCity().cityCode as string)
-  return api.postNewFunnelLoanSpecialRate(
+  return postNewFunnelLoanSpecialRate(
     {
       otr,
       dp,

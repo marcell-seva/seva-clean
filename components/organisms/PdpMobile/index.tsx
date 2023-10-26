@@ -464,7 +464,7 @@ export default function NewCarVariantList({
     if (variantIdFuel)
       getCarVariantDetailsById(
         variantIdFuel, // get cheapest variant
-      ).then((result) => {
+      ).then((result: any) => {
         setVariantFuelRatio(result.variantDetail.rasioBahanBakar)
       })
   }
@@ -568,7 +568,7 @@ export default function NewCarVariantList({
 
     if (!isCurrentCitySameWithSSR) {
       getNewFunnelRecommendations(getQueryParamForApiRecommendation()).then(
-        (result) => {
+        (result: any) => {
           let id = ''
           const carList = result.carRecommendations
           const currentCar = carList.filter(
@@ -601,7 +601,7 @@ export default function NewCarVariantList({
                 .sort((a: any, b: any) => a.priceValue - b.priceValue)
               getCarVariantDetailsById(
                 sortedVariantsOfCurrentModel[0].id, // get cheapest variant
-              ).then((result3) => {
+              ).then((result3: any) => {
                 if (result3.variantDetail.priceValue == null) {
                   setStatus('empty')
                 } else {

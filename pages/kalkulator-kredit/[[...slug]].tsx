@@ -31,7 +31,7 @@ import elementId from 'helpers/elementIds'
 import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { api } from 'services/api'
+
 import { useCar } from 'services/context/carContext'
 import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
@@ -101,6 +101,18 @@ import { getCarModelDetailsById } from 'utils/handler/carRecommendation'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import {
+  getCities,
+  postCheckPromoGiias,
+  getRecommendation,
+  getLoanCalculatorInsurance,
+  getFinalDpRangeValidation,
+  getMenu,
+  getMobileHeaderMenu,
+  getMobileFooterMenu,
+  getAnnouncementBox as gab,
+  postLoanPermutationIncludePromo,
+} from 'services/api'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -362,7 +374,7 @@ export default function LoanCalculatorPage() {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      api.getCities().then((res) => {
+      getCities().then((res) => {
         setCityListApi(res)
       })
     }
@@ -370,7 +382,7 @@ export default function LoanCalculatorPage() {
 
   const getAnnouncementBox = async () => {
     try {
-      const res: any = await api.getAnnouncementBox({
+      const res: any = await gab({
         headers: {
           'is-login': getToken() ? 'true' : 'false',
         },
@@ -388,7 +400,7 @@ export default function LoanCalculatorPage() {
 
     try {
       setIsLoadingPromoCode(true)
-      const result: any = await api.postCheckPromoGiias(forms.promoCode)
+      const result: any = await postCheckPromoGiias(forms.promoCode)
       setIsLoadingPromoCode(false)
 
       if (result.message === 'valid promo code') {
@@ -467,7 +479,7 @@ export default function LoanCalculatorPage() {
     params.append('cityId', defaultCity.id as string)
     params.append('city', defaultCity.cityCode as string)
 
-    const response = await api.getRecommendation('', { params })
+    const response = await getRecommendation('', { params })
 
     setAllModalCarList(response.carRecommendations)
   }
@@ -939,7 +951,7 @@ export default function LoanCalculatorPage() {
       )
 
       try {
-        const responseInsurance = await api.getLoanCalculatorInsurance({
+        const responseInsurance = await getLoanCalculatorInsurance({
           modelId: forms.model?.modelId ?? '',
           cityCode: forms.city.cityCode,
           tenure: allTenure[i],
@@ -1045,7 +1057,7 @@ export default function LoanCalculatorPage() {
   const validateDpInputRange = async () => {
     if (!!forms.variant?.variantId && !!forms.city.cityCode) {
       try {
-        const finalDpRange = await api.getFinalDpRangeValidation(
+        const finalDpRange = await getFinalDpRangeValidation(
           forms.variant?.variantId,
           forms.city.cityCode,
         )
@@ -1152,8 +1164,7 @@ export default function LoanCalculatorPage() {
       variantId: forms.variant?.variantId,
     }
 
-    api
-      .postLoanPermutationIncludePromo(payload)
+    postLoanPermutationIncludePromo(payload)
       .then((response) => {
         const result = response.data.reverse()
         const filteredResult = getFilteredCalculationResults(result)
@@ -1514,10 +1525,10 @@ export default function LoanCalculatorPage() {
   const fetchDataContext = async () => {
     const [menuDesktopRes, menuMobileRes, footerRes, cityRes]: any =
       await Promise.all([
-        api.getMenu(),
-        api.getMobileHeaderMenu(),
-        api.getMobileFooterMenu(),
-        api.getCities(),
+        getMenu(),
+        getMobileHeaderMenu(),
+        getMobileFooterMenu(),
+        getCities(),
       ])
 
     saveMobileWebTopMenus(menuMobileRes.data)

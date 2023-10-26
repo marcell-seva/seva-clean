@@ -30,8 +30,6 @@ import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { api } from 'services/api'
-
 import { useCar } from 'services/context/carContext'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
@@ -75,6 +73,7 @@ import { temanSevaUrlPath } from 'utils/types/props'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import { getMinMaxPrice, postCheckTemanSeva } from 'services/api'
 
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
@@ -367,7 +366,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       }
 
       try {
-        const temanSeva = await axios.post(temanSevaUrlPath.isTemanSeva, {
+        const temanSeva = await postCheckTemanSeva({
           phoneNumber: decryptUser.phoneNumber,
         })
         if (temanSeva.data.isTemanSeva) return 'Yes'
@@ -514,8 +513,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       const params = new URLSearchParams()
       getCity().cityCode && params.append('city', getCity().cityCode as string)
 
-      api
-        .getMinMaxPrice('', { params })
+      getMinMaxPrice('', { params })
         .then((response) => {
           if (response) {
             setMinMaxPrice({
@@ -546,7 +544,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
             }
 
             getNewFunnelRecommendations(queryParam)
-              .then((response) => {
+              .then((response: any) => {
                 if (response) {
                   patchFunnelQuery(queryParam)
                   saveRecommendation(response.carRecommendations)
@@ -632,7 +630,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       ...funnelQuery,
       sortBy: val || 'lowToHigh',
     }
-    getNewFunnelRecommendations(queryParam).then((response) => {
+    getNewFunnelRecommendations(queryParam).then((response: any) => {
       if (response) {
         patchFunnelQuery(queryParam)
         saveRecommendation(response.carRecommendations)

@@ -43,7 +43,7 @@ import {
 import { useRouter } from 'next/router'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
-import { api } from 'services/api'
+
 import { getCity } from 'utils/hooks/useGetCity'
 import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
@@ -53,6 +53,7 @@ import { navigateToPLP, PreviousButton } from 'utils/navigate'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { getMinMaxPrice } from 'services/api'
 
 export const initDataWidget = {
   downPaymentAmount: '',
@@ -100,7 +101,7 @@ const SearchWidget = () => {
 
   const fetchMinMaxPrice = () => {
     const params = getCity().cityCode
-    api.getMinMaxPrice(`?city=${params}`).then((response: any) => {
+    getMinMaxPrice(`?city=${params}`).then((response: any) => {
       setLimitPrice({
         min: response.minPriceValue,
         max: response.maxPriceValue,

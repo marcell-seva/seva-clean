@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { api } from 'services/api'
 import styles from 'styles/components/molecules/Search.module.scss'
 import { IconChevronLeft, IconCross, IconSearch } from 'components/atoms'
 import { Variant, PropsSearchMobile } from 'utils/types'
+import { getVariantCar } from 'services/api'
 
 const Search: React.FC<PropsSearchMobile> = ({
   onSearchMobileClose,
@@ -15,7 +15,7 @@ const Search: React.FC<PropsSearchMobile> = ({
   const getVariantProduct = async (value: string): Promise<any> => {
     try {
       const params: string = `?query=${value}&city=jakarta&cityId=189`
-      const res: any = await api.getVariantCar(params)
+      const res: any = await getVariantCar(params)
       if (res.length > 0) {
         setIsVariantShow(true)
         setVariantList(res)

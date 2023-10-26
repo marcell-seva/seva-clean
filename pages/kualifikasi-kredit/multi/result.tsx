@@ -15,7 +15,6 @@ import { PopupMultiCreditQualificationResult } from 'components/organisms/popUpM
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { api } from 'services/api'
 
 import { useMultiUnitQueryContext } from 'services/context/multiUnitQueryContext'
 import { SessionStorageKey } from 'utils/enum'
@@ -37,6 +36,7 @@ import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
+import { getCities, getAnnouncementBox as gab } from 'services/api'
 
 const discountedDp = undefined // for current promo, it will not affect DP
 
@@ -154,24 +154,22 @@ const MultiKKResult = () => {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      api.getCities().then((res) => {
+      getCities().then((res) => {
         setCityListApi(res)
       })
     }
   }
 
   const getAnnouncementBox = () => {
-    api
-      .getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      .then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-        if (res.data === undefined) {
-          setIsShowAnnouncementBox(false)
-        }
-      })
+    gab({
+      headers: {
+        'is-login': getToken() ? 'true' : 'false',
+      },
+    }).then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
+      if (res.data === undefined) {
+        setIsShowAnnouncementBox(false)
+      }
+    })
   }
 
   const sendToWhatsapp = async () => {

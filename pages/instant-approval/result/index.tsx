@@ -3,7 +3,8 @@ import Seo from 'components/atoms/seo'
 import { CreditQualificationRejected } from 'components/organisms/resultPages/rejected'
 import { InferGetServerSidePropsType } from 'next'
 import { useMemo } from 'react'
-import { api } from 'services/api'
+import { getMetaTagData } from 'services/api'
+
 import styles from 'styles/pages/kualifikasi-kredit-result.module.scss'
 import { defaultSeoImage } from 'utils/helpers/const'
 
@@ -50,7 +51,7 @@ export const getServerSideProps = async (ctx: any) => {
   const model = (ctx.query.model as string)?.replaceAll('-', '')
 
   try {
-    const [meta]: any = await Promise.all([api.getMetaTagData(model as string)])
+    const [meta]: any = await Promise.all([getMetaTagData(model as string)])
     return { props: { meta: meta.data } }
   } catch (e) {
     return { props: { meta: {} } }

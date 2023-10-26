@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from 'react'
 import { setAmplitudeUserId } from '../amplitude'
-import { api } from '../api'
 import { User, Token, Filter } from 'utils/types'
 import { encryptValue } from 'utils/encryptionUtils'
 import { saveLocalStorage } from 'utils/handler/localStorage'
@@ -35,7 +34,7 @@ export const AuthProvider = ({ children }: any) => {
 
   const getUserInfo = async () => {
     try {
-      const res: any = await api.getUserInfo()
+      const res: any = await getUserInfo()
       const dataUser: any = res[0]
       saveAuthData(dataUser)
       const encryptedData = encryptValue(JSON.stringify(dataUser))

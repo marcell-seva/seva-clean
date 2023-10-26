@@ -19,8 +19,9 @@ import { DocumentType, UploadDataKey } from 'utils/enum'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import Image from 'next/image'
-import { api } from 'services/api'
+
 import { getToken } from 'utils/handler/auth'
+import { postUploadKTPFile } from 'services/api'
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
@@ -65,13 +66,12 @@ const VerifyKtp = () => {
 
   const detectText = () => {
     if (file) {
-      api
-        .postUploadKTPFile(buildFileKTPData(file, DocumentType.KTP), {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: getToken()?.idToken,
-          },
-        })
+      postUploadKTPFile(buildFileKTPData(file, DocumentType.KTP), {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: getToken()?.idToken,
+        },
+      })
         .then((response) => {
           localStorage.setItem('formKtp', JSON.stringify(response.data))
           if (ktpType && ktpType.toLowerCase() === 'spouse') {
