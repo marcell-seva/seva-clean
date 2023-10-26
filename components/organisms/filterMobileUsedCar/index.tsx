@@ -154,6 +154,9 @@ const FilterMobileUsedCar = ({
     if (funnelQuery.brand !== isCheckedBrand) {
       setIsCheckedBrand(funnelQuery.brand ? funnelQuery.brand : [])
     }
+    if (funnelQuery.cityId !== locationSelected) {
+      setLocationSelected(funnelQuery.cityId ? funnelQuery.cityId : [])
+    }
   }, [isFilter, isButtonClick])
 
   const onSubmitFilter = () => {
