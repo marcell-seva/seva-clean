@@ -221,6 +221,7 @@ export const FormYear = ({
             value={minTempCurrency ? minTempCurrency : minTempCurrency}
             type="tel"
             onBlur={onInputEmpty}
+            tabIndex={-1}
           />
           <div className={styles.errorMessage}>
             {isErrorMin && (
@@ -247,6 +248,7 @@ export const FormYear = ({
             }
             type="tel"
             onBlur={onInputEmpty}
+            tabIndex={-1}
           />
           <div className={styles.errorMessage}>
             {isErrorMax && (
@@ -275,6 +277,7 @@ export const FormYear = ({
             onChange={onChangeSlider}
             defaultValue={[minTemp || minDefault, maxTemp || maxDefault]}
             value={[minTemp || minDefault, maxTemp || maxDefault]}
+            autoFocus={false}
           />
         </div>
       </div>
