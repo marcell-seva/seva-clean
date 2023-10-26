@@ -130,9 +130,9 @@ export const getServerSideProps: GetServerSideProps<{
   )
   const metabrand = getBrand(ctx.query.brand)
   const metaTagBaseApi =
-    'https://sslpots.com/api/meta-seos/?filters[location_page3][$eq]=CarSearchResult'
+    'https://api.sslpots.com/api/meta-seos/?filters[location_page3][$eq]=CarSearchResult'
   const footerTagBaseApi =
-    'https://sslpots.com/api/footer-seos/?filters[location_page2][$eq]=CarSearchResult'
+    'https://api.sslpots.com/api/footer-seos/?filters[location_page2][$eq]=CarSearchResult'
   const meta = {
     title: 'SEVA',
     description: '',
