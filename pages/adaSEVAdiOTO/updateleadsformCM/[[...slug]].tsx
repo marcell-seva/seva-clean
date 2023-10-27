@@ -94,9 +94,13 @@ const UpdateLeadsFormCM = ({
         leadId: value.dbLeadsId || '',
         salesId: value.salesId || 0,
         spkNo: value.noSPK || '',
-        spkDate: dayjs(value.spkDate).format('YYYY-MM-DD'),
+        spkDate:
+          value.spkDate !== '' ? dayjs(value.spkDate).format('YYYY-MM-DD') : '',
         bstkNo: value.noBSTK || '',
-        bstkDate: dayjs(value.bstkDate).format('YYYY-MM-DD'),
+        bstkDate:
+          value.bstkDate !== ''
+            ? dayjs(value.bstkDate).format('YYYY-MM-DD')
+            : '',
       }).then(() => {})
     },
     validateOnBlur: true,
@@ -217,7 +221,7 @@ const UpdateLeadsFormCM = ({
             <DatePickerCM
               forceRender={!!values.spkDate}
               placeholder="28/07/2023"
-              value={new Date(values.spkDate || '')}
+              value={new Date(values.spkDate || '') || ''}
               name="spkDate"
               onBlurInput={(e) => handleBlur(e)}
               onConfirm={(val: Date) => {
@@ -254,7 +258,7 @@ const UpdateLeadsFormCM = ({
             <DatePickerCM
               forceRender={!!values.bstkDate}
               placeholder="28/07/2023"
-              value={new Date(values.bstkDate || '')}
+              value={new Date(values.bstkDate || '') || ''}
               name="bstkDate"
               onBlurInput={(e) => handleBlur(e)}
               onConfirm={(val: Date) => {
