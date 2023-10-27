@@ -218,6 +218,7 @@ export interface UsedCarDetail {
   carGallery: UsedCarMedia[]
   carId: string
   carSpecifications: UsedCarSpecification[]
+  brandName: string
   cityCode: number
   cityId: number
   cityName: string

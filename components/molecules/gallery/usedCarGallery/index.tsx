@@ -29,6 +29,7 @@ import { useRouter } from 'next/router'
 import { LoanRank } from 'utils/types/models'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import Image from 'next/image'
+import { usedCar } from 'services/context/usedCarContext'
 
 interface PropsGallery {
   items: Array<string>
@@ -50,7 +51,7 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
 }): JSX.Element => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null)
   const [flagIndex, setFlagIndex] = useState<number>(activeIndex)
-  const { carModelDetails } = useCar()
+  const { detail } = usedCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -81,8 +82,8 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
 
   const trackCountlyMainImage = () => {
     trackEventCountly(CountlyEventNames.WEB_PDP_MAIN_PHOTO_CLICK, {
-      CAR_BRAND: carModelDetails?.brand ?? '',
-      CAR_MODEL: carModelDetails?.model ?? '',
+      CAR_BRAND: detail?.brandName ?? '',
+      CAR_MODEL: detail?.modelName ?? '',
       MENU_TAB_CATEGORY: valueMenuTabCategory(),
       CAR_PHOTO_ORDER: flagIndex + 1,
       VISUAL_TAB_CATEGORY: upperTab ? upperTab : 'Warna',
@@ -94,8 +95,8 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
 
   const trackCountlyCarouselImage = (index: number) => {
     trackEventCountly(CountlyEventNames.WEB_PDP_CAROUSEL_PHOTO_CLICK, {
-      CAR_BRAND: carModelDetails?.brand ?? '',
-      CAR_MODEL: carModelDetails?.model ?? '',
+      CAR_BRAND: detail?.brandName ?? '',
+      CAR_MODEL: detail?.modelName ?? '',
       PELUANG_KREDIT_BADGE: isUsingFilterFinancial
         ? getCreditBadgeForCountly()
         : 'Null',
@@ -109,11 +110,7 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
     <Image
       width={274}
       height={207}
-      alt={`Tampilan ${onTab === 'Exterior' ? 'Eksterior' : 'Interior'} ${
-        carModelDetails?.brand
-      } ${carModelDetails?.model.replace('-', ' ')} ${
-        url.match(/_(\d+)\.\w+$/)?.[1] ?? 'main'
-      }`}
+      alt={`Tampilan ${detail?.brandName} ${detail?.variantTitle}`}
       className={styles.mainImage}
       src={url}
       onClick={() => {
@@ -133,11 +130,7 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
         <Image
           width={61}
           height={46}
-          alt={`Tampilan ${onTab === 'Exterior' ? 'Eksterior' : 'Interior'} ${
-            carModelDetails?.brand
-          } ${carModelDetails?.model.replace('-', ' ')} ${
-            url.match(/_(\d+)\.\w+$/)?.[1] ?? 'main'
-          }`}
+          alt={`Tampilan ${detail?.brandName} ${detail?.variantTitle}`}
           className={`${isActive && styles.active} ${styles.subImage}`}
           src={url}
         />
@@ -203,7 +196,7 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
             prevEl: '.icon-gallery-prev',
           }}
         >
-          {items?.map((item: string, key: number) => (
+          {items?.map((item: any, key: number) => (
             <SwiperSlide key={key}>
               <MainImage url={item} />
             </SwiperSlide>
@@ -215,22 +208,14 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
           <Swiper
             initialSlide={flagIndex}
             onSwiper={(swiper: SwiperType | null) => setThumbsSwiper(swiper)}
-            onNavigationPrev={(swiper: SwiperType | null) =>
-              setThumbsSwiper(swiper)
-            }
-            onNavigationNext={(swiper: SwiperType | null) =>
-              setThumbsSwiper(swiper)
-            }
-            direction={'horizontal'}
             pagination={{
               clickable: true,
             }}
             className={`subGallery ${styles.thumbsSwiper}`}
+            slidesPerView={'auto'}
             spaceBetween={8}
-            slidesPerView={4}
             freeMode={true}
             modules={[FreeMode, Navigation, Thumbs]}
-            onTouchMove={() => setOnClickSubPhoto(false)}
           >
             {items?.map((item: string, key: number) => (
               <SwiperSlide
@@ -239,6 +224,7 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
                   setOnClickSubPhoto(true)
                   trackCountlyCarouselImage(key)
                 }}
+                className={styles.previewSubImageWrapper}
               >
                 <CoverSubImage url={item} isActive={flagIndex === key} />
               </SwiperSlide>

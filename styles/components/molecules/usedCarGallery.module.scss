@@ -61,6 +61,7 @@
   object-fit: cover;
   border-radius: 8px;
   height: 100%;
+  cursor: pointer;
 }
 
 .subImageWrapper {
@@ -78,6 +79,10 @@
   background-color: #000000;
   opacity: 0.4;
   border-radius: 8px;
+}
+
+.previewSubImageWrapper {
+  width: auto !important;
 }
 
 .subImage {

@@ -256,7 +256,7 @@ export const UsedCarDetailCard = ({
   )
 
   const bahanBakar = recommendation?.carSpecifications?.find(
-    (item) => item.specCode === 'fuel_type',
+    (item) => item.specCode === 'fuel-type',
   )
 
   const priceFormated = recommendation.priceFormatedValue.replace(/\s/g, '')

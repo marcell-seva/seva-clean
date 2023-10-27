@@ -117,12 +117,16 @@ export default function UsedCarVariantList({
   )
 
   useEffect(() => {
-    setDataPreviewImages(
-      usedCarModelDetailsRes.carGallery.map((items: any) => {
+    const temp = usedCarModelDetailsRes.carGallery.map((items: any) => {
+      if (items.mediaCode === 'main-image') {
         return items.url
-      }),
-    )
+      } else if (items.mediaCode === 'detail-images') {
+        return items.url
+      }
+    })
+    setDataPreviewImages(temp.slice(0, 10))
   }, [usedCarModelDetailsRes])
+
   const { detail } = usedCar()
 
   // const isUsingFilterFinancial =
