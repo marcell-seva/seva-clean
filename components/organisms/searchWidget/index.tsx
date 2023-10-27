@@ -10,7 +10,6 @@ import React, {
 } from 'react'
 import styles from 'styles/components/organisms/searchWidget.module.scss'
 import { MinAmount } from 'utils/types/models'
-import urls from 'utils/helpers/url'
 import elementId from 'utils/helpers/trackerId'
 import { colors } from 'utils/helpers/style/colors'
 import { sendAmplitudeData } from 'services/amplitude'

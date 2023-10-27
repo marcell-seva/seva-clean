@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from 'styles/components/organisms/promoBottomList.module.scss'
 import stylex from 'styles/components/organisms/promoBottomSheet.module.scss'
 import clsx from 'clsx'
