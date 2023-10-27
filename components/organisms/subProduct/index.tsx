@@ -47,7 +47,7 @@ const SubProduct = () => {
               loading="lazy"
             />
             <div>
-              <p className={styles.textTitlePromoBanner}>{title[0]}</p>
+              <h3 className={styles.textTitlePromoBanner}>{title[0]}</h3>
               <p className={styles.textDescriptionBanner}>
                 Solusi untuk kebutuhan dana langsung cair dengan jaminan BPKB
                 mobil
@@ -82,7 +82,7 @@ const SubProduct = () => {
               loading="lazy"
             />
             <div className={styles.wrapperDetail}>
-              <p className={styles.textTitlePromoBanner}>{title[1]}</p>
+              <h3 className={styles.textTitlePromoBanner}>{title[1]}</h3>
               <p className={styles.textDescriptionBanner}>
                 Urus surat kendaraanmu lewat SEVA
               </p>

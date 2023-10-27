@@ -8,7 +8,14 @@ import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { getCity } from 'utils/hooks/useGetCity'
 import { useCar } from 'services/context/carContext'
 import { useUtils } from 'services/context/utilsContext'
-import { MobileWebTopMenuType, NavbarItemResponse } from 'utils/types/utils'
+import {
+  Article,
+  Banner,
+  MobileWebTopMenuType,
+  NavbarItemResponse,
+  TestimonialData,
+} from 'utils/types/utils'
+import Script from 'next/script'
 import { getToken } from 'utils/handler/auth'
 
 interface HomePageDataLocalContextType {
@@ -108,6 +115,16 @@ export default function WithTracker({
         dataFooterMenu,
       }}
     >
+      <Script
+        id="product-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            jsonLD(dataMainArticle, dataBanner, dataTestimony),
+          ),
+        }}
+        key="product-jsonld"
+      />
       <HomepageMobile dataReccomendation={dataReccomendation} />
     </HomePageDataLocalContext.Provider>
   )
@@ -198,5 +215,173 @@ export async function getServerSideProps(context: any) {
     }
   } catch (error) {
     throw error
+  }
+}
+
+const jsonLD = (
+  dataMainArticles: Article[],
+  dataBanners: Banner[],
+  dataReviews: TestimonialData[],
+) => {
+  return {
+    Organization: {
+      '@type': 'Organization',
+      name: 'SEVA by Astra',
+      url: 'https://www.seva.id/',
+      logo: 'https://www.seva.id/static/media/seva-header.30f3b7238c6c0f5cea869e76e5924de4.svg',
+      image: 'logo-primary.webp',
+      sameAs: [
+        'https://www.instagram.com/sevabyastra/',
+        'https://twitter.com/sevaid_official',
+        'https://www.facebook.com/sevabyastra/',
+      ],
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Jakarta',
+        addressRegion: 'Jakarta',
+        postalCode: '10220',
+        streetAddress:
+          'Jl. Jenderal Sudirman No.Kav.5-6, RT.10/RW.6, Karet Tengsin, Kecamatan Tanah Abang',
+        telephone: '(021) 50821999',
+      },
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate:
+            'https://www.seva.id/search/result?q={search_term_string}',
+          'query-input': {
+            '@type': 'PropertyValueSpecification',
+            valueRequired: 'https://schema.org/True',
+            valueName: 'search_term_string',
+          },
+        },
+      },
+    },
+    ImageObject: dataBanners.map((banner) => ({
+      '@type': 'ImageObject',
+      contentUrl:
+        banner.attribute.web_mobile.split('/')?.[
+          banner.attribute.web_mobile.split('/')?.length - 1
+        ],
+      mainEntityOfPage: banner.attribute.web_mobile,
+      representativeOfPage: 'https://schema.org/True',
+      isFamilyFriendly: 'https://schema.org/True',
+      isAccesibleForFree: 'https://schema.org/False',
+    })),
+    Review: dataReviews.map((review) => ({
+      '@type': 'Review',
+      name: 'Cerita Pengguna SEVA',
+      itemReviewed: {
+        '@type': 'Car',
+        image: review.pictureUrl,
+        name: review.name,
+        reviewRating: {
+          '@type': 'Rating',
+          ratingValue: review.rating,
+          publisher: {
+            '@type': 'Organization',
+            name: 'SEVA by Astra',
+          },
+        },
+      },
+    })),
+    SiteNavigationElement: {
+      '@type': 'SiteNavigationElement',
+      name: 'SEVA',
+      potentialAction: [
+        {
+          '@type': 'Action',
+          name: 'Mobil',
+          url: 'https://www.seva.id/mobil-baru',
+        },
+        {
+          '@type': 'Action',
+          name: 'Fasilitas Dana',
+          url: 'https://www.seva.id/fasilitas-dana',
+        },
+        {
+          '@type': 'Action',
+          name: 'Layanan Surat Kendaraan',
+          url: 'https://www.seva.id/layanan-surat-kendaraan',
+        },
+        {
+          '@type': 'Action',
+          name: 'Tentang SEVA',
+          url: 'https://www.seva.id/info/tentang-kami/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Promo',
+          url: 'https://www.seva.id/info/promo/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Teman SEVA',
+          url: 'https://www.seva.id/teman-seva/onboarding',
+        },
+        {
+          '@type': 'Action',
+          name: 'Berita Utama Otomotif',
+          url: 'https://www.seva.id/blog/category/otomotif/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Review Otomotif',
+          url: 'https://www.seva.id/blog/category/otomotif/review-otomotif/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Tips & Rekomendasi',
+          url: 'https://www.seva.id/blog/category/otomotif/tips-rekomendasi-otomotif/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Keuangan',
+          url: 'https://www.seva.id/blog/category/keuangan/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Semua Artikel',
+          url: 'https://www.seva.id/blog/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Akun Saya',
+          url: 'https://www.seva.id/akun/profil',
+        },
+      ],
+    },
+    NewsArticle: dataMainArticles.map((article) => ({
+      '@type': 'NewsArticle',
+      mainEntityOfPage: 'https://www.seva.id/',
+      headline: article.title,
+      abstract: article.excerpt,
+      image: article.featured_image,
+      datePublished: new Date(article.publish_date).toLocaleDateString(
+        'id-ID',
+        { dateStyle: 'long' },
+      ),
+      dateModified: new Date(article.publish_date).toLocaleDateString('id-ID', {
+        dateStyle: 'long',
+      }),
+      author: {
+        '@type': 'Person',
+        name: article.writer_name,
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'SEVA by Astra',
+        logo: {
+          '@type': 'ImageObject',
+          url: 'https://cdn.seva.id/blog/media/2022/07/Seva-LogoxAF_Seva-PrimarybyAstraFinancial3.png',
+        },
+      },
+    })),
+    Website: {
+      '@type': 'Website',
+      name: 'SEVA by Astra',
+      url: 'https://www.seva.id/',
+    },
   }
 }

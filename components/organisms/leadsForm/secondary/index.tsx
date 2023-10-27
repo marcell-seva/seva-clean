@@ -419,9 +419,9 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({
         </div>
 
         <div className={styles.foreground}>
-          <h3 className={styles.textHeading}>
+          <h2 className={styles.textHeading}>
             Yuk, cari tahu & tanya lebih lanjut tentang {infoCar}
-          </h3>
+          </h2>
           <div className={styles.form}>
             <Input
               dataTestId={elementId.Field.FullName}
