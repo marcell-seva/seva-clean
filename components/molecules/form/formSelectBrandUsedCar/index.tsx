@@ -85,11 +85,11 @@ export const FormSelectBrandUsedCar = ({
     if (isCheckedBrandQuery.includes(key)) {
       setIsCheckedBrand(isCheckedBrandQuery.filter((item) => item !== key))
       setIsCheckedBrandQuery(isCheckedBrandQuery.filter((item) => item !== key))
-      paramQuery.brand = isCheckedBrandQuery.filter((item) => item !== key)
+      // paramQuery.brand = isCheckedBrandQuery.filter((item) => item !== key)
     } else {
       setIsCheckedBrand(isCheckedBrandQuery.concat(key))
       setIsCheckedBrandQuery(isCheckedBrandQuery.concat(key))
-      paramQuery.brand = isCheckedBrandQuery.concat(key)
+      // paramQuery.brand = isCheckedBrandQuery.concat(key)
     }
   }
   useEffect(() => {

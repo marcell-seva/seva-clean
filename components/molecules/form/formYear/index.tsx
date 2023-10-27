@@ -55,18 +55,20 @@ export const FormYear = ({
   )
 
   const onChangeInputMinimum = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value[0] === '0') {
+    const input = event.target.value
+    const numberOnly = input.replace(/\D/g, '')
+    if (numberOnly[0] === '0') {
       return
     }
     if (
-      Number(filterNonDigitCharacters(event.target.value)) < minDefault &&
-      event.target.value
+      Number(filterNonDigitCharacters(numberOnly)) < minDefault &&
+      numberOnly
     ) {
       setIsErrorMin(true)
     } else {
       setIsErrorMin(false)
     }
-    if (Number(filterNonDigitCharacters(event.target.value)) > maxTemp) {
+    if (Number(filterNonDigitCharacters(numberOnly)) > maxTemp) {
       setIsErrorMinTwo(true)
       setIsErrorForm(true)
     } else {
@@ -74,24 +76,26 @@ export const FormYear = ({
       setIsErrorForm(false)
     }
     setIsErrorMaxTwo(false)
-    setMinTempCurrency(event.target.value)
-    setMinYearFilter(filterNonDigitCharacters(event.target.value))
-    setMinTemp(Number(filterNonDigitCharacters(event.target.value)))
+    setMinTempCurrency(numberOnly)
+    setMinYearFilter(filterNonDigitCharacters(numberOnly))
+    setMinTemp(Number(filterNonDigitCharacters(numberOnly)))
     return
   }
   const onChangeInputMaximum = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value[0] === '0') {
+    const input = event.target.value
+    const numberOnly = input.replace(/\D/g, '')
+    if (numberOnly[0] === '0') {
       return
     }
     if (
-      Number(filterNonDigitCharacters(event.target.value)) > maxDefault &&
-      event.target.value
+      Number(filterNonDigitCharacters(numberOnly)) > maxDefault &&
+      numberOnly
     ) {
       setIsErrorMax(true)
     } else {
       setIsErrorMax(false)
     }
-    if (Number(filterNonDigitCharacters(event.target.value)) < minTemp) {
+    if (Number(filterNonDigitCharacters(numberOnly)) < minTemp) {
       setIsErrorMaxTwo(true)
       setIsErrorForm(true)
     } else {
@@ -99,9 +103,9 @@ export const FormYear = ({
       setIsErrorMaxTwo(false)
     }
     setIsErrorMinTwo(false)
-    setMaxYearFilter(filterNonDigitCharacters(event.target.value))
-    setMaxTempCurrency(event.target.value)
-    setMaxTemp(Number(filterNonDigitCharacters(event.target.value)))
+    setMaxYearFilter(filterNonDigitCharacters(numberOnly))
+    setMaxTempCurrency(numberOnly)
+    setMaxTemp(Number(filterNonDigitCharacters(numberOnly)))
     return
   }
   const onChangeSlider = (newValue: any) => {
@@ -187,6 +191,7 @@ export const FormYear = ({
         setMaxYearFilter(filterNonDigitCharacters(maxDefault.toString()))
         setMaxTemp(Number(filterNonDigitCharacters(maxDefault.toString())))
         setIsErrorMaxTwo(false)
+        setIsErrorForm(false)
       }, 2000)
     }
   }

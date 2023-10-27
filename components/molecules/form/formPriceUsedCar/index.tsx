@@ -192,6 +192,7 @@ export const FormPriceUsedCar = ({
         setMaxPriceFilter(filterNonDigitCharacters(maxDefault.toString()))
         setMaxTemp(Number(filterNonDigitCharacters(maxDefault.toString())))
         setIsErrorMaxTwo(false)
+        setIsErrorForm(false)
       }, 2000)
     }
   }
