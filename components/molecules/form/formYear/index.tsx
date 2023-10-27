@@ -174,6 +174,7 @@ export const FormYear = ({
         setMinYearFilter(filterNonDigitCharacters(minDefault.toString()))
         setMinTemp(Number(filterNonDigitCharacters(minDefault.toString())))
         setIsErrorMinTwo(false)
+        setIsErrorForm(false)
       }, 2000)
     }
 

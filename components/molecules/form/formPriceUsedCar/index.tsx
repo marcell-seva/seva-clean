@@ -176,6 +176,7 @@ export const FormPriceUsedCar = ({
         setMinPriceFilter(filterNonDigitCharacters(minDefault.toString()))
         setMinTemp(Number(filterNonDigitCharacters(minDefault.toString())))
         setIsErrorMinTwo(false)
+        setIsErrorForm(false)
       }, 2000)
     }
     if (isErrorMax) {
