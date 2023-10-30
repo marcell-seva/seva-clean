@@ -6,10 +6,12 @@ import Refinancing from './refinancing'
 import { LabelWithTooltip } from './label/LabelWithTooltip'
 import { NavigationTabV1 } from './navigationTabV1'
 import NavigationTabV2 from './navigationTabV2'
+import NavigationTabUsedCar from './navigationTabUsedCar'
 import { VideoItemCard } from './videoItemCard'
 import { FormPromoCode } from './form/formPromoCode'
 import { FormSelectCarVariant } from './form/formSelectCarVariant'
 import FormSelectCity from './form/formSelectCity'
+import { FormSearchModel } from './form/formSearchModel'
 import { FormSelectModelCar } from './form/formSelectModelCar'
 import InfoCard from './card/infoCard'
 import { Gallery } from './gallery/index'
@@ -40,6 +42,7 @@ import PriceRangeWidget from './searchWidget/option/priceRangeWidget'
 import TenureOptionWidget from './searchWidget/option/tenureOptionWidget'
 import { SearchModal } from './searchModal'
 import { ProfileUploadKtp } from './profileUploadKtp'
+import BrandUsedCarWidget from './searchWidget/option/brandUsedCarWidget'
 export {
   HowToUseSection,
   Testimony,
@@ -53,6 +56,7 @@ export {
   FormSelectCarVariant,
   FormSelectCity,
   FormSelectModelCar,
+  FormSearchModel,
   InfoCard,
   Gallery,
   UsedCarGallery,
@@ -82,4 +86,6 @@ export {
   PriceRangeWidget,
   TenureOptionWidget,
   ProfileUploadKtp,
+  NavigationTabUsedCar,
+  BrandUsedCarWidget,
 }

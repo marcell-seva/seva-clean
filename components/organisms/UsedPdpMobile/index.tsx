@@ -132,7 +132,7 @@ export default function UsedCarVariantList({
         return items.url
       }
     })
-    setDataPreviewImages(temp.slice(0, 10))
+    setDataPreviewImages(temp.slice(0, 11))
   }, [usedCarModelDetailsRes])
 
   const { detail } = usedCar()

@@ -18,6 +18,8 @@ import {
   CtaWidget,
   FooterMobile,
   HowToUse,
+  NavigationTabV1,
+  NavigationTabV2,
   PromoSection,
 } from 'components/molecules'
 import {
@@ -31,6 +33,7 @@ import {
   TestimonyWidget,
   LpCarRecommendations,
   CarOfTheMonth,
+  SearchWidgetSection,
 } from 'components/organisms'
 import { CarContext, CarContextType } from 'services/context'
 import { getCity } from 'utils/hooks/useGetCity'
@@ -91,6 +94,7 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
     LocalStorageKey.CityOtr,
     null,
   )
+  const [selectedTab, setSelectedTab] = useState('')
   const [isLoginModalOpened, setIsLoginModalOpened] = useState(false)
   const [carOfTheMonthData, setCarOfTheMonthData] =
     useState<COMData[]>(dataCarofTheMonth)
@@ -320,6 +324,10 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
     }
   }
 
+  const onSelectLowerTab = (value: string) => {
+    setSelectedTab(value)
+  }
+
   return (
     <>
       <Seo
@@ -346,6 +354,12 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
             passCountlyTrackerPageView={trackCountlyPageView}
           />
           <SearchWidget />
+          {/* <SearchWidgetSection
+            isShowAnnouncementBox={false}
+            onChangeTab={(value: string) => {
+              onSelectLowerTab(value)
+            }}
+          /> */}
           <div className={styles.line} />
           <PromoSection onPage={'Homepage'} />
           <LpCarRecommendations

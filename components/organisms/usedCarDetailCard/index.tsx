@@ -134,8 +134,11 @@ export const UsedCarDetailCard = ({
 
   const parseUrl = (url: any) => {
     const urlObj = new URL(url)
+
     const pathnameSegments = urlObj.pathname.split('/')
-    const id = pathnameSegments[pathnameSegments.length - 1]
+
+    const id = pathnameSegments[3].concat('-' + pathnameSegments[4])
+
     return id
   }
 

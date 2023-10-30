@@ -1,0 +1,17 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  margin-bottom: 150px;
+}
+
+.upperSpacing {
+  width: 100%;
+  height: 24px;
+  background: #{$primary-white};
+}
+
+.content {
+  z-index: 1;
+  height: 252px;
+}

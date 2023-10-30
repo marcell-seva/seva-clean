@@ -1,0 +1,27 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  position: sticky;
+  top: 54px; // page header height is 54px
+  background: #{$primary-white};
+  border-bottom: 1px solid #{$shades-grey-10};
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  z-index: 1;
+  justify-content: center;
+}
+
+.showAAnnouncementBox {
+  top: 115px !important;
+}
+
+.hideAAnnouncementBox {
+  top: 54px;
+}
+.container::-webkit-scrollbar {
+  display: none;
+}

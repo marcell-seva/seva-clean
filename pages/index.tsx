@@ -30,8 +30,8 @@ import {
   getMenu,
   getAnnouncementBox as gab,
   getMobileFooterMenu,
+  getMinMaxYearsUsedCar,
 } from 'services/api'
-import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 interface HomePageDataLocalContextType {
   dataBanner: any
@@ -46,6 +46,7 @@ interface HomePageDataLocalContextType {
   dataTypeCar: any
   dataCarofTheMonth: any
   dataFooterMenu: any
+  dataMinMaxYearUsedCar: any
 }
 /**
  * used to pass props without drilling through components
@@ -64,6 +65,7 @@ export const HomePageDataLocalContext =
     dataTypeCar: null,
     dataCarofTheMonth: null,
     dataFooterMenu: [],
+    dataMinMaxYearUsedCar: null,
   })
 
 export default function WithTracker({
@@ -79,6 +81,8 @@ export default function WithTracker({
   dataMainArticle,
   dataTypeCar,
   dataCarofTheMonth,
+  dataMinMaxYearUsedCar,
+  ssr,
   dataFooterMenu,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isMobile, setIsMobile] = useState(useIsMobileSSr())
@@ -128,6 +132,7 @@ export default function WithTracker({
         dataTypeCar,
         dataCarofTheMonth,
         dataFooterMenu,
+        dataMinMaxYearUsedCar,
       }}
     >
       <Script
@@ -166,6 +171,7 @@ export async function getServerSideProps(context: any) {
       carofTheMonthRes,
       menuDesktopRes,
       footerMenuRes,
+      minmaxYearRes,
     ]: any = await Promise.all([
       getRecommendation(params),
       getBanner(),
@@ -180,7 +186,9 @@ export async function getServerSideProps(context: any) {
       getCarofTheMonth('?city=' + getCity().cityCode),
       getMenu(),
       getMobileFooterMenu(),
+      getMinMaxYearsUsedCar(''),
     ])
+
     const [
       dataReccomendation,
       dataBanner,
@@ -195,6 +203,7 @@ export async function getServerSideProps(context: any) {
       dataCarofTheMonth,
       dataDesktopMenu,
       dataFooterMenu,
+      dataMinMaxYearUsedCar,
     ] = await Promise.all([
       recommendationRes.carRecommendations,
       bannerRes.data,
@@ -209,6 +218,7 @@ export async function getServerSideProps(context: any) {
       carofTheMonthRes.data,
       menuDesktopRes.data,
       footerMenuRes.data,
+      minmaxYearRes.data,
     ])
     return {
       props: {
@@ -223,13 +233,30 @@ export async function getServerSideProps(context: any) {
         dataMainArticle,
         dataTypeCar,
         dataCarofTheMonth,
+        dataMinMaxYearUsedCar,
         isSsrMobile: getIsSsrMobile(context),
         dataDesktopMenu,
         dataFooterMenu,
       },
     }
-  } catch (error: any) {
-    return serverSideManualNavigateToErrorPage(error?.response?.status)
+  } catch (error) {
+    return {
+      props: {
+        dataBanner: null,
+        dataDesktopMenu: [],
+        dataMobileMenu: [],
+        dataCities: null,
+        dataTestimony: null,
+        dataRecToyota: null,
+        dataRecMVP: null,
+        dataUsage: null,
+        dataMainArticle: null,
+        dataTypeCar: null,
+        dataCarofTheMonth: null,
+        dataMinMaxYearUsedCar: null,
+        ssr: 'failed',
+      },
+    }
   }
 }
 
