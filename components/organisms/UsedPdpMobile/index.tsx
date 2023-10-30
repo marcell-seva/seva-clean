@@ -3,8 +3,12 @@ import {
   AdaOTOdiSEVALeadsForm,
   FooterMobile,
   HeaderMobile,
+  LeadsFormAdaOTOdiSEVA,
+  LeadsFormTertiary,
+  LeadsFormUsedCar,
   PdpLowerSection,
   PdpUpperSection,
+  PdpUsedCarLowerSection,
 } from 'components/organisms'
 import styles from 'styles/pages/carVariantList.module.scss'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
@@ -153,14 +157,15 @@ export default function UsedCarVariantList({
     setIsPreviewGalleryOpened(false)
   }
 
-  // const router = useRouter()
+  const router = useRouter()
 
   // const brand = router.query.brand as string
   // const model = router.query.model as string
   // const slug = router.query.slug
-  // const [upperTabSlug, lowerTabSlug, citySlug] = Array.isArray(slug) ? slug : []
 
-  // const [selectedLowerTab, setSelectedLowerTab] = useState<string>(lowerTabSlug)
+  const [lowerTabSlug] = ['Deskripsi', 'Kredit']
+
+  const [selectedLowerTab, setSelectedLowerTab] = useState<string>(lowerTabSlug)
   // const [selectedUpperTab, setSelectedUpperTab] = useState<string>(upperTabSlug)
 
   // const [cityOtr, setCityOtr] = useState(getCity())
@@ -215,8 +220,8 @@ export default function UsedCarVariantList({
   // }
 
   // const [videoData] = useState<VideoDataType>(getVideoReview())
-  // const [isButtonClick, setIsButtonClick] = useState(false)
-  // const [promoName, setPromoName] = useState('promo1')
+  const [isButtonClick, setIsButtonClick] = useState(false)
+  const [promoName, setPromoName] = useState('promo1')
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const { cities, dataAnnouncementBox } = useUtils()
   const [isOpenShareModal, setIsOpenShareModal] = useState(false)
@@ -711,6 +716,13 @@ export default function UsedCarVariantList({
               isButtonClick={isButtonClick}
               promoName={promoName}
             /> */}
+            <PdpUsedCarLowerSection
+              onButtonClick={setIsButtonClick}
+              onChangeTab={(value: any) => setSelectedLowerTab(value)}
+              setPromoName={setPromoName}
+              showAnnouncementBox={showAnnouncementBox}
+              isShowAnnouncementBox={showAnnouncementBox}
+            />
             {!isPreviewGalleryOpened && <CSAButton onClick={showLeadsForm} />}
           </>
         )

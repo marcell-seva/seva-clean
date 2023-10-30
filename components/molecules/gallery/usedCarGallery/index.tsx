@@ -204,7 +204,7 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
         </Swiper>
       </div>
       <div className={styles.wrapperPagination}>
-        {items.length > 0 && (
+        {items?.length > 0 && (
           <Swiper
             initialSlide={flagIndex}
             onSwiper={(swiper: SwiperType | null) => setThumbsSwiper(swiper)}

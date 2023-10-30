@@ -18,6 +18,7 @@ import SortingMobile from './sortingMobile'
 import SortingMobileUsedCar from './sortingMobileUsedCar'
 import PdpMobile from './PdpMobile'
 import { PdpLowerSection } from './pdpLowerSection'
+import { PdpUsedCarLowerSection } from './pdpUsedCarLowerSection'
 import { PdpUpperSection } from './pdpUpperSection'
 import PDPSkeleton from './pdpSkeleton'
 import { ProductDetailEmptyState } from './emptyState/pdp/index'
@@ -26,6 +27,8 @@ import { ExteriorTab } from './tabContent/upper/exterior'
 import { InteriorTab } from './tabContent/upper/interior'
 import { Interior360ViewerTab } from './tabContent/upper/interior360Viewer'
 import { SummaryTab } from './tabContent/lower/summary'
+import { DescriptionTab } from './tabContent/lower/description'
+import { CreditUsedCarTab } from './tabContent/lower/creditUsedCar'
 import { SpecificationTab } from './tabContent/lower/spesification'
 import { VideoTab } from './tabContent/upper/video'
 import { CarOverview } from './tabContent/upper/carOverview'
@@ -63,6 +66,7 @@ import { NotFoundErrorPageContent } from './notFoundErrorPageContent'
 
 import { UsedCarDetailCard } from './usedCarDetailCard'
 import UsedPdpMobile from './UsedPdpMobile'
+import { LeadsFormUsedCar } from './leadsForm/usedCar'
 
 const Exterior360ViewerTab = dynamic(
   () => import('./tabContent/upper/exterior360Viewer'),
@@ -134,4 +138,8 @@ export {
   UsedCarDetailCard,
   InformationSection,
   UsedPdpMobile,
+  LeadsFormUsedCar,
+  DescriptionTab,
+  PdpUsedCarLowerSection,
+  CreditUsedCarTab,
 }

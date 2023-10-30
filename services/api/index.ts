@@ -170,6 +170,22 @@ const postUnverifiedLeadsNew = (body: any) => {
 
   return post(collections.leads.unverifiedLeadNew, encryptedPayload, config)
 }
+
+const postUnverifiedLeadsNewUsedCar = (body: any) => {
+  const config = {
+    headers: {
+      'torq-api-key': environments.unverifiedLeadApiKey,
+      'Content-Type': 'text/plain',
+    },
+  }
+
+  const encryptedPayload = AES.encrypt(
+    JSON.stringify(body),
+    process.env.NEXT_PUBLIC_LEAD_PAYLOAD_ENCRYPTION_KEY ?? '',
+  ).toString()
+
+  return post(collections.usedCar.usedCarsLeads, encryptedPayload, config)
+}
 const postRefreshToken = (body: any, config?: AxiosRequestConfig) =>
   post(collections.auth.refresh, body, config)
 const postSendSMSGeneration = (phoneNumber: string) =>
@@ -323,6 +339,7 @@ export const api = {
   getBrandList,
 
   postUnverifiedLeadsNew,
+  postUnverifiedLeadsNewUsedCar,
   postRefreshToken,
   postSendSMSGeneration,
   postVerifyOTPGeneration,

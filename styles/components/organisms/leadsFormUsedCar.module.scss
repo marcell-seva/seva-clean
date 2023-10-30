@@ -1,0 +1,96 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.wrapper {
+  position: relative;
+  height: 384px;
+}
+
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #{$primary-dark-blue};
+  z-index: 1;
+}
+
+.wrapperSupergraphicLeft {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  bottom: 0%;
+}
+
+.supergraphicLeft {
+  width: 375px;
+  height: 300px;
+  position: absolute;
+  top: 25px;
+  left: -250px;
+  z-index: 1;
+}
+
+.wrapperSupergraphicRight {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+}
+
+.supergraphicRight {
+  width: 600px;
+  height: 100%;
+  position: absolute;
+  right: -230px;
+  top: 120px;
+  z-index: 1;
+}
+
+.foreground {
+  position: relative;
+  z-index: 2;
+  padding: 32px 16px;
+}
+
+.form {
+  margin-top: 24px;
+}
+
+.textHeading {
+  font-family: var(--kanyon);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #{$primary-white};
+}
+
+.textSuggestion {
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #{$primary-white};
+  margin: 20px 0px;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 440px) {
+  .supergraphicLarge {
+    width: 600px;
+    height: auto;
+    position: absolute;
+    top: 55%;
+    right: -120px;
+    z-index: 1;
+    clip-path: inset(0px 123px 278px 213px);
+  }
+}

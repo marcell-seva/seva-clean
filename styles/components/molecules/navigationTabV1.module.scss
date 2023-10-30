@@ -14,6 +14,20 @@
   overflow-x: scroll;
   z-index: 4;
 }
+.containerUsedCar {
+  position: sticky;
+  top: 54px; // page header height is 54px
+  background: #{$primary-white};
+  border-bottom: 2px solid #{$shades-grey-10};
+  box-shadow: 0px 6px 14px 1px rgba(76, 82, 95, 0.08);
+  padding: 12px 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  overflow-x: scroll;
+  z-index: 4;
+}
 .showAAnnouncementBox {
   top: 115px;
 }

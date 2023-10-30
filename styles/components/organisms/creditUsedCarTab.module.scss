@@ -1,0 +1,119 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+@import '../../abstract/animations';
+
+.container {
+  padding: 24px 0 0;
+}
+
+.wrapper {
+  background-color: #{$primary-white};
+  padding: 32px 0 0 16px;
+}
+
+.gap {
+  height: 24px;
+}
+
+.formCard {
+  background-color: #{$primary-white};
+  padding: 16px 16px 41px;
+  margin: 0 16px 0;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.formWrapper {
+  //   margin-top: 24px;
+}
+
+.formCardCalculationResult {
+  background-color: #{$primary-white};
+  display: flex;
+  flex-direction: column;
+}
+
+.formCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formCardTitle {
+  font-family: var(--kanyon-medium);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #{$primary-black};
+}
+
+.formCardSubtitle {
+  margin-top: 8px;
+  font-family: var(--open-sans);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$primary-black};
+}
+
+.errorMessageWrapper {
+  margin-top: 8px;
+}
+
+.errorMessage {
+  font-family: var(--open-sans);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$secondary-brick-red};
+  mix-blend-mode: normal;
+  @include shake-animation-primary;
+}
+
+.recommendationAdditionalStyle {
+  padding: 24px 0 0 !important;
+  background-color: transparent !important;
+}
+
+.benefitCard {
+  background-color: #{$primary-white};
+  padding: 32px 16px 48px;
+  margin: 0 16px;
+  border-radius: 8px;
+}
+
+.benefitCardAdditonalStyle {
+  margin-top: 24px;
+}
+
+.benefitAdditionalStyle {
+  margin: 0 !important;
+}
+
+.benefitCardWrapperAdditionalStyle {
+  div {
+    padding-left: 0;
+  }
+}
+
+.articleAdditionalStyle {
+  padding: 32px 0 32px 16px !important;
+}
+
+.articleLinkAdditionalStyle {
+  margin-right: 16px;
+}
+
+.loanCalculatorFormAge {
+  margin-top: 20px;
+}

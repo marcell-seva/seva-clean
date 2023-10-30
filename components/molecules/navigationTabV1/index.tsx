@@ -5,6 +5,7 @@ import { TabItemData } from 'utils/types/props'
 import { lowerSectionNavigationTab } from 'config/carVariantList.config'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import elementId from 'helpers/elementIds'
+import { useRouter } from 'next/router'
 
 interface Props {
   itemList: TabItemData[]
@@ -22,6 +23,9 @@ export const NavigationTabV1 = ({
   const [selectedTabValue, setSelectedTabValue] = useState(
     selectedTabValueProps,
   )
+  const router = useRouter()
+  const isMobilBekas =
+    router.asPath.split('/')[1] === 'mobil-bekas' ? true : false
   const [selectedTabIndex, setSelectedTabIndex] = useState(0)
   const containerRef = useRef() as React.MutableRefObject<HTMLDivElement>
   // const showAnnouncementBoxLogin = getSessionStorage(
@@ -79,9 +83,9 @@ export const NavigationTabV1 = ({
 
   return (
     <div
-      className={`${styles.container} ${
-        showAnnouncementBox && styles.showAAnnouncementBox
-      }`}
+      className={`${
+        isMobilBekas ? styles.containerUsedCar : styles.container
+      } ${showAnnouncementBox && styles.showAAnnouncementBox}`}
       ref={containerRef}
       data-testid={elementId.PDP.NavigationTab.V1}
     >

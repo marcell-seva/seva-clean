@@ -67,6 +67,10 @@ import {
   DownOutlined,
   CloseOutlined2,
   InfoCircleOutlined,
+  IconBookInformation,
+  IconColor,
+  IconNumberField,
+  IconDocumentSigned,
 } from './icon'
 import Brand from './brand'
 import Logo from './logo'
@@ -202,4 +206,8 @@ export {
   CustomModal,
   BottomSheet,
   SearchInput,
+  IconBookInformation,
+  IconColor,
+  IconNumberField,
+  IconDocumentSigned,
 }

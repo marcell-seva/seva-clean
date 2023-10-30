@@ -45,6 +45,7 @@ const usedCar = {
   years: `${baseUrl}/used-car/get-years-car-min-max-by-city`,
   mileage: `${baseUrl}/used-car/get-mileage-car-min-max-by-city`,
   brandList: `${baseUrl}/used-car/get-list-brand`,
+  usedCarsLeads: `${baseUrl}/used-car/submit-leads`,
 }
 
 const leads = {
