@@ -39,7 +39,7 @@ import {
 } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import IncomeForm from 'components/molecules/credit/income'
-import DpForm from 'components/molecules/credit/dp'
+import DpUsedCarForm from 'components/molecules/credit/dpUsedCar'
 import { CicilOptionForm } from 'components/molecules/credit/cicil'
 import { FormAsuransiCredit } from 'components/molecules/credit/asuransi'
 import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
@@ -82,7 +82,12 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
 import dynamic from 'next/dynamic'
-import { api } from 'services/api'
+import {
+  getLoanCalculatorInsurance,
+  getRecommendation,
+  postCheckPromoGiias,
+  postLoanPermutationIncludePromo,
+} from 'services/api'
 import { getCarModelDetailsById } from 'utils/handler/carRecommendation'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
@@ -174,6 +179,8 @@ export const CreditUsedCarTab = () => {
     null,
   )
   const [isAssuranceModalOpen, setIsAssuranceModalOpen] = useState(false)
+  const [finalMinInputDp, setFinalMinInputDp] = useState(10000000)
+  const [finalMaxInputDp, setFinalMaxInputDp] = useState(10000000000000)
   const [carRecommendations, setCarRecommendations] = useState<
     CarRecommendation[]
   >([])
@@ -686,7 +693,7 @@ export const CreditUsedCarTab = () => {
     params.append('cityId', defaultCity.id as string)
     params.append('city', defaultCity.cityCode as string)
 
-    const response = await api.getRecommendation('', { params })
+    const response = await getRecommendation('', { params })
 
     setAllModalCarList(response.carRecommendations)
   }
@@ -872,7 +879,7 @@ export const CreditUsedCarTab = () => {
 
     try {
       setIsLoadingPromoCode(true)
-      const result: any = await api.postCheckPromoGiias(forms.promoCode)
+      const result: any = await postCheckPromoGiias(forms.promoCode)
       setIsLoadingPromoCode(false)
 
       if (result.message === 'valid promo code') {
@@ -927,7 +934,7 @@ export const CreditUsedCarTab = () => {
       )
 
       try {
-        const responseInsurance = await api.getLoanCalculatorInsurance({
+        const responseInsurance = await getLoanCalculatorInsurance({
           modelId: forms.model?.modelId ?? '',
           cityCode: forms.city.cityCode,
           tenure: allTenure[i],
@@ -979,6 +986,7 @@ export const CreditUsedCarTab = () => {
           subsidiDp: isAppliedSDD01Promo
             ? currentTenurePermutation[0]?.subsidiDp
             : 0,
+          dpDiscount: currentTenurePermutation[0]?.dpDiscount,
         })
       } catch (e: any) {
         if (e?.response?.data?.message) {
@@ -1092,8 +1100,7 @@ export const CreditUsedCarTab = () => {
         otr: getCarOtrNumber() - getCarDiscountNumber(),
       }
 
-      api
-        .postLoanPermutationIncludePromo(payload)
+      postLoanPermutationIncludePromo(payload)
         .then((response) => {
           const result = response.data.reverse()
           const filteredResult = getFilteredCalculationResults(result)
@@ -1720,7 +1727,9 @@ export const CreditUsedCarTab = () => {
           </div> */}
           {/* TODO : Implement carPrice by Car Variant Price */}
           <div id="loan-calculator-form-dp">
-            <DpForm
+            <DpUsedCarForm
+              // finalMaxInputDp={finalMaxInputDp}
+              // finalMinInputDp={finalMinInputDp}
               label="Kemampuan DP (Min. 20%)"
               value={dpValue}
               percentage={dpPercentage}

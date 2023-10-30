@@ -24,7 +24,7 @@ import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { savePreviouslyViewed } from 'utils/carUtils'
 import { decryptValue } from 'utils/encryptionUtils'
-import { CSAButton, WhatsappButton } from 'components/atoms'
+import { CSAButton, IconLocation, WhatsappButton } from 'components/atoms'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
 import {
@@ -32,7 +32,11 @@ import {
   removeSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
-import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
+import {
+  addSeparator,
+  capitalizeFirstLetter,
+  capitalizeWords,
+} from 'utils/stringUtils'
 import { useRouter } from 'next/router'
 import {
   PdpDataLocalContext,
@@ -716,6 +720,21 @@ export default function UsedCarVariantList({
               isButtonClick={isButtonClick}
               promoName={promoName}
             /> */}
+            <div className={styles.wrapper}>
+              <h2 className={styles.titleCar}>
+                {`${usedCarModelDetailsRes.brandName}  ${usedCarModelDetailsRes.modelName} ${usedCarModelDetailsRes.variantName} ${usedCarModelDetailsRes.nik}`}
+              </h2>
+              <h3 className={styles.titlePrice}>
+                Rp
+                {addSeparator(usedCarModelDetailsRes.priceValue.split('.')[0])}
+              </h3>
+              <div className={styles.wrapperLocation}>
+                <IconLocation width={18} height={18} color="#B4231E" />
+                <p className={styles.titleLocation}>
+                  {usedCarModelDetailsRes.cityName}
+                </p>
+              </div>
+            </div>
             <PdpUsedCarLowerSection
               onButtonClick={setIsButtonClick}
               onChangeTab={(value: any) => setSelectedLowerTab(value)}

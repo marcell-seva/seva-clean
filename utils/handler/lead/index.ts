@@ -16,6 +16,7 @@ import {
 import {
   postCustomerAssistantDetails,
   postUnverifiedLeadsNew,
+  postUnverifiedLeadsNewUsedCar,
 } from 'services/api'
 
 export enum UnverifiedLeadSubCategory {
@@ -88,7 +89,7 @@ export const createUnverifiedLeadNewUsedCar = (
   requestBody: CreateUnverifiedLeadRequestNew,
 ) => {
   const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
-  return api.postUnverifiedLeadsNewUsedCar({
+  return postUnverifiedLeadsNewUsedCar({
     ...requestBody,
     utmSource: UTMTags?.utm_source,
     utmMedium: UTMTags?.utm_medium,

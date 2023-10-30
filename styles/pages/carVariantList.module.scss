@@ -14,3 +14,44 @@
 .pdpLowerSection {
   background: #f5f6f6;
 }
+
+.wrapper {
+  padding: 24px 16px;
+}
+
+.titleCar {
+  color: #13131b;
+  font-family: var(--kanyon);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.titleLocation {
+  color: var(--shades-grey-grey-75, #878d98);
+
+  /* Small/Mobile/Regular */
+  font-family: var(--open-sans);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px; /* 150% */
+}
+
+.wrapperLocation {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.titlePrice {
+  color: #13131b;
+  font-family: Kanyon;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  margin-top: 8px;
+}
