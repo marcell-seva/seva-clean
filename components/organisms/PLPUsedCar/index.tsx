@@ -497,6 +497,10 @@ export const PLPUsedCar = ({
   }, [recommendation])
 
   useEffect(() => {
+    setPage(1)
+  }, [sampleArray])
+
+  useEffect(() => {
     if (isActive) {
       trackEventCountly(CountlyEventNames.WEB_HAMBURGER_OPEN, {
         PAGE_ORIGINATION: getPageName(),
