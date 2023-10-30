@@ -34,6 +34,17 @@ const PopupTestimony = ({ testimony, ...props }: PopupTestimonyProps) => {
             {differentDateStatus(new Date(testimony?.purchaseDate || ''))},{' '}
             {testimony?.cityName}
           </span>
+          {testimony?.urlCarPage !== null ? (
+            <a href={testimony?.urlCarPage}>
+              <span className={styles.carBrandAndModelName}>
+                {testimony?.carModelName}
+              </span>
+            </a>
+          ) : (
+            <span className={styles.carBrandAndModelName}>
+              {testimony?.carModelName}
+            </span>
+          )}
           <span className={styles.description}>{`"${testimony?.detail}"`}</span>
         </div>
       </div>

@@ -365,6 +365,8 @@ export interface TestimonialData {
   cityName: string
   purchaseDate: string
   displayNumber: number
+  carModelName?: string
+  urlCarPage?: string
 }
 export interface LoanDetail {
   loanRank: LoanRank

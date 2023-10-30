@@ -34,6 +34,9 @@
     font-size: 12px;
     line-height: 18px;
     color: #{$primary-dark-blue};
+  }
+  .carBrandAndModelName {
+    @extend .timeCityCar;
     margin-bottom: 8px;
   }
 
