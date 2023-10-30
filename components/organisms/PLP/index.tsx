@@ -225,7 +225,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   }
 
   const handelSticky = (position: number) => {
-    if (position > 50) return setSticky(true)
+    if (position > 150) return setSticky(true)
     return setSticky(false)
   }
 
@@ -726,7 +726,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
           pageOrigination={'PLP'}
           isOTO={isOTO}
         />
-
+        <PLPHeaderTitle />
         {!showLoading && sampleArray.items.length === 0 ? (
           <>
             <NavigationFilterMobile
@@ -907,5 +907,16 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
         )}
       </div>
     </>
+  )
+}
+
+const PLPHeaderTitle = () => {
+  return (
+    <div className={styles.titleHeaderWrapper}>
+      <h1 className={styles.title}>Rekomendasi Mobil Baru di SEVA</h1>
+      <h2 className={styles.subtitle}>
+        Menampilkan beragam pilihan mobil baru sesuai kebutuhan dan finansialmu.
+      </h2>
+    </div>
   )
 }

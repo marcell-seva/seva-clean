@@ -45,3 +45,24 @@
   text-align: center;
   border-radius: 4px;
 }
+
+.titleHeaderWrapper {
+  padding: 24px 16px 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #{$white};
+
+  .title {
+    color: #{$primary-black};
+    font-family: $font-kanyon;
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .subtitle {
+    color: #{$shades-grey-75};
+    font-family: $font-openSans;
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
