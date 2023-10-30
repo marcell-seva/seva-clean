@@ -18,21 +18,30 @@ export const getTdpAffectedByPromo = (
   if (currentPermutation?.applied.toLowerCase().includes('giias')) {
     return (
       currentPermutation?.totalFirstPaymentGiias -
+      currentPermutation?.subsidiDp -
       currentPermutation?.dpDiscount
     )
   } else if (currentPermutation?.applied.toLowerCase().includes('spekta')) {
     return (
       currentPermutation?.totalFirstPaymentSpekta -
+      currentPermutation?.subsidiDp -
       currentPermutation?.dpDiscount
     )
-  } else if (currentPermutation.promoArr.length !== 0) {
+  } else if (
+    currentPermutation?.subsidiDp !== 0 &&
+    currentPermutation.promoArr.length !== 0
+  ) {
     // if promoArr empty nominal will use total first payment regular only
     return (
-      currentPermutation?.totalFirstPayment - currentPermutation?.dpDiscount
+      currentPermutation?.totalFirstPayment -
+      currentPermutation?.subsidiDp -
+      currentPermutation?.dpDiscount
     )
   } else if (currentPermutation?.dpDiscount !== 0) {
     return (
-      currentPermutation?.totalFirstPayment - currentPermutation?.dpDiscount
+      currentPermutation?.totalFirstPayment -
+      currentPermutation?.subsidiDp -
+      currentPermutation?.dpDiscount
     )
   } else {
     return 0

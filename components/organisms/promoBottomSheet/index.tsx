@@ -64,8 +64,6 @@ const PromoBottomSheet = ({
       LocalStorageKey.SimpleCarVariantDetails,
       null,
     )
-  const [isLoadingRecalculateSDD01, setIsLoadingRecalculateSDD01] =
-    useState(false)
   // const [latestState, setLatestState] = useState(state)
   // const [isAllBestPromo, setIsAllBestPromo] = useState(false)
 
@@ -117,11 +115,8 @@ const PromoBottomSheet = ({
       )
     ) {
       if (
-        promoInsuranceTemp[indexForSelectedTenure].applied
-          .toLowerCase()
-          .includes('spekta') &&
         promoInsuranceTemp[indexForSelectedTenure].selectedPromo.some(
-          (a: any) => a.promoId === 'TS01',
+          (a: any) => a.promoId === 'SDD01',
         )
       ) {
         newState = promoInsuranceTemp.map(
@@ -130,9 +125,77 @@ const PromoBottomSheet = ({
             if (obj.tenure === selectedTenure) {
               return {
                 ...obj,
-                tdpAfterPromo: obj.tdpWithPromo,
-                installmentAfterPromo: obj.installmentWithPromo,
-                interestRateAfterPromo: obj.interestRateWithPromo,
+                tdpAfterPromo:
+                  obj.tdpBeforePromo - obj.subsidiDp - obj.dpDiscount,
+              }
+            }
+
+            // 👇️ otherwise return the object as is
+            return obj
+          },
+        )
+      } else {
+        if (
+          promoInsuranceTemp[indexForSelectedTenure].applied
+            .toLowerCase()
+            .includes('spekta') &&
+          promoInsuranceTemp[indexForSelectedTenure].selectedPromo.some(
+            (a: any) => a.promoId === 'TS01',
+          )
+        ) {
+          newState = promoInsuranceTemp.map(
+            (obj: LoanCalculatorInsuranceAndPromoType) => {
+              // 👇️ if tenure equals currently selected, update object property
+              if (obj.tenure === selectedTenure) {
+                return {
+                  ...obj,
+                  tdpAfterPromo: obj.tdpWithPromo,
+                  installmentAfterPromo: obj.installmentWithPromo,
+                  interestRateAfterPromo: obj.interestRateWithPromo,
+                }
+              }
+
+              // 👇️ otherwise return the object as is
+              return obj
+            },
+          )
+        } else {
+          newState = promoInsuranceTemp.map(
+            (obj: LoanCalculatorInsuranceAndPromoType) => {
+              // 👇️ if tenure equals currently selected, update object property
+              if (obj.tenure === selectedTenure) {
+                return {
+                  ...obj,
+                  tdpAfterPromo:
+                    obj.dpDiscount !== 0
+                      ? obj.tdpBeforePromo - obj.dpDiscount
+                      : 0,
+                  installmentAfterPromo: 0,
+                  interestRateAfterPromo: 0,
+                }
+              }
+
+              // 👇️ otherwise return the object as is
+              return obj
+            },
+          )
+        }
+      }
+
+      setPromoInsuranceTemp(newState)
+    } else {
+      if (
+        promoInsuranceTemp[indexForSelectedTenure].selectedPromo.some(
+          (a: any) => a.promoId === 'SDD01',
+        )
+      ) {
+        newState = promoInsuranceTemp.map(
+          (obj: LoanCalculatorInsuranceAndPromoType) => {
+            // 👇️ if tenure equals currently selected, update object property
+            if (obj.tenure === selectedTenure) {
+              return {
+                ...obj,
+                tdpAfterPromo: selectedCalculatePromoInsurance.tdpWithPromo,
               }
             }
 
@@ -148,11 +211,8 @@ const PromoBottomSheet = ({
               return {
                 ...obj,
                 tdpAfterPromo:
-                  obj.dpDiscount !== 0
-                    ? obj.tdpBeforePromo - obj.dpDiscount
-                    : 0,
-                installmentAfterPromo: 0,
-                interestRateAfterPromo: 0,
+                  selectedCalculatePromoInsurance.tdpWithPromo +
+                  selectedCalculatePromoInsurance.subsidiDp,
               }
             }
 
@@ -161,23 +221,6 @@ const PromoBottomSheet = ({
           },
         )
       }
-
-      setPromoInsuranceTemp(newState)
-    } else {
-      newState = promoInsuranceTemp.map(
-        (obj: LoanCalculatorInsuranceAndPromoType) => {
-          // 👇️ if tenure equals currently selected, update object property
-          if (obj.tenure === selectedTenure) {
-            return {
-              ...obj,
-              tdpAfterPromo: selectedCalculatePromoInsurance.tdpWithPromo,
-            }
-          }
-
-          // 👇️ otherwise return the object as is
-          return obj
-        },
-      )
 
       newState = promoInsuranceTemp.map(
         (obj: LoanCalculatorInsuranceAndPromoType) => {
@@ -311,9 +354,6 @@ const PromoBottomSheet = ({
             promoInsuranceTemp={promoInsuranceTemp}
             setPromoInsuranceTemp={setPromoInsuranceTemp}
             pageOrigination={pageOrigination}
-            calculationApiPayload={calculationApiPayload}
-            isLoadingRecalculateSDD01={isLoadingRecalculateSDD01}
-            setIsLoadingRecalculateSDD01={setIsLoadingRecalculateSDD01}
           />
         </>
       )}
@@ -348,7 +388,6 @@ const PromoBottomSheet = ({
           promoInsuranceTemp[indexForSelectedTenure].selectedPromo.length
         }
         isLoadingApiPromoList={isLoadingApiPromoList}
-        isLoadingRecalculateSDD01={isLoadingRecalculateSDD01}
       />
 
       <div

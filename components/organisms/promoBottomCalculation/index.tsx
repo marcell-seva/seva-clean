@@ -26,7 +26,6 @@ interface PromoProps {
   promoInsurance: boolean
   totalSelectedPromo: number
   isLoadingApiPromoList: boolean
-  isLoadingRecalculateSDD01: boolean
 }
 
 const PromoBottomCalculation = ({
@@ -42,7 +41,6 @@ const PromoBottomCalculation = ({
   finalInstallment = 0,
   totalSelectedPromo,
   isLoadingApiPromoList,
-  isLoadingRecalculateSDD01,
 }: PromoProps) => {
   const { currentLanguage } = useUtils()
   const onSubmit = () => {
@@ -150,7 +148,7 @@ const PromoBottomCalculation = ({
         version={ButtonVersion.SecondaryDark}
         size={ButtonSize.Big}
         onClick={onSubmit}
-        loading={isLoadingApiPromoList || isLoadingRecalculateSDD01}
+        loading={isLoadingApiPromoList}
         disabled={isLoadingApiPromoList}
       >
         {totalSelectedPromo === 0

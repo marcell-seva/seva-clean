@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React from 'react'
+import React, { useMemo } from 'react'
 import styles from 'styles/components/molecules/selectablePromo.module.scss'
 import { articleDateFormat } from 'utils/handler/date'
 import { PromoItemType } from 'utils/types/utils'
@@ -43,6 +43,10 @@ SelectablePromoProps) => {
     // expiredDate,
     // url,
   } = item
+
+  const isPromoClickable = useMemo(() => {
+    return item.promoId !== 'CDS03' && item.promoId !== 'SDD01'
+  }, [item])
 
   const formattedDate = promoFinishDate
     ? articleDateFormat(new Date(promoFinishDate), LanguageCode.id, {
@@ -89,7 +93,7 @@ SelectablePromoProps) => {
         [styles.active]: selected,
       })}
       onClick={() =>
-        is_Available && item.promoId !== 'CDS03' && onSelect && onSelect(item)
+        is_Available && isPromoClickable && onSelect && onSelect(item)
       }
     >
       <div
