@@ -21,6 +21,9 @@
   flex-direction: column;
   margin-top: 16px;
   padding-right: 17px;
+  a {
+    margin-bottom: 8px;
+  }
 
   .nameAge {
     font-family: var(--open-sans-semi-bold);

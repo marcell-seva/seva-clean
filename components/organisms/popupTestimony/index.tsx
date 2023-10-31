@@ -37,12 +37,12 @@ const PopupTestimony = ({ testimony, ...props }: PopupTestimonyProps) => {
           {testimony?.urlCarPage !== null ? (
             <a href={testimony?.urlCarPage}>
               <span className={styles.carBrandAndModelName}>
-                {testimony?.carModelName}
+                {testimony?.carBrand + ' ' + testimony?.carModelName}
               </span>
             </a>
           ) : (
             <span className={styles.carBrandAndModelName}>
-              {testimony?.carModelName}
+              {testimony?.carBrand + ' ' + testimony?.carModelName}
             </span>
           )}
           <span className={styles.description}>{`"${testimony?.detail}"`}</span>
