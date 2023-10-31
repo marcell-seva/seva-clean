@@ -53,7 +53,6 @@ export const PdpUsedCarLowerSection = ({
   onChangeTab,
 }: pdpUsedCarLowerSectionProps) => {
   const router = useRouter()
-  //   const { slug } = router.query
   const [lowerTabSlug] = ['Deskripsi', 'Kredit']
   const path = lowerTabSlug ? capitalizeFirstLetter(lowerTabSlug) : ''
   const [selectedTabValue, setSelectedTabValue] = useState(

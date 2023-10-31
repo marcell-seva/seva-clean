@@ -44,57 +44,14 @@ import { Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 type DescriptionSectionProps = {
-  //   setPromoName?: (value: string) => void
-  //   onButtonClick?: (value: boolean) => void
-  //   cheapestVariantData?: CarVariantRecommendation | undefined
-  //   info?: any
-  //   onPage?: string
-  //   setSelectedTabValue?: (value: string) => void
-  //   isOTO?: boolean
   scrollToLeads?: any
 }
 
-const DescriptionSection = ({
-  scrollToLeads,
-}: //   setPromoName,
-//   onButtonClick,
-//   cheapestVariantData,
-//   info,
-//   onPage,
-//   setSelectedTabValue,
-//   isOTO = false,
-DescriptionSectionProps) => {
+const DescriptionSection = ({ scrollToLeads }: DescriptionSectionProps) => {
   const router = useRouter()
-  const brand = router.query.brand as string
-  const model = router.query.model as string
   const { usedCarModelDetailsRes } = useContext(UsedPdpDataLocalContext)
 
   const item = usedCarModelDetailsRes
-
-  const IsShowBadgeCreditOpportunity = getSessionStorage(
-    SessionStorageKey.IsShowBadgeCreditOpportunity,
-  )
-  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
-  const dataCar: trackDataCarType | null = getSessionStorage(
-    SessionStorageKey.PreviousCarDataBeforeLogin,
-  )
-  const isUsingFilterFinancial =
-    !!filterStorage?.age &&
-    !!filterStorage?.downPaymentAmount &&
-    !!filterStorage?.monthlyIncome &&
-    !!filterStorage?.tenure
-
-  const loanRankcr = router.query.loanRankCVL ?? ''
-
-  const getCreditBadgeForCountly = () => {
-    let creditBadge = 'Null'
-    if (loanRankcr && loanRankcr.includes(LoanRank.Green)) {
-      creditBadge = 'Mudah disetujui'
-    } else if (loanRankcr && loanRankcr.includes(LoanRank.Red)) {
-      creditBadge = 'Sulit disetujui'
-    }
-    return creditBadge
-  }
 
   const navigateToSpecificationTab = () => {
     // setSelectedTabValue && setSelectedTabValue('Spesifikasi')
@@ -103,29 +60,7 @@ DescriptionSectionProps) => {
     //   .replace(':model', model)
     //   .replace(':tab?', 'spesifikasi')
   }
-  const trackCountlyClickSeeAll = () => {
-    trackEventCountly(CountlyEventNames.WEB_HOMEPAGE_PROMO_BANNER_ALL_CLICK)
-  }
-  const trackCountlyClicPromo = (promoUrl: string, promoOrder: number) => {
-    trackEventCountly(CountlyEventNames.WEB_HOMEPAGE_PROMO_BANNER_CLICK, {
-      PAGE_DIRECTION_URL: promoUrl,
-      PROMO_ORDER: promoOrder,
-    })
-  }
 
-  const trackCountlePromoCLick = (promoDetail: string, promoOrder: number) => {
-    trackEventCountly(CountlyEventNames.WEB_PROMO_CLICK, {
-      CAR_BRAND: getBrandAndModelValue(brand),
-      CAR_MODEL: getBrandAndModelValue(model),
-      PROMO_DETAILS: promoDetail,
-      PROMO_ORDER: promoOrder,
-      PELUANG_KREDIT_BADGE:
-        isUsingFilterFinancial && IsShowBadgeCreditOpportunity
-          ? dataCar?.PELUANG_KREDIT_BADGE
-          : 'Null',
-      PAGE_ORIGINATION: 'PDP',
-    })
-  }
   return (
     <div>
       <div className={styles.cardInfoDetail} style={{ padding: '16px' }}>
@@ -263,16 +198,8 @@ DescriptionSectionProps) => {
             //   disabled={!isFilled}
             version={ButtonVersion.PrimaryDarkBlue}
             size={ButtonSize.Big}
-            //   onClick={() => sendOtpCode()}
             onClick={scrollToLeads}
           >
-            {/* {isLoading && isFilled ? (
-                <div className={`${styles.iconWrapper} rotateAnimation`}>
-                  <IconLoading width={14} height={14} color="#FFFFFF" />
-                </div>
-              ) : (
-                'Kirim'
-                )} */}
             Tanya Unit
           </Button>
         </div>

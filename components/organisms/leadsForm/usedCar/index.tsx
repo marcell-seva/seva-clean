@@ -58,49 +58,35 @@ interface PropsLeadsForm {
   onVerify?: (e: any) => void
   onFailed?: (e: any) => void
   selectedLoan?: SelectedCalculateLoanUsedCar | null
-  // isOTO?: boolean
 }
 
 export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
-  // isOTO = false,
   toLeads,
   selectedLoan = null,
 }) => {
-  const platform = 'web'
   const toastSuccessInfo = 'Agen kami akan segera menghubungimu dalam 1x24 jam.'
   const [name, setName] = useState<string>('')
   const [phone, setPhone] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  // const [infoCar, setInfoCar] = useState<any>()
   const [isFilled, setIsFilled] = useState<boolean>(false)
   const [modalOpened, setModalOpened] = useState<
     'otp' | 'success-toast' | 'none'
   >('none')
   const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false)
-  // const { carModelDetails, carVariantDetails } = useCar()
+
   const { usedCarModelDetailsRes } = useContext(UsedPdpDataLocalContext)
   const carLeads = usedCarModelDetailsRes
-  console.log(carLeads)
 
   const infoCar = `${usedCarModelDetailsRes.variantTitle} ${usedCarModelDetailsRes.nik}`
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
   )
-  const { funnelQuery } = useFunnelQueryData()
-  const [loanRankPLP] = useSessionStorage(
-    SessionStorageKey.LoanRankFromPLP,
-    false,
-  )
   const referralCodeFromUrl: string | null = getLocalStorage(
     LocalStorageKey.referralTemanSeva,
   )
 
   const router = useRouter()
-
-  // const model = router.query.model as string
-  // const brand = router.query.brand as string
-  // const upperTab = router.query.tab as string
   const loanRankcr = router.query.loanRankCVL ?? ''
 
   const handleInputName = (payload: any): void => {
@@ -132,64 +118,6 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
   useEffect(() => {
     getDataCustomer()
   }, [])
-
-  // useEffect(() => {
-  //   if (carModelDetails) {
-  //     setInfoCar(`${carModelDetails.brand} ${carModelDetails.model}`)
-  //   }
-  // }, [carModelDetails])
-
-  // const sortedCarModelVariant = useMemo(() => {
-  //   return (
-  //     carModelDetails?.variants.sort(function (a, b) {
-  //       return a.priceValue - b.priceValue
-  //     }) || []
-  //   )
-  // }, [carModelDetails])
-
-  // const getDp = () => {
-  //   return sortedCarModelVariant[0].dpAmount
-  // }
-
-  // const getTenure = (): number => {
-  //   return sortedCarModelVariant[0].tenure
-  // }
-
-  // const trackLeads = (): LeadsActionParam => {
-  //   let loanRank = ''
-  //   if (
-  //     funnelQuery.age &&
-  //     funnelQuery.monthlyIncome &&
-  //     funnelQuery.tenure &&
-  //     funnelQuery.downPaymentAmount
-  //   ) {
-  //     if (sortedCarModelVariant[0].loanRank === LoanRank.Green) {
-  //       loanRank = 'Mudah'
-  //     } else if (sortedCarModelVariant[0].loanRank === LoanRank.Red) {
-  //       loanRank = 'Sulit'
-  //     }
-  //   }
-  //   const filterIncome = getConvertFilterIncome(
-  //     String(funnelQuery.monthlyIncome),
-  //   )
-
-  //   return {
-  //     ...(funnelQuery.monthlyIncome && {
-  //       Income: `Rp${filterIncome}`,
-  //     }),
-  //     ...(funnelQuery.age && {
-  //       Age: String(funnelQuery.age),
-  //     }),
-  //     Car_Brand: carModelDetails?.brand,
-  //     Car_Model: carModelDetails?.model,
-  //     Car_Body_Type: carVariantDetails?.variantDetail.bodyType,
-  //     DP: `Rp${Currency(String(getDp()))}`,
-  //     Tenure: String(getTenure()),
-  //     ...(loanRankPLP && loanRank && { Peluang_Kredit: loanRank }),
-  //     Page_Origination: PageOriginationName.PDPLeadsForm,
-  //     ...(cityOtr && { City: cityOtr.cityName }),
-  //   }
-  // }
 
   const verified = () => {
     const data = {
@@ -356,7 +284,6 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
         partnerName: carLeads.partnerName,
         partnerId: carLeads.partnerId,
       }
-      console.log(data)
 
       try {
         await createUnverifiedLeadNewUsedCar(data)
@@ -407,42 +334,6 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
     }
   }
 
-  // const trackClickCtaCountly = () => {
-  //   trackEventCountly(CountlyEventNames.WEB_PDP_LOAN_CALCULATOR_CTA_CLICK, {
-  //     SOURCE_SECTION: 'Leads form',
-  //     MENU_TAB_CATEGORY: valueMenuTabCategory(),
-  //     VISUAL_TAB_CATEGORY: upperTab ? upperTab : 'Warna',
-  //     CAR_BRAND: brand ? capitalizeWords(brand.replaceAll('-', ' ')) : '',
-  //     CAR_MODEL: model ? capitalizeWords(model.replaceAll('-', ' ')) : '',
-  //     CAR_ORDER: 'Null',
-  //     CAR_VARIANT: 'Null',
-  //   })
-  // }
-
-  const queryParamForPDP = () => {
-    const params = new URLSearchParams({
-      ...(loanRankcr &&
-        typeof loanRankcr === 'string' && { loanRankCVL: loanRankcr }),
-    })
-
-    return params
-  }
-
-  // const onClickCalculateCta = () => {
-  //   let urlDirection =
-  //     variantListUrl
-  //       .replace(':brand', brand)
-  //       .replace(':model', model)
-  //       .replace(':tab', 'kredit') + queryParamForPDP()
-
-  //   if (router.basePath) {
-  //     urlDirection = router.basePath + urlDirection
-  //   }
-
-  //   trackClickCtaCountly()
-  //   saveDataForCountlyTrackerPageViewLC(PreviousButton.LeadsForm)
-  //   window.location.href = urlDirection
-  // }
   const onClickNameField = () => {
     trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_NAME_CLICK, {
       PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
@@ -458,19 +349,11 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
   }
   return (
     <div ref={toLeads}>
-      {/* <div className={isOTO ? styles.wrapperOTO : styles.wrapper}> */}
       <div className={styles.wrapper}>
         <div className={styles.background}>
           <div className={styles.wrapperSupergraphicLeft}>
             <Image
               src={SupergraphicLeft}
-              // alt={
-              //   brand
-              //     ? `Vector Form Customer Service Mobil ${
-              //         carModelDetails?.brand
-              //       } ${carModelDetails?.model.replace('-', ' ')}`
-              //     : 'Vector Promosi Mobil'
-              // }
               alt={'Vector Promosi Mobil'}
               width={200}
               height={140}
@@ -480,13 +363,6 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
           <div className={styles.wrapperSupergraphicRight}>
             <Image
               src={SupergraphicRight}
-              // alt={
-              //   brand
-              //     ? `Vector Form Customer Service Mobil ${
-              //         carModelDetails?.brand
-              //       } ${carModelDetails?.model.replace('-', ' ')}`
-              //     : 'Vector Promosi Mobil'
-              // }
               alt={'Vector Promosi Mobil'}
               width={200}
               height={140}

@@ -17,9 +17,7 @@ import Tooltip from 'antd/lib/tooltip'
 import TooltipContentQualifacation from 'components/molecules/tooltipContent'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import elementId from 'helpers/elementIds'
-import PromoBottomSheet from '../promoBottomSheet'
-import { LanguageCode, SessionStorageKey } from 'utils/enum'
-import { InsuranceTooltip } from '../insuranceTooltip'
+import { SessionStorageKey } from 'utils/enum'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
@@ -74,7 +72,6 @@ export const CalculationUsedCarResult = ({
   ) // assume this state as Context, mind about re-render
   const [tenureForPopUp, setTenureForPopUp] = useState(data[0].tenure)
   const [openPromo, setOpenPromo] = useState(false)
-  const [openTooltipInsurance, setOpenTooltipInsurance] = useState(false)
   const [selectedCalculatePromo, setSelectedCalculatePromo] =
     useState<LoanCalculatorInsuranceAndPromoType | null>()
 
@@ -133,30 +130,6 @@ export const CalculationUsedCarResult = ({
     trackCountlyClickResultItem(value)
     saveDataCarForLoginPageView(value.tenor.toString(), value.loanRank)
     setSelectedLoan(value)
-    const selectedData = data.filter(
-      (item: any) => item.tenor === value.tenor,
-    )[0]
-
-    // setFinalLoan({
-    //   selectedInsurance: selectedData.selectedInsurance,
-    //   selectedPromoFinal: selectedData.selectedPromo,
-    //   tppFinal: selectedData.tdpAfterPromo,
-    //   installmentFinal: selectedData.installmentAfterPromo,
-    //   interestRateFinal: selectedData.interestRateAfterPromo,
-    //   installmentBeforePromo: selectedData.installmentBeforePromo,
-    //   interestRateBeforePromo: selectedData.interestRateBeforePromo,
-    //   tdpBeforePromo: selectedData.tdpBeforePromo,
-    // })
-  }
-
-  const getLoanRank = (rank: string) => {
-    if (rank === LoanRank.Green) {
-      return 'Mudah'
-    } else if (rank === LoanRank.Red) {
-      return 'Sulit'
-    }
-
-    return ''
   }
 
   useEffect(() => {
