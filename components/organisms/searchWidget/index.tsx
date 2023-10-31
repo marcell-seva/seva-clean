@@ -416,8 +416,8 @@ const SearchWidget = () => {
           <span
             className={`${styles.expandFinancialInfo} ${styles.expandFinancialInfoClose}`}
           >
-            Isi semua data di bawah ini untuk melihat peluang pinjamanmu akan
-            disetujui.
+            Isi data dibawah ini untuk mendapatkan rekomendasi mobil yang cocok
+            dengan kondisi keuanganmu.
           </span>
         </>
       )
@@ -450,7 +450,8 @@ const SearchWidget = () => {
         <span
           className={`${styles.expandFinancialInfo} ${styles.expandFinancialInfoOpen}`}
         >
-          Isi data tambahan untuk melihat peluang pinjamanmu.
+          Isi filter untuk mendapatkan rekomendasi mobil yang cocok dengan
+          kondisi keuanganmu.
         </span>
       </>
     )
