@@ -39,6 +39,45 @@ export const sortOptionsUsedCar = [
   },
 ]
 
+export const assuranceOptions = [
+  {
+    label: 'Full Comprehensive',
+    name: 'Full Comprehensive',
+    tenureAR: 60,
+    tenureTLO: 0,
+  },
+  {
+    label: '4 Tahun Comprehensive + 1 Tahun TLO',
+    name: '4 Tahun Comprehensive + 1 Tahun TLO',
+    tenureAR: 48,
+    tenureTLO: 12,
+  },
+  {
+    label: '3 Tahun Comprehensive + 2 Tahun TLO',
+    name: '3 Tahun Comprehensive + 2 Tahun TLO',
+    tenureAR: 36,
+    tenureTLO: 24,
+  },
+  {
+    label: '2 Tahun Comprehensive + 3 Tahun TLO',
+    name: '2 Tahun Comprehensive + 3 Tahun TLO',
+    tenureAR: 24,
+    tenureTLO: 36,
+  },
+  {
+    label: '1 Tahun Comprehensive + 4 Tahun TLO',
+    name: '1 Tahun Comprehensive + 4 Tahun TLO',
+    tenureAR: 12,
+    tenureTLO: 48,
+  },
+  {
+    label: 'Full TLO',
+    name: 'Full TLO',
+    tenureAR: 0,
+    tenureTLO: 60,
+  },
+]
+
 export const ageOptions = [
   { label: '18-27', value: '18-27', testid: '18-27' },
   { label: '28-34', value: '28-34', testid: '28-34' },

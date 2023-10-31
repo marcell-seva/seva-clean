@@ -517,16 +517,16 @@ export default function UsedCarVariantList({
             /> */}
             <div className={styles.wrapper}>
               <h2 className={styles.titleCar}>
-                {`${usedCarModelDetailsRes.brandName}  ${usedCarModelDetailsRes.modelName} ${usedCarModelDetailsRes.variantName} ${usedCarModelDetailsRes.nik}`}
+                {`${usedCarModelDetailsRes?.brandName}  ${usedCarModelDetailsRes?.modelName} ${usedCarModelDetailsRes?.variantName} ${usedCarModelDetailsRes?.nik}`}
               </h2>
               <h3 className={styles.titlePrice}>
                 Rp
-                {addSeparator(usedCarModelDetailsRes.priceValue.split('.')[0])}
+                {addSeparator(usedCarModelDetailsRes?.priceValue.split('.')[0])}
               </h3>
               <div className={styles.wrapperLocation}>
                 <IconLocation width={18} height={18} color="#B4231E" />
                 <p className={styles.titleLocation}>
-                  {usedCarModelDetailsRes.cityName}
+                  {usedCarModelDetailsRes?.cityName}
                 </p>
               </div>
             </div>

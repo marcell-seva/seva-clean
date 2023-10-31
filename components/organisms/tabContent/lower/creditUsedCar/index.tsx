@@ -6,9 +6,11 @@ import {
 import {
   Article,
   CityOtrOption,
+  CreditCarCalculation,
   FinalLoan,
   LoanCalculatorIncludePromoPayloadType,
   LoanCalculatorInsuranceAndPromoType,
+  SelectedCalculateLoanUsedCar,
   SpecialRateListWithPromoType,
   UsedCarRecommendation,
   trackDataCarType,
@@ -20,7 +22,7 @@ import {
   LoanRank,
   TrackerFlag,
 } from 'utils/types/models'
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useContext, useRef } from 'react'
 import {
   LeadsFormSecondary,
   UsedCarRecommendations,
@@ -63,7 +65,7 @@ import { ModelVariant } from 'utils/types/carVariant'
 import { TrackVariantList } from 'utils/types/tracker'
 import { useCar } from 'services/context/carContext'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
-import { ageOptions } from 'utils/config/funnel.config'
+import { ageOptions, assuranceOptions } from 'utils/config/funnel.config'
 import { formatPriceNumberThousandDivisor } from 'utils/numberUtils/numberUtils'
 import { getToken } from 'utils/handler/auth'
 import {
@@ -87,6 +89,7 @@ import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
 import dynamic from 'next/dynamic'
 import {
+  getCarCreditsSk,
   getLoanCalculatorInsurance,
   getRecommendation,
   getUsedCarRecommendations,
@@ -97,10 +100,12 @@ import { getCarModelDetailsById } from 'utils/handler/carRecommendation'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
+import { IconMoney } from 'components/atoms/icon'
 import { UsedPdpDataLocalContext } from 'pages/mobil-bekas/p/[[...slug]]'
+import { LeadsFormUsedCar } from 'components/organisms'
 
-const CalculationResult = dynamic(() =>
-  import('components/organisms').then((mod) => mod.CalculationResult),
+const CalculationUsedCarResult = dynamic(() =>
+  import('components/organisms').then((mod) => mod.CalculationUsedCarResult),
 )
 const NewCarRecommendations = dynamic(
   () => import('components/organisms/NewCarRecommendations'),
@@ -186,8 +191,7 @@ export const CreditUsedCarTab = () => {
     null,
   )
   const [isAssuranceModalOpen, setIsAssuranceModalOpen] = useState(false)
-  const [finalMinInputDp, setFinalMinInputDp] = useState(10000000)
-  const [finalMaxInputDp, setFinalMaxInputDp] = useState(10000000000000)
+  const [chosenAssurance, setChosenAssurance] = useState<any>({})
   const [carRecommendations, setCarRecommendations] = useState<
     CarRecommendation[]
   >([])
@@ -196,7 +200,7 @@ export const CreditUsedCarTab = () => {
   >([])
   const [articles, setArticles] = React.useState<Article[]>([])
   const [selectedLoan, setSelectedLoan] =
-    useState<SpecialRateListWithPromoType | null>(null)
+    useState<SelectedCalculateLoanUsedCar | null>(null)
   const [storedFilter] = useLocalStorage<null>(
     LocalStorageKey.FinancialData,
     null,
@@ -530,14 +534,6 @@ export const CreditUsedCarTab = () => {
     checkReffcode()
   }, [carVariantList])
 
-  const sortedCarModelVariant = useMemo(() => {
-    return (
-      carModelDetails?.variants.sort(function (a, b) {
-        return a.priceValue - b.priceValue
-      }) || []
-    )
-  }, [carModelDetails])
-
   const passedVariantData = useMemo(() => {
     return (
       carModelDetails?.variants.filter(
@@ -619,18 +615,6 @@ export const CreditUsedCarTab = () => {
     }
   }
 
-  const getInfoText = (): string => {
-    return `${info.brand} ${info.model} adalah mobil dengan ${info.seats} Kursi ${info.type} ${info.priceRange} di Indonesia. Mobil ini tersedia dalam  ${info.color} pilihan warna, ${info.totalType} tipe mobil, dan ${info.transmissionType} opsi transmisi: ${info.transmissionDetail} di Indonesia. Mobil ini memiliki dimensi sebagai berikut: ${info.length} mm L x ${info.width} mm W x ${info.height} mm H. Cicilan kredit mobil ${info.brand} ${info.model} dimulai dari Rp ${info.credit} juta selama ${info.month} bulan.`
-  }
-
-  const getTipsText = (): string => {
-    const currentYear: number = new Date().getFullYear()
-    return `Saat ini membeli mobil baru bukanlah hal buruk. Di tahun ${currentYear} data menunjukan bahwa pembelian mobil baru mengalami peningkatan yang cukup signifikan,
-     ini artinya mobil baru masih menjadi pilihan banyak orang. Jika kamu berniat membeli mobil baru, mobil baru ${info.brand} ${info.model}
-    Membeli mobil baru sama halnya seperti membeli mobil bekas, kita juga harus memperhatikan perawatannya, karena mobil yang rajin perawatan tentu akan bertahan untuk jangka waktu yang panjang. Perawatan yang bisa dilakukan untuk mobil baru ${info.brand} ${info.model}
-      adalah pergantian oli, filter AC, periksa tekanan ban, serta mencuci mobil.`
-  }
-
   const getColorVariant = () => {
     const currentUrlPathName = window.location.pathname
     const splitedPath = currentUrlPathName.split('/')
@@ -697,16 +681,6 @@ export const CreditUsedCarTab = () => {
       dpAmount: dpAmount,
     }
     setInfo(info)
-  }
-
-  const fetchAllCarModels = async () => {
-    const params = new URLSearchParams()
-    params.append('cityId', defaultCity.id as string)
-    params.append('city', defaultCity.cityCode as string)
-
-    const response = await getRecommendation('', { params })
-
-    setAllModalCarList(response.carRecommendations)
   }
 
   const fetchCarVariant = async () => {
@@ -776,6 +750,11 @@ export const CreditUsedCarTab = () => {
       )
     }
 
+    if (name === 'assurance') {
+      const result = assuranceOptions.find((opt: any) => opt.label === value)
+      setChosenAssurance(result)
+    }
+
     setForms({
       ...forms,
       [name]: value,
@@ -788,44 +767,6 @@ export const CreditUsedCarTab = () => {
         <span className={styles.errorMessage}>Wajib diisi</span>
       </div>
     )
-  }
-
-  const renderErrorMessageCity = () => {
-    if (modelError && forms.city?.cityCode) {
-      return (
-        <div className={`${styles.errorMessageWrapper} shake-animation-X`}>
-          <span className={styles.errorMessage}>
-            Mobil tidak tersedia di kotamu. Silakan pilih kota lain.
-          </span>
-        </div>
-      )
-    } else if (isValidatingEmptyField && !forms.city) {
-      return renderErrorMessageEmpty()
-    } else {
-      return <></>
-    }
-  }
-
-  const renderIncomeErrorMessage = () => {
-    if (isIncomeTooLow) {
-      return (
-        <div className={`${styles.errorMessageWrapper}`}>
-          <span className={styles.errorMessage}>
-            Pendapatan yang kamu masukkan terlalu rendah
-          </span>
-        </div>
-      )
-    } else if (isValidatingEmptyField && !forms.monthlyIncome) {
-      return renderErrorMessageEmpty()
-    } else {
-      return <></>
-    }
-  }
-
-  const onBlurIncomeInput = () => {
-    if (parseInt(forms.monthlyIncome) < 3000000) {
-      setIsIncomeTooLow(true)
-    }
   }
 
   const handleDpChange = (
@@ -849,83 +790,11 @@ export const CreditUsedCarTab = () => {
   }
 
   const getCarOtrNumber = () => {
-    return Number(forms.variant?.otr.replace('Rp', '').replaceAll('.', ''))
+    return Number(usedCarModelDetailsRes?.priceValue.split('.')[0])
   }
 
   const getCarDiscountNumber = () => {
     return Number(forms.variant?.discount ?? 0)
-  }
-
-  const handleInstallmentTypeChange = (
-    name: InstallmentTypeOptions,
-    value: boolean,
-  ) => {
-    if (value) {
-      setInstallmentType(name)
-    }
-  }
-
-  const handleOnChangePromoCode = (value: string) => {
-    setIsDataSubmitted(false)
-
-    setForms({
-      ...forms,
-      promoCode: value,
-    })
-  }
-
-  const handlePromoCodeValidResult = (value: boolean) => {
-    setForms({
-      ...forms,
-      isValidPromoCode: value,
-    })
-  }
-
-  const checkPromoCode = async () => {
-    if (!forms.promoCode) {
-      setPromoCodeSessionStorage('')
-      handlePromoCodeValidResult(true)
-      return true
-    }
-
-    try {
-      setIsLoadingPromoCode(true)
-      const result: any = await postCheckPromoGiias(forms.promoCode)
-      setIsLoadingPromoCode(false)
-
-      if (result.message === 'valid promo code') {
-        if (result.citySelector) {
-          const citygias = {
-            id: result.citySelector.id,
-            cityName: result.citySelector.cityName,
-            cityCode: result.citySelector.cityCode,
-            province: result.citySelector.province,
-          }
-          saveCity(citygias)
-        }
-        setIsErrorPromoCode(false)
-        setisSuccessPromoCode(true)
-        setPromoCodeSessionStorage(forms.promoCode)
-        handlePromoCodeValidResult(true)
-        return true
-      }
-      setIsErrorPromoCode(true)
-      setisSuccessPromoCode(false)
-      handlePromoCodeValidResult(false)
-      return false
-    } catch (err: any) {
-      setIsLoadingPromoCode(false)
-      setIsErrorPromoCode(true)
-      setisSuccessPromoCode(false)
-      handlePromoCodeValidResult(false)
-      return false
-    }
-  }
-
-  const resetPromoCodeStatus = () => {
-    setIsLoadingPromoCode(false)
-    setIsErrorPromoCode(false)
-    setisSuccessPromoCode(false)
   }
 
   const generateSelectedInsuranceAndPromo = async (
@@ -1071,102 +940,90 @@ export const CreditUsedCarTab = () => {
   const onClickCalculate = async () => {
     validateFormFields()
 
-    if (isDisableCtaCalculate) {
-      return
+    // if (isDisableCtaCalculate) {
+    //   return
+    // }
+
+    setIsLoadingCalculation(true)
+
+    // const dataFinancial = {
+    //   ...financialQuery,
+    //   downPaymentAmount: dpValue,
+    //   age: forms.age ? String(forms.age) : financialQuery.age,
+    //   monthlyIncome: forms.monthlyIncome
+    //     ? forms.monthlyIncome
+    //     : financialQuery.monthlyIncome,
+    // }
+
+    // patchFinancialQuery(dataFinancial)
+    // patchFunnelQuery({
+    //   age: forms.age,
+    //   monthlyIncome: forms.monthlyIncome,
+    //   downPaymentAmount: forms.downPaymentAmount,
+    // })
+
+    // const payload: LoanCalculatorIncludePromoPayloadType = {
+    //   brand: forms.model?.brandName ?? '',
+    //   model: removeFirstWordFromString(forms.model?.modelName ?? ''),
+    //   age: forms.age,
+    //   angsuranType: forms.paymentOption,
+    //   city: forms.city.cityCode,
+    //   discount: getCarDiscountNumber(),
+    //   dp: mappedDpPercentage,
+    //   dpAmount: dpValue,
+    //   monthlyIncome: forms.monthlyIncome,
+    //   otr: getCarOtrNumber() - getCarDiscountNumber(),
+    // }
+    const payloadUsedCar: CreditCarCalculation = {
+      nik: usedCarModelDetailsRes.nik,
+      DP: dpValue,
+      priceValue: Number(usedCarModelDetailsRes.priceValue.split('.')[0]),
+      tenureAR: chosenAssurance.tenureAR,
+      tenureTLO: chosenAssurance.tenureTLO,
+      presentaseDP: dpPercentage,
     }
+    const queryParam = new URLSearchParams()
+    queryParam.append('nik', payloadUsedCar.nik.toString())
+    queryParam.append('DP', payloadUsedCar.DP.toString())
+    queryParam.append('priceValue', payloadUsedCar.priceValue.toString())
+    queryParam.append('tenureAR', payloadUsedCar.tenureAR.toString())
+    queryParam.append('tenureTLO', payloadUsedCar.tenureTLO.toString())
+    queryParam.append('presentaseDP', payloadUsedCar.presentaseDP.toString())
+    getCarCreditsSk('', { params: queryParam })
+      .then((response) => {
+        const result = response.data.reverse()
+        const filteredResult = getFilteredCalculationResults(result)
+        setCalculationResult(filteredResult)
 
-    const promoCodeValidity = await checkPromoCode()
-
-    if (promoCodeValidity) {
-      setIsLoadingCalculation(true)
-
-      const dataFinancial = {
-        ...financialQuery,
-        downPaymentAmount: dpValue,
-        age: forms.age ? String(forms.age) : financialQuery.age,
-        monthlyIncome: forms.monthlyIncome
-          ? forms.monthlyIncome
-          : financialQuery.monthlyIncome,
-      }
-
-      patchFinancialQuery(dataFinancial)
-      patchFunnelQuery({
-        age: forms.age,
-        monthlyIncome: forms.monthlyIncome,
-        downPaymentAmount: forms.downPaymentAmount,
+        // // select loan with the longest tenure as default
+        const selectedLoanInitialValue = filteredResult[0] ?? null
+        setSelectedLoan(selectedLoanInitialValue)
+        saveDefaultTenureCarForLoginPageView(
+          selectedLoanInitialValue.tenure,
+          selectedLoanInitialValue.loanRank,
+        )
+        setIsDataSubmitted(true)
+        scrollToResult()
       })
-
-      fetchCarRecommendations()
-      fetchUsedCarRecommendations()
-      const payload: LoanCalculatorIncludePromoPayloadType = {
-        brand: forms.model?.brandName ?? '',
-        model: removeFirstWordFromString(forms.model?.modelName ?? ''),
-        age: forms.age,
-        angsuranType: forms.paymentOption,
-        city: forms.city.cityCode,
-        discount: getCarDiscountNumber(),
-        dp: mappedDpPercentage,
-        dpAmount: dpValue,
-        monthlyIncome: forms.monthlyIncome,
-        otr: getCarOtrNumber() - getCarDiscountNumber(),
-      }
-
-      postLoanPermutationIncludePromo(payload)
-        .then((response) => {
-          const result = response.data.reverse()
-          const filteredResult = getFilteredCalculationResults(result)
-          setCalculationResult(filteredResult)
-          generateSelectedInsuranceAndPromo(filteredResult)
-          trackCountlyResult(filteredResult)
-
-          // select loan with the longest tenure as default
-          const selectedLoanInitialValue =
-            filteredResult.sort(
-              (
-                a: SpecialRateListWithPromoType,
-                b: SpecialRateListWithPromoType,
-              ) => b.tenure - a.tenure,
-            )[0] ?? null
-          setSelectedLoan(selectedLoanInitialValue)
-          saveDefaultTenureCarForLoginPageView(
-            selectedLoanInitialValue.tenure,
-            selectedLoanInitialValue.loanRank,
+      .catch((error: any) => {
+        if (error?.response?.data?.message) {
+          setToastMessage(`${error?.response?.data?.message}`)
+        } else {
+          setToastMessage(
+            'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
           )
-          setIsDataSubmitted(true)
-          setCalculationApiPayload(payload)
-          // scrollToResult()
-        })
-        .catch((error: any) => {
-          if (error?.response?.data?.message) {
-            setToastMessage(`${error?.response?.data?.message}`)
-          } else {
-            setToastMessage(
-              'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
-            )
-          }
-          setIsOpenToast(true)
-        })
-        .finally(() => {
-          setIsLoadingCalculation(false)
-        })
-    }
+        }
+        setIsOpenToast(true)
+      })
+      .finally(() => {
+        setIsLoadingCalculation(false)
+      })
   }
 
   const validateFormFields = () => {
     setIsValidatingEmptyField(true)
-    if (!forms.city) {
-      scrollToElement('loan-calculator-form-city')
-    } else if (!forms.model?.modelId || !forms.model.modelName || modelError) {
-      scrollToElement('loan-calculator-form-car-model')
-    } else if (!forms.variant?.variantId || !forms.variant.variantName) {
-      scrollToElement('loan-calculator-form-car-variant')
-    } else if (!forms.monthlyIncome || isIncomeTooLow) {
-      scrollToElement('loan-calculator-form-income')
-    } else if (!forms.downPaymentAmount || isDpTooLow || isDpExceedLimit) {
-      scrollToElement('loan-calculator-form-dp')
-    } else if (!forms.paymentOption) {
-      scrollToElement('loan-calculator-form-installment-type')
-    } else if (!forms.age) {
+
+    if (Object.keys(chosenAssurance).length === 0) {
       scrollToElement('loan-calculator-form-age')
     }
   }
@@ -1196,156 +1053,108 @@ export const CreditUsedCarTab = () => {
     }
   }
 
-  const handleRedirectToWhatsapp = async (
-    loan: SpecialRateListWithPromoType,
-  ) => {
-    let temanSevaStatus = 'No'
-    if (referralCodeFromUrl) {
-      temanSevaStatus = 'Yes'
-    } else if (!!getToken()) {
-      const response = await getCustomerInfoSeva()
-      if (response[0].temanSevaTrxCode) {
-        temanSevaStatus = 'Yes'
-      }
-    }
-    trackEventCountly(CountlyEventNames.WEB_WA_DIRECT_CLICK, {
-      PAGE_ORIGINATION: 'PDP - Kredit',
-      SOURCE_BUTTON: 'CTA button Hubungi Agen SEVA',
-      CAR_BRAND: carModelDetails?.brand,
-      CAR_MODEL: carModelDetails?.model,
-      CAR_VARIANT: forms.variant?.variantName
-        ? forms.variant?.variantName
-        : 'Null',
-      PELUANG_KREDIT_BADGE:
-        carModelLoanRankPLP && carModelLoanRankPLP === 'Green'
-          ? 'Mudah disetujui'
-          : carModelLoanRankPLP && carModelLoanRankPLP === 'Red'
-          ? 'Sulit disetujui'
-          : 'Null',
-      TENOR_OPTION: loan?.tenure ? loan?.tenure + ' Tahun' : 'Null',
-      TENOR_RESULT:
-        dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Green'
-          ? 'Mudah disetujui'
-          : dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Red'
-          ? 'Sulit disetujui'
-          : 'Null',
-      KK_RESULT: 'Null',
-      IA_RESULT: 'Null',
-      TEMAN_SEVA_STATUS: temanSevaStatus,
-      INCOME_LOAN_CALCULATOR: filterStorage?.monthlyIncome,
-      INCOME_KUALIFIKASI_KREDIT: 'Null',
-      INCOME_CHANGE: 'Null',
-      OCCUPATION: 'Null',
-    })
-    const { model, variant, downPaymentAmount } = forms
-    const message = `Halo, saya tertarik dengan ${model?.modelName} ${variant?.variantName} dengan DP sebesar Rp ${downPaymentAmount}, cicilan per bulannya Rp ${loan?.installment}, dan tenor ${loan?.tenure} tahun.`
-
-    const whatsAppUrl = await getCustomerAssistantWhatsAppNumber()
-    window.open(`${whatsAppUrl}?text=${encodeURI(message)}`, '_blank')
-  }
-
   const handleClickButtonQualification = (
-    loan: SpecialRateListWithPromoType,
+    loan: SelectedCalculateLoanUsedCar,
   ) => {
-    trackCountlyClickCheckQualification(loan)
+    // trackCountlyClickCheckQualification(loan)
     setIsAssuranceModalOpen(true)
 
-    const selectedPromoTenure = insuranceAndPromoForAllTenure.filter(
-      (x) => x.tenure === loan.tenure,
-    )
+    // const selectedPromoTenure = insuranceAndPromoForAllTenure.filter(
+    //   (x) => x.tenure === loan.tenure,
+    // )
 
-    const rateType =
-      selectedPromoTenure[0].interestRateAfterPromo !== 0
-        ? selectedPromoTenure[0].applied === 'totalBayarGiias'
-          ? 'GIIAS2023'
-          : selectedPromoTenure[0].applied === 'totalBayarSepkta'
-          ? 'TOYOTASPEKTA01'
-          : 'REGULAR'
-        : 'REGULAR'
+    // const rateType =
+    //   selectedPromoTenure[0].interestRateAfterPromo !== 0
+    //     ? selectedPromoTenure[0].applied === 'totalBayarGiias'
+    //       ? 'GIIAS2023'
+    //       : selectedPromoTenure[0].applied === 'totalBayarSepkta'
+    //       ? 'TOYOTASPEKTA01'
+    //       : 'REGULAR'
+    //     : 'REGULAR'
 
-    saveLocalStorage(LocalStorageKey.SelectedRateType, rateType)
+    // saveLocalStorage(LocalStorageKey.SelectedRateType, rateType)
 
-    const dataWithoutPromo = {
-      ...selectedPromoTenure[0],
+    // const dataWithoutPromo = {
+    //   ...selectedPromoTenure[0],
 
-      selectedInsurance: finalLoan.selectedInsurance,
-      selectedPromo: finalLoan.selectedPromoFinal,
-      tdpAfterPromo: finalLoan.tppFinal,
-      installmentAfterPromo: finalLoan.installmentFinal,
-      interestRateAfterPromo: finalLoan.interestRateFinal,
-      installmentBeforePromo: finalLoan.installmentBeforePromo,
-      interestRateBeforePromo: finalLoan.interestRateBeforePromo,
-      tdpBeforePromo: finalLoan.tdpBeforePromo,
-    }
-    if (
-      finalLoan.tppFinal !== 0 &&
-      finalLoan.selectedInsurance.value.includes('FC')
-    ) {
-      saveLocalStorage(
-        LocalStorageKey.SelectablePromo,
-        JSON.stringify(selectedPromoTenure[0]),
-      )
-    } else {
-      saveLocalStorage(
-        LocalStorageKey.SelectablePromo,
-        JSON.stringify(dataWithoutPromo),
-      )
-    }
+    //   selectedInsurance: finalLoan.selectedInsurance,
+    //   selectedPromo: finalLoan.selectedPromoFinal,
+    //   tdpAfterPromo: finalLoan.tppFinal,
+    //   installmentAfterPromo: finalLoan.installmentFinal,
+    //   interestRateAfterPromo: finalLoan.interestRateFinal,
+    //   installmentBeforePromo: finalLoan.installmentBeforePromo,
+    //   interestRateBeforePromo: finalLoan.interestRateBeforePromo,
+    //   tdpBeforePromo: finalLoan.tdpBeforePromo,
+    // }
+    // if (
+    //   finalLoan.tppFinal !== 0 &&
+    //   finalLoan.selectedInsurance.value.includes('FC')
+    // ) {
+    //   saveLocalStorage(
+    //     LocalStorageKey.SelectablePromo,
+    //     JSON.stringify(selectedPromoTenure[0]),
+    //   )
+    // } else {
+    //   saveLocalStorage(
+    //     LocalStorageKey.SelectablePromo,
+    //     JSON.stringify(dataWithoutPromo),
+    //   )
+    // }
 
-    const installment =
-      finalLoan.installmentFinal !== 0
-        ? finalLoan.installmentFinal
-        : finalLoan.installmentBeforePromo
+    // const installment =
+    //   finalLoan.installmentFinal !== 0
+    //     ? finalLoan.installmentFinal
+    //     : finalLoan.installmentBeforePromo
 
-    const tpp =
-      finalLoan.tppFinal !== 0 ? finalLoan.tppFinal : finalLoan.tdpBeforePromo
+    // const tpp =
+    //   finalLoan.tppFinal !== 0 ? finalLoan.tppFinal : finalLoan.tdpBeforePromo
 
-    const rate =
-      finalLoan.interestRateFinal !== 0
-        ? finalLoan.interestRateFinal
-        : finalLoan.interestRateBeforePromo
+    // const rate =
+    //   finalLoan.interestRateFinal !== 0
+    //     ? finalLoan.interestRateFinal
+    //     : finalLoan.interestRateBeforePromo
 
-    const moengageAttribute = {
-      brand: forms.model?.brandName,
-      model: forms.model?.modelName,
-      price: forms.variant?.otr,
-      variants: forms.variant?.variantName,
-      montly_instalment: selectedLoan?.installment.toString(),
-      downpayment: selectedLoan?.dpAmount.toString(),
-      loan_tenure: selectedLoan?.tenure.toString(),
-      car_seat: carVariantDetails?.variantDetail.carSeats.toString(),
-      fuel: carVariantDetails?.variantDetail.fuelType,
-      transmition: carVariantDetails?.variantDetail.transmission,
-      body_type: carVariantDetails?.variantDetail.bodyType,
-      dimension:
-        recommendation?.filter(
-          (car) => car.id === carVariantDetails?.modelDetail.id,
-        ).length > 0
-          ? recommendation?.filter(
-              (car) => car.id === carVariantDetails?.modelDetail.id,
-            )[0].height
-          : '',
-    }
-    saveLocalStorage(
-      LocalStorageKey.MoengageAttribute,
-      JSON.stringify(moengageAttribute),
-    )
-    saveLocalStorage(
-      LocalStorageKey.SelectedAngsuranType,
-      forms.paymentOption === InstallmentTypeOptions.ADDM
-        ? InstallmentTypeOptions.ADDM
-        : InstallmentTypeOptions.ADDB,
-    )
-    setSimpleCarVariantDetails({
-      modelId: forms.model?.modelId,
-      variantId: forms.variant?.variantId,
-      loanTenure: selectedLoan?.tenure,
-      loanDownPayment: tpp,
-      loanMonthlyInstallment: installment,
-      loanRank: selectedLoan?.loanRank,
-      totalFirstPayment: tpp,
-      flatRate: rate,
-    })
+    // const moengageAttribute = {
+    //   brand: forms.model?.brandName,
+    //   model: forms.model?.modelName,
+    //   price: forms.variant?.otr,
+    //   variants: forms.variant?.variantName,
+    //   montly_instalment: selectedLoan?.installment.toString(),
+    //   downpayment: selectedLoan?.dpAmount.toString(),
+    //   loan_tenure: selectedLoan?.tenure.toString(),
+    //   car_seat: carVariantDetails?.variantDetail.carSeats.toString(),
+    //   fuel: carVariantDetails?.variantDetail.fuelType,
+    //   transmition: carVariantDetails?.variantDetail.transmission,
+    //   body_type: carVariantDetails?.variantDetail.bodyType,
+    //   dimension:
+    //     recommendation?.filter(
+    //       (car) => car.id === carVariantDetails?.modelDetail.id,
+    //     ).length > 0
+    //       ? recommendation?.filter(
+    //           (car) => car.id === carVariantDetails?.modelDetail.id,
+    //         )[0].height
+    //       : '',
+    // }
+    // saveLocalStorage(
+    //   LocalStorageKey.MoengageAttribute,
+    //   JSON.stringify(moengageAttribute),
+    // )
+    // saveLocalStorage(
+    //   LocalStorageKey.SelectedAngsuranType,
+    //   forms.paymentOption === InstallmentTypeOptions.ADDM
+    //     ? InstallmentTypeOptions.ADDM
+    //     : InstallmentTypeOptions.ADDB,
+    // )
+    // setSimpleCarVariantDetails({
+    //   modelId: forms.model?.modelId,
+    //   variantId: forms.variant?.variantId,
+    //   loanTenure: selectedLoan?.tenure,
+    //   loanDownPayment: tpp,
+    //   loanMonthlyInstallment: installment,
+    //   loanRank: selectedLoan?.loanRank,
+    //   totalFirstPayment: tpp,
+    //   flatRate: rate,
+    // })
   }
 
   const isTooltipExpired = (): boolean => {
@@ -1404,27 +1213,9 @@ export const CreditUsedCarTab = () => {
     })
   }
 
-  const getLoanRank = (rank: string) => {
-    if (rank === LoanRank.Green) {
-      return 'Mudah'
-    } else if (rank === LoanRank.Red) {
-      return 'Sulit'
-    }
-
-    return ''
-  }
-
   const onCloseQualificationPopUp = () => {
-    trackCountlyOnCloseQualificationModal()
+    // trackCountlyOnCloseQualificationModal()
     setIsAssuranceModalOpen(false)
-  }
-
-  const clearPromoCodeHandler = () => {
-    setIsErrorPromoCode(false)
-    setForms({
-      ...forms,
-      promoCode: '',
-    })
   }
 
   const formatCurrency = (value: number): string => {
@@ -1437,41 +1228,6 @@ export const CreditUsedCarTab = () => {
       CAR_BRAND: forms.model?.brandName ?? 'Null',
       CAR_MODEL: removeCarBrand(forms.model?.modelName ?? 'Null'),
     }
-  }
-
-  const onOpenTooltipCityField = () => {
-    trackEventCountly(
-      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CITY_TOOLTIP_CLICK,
-      dataForCountlyTrackerOnClick(),
-    )
-  }
-
-  const onShowDropdownCityField = () => {
-    trackEventCountly(
-      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CITY_CLICK,
-      dataForCountlyTrackerOnClick(),
-    )
-  }
-
-  const onShowDropdownModelField = () => {
-    trackEventCountly(
-      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_MODEL_CLICK,
-      dataForCountlyTrackerOnClick(),
-    )
-  }
-
-  const onShowDropdownVariantField = () => {
-    trackEventCountly(
-      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_VARIANT_CLICK,
-      dataForCountlyTrackerOnClick(),
-    )
-  }
-
-  const onFocusIncomeField = () => {
-    trackEventCountly(
-      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_INCOME_CLICK,
-      dataForCountlyTrackerOnClick(),
-    )
   }
 
   const onFocusDpAmountField = () => {
@@ -1591,59 +1347,59 @@ export const CreditUsedCarTab = () => {
     )
   }
 
-  const trackCountlyOnClickCtaModal = () => {
-    const selectedLoanDataStorage: any = getLocalStorage(
-      LocalStorageKey.SelectablePromo,
-    )
-    if (selectedLoanDataStorage) {
-      trackEventCountly(
-        CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CHECK_QUALIFICATION_BANNER_CHECK_CLICK,
-        {
-          ...dataForCountlyTrackerOnClick(),
-          PELUANG_KREDIT_BADGE: isUsingFilterFinancial
-            ? getCreditBadgeForCountlyTracker()
-            : 'Null',
-          CAR_VARIANT: forms.variant?.variantName ?? 'Null',
-          TENOR_OPTION: `${selectedLoan?.tenure} tahun`,
-          TENOR_RESULT:
-            selectedLoan?.loanRank === LoanRank.Green
-              ? 'Mudah disetujui'
-              : 'Sulit disetujui',
-          INSURANCE_TYPE: !!selectedLoanDataStorage
-            ? selectedLoanDataStorage?.selectedInsurance.label
-            : 'Null',
-          PROMO_AMOUNT: !!selectedLoanDataStorage
-            ? selectedLoanDataStorage?.selectedPromo?.length
-            : 'Null',
-          LOGIN_STATUS: !!getToken() ? 'Yes' : 'No',
-        },
-      )
-    }
-  }
+  // const trackCountlyOnClickCtaModal = () => {
+  //   const selectedLoanDataStorage: any = getLocalStorage(
+  //     LocalStorageKey.SelectablePromo,
+  //   )
+  //   if (selectedLoanDataStorage) {
+  //     trackEventCountly(
+  //       CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CHECK_QUALIFICATION_BANNER_CHECK_CLICK,
+  //       {
+  //         ...dataForCountlyTrackerOnClick(),
+  //         PELUANG_KREDIT_BADGE: isUsingFilterFinancial
+  //           ? getCreditBadgeForCountlyTracker()
+  //           : 'Null',
+  //         CAR_VARIANT: forms.variant?.variantName ?? 'Null',
+  //         TENOR_OPTION: `${selectedLoan?.tenure} tahun`,
+  //         TENOR_RESULT:
+  //           selectedLoan?.loanRank === LoanRank.Green
+  //             ? 'Mudah disetujui'
+  //             : 'Sulit disetujui',
+  //         INSURANCE_TYPE: !!selectedLoanDataStorage
+  //           ? selectedLoanDataStorage?.selectedInsurance.label
+  //           : 'Null',
+  //         PROMO_AMOUNT: !!selectedLoanDataStorage
+  //           ? selectedLoanDataStorage?.selectedPromo?.length
+  //           : 'Null',
+  //         LOGIN_STATUS: !!getToken() ? 'Yes' : 'No',
+  //       },
+  //     )
+  //   }
+  // }
 
-  const trackCountlyOnCloseQualificationModal = () => {
-    const selectedLoanDataStorage: any = getLocalStorage(
-      LocalStorageKey.SelectablePromo,
-    )
-    if (selectedLoanDataStorage) {
-      trackEventCountly(
-        CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CHECK_QUALIFICATION_BANNER_CLOSE_CLICK,
-        {
-          ...dataForCountlyTrackerOnClick(),
-          CAR_VARIANT: forms.variant?.variantName ?? 'Null',
-          TENOR_OPTION: `${selectedLoan?.tenure} tahun`,
-          TENOR_RESULT:
-            selectedLoan?.loanRank === LoanRank.Green
-              ? 'Mudah disetujui'
-              : 'Sulit disetujui',
-        },
-      )
-    }
-  }
+  // const trackCountlyOnCloseQualificationModal = () => {
+  //   const selectedLoanDataStorage: any = getLocalStorage(
+  //     LocalStorageKey.SelectablePromo,
+  //   )
+  //   if (selectedLoanDataStorage) {
+  //     trackEventCountly(
+  //       CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_CHECK_QUALIFICATION_BANNER_CLOSE_CLICK,
+  //       {
+  //         ...dataForCountlyTrackerOnClick(),
+  //         CAR_VARIANT: forms.variant?.variantName ?? 'Null',
+  //         TENOR_OPTION: `${selectedLoan?.tenure} tahun`,
+  //         TENOR_RESULT:
+  //           selectedLoan?.loanRank === LoanRank.Green
+  //             ? 'Mudah disetujui'
+  //             : 'Sulit disetujui',
+  //       },
+  //     )
+  //   }
+  // }
 
-  const onClickCtaQualificationModal = () => {
-    trackCountlyOnClickCtaModal()
-  }
+  // const onClickCtaQualificationModal = () => {
+  //   trackCountlyOnClickCtaModal()
+  // }
 
   const trackCountlyOnShowTooltip = () => {
     trackEventCountly(
@@ -1655,12 +1411,17 @@ export const CreditUsedCarTab = () => {
     )
   }
 
+  const toLeads = useRef<null | HTMLDivElement>(null)
+  const scrollToLeads = () => {
+    toLeads.current?.scrollIntoView({ behavior: 'smooth', inline: 'start' })
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.formCard}>
         <div className={styles.formCardHeader}>
           <div className={styles.iconWrapper}>
-            <IconCalculator
+            <IconMoney
               width={24}
               height={24}
               color="#B4231E"
@@ -1671,86 +1432,9 @@ export const CreditUsedCarTab = () => {
         </div>
 
         <div className={styles.formWrapper}>
-          {/* <div id="loan-calculator-form-city">
-            <FormSelectCity
-              isHasCarParameter={false}
-              handleChange={handleChange}
-              name="city"
-              isError={
-                (modelError && !!forms.city?.cityCode) ||
-                (isValidatingEmptyField && !forms.city)
-              }
-              onOpenTooltip={onOpenTooltipCityField}
-              onShowDropdown={onShowDropdownCityField}
-            />
-            {renderErrorMessageCity()}
-          </div> */}
-          {/* <div id="loan-calculator-form-car-model">
-            <FormSelectModelCar
-              selectedCity={forms?.city?.cityCode || ''}
-              handleChange={handleChange}
-              name="model"
-              value={forms?.model?.modelName || ''}
-              valueImage={
-                forms.model?.modelImage || (CarSillhouete as unknown as string)
-              }
-              valueId={forms?.model?.modelId || ''}
-              allModelCarList={allModelCarList}
-              setModelError={setModelError}
-              overrideDisabled={true}
-              isCheckForError={false}
-              isShowArrow={false}
-              onShowDropdown={onShowDropdownModelField}
-              overrideIsErrorFieldOnly={
-                isValidatingEmptyField &&
-                (!forms.model?.modelId || !forms.model.modelName)
-              }
-            />
-            {isValidatingEmptyField &&
-            (!forms.model?.modelId || !forms.model.modelName)
-              ? renderErrorMessageEmpty()
-              : null}
-          </div> */}
-          {/* <div id="loan-calculator-form-car-variant">
-            <FormSelectCarVariant
-              selectedModel={forms?.model?.modelId || ''}
-              handleChange={handleChange}
-              name="variant"
-              carVariantList={carVariantList}
-              value={forms.variant || variantEmptyValue}
-              modelError={modelError}
-              onShowDropdown={onShowDropdownVariantField}
-              isError={
-                isValidatingEmptyField &&
-                (!forms.variant?.variantId || !forms.variant.variantName)
-              }
-            />
-            {isValidatingEmptyField &&
-            (!forms.variant?.variantId || !forms.variant.variantName)
-              ? renderErrorMessageEmpty()
-              : null}
-          </div> */}
-          {/* <div id="loan-calculator-form-income">
-            <IncomeForm
-              name="monthlyIncome"
-              title="Pendapatan bulanan"
-              value={Number(forms.monthlyIncome)}
-              defaultValue={Number(forms.monthlyIncome)}
-              handleChange={handleChange}
-              isError={
-                isIncomeTooLow ||
-                (isValidatingEmptyField && !forms.monthlyIncome)
-              }
-              emitOnBlurInput={onBlurIncomeInput}
-              onFocus={onFocusIncomeField}
-            />
-            {renderIncomeErrorMessage()}
-          </div> */}
           {/* TODO : Implement carPrice by Car Variant Price */}
           <div id="loan-calculator-form-dp">
             <DpUsedCarForm
-              // finalMaxInputDp={finalMaxInputDp}
-              // finalMinInputDp={finalMinInputDp}
               label="Kemampuan DP (Min. 20%)"
               value={dpValue}
               percentage={dpPercentage}
@@ -1772,29 +1456,17 @@ export const CreditUsedCarTab = () => {
               emitOnAfterChangeDpSlider={onAfterChangeDpSlider}
             />
           </div>
-          {/* <div id="loan-calculator-form-installment-type">
-            <CicilOptionForm
-              name="paymentOption"
-              isClicked={installmentType === InstallmentTypeOptions.ADDB}
-              onClick={(value: boolean) =>
-                handleInstallmentTypeChange(InstallmentTypeOptions.ADDB, value)
-              }
-              handleChange={handleChange}
-              value={forms.paymentOption}
-            />
-            {isValidatingEmptyField && !forms.paymentOption
-              ? renderErrorMessageEmpty()
-              : null}
-          </div> */}
           <div
             id="loan-calculator-form-age"
             className={styles.loanCalculatorFormAge}
           >
             <FormAsuransiCredit
-              ageList={ageOptions}
-              name="age"
+              ageList={assuranceOptions}
+              name="assurance"
               handleChange={handleChange}
-              defaultValue={forms.age}
+              defaultValue={
+                chosenAssurance.length > 0 ? chosenAssurance.length : ''
+              }
               onShowDropdown={onShowDropdownAgeField}
               isError={isValidatingEmptyField && !forms.age}
               setIsAssuranceModal={setIsAssuranceModalOpen}
@@ -1803,25 +1475,7 @@ export const CreditUsedCarTab = () => {
               ? renderErrorMessageEmpty()
               : null}
           </div>
-          {false && (
-            <div id="loan-calculator-form-promo-code">
-              <FormPromoCode
-                emitOnChange={handleOnChangePromoCode}
-                emitPromoCodeValidResult={handlePromoCodeValidResult}
-                isLoadingPromoCode={isLoadingPromoCode}
-                isErrorPromoCode={isErrorPromoCode}
-                isSuccessPromoCode={isSuccessPromoCode}
-                passedResetPromoCodeStatusFunc={resetPromoCodeStatus}
-                passedCheckPromoCodeFunc={checkPromoCode}
-                onClearInput={clearPromoCodeHandler}
-                value={forms.promoCode}
-              />
-            </div>
-          )}
-
           <Button
-            // not using "disabled" attrib because some func need to be run
-            // when disabled button is clicked
             version={ButtonVersion.PrimaryDarkBlue}
             size={ButtonSize.Big}
             onClick={onClickCalculate}
@@ -1849,8 +1503,7 @@ export const CreditUsedCarTab = () => {
       isDataSubmitted ? (
         <>
           <div className={styles.formCardCalculationResult}>
-            <CalculationResult
-              handleRedirectToWhatsapp={handleRedirectToWhatsapp}
+            <CalculationUsedCarResult
               data={calculationResult}
               selectedLoan={selectedLoan}
               setSelectedLoan={setSelectedLoan}
@@ -1867,8 +1520,11 @@ export const CreditUsedCarTab = () => {
               calculationApiPayload={calculationApiPayload}
               setFinalLoan={setFinalLoan}
               pageOrigination={'PDP Credit Tab'}
+              scrollToLeads={scrollToLeads}
             />
           </div>
+          <div ref={toLeads} className={styles.reference}></div>
+          <LeadsFormUsedCar selectedLoan={selectedLoan} />
         </>
       ) : (
         <></>
@@ -1900,7 +1556,7 @@ export const CreditUsedCarTab = () => {
         )}
       </div>
       <div className={styles.wrapper}>
-        {usedCarRecommendations.length > 0 && (
+        {usedCarRecommendations?.length > 0 && (
           <UsedCarRecommendations
             usedCarRecommendationList={usedCarRecommendations}
             title="Beli Mobil Bekas Berkualitas"
@@ -1915,8 +1571,6 @@ export const CreditUsedCarTab = () => {
         isOpen={isAssuranceModalOpen}
         onClickCloseButton={onCloseQualificationPopUp}
         formData={forms}
-        selectedLoan={selectedLoan}
-        onClickCta={onClickCtaQualificationModal}
       />
 
       <Toast

@@ -214,6 +214,11 @@ export enum LeadsUsedCar {
   USED_CAR_CALCULATOR_LEADS_FORM = 'Used Car Calculator Leads Form',
 }
 
+export enum LeadsUsedCar {
+  USED_CAR_PDP_LEADS_FORM = 'USED_CAR_PDP_LEADS_FORM',
+  USED_CAR_CALCULATOR_LEADS_FORM = 'USED_CAR_CALCULATOR_LEADS_FORM',
+}
+
 export enum ContactType {
   phone = 'phone',
   whatsApp = 'whatsApp',

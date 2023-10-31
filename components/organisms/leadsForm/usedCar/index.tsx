@@ -23,6 +23,7 @@ import { useRouter } from 'next/router'
 import { useCar } from 'services/context/carContext'
 import { ButtonVersion, ButtonSize } from 'components/atoms/button'
 import {
+  LeadsUsedCar,
   LocalStorageKey,
   SessionStorageKey,
   UnverifiedLeadSubCategory,
@@ -46,6 +47,7 @@ import { createUnverifiedLeadNewUsedCar } from 'utils/handler/lead'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { UsedPdpDataLocalContext } from 'pages/mobil-bekas/p/[[...slug]]'
 import { LeadsActionParam, PageOriginationName } from 'utils/types/props'
+import { SelectedCalculateLoanUsedCar } from 'utils/types/utils'
 
 const SupergraphicLeft = '/revamp/illustration/supergraphic-small.webp'
 const SupergraphicRight = '/revamp/illustration/supergraphic-large.webp'
@@ -55,12 +57,14 @@ interface PropsLeadsForm {
   toLeads?: any
   onVerify?: (e: any) => void
   onFailed?: (e: any) => void
+  selectedLoan?: SelectedCalculateLoanUsedCar | null
   // isOTO?: boolean
 }
 
 export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
   // isOTO = false,
   toLeads,
+  selectedLoan = null,
 }) => {
   const platform = 'web'
   const toastSuccessInfo = 'Agen kami akan segera menghubungimu dalam 1x24 jam.'
@@ -75,6 +79,10 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
   const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false)
   // const { carModelDetails, carVariantDetails } = useCar()
   const { usedCarModelDetailsRes } = useContext(UsedPdpDataLocalContext)
+  const carLeads = usedCarModelDetailsRes
+  console.log(carLeads)
+
+  const infoCar = `${usedCarModelDetailsRes.variantTitle} ${usedCarModelDetailsRes.nik}`
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -258,56 +266,112 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
         temanSevaStatus = 'Yes'
       }
     }
-    const data = {
-      platform,
-      name,
-      phoneNumber: phone,
-      selectedTenure: '',
-      selectedTdp: '',
-      selectedInstallment: '',
-      carId: '',
-      makeName: '',
-      variantName: '',
-      skuCode: '',
-      colourName: '',
-      engineCapacity: '',
-      priceValue: '',
-      seat: '',
-      variantTitle: '',
-      transmission: '',
-      fuelType: '',
-      productCat: '',
-      nik: '',
-      cityName: '',
-      plate: '',
-      mileage: '',
-      taxDate: '',
-      partnerName: '',
-      partnerId: '',
-      // origination: isOTO
-      //   ? UnverifiedLeadSubCategory.OTO_NEW_CAR_PDP_LEADS_FORM
-      //   : UnverifiedLeadSubCategory.SEVA_NEW_CAR_PDP_LEADS_FORM,
-      ...(cityOtr?.id && { cityId: cityOtr.id }),
-      // dp: getDp(),
-      // tenure: getTenure(),
-      // monthlyInstallment: sortedCarModelVariant[0].monthlyInstallment,
-      // carBrand: carModelDetails?.brand,
-      // carModelText: carModelDetails?.model,
-      // carVariantText: carVariantDetails?.variantDetail.name,
-    }
-    try {
-      await createUnverifiedLeadNewUsedCar(data)
-      setModalOpened('success-toast')
-      trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SUCCESS_VIEW, {
-        PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
-        LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
-        TEMAN_SEVA_STATUS: temanSevaStatus,
-        PHONE_NUMBER: '+62' + phone,
-      })
-      setIsLoading(false)
-      setTimeout(() => setModalOpened('none'), 3000)
-    } catch (error) {
-      throw error
+    if (selectedLoan !== null) {
+      const data = {
+        origination:
+          selectedLoan !== null
+            ? LeadsUsedCar.USED_CAR_CALCULATOR_LEADS_FORM
+            : LeadsUsedCar.USED_CAR_PDP_LEADS_FORM,
+        customerName: name,
+        phoneNumber: phone,
+        selectedTenure: selectedLoan?.tenor,
+        selectedTdp: selectedLoan?.totalDP,
+        selectedInstallment: selectedLoan?.totalInstallment,
+        priceFormatedNumber: carLeads.priceValue,
+        carId: carLeads.carId,
+        makeName: carLeads.brandName,
+        modelName: carLeads.modelName,
+        variantName: carLeads.variantName,
+        skuCode: carLeads.skuCode,
+        colourName: carLeads.color,
+        engineCapacity: carLeads.carSpecifications.find(
+          (item: any) => item.specCode === 'engine-capacity',
+        ).value,
+        priceValue: carLeads.priceValue,
+        seat: carLeads.seat,
+        variantTitle: carLeads.variantTitle,
+        transmission: carLeads.carSpecifications.find(
+          (item: any) => item.specCode === 'transmission',
+        ).value,
+        fuelType: carLeads.carSpecifications.find(
+          (item: any) => item.specCode === 'fuel-type',
+        ).value,
+        productCat: carLeads.productCat,
+        nik: carLeads.nik,
+        cityName: carLeads.cityName.replace(' ', ''),
+        plate: carLeads.plate,
+        mileage: carLeads.mileage,
+        taxDate: carLeads.taxDate,
+        partnerName: carLeads.partnerName,
+        partnerId: carLeads.partnerId,
+      }
+
+      try {
+        await createUnverifiedLeadNewUsedCar(data)
+        setModalOpened('success-toast')
+        trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SUCCESS_VIEW, {
+          PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
+          LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
+          TEMAN_SEVA_STATUS: temanSevaStatus,
+          PHONE_NUMBER: '+62' + phone,
+        })
+        setIsLoading(false)
+        setTimeout(() => setModalOpened('none'), 3000)
+      } catch (error) {
+        throw error
+      }
+    } else {
+      const data = {
+        origination:
+          selectedLoan !== null
+            ? LeadsUsedCar.USED_CAR_CALCULATOR_LEADS_FORM
+            : LeadsUsedCar.USED_CAR_PDP_LEADS_FORM,
+        customerName: name,
+        phoneNumber: phone,
+        priceFormatedNumber: carLeads.priceValue,
+        carId: carLeads.carId,
+        makeName: carLeads.brandName,
+        modelName: carLeads.modelName,
+        variantName: carLeads.variantName,
+        skuCode: carLeads.skuCode,
+        colourName: carLeads.color,
+        engineCapacity: carLeads.carSpecifications.find(
+          (item: any) => item.specCode === 'engine-capacity',
+        ).value,
+        priceValue: carLeads.priceValue,
+        seat: carLeads.seat,
+        variantTitle: carLeads.variantTitle,
+        transmission: carLeads.carSpecifications.find(
+          (item: any) => item.specCode === 'transmission',
+        ).value,
+        fuelType: carLeads.carSpecifications.find(
+          (item: any) => item.specCode === 'fuel-type',
+        ).value,
+        productCat: carLeads.productCat,
+        nik: carLeads.nik,
+        cityName: carLeads.cityName.replace(' ', ''),
+        plate: carLeads.plate,
+        mileage: carLeads.mileage,
+        taxDate: carLeads.taxDate,
+        partnerName: carLeads.partnerName,
+        partnerId: carLeads.partnerId,
+      }
+      console.log(data)
+
+      try {
+        await createUnverifiedLeadNewUsedCar(data)
+        setModalOpened('success-toast')
+        trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SUCCESS_VIEW, {
+          PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
+          LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
+          TEMAN_SEVA_STATUS: temanSevaStatus,
+          PHONE_NUMBER: '+62' + phone,
+        })
+        setIsLoading(false)
+        setTimeout(() => setModalOpened('none'), 3000)
+      } catch (error) {
+        throw error
+      }
     }
   }
 
@@ -433,7 +497,7 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
 
         <div className={styles.foreground}>
           <h2 className={styles.textHeading}>
-            Yuk, cari tahu & tanya lebih lanjut tentang #infoCar
+            Yuk, cari tahu & tanya lebih lanjut tentang {infoCar}
           </h2>
           <div className={styles.form}>
             <Input

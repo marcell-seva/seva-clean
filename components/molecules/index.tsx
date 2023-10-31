@@ -20,6 +20,7 @@ import { OverlayGallery } from './overlay'
 import { UsedCarOverlayGallery } from './overlay/usedCarOverlay'
 import { ShareModal } from './shareModal'
 import { CalculationResultItem } from './calculationResultItem'
+import { CalculationUsedCarResultItem } from './calculationUsedCarResultItem'
 import { MenuList } from './menuList'
 import { Tenure } from './tenure'
 import YearRangeWidget from './searchWidget/option/yearRangeWidget'
@@ -91,4 +92,5 @@ export {
   BrandUsedCarWidget,
   YearRangeWidget,
   TransmissionUsedCarWidget,
+  CalculationUsedCarResultItem,
 }

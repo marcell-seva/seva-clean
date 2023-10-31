@@ -41,6 +41,10 @@ const PopupVariantDetail = dynamic(
   () => import('components/organisms/popupVariantDetail/index'),
 )
 
+const NewCarRecommendations = dynamic(
+  () => import('components/organisms/NewCarRecommendations'),
+)
+
 type DescriptionProps = {
   setPromoName: (value: string) => void
   onButtonClick: (value: boolean) => void
@@ -368,16 +372,20 @@ export const DescriptionTab = ({
       <div ref={toLeads} className={styles.reference} id="leads-form"></div>
       <LeadsFormUsedCar />
       <div className={styles.wrapper}>
-        <Gap height={24} />
-        <Info isWithIcon headingText="Tentang Mobil" descText={getInfoText()} />
-        <div className={styles.gap} />
-        <Info
-          headingText={`Membeli Mobil ${summaryInfo.brand} ${summaryInfo.model}? Seperti Ini Cara Perawatannya!`}
-          descText={getTipsText()}
-        />
+        {carRecommendations?.length > 0 && (
+          <NewCarRecommendations
+            carRecommendationList={carRecommendations}
+            title="Rekomendasi Mobil Baru"
+            onClick={() => {
+              return
+            }}
+            selectedCity={'Jakarta Pusat'}
+            additionalContainerStyle={styles.recommendationAdditionalStyle}
+          />
+        )}
       </div>
       <div className={styles.wrapper}>
-        {usedCarRecommendations.length > 0 && (
+        {usedCarRecommendations?.length > 0 && (
           <UsedCarRecommendations
             usedCarRecommendationList={usedCarRecommendations}
             title="Beli Mobil Bekas Berkualitas"

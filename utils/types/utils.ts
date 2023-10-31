@@ -879,6 +879,12 @@ export interface SpecialRateListWithPromoType {
   dpDiscount: number
 }
 
+export interface SelectedCalculateLoanUsedCar {
+  tenor: number
+  totalDP: string
+  totalInstallment: string
+}
+
 export interface LoanCalculatorInsuranceAndPromoType {
   tenure: number
   allInsuranceList: Option<string>[]
@@ -913,6 +919,15 @@ export interface LoanCalculatorIncludePromoPayloadType {
   otr: number
   variantId?: string
   calculateIncludeSubsidi?: boolean // if undefined, BE will assume its "true"
+}
+
+export interface CreditCarCalculation {
+  priceValue: number
+  presentaseDP: number
+  DP: number
+  tenureAR: number
+  tenureTLO: number
+  nik: number
 }
 
 export interface LoanCalculatorInsuranceParams {

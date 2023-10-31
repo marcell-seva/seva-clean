@@ -1,6 +1,7 @@
 import {
   CheckTemanSeva,
   CreateProbeTrackRequest,
+  CreditCarCalculation,
   CustomerKtpSeva,
   DeleteAccountRequestType,
   SendInstantApproval,
@@ -305,6 +306,8 @@ const getUsedCarRecommendations = (
   params?: string,
   config?: AxiosRequestConfig,
 ) => get(collections.usedCar.usedRecommendations + params, config)
+const getCarCreditsSk = (params?: string, config?: AxiosRequestConfig) =>
+  get(collections.usedCar.getCarCreditsSk + params, config)
 
 export {
   getMenu,
@@ -348,6 +351,7 @@ export {
   getModelUsedCar,
   getUsedCarRecommendations,
   getFinalDpRangeValidation,
+  getCarCreditsSk,
   postUpdateLeadsOTO,
   postUnverifiedLeadsNew,
   postUnverifiedLeadsNewUsedCar,

@@ -24,16 +24,12 @@ interface AssuranceCreditModalProps {
   onClickCloseButton: () => void
   isOpen: boolean
   formData: FormLCState
-  selectedLoan: SpecialRateList | null
-  onClickCta?: () => void
 }
 
 export const AssuranceCreditModal: React.FC<AssuranceCreditModalProps> = ({
   onClickCloseButton,
   isOpen,
   formData,
-  selectedLoan,
-  onClickCta,
 }) => {
   const [isLogin] = React.useState(!!getToken())
 
@@ -66,7 +62,7 @@ export const AssuranceCreditModal: React.FC<AssuranceCreditModalProps> = ({
       JSON.stringify(formData),
     )
     saveSessionStorage(SessionStorageKey.PreviousSourceSectionLogin, 'Null')
-    onClickCta && onClickCta()
+    // onClickCta && onClickCta()
     if (isLogin) {
       navigateToKK(true)
     } else {

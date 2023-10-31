@@ -1,12 +1,17 @@
 import elementId from 'helpers/elementIds'
 import React, { useRef, useState } from 'react'
 import { Option } from 'utils/types/utils'
-import { IconChevronDown, IconRemove, InputSelect } from 'components/atoms'
+import {
+  IconChevronDown,
+  IconChevronUp,
+  IconRemove,
+  InputSelect,
+} from 'components/atoms'
 import styles from 'styles/components/atoms/input.module.scss'
 import styles2 from 'styles/components/molecules/assuranceModal.module.scss'
 
 interface Props {
-  ageList: Option<string>[]
+  ageList: any
   name: string
   handleChange: (name: string, value: any) => void
   defaultValue: string
@@ -76,11 +81,16 @@ export const FormAsuransiCredit: React.FC<Props> = ({
           if (state.isOpen) {
             return (
               <div
-                onMouseDown={onResetHandler}
-                onClick={onResetHandler}
+                onMouseDown={onShowDropdown}
+                onClick={onClickArrowHandler}
                 style={{ cursor: 'pointer' }}
               >
-                <IconRemove width={25} height={25} color={'#13131B'} />
+                <IconChevronUp
+                  width={25}
+                  height={25}
+                  color={'#13131B'}
+                  alt="SEVA Dropdown Icon"
+                />
               </div>
             )
           } else {

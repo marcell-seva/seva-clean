@@ -48,6 +48,8 @@ const usedCar = {
   usedCarsLeads: `${baseUrl}/used-car/submit-leads`,
   modelUsedCar: `${baseUrl}/used-car/get-model`,
   usedRecommendations: `${baseUrl}/used-car/used-car-recommendations`,
+  usedNewCarRecommendations: `${baseUrl}/used-car/new-car-recommendations`,
+  getCarCreditsSk: `${baseUrl}/used-car/get-car-credits-sk`,
 }
 
 const leads = {

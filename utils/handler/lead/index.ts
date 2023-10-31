@@ -3,7 +3,7 @@ import { defaultCSANumber } from 'utils/helpers/const'
 import urls from 'helpers/urls'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { UTMTagsData } from 'utils/types/utils'
-import { ContactType, LocalStorageKey } from 'utils/enum'
+import { ContactType, LeadsUsedCar, LocalStorageKey } from 'utils/enum'
 import {
   CountryCodePlusSign,
   defaultContactFormValue,
@@ -64,6 +64,35 @@ export interface CreateUnverifiedLeadRequestNew {
   cityId?: number
   platform?: string
 }
+export interface CreateUnverifiedLeadRequestNewUsedCar {
+  origination: LeadsUsedCar
+  customerName?: string
+  phoneNumber: string
+  selectedTenure?: number
+  selectedTdp?: string
+  selectedInstallment?: string
+  priceFormatedNumber?: string
+  carId?: string
+  makeName?: string
+  modelName?: string
+  variantName?: string
+  skuCode?: string
+  colourName?: string
+  engineCapacity?: string
+  priceValue?: string
+  seat?: string
+  variantTitle?: string
+  transmission?: string
+  fuelType?: string
+  productCat?: string
+  nik?: number
+  cityName?: string
+  plate?: string
+  mileage?: number
+  taxDate?: string
+  partnerName?: string
+  partnerId?: number
+}
 
 const getCustomerAssistantDetails = (phoneNumber: string) => {
   return postCustomerAssistantDetails(phoneNumber)
@@ -86,18 +115,18 @@ export const createUnverifiedLeadNew = (
 }
 
 export const createUnverifiedLeadNewUsedCar = (
-  requestBody: CreateUnverifiedLeadRequestNew,
+  requestBody: CreateUnverifiedLeadRequestNewUsedCar,
 ) => {
   const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
   return postUnverifiedLeadsNewUsedCar({
     ...requestBody,
-    utmSource: UTMTags?.utm_source,
-    utmMedium: UTMTags?.utm_medium,
-    utmCampaign: UTMTags?.utm_campaign,
-    utmId: UTMTags?.utm_id,
-    utmContent: null, // temporary
-    utmTerm: UTMTags?.utm_term,
-    adSet: UTMTags?.adset,
+    // utmSource: UTMTags?.utm_source,
+    // utmMedium: UTMTags?.utm_medium,
+    // utmCampaign: UTMTags?.utm_campaign,
+    // utmId: UTMTags?.utm_id,
+    // utmContent: null, // temporary
+    // utmTerm: UTMTags?.utm_term,
+    // adSet: UTMTags?.adset,
   })
 }
 

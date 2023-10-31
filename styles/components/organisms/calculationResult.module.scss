@@ -40,6 +40,16 @@
   gap: 8px;
 }
 
+.dataHeaderWrapperUsedCar {
+  margin-top: 32px;
+  padding: 0 10px;
+  padding-left: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
 .dataHeaderText {
   font-family: var(--open-sans-bold);
   font-style: normal;
