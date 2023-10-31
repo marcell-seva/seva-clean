@@ -4,6 +4,7 @@ import {
   FooterMobile,
   HeaderMobile,
   PdpUsedCarLowerSection,
+  PdpUsedCarUpperSection,
 } from 'components/organisms'
 import styles from 'styles/pages/carVariantList.module.scss'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
@@ -87,17 +88,6 @@ export default function UsedCarVariantList({
   const IsShowBadgeCreditOpportunity = getSessionStorage(
     SessionStorageKey.IsShowBadgeCreditOpportunity,
   )
-
-  useEffect(() => {
-    const temp = usedCarModelDetailsRes.carGallery.map((items: any) => {
-      if (items.mediaCode === 'main-image') {
-        return items.url
-      } else if (items.mediaCode === 'detail-images') {
-        return items.url
-      }
-    })
-    setDataPreviewImages(temp.slice(0, 11))
-  }, [usedCarModelDetailsRes])
 
   const { detail } = usedCar()
 
@@ -486,8 +476,8 @@ export default function UsedCarVariantList({
       case 'exist':
         return (
           <>
-            <UsedCarGallery
-              items={dataPreviewImages}
+            <PdpUsedCarUpperSection
+              isPreviewOpened={isPreviewGalleryOpened}
               activeIndex={galleryIndexActive}
               emitActiveIndex={(e: number) => handlePreviewOpened(e)}
               emitDataImages={(e: Array<string>) => setDataPreviewImages(e)}

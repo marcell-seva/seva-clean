@@ -72,6 +72,9 @@ import Profile from './profile'
 import { SearchWidgetSection } from './searchWidgetSection'
 import UsedCarRecommendations from './UsedCarRecommendations'
 import { AlternativeUsedCarRecomendationCard } from './alternativeUsedCarRecomendationCard'
+import { PopupResultRecommended } from './popupResultFilter/resultRecommended'
+import { CarGallery } from './tabContent/upper/CarGallery'
+import PdpUsedCarUpperSection from './PdpUsedCarUpperSection'
 
 const Exterior360ViewerTab = dynamic(
   () => import('./tabContent/upper/exterior360Viewer'),
@@ -152,4 +155,7 @@ export {
   UsedCarSearchWidget,
   UsedCarRecommendations,
   AlternativeUsedCarRecomendationCard,
+  PopupResultRecommended,
+  CarGallery,
+  PdpUsedCarUpperSection,
 }
