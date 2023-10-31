@@ -37,11 +37,11 @@ import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { UsedPdpDataLocalContext } from 'pages/mobil-bekas/p/[[...slug]]'
 import { usedCar } from 'services/context/usedCarContext'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
-import { UsedCarGallery, UsedCarOverlayGallery } from 'components/molecules'
+import { UsedCarGallery } from 'components/molecules'
 import clsx from 'clsx'
 
-const OverlayGallery = dynamic(() =>
-  import('components/molecules').then((mod) => mod.OverlayGallery),
+const UsedCarOverlayGallery = dynamic(() =>
+  import('components/molecules').then((mod) => mod.UsedCarOverlayGallery),
 )
 const CitySelectorModal = dynamic(() =>
   import('components/molecules').then((mod) => mod.CitySelectorModal),

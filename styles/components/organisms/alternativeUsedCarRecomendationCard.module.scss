@@ -13,10 +13,12 @@
 .heroImg {
   position: absolute;
   z-index: 1;
-  width: 180px;
+  max-width: 180px;
   aspect-ratio: 4/3;
-  object-fit: contain;
   top: -30px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .brandModelText {

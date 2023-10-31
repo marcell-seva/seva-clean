@@ -250,6 +250,20 @@ export type CarRecommendation = {
   base64?: string
 }
 
+export type UsedCarRecommendation = {
+  id: string
+  modelName: string
+  typeName: string
+  variantTitle: string
+  cityId: number
+  cityName: string
+  nik: number
+  sevaUrl: string
+  priceValue: string
+  skuCode: string
+  urlMedia: string
+}
+
 export interface CarRecommendationResponse {
   carRecommendations: CarRecommendation[]
   lowestCarPrice: number

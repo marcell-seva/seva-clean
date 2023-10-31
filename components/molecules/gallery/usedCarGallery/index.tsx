@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperType } from 'swiper'
 import { FreeMode, Thumbs, Navigation } from 'swiper'
@@ -208,6 +208,12 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
           <Swiper
             initialSlide={flagIndex}
             onSwiper={(swiper: SwiperType | null) => setThumbsSwiper(swiper)}
+            onNavigationPrev={(swiper: SwiperType | null) =>
+              setThumbsSwiper(swiper)
+            }
+            onNavigationNext={(swiper: SwiperType | null) =>
+              setThumbsSwiper(swiper)
+            }
             pagination={{
               clickable: true,
             }}

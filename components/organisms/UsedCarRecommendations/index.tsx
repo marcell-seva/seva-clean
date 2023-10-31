@@ -6,7 +6,11 @@ import {
   loanCalculatorWithCityBrandModelUrl,
   variantListUrl,
 } from 'utils/helpers/routes'
-import { CarRecommendation, trackDataCarType } from 'utils/types/utils'
+import {
+  CarRecommendation,
+  UsedCarRecommendation,
+  trackDataCarType,
+} from 'utils/types/utils'
 import { getLowestInstallment } from 'utils/carModelUtils/carModelUtils'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { Button } from 'components/atoms'
@@ -33,18 +37,18 @@ import { AlternativeUsedCarRecomendationCard } from '../alternativeUsedCarRecome
 
 type UsedCarRecommendationsPropss = {
   title: string
-  carRecommendationList: CarRecommendation[]
+  usedCarRecommendationList: UsedCarRecommendation[]
   onClick: () => void
-  selectedCity: string
-  additionalContainerStyle?: string
+  additionalContainerStyle: any
+  scrollTo?: () => void
 }
 
 export default function UsedCarRecommendations({
   title,
-  carRecommendationList,
+  usedCarRecommendationList,
   onClick,
-  selectedCity,
   additionalContainerStyle,
+  scrollTo,
 }: UsedCarRecommendationsPropss) {
   const router = useRouter()
   const swiperRef = useRef<SwiperType>()
@@ -53,69 +57,6 @@ export default function UsedCarRecommendations({
   const dataCar: trackDataCarType | null = getSessionStorage(
     SessionStorageKey.PreviousCarDataBeforeLogin,
   )
-
-  const getDestinationUrl = (carDetail: CarRecommendation) => {
-    if (window.location.pathname.includes('/mobil-baru')) {
-      return variantListUrl
-        .replace(
-          ':brand/:model',
-          (carDetail.brand + '/' + carDetail.model.replace(/ +/g, '-'))
-            .replace(/ +/g, '')
-            .toLowerCase(),
-        )
-        .replace(':tab', 'kredit')
-    } else {
-      return loanCalculatorWithCityBrandModelUrl
-        .replace(
-          ':cityName/:brand/:model',
-          selectedCity.replace(/ +/g, '-') +
-            '/' +
-            carDetail.brand.replace(/ +/g, '-') +
-            '/' +
-            carDetail.model.replace(/ +/g, '-') +
-            '/',
-        )
-        .toLocaleLowerCase()
-    }
-  }
-
-  const handleCalculateAbility = (item: CarRecommendation) => {
-    const lowestInstallment = getLowestInstallment(item.variants)
-    const formatLowestInstallment = replacePriceSeparatorByLocalization(
-      lowestInstallment,
-      LanguageCode.id,
-    )
-    const dataCarTemp = {
-      ...dataCar,
-      PELUANG_KREDIT_BADGE: 'Mudah disetujui',
-    }
-    saveSessionStorage(
-      SessionStorageKey.PreviousCarDataBeforeLogin,
-      JSON.stringify(dataCarTemp),
-    )
-    trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CTA_CLICK, {
-      PAGE_ORIGINATION: 'PDP - Kredit',
-      CAR_BRAND: brand
-        ? capitalizeWords(brand.toString().replaceAll('-', ' '))
-        : 'Null',
-      CAR_MODEL: model
-        ? capitalizeWords(model.toString().replaceAll('-', ' '))
-        : 'Null',
-      CAR_BRAND_RECOMMENDATION: item.brand,
-      CAR_MODEL_RECOMMENDATION: item.model,
-      CTA_BUTTON: 'Hitung Kemampuan',
-      TENOR_OPTION: dataCar?.TENOR_OPTION,
-      TENOR_RESULT:
-        dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Green'
-          ? 'Mudah disetujui'
-          : dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Red'
-          ? 'Sulit disetujui'
-          : 'Null',
-      PAGE_DIRECTION_URL: window.location.hostname + getDestinationUrl(item),
-    })
-    saveDataForCountlyTrackerPageViewLC(PreviousButton.CarRecommendation)
-    window.location.replace(getDestinationUrl(item))
-  }
 
   const handleClickDetailCar = (url: string, item: CarRecommendation) => {
     const lowestInstallment = getLowestInstallment(item.variants)
@@ -176,7 +117,7 @@ export default function UsedCarRecommendations({
         className={styles.alternativeCarTitle}
         data-testid={elementId.LoanCalculator.RekomendasiFinansial}
       >
-        Beli Mobil Bekas Berkualitas
+        {title}
       </h3>
       <div>
         <Swiper
@@ -186,7 +127,7 @@ export default function UsedCarRecommendations({
           onBeforeInit={(swiper) => (swiperRef.current = swiper)}
           style={{ paddingRight: 16 }}
         >
-          {carRecommendationList?.map((item, index) => (
+          {usedCarRecommendationList?.map((item, index) => (
             <SwiperSlide key={index} style={{ width: 212 }}>
               <AlternativeUsedCarRecomendationCard
                 key={index}
@@ -197,8 +138,9 @@ export default function UsedCarRecommendations({
               >
                 <div
                   className={styles.alternativeCarLink}
-                  onClick={() =>
-                    handleClickDetailCar(`${carResultsUrl}/${item.id}`, item)
+                  onClick={
+                    () => {}
+                    // handleClickDetailCar(`${carResultsUrl}/${item.id}`, item)
                   }
                   data-testid={elementId.LoanCalculator.Button.LihatDetail}
                 >
@@ -207,9 +149,9 @@ export default function UsedCarRecommendations({
                 <Button
                   version={ButtonVersion.Secondary}
                   size={ButtonSize.Big}
-                  onClick={() => handleCalculateAbility(item)}
+                  onClick={() => {}}
                 >
-                  Hitung Kemampuan
+                  Tanya Unit
                 </Button>
               </AlternativeUsedCarRecomendationCard>
             </SwiperSlide>

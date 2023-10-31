@@ -147,6 +147,11 @@ export const UsedCarDetailCard = ({
     parseUrl(recommendation.sevaUrl).toLowerCase(),
   )
 
+  const detailCarScrollRoute = usedCarDetailUrl.replace(
+    ':id',
+    parseUrl(recommendation.sevaUrl).toLowerCase() + '#leads-form',
+  )
+
   const cityName = getCity()?.cityName || 'Jakarta Pusat'
 
   // const navigateToLoanCalculator = () => {
@@ -253,6 +258,10 @@ export const UsedCarDetailCard = ({
     // router.push(urls.internalUrls.usedCarDetailUrl)
     router.push(detailCarRoute)
   }
+  const onClickScrollDetail = () => {
+    // router.push(urls.internalUrls.usedCarDetailUrl)
+    router.push(detailCarScrollRoute)
+  }
 
   const transmisi = recommendation?.carSpecifications?.find(
     (item) => item.specCode === 'transmission',
@@ -348,9 +357,7 @@ export const UsedCarDetailCard = ({
         <Button
           version={ButtonVersion.Secondary}
           size={ButtonSize.Big}
-          onClick={() => {
-            router.push(urls.internalUrls.usedCarDetailUrl)
-          }}
+          onClick={onClickScrollDetail}
           data-testid={elementId.PLP.Button.HitungKemampuan}
         >
           Tanya Unit

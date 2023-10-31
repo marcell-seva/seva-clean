@@ -10,6 +10,7 @@ import {
   LoanCalculatorIncludePromoPayloadType,
   LoanCalculatorInsuranceAndPromoType,
   SpecialRateListWithPromoType,
+  UsedCarRecommendation,
   trackDataCarType,
 } from 'utils/types/utils'
 import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
@@ -19,7 +20,7 @@ import {
   LoanRank,
   TrackerFlag,
 } from 'utils/types/models'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import {
   LeadsFormSecondary,
   UsedCarRecommendations,
@@ -88,6 +89,7 @@ import dynamic from 'next/dynamic'
 import {
   getLoanCalculatorInsurance,
   getRecommendation,
+  getUsedCarRecommendations,
   postCheckPromoGiias,
   postLoanPermutationIncludePromo,
 } from 'services/api'
@@ -95,6 +97,7 @@ import { getCarModelDetailsById } from 'utils/handler/carRecommendation'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
+import { UsedPdpDataLocalContext } from 'pages/mobil-bekas/p/[[...slug]]'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -144,6 +147,7 @@ interface FormState {
 }
 
 export const CreditUsedCarTab = () => {
+  const { usedCarModelDetailsRes } = useContext(UsedPdpDataLocalContext)
   const router = useRouter()
   const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
@@ -186,6 +190,9 @@ export const CreditUsedCarTab = () => {
   const [finalMaxInputDp, setFinalMaxInputDp] = useState(10000000000000)
   const [carRecommendations, setCarRecommendations] = useState<
     CarRecommendation[]
+  >([])
+  const [usedCarRecommendations, setUsedCarRecommendations] = useState<
+    UsedCarRecommendation[]
   >([])
   const [articles, setArticles] = React.useState<Article[]>([])
   const [selectedLoan, setSelectedLoan] =
@@ -412,6 +419,7 @@ export const CreditUsedCarTab = () => {
 
   useEffect(() => {
     fetchCarRecommendations()
+    fetchUsedCarRecommendations()
     const timeoutCountlyTracker = setTimeout(() => {
       if (!isSentCountlyPageView) {
         trackCountlyViewCreditTab()
@@ -1089,7 +1097,7 @@ export const CreditUsedCarTab = () => {
       })
 
       fetchCarRecommendations()
-
+      fetchUsedCarRecommendations()
       const payload: LoanCalculatorIncludePromoPayloadType = {
         brand: forms.model?.brandName ?? '',
         model: removeFirstWordFromString(forms.model?.modelName ?? ''),
@@ -1367,6 +1375,16 @@ export const CreditUsedCarTab = () => {
       (car: any) => car.loanRank === LoanRank.Green,
     )
     setCarRecommendations(filteredCarRecommendations.slice(0, 10))
+  }
+
+  const fetchUsedCarRecommendations = () => {
+    const params = new URLSearchParams()
+    params.append('bodyType', usedCarModelDetailsRes.typeName)
+    const response = getUsedCarRecommendations('', { params })
+
+    response.then((data: any) => {
+      setUsedCarRecommendations(data.data)
+    })
   }
 
   const fetchArticles = async () => {
@@ -1882,14 +1900,13 @@ export const CreditUsedCarTab = () => {
         )}
       </div>
       <div className={styles.wrapper}>
-        {carRecommendations.length > 0 && (
+        {usedCarRecommendations.length > 0 && (
           <UsedCarRecommendations
-            carRecommendationList={carRecommendations}
-            title="Rekomendasi Mobil Baru"
+            usedCarRecommendationList={usedCarRecommendations}
+            title="Beli Mobil Bekas Berkualitas"
             onClick={() => {
               return
             }}
-            selectedCity={forms?.city?.cityName}
             additionalContainerStyle={styles.recommendationAdditionalStyle}
           />
         )}
