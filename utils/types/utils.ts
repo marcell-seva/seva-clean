@@ -975,6 +975,7 @@ export interface SendMultiKualifikasiKredit {
   transmission?: string
   limit?: number
   offset?: number
+  tsTrxCode?: string
 }
 
 export type MultKKCarVariant = CarVariantLoan & {

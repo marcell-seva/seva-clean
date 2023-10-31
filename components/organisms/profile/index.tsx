@@ -276,209 +276,223 @@ const Profile = () => {
   return (
     <>
       <PageLayout>
-        <main className={styles.wrapper}>
-          {isLoadingCustomer ? (
-            <>
-              <section className={styles.wrapper__form}>
-                <section className={styles.info}>
+        {() => (
+          <>
+            <main className={styles.wrapper}>
+              {isLoadingCustomer ? (
+                <>
+                  <section className={styles.wrapper__form}>
+                    <section className={styles.info}>
+                      <Skeleton
+                        height={56}
+                        width={56}
+                        style={{
+                          borderRadius: '50%',
+                        }}
+                      />
+                      <Skeleton
+                        height={44}
+                        width={120}
+                        className={styles.rounded}
+                      />
+                    </section>
+                    <SkeletonForm />
+                    <SkeletonForm />
+                    <SkeletonForm />
+                    <SkeletonForm />
+                  </section>
                   <Skeleton
-                    height={56}
-                    width={56}
-                    style={{
-                      borderRadius: '50%',
-                    }}
-                  />
-                  <Skeleton
-                    height={44}
-                    width={120}
+                    height={113}
+                    width={'100%'}
                     className={styles.rounded}
                   />
-                </section>
-                <SkeletonForm />
-                <SkeletonForm />
-                <SkeletonForm />
-                <SkeletonForm />
-              </section>
-              <Skeleton
-                height={113}
-                width={'100%'}
-                className={styles.rounded}
-              />
-            </>
-          ) : (
-            <>
-              <section className={styles.wrapper__form}>
-                <section className={styles.info}>
-                  <Avatar
-                    title={
-                      customerDetail?.fullName
-                        ? setIconNameCustomer(customerDetail.fullName)
-                        : ''
-                    }
-                  />
-                  <div className={styles.info__phoneName}>
-                    <h3 className={styles.fullnameText}>
-                      {customerDetail?.fullName}
-                    </h3>
-                    <span>
-                      {phoneNumber?.code} | {phoneNumber?.number}
-                    </span>
-                  </div>
-                </section>
-                {isNeedComplete(customerDetail) || !customerDetail?.gender ? (
-                  <LabelAccount />
-                ) : null}
-                <Input
-                  title="Nama Lengkap"
-                  value={values.fullName}
-                  placeholder="Masukkan nama lengkap"
-                  name="fullName"
-                  id="fullName"
-                  onChange={(e) => {
-                    if (
-                      e.target.value === '' ||
-                      RegExOnlyAlphabetsAndSpaces.test(e.target.value)
-                    ) {
-                      handleChange(e)
-                    }
-                  }}
-                  onBlur={handleBlur}
-                  isError={!!errors.fullName && touched.fullName}
-                  message={errors.fullName}
-                  data-testid={elementId.Input.FullName}
-                  onFocus={trackCountlyNameFieldClick}
-                />
-                <Input
-                  title="Email"
-                  value={values.email}
-                  placeholder="Masukkan email"
-                  name="email"
-                  id="email"
-                  onChange={(e) => {
-                    const re = /^[a-zA-Z0-9@._-]+$/
-                    if (e.target.value === '' || re.test(e.target.value)) {
-                      const value = e.target.value.toLowerCase()
-                      setFieldValue('email', value)
-                    }
-                  }}
-                  onBlur={handleBlur}
-                  isError={!!errors.email && touched.email}
-                  message={errors.email}
-                  data-testid={elementId.Input.Email}
-                  onFocus={trackCountlyEmailFieldClick}
-                />
-                <DatePicker
-                  forceRender={!!values.dob}
-                  title="Tanggal Lahir"
-                  placeholder="DD/MM/YYYY"
-                  value={new Date(values.dob)}
-                  min={dayjs().add(-100, 'year').toDate()}
-                  max={dayjs().add(-17, 'year').toDate()}
-                  name="dob"
-                  isError={!!errors.dob && touched.dob}
-                  errorMessage={errors.dob}
-                  data-testid={elementId.DatePicker.DOB}
-                  onBlurInput={(e) => handleBlur(e)}
-                  onConfirm={(val: Date) => {
-                    setFieldValue('dob', dayjs(val).format('YYYY-MM-DD'))
-                  }}
-                  onOpenDate={trackCountlyDobFieldClick}
-                />
-                <div>
-                  <label className={inputStyles.titleText}>Jenis Kelamin</label>
-                  <InputSelect
-                    id="gender"
-                    name="gender"
-                    value={values.gender || ''}
-                    onChange={(value) => {
-                      setFieldValue('gender', value)
-                    }}
-                    options={[
-                      { value: Gender.Male, label: 'Pria' },
-                      {
-                        value: Gender.Female,
-                        label: 'Wanita',
-                      },
-                    ]}
-                    placeholderText="Pilih jenis kelamin"
-                    onBlurInput={handleBlur}
-                    isError={!!errors.gender && touched.gender}
-                    rightIcon={(state) => {
-                      if (state.isOpen) {
-                        return (
-                          <IconChevronUp
-                            width={24}
-                            height={24}
-                            color={'#13131B'}
-                          />
-                        )
-                      } else {
-                        return (
-                          <IconChevronDown
-                            width={24}
-                            height={24}
-                            color={'#13131B'}
-                          />
-                        )
-                      }
-                    }}
-                    isSearchable={false}
-                    isClearable={false}
-                    showValueAsLabel
-                    highlightSelectedOption
-                    datatestid={elementId.Dropdown.Gender}
-                    onFocusInput={trackCountlyGenderFieldClick}
-                  />
-                  {!!errors.gender && touched.gender ? (
-                    <p className={inputStyles.errorText}>{errors.gender}</p>
-                  ) : null}
-                </div>
-              </section>
+                </>
+              ) : (
+                <>
+                  <section className={styles.wrapper__form}>
+                    <section className={styles.info}>
+                      <Avatar
+                        title={
+                          customerDetail?.fullName
+                            ? setIconNameCustomer(customerDetail.fullName)
+                            : ''
+                        }
+                      />
+                      <div className={styles.info__phoneName}>
+                        <h3 className={styles.fullnameText}>
+                          {customerDetail?.fullName}
+                        </h3>
+                        <span>
+                          {phoneNumber?.code} | {phoneNumber?.number}
+                        </span>
+                      </div>
+                    </section>
+                    {isNeedComplete(customerDetail) ||
+                    !customerDetail?.gender ? (
+                      <LabelAccount />
+                    ) : null}
+                    <Input
+                      title="Nama Lengkap"
+                      value={values.fullName}
+                      placeholder="Masukkan nama lengkap"
+                      name="fullName"
+                      id="fullName"
+                      onChange={(e) => {
+                        if (
+                          e.target.value === '' ||
+                          RegExOnlyAlphabetsAndSpaces.test(e.target.value)
+                        ) {
+                          handleChange(e)
+                        }
+                      }}
+                      onBlur={handleBlur}
+                      isError={!!errors.fullName && touched.fullName}
+                      message={errors.fullName}
+                      data-testid={elementId.Input.FullName}
+                      onFocus={trackCountlyNameFieldClick}
+                    />
+                    <Input
+                      title="Email"
+                      value={values.email}
+                      placeholder="Masukkan email"
+                      name="email"
+                      id="email"
+                      onChange={(e) => {
+                        const re = /^[a-zA-Z0-9@._-]+$/
+                        if (e.target.value === '' || re.test(e.target.value)) {
+                          const value = e.target.value.toLowerCase()
+                          setFieldValue('email', value)
+                        }
+                      }}
+                      onBlur={handleBlur}
+                      isError={!!errors.email && touched.email}
+                      message={errors.email}
+                      data-testid={elementId.Input.Email}
+                      onFocus={trackCountlyEmailFieldClick}
+                    />
+                    <DatePicker
+                      forceRender={!!values.dob}
+                      title="Tanggal Lahir"
+                      placeholder="DD/MM/YYYY"
+                      value={new Date(values.dob)}
+                      min={dayjs().add(-100, 'year').toDate()}
+                      max={dayjs().add(-17, 'year').toDate()}
+                      name="dob"
+                      isError={!!errors.dob && touched.dob}
+                      errorMessage={errors.dob}
+                      data-testid={elementId.DatePicker.DOB}
+                      onBlurInput={(e) => handleBlur(e)}
+                      onConfirm={(val: Date) => {
+                        setFieldValue('dob', dayjs(val).format('YYYY-MM-DD'))
+                      }}
+                      onOpenDate={trackCountlyDobFieldClick}
+                    />
+                    <div>
+                      <label className={inputStyles.titleText}>
+                        Jenis Kelamin
+                      </label>
+                      <InputSelect
+                        id="gender"
+                        name="gender"
+                        value={values.gender || ''}
+                        onChange={(value) => {
+                          setFieldValue('gender', value)
+                        }}
+                        options={[
+                          { value: Gender.Male, label: 'Pria' },
+                          {
+                            value: Gender.Female,
+                            label: 'Wanita',
+                          },
+                        ]}
+                        placeholderText="Pilih jenis kelamin"
+                        onBlurInput={handleBlur}
+                        isError={!!errors.gender && touched.gender}
+                        rightIcon={(state) => {
+                          if (state.isOpen) {
+                            return (
+                              <IconChevronUp
+                                width={24}
+                                height={24}
+                                color={'#13131B'}
+                              />
+                            )
+                          } else {
+                            return (
+                              <IconChevronDown
+                                width={24}
+                                height={24}
+                                color={'#13131B'}
+                              />
+                            )
+                          }
+                        }}
+                        isSearchable={false}
+                        isClearable={false}
+                        showValueAsLabel
+                        highlightSelectedOption
+                        datatestid={elementId.Dropdown.Gender}
+                        onFocusInput={trackCountlyGenderFieldClick}
+                      />
+                      {!!errors.gender && touched.gender ? (
+                        <p className={inputStyles.errorText}>{errors.gender}</p>
+                      ) : null}
+                    </div>
+                  </section>
 
-              {enableUploadKtp && (
-                <ProfileUploadKtp
-                  dirty={dirty}
-                  onModalOpen={(val) => setIsModalOpen(val)}
-                  nik={Boolean(customerDetail?.nik)}
-                />
+                  {enableUploadKtp && (
+                    <ProfileUploadKtp
+                      dirty={dirty}
+                      onModalOpen={(val) => setIsModalOpen(val)}
+                      nik={Boolean(customerDetail?.nik)}
+                    />
+                  )}
+                </>
               )}
-            </>
-          )}
-          <section className={styles.wrapper__button}>
-            <Button
-              onClick={() => {
-                setErrorMessage(null)
-                if (!navigator.onLine) {
-                  setErrorMessage(lostConnectionMessage)
-                  return
-                }
-                handleSubmit()
-              }}
-              version={ButtonVersion.PrimaryDarkBlue}
-              size={ButtonSize.Big}
-              disabled={
-                isNeedComplete(values) || !dirty || !isValid || isLoadingSubmit
-              }
-              loading={isLoadingSubmit}
-              data-testid={elementId.Profil.Button.SimpanPerubahan}
-            >
-              Simpan Perubahan
-            </Button>
-            <button
-              onClick={onClickLogout}
-              className={`${styles.button__link} ${styles.logoutButton}`}
-              data-testid={elementId.Profil.Button.KeluarAkun}
-            >
-              Keluar Akun
-            </button>
-          </section>
-        </main>
-        {enableDeleteAccount && (
-          <div className={styles.deleteAccountSection}>
-            <Link className={styles.deleteAccountLink} href={deleteAccountUrl}>
-              Hapus Akun
-            </Link>
-          </div>
+              <section className={styles.wrapper__button}>
+                <Button
+                  onClick={() => {
+                    setErrorMessage(null)
+                    if (!navigator.onLine) {
+                      setErrorMessage(lostConnectionMessage)
+                      return
+                    }
+                    handleSubmit()
+                  }}
+                  version={ButtonVersion.PrimaryDarkBlue}
+                  size={ButtonSize.Big}
+                  disabled={
+                    isNeedComplete(values) ||
+                    !dirty ||
+                    !isValid ||
+                    isLoadingSubmit
+                  }
+                  loading={isLoadingSubmit}
+                  data-testid={elementId.Profil.Button.SimpanPerubahan}
+                >
+                  Simpan Perubahan
+                </Button>
+                <button
+                  onClick={onClickLogout}
+                  className={`${styles.button__link} ${styles.logoutButton}`}
+                  data-testid={elementId.Profil.Button.KeluarAkun}
+                >
+                  Keluar Akun
+                </button>
+              </section>
+            </main>
+
+            {enableDeleteAccount && (
+              <div className={styles.deleteAccountSection}>
+                <Link
+                  className={styles.deleteAccountLink}
+                  href={deleteAccountUrl}
+                >
+                  Hapus Akun
+                </Link>
+              </div>
+            )}
+          </>
         )}
       </PageLayout>
       <Toast
