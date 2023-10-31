@@ -10,7 +10,7 @@ import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { Button, CardShadow } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { LabelPromo } from 'components/molecules'
-import styles from '../../../styles/components/organisms/alternativeCarCard.module.scss'
+import styles from 'styles/components/organisms/alternativeUsedCarRecomendationCard.module.scss'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { Location } from 'utils/types'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
@@ -33,6 +33,7 @@ import {
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
+import { LocationRed } from 'components/atoms/icon/LocationRed'
 
 type AlternativeUsedCarCardRecomendationProps = {
   recommendation: CarRecommendation
@@ -202,29 +203,43 @@ export const AlternativeUsedCarRecomendationCard = ({
         />
         <div
           className={styles.contentWrapper}
-          onClick={navigateToPDP}
-          data-testid={elementId.CarRecommendation.BrandModel}
+          role="button"
+          onClick={onClickSeeDetail}
         >
-          <h4 className={styles.brandModelText}>
-            {recommendation.brand} {recommendation.model}
-          </h4>
-          <div
-            className={styles.infoWrapper}
-            data-testid={elementId.CarRecommendation.NominalCicilan}
+          <h2
+            className={styles.brandModelText}
+            data-testid={elementId.PLP.Text + 'brand-model-mobil'}
           >
-            <div className={styles.detailInfoWrapper}>
-              <span className={styles.smallRegular}>Cicilan mulai dari</span>
-              <span className={styles.bodyPriceText}>
-                Rp{formatLowestInstallment}/bln
-              </span>
-            </div>
-          </div>
+            {/* {recommendation.brandName} {recommendation.modelName}{' '}
+            {recommendation.variantName} {recommendation.year} */}
+            {recommendation.brand} {recommendation.model}
+          </h2>
+          <span
+            className={styles.priceOtrRange}
+            data-testid={elementId.PLP.Text + 'range-harga'}
+          >
+            {recommendation.lowestAssetPrice}
+          </span>
+          <span className={styles.locationSmallRegular}>
+            <LocationRed />
+            {recommendation.brand}
+          </span>
+          <span
+            role="link"
+            onClick={onClickSeeDetail}
+            className={styles.linkLihatDetail}
+            data-testid={elementId.PLP.Button.LihatDetail}
+          >
+            Lihat Detail
+          </span>
         </div>
         <Button
           version={ButtonVersion.Secondary}
           size={ButtonSize.Big}
-          onClick={onClickSeeDetail}
-          data-testid={elementId.CarRecommendation.Button.LihatDetail}
+          // onClick={() => {
+          //   router.push(urls.internalUrls.usedCarDetailUrl)
+          // }}
+          data-testid={elementId.PLP.Button.HitungKemampuan}
         >
           Tanya Unit
         </Button>
