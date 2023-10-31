@@ -45,6 +45,8 @@ import {
   PriceRangeWidget,
   SelectWidget,
   TenureOptionWidget,
+  TransmissionUsedCarWidget,
+  YearRangeWidget,
 } from 'components/molecules'
 import { useRouter } from 'next/router'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
@@ -70,6 +72,7 @@ import { HomePageDataLocalContext } from 'pages'
 import { MinMaxYear } from 'utils/types/context'
 
 const initEmptyDataWidget = {
+  model: [],
   brand: [],
   minYear: '',
   maxYear: '',
@@ -78,6 +81,9 @@ const initEmptyDataWidget = {
 
 const UsedCarSearchWidget = () => {
   const [minmaxYear, setMinMaxYear] = useState<MinMaxYear>()
+  const { dataMinMaxYearUsedCar, dataModelUsedCar } = useContext(
+    HomePageDataLocalContext,
+  )
   const { patchFunnelQuery }: any = useFunnelQueryUsedCarData()
   const { funnelWidget, saveFunnelWidget } = useContext(
     SearchUsedCarWidgetContext,
@@ -89,10 +95,13 @@ const UsedCarSearchWidget = () => {
     initEmptyDataWidget,
   )
 
-  const fetchMinMaxYear = () => {
-    getMinMaxYearsUsedCar('').then((data) => {
-      setMinMaxYear(data.data)
-    })
+  const [locationSelected, setLocationSelected] = useState(
+    funnelWidget.model ? funnelWidget.model : [],
+  )
+
+  const fetchMinMaxYear = async () => {
+    const response = await getMinMaxYearsUsedCar('')
+    setMinMaxYear(response.data)
   }
 
   const brandPlaceholder = () => {
@@ -111,22 +120,47 @@ const UsedCarSearchWidget = () => {
     return 'Pilih merek mobil bekas'
   }
 
-  // const submit = () => {
-  //   const { brand, minYear, maxYear, transmission } = funnelWidget
-  //   const urlParam = new URLSearchParams({
-  //     ...(brand && brand.length > 0 && { brand: brand.join(',') }),
-  //     ...(expandFinancial && tenure && { tenure }),
-  //     sortBy: 'lowToHigh',
-  //   }).toString()
+  const yearPlaceholder = () => {
+    if (funnelWidget.minYear && funnelWidget.maxYear) {
+      return `${funnelWidget.minYear} - ${funnelWidget.maxYear}`
+    }
+    return 'Pilih tahun mobil bekas'
+  }
 
-  //   navigateToPLP(
-  //     PreviousButton.SmartSearch,
-  //     { search: urlParam },
-  //     true,
-  //     false,
-  //     urls.internalUrls.usedCarResultsUrl,
-  //   )
-  // }
+  const transmissionPlaceholder = () => {
+    if (funnelWidget.transmission.length > 0) {
+      return funnelWidget.transmission.join(', ')
+    }
+
+    return 'Pilih transmisi'
+  }
+
+  const submit = () => {
+    const { brand, minYear, maxYear, transmission, model } = funnelWidget
+    const urlParam = new URLSearchParams({
+      ...(model && model.length > 0 && { modelName: model.join(',') }),
+      ...(brand && brand.length > 0 && { brand: brand.join(',') }),
+      ...(minYear && { yearStart: minYear }),
+      ...(maxYear && { yearEnd: maxYear }),
+      ...(transmission &&
+        transmission.length > 0 && { transmission: transmission.join(',') }),
+      sortBy: 'lowToHigh',
+    }).toString()
+
+    navigateToPLP(
+      PreviousButton.SmartSearch,
+      {
+        search: urlParam,
+      },
+      true,
+      false,
+      urls.internalUrls.usedCarResultsUrl,
+    )
+  }
+
+  useEffect(() => {
+    saveFunnelWidget({ ...funnelWidget, model: locationSelected })
+  }, [locationSelected])
 
   useEffect(() => {
     saveFunnelWidget({ ...funnelWidget })
@@ -153,6 +187,7 @@ const UsedCarSearchWidget = () => {
     const response = await getUsedCarCityList()
     setCityList(response.data)
   }
+
   return (
     <div className={styles.container}>
       <CardShadow
@@ -160,7 +195,11 @@ const UsedCarSearchWidget = () => {
           [styles.cardContainer]: true,
         })}
       >
-        <FormSearchModel cityList={cityList} isApplied={isApplied} />
+        <FormSearchModel
+          modelList={dataModelUsedCar}
+          isApplied={isApplied}
+          setLocationSelected={setLocationSelected}
+        />
         <SelectWidget
           title="Merek"
           placeholder={brandPlaceholder()}
@@ -178,7 +217,7 @@ const UsedCarSearchWidget = () => {
         />
         <SelectWidget
           title="Tahun"
-          placeholder={'Pilih tahun mobil bekas'}
+          placeholder={yearPlaceholder()}
           icon={
             <IconCalendar
               width={32}
@@ -187,12 +226,9 @@ const UsedCarSearchWidget = () => {
             />
           }
           sheetOption={({ onClose }: any) => (
-            <GridOptionWidget
+            <YearRangeWidget
               onClose={onClose}
-              type="bodyType"
-              errorToastMessage="Silahkan pilih salah satu tipe mobil"
-              // trackCountlyOnSubmit={trackCountlyOnSubmitCarBodyType}
-              trackCountlyOnReset={() => trackCountlyOnReset('Car Type')}
+              minMaxYear={dataMinMaxYearUsedCar}
             />
           )}
           datatestid={elementId.FilterType}
@@ -200,7 +236,7 @@ const UsedCarSearchWidget = () => {
         <SelectWidget
           ref={priceRangeRef}
           title="Transmisi"
-          placeholder={'Pilih transmisi'}
+          placeholder={transmissionPlaceholder()}
           icon={
             <IconTransmission
               width={32}
@@ -209,7 +245,7 @@ const UsedCarSearchWidget = () => {
             />
           }
           sheetOption={({ onClose }: any) => (
-            <BrandUsedCarWidget onClose={onClose} />
+            <TransmissionUsedCarWidget onClose={onClose} />
           )}
           datatestid={elementId.FilterHarga}
         />
@@ -218,7 +254,7 @@ const UsedCarSearchWidget = () => {
         <Button
           version={ButtonVersion.PrimaryDarkBlue}
           size={ButtonSize.Big}
-          // onClick={submit}
+          onClick={submit}
           data-testid={elementId.Homepage.Button.CariMobil}
         >
           Cari Mobil

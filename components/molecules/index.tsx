@@ -22,7 +22,7 @@ import { ShareModal } from './shareModal'
 import { CalculationResultItem } from './calculationResultItem'
 import { MenuList } from './menuList'
 import { Tenure } from './tenure'
-
+import YearRangeWidget from './searchWidget/option/yearRangeWidget'
 import PromoSection from '../organisms/promoSection'
 import HowToUse from './howToUse'
 import CtaWidget from './ctaWidget'
@@ -43,6 +43,7 @@ import TenureOptionWidget from './searchWidget/option/tenureOptionWidget'
 import { SearchModal } from './searchModal'
 import { ProfileUploadKtp } from './profileUploadKtp'
 import BrandUsedCarWidget from './searchWidget/option/brandUsedCarWidget'
+import TransmissionUsedCarWidget from './searchWidget/option/transmissionWidget'
 export {
   HowToUseSection,
   Testimony,
@@ -88,4 +89,6 @@ export {
   ProfileUploadKtp,
   NavigationTabUsedCar,
   BrandUsedCarWidget,
+  YearRangeWidget,
+  TransmissionUsedCarWidget,
 }

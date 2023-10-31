@@ -31,6 +31,7 @@ import {
   getAnnouncementBox as gab,
   getMobileFooterMenu,
   getMinMaxYearsUsedCar,
+  getModelUsedCar,
 } from 'services/api'
 
 interface HomePageDataLocalContextType {
@@ -47,6 +48,7 @@ interface HomePageDataLocalContextType {
   dataCarofTheMonth: any
   dataFooterMenu: any
   dataMinMaxYearUsedCar: any
+  dataModelUsedCar: any
 }
 /**
  * used to pass props without drilling through components
@@ -66,6 +68,7 @@ export const HomePageDataLocalContext =
     dataCarofTheMonth: null,
     dataFooterMenu: [],
     dataMinMaxYearUsedCar: null,
+    dataModelUsedCar: [],
   })
 
 export default function WithTracker({
@@ -82,6 +85,7 @@ export default function WithTracker({
   dataTypeCar,
   dataCarofTheMonth,
   dataMinMaxYearUsedCar,
+  dataModelUsedCar,
   ssr,
   dataFooterMenu,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
@@ -133,6 +137,7 @@ export default function WithTracker({
         dataCarofTheMonth,
         dataFooterMenu,
         dataMinMaxYearUsedCar,
+        dataModelUsedCar,
       }}
     >
       <Script
@@ -172,6 +177,7 @@ export async function getServerSideProps(context: any) {
       menuDesktopRes,
       footerMenuRes,
       minmaxYearRes,
+      modelUsedCarRes,
     ]: any = await Promise.all([
       getRecommendation(params),
       getBanner(),
@@ -187,6 +193,7 @@ export async function getServerSideProps(context: any) {
       getMenu(),
       getMobileFooterMenu(),
       getMinMaxYearsUsedCar(''),
+      getModelUsedCar(''),
     ])
 
     const [
@@ -204,6 +211,7 @@ export async function getServerSideProps(context: any) {
       dataDesktopMenu,
       dataFooterMenu,
       dataMinMaxYearUsedCar,
+      dataModelUsedCar,
     ] = await Promise.all([
       recommendationRes.carRecommendations,
       bannerRes.data,
@@ -219,6 +227,7 @@ export async function getServerSideProps(context: any) {
       menuDesktopRes.data,
       footerMenuRes.data,
       minmaxYearRes.data,
+      modelUsedCarRes.data,
     ])
     return {
       props: {
@@ -234,6 +243,7 @@ export async function getServerSideProps(context: any) {
         dataTypeCar,
         dataCarofTheMonth,
         dataMinMaxYearUsedCar,
+        dataModelUsedCar,
         isSsrMobile: getIsSsrMobile(context),
         dataDesktopMenu,
         dataFooterMenu,
@@ -254,6 +264,7 @@ export async function getServerSideProps(context: any) {
         dataTypeCar: null,
         dataCarofTheMonth: null,
         dataMinMaxYearUsedCar: null,
+        dataModelUsedCar: [],
         ssr: 'failed',
       },
     }

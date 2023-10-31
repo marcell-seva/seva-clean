@@ -353,13 +353,12 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
             onCtaClick={onClickMainHeroLP}
             passCountlyTrackerPageView={trackCountlyPageView}
           />
-          <SearchWidget />
-          {/* <SearchWidgetSection
+          <SearchWidgetSection
             isShowAnnouncementBox={false}
             onChangeTab={(value: string) => {
               onSelectLowerTab(value)
             }}
-          /> */}
+          />
           <div className={styles.line} />
           <PromoSection onPage={'Homepage'} />
           <LpCarRecommendations

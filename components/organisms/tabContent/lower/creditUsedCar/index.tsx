@@ -20,7 +20,10 @@ import {
   TrackerFlag,
 } from 'utils/types/models'
 import React, { useEffect, useMemo, useState } from 'react'
-import { LeadsFormSecondary } from 'components/organisms'
+import {
+  LeadsFormSecondary,
+  UsedCarRecommendations,
+} from 'components/organisms'
 import styles from 'styles/components/organisms/creditUsedCarTab.module.scss'
 import { Button, Gap, IconCalculator, IconLoading } from 'components/atoms'
 import {
@@ -1868,6 +1871,19 @@ export const CreditUsedCarTab = () => {
       <div className={styles.wrapper}>
         {carRecommendations.length > 0 && (
           <NewCarRecommendations
+            carRecommendationList={carRecommendations}
+            title="Rekomendasi Mobil Baru"
+            onClick={() => {
+              return
+            }}
+            selectedCity={forms?.city?.cityName}
+            additionalContainerStyle={styles.recommendationAdditionalStyle}
+          />
+        )}
+      </div>
+      <div className={styles.wrapper}>
+        {carRecommendations.length > 0 && (
+          <UsedCarRecommendations
             carRecommendationList={carRecommendations}
             title="Rekomendasi Mobil Baru"
             onClick={() => {

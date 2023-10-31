@@ -4,11 +4,9 @@ import clsx from 'clsx'
 import { CSAButton } from 'components/atoms'
 import {
   AdaOTOdiSEVALeadsForm,
-  CarDetailCard,
   FooterMobile,
   HeaderMobile,
   NavigationFilterMobileUsedCar,
-  PLPEmpty,
   PLPEmptyUsedCar,
   UsedCarDetailCard,
 } from 'components/organisms'
@@ -131,6 +129,7 @@ export const PLPUsedCar = ({
     transmission,
     age,
     sortBy,
+    modelName,
   } = router.query as FilterParam
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
 
@@ -161,7 +160,8 @@ export const PLPUsedCar = ({
     yearEnd ||
     mileageStart ||
     mileageEnd ||
-    transmission
+    transmission ||
+    modelName
       ? true
       : false
 
@@ -553,6 +553,7 @@ export const PLPUsedCar = ({
             mileageEnd: mileageEnd ? mileageEnd : '',
             mileageStart: mileageStart ? mileageStart : '',
             transmission: transmission ? transmission?.split(',') : [],
+            modelName: modelName ? modelName?.split('%2C') : [],
             // cityId: cityId ? cityId?.split(',') : [],
             sortBy: sortBy || 'lowToHigh',
             page: page || '1',
@@ -606,6 +607,7 @@ export const PLPUsedCar = ({
       saveRecommendation(recommendation)
       const queryParam: any = {
         brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
+        modelName: modelName?.split('%2C') || '',
         priceStart: priceStart,
         priceEnd: priceEnd,
         yearStart: yearStart,
@@ -741,6 +743,7 @@ export const PLPUsedCar = ({
         className={clsx({
           [styles.wrapper]: true,
           [styles.stickypadding]: sticky,
+          [styles.showAAnnouncementBox]: showAnnouncementBox,
         })}
       >
         <HeaderMobile

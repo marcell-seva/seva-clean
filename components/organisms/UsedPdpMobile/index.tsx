@@ -3,23 +3,11 @@ import {
   AdaOTOdiSEVALeadsForm,
   FooterMobile,
   HeaderMobile,
-  LeadsFormAdaOTOdiSEVA,
-  LeadsFormTertiary,
-  LeadsFormUsedCar,
-  PdpLowerSection,
-  PdpUpperSection,
   PdpUsedCarLowerSection,
 } from 'components/organisms'
 import styles from 'styles/pages/carVariantList.module.scss'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
-import {
-  CarRecommendation,
-  CityOtrOption,
-  MainVideoResponseType,
-  VariantDetail,
-  VideoDataType,
-  trackDataCarType,
-} from 'utils/types/utils'
+import { trackDataCarType } from 'utils/types/utils'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { savePreviouslyViewed } from 'utils/carUtils'
@@ -38,43 +26,19 @@ import {
   capitalizeWords,
 } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
-import {
-  PdpDataLocalContext,
-  checkCitySlug,
-} from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
-import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
-import { useQuery } from 'utils/hooks/useQuery'
-import { useCar } from 'services/context/carContext'
 import { getToken } from 'utils/handler/auth'
-import { formatNumberByLocalization } from 'utils/handler/rupiah'
-import { LoanRank } from 'utils/types/models'
-import { CountlyEventNames } from 'helpers/countly/eventNames'
-import {
-  trackEventCountly,
-  valueForInitialPageProperty,
-  valueForUserTypeProperty,
-  valueMenuTabCategory,
-} from 'helpers/countly/countly'
-import { client } from 'utils/helpers/const'
-import { defineRouteName } from 'utils/navigate'
+import { valueMenuTabCategory } from 'helpers/countly/countly'
 import { useUtils } from 'services/context/utilsContext'
 import { defaultCity, getCity } from 'utils/hooks/useGetCity'
 import dynamic from 'next/dynamic'
-import { Currency } from 'utils/handler/calculation'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
-import {
-  getCarModelDetailsById,
-  getCarVariantDetailsById,
-  handleRecommendationsAndCarModelDetailsUpdate,
-} from 'utils/handler/carRecommendation'
-import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
-import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { UsedPdpDataLocalContext } from 'pages/mobil-bekas/p/[[...slug]]'
 import { usedCar } from 'services/context/usedCarContext'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
 import { UsedCarGallery, UsedCarOverlayGallery } from 'components/molecules'
+import clsx from 'clsx'
 
 const OverlayGallery = dynamic(() =>
   import('components/molecules').then((mod) => mod.OverlayGallery),
@@ -249,171 +213,12 @@ export default function UsedCarVariantList({
     SessionStorageKey.PreviousCarDataBeforeLogin,
   )
 
-  // const getQueryParamForApiRecommendation = () => {
-  //   if (source && source.toLowerCase() === 'plp') {
-  //     return {
-  //       downPaymentType: storedFilter?.downPaymentType,
-  //       downPaymentAmount: storedFilter?.downPaymentAmount,
-  //       downPaymentPercentage: storedFilter?.downPaymentPercentage,
-  //       monthlyIncome: storedFilter?.monthlyIncome,
-  //       tenure: storedFilter?.tenure,
-  //       age: storedFilter?.age,
-  //       priceRangeGroup: storedFilter?.priceRangeGroup,
-  //     }
-  //   } else {
-  //     return {}
-  //   }
-  // }
-
   useEffect(() => {
     document.body.style.overflowY = isActive ? 'hidden' : 'auto'
     return () => {
       document.body.style.overflowY = 'auto'
     }
   }, [isActive])
-
-  // const sortedCarModelVariant = useMemo(() => {
-  //   return (
-  //     modelDetail?.variants?.sort(function (
-  //       a: VariantDetail,
-  //       b: VariantDetail,
-  //     ) {
-  //       return a.priceValue - b.priceValue
-  //     }) || []
-  //   )
-  // }, [modelDetail])
-
-  // const getMonthlyInstallment = () => {
-  //   return formatNumberByLocalization(
-  //     sortedCarModelVariant[0].monthlyInstallment,
-  //     LanguageCode.id,
-  //     1000000,
-  //     10,
-  //   )
-  // }
-
-  // const getDp = () => {
-  //   if (
-  //     funnelQuery.downPaymentAmount &&
-  //     funnelQuery.downPaymentAmount?.toString().length > 0
-  //   ) {
-  //     return formatNumberByLocalization(
-  //       parseInt(funnelQuery.downPaymentAmount.toString()),
-  //       LanguageCode.id,
-  //       1000000,
-  //       10,
-  //     )
-  //   } else {
-  //     return formatNumberByLocalization(
-  //       sortedCarModelVariant[0].dpAmount,
-  //       LanguageCode.id,
-  //       1000000,
-  //       10,
-  //     )
-  //   }
-  // }
-
-  // const getTenure = () => {
-  //   if (funnelQuery.tenure && funnelQuery.tenure.toString().length > 0) {
-  //     return funnelQuery.tenure
-  //   } else {
-  //     return '5'
-  //   }
-  // }
-  // const saveDataCarForLoginPageView = () => {
-  //   const dataCarTmp = {
-  //     CAR_BRAND: brand,
-  //     CAR_MODEL: model,
-  //     CAR_VARIANT: 'Null',
-  //     PELUANG_KREDIT_BADGE: dataCar?.PELUANG_KREDIT_BADGE
-  //       ? dataCar.PELUANG_KREDIT_BADGE
-  //       : loanRankcr
-  //       ? loanRankcr === LoanRank.Green
-  //         ? 'Mudah disetujui'
-  //         : loanRankcr === LoanRank.Red
-  //         ? 'Sulit disetujui'
-  //         : 'Null'
-  //       : 'Null',
-  //     TENOR_OPTION: 'Null',
-  //   }
-  //   saveSessionStorage(
-  //     SessionStorageKey.PreviousCarDataBeforeLogin,
-  //     JSON.stringify(dataCarTmp),
-  //   )
-  // }
-
-  // const trackCountlyFloatingWhatsapp = async () => {
-  //   let temanSevaStatus = 'No'
-  //   if (referralCodeFromUrl) {
-  //     temanSevaStatus = 'Yes'
-  //   } else if (!!getToken()) {
-  //     const response = await getCustomerInfoSeva()
-  //     if (response[0].temanSevaTrxCode) {
-  //       temanSevaStatus = 'Yes'
-  //     }
-  //   }
-  //   trackEventCountly(CountlyEventNames.WEB_WA_DIRECT_CLICK, {
-  //     PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
-  //     SOURCE_BUTTON: 'Floating Button',
-  //     CAR_BRAND: carModelDetails?.brand,
-  //     CAR_MODEL: carModelDetails?.model,
-  //     CAR_VARIANT: dataCar?.CAR_VARIANT ? dataCar?.CAR_VARIANT : 'Null',
-  //     PELUANG_KREDIT_BADGE:
-  //       isUsingFilterFinancial && IsShowBadgeCreditOpportunity
-  //         ? dataCar?.PELUANG_KREDIT_BADGE
-  //         : 'Null',
-  //     TENOR_OPTION:
-  //       window.location.href.includes('kredit') &&
-  //       dataCar?.PELUANG_KREDIT_BADGE !== 'Null'
-  //         ? dataCar?.TENOR_OPTION + ' Tahun'
-  //         : 'Null',
-  //     TENOR_RESULT:
-  //       dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Green'
-  //         ? 'Mudah disetujui'
-  //         : dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Red'
-  //         ? 'Sulit disetujui'
-  //         : 'Null',
-  //     KK_RESULT: 'Null',
-  //     IA_RESULT: 'Null',
-  //     TEMAN_SEVA_STATUS: temanSevaStatus,
-  //     INCOME_LOAN_CALCULATOR: filterStorage?.monthlyIncome
-  //       ? `Rp${Currency(filterStorage?.monthlyIncome)}`
-  //       : 'Null',
-  //     INCOME_KUALIFIKASI_KREDIT: 'Null',
-  //     INCOME_CHANGE: 'Null',
-  //     OCCUPATION: 'Null',
-  //   })
-  // }
-  // const onClickFloatingWhatsapp = async () => {
-  //   let message = ''
-  //   trackCountlyFloatingWhatsapp()
-  //   const parsedModel = capitalizeFirstLetter(model.replace(/-/g, ' '))
-  //   const brandModel =
-  //     capitalizeFirstLetter(brand.replace(/-/g, ' ')) +
-  //     ' ' +
-  //     capitalizeFirstLetter(parsedModel.replace(/-/g, ' '))
-
-  //   const getMessageEnding = () => {
-  //     if (connectedRefCode && connectedRefCode.length > 0) {
-  //       return ` dengan menggunakan kode referral ${connectedRefCode}.`
-  //     } else if (referralCodeFromUrl && referralCodeFromUrl.length > 0) {
-  //       return ` dengan menggunakan kode referral ${referralCodeFromUrl}.`
-  //     } else {
-  //       return '.'
-  //     }
-  //   }
-
-  //   if (status === 'empty') {
-  //     message = `Halo, saya tertarik dengan mobil ${brandModel} di kota ${cityOtr?.cityName}. Apakah dapat dibantu?`
-  //   } else {
-  //     message =
-  //       `Halo, saya tertarik dengan mobil ${brandModel} dengan DP sebesar Rp ${getDp()} jt dan cicilan per bulannya Rp ${getMonthlyInstallment()} jt selama ${getTenure()} tahun` +
-  //       getMessageEnding()
-  //   }
-
-  //   const whatsAppUrl = await getCustomerAssistantWhatsAppNumber()
-  //   window.open(`${whatsAppUrl}?text=${encodeURI(message)}`, '_blank')
-  // }
 
   const checkConnectedRefCode = async () => {
     if (getToken()) {
@@ -756,7 +561,12 @@ export default function UsedCarVariantList({
   }
   return (
     <>
-      <div className={styles.container}>
+      <div
+        className={clsx({
+          [styles.container]: true,
+          [styles.showAAnnouncementBox]: showAnnouncementBox,
+        })}
+      >
         <HeaderMobile
           isActive={isActive}
           setIsActive={setIsActive}

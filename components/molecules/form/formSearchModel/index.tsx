@@ -1,39 +1,62 @@
 import { Divider, Select, Space, ConfigProvider } from 'antd'
 import type { SelectProps } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import styles from 'styles/components/molecules/form/formSearchModel.module.scss'
 import { CloseOutlined2 } from 'components/atoms/icon/CloseOutlined2'
 import { IconChevronDown, IconChevronUp, IconSearch } from 'components/atoms'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
+import {
+  SearchUsedCarWidgetContext,
+  SearchUsedCarWidgetContextType,
+} from 'services/context'
+import { getModelUsedCar } from 'services/api'
 
 const { Option } = Select
 
 interface CarLocationProps {
-  cityList: any
+  modelList: any
   setLocationSelected?: any
   isResetFilter?: boolean
   isApplied: boolean
 }
 
 interface Option {
-  cityId: number
-  cityName: string
-  province?: string
+  brandName: string
+  modelName: string
+  modelCode: string
 }
 
 export const FormSearchModel = ({
-  cityList,
+  modelList,
   setLocationSelected,
   isResetFilter,
   isApplied,
 }: CarLocationProps) => {
-  const { funnelQuery } = useFunnelQueryUsedCarData()
+  const { funnelWidget, saveFunnelWidget } = useContext(
+    SearchUsedCarWidgetContext,
+  ) as SearchUsedCarWidgetContextType
   const [chosen, setChosen] = useState(
-    funnelQuery.cityId ? funnelQuery.cityId : [],
+    funnelWidget.model ? funnelWidget.model : [],
   )
   const [totalChosen, setTotalChosen] = useState(0)
   const [changeIcon, setChangeIcon] = useState(false)
-  const [options, setOptions] = useState(cityList)
+  const [options, setOptions] = useState(modelList)
+
+  const distinctData = options.filter((value: any, index: any, self: any) => {
+    const indexOfItem = self.findIndex(
+      (item: any) =>
+        item.brandName === value.brandName &&
+        item.modelName === value.modelName &&
+        item.modelCode === value.modelCode,
+    )
+    return indexOfItem === index
+  })
+
+  const formattedData = distinctData.map((item: any) => ({
+    brandName: item.brandName.charAt(0) + item.brandName.slice(1).toLowerCase(),
+    modelName: item.modelName.charAt(0) + item.modelName.slice(1).toLowerCase(),
+    modelCode: item.modelCode,
+  }))
 
   const handleChange = (value: any) => {
     setTotalChosen(value.length)
@@ -93,9 +116,6 @@ export const FormSearchModel = ({
             }
             optionFilterProp="label"
             dropdownStyle={{ padding: '4px 0' }}
-            getPopupContainer={() =>
-              document.getElementById('formCarLocation')!
-            }
             removeIcon={
               <div className={styles.removeIcon}>
                 <CloseOutlined2 color="#F5F6F6" width={4.59} height={4.59} />
@@ -122,11 +142,11 @@ export const FormSearchModel = ({
               </>
             )}
           >
-            {options.map((item: Option) => (
+            {formattedData.map((item: Option, index: number) => (
               <Option
-                key={item.cityId}
-                value={item.cityId}
-                label={item.cityName}
+                key={index}
+                value={item.modelCode}
+                label={item.modelName}
                 style={{
                   padding: '18px 16px',
                   fontSize: '14px',
@@ -134,7 +154,7 @@ export const FormSearchModel = ({
                   fontWeight: '400',
                 }}
               >
-                {item.cityName}
+                {item.brandName} {item.modelName}
               </Option>
             ))}
           </Select>

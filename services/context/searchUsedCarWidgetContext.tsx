@@ -2,6 +2,7 @@ import { createContext, useState } from 'react'
 import { FunnelWidget, UsedCarFunnelWidget } from 'utils/types/props'
 
 const initEmptyDataWidget = {
+  model: [],
   brand: [],
   minYear: '',
   maxYear: '',

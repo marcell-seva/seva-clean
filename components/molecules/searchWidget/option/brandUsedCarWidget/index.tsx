@@ -114,6 +114,7 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
 
   const clear = () => {
     setIsCheckedBrandQuery([])
+    setDisableActionButton(true)
   }
 
   const submit = () => {
@@ -128,10 +129,6 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
       }, 1200)
     }
   }, [showToast])
-
-  useEffect(() => {
-    console.log('data', funnelWidget)
-  }, [funnelWidget])
 
   useEffect(() => {
     if (isCheckedBrandQuery.length === 0) {

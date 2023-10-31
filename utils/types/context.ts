@@ -47,6 +47,7 @@ export interface Filter {
 export interface FilterParam extends NextParsedUrlQuery {
   bodyType: string
   brand: string
+  modelName?: string
   downPaymentAmount: string
   monthlyIncome: string
   tenure: string
@@ -89,6 +90,7 @@ export interface FunnelQuery extends Filter {
   filterFincap?: boolean
   page?: string
   perPage?: string
+  modelName?: string[]
 }
 
 export interface UTM {
