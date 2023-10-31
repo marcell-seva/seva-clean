@@ -33,8 +33,10 @@ import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { TrackerFlag, InstallmentTypeOptions } from 'utils/types/models'
 import dynamic from 'next/dynamic'
 import { getNewFunnelLoanSpecialRate } from 'utils/handler/funnel'
+import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
 
-const Modal = dynamic(() => import('antd').then((mod) => mod.Modal))
+const Modal = dynamic(() => import('antd/lib/modal'), { ssr: false })
+
 const PopupVariantDetail = dynamic(
   () => import('components/organisms/popupVariantDetail/index'),
 )
@@ -318,13 +320,6 @@ export const SummaryTab = ({
     return `${summaryInfo.brand} ${summaryInfo.model} adalah mobil dengan ${summaryInfo.seats} Kursi ${summaryInfo.type} ${summaryInfo.priceRange} di Indonesia. Mobil ini tersedia dalam  ${summaryInfo.color} pilihan warna, ${summaryInfo.totalType} tipe mobil, dan ${summaryInfo.transmissionType} opsi transmisi: ${summaryInfo.transmissionDetail} di Indonesia. Mobil ini memiliki dimensi sebagai berikut: ${summaryInfo.length} mm L x ${summaryInfo.width} mm W x ${summaryInfo.height} mm H. Cicilan kredit mobil ${summaryInfo.brand} ${summaryInfo.model} dimulai dari Rp ${summaryInfo.credit} juta selama ${summaryInfo.month} bulan. `
   }
 
-  const getTipsText = (): string => {
-    const currentYear: number = new Date().getFullYear()
-    return `Saat ini membeli mobil baru bukanlah hal buruk. Di tahun ${currentYear} data menunjukan bahwa pembelian mobil baru mengalami peningkatan yang cukup signifikan,
-   ini artinya mobil baru masih menjadi pilihan banyak orang. Jika kamu berniat membeli mobil baru, mobil baru ${summaryInfo.brand} ${summaryInfo.model}
-  Membeli mobil baru sama halnya seperti membeli mobil bekas, kita juga harus memperhatikan perawatannya, karena mobil yang rajin perawatan tentu akan bertahan untuk jangka waktu yang panjang. Perawatan yang bisa dilakukan untuk mobil baru ${summaryInfo.brand} ${summaryInfo.model}
-    adalah pergantian oli, filter AC, periksa tekanan ban, serta mencuci mobil. `
-  }
   const listFaq = [
     {
       question: `Berapa Cicilan / Kredit Bulanan ${summaryInfo.brand} ${summaryInfo.model} Terendah?`,
@@ -451,7 +446,11 @@ export const SummaryTab = ({
         <div className={styles.gap} />
         <Info
           headingText={`Membeli Mobil ${summaryInfo.brand} ${summaryInfo.model}? Seperti Ini Cara Perawatannya!`}
-          descText={getTipsText()}
+          descText={getSeoFooterTextDescription(
+            summaryInfo.brand,
+            summaryInfo.model,
+          )}
+          isUsingSetInnerHtmlDescText={true}
         />
       </div>
     </div>

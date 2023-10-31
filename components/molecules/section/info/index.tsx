@@ -18,18 +18,20 @@ import {
   valueMenuTabCategory,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
-import clsx from 'clsx'
+import DOMPurify from 'dompurify'
 
 export interface PropsInfo {
   isWithIcon?: boolean
   headingText: string
   descText: string
+  isUsingSetInnerHtmlDescText?: boolean
 }
 
 export const Info: React.FC<PropsInfo> = ({
   isWithIcon,
   headingText,
   descText,
+  isUsingSetInnerHtmlDescText = false,
 }): JSX.Element => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
   const readMoreText = 'Baca Selengkapnya'
@@ -99,14 +101,20 @@ export const Info: React.FC<PropsInfo> = ({
         </h2>
       </div>
       <div className={styles.desc}>
-        <span
-          className={clsx({
-            [styles.textDesc]: true,
-            [styles.elipsed]: !isExpanded,
-          })}
-        >
-          {descText}
-        </span>
+        {isUsingSetInnerHtmlDescText ? (
+          <div
+            className={`${styles.innerHtmlWrapper} ${
+              !isExpanded && styles.innerHtmlWrapperElipsed
+            }`}
+            dangerouslySetInnerHTML={{
+              __html: client ? DOMPurify.sanitize(descText) : descText,
+            }}
+          ></div>
+        ) : (
+          <p className={`${styles.textDesc} ${!isExpanded && styles.elipsed}`}>
+            {descText}
+          </p>
+        )}
         <br />
         <button
           className={styles.button}

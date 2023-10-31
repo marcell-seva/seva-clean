@@ -24,7 +24,7 @@ import {
   LoanRank,
   TrackerFlag,
 } from 'utils/types/models'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { LeadsFormSecondary } from 'components/organisms'
 import styles from 'styles/components/organisms/creditTab.module.scss'
 import { Button, Gap, IconCalculator, IconLoading } from 'components/atoms'
@@ -99,6 +99,8 @@ import {
   postCheckPromoGiias,
   postLoanPermutationIncludePromo,
 } from 'services/api'
+import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -150,11 +152,23 @@ interface FormState {
 export const CreditTab = () => {
   const router = useRouter()
   const { carModelDetails, carVariantDetails, recommendation } = useCar()
+  const {
+    dataCombinationOfCarRecomAndModelDetailDefaultCity,
+    carVariantDetailsResDefaultCity,
+    carRecommendationsResDefaultCity,
+  } = useContext(PdpDataLocalContext)
+  const modelDetailWithDefaultFromServer =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
+  const variantDetailWithDefaultFromServer =
+    carVariantDetails || carVariantDetailsResDefaultCity
+  const carRecommendationsWithDefaultFromServer =
+    recommendation.length > 0
+      ? recommendation
+      : carRecommendationsResDefaultCity?.carRecommendations
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
   )
-  const [info, setInfo] = useState<any>({})
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
   const [isDisableCtaCalculate, setIsDisableCtaCalculate] = useState(true)
   const { financialQuery, patchFinancialQuery } = useFinancialQueryData()
@@ -447,7 +461,6 @@ export const CreditTab = () => {
       recommendation !== undefined
     ) {
       trackEventMoengage()
-      getSummaryInfo()
       autofillCarModelAndVariantData()
     }
   }, [carModelDetails, carVariantDetails, recommendation])
@@ -656,16 +669,8 @@ export const CreditTab = () => {
     return `${info.brand} ${info.model} adalah mobil dengan ${info.seats} Kursi ${info.type} ${info.priceRange} di Indonesia. Mobil ini tersedia dalam  ${info.color} pilihan warna, ${info.totalType} tipe mobil, dan ${info.transmissionType} opsi transmisi: ${info.transmissionDetail} di Indonesia. Mobil ini memiliki dimensi sebagai berikut: ${info.length} mm L x ${info.width} mm W x ${info.height} mm H. Cicilan kredit mobil ${info.brand} ${info.model} dimulai dari Rp ${info.credit} juta selama ${info.month} bulan.`
   }
 
-  const getTipsText = (): string => {
-    const currentYear: number = new Date().getFullYear()
-    return `Saat ini membeli mobil baru bukanlah hal buruk. Di tahun ${currentYear} data menunjukan bahwa pembelian mobil baru mengalami peningkatan yang cukup signifikan,
-   ini artinya mobil baru masih menjadi pilihan banyak orang. Jika kamu berniat membeli mobil baru, mobil baru ${info.brand} ${info.model}
-  Membeli mobil baru sama halnya seperti membeli mobil bekas, kita juga harus memperhatikan perawatannya, karena mobil yang rajin perawatan tentu akan bertahan untuk jangka waktu yang panjang. Perawatan yang bisa dilakukan untuk mobil baru ${info.brand} ${info.model}
-    adalah pergantian oli, filter AC, periksa tekanan ban, serta mencuci mobil.`
-  }
-
   const getColorVariant = () => {
-    const currentUrlPathName = window.location.pathname
+    const currentUrlPathName = router.asPath
     const splitedPath = currentUrlPathName.split('/')
     const carBrandModelUrl = `/${splitedPath[1]}/${splitedPath[2]}/${splitedPath[3]}`
     if (availableList.includes(carBrandModelUrl)) {
@@ -686,29 +691,31 @@ export const CreditTab = () => {
     )
   }
 
-  const getSummaryInfo = () => {
-    const brand = carModelDetails?.brand || ''
-    const model = carModelDetails?.model || ''
-    const type = carVariantDetails?.variantDetail.bodyType
-    const seats = carVariantDetails?.variantDetail.carSeats
-    const priceRange = getPriceRange(carModelDetails?.variants)
-    const totalType = carModelDetails?.variants.length
+  const info = useMemo(() => {
+    const brand = modelDetailWithDefaultFromServer?.brand || ''
+    const model = modelDetailWithDefaultFromServer?.model || ''
+    const type = variantDetailWithDefaultFromServer?.variantDetail.bodyType
+    const seats = variantDetailWithDefaultFromServer?.variantDetail.carSeats
+    const priceRange = getPriceRange(modelDetailWithDefaultFromServer?.variants)
+    const totalType = modelDetailWithDefaultFromServer?.variants.length
     const color = getColorVariant()
-    const dimenssion = getDimenssion(recommendation)
-    const credit = getCreditPrice(carModelDetails?.variants)
-    const month = carModelDetails && carModelDetails!.variants[0].tenure * 12
+    const dimenssion = getDimenssion(carRecommendationsWithDefaultFromServer)
+    const credit = getCreditPrice(modelDetailWithDefaultFromServer?.variants)
+    const month =
+      modelDetailWithDefaultFromServer &&
+      modelDetailWithDefaultFromServer!.variants[0].tenure * 12
     const transmissionType = getTransmissionType(
-      carModelDetails?.variants,
+      modelDetailWithDefaultFromServer?.variants,
     )?.length
     const transmissionDetail = getTransmissionType(
-      carModelDetails?.variants,
+      modelDetailWithDefaultFromServer?.variants,
     )?.join(' dan ')
-    const CarVariants = carModelDetails?.variants
-    const dpAmount = carModelDetails?.variants.sort(
+    const CarVariants = modelDetailWithDefaultFromServer?.variants
+    const dpAmount = modelDetailWithDefaultFromServer?.variants.sort(
       (a: any, b: any) => a.priceValue - b.priceValue,
     )[0].dpAmount
 
-    const info = {
+    const temp = {
       brand,
       model,
       type,
@@ -729,8 +736,13 @@ export const CreditTab = () => {
       highestAssetPrice: dimenssion?.highestAssetPrice,
       dpAmount: dpAmount,
     }
-    setInfo(info)
-  }
+
+    return temp
+  }, [
+    modelDetailWithDefaultFromServer,
+    variantDetailWithDefaultFromServer,
+    carRecommendationsWithDefaultFromServer,
+  ])
 
   const fetchAllCarModels = async () => {
     const params = new URLSearchParams()
@@ -2059,7 +2071,8 @@ export const CreditTab = () => {
         <div className={styles.gap} />
         <Info
           headingText={`Membeli Mobil ${info.brand} ${info.model}? Seperti Ini Cara Perawatannya!`}
-          descText={getTipsText()}
+          descText={getSeoFooterTextDescription(info.brand, info.model)}
+          isUsingSetInnerHtmlDescText={true}
         />
         <div className={styles.gap} />
       </div>

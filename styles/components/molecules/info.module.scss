@@ -1,6 +1,23 @@
 @import '../../abstract/colors';
 @import '../../abstract/mixins';
 
+@mixin descriptionStyle {
+  display: -webkit-box;
+  font-size: 12px;
+  line-height: 18px;
+  height: auto;
+  color: #{$primary-black};
+  overflow: auto;
+  font-family: $font-openSans;
+}
+
+@mixin elipsedStyle {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .wrapper {
   padding: 16px;
   background-color: #{$primary-white};
@@ -27,20 +44,11 @@
 }
 
 .textDesc {
-  display: -webkit-box;
-  font-size: 12px;
-  line-height: 18px;
-  height: auto;
-  color: #{$primary-black};
-  overflow: auto;
-  font-family: $font-openSans;
+  @include descriptionStyle();
 }
 
 .elipsed {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  @include elipsedStyle();
 }
 
 .button {
@@ -51,6 +59,30 @@
   outline: none;
   border: none;
   cursor: pointer;
+}
+
+.innerHtmlWrapper {
+  p {
+    @include descriptionStyle();
+  }
+
+  i {
+    font-style: italic;
+  }
+
+  b {
+    font-family: var(--open-sans-bold);
+  }
+
+  a {
+    text-decoration: underline;
+  }
+}
+
+.innerHtmlWrapperElipsed {
+  p {
+    @include elipsedStyle();
+  }
 }
 
 @include lg {

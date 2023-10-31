@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import styles from 'styles/components/organisms/spesification.module.scss'
 import { Gap, IconCar } from 'components/atoms'
 import { TrackVariantList } from 'utils/types/tracker'
@@ -17,6 +17,9 @@ import { PropsField, PropsFieldDetail } from 'utils/types/props'
 import { useCar } from 'services/context/carContext'
 import { LocalStorageKey, LanguageCode } from 'utils/enum'
 import { TrackerFlag } from 'utils/types/models'
+import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { useRouter } from 'next/router'
 
 interface SpecificationTabProps {
   isOTO?: boolean
@@ -24,9 +27,22 @@ interface SpecificationTabProps {
 
 export const SpecificationTab = ({ isOTO = false }: SpecificationTabProps) => {
   const { carModelDetails, carVariantDetails, recommendation } = useCar()
-  const [spesification, setSpesification] = useState<any>()
+  const {
+    dataCombinationOfCarRecomAndModelDetailDefaultCity,
+    carVariantDetailsResDefaultCity,
+    carRecommendationsResDefaultCity,
+  } = useContext(PdpDataLocalContext)
+  const modelDetailWithDefaultFromServer =
+    carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
+  const variantDetailWithDefaultFromServer =
+    carVariantDetails || carVariantDetailsResDefaultCity
+  const carRecommendationsWithDefaultFromServer =
+    recommendation.length > 0
+      ? recommendation
+      : carRecommendationsResDefaultCity?.carRecommendations
   const headingText = 'Spesifikasi'
   const [flag, setFlag] = useState<TrackerFlag>(TrackerFlag.Init)
+  const router = useRouter()
 
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
@@ -78,82 +94,6 @@ export const SpecificationTab = ({ isOTO = false }: SpecificationTabProps) => {
 
   useEffect(() => {
     if (carVariantDetails && carModelDetails) {
-      const fuelType = carVariantDetails?.variantDetail.fuelType
-      const engineCapacity = carVariantDetails?.variantDetail.engineCapacity
-      const transmission = carVariantDetails?.variantDetail.transmission
-      const seats = carVariantDetails!.variantDetail.carSeats
-      const dimenssion = getDimenssion(recommendation)
-      const brand = carModelDetails?.brand
-      const model = carModelDetails?.model
-      const priceRange = getPriceRange(carModelDetails?.variants)
-      const totalType = carModelDetails?.variants.length
-      const color = getColorVariant()
-      const type = carVariantDetails?.variantDetail.bodyType
-      const transmissionDetail = getTransmissionType(
-        carModelDetails?.variants,
-      ).join(' dan ')
-      const transmissionType = getTransmissionType(
-        carModelDetails?.variants,
-      ).length
-      const credit = getCreditPrice(carModelDetails?.variants)
-      const month = carModelDetails!.variants[0].tenure * 12
-      const fuelRatio = carVariantDetails.variantDetail.rasioBahanBakar
-
-      const dataDimension: PropsFieldDetail = {
-        title: 'Dimensi & Berat',
-        data: [
-          {
-            key: 'Panjang x Lebar x Tinggi',
-            value: `${dimenssion?.length} x ${dimenssion?.width} x ${dimenssion?.height} mm`,
-          },
-        ],
-      }
-
-      const dataInterior: PropsFieldDetail = {
-        title: 'Interior',
-        data: [{ key: 'Kapasitas', value: ` ${seats} kursi` }],
-      }
-
-      const dataTransmission: PropsFieldDetail = {
-        title: 'Mesin & Transmisi',
-        data: [
-          { key: 'Bahan bakar', value: fuelType || 'Bensin' },
-          {
-            key: 'Kapasitas Mesin',
-            value: `${engineCapacity} cc`,
-          },
-          {
-            key: 'Jenis Transmisi',
-            value: transmission || 'Manual',
-          },
-        ],
-      }
-      if (fuelRatio !== null && fuelRatio !== '-') {
-        dataTransmission.data.push({
-          key: 'Rasio Bahan Bakar',
-          value: fuelRatio,
-        })
-      }
-      const dataDetail = {
-        dimension: dataDimension,
-        interior: dataInterior,
-        transmission: dataTransmission,
-        model: model,
-        type: type,
-        brand: brand,
-        seats: seats,
-        priceRange: priceRange,
-        totalType: totalType,
-        color: color,
-        transmissionDetail: transmissionDetail,
-        credit: credit,
-        month: month,
-        width: dimenssion.width,
-        height: dimenssion.height,
-        length: dimenssion.length,
-        transmissionType: transmissionType,
-      }
-      setSpesification(dataDetail)
       trackEventMoengage()
     }
   }, [carVariantDetails, carModelDetails, recommendation])
@@ -188,7 +128,7 @@ export const SpecificationTab = ({ isOTO = false }: SpecificationTabProps) => {
   }
 
   const getColorVariant = () => {
-    const currentUrlPathName = window.location.pathname
+    const currentUrlPathName = router.asPath
     const splitedPath = currentUrlPathName.split('/')
     const carBrandModelUrl = `/${splitedPath[1]}/${splitedPath[2]}/${splitedPath[3]}`
     if (availableList.includes(carBrandModelUrl)) {
@@ -219,30 +159,111 @@ export const SpecificationTab = ({ isOTO = false }: SpecificationTabProps) => {
     return type
   }
   const getPriceRange = (payload: any) => {
-    const variantLength = payload.length
-    if (variantLength === 1) {
-      const price: string = rupiah(payload[0].priceValue)
-      return `yang tersedia dalam kisaran harga mulai dari ${price}`
-    } else {
-      const upperPrice = rupiah(payload[0].priceValue)
-      const lowerPrice = rupiah(payload[variantLength - 1].priceValue)
+    if (payload) {
+      const variantLength = payload.length
+      if (variantLength === 1) {
+        const price: string = rupiah(payload[0].priceValue)
+        return `yang tersedia dalam kisaran harga mulai dari ${price}`
+      } else {
+        const upperPrice = rupiah(payload[0].priceValue)
+        const lowerPrice = rupiah(payload[variantLength - 1].priceValue)
 
-      return `yang tersedia dalam kisaran harga ${lowerPrice} - ${upperPrice} juta`
+        return `yang tersedia dalam kisaran harga ${lowerPrice} - ${upperPrice} juta`
+      }
     }
   }
+
+  const spesification = useMemo(() => {
+    const fuelType = variantDetailWithDefaultFromServer?.variantDetail.fuelType
+    const engineCapacity =
+      variantDetailWithDefaultFromServer?.variantDetail.engineCapacity
+    const transmission =
+      variantDetailWithDefaultFromServer?.variantDetail.transmission
+    const seats = variantDetailWithDefaultFromServer!.variantDetail.carSeats
+    const dimenssion = getDimenssion(carRecommendationsWithDefaultFromServer)
+    const brand = modelDetailWithDefaultFromServer?.brand
+    const model = modelDetailWithDefaultFromServer?.model
+    const priceRange = getPriceRange(modelDetailWithDefaultFromServer?.variants)
+    const totalType = modelDetailWithDefaultFromServer?.variants.length
+    const color = getColorVariant()
+    const type = variantDetailWithDefaultFromServer?.variantDetail.bodyType
+    const transmissionDetail = getTransmissionType(
+      modelDetailWithDefaultFromServer?.variants,
+    ).join(' dan ')
+    const transmissionType = getTransmissionType(
+      modelDetailWithDefaultFromServer?.variants,
+    ).length
+    const credit = getCreditPrice(modelDetailWithDefaultFromServer?.variants)
+    const month = modelDetailWithDefaultFromServer!.variants[0].tenure * 12
+    const fuelRatio =
+      variantDetailWithDefaultFromServer.variantDetail.rasioBahanBakar
+
+    const dataDimension: PropsFieldDetail = {
+      title: 'Dimensi & Berat',
+      data: [
+        {
+          key: 'Panjang x Lebar x Tinggi',
+          value: `${dimenssion?.length} x ${dimenssion?.width} x ${dimenssion?.height} mm`,
+        },
+      ],
+    }
+
+    const dataInterior: PropsFieldDetail = {
+      title: 'Interior',
+      data: [{ key: 'Kapasitas', value: ` ${seats} kursi` }],
+    }
+
+    const dataTransmission: PropsFieldDetail = {
+      title: 'Mesin & Transmisi',
+      data: [
+        { key: 'Bahan bakar', value: fuelType || 'Bensin' },
+        {
+          key: 'Kapasitas Mesin',
+          value: `${engineCapacity} cc`,
+        },
+        {
+          key: 'Jenis Transmisi',
+          value: transmission || 'Manual',
+        },
+      ],
+    }
+    if (fuelRatio !== null && fuelRatio !== '-') {
+      dataTransmission.data.push({
+        key: 'Rasio Bahan Bakar',
+        value: fuelRatio,
+      })
+    }
+    const dataDetail = {
+      dimension: dataDimension,
+      interior: dataInterior,
+      transmission: dataTransmission,
+      model: model,
+      type: type,
+      brand: brand,
+      seats: seats,
+      priceRange: priceRange,
+      totalType: totalType,
+      color: color,
+      transmissionDetail: transmissionDetail,
+      credit: credit,
+      month: month,
+      width: dimenssion.width,
+      height: dimenssion.height,
+      length: dimenssion.length,
+      transmissionType: transmissionType,
+    }
+    return dataDetail
+  }, [
+    modelDetailWithDefaultFromServer,
+    variantDetailWithDefaultFromServer,
+    carRecommendationsWithDefaultFromServer,
+  ])
 
   const getInfoText = (): string => {
     return `${spesification?.brand} ${spesification?.model} adalah mobil dengan ${spesification?.seats} Kursi ${spesification?.type} ${spesification?.priceRange} di Indonesia. Mobil ini tersedia dalam  ${spesification?.color} pilihan warna, ${spesification?.totalType} tipe mobil, dan ${spesification?.transmissionType} opsi transmisi: ${spesification?.transmissionDetail} di Indonesia. Mobil ini memiliki dimensi sebagai berikut: ${spesification?.length} mm L x ${spesification?.width} mm W x ${spesification?.height} mm H. Cicilan kredit mobil ${spesification?.brand} ${spesification?.model} dimulai dari Rp ${spesification?.credit} juta selama ${spesification?.month} bulan. `
   }
 
-  const getTipsText = (): string => {
-    const currentYear: number = new Date().getFullYear()
-    return `Saat ini membeli mobil baru bukanlah hal buruk. Di tahun ${currentYear} data menunjukan bahwa pembelian mobil baru mengalami peningkatan yang cukup signifikan,
-   ini artinya mobil baru masih menjadi pilihan banyak orang. Jika kamu berniat membeli mobil baru, mobil baru ${spesification?.brand} ${spesification?.model}
-  Membeli mobil baru sama halnya seperti membeli mobil bekas, kita juga harus memperhatikan perawatannya, karena mobil yang rajin perawatan tentu akan bertahan untuk jangka waktu yang panjang. Perawatan yang bisa dilakukan untuk mobil baru ${spesification?.brand} ${spesification?.model}
-    adalah pergantian oli, filter AC, periksa tekanan ban, serta mencuci mobil. `
-  }
-  const Field: React.FC<PropsField> = ({
+  const Field: React.FC<PropsField | PropsFieldDetail> = ({
     title,
     data,
     isLastIndex,
@@ -298,7 +319,11 @@ export const SpecificationTab = ({ isOTO = false }: SpecificationTabProps) => {
         <div className={styles.gap} />
         <Info
           headingText={`Membeli Mobil ${spesification?.brand} ${spesification?.model}? Seperti Ini Cara Perawatannya!`}
-          descText={getTipsText()}
+          descText={getSeoFooterTextDescription(
+            spesification?.brand,
+            spesification?.model,
+          )}
+          isUsingSetInnerHtmlDescText={true}
         />
         <div className={styles.gap} />
       </div>
