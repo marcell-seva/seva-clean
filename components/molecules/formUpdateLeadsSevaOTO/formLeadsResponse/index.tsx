@@ -40,7 +40,7 @@ export const FormLeadsResponse = ({
           Leads Response <span className={styles.red}>*</span>
         </div>
       </div>
-      <Space size={[16, 16]} wrap>
+      <div className={styles.wrapperBox}>
         {leadsList.map(({ value }) => (
           <>
             <div
@@ -58,7 +58,7 @@ export const FormLeadsResponse = ({
             </div>
           </>
         ))}
-      </Space>
+      </div>
     </div>
   )
 }
