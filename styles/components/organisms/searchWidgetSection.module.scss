@@ -2,7 +2,7 @@
 @import '../../abstract/mixins';
 
 .container {
-  margin-bottom: 150px;
+  margin-bottom: 75px;
 }
 
 .upperSpacing {
@@ -13,5 +13,5 @@
 
 .content {
   z-index: 1;
-  height: 252px;
+  height: 100%;
 }

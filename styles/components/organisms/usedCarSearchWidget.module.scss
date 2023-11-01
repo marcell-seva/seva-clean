@@ -1,0 +1,109 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  position: relative;
+  width: 100%;
+  padding: 0 16px;
+
+  height: 100%;
+}
+
+.cardContainer {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  min-height: 344px;
+  height: 100%;
+  overflow: hidden;
+  transition: max-height 1s ease;
+}
+
+.expandCard {
+  max-height: 800px;
+  transition: max-height 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  height: 100%;
+}
+
+.expandFinancialButton {
+  display: flex;
+  gap: 4px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  span {
+    color: #{$primary-dark-blue};
+    font-family: var(--open-sans);
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+.expandFinancialInfo {
+  color: #{$shades-grey-75};
+  font-family: var(--open-sans);
+  font-size: 11px;
+  line-height: 16px;
+  width: 100%;
+  text-align: center;
+
+  &.expandFinancialInfoOpen {
+    margin-top: 8px;
+    margin-bottom: 50px;
+  }
+
+  &.expandFinancialInfoClose {
+    margin-bottom: 24px;
+    text-align: left;
+  }
+}
+
+.expandFinancialClose {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 10px;
+
+  .title {
+    font-family: var(--kanyon-medium);
+    font-size: 16px;
+    line-height: 24px;
+    color: #{$primary-dark-blue};
+  }
+
+  .closeText {
+    font-family: var(--open-sans);
+    font-size: 14px;
+    line-height: 20px;
+    color: #{$secondary-blue};
+  }
+}
+
+.buttonWrapper {
+  position: absolute;
+  z-index: 1;
+  width: 50%;
+  left: 0;
+  right: 0;
+  bottom: -22px;
+  margin-left: auto;
+  margin-right: auto;
+
+  display: flex;
+  justify-content: center;
+}
+
+.dpError {
+  font-family: var(--open-sans);
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$secondary-brick-red};
+
+  .clickable {
+    font-family: var(--open-sans-semi-bold);
+    color: #{$secondary-blue};
+  }
+}

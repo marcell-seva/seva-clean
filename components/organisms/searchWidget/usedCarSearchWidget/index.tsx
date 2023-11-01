@@ -8,7 +8,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import styles from 'styles/components/organisms/searchWidget.module.scss'
+import styles from 'styles/components/organisms/usedCarSearchWidget.module.scss'
 import { MinAmount } from 'utils/types/models'
 import urls from 'utils/helpers/url'
 import elementId from 'utils/helpers/trackerId'
@@ -165,7 +165,6 @@ const UsedCarSearchWidget = () => {
   useEffect(() => {
     saveFunnelWidget({ ...funnelWidget })
     fetchMinMaxYear()
-    getCiyList()
     patchFunnelQuery({ filterFincap: false })
   }, [])
 
@@ -179,15 +178,6 @@ const UsedCarSearchWidget = () => {
     })
   }
 
-  const [cityList, setCityList] = useState([])
-  const [isApplied, setIsApplied] = useState(false)
-  const [resetTmp, setResetTmp] = useState(false)
-
-  const getCiyList = async () => {
-    const response = await getUsedCarCityList()
-    setCityList(response.data)
-  }
-
   return (
     <div className={styles.container}>
       <CardShadow
@@ -197,7 +187,6 @@ const UsedCarSearchWidget = () => {
       >
         <FormSearchModel
           modelList={dataModelUsedCar}
-          isApplied={isApplied}
           setLocationSelected={setLocationSelected}
         />
         <SelectWidget
@@ -257,7 +246,7 @@ const UsedCarSearchWidget = () => {
           onClick={submit}
           data-testid={elementId.Homepage.Button.CariMobil}
         >
-          Cari Mobil
+          Cari Mobil Bekas
         </Button>
       </div>
     </div>

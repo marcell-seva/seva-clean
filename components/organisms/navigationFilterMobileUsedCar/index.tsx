@@ -74,6 +74,10 @@ export const NavigationFilterMobileUsedCar = ({
     )
   }
 
+  useEffect(() => {
+    console.log(funnelQuery.brand)
+  }, [])
+
   const removePriceRangeFilter = () => {
     patchFunnelQuery({
       priceStart: '',
