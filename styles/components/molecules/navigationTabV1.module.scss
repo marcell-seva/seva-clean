@@ -15,8 +15,8 @@
   z-index: 4;
 }
 .containerUsedCar {
-  position: sticky;
-  top: 54px; // page header height is 54px
+  // position: sticky;
+  // top: 54px;
   background: #{$primary-white};
   border-bottom: 2px solid #{$shades-grey-10};
   box-shadow: 0px 6px 14px 1px rgba(76, 82, 95, 0.08);

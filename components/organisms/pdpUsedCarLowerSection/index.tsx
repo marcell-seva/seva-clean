@@ -114,14 +114,14 @@ export const PdpUsedCarLowerSection = ({
     trackClickLowerTabCountly(value)
     trackAnnouncementBoxView(value)
     setSelectedTabValue(value)
-    const destinationElm = document.getElementById('pdp-lower-content')
+    // const destinationElm = document.getElementById('pdp-lower-content')
     onChangeTab(value)
 
-    if (destinationElm) {
-      destinationElm.scrollIntoView()
-      // add more scroll because global page header is fixed position
-      window.scrollBy({ top: -100, left: 0 })
-    }
+    // if (destinationElm) {
+    //   destinationElm.scrollIntoView()
+    //   // add more scroll because global page header is fixed position
+    //   window.scrollBy({ top: -100, left: 0 })
+    // }
   }
   const getAnnouncementBox = () => {
     if (dataAnnouncementBox !== undefined) {

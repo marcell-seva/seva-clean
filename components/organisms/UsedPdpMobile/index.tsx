@@ -81,6 +81,9 @@ export default function UsedCarVariantList({
   // )
   const { usedCarModelDetailsRes } = useContext(UsedPdpDataLocalContext)
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
+  const modelName =
+    usedCarModelDetailsRes?.modelName.slice(0, 1) +
+    usedCarModelDetailsRes?.modelName.slice(1).toLowerCase()
 
   // const [isOpenCitySelectorOTRPrice, setIsOpenCitySelectorOTRPrice] =
   //   useState(false)
@@ -482,42 +485,9 @@ export default function UsedCarVariantList({
               emitActiveIndex={(e: number) => handlePreviewOpened(e)}
               emitDataImages={(e: Array<string>) => setDataPreviewImages(e)}
             />
-            {/* <PdpUpperSection
-              isPreviewOpened={isPreviewGalleryOpened}
-              emitDataImages={(e: Array<string>) => setDataPreviewImages(e)}
-              emitActiveIndex={(e: number) => handlePreviewOpened(e)}
-              activeIndex={galleryIndexActive}
-              videoData={videoData}
-              onClickCityOtrCarOverview={() => {
-                setIsOpenCitySelectorModal(true)
-                setIsOpenCitySelectorOTRPrice(true)
-                trackCountlyCityOTRClick()
-              }}
-              onChangeTab={(value: any) => setSelectedUpperTab(value)}
-              onClickShareButton={() => setIsOpenShareModal(true)}
-              isShowAnnouncementBox={showAnnouncementBox}
-              isOTO={isOTO}
-              cityOtr={cityOtr}
-            />
-            <PdpLowerSection
-              onButtonClick={setIsButtonClick}
-              onChangeTab={(value: any) => setSelectedLowerTab(value)}
-              setPromoName={setPromoName}
-              videoData={videoData}
-              showAnnouncementBox={showAnnouncementBox}
-              setVariantIdFuelRatio={setVariantIdFuelRatio}
-              variantFuelRatio={variantFuelRatio}
-              isOTO={isOTO}
-              isShowAnnouncementBox={showAnnouncementBox}
-            />
-            <PromoPopup
-              onButtonClick={setIsButtonClick}
-              isButtonClick={isButtonClick}
-              promoName={promoName}
-            /> */}
             <div className={styles.wrapper}>
               <h2 className={styles.titleCar}>
-                {`${usedCarModelDetailsRes?.brandName}  ${usedCarModelDetailsRes?.modelName} ${usedCarModelDetailsRes?.variantName} ${usedCarModelDetailsRes?.nik}`}
+                {`${usedCarModelDetailsRes?.brandName}  ${modelName} ${usedCarModelDetailsRes?.variantName} ${usedCarModelDetailsRes?.nik}`}
               </h2>
               <h3 className={styles.titlePrice}>
                 Rp
