@@ -53,7 +53,7 @@ import { useBadgePromo } from 'utils/hooks/usebadgePromo'
 import { FormLCState } from 'pages/kalkulator-kredit/[[...slug]]'
 import { isIsoDateFormat } from 'utils/handler/regex'
 import Seo from 'components/atoms/seo'
-import { defaultSeoImage } from 'utils/helpers/const'
+import { client, defaultSeoImage } from 'utils/helpers/const'
 import { RouteName, navigateToKK } from 'utils/navigate'
 import Image from 'next/image'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
@@ -83,7 +83,8 @@ const Toast = dynamic(() => import('components/atoms').then((mod) => mod.Toast))
 const CreditQualificationReviewPage = () => {
   useProtectPage()
   const router = useRouter()
-  const dataReview = JSON.parse(localStorage.getItem('qualification_credit')!)
+  const dataReview =
+    client && JSON.parse(localStorage.getItem('qualification_credit')!)
   const selectablePromo = getLocalStorage<LoanCalculatorInsuranceAndPromoType>(
     LocalStorageKey.SelectablePromo,
   )
