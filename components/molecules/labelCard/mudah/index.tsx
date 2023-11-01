@@ -5,7 +5,7 @@ import { colors } from 'utils/helpers/style/colors'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   additionalClassname?: string
-  prefixComponent?: () => void
+  prefixComponent?: () => JSX.Element
   labelText?: string
 }
 
