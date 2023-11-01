@@ -38,6 +38,8 @@ export type UtilsContextType = {
   saveDesktopWebTopMenu: (data: NavbarItemResponse[] | []) => void
   dataLeads: CarRecommendation | undefined
   saveDataLeads: (data: CarRecommendation) => void
+  dataVariantLeads: string | undefined
+  saveDataVariantLeads: (data: string) => void
 }
 
 export const UtilsContext = createContext<UtilsContextType | []>([])
@@ -47,6 +49,7 @@ export const UtilsContextProvider = ({ children }: any) => {
   const [agent, setAgent] = useState<SalesAgent[] | []>([])
   const [articles, setArticles] = useState<ArticleData[] | []>([])
   const [dataLeads, setDataLeads] = useState<CarRecommendation | undefined>()
+  const [dataVariantLeads, setDataVariantLeads] = useState<string | undefined>()
   const [dataAnnouncementBox, setIsShowAnnouncementBox] = useState<
     AnnouncementBoxDataType | undefined
   >()
@@ -76,6 +79,9 @@ export const UtilsContextProvider = ({ children }: any) => {
 
   const saveDataLeads = (leadsData: CarRecommendation | undefined) =>
     setDataLeads(leadsData)
+
+  const saveDataVariantLeads = (leadsVariantData: string | undefined) =>
+    setDataVariantLeads(leadsVariantData)
 
   const saveAgent = (agentData: SalesAgent[] | []) => setAgent(agentData)
 
@@ -128,6 +134,8 @@ export const UtilsContextProvider = ({ children }: any) => {
         saveDesktopWebTopMenu,
         dataLeads,
         saveDataLeads,
+        dataVariantLeads,
+        saveDataVariantLeads,
       }}
     >
       {children}

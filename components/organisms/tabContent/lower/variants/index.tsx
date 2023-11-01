@@ -49,6 +49,7 @@ import {
 } from 'utils/handler/sessionStorage'
 import Image from 'next/image'
 import { AdaOTOdiSEVALeadsForm } from 'components/organisms/leadsForm/adaOTOdiSEVA/popUp'
+import { useUtils } from 'services/context/utilsContext'
 
 const rpIcon = '/revamp/illustration/rp-icon.webp'
 
@@ -71,6 +72,7 @@ const TabContentLowerVariant = ({
   const [toggleHorizontal, setToggleHorizontal] = useState(true)
   const [expandHorizontal, setExpandHorizontal] = useState(false)
   const [onHover, setOnHover] = useState(false)
+  const { saveDataVariantLeads } = useUtils()
   const collapseRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
@@ -145,7 +147,8 @@ const TabContentLowerVariant = ({
     setIsModalOpened(false)
   }
 
-  const showLeadsForm = () => {
+  const showLeadsForm = (data: string) => {
+    saveDataVariantLeads(data)
     setIsModalOpened(true)
   }
 
@@ -438,7 +441,7 @@ const TabContentLowerVariant = ({
                     className={styles.buttonPrimary}
                     onClick={() => {
                       isOTO
-                        ? showLeadsForm()
+                        ? showLeadsForm(carVariant.name)
                         : navigateToCreditTab(carVariant, index)
                     }}
                     data-testid={elementId.PDP.List.CTAHitungKemampuan}
@@ -567,7 +570,7 @@ const TabContentLowerVariant = ({
                     className={styles.buttonPrimary}
                     onClick={() => {
                       isOTO
-                        ? showLeadsForm()
+                        ? showLeadsForm(carVariant.name)
                         : navigateToCreditTab(carVariant, index)
                     }}
                     data-testid={elementId.PDP.List.CTAHitungKemampuan}
@@ -699,7 +702,7 @@ const TabContentLowerVariant = ({
                         className={styles.buttonPrimary}
                         onClick={() => {
                           isOTO
-                            ? showLeadsForm()
+                            ? showLeadsForm(carVariant.name)
                             : navigateToCreditTab(carVariant, index)
                         }}
                         data-testid={elementId.PDP.Grid.CTAHitungKemampuan}
@@ -740,7 +743,9 @@ const TabContentLowerVariant = ({
           </div>
         )}
       </div>
-      {isModalOpenend && <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} />}
+      {isModalOpenend && (
+        <AdaOTOdiSEVALeadsForm onCancel={closeLeadsForm} onPage="PDP" />
+      )}
     </div>
   )
 }

@@ -11,7 +11,6 @@ import {
   TemanSevaOnboardingUrl,
 } from 'utils/helpers/routes'
 import { CityOtrOption } from 'utils/types'
-import { useMediaQuery } from 'react-responsive'
 
 export const useCityFirst = () => {
   const router = useRouter()

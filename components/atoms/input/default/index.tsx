@@ -36,6 +36,7 @@ const Input = ({
         className={clsx({
           [styles.input]: true,
           [styles.error]: isError,
+          [styles.disabled]: disabled,
           ['shake-animation-X']: isError,
           ...(className && [className]),
         })}

@@ -48,6 +48,12 @@ const omnicom = {
   updateLeadsCM: `${baseUrl}/omnicom/cm`,
 }
 
+const omnicom = {
+  check: `${baseUrl}/omnicom/check/:id`,
+  updateLeads: `${baseUrl}/omnicom`,
+  updateLeadsCM: `${baseUrl}/omnicom/cm`,
+}
+
 const auth = {
   user: `${baseUrl}/customers/info`,
   refresh: `${baseUrl}/auth/token`,

@@ -101,6 +101,7 @@ import { getCarModelDetailsById } from 'utils/handler/carRecommendation'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),

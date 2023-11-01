@@ -100,7 +100,6 @@ export const WebAnnouncementBox = ({
     getSessionStorage(SessionStorageKey.ShowWebAnnouncementNonLogin),
     getSessionStorage(SessionStorageKey.ShowWebAnnouncementLogin),
     getToken(),
-    dataAnnouncementBox,
   ])
 
   useAfterInteractive(() => {

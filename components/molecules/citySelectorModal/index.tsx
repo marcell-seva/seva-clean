@@ -34,6 +34,7 @@ import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { RouteName } from 'utils/navigate'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
 import dynamic from 'next/dynamic'
+import { useCityFirst } from 'utils/hooks/useCityFirst'
 
 const searchOption = {
   keys: ['label'],
@@ -65,6 +66,7 @@ const CitySelectorModal = ({
   modelName,
   brandName,
 }: Props) => {
+  const { showCity, onCloseCity } = useCityFirst()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -130,6 +132,7 @@ const CitySelectorModal = ({
           ? 'PDP - ' + valueMenuTabCategory()
           : getPathname(),
     })
+    onCloseCity()
     onClickCloseButton()
   }
 
@@ -366,7 +369,7 @@ const CitySelectorModal = ({
       closable={false}
       centered
       className="city-selector-custom-modal"
-      open={isOpen}
+      open={showCity || isOpen}
       footer={null}
       maskStyle={{
         background: 'rgba(19, 19, 27, 0.5)',
