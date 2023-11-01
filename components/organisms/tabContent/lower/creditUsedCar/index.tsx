@@ -152,7 +152,9 @@ interface FormState {
 }
 
 export const CreditUsedCarTab = () => {
-  const { usedCarModelDetailsRes } = useContext(UsedPdpDataLocalContext)
+  const { usedCarModelDetailsRes, usedCarRecommendations } = useContext(
+    UsedPdpDataLocalContext,
+  )
   const router = useRouter()
   const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
@@ -191,9 +193,7 @@ export const CreditUsedCarTab = () => {
   const [carRecommendations, setCarRecommendations] = useState<
     CarRecommendation[]
   >([])
-  const [usedCarRecommendations, setUsedCarRecommendations] = useState<
-    UsedCarRecommendation[]
-  >([])
+
   const [articles, setArticles] = React.useState<Article[]>([])
   const [selectedLoan, setSelectedLoan] =
     useState<SelectedCalculateLoanUsedCar | null>(null)
@@ -414,8 +414,8 @@ export const CreditUsedCarTab = () => {
   }
 
   useEffect(() => {
+    // console.log
     fetchCarRecommendations()
-    fetchUsedCarRecommendations()
     const timeoutCountlyTracker = setTimeout(() => {
       if (!isSentCountlyPageView) {
         trackCountlyViewCreditTab()
@@ -918,16 +918,6 @@ export const CreditUsedCarTab = () => {
       (car: any) => car.loanRank === LoanRank.Green,
     )
     setCarRecommendations(filteredCarRecommendations.slice(0, 10))
-  }
-
-  const fetchUsedCarRecommendations = () => {
-    const params = new URLSearchParams()
-    params.append('bodyType', usedCarModelDetailsRes.typeName)
-    const response = getUsedCarRecommendations('', { params })
-
-    response.then((data: any) => {
-      setUsedCarRecommendations(data.data)
-    })
   }
 
   const resetVariant = () => {

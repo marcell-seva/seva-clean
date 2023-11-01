@@ -30,12 +30,21 @@ import Script from 'next/script'
 import { mergeModelDetailsWithLoanRecommendations } from 'utils/handler/carRecommendation'
 import { formatShortPrice } from 'components/organisms/tabContent/lower/summary'
 import { usedCar } from 'services/context/usedCarContext'
+import {
+  getMobileHeaderMenu,
+  getMobileFooterMenu,
+  getCities,
+  getMenu,
+  getAnnouncementBox as gab,
+  getUsedCarBySKU,
+  getUsedCarRecommendations,
+} from 'services/api'
 interface UsedPdpDataLocalContextType {
   // /**
   //  * this variable use "jakarta" as default payload, so that search engine could see page content.
   //  * need to re-fetch API in client with city from localStorage
   //  */
-  // carRecommendationsResDefaultCity: any
+  usedCarRecommendations: any
   // /**
   //  * this variable use "jakarta" as default payload, so that search engine could see page content.
   //  * need to re-fetch API in client with city from localStorage
@@ -56,9 +65,11 @@ interface UsedPdpDataLocalContextType {
  */
 export const UsedPdpDataLocalContext =
   createContext<UsedPdpDataLocalContextType>({
+    usedCarRecommendations: null,
     usedCarModelDetailsRes: null,
   })
 export default function index({
+  usedCarRecommendationRes,
   carModelDetailsRes,
   dataDesktopMenu,
   dataMobileMenu,
@@ -105,6 +116,7 @@ export default function index({
     saveCities(dataCities)
     getAnnouncementBox()
     checkCitySlug(citySlug, dataCities, setCurrentCity)
+    console.log(usedCarRecommendationRes)
   }, [])
 
   const getAnnouncementBox = async () => {
@@ -190,6 +202,7 @@ export default function index({
       <UsedPdpDataLocalContext.Provider
         value={{
           usedCarModelDetailsRes: carModelDetailsRes,
+          usedCarRecommendations: usedCarRecommendationRes,
         }}
       >
         <UsedPdpMobile />
@@ -275,6 +288,14 @@ export async function getServerSideProps(context: any) {
     //   },
     // )
 
+    // const params = new URLSearchParams()
+
+    // params.append('bodyType', carDetailRes.data[0].typeName)
+
+    const [carRecommendationsRes]: any = await Promise.all([
+      getUsedCarRecommendations(`?bodyType=${carDetailRes.data[0].typeName}`),
+    ])
+
     return {
       props: {
         // carRecommendationsRes,
@@ -284,6 +305,7 @@ export async function getServerSideProps(context: any) {
         // metaTagDataRes,
         // carVideoReviewRes,
         // carArticleReviewRes,
+        usedCarRecommendationRes: carRecommendationsRes.carData,
         carModelDetailsRes: carDetailRes.data[0],
         isSsrMobile: getIsSsrMobile(context),
         dataMobileMenu: menuMobileRes.data,
@@ -298,6 +320,7 @@ export async function getServerSideProps(context: any) {
     return {
       props: {
         notFound: false,
+        usedCarRecommendationRes: [],
         dataMobileMenu: [],
         dataFooter: [],
         dataCities: [],

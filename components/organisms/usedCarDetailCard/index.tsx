@@ -274,7 +274,7 @@ export const UsedCarDetailCard = ({
   const priceFormated = recommendation.priceFormatedValue.replace(/\s/g, '')
 
   return (
-    <div className={styles.container} onClick={onClickSeeDetail}>
+    <div className={styles.container}>
       <CardShadow className={styles.cardWrapper}>
         {order === 0 ? (
           <Image

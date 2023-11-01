@@ -124,19 +124,6 @@ export const FormSearchModel = ({
             listItemHeight={36}
             dropdownRender={(menu) => (
               <>
-                <div className={styles.dropdownDivider}>
-                  <div className={styles.totalChosen}>
-                    {totalChosen} Model dipilih
-                  </div>
-                  <div
-                    onClick={() => {
-                      handleClearFilter()
-                    }}
-                    className={styles.clearSelect}
-                  >
-                    Hapus Pilihan
-                  </div>
-                </div>
                 <Divider style={{ margin: '0' }} />
                 {menu}
               </>
