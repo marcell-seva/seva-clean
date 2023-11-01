@@ -5,14 +5,14 @@ import { colors } from 'utils/helpers/style/colors'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   additionalClassname?: string
-  prefixComponent?: () => JSX.Element
+  prefixComponent?: () => void
   labelText?: string
 }
 
 const LabelMudah = ({
   additionalClassname,
   prefixComponent,
-  labelText = 'Mudah disetujui',
+  labelText = 'Rekomendasi',
   ...restProps
 }: Props) => {
   return (

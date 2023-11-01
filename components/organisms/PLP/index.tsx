@@ -93,8 +93,8 @@ const PopupResultSulit = dynamic(() =>
 const PopupResultMudah = dynamic(() =>
   import('components/organisms').then((mod) => mod.PopupResultMudah),
 )
-const PopupResultInfo = dynamic(() =>
-  import('components/organisms').then((mod) => mod.PopupResultInfo),
+const PopupResultRecommended = dynamic(() =>
+  import('components/organisms').then((mod) => mod.PopupResultRecommended),
 )
 const CitySelectorModal = dynamic(() =>
   import('components/molecules').then((mod) => mod.CitySelectorModal),
@@ -487,7 +487,8 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   useEffect(() => {
     if (
       isFilterFinancial &&
-      getLocalStorage(LocalStorageKey.flagResultFilterInfoPLP) !== true
+      getLocalStorage(LocalStorageKey.flagResultFilterInfoPLP) !== true &&
+      sampleArray.items.some((a) => a.loanRank === 'Green')
     ) {
       setOpenLabelResultInfo(true)
     }
@@ -882,7 +883,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
             trackPeluangMudahPopUpCloseClick(getDataForAmplitude())
           }}
         />
-        <PopupResultInfo
+        <PopupResultRecommended
           open={openLabelResultInfo}
           onCancel={onCloseResultInfoClose}
           onOk={onCloseResultInfo}
