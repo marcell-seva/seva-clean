@@ -72,7 +72,6 @@ export const FormSearchModel = ({
         return indexOfItem === index
       },
     )
-    console.log(mappingTemp)
 
     saveFunnelWidget({ ...funnelWidget, brand: filteredTemp })
   }
