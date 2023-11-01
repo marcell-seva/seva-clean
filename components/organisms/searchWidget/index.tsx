@@ -416,7 +416,8 @@ const SearchWidget = () => {
           <span
             className={`${styles.expandFinancialInfo} ${styles.expandFinancialInfoClose}`}
           >
-            Isi data dibawah ini untuk mendapatkan rekomendasi mobil yang cocok
+            Isi data dibawah ini untuk mendapatkan rekomendasi mobil yang cocok{' '}
+            <br />
             dengan kondisi keuanganmu.
           </span>
         </>
