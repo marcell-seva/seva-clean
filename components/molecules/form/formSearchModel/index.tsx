@@ -53,7 +53,7 @@ export const FormSearchModel = ({
 
   const formattedData = distinctData.map((item: any) => ({
     brandName: item.brandName.charAt(0) + item.brandName.slice(1).toLowerCase(),
-    modelName: item.modelName.charAt(0) + item.modelName.slice(1).toLowerCase(),
+    modelName: item.modelName,
     modelCode: item.modelCode,
   }))
 
@@ -152,7 +152,7 @@ export const FormSearchModel = ({
               <Option
                 key={index}
                 value={item.modelCode}
-                label={item.modelName}
+                label={item.brandName + ' ' + item.modelName}
                 style={{
                   padding: '18px 16px',
                   fontSize: '14px',
