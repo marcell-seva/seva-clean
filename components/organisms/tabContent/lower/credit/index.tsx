@@ -137,6 +137,7 @@ interface FormState {
         modelName: string
         modelImage: string
         brandName: string
+        loanRank: string
       }
     | undefined
   variant:
@@ -292,6 +293,7 @@ export const CreditTab = () => {
       modelName: '',
       modelId: '',
       modelImage: CarSillhouete,
+      loanRank: '',
     },
     variant: {
       variantId: '',
@@ -319,6 +321,7 @@ export const CreditTab = () => {
         modelName: '',
         modelId: '',
         modelImage: '',
+        loanRank: '',
       },
       variant: {
         ...variantEmptyValue,
@@ -497,6 +500,7 @@ export const CreditTab = () => {
           modelName: '',
           modelId: '',
           modelImage: '',
+          loanRank: '',
         },
       }
 

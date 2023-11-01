@@ -447,6 +447,7 @@ export interface FormLCState {
         modelName: string
         modelImage: string
         brandName: string
+        loanRank: string
       }
     | undefined
   variant:
@@ -958,6 +959,7 @@ export interface SendKualifikasiKreditRequest {
   loanRank: string
   platform: 'web'
   selectablePromo?: string[]
+  dob?: string
 }
 
 export interface SendMultiKualifikasiKredit {

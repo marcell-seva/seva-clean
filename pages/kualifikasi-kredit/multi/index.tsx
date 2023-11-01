@@ -235,25 +235,25 @@ const MultiKK = ({
 
   const getCustomerInfo = () => {
     getCustomerInfoSeva().then((response) => {
-      if (!!response.data[0].dob) {
-        setCustomerDob(response.data[0].dob)
-        setMultiForm((prev: any) => ({ ...prev, dob: response.data[0].dob }))
+      if (!!response[0].dob) {
+        setCustomerDob(response[0].dob)
+        setMultiForm((prev: any) => ({ ...prev, dob: response[0].dob }))
       }
 
-      if (response.data[0].temanSevaTrxCode && referralCodeInput === '') {
-        setReferralCodeInput(response.data[0].temanSevaTrxCode)
+      if (response[0].temanSevaTrxCode && referralCodeInput === '') {
+        setReferralCodeInput(response[0].temanSevaTrxCode)
         localStorage.setItem(
           LocalStorageKey.ReferralCodePrelimQuestion,
-          response.data[0].temanSevaTrxCode,
+          response[0].temanSevaTrxCode,
         )
       }
 
-      if (response.data[0].temanSevaTrxCode) {
-        setConnectedCode(response.data[0].temanSevaTrxCode ?? '')
+      if (response[0].temanSevaTrxCode) {
+        setConnectedCode(response[0].temanSevaTrxCode ?? '')
       } else {
         setConnectedCode('')
       }
-      sendDataTracker(response.data[0].temanSevaTrxCode)
+      sendDataTracker(response[0].temanSevaTrxCode)
     })
   }
 
@@ -578,7 +578,7 @@ const MultiKK = ({
         const carListNonSulit = filteredCarList(result.carRecommendations)
 
         if (
-          result.data.carRecommendations.length === 0 ||
+          result.carRecommendations.length === 0 ||
           carListNonSulit.length === 0
         ) {
           setNotFoundMessage({

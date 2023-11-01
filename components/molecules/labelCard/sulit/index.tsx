@@ -3,7 +3,18 @@ import React, { HTMLAttributes } from 'react'
 import styles from 'styles/components/molecules/labelCard/sulit/sulit.module.scss'
 import { colors } from 'utils/helpers/style/colors'
 
-const LabelSulit = ({ ...props }: HTMLAttributes<HTMLDivElement>) => {
+interface Props extends HTMLAttributes<HTMLDivElement> {
+  additionalClassname?: string
+  prefixComponent?: () => JSX.Element
+  labelText?: string
+}
+
+const LabelSulit = ({
+  additionalClassname,
+  prefixComponent,
+  labelText = 'Sulit disetujui',
+  ...props
+}: Props) => {
   return (
     <div className={` ${styles.container} ${styles.labelResult}`} {...props}>
       <IconWarningCircle
