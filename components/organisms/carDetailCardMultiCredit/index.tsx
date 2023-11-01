@@ -203,7 +203,7 @@ const CarDetailCardMultiCredit = ({
       otr: recommendation.variants[0].priceValue,
     })
       .then((response) => {
-        const resultByTenure = response.data.data.filter(
+        const resultByTenure = response.data.filter(
           (x: { tenure: string }) => String(x.tenure) === multiUnitQuery.tenure,
         )
         const toyotaSpekta = recommendation.promo?.promoId === 'TS01'
