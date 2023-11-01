@@ -64,7 +64,8 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
   toLeads,
   selectedLoan = null,
 }) => {
-  const toastSuccessInfo = 'Agen kami akan segera menghubungimu dalam 1x24 jam.'
+  const toastSuccessInfo =
+    'Agen Setir Kanan akan menghubungi kamu dalam 1x24 jam.'
   const [name, setName] = useState<string>('')
   const [phone, setPhone] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -76,8 +77,9 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
 
   const { usedCarModelDetailsRes } = useContext(UsedPdpDataLocalContext)
   const carLeads = usedCarModelDetailsRes
-
-  const infoCar = `${usedCarModelDetailsRes.variantTitle} ${usedCarModelDetailsRes.nik}`
+  const modelName =
+    carLeads?.modelName.slice(0, 1) + carLeads?.modelName.slice(1).toLowerCase()
+  const infoCar = `${carLeads?.brandName}  ${modelName} ${carLeads?.variantName} ${carLeads?.nik}`
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -372,9 +374,7 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
         </div>
 
         <div className={styles.foreground}>
-          <h2 className={styles.textHeading}>
-            Yuk, cari tahu & tanya lebih lanjut tentang {infoCar}
-          </h2>
+          <h2 className={styles.textHeading}>Tanyakan unit {infoCar}</h2>
           <div className={styles.form}>
             <Input
               dataTestId={elementId.Field.FullName}

@@ -52,10 +52,29 @@
   gap: 24px;
   width: 50%;
 }
+.rowWithGap24SetirKanan {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  width: 50%;
+}
+$defaultwidth: 570px;
+$layarHP: 375px;
+
 .setirKananSection {
+  @media screen and (max-width: $layarHP) {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    background: var(--shades-sky-blue-sky-blue-5, #f3f9fd);
+    gap: 0 12px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    align-items: center;
+  }
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: center;
   background: var(--shades-sky-blue-sky-blue-5, #f3f9fd);
   gap: 0 12px;
   padding: 8px 16px;

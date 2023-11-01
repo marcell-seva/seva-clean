@@ -1022,9 +1022,7 @@ export const CreditUsedCarTab = () => {
               handleChange={handleChange}
               name="downPaymentAmount"
               isDisabled={false}
-              isErrorEmptyField={
-                isValidatingEmptyField && !forms.downPaymentAmount
-              }
+              isErrorEmptyField={isValidatingEmptyField && !dpValue}
               isDpTooLow={isDpTooLow}
               setIsDpTooLow={setIsDpTooLow}
               isDpExceedLimit={isDpExceedLimit}
