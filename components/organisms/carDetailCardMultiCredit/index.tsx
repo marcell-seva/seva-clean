@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import styles from 'styles/components/organisms/cardetailcardMultiCredit.module.scss'
 import elementId from 'helpers/elementIds'
 import Tooltip from 'antd/lib/tooltip'
-import { LandingIA } from '../landingIA'
 import {
   dpRateCollectionNewCalculatorTmp,
   FormLCState,
@@ -50,6 +49,10 @@ import Image from 'next/image'
 const Toast = dynamic(
   () => import('components/atoms/toast').then((mod) => mod.Toast),
   { ssr: false },
+)
+
+const LandingIA = dynamic(() =>
+  import('../landingIA').then((mod) => mod.LandingIA),
 )
 
 type CarDetailCardProps = {
