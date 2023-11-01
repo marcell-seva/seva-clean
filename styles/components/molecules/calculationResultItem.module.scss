@@ -5,8 +5,8 @@
   border: 2px solid #{$secondary-green};
 }
 
-@mixin redBorder {
-  border: 2px solid #{$secondary-brick-red};
+@mixin blueBorder {
+  border: 2px solid #{$secondary-sky-blue};
 }
 
 .container {
@@ -37,12 +37,6 @@
   border-bottom: none;
 }
 
-.upperInfoRed {
-  @include redBorder();
-  background: #{$secondary-brick-red};
-  border-bottom: none;
-}
-
 .detailSection {
   width: 100%;
   background: #{$primary-white};
@@ -62,11 +56,11 @@
   border-radius: 0;
 }
 
-.detailSectionRed {
-  @include redBorder();
-  background: #{$shades-brick-red-5};
+.detailSectionBlue {
+  @include blueBorder();
+  background: #{$shades-sky-blue-5};
   border-bottom: none;
-  border-radius: 0;
+  border-radius: 8px 8px 0 0;
 }
 
 .rankTenureInterestWrapper {
@@ -87,10 +81,6 @@
 
 .iconWrapperGreen {
   background: #{$shades-green-70};
-}
-
-.iconWrapperRed {
-  background: #{$shades-brick-red-50};
 }
 
 .tenureInterestWrapper {
@@ -148,8 +138,8 @@
   border-bottom: none;
 }
 
-.separatorRed {
-  @include redBorder();
+.separatorBlue {
+  @include blueBorder();
   border-top: none;
   border-bottom: none;
 }
@@ -181,9 +171,9 @@
   border-top: none;
 }
 
-.bottomInfoRed {
-  @include redBorder();
-  background: #{$shades-brick-red-5};
+.bottomInfoBlue {
+  @include blueBorder();
+  background: #{$shades-sky-blue-5};
   border-top: none;
 }
 

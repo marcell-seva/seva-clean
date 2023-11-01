@@ -132,6 +132,11 @@ const QualificationCreditModal = dynamic(() =>
   ),
 )
 const Toast = dynamic(() => import('components/atoms').then((mod) => mod.Toast))
+const PopupResultRecommended = dynamic(() =>
+  import('components/organisms/popupResultFilter/resultRecommended').then(
+    (mod) => mod.PopupResultRecommended,
+  ),
+)
 
 const CarSillhouete = '/revamp/illustration/car-sillhouete.webp'
 
@@ -277,6 +282,7 @@ export default function LoanCalculatorPage() {
   } = useUtils()
   const [finalMinInputDp, setFinalMinInputDp] = useState(0)
   const [finalMaxInputDp, setFinalMaxInputDp] = useState(0)
+  const [isOpenPopupRecommended, setIsOpenPopupRecommended] = useState(false)
 
   const getAutofilledCityData = () => {
     // related to logic inside component "FormSelectCity"
@@ -1514,6 +1520,7 @@ export default function LoanCalculatorPage() {
       sortBy: 'highToLow',
       age: forms?.age,
       monthlyIncome: forms?.monthlyIncome,
+      downPaymentAmount: forms?.downPaymentAmount,
     })
 
     const filteredCarRecommendations = response.carRecommendations.filter(
@@ -2043,7 +2050,7 @@ export default function LoanCalculatorPage() {
                   title="Rekomendasi Sesuai
 Kemampuan Finansialmu"
                   onClick={() => {
-                    return
+                    setIsOpenPopupRecommended(true)
                   }}
                   selectedCity={forms?.city?.cityName}
                 />
@@ -2086,6 +2093,13 @@ Kemampuan Finansialmu"
           typeToast={'error'}
           onCancel={() => setIsOpenToast(false)}
           closeOnToastClick
+        />
+
+        <PopupResultRecommended
+          open={isOpenPopupRecommended}
+          onCancel={() => {
+            setIsOpenPopupRecommended(false)
+          }}
         />
       </div>
     </>

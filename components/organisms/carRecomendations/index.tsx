@@ -34,6 +34,7 @@ import {
 import { capitalizeWords } from 'utils/stringUtils'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Swiper as SwiperType } from 'swiper'
+import { IconThumbsUp } from 'components/atoms/icon'
 
 type CarRecommendationsPropss = {
   title: string
@@ -210,7 +211,16 @@ export default function CarRecommendations({
                 key={index}
                 recommendation={item}
                 onClickLabel={onClick}
-                label={<LabelMudah style={{ left: 0 }} />}
+                label={
+                  <LabelMudah
+                    style={{ left: 0 }}
+                    prefixComponent={() => (
+                      <IconThumbsUp width={16} height={16} color="white" />
+                    )}
+                    labelText="Rekomendasi"
+                    onClick={onClick}
+                  />
+                }
                 pageOrigination="PDP - Kredit"
               >
                 <div
