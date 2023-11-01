@@ -138,7 +138,7 @@ export const LandingIA = ({
         })
         saveLocalStorage(
           LocalStorageKey.CreditQualificationResult,
-          JSON.stringify(sendKK.data.data),
+          JSON.stringify(sendKK.data),
         )
       }
 
@@ -149,7 +149,7 @@ export const LandingIA = ({
         SessionStorageKey.PreviousPage,
         JSON.stringify({ refer: window.location.pathname }),
       )
-      if (dataKTPUser.data.data[0]) {
+      if (dataKTPUser.data[0]) {
         if (dataKTPSpouse) {
           trackLandingIAContinue('Main + Spouse')
         } else {
@@ -207,7 +207,7 @@ export const LandingIA = ({
         }) // posibility return "creditQualificationStatus": null
         saveLocalStorage(
           LocalStorageKey.CreditQualificationResult,
-          JSON.stringify(res.data.data),
+          JSON.stringify(res.data),
         )
       }
 
