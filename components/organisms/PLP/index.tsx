@@ -90,9 +90,9 @@ const PopupPromo = dynamic(() =>
 const PopupResultSulit = dynamic(() =>
   import('components/organisms').then((mod) => mod.PopupResultSulit),
 )
-const PopupResultMudah = dynamic(() =>
-  import('components/organisms').then((mod) => mod.PopupResultMudah),
-)
+// const PopupResultMudah = dynamic(() =>
+//   import('components/organisms').then((mod) => mod.PopupResultMudah),
+// )
 const PopupResultRecommended = dynamic(() =>
   import('components/organisms').then((mod) => mod.PopupResultRecommended),
 )
@@ -601,7 +601,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   }
   const onCloseResultInfoClose = () => {
     setOpenLabelResultInfo(false)
-    trackCekPeluangPopUpCloseClick(getDataForAmplitude())
+    setOpenLabelResultMudah(false)
     trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BANNER_DESC_EXIT_CLICK)
   }
 
@@ -876,15 +876,15 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
             trackPeluangSulitPopUpCloseClick(getDataForAmplitude())
           }}
         />
-        <PopupResultMudah
+        {/* <PopupResultMudah
           open={openLabelResultMudah}
           onCancel={() => {
             setOpenLabelResultMudah(false)
             trackPeluangMudahPopUpCloseClick(getDataForAmplitude())
           }}
-        />
+        /> */}
         <PopupResultRecommended
-          open={openLabelResultInfo}
+          open={openLabelResultInfo || openLabelResultMudah}
           onCancel={onCloseResultInfoClose}
           onOk={onCloseResultInfo}
         />
