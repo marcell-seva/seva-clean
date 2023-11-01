@@ -636,7 +636,7 @@ const SearchWidget = () => {
           onClick={submit}
           data-testid={elementId.Homepage.Button.CariMobil}
         >
-          Cari Mobil
+          Cari Mobil Baru
         </Button>
       </div>
     </div>
