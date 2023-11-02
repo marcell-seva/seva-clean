@@ -113,12 +113,12 @@ export default function UsedCarRecommendations({
     <div
       className={`${styles.alternativeCarContainer} ${additionalContainerStyle}`}
     >
-      <h3
+      <h2
         className={styles.alternativeCarTitle}
         data-testid={elementId.LoanCalculator.RekomendasiFinansial}
       >
         {title}
-      </h3>
+      </h2>
       <div>
         <Swiper
           slidesPerView={'auto'}

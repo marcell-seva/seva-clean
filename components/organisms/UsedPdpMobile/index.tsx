@@ -486,9 +486,9 @@ export default function UsedCarVariantList({
               emitDataImages={(e: Array<string>) => setDataPreviewImages(e)}
             />
             <div className={styles.wrapper}>
-              <h2 className={styles.titleCar}>
+              <h1 className={styles.titleCar}>
                 {`${usedCarModelDetailsRes?.brandName}  ${modelName} ${usedCarModelDetailsRes?.variantName} ${usedCarModelDetailsRes?.nik}`}
-              </h2>
+              </h1>
               <h3 className={styles.titlePrice}>
                 Rp
                 {addSeparator(usedCarModelDetailsRes?.priceValue.split('.')[0])}
