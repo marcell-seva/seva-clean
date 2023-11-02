@@ -252,7 +252,6 @@ export async function getServerSideProps(context: any) {
     ])
 
     const selectedCity = getCity()
-    console.log(selectedCity)
 
     // const carList = carRecommendationsRes.carRecommendations
     // const currentCar = carList.filter(
