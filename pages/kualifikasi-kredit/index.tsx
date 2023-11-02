@@ -6,7 +6,7 @@ import {
   InputSelect,
   Button,
   IconChevronRight,
-  IconInfo,
+  DatePicker,
 } from '../../components/atoms'
 import { ButtonSize, ButtonVersion } from '../../components/atoms/button'
 import Fuse from 'fuse.js'
@@ -16,14 +16,24 @@ import SpouseIncomeForm from '../../components/molecules/credit/spouseIncome'
 import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
 import { useRouter } from 'next/router'
 import { getLocalStorage } from 'utils/handler/localStorage'
-import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import {
+  LanguageCode,
+  LocalStorageKey,
+  SessionStorageKey,
+  TemanSeva,
+} from 'utils/enum'
 import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import { CityOtrOption, NewFunnelCarVariantDetails, Option } from 'utils/types'
 import { occupations } from 'utils/occupations'
 import { TrackerFlag } from 'utils/types/models'
 import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import { FormControlValue, SimpleCarVariantDetail } from 'utils/types/utils'
+import {
+  FormControlValue,
+  LoanCalculatorInsuranceAndPromoType,
+  SimpleCarVariantDetail,
+  trackDataCarType,
+} from 'utils/types/utils'
 import { getToken } from 'utils/handler/auth'
 import { isIsoDateFormat } from 'utils/handler/regex'
 import {
@@ -39,6 +49,7 @@ import {
 } from 'utils/handler/rupiah'
 import {
   creditQualificationReviewUrl,
+  creditQualificationUrl,
   loanCalculatorDefaultUrl,
 } from 'utils/helpers/routes'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
@@ -53,6 +64,23 @@ import { temanSevaUrlPath } from 'utils/types/props'
 import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
 import dynamic from 'next/dynamic'
 import { default as customAxiosGet } from 'services/api/get'
+import dayjs from 'dayjs'
+import {
+  trackEventCountly,
+  valueForInitialPageProperty,
+} from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import elementId from 'helpers/elementIds'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { Currency } from 'utils/handler/calculation'
+import {
+  getSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
+import { getCity } from 'utils/hooks/useGetCity'
+import { useBadgePromo } from 'utils/hooks/usebadgePromo'
+import { RouteName } from 'utils/navigate'
+import { useCar } from 'services/context/carContext'
 
 const Modal = dynamic(() => import('antd/lib/modal'), { ssr: false })
 
@@ -68,7 +96,9 @@ const CreditQualificationPage = () => {
   const router = useRouter()
   const optionADDM = getLocalStorage(LocalStorageKey.SelectedAngsuranType)
   const [isIncomeTooLow, setIsIncomeTooLow] = useState(false)
-  const { financialQuery } = useFinancialQueryData()
+  const { financialQuery, fincap } = useFinancialQueryData()
+  const { filterFincap } = useFunnelQueryData()
+  const currentMonthlyIncome = financialQuery.monthlyIncome
   const [joinIncomeValueFormatted, setJoinIncomeValueFormatted] = useState(
     financialQuery.monthlyIncome || '0',
   )
@@ -85,6 +115,18 @@ const CreditQualificationPage = () => {
   const [suggestionsLists, setSuggestionsLists] = useState<Option<string>[]>([])
   const [flag, setFlag] = useState<TrackerFlag>(TrackerFlag.Init)
   const [customerYearBorn, setCustomerYearBorn] = useState('')
+  const [isShowDobField, setIsShowDobField] = useState(false)
+  const [customerDobForm, setCustomerDobForm] = useState('')
+  const selectablePromo = getLocalStorage<LoanCalculatorInsuranceAndPromoType>(
+    LocalStorageKey.SelectablePromo,
+  )
+  const { selectedPromoList } = useBadgePromo()
+  const kkFlowType = getSessionStorage(SessionStorageKey.KKIAFlowType)
+  const isInPtbcFlow = kkFlowType && kkFlowType === 'ptbc'
+  const { recommendation } = useCar()
+  const dataCarStorage: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
 
   const onChangeInputHandler = (value: string) => {
     if (value === '') {
@@ -116,7 +158,7 @@ const CreditQualificationPage = () => {
     )
   const referralCodeFromUrl: string =
     getLocalStorage(LocalStorageKey.referralTemanSeva) ?? ''
-  const [connectedCode, setConnectedCode] = useState('')
+  const [connectedCode, setConnectedCode] = useState<string | undefined>()
   const [referralCodeInput, setReferralCodeInput] = useState('')
   const [currentUserOwnCode, setCurrentUserOwnCode] = useState('') // code that can be seen in teman seva dashboard
   const [isLoadingReferralCode, setIsLoadingReferralCode] = useState(false)
@@ -125,6 +167,7 @@ const CreditQualificationPage = () => {
   const [isErrorRefCodeUsingOwnCode, setIsErrorRefCodeUsingOwnCode] =
     useState(false)
   const [isSuccessReferralCode, setisSuccessReferralCode] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const onInputJoinIncome = () => {
     if (joinIncomeValueFormatted === '') {
@@ -212,6 +255,13 @@ const CreditQualificationPage = () => {
     getCustomerInfoSeva()
       .then((response) => {
         // setLoadShimmer2(false)
+        if (!!response[0].dob) {
+          setIsShowDobField(false)
+          setCustomerDobForm(response[0].dob)
+        } else {
+          setIsShowDobField(true)
+        }
+
         if (!!response[0].dob && isIsoDateFormat(response[0].dob)) {
           setCustomerYearBorn(response[0].dob.slice(0, 4))
         }
@@ -253,17 +303,19 @@ const CreditQualificationPage = () => {
     if (referralCodeFromUrl && referralCodeFromUrl.length > 0) {
       setReferralCodeInput(referralCodeFromUrl)
       checkRefCode(referralCodeFromUrl)
-    } else if (connectedCode.length > 0) {
+      trackCreditQualificationView({ trx: referralCodeFromUrl })
+    } else if (connectedCode && connectedCode.length > 0) {
       setReferralCodeInput(connectedCode)
       checkRefCode(connectedCode)
+      trackCreditQualificationView({ trx: connectedCode })
     } else {
       setReferralCodeInput('')
+      trackCreditQualificationView({ trx: '' })
     }
   }
   const onChooseHandler = (item: Option<FormControlValue>) => {
     setLastChoosenValue(String(item.value))
     setInputValue(String(item.label))
-    console.log(lastChoosenValue, inputValue)
   }
 
   const getDataForTracker = (): CreditQualificationFlowParam => {
@@ -304,24 +356,45 @@ const CreditQualificationPage = () => {
     )
   }
 
-  const getCreditCualficationDataTracker = () => ({
-    ...getDataForTracker(),
-    Income: undefined,
-    Total_Income: `Rp${formatNumberByLocalization(
-      Number(financialQuery.monthlyIncome) + Number(joinIncomeValue || 0),
-      LanguageCode.id,
-      1000000,
-      10,
-    )} Juta`,
-    Teman_SEVA_Ref_Code: referralCodeInput,
-    Occupation: lastChoosenValue,
-    Page_Origination: window.location.href,
-  })
-
+  const updateValueForTrackingWaDirect = () => {
+    const updateDataCar = {
+      ...dataCarStorage,
+      INCOME_KK: joinIncomeValue,
+    }
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(updateDataCar),
+    )
+  }
   const onClickCtaNext = async () => {
-    trackKualifikasiKreditFormPageCTAClick(getCreditCualficationDataTracker())
+    const dataCarValue = {
+      ...dataCarStorage,
+      IA_FLOW: 'Instant Approval (Reg)',
+      INCOME_KK: joinIncomeValue,
+    }
 
-    const refCodeValidity = await checkRefCode(referralCodeInput)
+    updateValueForTrackingWaDirect()
+
+    setIsLoading(true)
+
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarValue),
+    )
+
+    setIsLoading(true)
+
+    const refcode =
+      kkFlowType && kkFlowType === 'ptbc'
+        ? TemanSeva.PTBC
+        : referralCodeInput || ''
+    // ref code input field is removed in PTBC flow, no need to check validitity
+    let refCodeValidity = true
+    if (!isInPtbcFlow) {
+      refCodeValidity = await checkRefCode(referralCodeInput)
+    }
+
+    setIsLoading(false)
 
     if (refCodeValidity) {
       const qualificationData = {
@@ -343,30 +416,124 @@ const CreditQualificationPage = () => {
         citySelector: cityOtr ? cityOtr?.cityName : 'Jakarta Pusat',
         spouseIncome: joinIncomeValue,
         promoCode: promoCode || '',
-        temanSevaTrxCode: referralCodeInput || '',
+        temanSevaTrxCode: refcode,
         angsuranType: optionADDM,
         rateType: getLocalStorage(LocalStorageKey.SelectedRateType),
         platform: 'web',
         occupations: lastChoosenValue,
+        dob: customerDobForm,
       }
       localStorage.setItem(
         'qualification_credit',
         JSON.stringify(qualificationData),
       )
+      const track = {
+        CAR_BRAND: dataCar?.modelDetail.brand,
+        CAR_VARIANT: dataCar?.variantDetail.name,
+        CAR_MODEL: dataCar?.modelDetail.model,
+        INCOME_CHANGE:
+          Number(currentMonthlyIncome) === Number(joinIncomeValue)
+            ? 'No'
+            : 'Yes',
+        INCOME_KUALIFIKASI_KREDIT: `Rp${Currency(joinIncomeValue)}`,
+        INCOME_LOAN_CALCULATOR: `Rp${Currency(Number(currentMonthlyIncome))}`,
+        INSURANCE_TYPE: selectablePromo?.selectedInsurance.label || 'Null',
+        PROMO_AMOUNT: selectedPromoList ? selectedPromoList.length : 'Null',
+        OCCUPATION: lastChoosenValue.replace('&', ''),
+        TEMAN_SEVA_REFERRAL_CODE: refcode || 'Null',
+      }
+      setTimeout(() => {
+        if (isInPtbcFlow) {
+          trackEventCountly(
+            CountlyEventNames.WEB_PTBC_CREDIT_QUALIFICATION_FORM_PAGE_CTA_CLICK,
+          )
+        } else {
+          trackEventCountly(
+            CountlyEventNames.WEB_CREDIT_QUALIFICATION_FORM_PAGE_CTA_CLICK,
+            track,
+          )
+        }
+      }, 500)
+
       router.push(creditQualificationReviewUrl)
       // saveLocalStorage(QualificationCredit, 'REGULAR')
       // only proceed if currently inputted ref code is valid
     }
   }
 
+  const trackCreditQualificationDetailClick = () => {
+    const track = {
+      CAR_BRAND: dataCar?.modelDetail.brand,
+      CAR_VARIANT: dataCar?.variantDetail.name,
+      CAR_MODEL: dataCar?.modelDetail.model,
+      PAGE_ORIGINATION: RouteName.KKForm,
+      PAGE_ORIGINATION_URL: window.location.href,
+    }
+
+    trackEventCountly(
+      CountlyEventNames.WEB_CREDIT_QUALIFICATION_FORM_PAGE_CAR_DETAIL_CLICK,
+      track,
+    )
+  }
+
   const handleOpenModal = () => {
-    trackKualifikasiKreditCarDetailClick(getCreditCualficationDataTracker())
+    trackCreditQualificationDetailClick()
     setOpenModal(true)
   }
 
   const handleCloseModal = () => {
-    trackKualifikasiKreditCarDetailClose(getCreditCualficationDataTracker())
     setOpenModal(false)
+  }
+
+  const trackCreditQualificationView = ({ trx = '' }) => {
+    const prevPage = getSessionStorage(SessionStorageKey.PreviousPage) as any
+    const loginStatus = localStorage.getItem(LocalStorageKey.prevLoginPath)
+    const infoCarRecommendation = recommendation.filter(
+      (x) => x.id === dataCar?.modelDetail.id,
+    )[0]
+    const track = {
+      PAGE_REFERRER: prevPage,
+      FINCAP_FILTER_USAGE: filterFincap ? 'Yes' : 'No',
+      CAR_BRAND: dataCar?.modelDetail.brand,
+      CAR_VARIANT: dataCar?.variantDetail.name,
+      CAR_MODEL: dataCar?.modelDetail.model,
+      PELUANG_KREDIT_BADGE: fincap
+        ? infoCarRecommendation
+          ? infoCarRecommendation.loanRank === 'Green'
+            ? 'Mudah disetujui'
+            : 'Sulit disetujui'
+          : 'Null'
+        : 'Null',
+      TENOR_OPTION: simpleCarVariantDetails.loanTenure + ' tahun',
+      TENOR_RESULT:
+        simpleCarVariantDetails.loanRank === 'Green'
+          ? 'Mudah disetujui'
+          : simpleCarVariantDetails.loanRank === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      INCOME_LOAN_CALCULATOR: `Rp${Currency(
+        Number(financialQuery.monthlyIncome),
+      )}`,
+      INITIAL_PAGE: valueForInitialPageProperty(),
+      INSURANCE_TYPE: selectablePromo?.selectedInsurance.label || 'Null',
+      PROMO_AMOUNT: selectedPromoList ? selectedPromoList.length : 'Null',
+      INITIAL_LOGIN_STATUS:
+        loginStatus && loginStatus === creditQualificationUrl ? 'No' : 'Yes',
+      TEMAN_SEVA_STATUS: trx ? 'Yes' : 'No',
+    }
+
+    setTimeout(() => {
+      if (isInPtbcFlow) {
+        trackEventCountly(
+          CountlyEventNames.WEB_PTBC_CREDIT_QUALIFICATION_FORM_PAGE_VIEW,
+        )
+      } else {
+        trackEventCountly(
+          CountlyEventNames.WEB_CREDIT_QUALIFICATION_FORM_PAGE_VIEW,
+          track,
+        )
+      }
+    }, 1000)
   }
 
   useEffect(() => {
@@ -375,32 +542,34 @@ const CreditQualificationPage = () => {
 
   useEffect(() => {
     if (!!getToken()) {
-      if (!simpleCarVariantDetails || !simpleCarVariantDetails.variantId) {
+      if (
+        !simpleCarVariantDetails ||
+        !simpleCarVariantDetails.variantId ||
+        !optionADDM
+      ) {
         router.push(loanCalculatorDefaultUrl)
-        return
-      }
-      getCarVariantDetailsById(simpleCarVariantDetails.variantId)
-        .then((response) => {
-          if (response) {
-            setDataCar(response)
-          } else {
+      } else {
+        getCarVariantDetailsById(simpleCarVariantDetails.variantId)
+          .then((response) => {
+            if (response) {
+              setDataCar(response)
+            } else {
+              router.push(loanCalculatorDefaultUrl)
+            }
+          })
+          .catch(() => {
             router.push(loanCalculatorDefaultUrl)
-            return
-          }
-        })
-        .catch(() => {
-          router.push(loanCalculatorDefaultUrl)
-          return
-        })
-      getCurrentUserInfo()
-      getCurrentUserOwnCode()
+          })
+        getCurrentUserInfo()
+        getCurrentUserOwnCode()
+      }
     }
   }, [])
 
   useEffect(() => {
     // autofill using useEffect hook because connectedCode value is from API
-    autofillRefCodeValue()
-  }, [connectedCode])
+    if (typeof connectedCode !== 'undefined' && dataCar) autofillRefCodeValue()
+  }, [connectedCode, dataCar])
 
   useEffect(() => {
     if (inputValue === '') {
@@ -451,6 +620,16 @@ const CreditQualificationPage = () => {
       )
       setJoinIncomeValueFormatted(formatted)
       setJoinIncomeValue(Number(filterNonDigitCharacters(value)))
+
+      const dataCarTemp = {
+        ...dataCarStorage,
+        INCOME_CHANGE: 'Yes',
+        INCOME_KK: Number(filterNonDigitCharacters(value)),
+      }
+      saveSessionStorage(
+        SessionStorageKey.PreviousCarDataBeforeLogin,
+        JSON.stringify(dataCarTemp),
+      )
     }
   }
 
@@ -478,6 +657,8 @@ const CreditQualificationPage = () => {
     }
   }
 
+  const cityName = getCity()?.cityName || 'Jakarta Pusat'
+
   return (
     <>
       <Seo
@@ -499,14 +680,13 @@ const CreditQualificationPage = () => {
       <div className={styles.container}>
         <div className={styles.paddingInfoCar} onClick={handleOpenModal}>
           <div className={styles.cardInfoCar}>
-            <div className={styles.imageCar}>
-              <Image
-                src={dataCar?.variantDetail?.images[0] || ''}
-                alt="car-images"
-                width="82"
-                height="61"
-              />
-            </div>
+            <Image
+              src={dataCar?.variantDetail?.images[0] || ''}
+              alt="car-images"
+              width="82"
+              height="61"
+              className={styles.imageCar}
+            />
             <div className={styles.frameTextInfoCar}>
               <div className={styles.titleTextCar}>
                 {dataCar?.modelDetail.brand} {dataCar?.modelDetail.model}
@@ -523,19 +703,7 @@ const CreditQualificationPage = () => {
               </div>
               <div className={styles.hargaOtrWrapper}>
                 <span className={styles.smallRegular}>Harga OTR</span>
-                <span className={styles.smallSemibold}>
-                  {!cityOtr || dataCar?.modelDetail.brand.includes('Daihatsu')
-                    ? 'Jakarta Pusat'
-                    : cityOtr?.cityName}
-                </span>
-                {dataCar?.modelDetail.brand.includes('Daihatsu') && (
-                  <IconInfo
-                    className={styles.margin}
-                    width={18}
-                    height={18}
-                    color="#878D98"
-                  />
-                )}
+                <span className={styles.smallSemibold}>{cityName}</span>
               </div>
               {/*{promoCode && (*/}
               {/*  <div className={styles.textPromo}>*/}
@@ -558,10 +726,15 @@ const CreditQualificationPage = () => {
           <InputSelect
             value={inputValue}
             options={suggestionsLists}
+            onFocusInput={() => {
+              trackEventCountly(
+                CountlyEventNames.WEB_CREDIT_QUALIFICATION_FORM_PAGE_OCCUPATION_CLICK,
+              )
+            }}
             onChange={onChangeInputHandler}
             onChoose={onChooseHandler}
             placeholderText="Pilih Pekerjaan"
-            noOptionsText="Mobil tidak ditemukan"
+            noOptionsText="Pekerjaan tidak ditemukan"
             isSearchable={true}
             onBlurInput={onBlurHandler}
             rightIcon={
@@ -581,28 +754,57 @@ const CreditQualificationPage = () => {
           />
           {renderIncomeErrorMessage()}
         </div>
-        <div className={styles.paddingFormReferral}>
-          <FormReferralCode
-            onClearInput={resetReferralCodeStatus}
-            value={referralCodeInput}
-            isLoadingReferralCode={isLoadingReferralCode}
-            isErrorReferralCode={
-              referralCodeInput !== '' &&
-              (isErrorReferralCodeInvalid || isErrorRefCodeUsingOwnCode)
-            }
-            isSuccessReferralCode={isSuccessReferralCode}
-            passedResetReferralCodeStatusFunc={resetReferralCodeStatus}
-            passedCheckReferralCodeFunc={() => checkRefCode(referralCodeInput)}
-            emitOnChange={handleInputRefferal}
-            checkedIconColor={'#05256E'}
-            errorIconColor={'#D83130'}
-            errorMessage={getErrorMesssageRefCode()}
-            maxInputLength={8}
-            vibrateErrorMessage={true}
-            fieldLabel={'Punya kode referral Teman SEVA? Masukkan di sini.'}
-            placeholderText={'Contoh: SEVA0000'}
-          />
-        </div>
+
+        {isShowDobField ? (
+          <div className={styles.paddingFormDob}>
+            <DatePicker
+              title="Tanggal Lahir"
+              placeholder="DD/MM/YYYY"
+              value={dayjs(customerDobForm).toDate()}
+              min={dayjs().add(-100, 'year').toDate()}
+              max={dayjs().add(-17, 'year').toDate()}
+              name="dob"
+              data-testid={elementId.DatePicker.DOB}
+              onConfirm={(val: Date) => {
+                setCustomerDobForm(dayjs(val).format('YYYY-MM-DD'))
+              }}
+            />
+          </div>
+        ) : (
+          <></>
+        )}
+        {kkFlowType !== 'ptbc' && (
+          <div className={styles.paddingFormReferral}>
+            <FormReferralCode
+              onClearInput={resetReferralCodeStatus}
+              value={referralCodeInput}
+              isLoadingReferralCode={isLoadingReferralCode}
+              isErrorReferralCode={
+                referralCodeInput !== '' &&
+                (isErrorReferralCodeInvalid || isErrorRefCodeUsingOwnCode)
+              }
+              isSuccessReferralCode={isSuccessReferralCode}
+              passedResetReferralCodeStatusFunc={resetReferralCodeStatus}
+              passedCheckReferralCodeFunc={() =>
+                checkRefCode(referralCodeInput)
+              }
+              emitOnChange={handleInputRefferal}
+              checkedIconColor={'#05256E'}
+              errorIconColor={'#D83130'}
+              errorMessage={getErrorMesssageRefCode()}
+              maxInputLength={8}
+              vibrateErrorMessage={true}
+              fieldLabel={'Kode Referral Teman SEVA (Opsional)'}
+              placeholderText={'Contoh: SEVA0000'}
+              onFocus={() => {
+                trackEventCountly(
+                  CountlyEventNames.WEB_CREDIT_QUALIFICATION_FORM_PAGE_REFERRAL_CLICK,
+                )
+              }}
+            />
+          </div>
+        )}
+
         <div className={styles.paddingButton}>
           <Button
             version={ButtonVersion.PrimaryDarkBlue}
@@ -610,9 +812,12 @@ const CreditQualificationPage = () => {
             disabled={
               lastChoosenValue === '' ||
               isIncomeTooLow ||
-              joinIncomeValue < 3000000
+              joinIncomeValue < 3000000 ||
+              !customerDobForm ||
+              isLoading
             }
             onClick={onClickCtaNext}
+            loading={isLoading}
           >
             Lanjutkan
           </Button>
@@ -625,6 +830,14 @@ const CreditQualificationPage = () => {
         footer={null}
         className="custom-modal-credit"
         width={343}
+        styles={{
+          mask: {
+            background: 'rgba(19, 19, 27, 0.5)',
+            maxWidth: '570px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          },
+        }}
         style={{ borderRadius: '8px' }}
       >
         <PopupCreditDetail

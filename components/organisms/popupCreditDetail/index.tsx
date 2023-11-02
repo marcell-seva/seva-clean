@@ -34,8 +34,6 @@ const PopupCreditDetail = ({
   simpleCarVariantDetails,
   optionADDM,
 }: VariantsProps) => {
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false)
-
   const selectablePromo = getLocalStorage<LoanCalculatorInsuranceAndPromoType>(
     LocalStorageKey.SelectablePromo,
   )
@@ -65,45 +63,7 @@ const PopupCreditDetail = ({
           )}
         </div>
         <div className={styles.textCity}>
-          <span className={styles.margin}>
-            Harga OTR{' '}
-            {carVariant?.modelDetail.brand.includes('Daihatsu')
-              ? 'Jakarta Pusat'
-              : city}
-          </span>
-          <div
-            className={`${styles.overlay} ${
-              isTooltipOpen ? styles.showOverlay : ''
-            }`}
-            onClick={() => setIsTooltipOpen(false)}
-          />
-          {carVariant?.modelDetail.brand.includes('Daihatsu') && (
-            <Tooltip
-              title={
-                <TooltipDaihatsu onClick={() => setIsTooltipOpen(false)} />
-              }
-              color="#246ED4"
-              placement="top"
-              trigger="click"
-              visible={isTooltipOpen}
-            >
-              <IconInfo
-                onClick={() => {
-                  setIsTooltipOpen(true)
-                  trackEventCountly(
-                    CountlyEventNames.WEB_CITY_SELECTOR_TOOLTIP_CLICK,
-                    {
-                      PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
-                    },
-                  )
-                }}
-                className={styles.margin}
-                width={18}
-                height={18}
-                color="#878D98"
-              />
-            </Tooltip>
-          )}
+          <span className={styles.margin}>Harga OTR {city}</span>
         </div>
         <div className={styles.rowWithSpaceBottom}>
           <div className={styles.column}>

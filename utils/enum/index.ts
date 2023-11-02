@@ -104,6 +104,7 @@ export enum LocalStorageKey {
   carModelLoanRank = 'carModelLoanRank', // loan rank on plp
   LastTimeUpdateUtm = 'lastTimeUpdateUtm',
   flagPopUpRecomendation = 'flagPopUpRecomendation',
+  prevLoginPath = 'prevLoginPath',
 }
 
 export enum SessionStorageKey {

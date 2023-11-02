@@ -100,6 +100,7 @@ import { Separator } from './separator'
 import CustomModal from './modal/custom'
 import BottomSheet from './bottomSheet'
 import { SearchInput } from './searchInput'
+import DatePicker from './inputDate/datepicker'
 export {
   Button,
   Capsule,
@@ -202,4 +203,5 @@ export {
   CustomModal,
   BottomSheet,
   SearchInput,
+  DatePicker,
 }
