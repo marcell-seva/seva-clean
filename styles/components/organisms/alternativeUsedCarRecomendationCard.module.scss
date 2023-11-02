@@ -29,6 +29,13 @@
   height: 48px;
   font-weight: 300;
   color: var(--primary-black, #13131b);
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .cardWrapper {
@@ -130,4 +137,5 @@
   line-height: 20px;
   color: #{$secondary-blue};
   margin-bottom: 24px;
+  cursor: pointer;
 }
