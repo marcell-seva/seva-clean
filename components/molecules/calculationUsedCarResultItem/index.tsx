@@ -109,7 +109,7 @@ export const CalculationUsedCarResultItem = ({
             currentLanguage,
           )}`}</span>
         </div>
-        <div className={styles.priceTextWrapper}>
+        <div className={styles.priceTextWrapperEnd}>
           <span
             className={styles.priceText}
           >{`Rp${replacePriceSeparatorByLocalization(
