@@ -86,7 +86,7 @@ export const AlternativeUsedCarRecomendationCard = ({
 
   const detailCarScrollRoute = usedCarDetailUrl.replace(
     ':id',
-    parseUrl(recommendation.sevaUrl).toLowerCase().concat('#leads-form'),
+    parseUrl(recommendation.sevaUrl).toLowerCase() + '#leads-form',
   )
 
   const getValueBrandAndModel = (value: string) => {
@@ -260,7 +260,7 @@ export const AlternativeUsedCarRecomendationCard = ({
         <Button
           version={ButtonVersion.Secondary}
           size={ButtonSize.Big}
-          onClick={onClickScrollDetail}
+          onClick={onClickSeeDetail}
           data-testid={elementId.PLP.Button.HitungKemampuan}
         >
           Tanya Unit
