@@ -74,9 +74,13 @@ export const AlternativeUsedCarRecomendationCard = ({
 
     const pathnameSegments = urlObj.pathname.split('/')
 
-    const id = pathnameSegments[3].concat('-' + pathnameSegments[4])
-
-    return id
+    if (pathnameSegments.length > 4) {
+      const id = pathnameSegments[3].concat('-' + pathnameSegments[4])
+      return id
+    } else {
+      const id = pathnameSegments[3]
+      return id
+    }
   }
 
   const detailCarRoute = usedCarDetailUrl.replace(
@@ -223,7 +227,9 @@ export const AlternativeUsedCarRecomendationCard = ({
           src={recommendation.urlMedia}
           className={styles.heroImg}
           alt={`${recommendation.variantTitle}`}
-          onClick={onClickSeeDetail}
+          onClick={() => {
+            onClickSeeDetail()
+          }}
           data-testid={elementId.CarRecommendation.Image}
           width={180}
           height={135}
@@ -250,7 +256,9 @@ export const AlternativeUsedCarRecomendationCard = ({
           </span>
           <span
             role="link"
-            onClick={onClickSeeDetail}
+            onClick={() => {
+              onClickSeeDetail()
+            }}
             className={styles.linkLihatDetail}
             data-testid={elementId.PLP.Button.LihatDetail}
           >
@@ -260,7 +268,9 @@ export const AlternativeUsedCarRecomendationCard = ({
         <Button
           version={ButtonVersion.Secondary}
           size={ButtonSize.Big}
-          onClick={onClickSeeDetail}
+          onClick={() => {
+            onClickScrollDetail()
+          }}
           data-testid={elementId.PLP.Button.HitungKemampuan}
         >
           Tanya Unit

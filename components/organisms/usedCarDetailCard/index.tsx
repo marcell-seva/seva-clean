@@ -137,9 +137,13 @@ export const UsedCarDetailCard = ({
 
     const pathnameSegments = urlObj.pathname.split('/')
 
-    const id = pathnameSegments[3].concat('-' + pathnameSegments[4])
-
-    return id
+    if (pathnameSegments.length > 4) {
+      const id = pathnameSegments[3].concat('-' + pathnameSegments[4])
+      return id
+    } else {
+      const id = pathnameSegments[3]
+      return id
+    }
   }
 
   const detailCarRoute = usedCarDetailUrl.replace(
@@ -294,7 +298,9 @@ export const UsedCarDetailCard = ({
             src={recommendation.mainImage || CarSkeleton}
             className={styles.heroImg}
             alt={`${recommendation.variantName}`}
-            onClick={onClickSeeDetail}
+            onClick={() => {
+              onClickSeeDetail()
+            }}
             data-testid={elementId.CarImage}
             width={279}
           />
@@ -352,7 +358,7 @@ export const UsedCarDetailCard = ({
           <span
             role="link"
             onClick={() => {
-              onClickSeeDetail
+              onClickSeeDetail()
             }}
             className={styles.linkLihatDetail}
             data-testid={elementId.PLP.Button.LihatDetail}
@@ -364,7 +370,7 @@ export const UsedCarDetailCard = ({
           version={ButtonVersion.Secondary}
           size={ButtonSize.Big}
           onClick={() => {
-            onClickSeeDetail()
+            onClickScrollDetail()
           }}
           data-testid={elementId.PLP.Button.HitungKemampuan}
         >

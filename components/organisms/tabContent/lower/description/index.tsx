@@ -140,7 +140,7 @@ export const DescriptionTab = ({
           usedCarRecommendationList={usedCarRecommendations}
           title="Beli Mobil Bekas Berkualitas"
           onClick={() => {
-            return
+            scrollToLeads()
           }}
           additionalContainerStyle={styles.recommendationAdditionalStyle}
         />
