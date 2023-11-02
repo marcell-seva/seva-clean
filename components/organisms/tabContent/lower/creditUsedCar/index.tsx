@@ -895,13 +895,6 @@ export const CreditUsedCarTab = () => {
       // add more scroll because global page header is fixed position
       window.scrollBy({ top: -100, left: 0 })
     }
-    if (!tooltipNextDisplay || isTooltipExpired()) {
-      setIsTooltipOpen(true)
-      trackCountlyOnShowTooltip()
-      const nextDisplay = calculateNextDisplayDate().toString()
-      setTooltipNextDisplay(nextDisplay)
-      localStorage.setItem('tooltipNextDisplay', nextDisplay)
-    }
   }
 
   const handleClickButtonQualification = () => {

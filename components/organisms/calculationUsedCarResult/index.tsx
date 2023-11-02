@@ -224,54 +224,14 @@ export const CalculationUsedCarResult = ({
       return (
         <>
           <div className={styles.ctaGroup}>
-            {!isTooltipOpen && (
-              <Button
-                version={ButtonVersion.PrimaryDarkBlue}
-                size={ButtonSize.Big}
-                onClick={scrollToLeads}
-                data-testid={elementId.LoanCalculator.Info.KualifikasiKredit}
-              >
-                Tanya Unit
-              </Button>
-            )}
-
-            {isTooltipOpen && (
-              <>
-                <Overlay
-                  isShow={isTooltipOpen}
-                  onClick={handleCloseTooltip}
-                  zIndex={998}
-                  additionalstyle={styles.overlayAdditionalStyle}
-                />
-                <div style={{ width: '100%' }}>
-                  <Tooltip
-                    title={
-                      <TooltipContentQualifacation
-                        onClick={handleUnderstandTooltip}
-                      />
-                    }
-                    color="#246ED4"
-                    placement="top"
-                    className="calculation-result"
-                    visible={isTooltipOpen}
-                    overlayClassName="calculation-result"
-                  >
-                    <div
-                      ref={goToButton}
-                      className={isTooltipOpen ? styles.bordered : ''}
-                    >
-                      <Button
-                        version={ButtonVersion.PrimaryDarkBlue}
-                        size={ButtonSize.Big}
-                        onClick={closeTooltip}
-                      >
-                        Cek Kualifikasi Kredit
-                      </Button>
-                    </div>
-                  </Tooltip>
-                </div>
-              </>
-            )}
+            <Button
+              version={ButtonVersion.PrimaryDarkBlue}
+              size={ButtonSize.Big}
+              onClick={scrollToLeads}
+              data-testid={elementId.LoanCalculator.Info.KualifikasiKredit}
+            >
+              Tanya Unit
+            </Button>
           </div>
           {renderDisclaimer()}
           {renderLogoFinco()}
