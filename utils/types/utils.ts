@@ -263,6 +263,16 @@ export type UsedCarRecommendation = {
   skuCode: string
   urlMedia: string
 }
+export type UsedNewCarRecommendation = {
+  id: string
+  modelName: string
+  makeName: string
+  variantTitle: string
+  url: string
+  priceValue: number
+  mainImageUrl: string
+  startInstallmentL: number
+}
 
 export interface CarRecommendationResponse {
   carRecommendations: CarRecommendation[]

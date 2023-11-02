@@ -38,6 +38,7 @@ import {
   getAnnouncementBox as gab,
   getUsedCarBySKU,
   getUsedCarRecommendations,
+  getUsedNewCarRecommendations,
 } from 'services/api'
 interface UsedPdpDataLocalContextType {
   // /**
@@ -50,6 +51,8 @@ interface UsedPdpDataLocalContextType {
   //  * need to re-fetch API in client with city from localStorage
   //  */
   usedCarModelDetailsRes: any
+
+  usedCarNewRecommendations: any
   // dataCombinationOfCarRecomAndModelDetailDefaultCity: any
   // /**
   //  * this variable use "jakarta" as default payload, so that search engine could see page content.
@@ -67,9 +70,11 @@ export const UsedPdpDataLocalContext =
   createContext<UsedPdpDataLocalContextType>({
     usedCarRecommendations: null,
     usedCarModelDetailsRes: null,
+    usedCarNewRecommendations: null,
   })
 export default function index({
   usedCarRecommendationRes,
+  newCarRecommendationRes,
   carModelDetailsRes,
   dataDesktopMenu,
   dataMobileMenu,
@@ -202,6 +207,7 @@ export default function index({
         value={{
           usedCarModelDetailsRes: carModelDetailsRes,
           usedCarRecommendations: usedCarRecommendationRes,
+          usedCarNewRecommendations: newCarRecommendationRes,
         }}
       >
         <UsedPdpMobile />
@@ -244,6 +250,9 @@ export async function getServerSideProps(context: any) {
       api.getMenu(),
       api.getUsedCarBySKU(uuid, ''),
     ])
+
+    const selectedCity = getCity()
+    console.log(selectedCity)
 
     // const carList = carRecommendationsRes.carRecommendations
     // const currentCar = carList.filter(
@@ -291,9 +300,11 @@ export async function getServerSideProps(context: any) {
 
     // params.append('bodyType', carDetailRes.data[0].typeName)
 
-    const [carRecommendationsRes]: any = await Promise.all([
-      getUsedCarRecommendations(`?bodyType=${carDetailRes.data[0].typeName}`),
-    ])
+    const [carRecommendationsRes, newCarRecommendationsRes]: any =
+      await Promise.all([
+        getUsedCarRecommendations(`?bodyType=${carDetailRes.data[0].typeName}`),
+        getUsedNewCarRecommendations(`?modelName=New%20Alphard&bodyType=MPV`),
+      ])
 
     return {
       props: {
@@ -305,6 +316,7 @@ export async function getServerSideProps(context: any) {
         // carVideoReviewRes,
         // carArticleReviewRes,
         usedCarRecommendationRes: carRecommendationsRes.carData,
+        newCarRecommendationRes: newCarRecommendationsRes.carData,
         carModelDetailsRes: carDetailRes.data[0],
         isSsrMobile: getIsSsrMobile(context),
         dataMobileMenu: menuMobileRes.data,

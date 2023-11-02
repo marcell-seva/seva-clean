@@ -26,6 +26,7 @@ import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import {
   CarVariantListPageUrlParams,
+  UsedNewCarRecommendation,
   trackDataCarType,
 } from 'utils/types/utils'
 import {
@@ -35,7 +36,7 @@ import {
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
 
 type AlternativeUsedCarCardProps = {
-  recommendation: CarRecommendation
+  recommendation: UsedNewCarRecommendation
   onClickLabel: () => void
   children?: React.ReactNode
   label?: React.ReactNode
@@ -69,7 +70,11 @@ export const AlternativeUsedCarCard = ({
   const detailCarRoute = (isOTO ? OTOVariantListUrl : variantListUrl)
     .replace(
       ':brand/:model',
-      (recommendation.brand + '/' + recommendation.model.replace(/ +/g, '-'))
+      (
+        recommendation.makeName +
+        '/' +
+        recommendation.modelName.replace(/ +/g, '-')
+      )
         .replace(/ +/g, '')
         .toLowerCase(),
     )
@@ -123,8 +128,8 @@ export const AlternativeUsedCarCard = ({
           : carModel
           ? getValueBrandAndModel(removeCarBrand(carModel))
           : getValueBrandAndModel(model),
-      CAR_BRAND_RECOMMENDATION: recommendation.brand,
-      CAR_MODEL_RECOMMENDATION: recommendation.model,
+      CAR_BRAND_RECOMMENDATION: recommendation.makeName,
+      CAR_MODEL_RECOMMENDATION: recommendation.modelName,
       PAGE_DIRECTION_URL:
         'https://' + window.location.hostname + detailCarRoute,
       TENOR_OPTION: dataCar?.TENOR_OPTION,
@@ -158,9 +163,8 @@ export const AlternativeUsedCarCard = ({
     window.location.href = detailCarRoute
   }
 
-  const lowestInstallment = getLowestInstallment(recommendation.variants)
   const formatLowestInstallment = replacePriceSeparatorByLocalization(
-    lowestInstallment,
+    recommendation.startInstallmentL,
     LanguageCode.id,
   )
 
@@ -169,8 +173,8 @@ export const AlternativeUsedCarCard = ({
       PAGE_ORIGINATION: 'PLP - Empty Page',
       CAR_BRAND: 'Null',
       CAR_MODEL: 'Null',
-      CAR_BRAND_RECOMMENDATION: recommendation.brand,
-      CAR_MODEL_RECOMMENDATION: recommendation.model,
+      CAR_BRAND_RECOMMENDATION: recommendation.makeName,
+      CAR_MODEL_RECOMMENDATION: recommendation.modelName,
       CTA_BUTTON: 'Lihat Detail',
       PAGE_DIRECTION_URL: window.location.hostname + detailCarRoute,
     })
@@ -191,9 +195,9 @@ export const AlternativeUsedCarCard = ({
     <div className={styles.container}>
       <CardShadow className={styles.cardWrapper}>
         <Image
-          src={recommendation.images[0]}
+          src={recommendation.mainImageUrl}
           className={styles.heroImg}
-          alt={`${recommendation.brand} ${recommendation.model}`}
+          alt={`${recommendation.makeName} ${recommendation.modelName}`}
           onClick={navigateToPDP}
           data-testid={elementId.CarRecommendation.Image}
           width={180}
@@ -206,7 +210,7 @@ export const AlternativeUsedCarCard = ({
           data-testid={elementId.CarRecommendation.BrandModel}
         >
           <h4 className={styles.brandModelText}>
-            {recommendation.brand} {recommendation.model}
+            {recommendation.makeName} {recommendation.modelName}
           </h4>
           <div
             className={styles.infoWrapper}

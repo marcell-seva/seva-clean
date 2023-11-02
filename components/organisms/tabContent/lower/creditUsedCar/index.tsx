@@ -151,10 +151,20 @@ interface FormState {
   paymentOption: InstallmentTypeOptions
 }
 
+interface ChoosenAssurance {
+  label: string
+  name: string
+  tenureAR: number
+  tenureTLO: number
+}
+
 export const CreditUsedCarTab = () => {
-  const { usedCarModelDetailsRes, usedCarRecommendations } = useContext(
-    UsedPdpDataLocalContext,
-  )
+  const {
+    usedCarModelDetailsRes,
+    usedCarRecommendations,
+    usedCarNewRecommendations,
+  } = useContext(UsedPdpDataLocalContext)
+
   const router = useRouter()
   const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
@@ -189,7 +199,13 @@ export const CreditUsedCarTab = () => {
     null,
   )
   const [isAssuranceModalOpen, setIsAssuranceModalOpen] = useState(false)
-  const [chosenAssurance, setChosenAssurance] = useState<any>({})
+  const [chosenAssurance, setChosenAssurance] = useState<ChoosenAssurance>({
+    label: '',
+    name: '',
+    tenureAR: 0,
+    tenureTLO: 0,
+  })
+
   const [carRecommendations, setCarRecommendations] = useState<
     CarRecommendation[]
   >([])
@@ -491,16 +507,13 @@ export const CreditUsedCarTab = () => {
   }, [forms.city?.cityCode])
 
   useEffect(() => {
-    if (
-      Object.keys(chosenAssurance).length === 0 &&
-      chosenAssurance.length === undefined
-    ) {
+    if (chosenAssurance.label === '' || isDpTooLow || isDpExceedLimit) {
       setIsDisableCtaCalculate(true)
       return
     } else {
       setIsDisableCtaCalculate(false)
     }
-  }, [chosenAssurance])
+  }, [chosenAssurance, isDpTooLow, isDpExceedLimit])
 
   useEffect(() => {
     updateSelectedVariantData()
@@ -724,8 +737,12 @@ export const CreditUsedCarTab = () => {
     }
 
     if (name === 'assurance') {
-      const result = assuranceOptions.find((opt: any) => opt.label === value)
-      setChosenAssurance(result)
+      const result = assuranceOptions.find(
+        (opt: ChoosenAssurance) => opt.label === value,
+      )
+      if (result) {
+        setChosenAssurance(result)
+      }
     }
 
     setForms({
@@ -857,7 +874,7 @@ export const CreditUsedCarTab = () => {
   const validateFormFields = () => {
     setIsValidatingEmptyField(true)
 
-    if (Object.keys(chosenAssurance).length === 0) {
+    if (chosenAssurance.label === '') {
       scrollToElement('loan-calculator-form-age')
     }
   }
@@ -1040,12 +1057,15 @@ export const CreditUsedCarTab = () => {
               ageList={assuranceOptions}
               name="assurance"
               handleChange={handleChange}
-              defaultValue={chosenAssurance?.length > 0 ? chosenAssurance : ''}
+              disabled={isDpTooLow || isDpExceedLimit}
+              defaultValue={
+                chosenAssurance.label !== '' ? chosenAssurance.label : ''
+              }
               onShowDropdown={onShowDropdownAgeField}
               isError={isValidatingEmptyField && !chosenAssurance}
               setIsAssuranceModal={setIsAssuranceModalOpen}
             />
-            {isValidatingEmptyField && Object.keys(chosenAssurance).length === 0
+            {isValidatingEmptyField && chosenAssurance?.label === ''
               ? renderErrorMessageEmpty()
               : null}
           </div>
@@ -1105,9 +1125,9 @@ export const CreditUsedCarTab = () => {
       )}
 
       <div className={styles.wrapper}>
-        {carRecommendations.length > 0 && (
+        {usedCarNewRecommendations.length > 0 && (
           <NewCarRecommendations
-            carRecommendationList={carRecommendations}
+            carRecommendationList={usedCarNewRecommendations}
             title="Rekomendasi Mobil Baru"
             onClick={() => {
               return

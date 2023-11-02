@@ -6,7 +6,11 @@ import {
   loanCalculatorWithCityBrandModelUrl,
   variantListUrl,
 } from 'utils/helpers/routes'
-import { CarRecommendation, trackDataCarType } from 'utils/types/utils'
+import {
+  CarRecommendation,
+  UsedNewCarRecommendation,
+  trackDataCarType,
+} from 'utils/types/utils'
 import { getLowestInstallment } from 'utils/carModelUtils/carModelUtils'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { Button } from 'components/atoms'
@@ -33,7 +37,7 @@ import { AlternativeUsedCarCard } from '../alternativeUsedCarCard'
 
 type NewCarRecommendationsPropss = {
   title: string
-  carRecommendationList: CarRecommendation[]
+  carRecommendationList: UsedNewCarRecommendation[]
   onClick: () => void
   selectedCity: string
   additionalContainerStyle?: string
@@ -54,12 +58,12 @@ export default function NewCarRecommendations({
     SessionStorageKey.PreviousCarDataBeforeLogin,
   )
 
-  const getDestinationUrl = (carDetail: CarRecommendation) => {
+  const getDestinationUrl = (carDetail: UsedNewCarRecommendation) => {
     if (window.location.pathname.includes('/mobil-baru')) {
       return variantListUrl
         .replace(
           ':brand/:model',
-          (carDetail.brand + '/' + carDetail.model.replace(/ +/g, '-'))
+          (carDetail.makeName + '/' + carDetail.modelName.replace(/ +/g, '-'))
             .replace(/ +/g, '')
             .toLowerCase(),
         )
@@ -70,19 +74,18 @@ export default function NewCarRecommendations({
           ':cityName/:brand/:model',
           selectedCity.replace(/ +/g, '-') +
             '/' +
-            carDetail.brand.replace(/ +/g, '-') +
+            carDetail.makeName.replace(/ +/g, '-') +
             '/' +
-            carDetail.model.replace(/ +/g, '-') +
+            carDetail.modelName.replace(/ +/g, '-') +
             '/',
         )
         .toLocaleLowerCase()
     }
   }
 
-  const handleCalculateAbility = (item: CarRecommendation) => {
-    const lowestInstallment = getLowestInstallment(item.variants)
+  const handleCalculateAbility = (item: UsedNewCarRecommendation) => {
     const formatLowestInstallment = replacePriceSeparatorByLocalization(
-      lowestInstallment,
+      item.startInstallmentL,
       LanguageCode.id,
     )
     const dataCarTemp = {
@@ -101,8 +104,8 @@ export default function NewCarRecommendations({
       CAR_MODEL: model
         ? capitalizeWords(model.toString().replaceAll('-', ' '))
         : 'Null',
-      CAR_BRAND_RECOMMENDATION: item.brand,
-      CAR_MODEL_RECOMMENDATION: item.model,
+      CAR_BRAND_RECOMMENDATION: item.makeName,
+      CAR_MODEL_RECOMMENDATION: item.modelName,
       CTA_BUTTON: 'Hitung Kemampuan',
       TENOR_OPTION: dataCar?.TENOR_OPTION,
       TENOR_RESULT:
@@ -117,44 +120,24 @@ export default function NewCarRecommendations({
     window.location.replace(getDestinationUrl(item))
   }
 
-  const handleClickDetailCar = (url: string, item: CarRecommendation) => {
-    const lowestInstallment = getLowestInstallment(item.variants)
+  const handleClickDetailCar = (
+    url: string,
+    item: UsedNewCarRecommendation,
+  ) => {
     const formatLowestInstallment = replacePriceSeparatorByLocalization(
-      lowestInstallment,
+      item.startInstallmentL,
       LanguageCode.id,
     )
 
     const path = variantListUrl
       .replace(
         ':brand/:model/:tab?',
-        item.brand.replace(/ +/g, '-') +
+        item.makeName.replace(/ +/g, '-') +
           '/' +
-          item.model.replace(/ +/g, '-') +
+          item.modelName.replace(/ +/g, '-') +
           '/',
       )
       .toLocaleLowerCase()
-
-    trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CLICK, {
-      PAGE_ORIGINATION: 'PDP - Kredit',
-      PELUANG_KREDIT_BADGE:
-        item.loanRank === 'Green'
-          ? 'Mudah disetujui'
-          : item.loanRank === 'Red'
-          ? 'Sulit disetujui'
-          : 'Null',
-      CAR_BRAND: item.brand,
-      CAR_MODEL: item.model,
-      CAR_BRAND_RECOMMENDATION: item.brand,
-      CAR_MODEL_RECOMMENDATION: item.model,
-      PAGE_DIRECTION_URL: window.location.hostname + path,
-      TENOR_OPTION: dataCar?.TENOR_OPTION,
-      TENOR_RESULT:
-        dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Green'
-          ? 'Mudah disetujui'
-          : dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Red'
-          ? 'Sulit disetujui'
-          : 'Null',
-    })
 
     if (window.location.pathname.includes('kalkulator-kredit')) {
       saveDataForCountlyTrackerPageViewPDP(

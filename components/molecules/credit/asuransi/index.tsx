@@ -18,6 +18,7 @@ interface Props {
   onShowDropdown?: () => void
   isError?: boolean
   setIsAssuranceModal?: any
+  disabled?: boolean
 }
 
 export const FormAsuransiCredit: React.FC<Props> = ({
@@ -28,6 +29,7 @@ export const FormAsuransiCredit: React.FC<Props> = ({
   onShowDropdown,
   setIsAssuranceModal,
   isError = false,
+  disabled = false,
 }) => {
   const [selectedAge, setSelectedAge] = useState<string>(defaultValue)
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
@@ -76,6 +78,7 @@ export const FormAsuransiCredit: React.FC<Props> = ({
         options={ageList}
         onChange={handleAgeChange}
         placeholderText="Pilih asuransi"
+        disabled={disabled}
         isSearchable={false}
         rightIcon={(state) => {
           if (state.isOpen) {
