@@ -386,19 +386,16 @@ const CreditQualificationReviewPage = () => {
     if (!!getToken()) {
       if (!simpleCarVariantDetails && !dataReview) {
         router.push(loanCalculatorDefaultUrl)
-      }
-      if (
+      } else if (
         !simpleCarVariantDetails ||
         !simpleCarVariantDetails?.variantId ||
         !optionADDM
       ) {
         router.push(loanCalculatorDefaultUrl)
-      }
-      if (simpleCarVariantDetails && !dataReview) {
+      } else if (simpleCarVariantDetails && !dataReview) {
         // no need to change sessionStorage "KKIAFlowType" because user will be in the same flow type
         navigateToKK()
-      }
-      if (simpleCarVariantDetails) {
+      } else if (simpleCarVariantDetails) {
         getCarVariantDetailsById(
           simpleCarVariantDetails?.variantId, // get cheapest variant
         )
