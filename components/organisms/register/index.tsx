@@ -316,7 +316,7 @@ export const Register = () => {
         SessionStorageKey.prevLoginPath,
         nextPage ?? rootUrl,
       )
-      router.push(nextPage ?? rootUrl)
+      window.location.href = nextPage ?? rootUrl
     }
   }
 

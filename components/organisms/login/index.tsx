@@ -316,7 +316,7 @@ export const Login = () => {
         nextPage ?? rootUrl,
       )
       localStorage.removeItem(LocalStorageKey.PageBeforeLogin)
-      router.push(nextPage ?? rootUrl)
+      window.location.href = nextPage ?? rootUrl
     }
   }
 
