@@ -862,3 +862,61 @@ export enum TrackerFlag {
   Init = 'init',
   Sent = 'sent',
 }
+
+export interface CustomerRegister {
+  phoneNumber: string
+  fullName: string
+  gender?: string
+  dob: string
+  email: string | null
+  promoSubscription: boolean
+  marital?: string
+  referralCode?: string
+}
+
+export interface CitySelectorType {
+  id: number
+  cityName: string
+  cityCode: string
+  province: string
+  status: boolean
+  feSelector: boolean
+  paWhitelist: boolean
+  insuranceWilayahCode: string
+  dsoCityCode: string
+}
+
+export type PAACustomerProps = {
+  car: {
+    brand: string
+    model: string
+    priceOtr: number
+    variant: string
+  }
+  customer: {
+    cityName: string
+    fullName: string
+    phoneNumber: string
+  }
+  financial: {
+    angsuranType: string
+    dpAmount: number
+    flatRate: number
+    leasing: string
+    loanMonthlyInstallment: number
+    loanTenure: number
+    tpp: number
+  }
+}
+
+export type PAALinkInfoProps = {
+  customer: {
+    city: CitySelectorType
+    fullName: string
+    phoneNumber: string
+  }
+} & Omit<PAACustomerProps, 'customer'>
+
+export type PAAInfoStorageProps = {
+  orderId: string
+} & PAALinkInfoProps

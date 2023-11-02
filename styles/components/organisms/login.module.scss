@@ -1,0 +1,67 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+@import '../../abstract/animations';
+
+.container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+
+.banner {
+  display: none;
+}
+
+.wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px 16px;
+}
+
+.form {
+  margin-top: 81px;
+}
+
+.imageLogo {
+  width: 111px;
+  height: 68px;
+}
+
+.headerText {
+  font-family: 'Kanyon';
+  font-size: 28px;
+  line-height: 40px;
+  color: #{$primary-black};
+  margin-top: 32px;
+}
+
+.descText {
+  font-size: 16px;
+  line-height: 24px;
+  color: #{$primary-black};
+  margin-top: 8px;
+}
+
+.inputPhone {
+  margin-top: 32px;
+}
+
+.button {
+  margin-top: 32px;
+}
+
+.descFooter {
+  color: #{$shades-grey-75};
+  font-size: 11px;
+  line-height: 16px;
+  text-align: center;
+  // position: sticky;
+  width: 100%;
+  // margin: auto;
+  bottom: 32px;
+  left: 0;
+}

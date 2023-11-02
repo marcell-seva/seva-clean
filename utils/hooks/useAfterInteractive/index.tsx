@@ -11,7 +11,7 @@ export const useAfterInteractive = (
   const [interactive, setInteractive] = useState(false)
 
   const onInteractive = useCallback(() => {
-    ;['scroll', 'touchstart'].forEach((ev) =>
+    ;['scroll', 'touchstart', 'keydown'].forEach((ev) =>
       window.removeEventListener(ev, onInteractive),
     )
     setInteractive(true)
@@ -19,7 +19,7 @@ export const useAfterInteractive = (
 
   useEffect(() => {
     if (!interactive) {
-      ;['scroll', 'touchstart'].forEach((ev) =>
+      ;['scroll', 'touchstart', 'keydown'].forEach((ev) =>
         window.addEventListener(ev, onInteractive),
       )
 

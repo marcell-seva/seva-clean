@@ -60,10 +60,10 @@ import {
 } from 'utils/handler/sessionStorage'
 import { RouteName } from 'utils/navigate'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
-import { useCar } from 'services/context/carContext'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 import { useUtils } from 'services/context/utilsContext'
+import { useCar } from 'services/context/carContext'
 
 const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
   const { dataCities, dataCarofTheMonth } = useContext(HomePageDataLocalContext)

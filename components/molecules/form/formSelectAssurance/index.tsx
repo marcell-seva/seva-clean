@@ -129,6 +129,7 @@ const FormSelectAssurance = ({
             interestRateAfterPromo:
               getInterestRateAffectedByPromo(responseData),
             subsidiDp: isAppliedSDD01Promo ? responseData.subsidiDp : 0,
+            dpDiscount: responseData.dpDiscount,
           }
         }
 
@@ -183,6 +184,7 @@ const FormSelectAssurance = ({
             otr: calculationApiPayload.otr,
             tenure: selectedTenure,
             asuransiKombinasi: item.value,
+            variantId: calculationApiPayload.variantId,
           })
           .then((response) => {
             updateDataInsuranceAndPromo(response.data[0], item)

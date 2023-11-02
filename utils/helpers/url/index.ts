@@ -159,6 +159,10 @@ const internalUrls = {
   successKtpUrl: '/akun/profil/ktp/success',
   successChangeKtpUrl: '/akun/profil/ktp/success-change-ktp',
   previewKtpUrl: '/akun/profil/ktp/preview',
+  paaIAInfo: '/pa-ambassador/info/',
+  checkRegistered: '/customers/check-customer-register',
+  createCustomerSeva: '/customers/register',
+  sendRefiContact: '/refinancing/contact',
 }
 
 const externalUrls = {

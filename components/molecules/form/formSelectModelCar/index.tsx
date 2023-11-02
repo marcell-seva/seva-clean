@@ -37,6 +37,7 @@ type FormSelectModelCarProps = {
   isCheckForError?: boolean
   isShowArrow?: boolean
   onShowDropdown?: () => void
+  overrideIsErrorFieldOnly?: boolean
 }
 
 export const FormSelectModelCar = ({
@@ -52,6 +53,7 @@ export const FormSelectModelCar = ({
   isCheckForError = true,
   isShowArrow = true,
   onShowDropdown,
+  overrideIsErrorFieldOnly = false,
 }: FormSelectModelCarProps) => {
   const [modelCarList, setModelCarList] = useState<CarModel[]>([])
   const [carImage, setCarImage] = React.useState(
@@ -297,7 +299,10 @@ export const FormSelectModelCar = ({
         isClearable={false}
         showDropdownImage
         disableDropdownText="Tidak tersedia di kota pilihan kamu"
-        isError={isError && !!selectedCity && isCheckForError}
+        isError={
+          (isError && !!selectedCity && isCheckForError) ||
+          overrideIsErrorFieldOnly
+        }
         disabled={isDisabledField}
         datatestid={elementId.Field.CarMobil}
         onShowDropdown={onShowDropdown}

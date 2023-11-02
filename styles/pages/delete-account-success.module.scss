@@ -59,7 +59,7 @@
   display: flex;
   align-items: center;
   text-align: center;
-  color: #52627A;
+  color: #52627a;
 }
 
 .floatingWrapper {
@@ -67,4 +67,7 @@
   width: 100%;
   padding: 0 16px;
   bottom: 33px;
+  @include centeredWithMaxWidth;
+  left: 0;
+  right: 0;
 }

@@ -251,8 +251,7 @@
 .titleText {
   font-size: 20px;
   line-height: 28px;
-  font-family: var(--kanyon);
-  font-weight: 400;
+  font-family: $font-kanyon;
   margin-bottom: 8px;
 }
 .downloadText {
@@ -370,6 +369,5 @@
 .fullnameText {
   font-size: 16px;
   line-height: 24px;
-  font-family: "KanyonMedium";
-  font-weight: 500;
+  font-family: $font-kanyon-medium;
 }

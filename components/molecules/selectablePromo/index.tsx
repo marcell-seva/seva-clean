@@ -1,10 +1,11 @@
 import clsx from 'clsx'
-import React from 'react'
+import React, { useMemo } from 'react'
 import styles from 'styles/components/molecules/selectablePromo.module.scss'
 import { articleDateFormat } from 'utils/handler/date'
 import { PromoItemType } from 'utils/types/utils'
 import { LanguageCode } from 'utils/enum'
 import {
+  IconLoading,
   IconSquareCheckBox,
   IconSquareCheckedBox,
   IconTime,
@@ -17,6 +18,7 @@ type SelectablePromoProps = {
   groupPromo: 'best-promo' | 'additional-promo' | ''
   onSelect?: (item: PromoItemType) => void
   onClickSnK?: () => void
+  isLoading?: boolean
 }
 
 export const SelectablePromo = ({
@@ -24,6 +26,7 @@ export const SelectablePromo = ({
   selected,
   onSelect,
   onClickSnK,
+  isLoading = false,
 }: // groupPromo,
 SelectablePromoProps) => {
   const {
@@ -40,6 +43,10 @@ SelectablePromoProps) => {
     // expiredDate,
     // url,
   } = item
+
+  const isPromoClickable = useMemo(() => {
+    return item.promoId !== 'CDS03' && item.promoId !== 'SDD01'
+  }, [item])
 
   const formattedDate = promoFinishDate
     ? articleDateFormat(new Date(promoFinishDate), LanguageCode.id, {
@@ -62,6 +69,20 @@ SelectablePromoProps) => {
   //   (groupPromo === 'best-promo' && !is_Best_Promo) ||
   //   (groupPromo === 'additional-promo' && is_Best_Promo)
 
+  const renderIcon = () => {
+    if (isLoading) {
+      return (
+        <div className="rotateAnimation">
+          <IconLoading width={16} height={16} />
+        </div>
+      )
+    } else if (selected) {
+      return <IconSquareCheckedBox width={16} height={16} />
+    } else {
+      return <IconSquareCheckBox width={16} height={16} />
+    }
+  }
+
   const enableSnK = false
 
   return (
@@ -72,7 +93,7 @@ SelectablePromoProps) => {
         [styles.active]: selected,
       })}
       onClick={() =>
-        is_Available && item.promoId !== 'CDS03' && onSelect && onSelect(item)
+        is_Available && isPromoClickable && onSelect && onSelect(item)
       }
     >
       <div
@@ -136,13 +157,7 @@ SelectablePromoProps) => {
           </span>
         </div>
         {is_Available && (
-          <div className={styles.iconWrapper}>
-            {selected ? (
-              <IconSquareCheckedBox width={16} height={16} />
-            ) : (
-              <IconSquareCheckBox width={16} height={16} />
-            )}
-          </div>
+          <div className={styles.iconWrapper}>{renderIcon()}</div>
         )}
       </div>
       {is_Available && (

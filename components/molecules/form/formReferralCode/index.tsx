@@ -11,6 +11,7 @@ import elementId from 'helpers/elementIds'
 
 interface Props {
   emitOnChange: (event: ChangeEvent<HTMLInputElement>) => void
+  onFocus?: (event: ChangeEvent<HTMLInputElement>) => void
   isLoadingReferralCode: boolean
   isErrorReferralCode: boolean
   isSuccessReferralCode: boolean
@@ -30,6 +31,7 @@ interface Props {
 
 export const FormReferralCode = ({
   emitOnChange,
+  onFocus,
   isLoadingReferralCode,
   isErrorReferralCode,
   isSuccessReferralCode,
@@ -110,6 +112,7 @@ export const FormReferralCode = ({
     <div className={styles.container}>
       <span className={styles.fieldLabel}>{fieldLabel}</span>
       <InputWithIcon
+        onFocus={onFocus}
         isAutoFocus={isFocus}
         ref={inputWithIconRef}
         value={value}

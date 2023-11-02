@@ -15,3 +15,6 @@ export const isIsoDateFormat = (date: string) => {
   const regEx = /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/
   return regEx.test(date)
 }
+
+export const RegExOnlyAlphanumericAndSpace = /^[\w\s]*$/
+export const RegExOnlyAlphabetsAndSpaces = /^[a-zA-Z ]*$/

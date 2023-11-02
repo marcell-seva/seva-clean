@@ -14,6 +14,7 @@ import { SideMenuContextProvider } from './sideMenuContext'
 import { MultiUnitQueryContextProvider } from './multiUnitQueryContext'
 import { GalleryContextProvider } from './galleryContext'
 import { AnnouncementBoxProvider } from './announcementBoxContext'
+import { ContactFormProvider } from './contactFormContext'
 
 const providers: Array<
   React.JSXElementConstructor<React.PropsWithChildren<any>>
@@ -34,6 +35,7 @@ const providers: Array<
   MultiUnitQueryContextProvider,
   GalleryContextProvider,
   AnnouncementBoxProvider,
+  ContactFormProvider,
 ]
 
 export const GlobalContextProvider = (props: HTMLAttributes<HTMLElement>) => {

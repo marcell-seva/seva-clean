@@ -230,7 +230,7 @@ export const OTP = ({
       )
       isOtpVerified()
       if (savedTokenAfterVerify)
-        localStorage.setItem('token', JSON.stringify(res.data))
+        localStorage.setItem('token', JSON.stringify(res))
       sessionStorage.removeItem('lastOtpSent')
       sessionStorage.removeItem('lastOtpSentPhoneNumber')
     } catch (error: any) {

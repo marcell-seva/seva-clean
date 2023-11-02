@@ -11,24 +11,38 @@ export const generateAllBestPromoList = (list: PromoItemType[]) => {
   })
 }
 
+// func getTdpAffectedByPromo() only used everytime API calculate is called
 export const getTdpAffectedByPromo = (
   currentPermutation: SpecialRateListWithPromoType,
 ) => {
   if (currentPermutation?.applied.toLowerCase().includes('giias')) {
     return (
-      currentPermutation?.totalFirstPaymentGiias - currentPermutation?.subsidiDp
+      currentPermutation?.totalFirstPaymentGiias -
+      currentPermutation?.subsidiDp -
+      currentPermutation?.dpDiscount
     )
   } else if (currentPermutation?.applied.toLowerCase().includes('spekta')) {
     return (
       currentPermutation?.totalFirstPaymentSpekta -
-      currentPermutation?.subsidiDp
+      currentPermutation?.subsidiDp -
+      currentPermutation?.dpDiscount
     )
   } else if (
     currentPermutation?.subsidiDp !== 0 &&
     currentPermutation.promoArr.length !== 0
   ) {
     // if promoArr empty nominal will use total first payment regular only
-    return currentPermutation?.totalFirstPayment - currentPermutation?.subsidiDp
+    return (
+      currentPermutation?.totalFirstPayment -
+      currentPermutation?.subsidiDp -
+      currentPermutation?.dpDiscount
+    )
+  } else if (currentPermutation?.dpDiscount !== 0) {
+    return (
+      currentPermutation?.totalFirstPayment -
+      currentPermutation?.subsidiDp -
+      currentPermutation?.dpDiscount
+    )
   } else {
     return 0
   }

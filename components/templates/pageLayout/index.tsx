@@ -10,6 +10,12 @@ import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { CityOtrOption } from 'utils/types'
 import { AnnouncementBoxDataType } from 'utils/types/utils'
 import styles from 'styles/components/templates/pageLayout.module.scss'
+import dynamic from 'next/dynamic'
+import { RouteName } from 'utils/navigate'
+import { client } from 'const/const'
+import { useUtils } from 'services/context/utilsContext'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 type PageLayoutProps = {
   children: React.ReactNode
@@ -19,43 +25,30 @@ type PageLayoutProps = {
 const PageLayout = ({ children, footer = true }: PageLayoutProps) => {
   const [isActive, setIsActive] = useState(false)
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
-  const [cityListApi, setCityListApi] = useState<Array<CityOtrOption>>([])
-  const [showAnnouncementBox, setShowAnnouncementBox] = useState<
-    boolean | null
-  >(
-    getSessionStorage(
-      getToken()
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ),
-  )
+  const { cities, dataAnnouncementBox } = useUtils()
+  const { showAnnouncementBox, saveShowAnnouncementBox } =
+    useAnnouncementBoxContext()
 
-  const checkCitiesData = () => {
-    if (cityListApi.length === 0) {
-      api.getCities().then((res) => {
-        setCityListApi(res)
-      })
+  const getAnnouncementBox = () => {
+    if (dataAnnouncementBox) {
+      const isShowAnnouncement = getSessionStorage(
+        getToken()
+          ? SessionStorageKey.ShowWebAnnouncementLogin
+          : SessionStorageKey.ShowWebAnnouncementNonLogin,
+      )
+      if (typeof isShowAnnouncement !== 'undefined') {
+        saveShowAnnouncementBox(isShowAnnouncement as boolean)
+      } else {
+        saveShowAnnouncementBox(true)
+      }
+    } else {
+      saveShowAnnouncementBox(false)
     }
   }
 
-  useEffect(() => {
+  useAfterInteractive(() => {
     getAnnouncementBox()
-    checkCitiesData()
-  }, [])
-
-  const getAnnouncementBox = () => {
-    api
-      .getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      .then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-        if (res.data === undefined) {
-          setShowAnnouncementBox(false)
-        }
-      })
-  }
+  }, [dataAnnouncementBox])
 
   return (
     <>
@@ -66,15 +59,33 @@ const PageLayout = ({ children, footer = true }: PageLayoutProps) => {
           emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
           style={{ withBoxShadow: true, position: 'sticky' }}
           isShowAnnouncementBox={showAnnouncementBox}
-          setShowAnnouncementBox={setShowAnnouncementBox}
+          setShowAnnouncementBox={saveShowAnnouncementBox}
+          pageOrigination={
+            client && window.location.href.includes('akun/profil')
+              ? RouteName.ProfilePage
+              : ''
+          }
         />
         {children}
-        {footer && <FooterMobile />}
+        {footer && (
+          <FooterMobile
+            pageOrigination={
+              client && window.location.href.includes('akun/profil')
+                ? RouteName.ProfilePage
+                : ''
+            }
+          />
+        )}
       </div>
       <CitySelectorModal
         isOpen={isOpenCitySelectorModal}
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
-        cityListFromApi={cityListApi}
+        cityListFromApi={cities}
+        pageOrigination={
+          client && window.location.href.includes('akun/profil')
+            ? RouteName.ProfilePage
+            : ''
+        }
       />
     </>
   )

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { colors } from 'styles/colors'
-import { IconInstagram, IconTwitterOutlined } from 'components/atoms/icon'
+import {
+  IconInstagram,
+  IconLinkedinOutlined,
+  IconTwitterOutlined,
+  IconYoutubeOutlined,
+} from 'components/atoms/icon'
 import styles from '../../../styles/components/organisms/footerMobile.module.scss'
 import urls from 'helpers/urls'
 import elementId from 'helpers/elementIds'
@@ -158,6 +163,34 @@ export const FooterMobile = ({ pageOrigination }: FooterProps) => {
               width={25}
               height={25}
               alt="SEVA Facebook Icon"
+            />
+          </a>
+          <a
+            href={urls.youtube}
+            onClick={() => handleClickMenu('Twitter', urls.youtube)}
+            rel="noreferrer noopener"
+            target="_blank"
+            datatest-id={elementId.Footer.LogoYoutube}
+          >
+            <IconYoutubeOutlined
+              width={32}
+              height={32}
+              color={colors.white}
+              alt={'SEVA Instagram Icon Footer'}
+            />
+          </a>
+          <a
+            href={urls.linkedin}
+            onClick={() => handleClickMenu('Twitter', urls.linkedin)}
+            rel="noreferrer noopener"
+            target="_blank"
+            datatest-id={elementId.Footer.LogoLinkedin}
+          >
+            <IconLinkedinOutlined
+              width={32}
+              height={32}
+              color={colors.white}
+              alt={'SEVA Instagram Icon Footer'}
             />
           </a>
         </div>

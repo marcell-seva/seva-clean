@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Col, Input, Row, Slider } from 'antd'
+import { Input } from 'antd'
 import styles from 'styles/components/molecules/dp/dpform.module.scss'
 import { dpRateCollectionNewCalculator } from 'utils/helpers/const'
 import {
@@ -14,13 +14,13 @@ import { getSessionStorage } from 'utils/handler/sessionStorage'
 interface DpFormProps {
   label: string
   value: number
-  percentage: number
+  percentage?: number
   onChange: (
     value: number,
     percentage: number,
     mappedPercentage: number,
   ) => void
-  emitDpPercentageChange: (
+  emitDpPercentageChange?: (
     value: number,
     percentage: number,
     mappedPercentage: number,
@@ -38,14 +38,14 @@ interface DpFormProps {
   emitOnFocusDpAmountField?: () => void
   emitOnFocusDpPercentageField?: () => void
   emitOnAfterChangeDpSlider?: () => void
+  finalMinInputDp: number
+  finalMaxInputDp: number
 }
 
 const DpForm: React.FC<DpFormProps> = ({
   label,
   value,
-  percentage,
   onChange,
-  emitDpPercentageChange,
   carPriceMinusDiscount,
   handleChange,
   name,
@@ -57,8 +57,8 @@ const DpForm: React.FC<DpFormProps> = ({
   setIsDpExceedLimit,
   isAutofillValueFromCreditQualificationData = false,
   emitOnFocusDpAmountField,
-  emitOnFocusDpPercentageField,
-  emitOnAfterChangeDpSlider,
+  finalMinInputDp,
+  finalMaxInputDp,
 }) => {
   const formatCurrency = (value: number): string => {
     return `Rp${value.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`
@@ -73,6 +73,8 @@ const DpForm: React.FC<DpFormProps> = ({
   )
 
   useEffect(() => {
+    setIsDpTooLow(false)
+    setIsDpExceedLimit(false)
     if (isAutofillValueFromCreditQualificationData) {
       const initialDpValue = kkForm?.downPaymentAmount
         ? parseInt(kkForm?.downPaymentAmount)
@@ -108,50 +110,6 @@ const DpForm: React.FC<DpFormProps> = ({
 
     if (!isNaN(numericValue)) {
       setFormattedValue(formatCurrency(numericValue))
-      if (
-        numericValue >= carPriceMinusDiscount * 0.2 &&
-        numericValue <= carPriceMinusDiscount * 0.9
-      ) {
-        setIsDpTooLow(false)
-        setIsDpExceedLimit(false)
-        onChange(
-          numericValue,
-          calculatePercentage(numericValue, carPriceMinusDiscount),
-          getDpPercentageByMapping(numericValue),
-        )
-        handleChange(name, numericValue)
-      } else if (numericValue < carPriceMinusDiscount * 0.2) {
-        setIsDpTooLow(true)
-        setIsDpExceedLimit(false)
-      } else if (numericValue > carPriceMinusDiscount * 0.9) {
-        setIsDpTooLow(false)
-        setIsDpExceedLimit(true)
-      }
-    }
-  }
-
-  const handleValueBlur = () => {
-    setFormattedValue(formatCurrency(value))
-    if (value < carPriceMinusDiscount * 0.2) {
-      setIsDpTooLow(true)
-      setIsDpExceedLimit(false)
-    } else if (value > carPriceMinusDiscount * 0.9) {
-      setIsDpTooLow(false)
-      setIsDpExceedLimit(true)
-    } else {
-      setIsDpTooLow(false)
-      setIsDpExceedLimit(false)
-    }
-  }
-
-  const handleSliderChange = (value: number) => {
-    const numericValue = Number(value)
-
-    if (
-      numericValue >= carPriceMinusDiscount * 0.2 &&
-      numericValue <= carPriceMinusDiscount * 0.9
-    ) {
-      setFormattedValue(formatCurrency(numericValue))
       setIsDpTooLow(false)
       setIsDpExceedLimit(false)
       onChange(
@@ -160,17 +118,11 @@ const DpForm: React.FC<DpFormProps> = ({
         getDpPercentageByMapping(numericValue),
       )
       handleChange(name, numericValue)
-    } else if (numericValue < carPriceMinusDiscount * 0.2) {
-      setIsDpTooLow(true)
-      setIsDpExceedLimit(false)
-    } else if (numericValue > carPriceMinusDiscount * 0.9) {
-      setIsDpTooLow(false)
-      setIsDpExceedLimit(true)
     }
   }
 
-  const calculateValue = (percentage: number, carPrice: number): number => {
-    return (carPrice * percentage) / 100
+  const handleValueBlur = () => {
+    setFormattedValue(formatCurrency(value))
   }
 
   const calculatePercentage = (dpValue: number, carPrice: number): number => {
@@ -203,97 +155,46 @@ const DpForm: React.FC<DpFormProps> = ({
     return 20 //default
   }
 
-  const sliderIconStyle = {
-    width: 24,
-    height: 24,
-    marginLeft: '10px',
-  }
-
-  const handleDpPercentageChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const inputtedPercentage = event.target.value
-    const numericPercentage = Number(inputtedPercentage.replace(/\D/g, ''))
-
-    if (!isNaN(numericPercentage)) {
-      const dpValue = calculateValue(numericPercentage, carPriceMinusDiscount)
-      setFormattedValue(formatCurrency(dpValue))
-      handleChange(name, dpValue)
-      emitDpPercentageChange(
-        dpValue,
-        numericPercentage,
-        getDpPercentageByMapping(dpValue),
-      )
-
-      if (
-        dpValue >= carPriceMinusDiscount * 0.2 &&
-        dpValue <= carPriceMinusDiscount * 0.9
-      ) {
-        setIsDpTooLow(false)
-        setIsDpExceedLimit(false)
-        onChange(dpValue, numericPercentage, getDpPercentageByMapping(dpValue))
-      } else if (dpValue < carPriceMinusDiscount * 0.2) {
-        setIsDpTooLow(true)
-        setIsDpExceedLimit(false)
-      } else if (dpValue > carPriceMinusDiscount * 0.9) {
-        setIsDpTooLow(false)
-        setIsDpExceedLimit(true)
-      }
-    }
-  }
-
   return (
     <div className={styles.wrapper}>
       <label className={styles.titleText}>{label}</label>
-      <Row gutter={16}>
-        <Col span={18}>
-          <Input
-            type="tel"
-            className={styles.input}
-            value={formattedValue}
-            onChange={handleValueChange}
-            onBlur={handleValueBlur}
-            name={name}
-            disabled={isDisabled}
-            data-testid={elementId.Field.DP}
-            onFocus={() => {
-              emitOnFocusDpAmountField && emitOnFocusDpAmountField()
-            }}
-          />
-          {isDpTooLow && (
-            <div className={`${styles.errorMessageWrapper} shake-animation-X`}>
-              <span className={styles.errorMessage}>
-                DP yang kamu masukkan terlalu rendah
-              </span>
-            </div>
-          )}
-          {isDpExceedLimit && (
-            <div className={styles.errorMessageWrapper}>
-              <span className={styles.errorMessage}>
-                DP yang kamu masukkan melebihi 90%
-              </span>
-            </div>
-          )}
-        </Col>
-        <Col span={6} style={{ gap: '16px', alignItems: 'center' }}>
-          <Input
-            type="tel"
-            className={clsx({
-              [styles.input]: true,
-              [styles.inputDisabled]: isDisabled,
-            })}
-            value={`${percentage}`}
-            onChange={handleDpPercentageChange}
-            disabled={isDisabled}
-            suffix="%"
-            maxLength={2}
-            data-testid={elementId.Field.DPPercentage}
-            onFocus={() => {
-              emitOnFocusDpPercentageField && emitOnFocusDpPercentageField()
-            }}
-          />
-        </Col>
-      </Row>
+      <Input
+        type="tel"
+        className={clsx({
+          [styles.input]: true,
+          [styles.error]: isErrorEmptyField || isDpTooLow || isDpExceedLimit,
+        })}
+        value={
+          parseInt(formattedValue.replace('Rp', '')) > 0
+            ? formattedValue
+            : undefined // use "undefined" so that placeholder will be shown
+        }
+        placeholder="Masukkan DP"
+        onChange={handleValueChange}
+        onBlur={handleValueBlur}
+        name={name}
+        disabled={isDisabled}
+        data-testid={elementId.Field.DP}
+        onFocus={() => {
+          emitOnFocusDpAmountField && emitOnFocusDpAmountField()
+        }}
+      />
+      {isDpTooLow && (
+        <div className={`${styles.errorMessageWrapper} shake-animation-X`}>
+          <span className={styles.errorMessage}>
+            Berdasarkan harga mobil yang Anda pilih, min. DP{' '}
+            {formatCurrency(finalMinInputDp)}
+          </span>
+        </div>
+      )}
+      {isDpExceedLimit && (
+        <div className={styles.errorMessageWrapper}>
+          <span className={styles.errorMessage}>
+            Berdasarkan harga mobil yang Anda pilih, maks. DP{' '}
+            {formatCurrency(finalMaxInputDp)}
+          </span>
+        </div>
+      )}
       {isErrorEmptyField ? (
         <div className={styles.errorMessageWrapper}>
           <span className={styles.errorMessage}>Wajib diisi</span>
@@ -301,33 +202,6 @@ const DpForm: React.FC<DpFormProps> = ({
       ) : (
         <></>
       )}
-      <Row data-testid={elementId.LoanCalculator.SliderDP}>
-        <Slider
-          className={styles.slider}
-          min={carPriceMinusDiscount * 0.2}
-          max={carPriceMinusDiscount * 0.9}
-          step={100000}
-          value={value}
-          onChange={handleSliderChange}
-          handleStyle={sliderIconStyle}
-          disabled={isDisabled}
-          onAfterChange={() => {
-            emitOnAfterChangeDpSlider && emitOnAfterChangeDpSlider()
-          }}
-        />
-      </Row>
-      <Row>
-        <div className={styles.labelSliderContent}>
-          <Row>
-            <span className={styles.labelSliderOne}>
-              {formatCurrency(carPriceMinusDiscount * 0.2)}
-            </span>
-            <span className={styles.labelSliderTwo}>
-              {formatCurrency(carPriceMinusDiscount * 0.9)}
-            </span>
-          </Row>
-        </div>
-      </Row>
     </div>
   )
 }

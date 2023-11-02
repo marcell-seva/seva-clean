@@ -125,7 +125,8 @@ const PromoBottomSheet = ({
             if (obj.tenure === selectedTenure) {
               return {
                 ...obj,
-                tdpAfterPromo: obj.tdpBeforePromo - obj.subsidiDp,
+                tdpAfterPromo:
+                  obj.tdpBeforePromo - obj.subsidiDp - obj.dpDiscount,
               }
             }
 
@@ -165,7 +166,10 @@ const PromoBottomSheet = ({
               if (obj.tenure === selectedTenure) {
                 return {
                   ...obj,
-                  tdpAfterPromo: 0,
+                  tdpAfterPromo:
+                    obj.dpDiscount !== 0
+                      ? obj.tdpBeforePromo - obj.dpDiscount
+                      : 0,
                   installmentAfterPromo: 0,
                   interestRateAfterPromo: 0,
                 }

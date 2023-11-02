@@ -18,13 +18,13 @@ export const AuthContext = createContext<AuthContextType | null>(null)
 
 const getDataToken = (): Token => {
   const dataToken = localStorage.getItem('token')
-  const token = dataToken !== null ? JSON.parse(dataToken) : null
+  const token = !!dataToken ? JSON.parse(dataToken) : null
   return token
 }
 
 const getDataFilter = (): Filter => {
   const dataFilter = localStorage.getItem('filter')
-  const filter = dataFilter !== null ? JSON.parse(dataFilter) : null
+  const filter = !!dataFilter ? JSON.parse(dataFilter) : null
   return filter
 }
 

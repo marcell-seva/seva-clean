@@ -400,6 +400,10 @@ export const availableListColors = [
     colors: ['#0d0d0d', '#54554d', '#c0c1bb', '#de6e2b'],
     url: '/mobil-baru/peugeot/2008',
   },
+  {
+    colors: ['#000000', '#ffffff', '#c2282e', '#737373', '#a7a8ad', '#d3ca50'],
+    url: '/mobil-baru/toyota/all-new-agya',
+  },
 ]
 
 export const availableList = [
@@ -434,6 +438,7 @@ export const availableList = [
   '/mobil-baru/toyota/supra',
   '/mobil-baru/toyota/all-new-bz4x',
   '/mobil-baru/toyota/all-new-kijang-innova-zenix',
+  '/mobil-baru/toyota/all-new-agya',
 
   // daihatsu cars
   '/mobil-baru/daihatsu/new-ayla', //ayla

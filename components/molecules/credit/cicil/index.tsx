@@ -3,6 +3,7 @@ import styles from 'styles/components/molecules/dp/cicilform.module.scss'
 import { Row, Button } from 'antd'
 import elementId from 'helpers/elementIds'
 import { InstallmentTypeOptions } from 'utils/types/models'
+import clsx from 'clsx'
 
 interface CicilOptionFormProps {
   isClicked?: boolean
@@ -19,12 +20,15 @@ export function CicilOptionForm({
   value,
 }: CicilOptionFormProps) {
   return (
-    <div>
+    <div style={{ marginTop: '24px' }}>
       <p className={styles.titleText}>Pembayaran cicilan pertama</p>
       <div className={styles.cicilOptionForm}>
         <Row>
           <Button
-            className={styles.buttonOption}
+            className={clsx({
+              [styles.buttonOption]: true,
+              [styles.selectedStyle]: value === InstallmentTypeOptions.ADDM,
+            })}
             onClick={() => {
               onClick(true)
               handleChange(name, InstallmentTypeOptions.ADDM)
@@ -35,13 +39,16 @@ export function CicilOptionForm({
             }}
             data-testid={elementId.Field.ADDM}
           >
-            <p className={styles.buttonOptionText}>Bayar di muka</p>
+            <p className={styles.buttonOptionText}>Bayar di Muka</p>
             <p className={styles.titleTextDP}>Dibayar bersama dengan DP</p>
           </Button>
         </Row>
         <Row>
           <Button
-            className={styles.buttonOption}
+            className={clsx({
+              [styles.buttonOption]: true,
+              [styles.selectedStyle]: value === InstallmentTypeOptions.ADDB,
+            })}
             onClick={() => {
               onClick(false)
               handleChange(name, InstallmentTypeOptions.ADDB)
@@ -52,7 +59,7 @@ export function CicilOptionForm({
             }}
             data-testid={elementId.Field.ADDB}
           >
-            <p className={styles.buttonOptionText}>Bayar di belakang</p>
+            <p className={styles.buttonOptionText}>Bayar di Belakang</p>
             <p className={styles.titleTextDP}>Dibayar sebulan setelah DP</p>
           </Button>
         </Row>
