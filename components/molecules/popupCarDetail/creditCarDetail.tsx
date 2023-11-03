@@ -29,13 +29,8 @@ const CreditCarDetail: React.FC<CreditCarDetailProps> = ({
         <h2 className={styles.subtitle}>{price}</h2>
       </div>
       <div>
-        <h2 className={styles.title}>{dpLabelText}</h2>
-        <h2 className={styles.subtitle}>{dp}</h2>
-        {dpBeforeDiscount ? (
-          <h2 className={styles.subtitleBeforeDiscount}>{dpBeforeDiscount}</h2>
-        ) : (
-          <></>
-        )}
+        <h2 className={styles.title}>Tenor</h2>
+        <h2 className={styles.subtitle}>{tenure}</h2>
       </div>
 
       <div>
@@ -50,8 +45,13 @@ const CreditCarDetail: React.FC<CreditCarDetailProps> = ({
         )}
       </div>
       <div>
-        <h2 className={styles.title}>Tenor</h2>
-        <h2 className={styles.subtitle}>{tenure}</h2>
+        <h2 className={styles.title}>{dpLabelText}</h2>
+        <h2 className={styles.subtitle}>{dp}</h2>
+        {dpBeforeDiscount ? (
+          <h2 className={styles.subtitleBeforeDiscount}>{dpBeforeDiscount}</h2>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   )

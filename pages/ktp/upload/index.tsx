@@ -2,6 +2,7 @@ import React, {
   ChangeEvent,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -53,6 +54,8 @@ import { defineRouteName } from 'utils/navigate'
 import { FormLCState } from 'utils/types/utils'
 import { useValidateUserFlowKKIA } from 'utils/hooks/useValidateUserFlowKKIA'
 import styles from 'styles/pages/ktp-upload.module.scss'
+import dynamic from 'next/dynamic'
+import { useMediaQuery } from 'react-responsive'
 
 const ChevronLeft = '/revamp/icon/chevron-left.webp'
 
@@ -82,6 +85,7 @@ export default function CameraKtp() {
   const kkForm: FormLCState | null = getSessionStorage(
     SessionStorageKey.KalkulatorKreditForm,
   )
+  const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const { fincap } = useFinancialQueryData()
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -97,12 +101,14 @@ export default function CameraKtp() {
     'Maaf, kami belum mendukung tipe file ini. Coba pakai tipe gambar .jpg, .jpeg, atau .png ya'
   const [errorMessage, setErrorMessage] = useState<string>(commonErrorMessage)
   const { showToast, RenderToast } = useToast()
-  const { setGalleryFile } = useGalleryContext()
-  const CameraConstraints = {
-    aspectRatio: isMobileDevice
-      ? frameHeight / frameWidth
-      : frameWidth / frameHeight,
-  }
+  const { setGalleryFile, setPhotoFile } = useGalleryContext()
+  const CameraConstraints = useMemo(() => {
+    return {
+      aspectRatio: isMobile
+        ? frameHeight / frameWidth
+        : frameWidth / frameHeight,
+    }
+  }, [isMobile])
   const kkFlowType = getSessionStorage(SessionStorageKey.KKIAFlowType)
   const isInPtbcFlow = kkFlowType && kkFlowType === 'ptbc'
 
@@ -206,11 +212,8 @@ export default function CameraKtp() {
       const nextLocation = {
         pathname: verifyKtpUrl,
         search: getNextLocationQueryParam(),
-        state: {
-          [LocationStateKey.Channel]: UploadChannel.Camera,
-          [LocationStateKey.File]: imageFile,
-        },
       }
+      setPhotoFile(imageFile)
       router.push(nextLocation)
     }
   }, [imageData])
@@ -280,12 +283,8 @@ export default function CameraKtp() {
         const nextLocation = {
           pathname: verifyKtpUrl,
           search: getNextLocationQueryParam(),
-          state: {
-            [LocationStateKey.Base64]: value,
-            [LocationStateKey.Channel]: UploadChannel.Gallery,
-            [LocationStateKey.File]: file,
-          },
         }
+        setPhotoFile(file)
         router.push(nextLocation)
       } else {
         showToast()
@@ -315,6 +314,8 @@ export default function CameraKtp() {
             )
             router.back()
           }}
+          height={14}
+          width={8}
           style={{
             position: 'absolute',
             top: '20px',
@@ -364,40 +365,40 @@ export default function CameraKtp() {
           </div>
         </div>
 
-        {isUserMediaReady && (
-          <div className={styles.footerWrapper}>
+        <div className={styles.footerWrapper}>
+          {isUserMediaReady && (
             <CameraSelect onSelected={onSelected} isKtp={true} />
-            <div className={styles.guideLineWrapper}>
-              {guideline.map((item, index) => (
-                <div
-                  key={index}
-                  style={{ display: 'flex', flexDirection: 'row', gap: 8 }}
-                >
-                  <div>
-                    <IconChecked
-                      width={12}
-                      height={12}
-                      color={colors.white}
-                      fillColor={colors.primaryDarkBlue}
-                    />
-                  </div>
-                  <span className={styles.guideLineText}>{item}</span>
+          )}
+          <div className={styles.guideLineWrapper}>
+            {guideline.map((item, index) => (
+              <div
+                key={index}
+                style={{ display: 'flex', flexDirection: 'row', gap: 8 }}
+              >
+                <div>
+                  <IconChecked
+                    width={12}
+                    height={12}
+                    color={colors.white}
+                    fillColor={colors.primaryDarkBlue}
+                  />
                 </div>
-              ))}
-            </div>
-            <div className={styles.bottomWrapper}>
-              <div role="button" onClick={onGalleryInputButtonClick}>
-                <IconUpload width={32} height={32} color={colors.white} />
+                <span className={styles.guideLineText}>{item}</span>
               </div>
-              <input
-                className={styles.input}
-                ref={inputRef}
-                type={'file'}
-                accept={[ImageType.PNG, ImageType.JPEG, ImageType.JPG].join(
-                  ',',
-                )}
-                onChange={onGalleryInputChange}
-              />
+            ))}
+          </div>
+          <div className={styles.bottomWrapper}>
+            <div role="button" onClick={onGalleryInputButtonClick}>
+              <IconUpload width={32} height={32} color={colors.white} />
+            </div>
+            <input
+              className={styles.input}
+              ref={inputRef}
+              type={'file'}
+              accept={[ImageType.PNG, ImageType.JPEG, ImageType.JPG].join(',')}
+              onChange={onGalleryInputChange}
+            />
+            {isUserMediaReady && (
               <button
                 className={styles.button}
                 data-testid={elementId.Profil.Button.CaptureImage}
@@ -405,10 +406,11 @@ export default function CameraKtp() {
               >
                 <IconCamera width={38} height={38} />
               </button>
-              <div style={{ width: 32, height: 32 }}></div>
-            </div>
+            )}
+
+            <div style={{ width: 32, height: 32 }}></div>
           </div>
-        )}
+        </div>
       </div>
       <RenderToast type={ToastType.Error} message={errorMessage} />
     </>

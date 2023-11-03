@@ -2,6 +2,7 @@
 @import '../abstract/mixins';
 
 .progressBar {
+  @include mobileView;
   padding: 16px;
   height: 36px;
   flex: none;

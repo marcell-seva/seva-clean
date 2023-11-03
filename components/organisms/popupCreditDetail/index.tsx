@@ -1,22 +1,13 @@
 import React, { useState } from 'react'
 
 import styles from 'styles/components/organisms/popupCreditDetail.module.scss'
-
-import { IconInfo } from '../../atoms'
-import TooltipDaihatsu from '../../molecules/tooltipDaihatsu'
-import { Tooltip } from 'antd'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { LoanCalculatorInsuranceAndPromoType } from 'utils/types/utils'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { Currency } from 'utils/handler/calculation'
 import { useBadgePromo } from 'utils/hooks/usebadgePromo'
-import {
-  trackEventCountly,
-  valueMenuTabCategory,
-} from 'helpers/countly/countly'
-import { CountlyEventNames } from 'helpers/countly/eventNames'
-import { getPageName } from 'utils/pageName'
+
 import Image from 'next/image'
 
 type VariantsProps = {
@@ -47,6 +38,7 @@ const PopupCreditDetail = ({
           width="188"
           height="141"
           alt="car-image"
+          style={{ height: 'auto' }}
         />
       </div>
       <div className={styles.wrapperWithBorderBottom}>

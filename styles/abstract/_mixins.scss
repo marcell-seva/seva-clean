@@ -18,6 +18,23 @@
   }
 }
 
+@mixin mobileXsView {
+  @include xs() {
+    max-width: 570px;
+    margin: 0 auto;
+    position: relative;
+  }
+}
+
+@mixin mobileView {
+  @include sm {
+    max-width: 570px;
+    margin: 0 auto;
+    position: relative;
+    @content;
+  }
+}
+
 // typography
 @mixin fontFamily($font: $font-openSans, $weight: 400) {
   font-family: $font;

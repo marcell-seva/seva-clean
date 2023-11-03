@@ -38,6 +38,10 @@
   background-color: transparent;
 }
 
+.box {
+  @include mobileView;
+}
+
 .container {
   display: flex;
   flex-direction: row;

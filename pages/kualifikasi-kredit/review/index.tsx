@@ -66,14 +66,10 @@ import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { useCar } from 'services/context/carContext'
 import { postCreditQualification } from 'services/api'
 
-const Modal = dynamic(() => import('antd/lib/modal'), { ssr: false })
-
 const PopupCarDetail = dynamic(
   () => import('components/organisms/popupCarDetail'),
 )
-const PopupCreditDetail = dynamic(
-  () => import('components/organisms/popupCreditDetail'),
-)
+
 const LandingIA = dynamic(() =>
   import('components/organisms/landingIA').then((mod) => mod.LandingIA),
 )
@@ -107,7 +103,6 @@ const CreditQualificationReviewPage = () => {
     '',
   )
   const [carDimenssion, setCarDimenssion] = useState('')
-  const [openModal, setOpenModal] = useState(false)
   const [isShowDetailCar, setIsShowDetailCar] = useState(false)
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
@@ -492,8 +487,9 @@ const CreditQualificationReviewPage = () => {
           <Image
             src={dataCar?.variantDetail?.images[0] || ''}
             alt="car-images"
-            width="188.39"
+            width={188.39}
             height={141.28}
+            style={{ height: 'auto' }}
           />
         </div>
         <div className={styles.wrapperWithBorderBottom}>
@@ -652,25 +648,6 @@ const CreditQualificationReviewPage = () => {
         rasioBahanBakar={dataCar?.variantDetail.rasioBahanBakar}
         dimenssion={carDimenssion}
       />
-
-      <Modal
-        open={openModal}
-        onCancel={() => setOpenModal(false)}
-        title=""
-        footer={null}
-        className="custom-modal-credit"
-        width={343}
-        style={{ borderRadius: '8px' }}
-      >
-        <PopupCreditDetail
-          carVariant={dataCar}
-          dataFinancial={financialQuery}
-          city={cityOtr ? cityOtr?.cityName : 'Jakarta Pusat'}
-          promoCode={promoCode}
-          simpleCarVariantDetails={simpleCarVariantDetails}
-          optionADDM={optionADDM}
-        />
-      </Modal>
 
       <Toast
         width={339}
