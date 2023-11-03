@@ -1,4 +1,4 @@
-import getCurrentEnvironment from 'utils/handler/getCurrentEnvironment'
+import getCurrentEnvironment from 'helpers/environments'
 
 const rootPath = getCurrentEnvironment.rootPath
 const apiBaseUrl = getCurrentEnvironment.apiBaseUrl
