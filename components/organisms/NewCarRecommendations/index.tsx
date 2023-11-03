@@ -85,7 +85,7 @@ export default function NewCarRecommendations({
 
   const handleCalculateAbility = (item: UsedNewCarRecommendation) => {
     const formatLowestInstallment = replacePriceSeparatorByLocalization(
-      item.startInstallmentL,
+      item.startInstallment,
       LanguageCode.id,
     )
     const dataCarTemp = {
@@ -125,7 +125,7 @@ export default function NewCarRecommendations({
     item: UsedNewCarRecommendation,
   ) => {
     const formatLowestInstallment = replacePriceSeparatorByLocalization(
-      item.startInstallmentL,
+      item.startInstallment,
       LanguageCode.id,
     )
 

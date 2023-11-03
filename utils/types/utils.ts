@@ -271,7 +271,7 @@ export type UsedNewCarRecommendation = {
   url: string
   priceValue: number
   mainImageUrl: string
-  startInstallmentL: number
+  startInstallment: number
 }
 
 export interface CarRecommendationResponse {

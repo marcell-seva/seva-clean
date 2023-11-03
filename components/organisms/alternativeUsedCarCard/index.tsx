@@ -164,9 +164,11 @@ export const AlternativeUsedCarCard = ({
   }
 
   const formatLowestInstallment = replacePriceSeparatorByLocalization(
-    recommendation.startInstallmentL,
+    recommendation.startInstallment,
     LanguageCode.id,
   )
+
+  console.log(recommendation)
 
   const onClickSeeDetail = () => {
     trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CTA_CLICK, {
