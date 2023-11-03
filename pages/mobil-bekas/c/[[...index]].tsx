@@ -70,7 +70,11 @@ const UsedCarResultPage = ({
     metaTitle = `Jual Beli Mobil ${capitalizeFirstLetter(
       brandSlug,
     )} di ${loc} Bekas - Promo Kredit ${monthId(todayDate.getMonth())} | SEVA`
-    metaDescription = `Beli mobil bekas ${brandSlug} di ${loc} secara kredit. Cari tau spesifikasi, harga, dan promo bulan oktober di SEVA`
+    metaDescription = `Beli mobil bekas ${capitalizeFirstLetter(
+      brandSlug,
+    )} di ${loc} secara kredit. Cari tau spesifikasi, harga, dan promo bulan ${monthId(
+      todayDate.getMonth(),
+    )} di SEVA`
   } else {
     if (brandSlug !== null && brandSlug !== undefined) {
       router.query.brand = brandSlug
@@ -79,13 +83,17 @@ const UsedCarResultPage = ({
       )} Bekas - Promo Kredit ${monthId(todayDate.getMonth())} | SEVA`
       metaDescription = `Beli mobil bekas ${capitalizeFirstLetter(
         brandSlug,
-      )} secara kredit. Cari tau spesifikasi, harga, dan promo bulan oktober di SEVA`
+      )} secara kredit. Cari tau spesifikasi, harga, dan promo bulan ${monthId(
+        todayDate.getMonth(),
+      )} di SEVA`
     } else if (citySlug !== null && citySlug !== undefined) {
       const loc = citySlug[0].cityName
       metaTitle = `Jual Beli Mobil Bekas di ${loc} - Promo Kredit ${monthId(
         todayDate.getMonth(),
       )} | SEVA`
-      metaDescription = `Beli mobil bekas di ${loc} secara kredit. Cari tau spesifikasi, harga, dan promo bulan oktober di SEVA`
+      metaDescription = `Beli mobil bekas di ${loc} secara kredit. Cari tau spesifikasi, harga, dan promo bulan ${monthId(
+        todayDate.getMonth(),
+      )} di SEVA`
     } else {
       metaTitle = `Jual Beli Mobil Bekas - Promo Kredit ${monthId(
         todayDate.getMonth(),

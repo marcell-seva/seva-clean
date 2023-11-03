@@ -167,7 +167,7 @@ export const AlternativeUsedCarCard = ({
     recommendation.startInstallment,
     LanguageCode.id,
   )
-  
+
   const onClickSeeDetail = () => {
     trackEventCountly(CountlyEventNames.WEB_CAR_RECOMMENDATION_CTA_CLICK, {
       PAGE_ORIGINATION: 'PLP - Empty Page',
