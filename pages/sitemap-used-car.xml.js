@@ -79,7 +79,14 @@ function generateSiteMap(posts, brand, month, metaDesc) {
                     <news:publication_date>2023-11-02</news:publication_date>
                     <news:title>
                         ${escapeCdata(
-                          `Daftar Mobil ${brandName} Bekas - Promo Cicilan Oktober | SEVA`,
+                          `Daftar Mobil ${brandName
+                            .toLowerCase()
+                            .split(' ')
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1),
+                            )
+                            .join(' ')} Bekas - Promo Cicilan ${month} | SEVA`,
                         )}
                     </news:title>
                     <news:keywords>
@@ -126,7 +133,16 @@ function generateSiteMap(posts, brand, month, metaDesc) {
                     <news:publication_date>2023-11-02</news:publication_date>
                     <news:title>
                         ${escapeCdata(
-                          `Beli mobil bekas ${brandName} ${modelName} ${variantName} ${year} di ${cityName} | SEVA`,
+                          `Beli mobil bekas ${brandName
+                            .toLowerCase()
+                            .split(' ')
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1),
+                            )
+                            .join(
+                              ' ',
+                            )} ${modelName} ${variantName} ${year} di ${cityName} | SEVA`,
                         )}
                     </news:title>
                     <news:keywords>
@@ -176,7 +192,16 @@ function generateSiteMap(posts, brand, month, metaDesc) {
                     <news:publication_date>2023-11-02</news:publication_date>
                     <news:title>
                         ${escapeCdata(
-                          `Kredit mobil bekas ${brandName} ${modelName} ${variantName} ${year} di ${cityName} | SEVA`,
+                          `Kredit mobil bekas ${brandName
+                            .toLowerCase()
+                            .split(' ')
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1),
+                            )
+                            .join(
+                              ' ',
+                            )} ${modelName} ${variantName} ${year} di ${cityName} | SEVA`,
                         )}
                     </news:title>
                     <news:keywords>
