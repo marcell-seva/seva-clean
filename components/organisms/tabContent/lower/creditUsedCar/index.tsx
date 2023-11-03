@@ -171,6 +171,9 @@ export const CreditUsedCarTab = () => {
     LocalStorageKey.CityOtr,
     null,
   )
+
+  const [usedCarRecommendationList, setUsedCarRecommendationList] = useState([])
+
   const [info, setInfo] = useState<any>({})
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
   const [isDisableCtaCalculate, setIsDisableCtaCalculate] = useState(true)
@@ -505,6 +508,14 @@ export const CreditUsedCarTab = () => {
       })
     }
   }, [forms.city?.cityCode])
+
+  useEffect(() => {
+    const temp = usedCarRecommendations.filter(
+      (data: any) => data.id !== usedCarModelDetailsRes.carId,
+    )
+
+    setUsedCarRecommendationList(temp)
+  }, [usedCarRecommendations, usedCarModelDetailsRes])
 
   useEffect(() => {
     if (chosenAssurance.label === '' || isDpTooLow || isDpExceedLimit) {
@@ -1130,9 +1141,9 @@ export const CreditUsedCarTab = () => {
           />
         )}
       </div>
-      {usedCarRecommendations?.length > 0 && (
+      {usedCarRecommendationList?.length > 0 && (
         <UsedCarRecommendations
-          usedCarRecommendationList={usedCarRecommendations}
+          usedCarRecommendationList={usedCarRecommendationList}
           title="Beli Mobil Bekas Berkualitas"
           onClick={() => {
             return
