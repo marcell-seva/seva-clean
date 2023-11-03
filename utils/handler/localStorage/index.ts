@@ -32,7 +32,7 @@ export const getWithExpiry = <T>(key: LocalStorageKey): T | null => {
   return item.value
 }
 
-export const getLocalStorage = <T>(key: LocalStorageKey): T | null => {
+export const getLocalStorage = <T>(key: LocalStorageKey | string): T | null => {
   if (typeof window !== 'undefined') {
     const dataInLocalstorage = window.localStorage.getItem(key)
     try {

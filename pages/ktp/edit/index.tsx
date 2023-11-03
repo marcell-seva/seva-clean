@@ -15,11 +15,10 @@ import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
-import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { SessionStorageKey } from 'utils/enum'
 import {
   cameraKtpUrl,
   ktpReviewUrl,
-  loanCalculatorDefaultUrl,
   uploadKtpSpouseQueryParam,
   verifyKtpUrl,
 } from 'utils/helpers/routes'
@@ -33,7 +32,6 @@ import {
   Skeleton,
 } from 'components/atoms'
 import { ProgressBar } from 'components/atoms/progressBar'
-import InputPrefix from 'components/atoms/input/inputPrefix'
 import { DatePicker } from 'components/atoms/inputDate'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { ToastV2 } from 'components/atoms/toastV2'
@@ -54,8 +52,14 @@ import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import { useValidateUserFlowKKIA } from 'utils/hooks/useValidateUserFlowKKIA'
 import { defineRouteName } from 'utils/navigate'
 import { formatKTPDate } from 'utils/handler/date'
-const PopupError = dynamic(() => import('components/organisms/popupError'))
-const Toast = dynamic(() => import('components/atoms').then((mod) => mod.Toast))
+
+const PopupError = dynamic(() => import('components/organisms/popupError'), {
+  ssr: false,
+})
+const Toast = dynamic(
+  () => import('components/atoms').then((mod) => mod.Toast),
+  { ssr: false },
+)
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
@@ -347,7 +351,7 @@ const KtpForm = () => {
 
   const getPopupErrorSubtitle = () => {
     if (
-      localStorage.getItem('change_ktp') !== 'true' &&
+      getLocalStorage('change_ktp') !== 'true' &&
       getSessionStorage(SessionStorageKey.OCRKTP) !== 'profile'
     ) {
       return 'Kamu tidak dapat menggunakan KTP yang sama.'
@@ -476,10 +480,6 @@ const KtpForm = () => {
       })
     }
   }, [cityListFromApi])
-
-  {
-    galleryFile ?? router.push(loanCalculatorDefaultUrl)
-  }
 
   return (
     <>
