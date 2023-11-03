@@ -29,9 +29,22 @@ import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 import { useMediaQuery } from 'react-responsive'
 import { useRouter } from 'next/router'
 import { getCity } from 'utils/hooks/useGetCity'
+import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { PLPUsedCar } from 'components/organisms/PLPUsedCar'
 import { getUsedCarFunnelRecommendations } from 'utils/handler/funnel'
 import { getToken } from 'utils/handler/auth'
+import {
+  getMenu,
+  getMobileHeaderMenu,
+  getMobileFooterMenu,
+  getCities,
+  getMinMaxPriceUsedCar,
+  getMinMaxYearsUsedCar,
+  getMinMaxMileageUsedCar,
+  getAnnouncementBox as gab,
+  getBrandList,
+  getUsedCarCityList,
+} from 'services/api'
 
 const UsedCarResultPage = ({
   meta,
@@ -39,16 +52,50 @@ const UsedCarResultPage = ({
   dataFooter,
   dataCities,
   isSsrMobileLocal,
+  brandSlug,
+  citySlug,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const todayDate = new Date()
-  const brand = router.query.brand
-  const metaTitle = `Beli Mobil Terbaru ${todayDate.getFullYear()} - Harga OTR dengan Promo Cicilan bulan ${monthId(
-    todayDate.getMonth(),
-  )} | SEVA`
-  const metaDesc = `Beli mobil ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
-  const metaBrandDesc = `Beli mobil ${brand} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
-  const descTag = router.query.brand ? metaBrandDesc : metaDesc
+  let metaTitle
+  let metaDescription
+  if (
+    brandSlug !== null &&
+    brandSlug !== undefined &&
+    citySlug !== null &&
+    citySlug !== undefined
+  ) {
+    const loc = citySlug[0].cityName
+    router.query.brand = brandSlug
+    metaTitle = `Jual Beli Mobil ${capitalizeFirstLetter(
+      brandSlug,
+    )} di ${loc} Bekas - Promo Kredit ${monthId(todayDate.getMonth())} | SEVA`
+    metaDescription = `Beli mobil bekas ${brandSlug} di ${loc} secara kredit. Cari tau spesifikasi, harga, dan promo bulan oktober di SEVA`
+  } else {
+    if (brandSlug !== null && brandSlug !== undefined) {
+      router.query.brand = brandSlug
+      metaTitle = `Jual Beli Mobil ${capitalizeFirstLetter(
+        brandSlug,
+      )} Bekas - Promo Kredit ${monthId(todayDate.getMonth())} | SEVA`
+      metaDescription = `Beli mobil bekas ${capitalizeFirstLetter(
+        brandSlug,
+      )} secara kredit. Cari tau spesifikasi, harga, dan promo bulan oktober di SEVA`
+    } else if (citySlug !== null && citySlug !== undefined) {
+      const loc = citySlug[0].cityName
+      metaTitle = `Jual Beli Mobil Bekas di ${loc} - Promo Kredit ${monthId(
+        todayDate.getMonth(),
+      )} | SEVA`
+      metaDescription = `Beli mobil bekas di ${loc} secara kredit. Cari tau spesifikasi, harga, dan promo bulan oktober di SEVA`
+    } else {
+      metaTitle = `Jual Beli Mobil Bekas - Promo Kredit ${monthId(
+        todayDate.getMonth(),
+      )} | SEVA`
+      metaDescription = `Jual beli mobil bekas di SEVA. Temukan promo kredit bulan ${monthId(
+        todayDate.getMonth(),
+      )}`
+    }
+  }
+
   const [isMobile, setIsMobile] = useState(isSsrMobileLocal)
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const {
@@ -82,7 +129,11 @@ const UsedCarResultPage = ({
   }, [isClientMobile])
   return (
     <>
-      <Seo title={metaTitle} description={descTag} image={defaultSeoImage} />
+      <Seo
+        title={metaTitle}
+        description={metaDescription}
+        image={defaultSeoImage}
+      />
       <UsedCarProvider
         car={null}
         carOfTheMonth={[]}
@@ -127,8 +178,15 @@ const getBrand = (brand: string | string[] | undefined) => {
   } else if (String(brand).toLowerCase() === 'bmw') {
     return 'Bmw'
   } else {
-    return ''
+    return 'other'
   }
+}
+
+interface CitySlug {
+  cityId: number
+  cityName: string
+  cityCode: number
+  province?: string
 }
 
 export const getServerSideProps: GetServerSideProps<{
@@ -138,6 +196,8 @@ export const getServerSideProps: GetServerSideProps<{
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
   isSsrMobileLocal: boolean
+  brandSlug?: string | null
+  citySlug?: CitySlug[] | null
 }> = async (ctx) => {
   ctx.res.setHeader(
     'Cache-Control',
@@ -171,19 +231,8 @@ export const getServerSideProps: GetServerSideProps<{
     },
   }
 
-  const {
-    brand,
-    priceStart,
-    priceEnd,
-    yearStart,
-    yearEnd,
-    mileageStart,
-    mileageEnd,
-    transmission,
-    cityId,
-    sortBy,
-    modelName,
-  } = ctx.query
+  const { priceStart, priceEnd, yearStart, yearEnd, mileageStart, mileageEnd } =
+    ctx.query
 
   try {
     const [
@@ -235,25 +284,53 @@ export const getServerSideProps: GetServerSideProps<{
       }
     }
 
+    const allBrand = await getBrandList('?isAll=true')
+    const allCity = await getUsedCarCityList()
+
+    const checkData = ctx.query.index
+    let brandSlug
+    let locSlug
+
+    if (checkData !== undefined) {
+      if (checkData.length === 2) {
+        const resultCheck = allBrand.data.filter(
+          (item: any) => item.makeCode === checkData[0].toLowerCase(),
+        )
+        const resultCheck2 = allCity.data.filter(
+          (item: any) =>
+            item.cityName.toLowerCase() === checkData[1].toLowerCase(),
+        )
+        if (resultCheck.length !== 0 && resultCheck2.length !== 0) {
+          brandSlug = resultCheck[0].makeCode
+          locSlug = resultCheck2
+        }
+      } else {
+        const resultCheck = allBrand.data.filter(
+          (item: any) => item.makeCode === checkData[0].toLowerCase(),
+        )
+
+        if (resultCheck.length !== 0) {
+          brandSlug = resultCheck[0].makeCode
+        } else {
+          const resultCheck2 = allCity.data.filter(
+            (item: any) =>
+              item.cityName.toLowerCase() === checkData[0].toLowerCase(),
+          )
+
+          if (resultCheck2 !== 0) {
+            locSlug = resultCheck2
+          }
+        }
+      }
+    }
+
     const queryParam: any = {
-      ...(brand && {
-        brand: String(brand)
+      ...(brandSlug && {
+        brand: String(brandSlug)
           ?.split(',')
           .map((item) => getCarBrand(item)),
       }),
-      ...(transmission && {
-        transmission: String(transmission)
-          ?.split(',')
-          .map((item) => item),
-      }),
-      ...(priceStart && priceEnd
-        ? { priceStart, priceEnd }
-        : {
-            priceStart: meta.MinMaxPrice.minPriceValue,
-            priceEnd: meta.MinMaxPrice.maxPriceValue,
-          }),
-      ...(cityId && { cityId }),
-      ...(sortBy && { sortBy: 'lowToHigh' }),
+      ...(locSlug && { cityId: locSlug.map((city: any) => city.cityId) }),
       ...{ sortBy: 'lowToHigh' },
       ...{ page: '1' },
       ...{ perPage: '10' },
@@ -261,19 +338,23 @@ export const getServerSideProps: GetServerSideProps<{
 
     const response = await getUsedCarFunnelRecommendations({ ...queryParam })
 
-    const recommendation = response.data
+    const recommendation = response.carData
+    const totalItems = response.totalItems
 
     if (footerData && footerData.length > 0) {
       meta.footer = footerData[0].attributes
     }
 
     if (recommendation) {
-      meta.carRecommendations = recommendation
+      meta.carRecommendations.carRecommendations = recommendation
+      meta.carRecommendations.totalItems = totalItems
     }
 
     return {
       props: {
         meta,
+        brandSlug: brandSlug === undefined ? null : brandSlug,
+        citySlug: locSlug === undefined ? null : locSlug,
         dataDesktopMenu: menuDesktopRes.data,
         dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,

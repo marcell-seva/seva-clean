@@ -23,6 +23,7 @@ import {
   getUsedCarFunnelRecommendations,
 } from 'utils/handler/funnel'
 import { usedCar } from 'services/context/usedCarContext'
+import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 
 type NavFilterMobileUsedCarProps = {
   carlist?: any
@@ -58,6 +59,7 @@ export const NavigationFilterMobileUsedCar = ({
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryUsedCarData()
   const { sortBy } = funnelQuery
   const router = useRouter()
+
   const filterSortOption = sortOptionsUsedCar.filter(
     (x) => x.value === sortBy,
   )[0]

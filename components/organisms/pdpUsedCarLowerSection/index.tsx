@@ -148,20 +148,25 @@ export const PdpUsedCarLowerSection = ({
   }
 
   const navigateToTabCredit = () => {
-    const id = router.asPath.split('/')[3]
+    const id = router.asPath.includes('#leads-form')
+      ? router.asPath.replace('#leads-form', '/kredit')
+      : usedCarDetailUrl.replace(':id', router.asPath.split('/')[3]) + '/kredit'
+
     router.replace(
       {
-        pathname: usedCarDetailUrl.replace(':id', id) + '/kredit',
+        pathname: id,
       },
       undefined,
       { scroll: false },
     )
   }
   const navigateToTabDescription = () => {
-    const id = router.asPath.split('/')[3]
+    const id = router.asPath.includes('#leads-form')
+      ? router.asPath.replace('#leads-form', '')
+      : usedCarDetailUrl.replace(':id', router.asPath.split('/')[3])
     router.replace(
       {
-        pathname: usedCarDetailUrl.replace(':id', id),
+        pathname: id,
       },
       undefined,
       { scroll: false },

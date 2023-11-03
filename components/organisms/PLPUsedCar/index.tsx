@@ -213,8 +213,25 @@ export const PLPUsedCar = ({
       if (sampleArray.items.length >= 10 * page) {
         const pagePlus = page + 1
         setPage(pagePlus)
+        const queryParam: any = {
+          brand:
+            brand?.split(',')?.map((item) => getCarBrand(item).toLowerCase()) ||
+            '',
+          priceStart: priceStart ? priceStart : '',
+          priceEnd: priceEnd ? priceEnd : '',
+          yearEnd: yearEnd ? yearEnd : '',
+          yearStart: yearStart ? yearStart : '',
+          mileageEnd: mileageEnd ? mileageEnd : '',
+          mileageStart: mileageStart ? mileageStart : '',
+          transmission: transmission ? transmission?.split(',') : [],
+          modelName: modelName ? modelName?.split('%2C') : [],
+          // cityId: cityId ? cityId?.split(',') : [],
+          sortBy: sortBy || 'lowToHigh',
+          page: pagePlus || '1',
+          perPage: '10',
+        }
         getUsedCarFunnelRecommendations({
-          ...tempQuery,
+          ...(tempQuery ? tempQuery : queryParam),
           page: pagePlus,
         }).then((response) => {
           if (response) {
@@ -508,7 +525,6 @@ export const PLPUsedCar = ({
         USER_TYPE: valueForUserTypeProperty(),
       })
     }
-
     if (!isCurrentCitySameWithSSR || recommendation.length === 0) {
       const params = new URLSearchParams()
       getCity().cityCode && params.append('city', getCity().cityCode as string)

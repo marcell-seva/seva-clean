@@ -29,7 +29,7 @@ import { lowerSectionNavigationTab } from 'config/carVariantList.config'
 import Script from 'next/script'
 import { mergeModelDetailsWithLoanRecommendations } from 'utils/handler/carRecommendation'
 import { formatShortPrice } from 'components/organisms/tabContent/lower/summary'
-import { usedCar } from 'services/context/usedCarContext'
+import { defaultSeoImage } from 'utils/helpers/const'
 import {
   getMobileHeaderMenu,
   getMobileFooterMenu,
@@ -40,6 +40,7 @@ import {
   getUsedCarRecommendations,
   getUsedNewCarRecommendations,
 } from 'services/api'
+import Seo from 'components/atoms/seo'
 interface UsedPdpDataLocalContextType {
   // /**
   //  * this variable use "jakarta" as default payload, so that search engine could see page content.
@@ -93,7 +94,8 @@ export default function index({
   const [upperTabSlug, lowerTabSlug, citySlug] = slug?.length
     ? (slug as Array<string>)
     : []
-  const { carModelDetails, recommendation, detail } = usedCar()
+  // const { carModelDetails, recommendation, detail } = usedCar()
+
   const path = lowerTabSlug ? capitalizeFirstLetter(lowerTabSlug) : ''
   const [selectedTabValue, setSelectedTabValue] = useState(
     path ||
@@ -102,17 +104,8 @@ export default function index({
   )
   const [currentCity, setCurrentCity] = useState(getCity())
 
-  // const meta = useMemo(() => {
-  //   const title =
-  //     metaTagDataRes.data && metaTagDataRes.data.length > 0
-  //       ? metaTagDataRes.data[0].attributes.meta_title
-  //       : 'SEVA'
-  //   const description =
-  //     metaTagDataRes.data && metaTagDataRes.data.length > 0
-  //       ? metaTagDataRes.data[0].attributes.meta_description
-  //       : ''
-  //   return { title, description }
-  // }, [metaTagDataRes])
+  const { brandName, modelName, variantName, nik, cityName, carGallery } =
+    carModelDetailsRes
 
   useEffect(() => {
     saveDesktopWebTopMenu(dataDesktopMenu)
@@ -137,51 +130,30 @@ export default function index({
   const todayDate = new Date()
 
   const capitalizeWord = (word: string) =>
-    word.charAt(0).toUpperCase() + word.slice(1)
+    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
 
-  const capitalizeIfString = (value: string) =>
-    typeof value === 'string'
-      ? value.split('-').map(capitalizeWord).join(' ')
-      : ''
+  const carModel = capitalizeWord(modelName as string)
 
-  const carBrand = capitalizeIfString(brand as string)
-
-  const currentYear = todayDate.getFullYear()
   const currentMonth = monthId(todayDate.getMonth())
 
-  // const carOTRValueArray =
-  //   dataCombinationOfCarRecomAndModelDetail?.variants.map((item) =>
-  //     Number(item.priceValue),
-  //   )
-  // const carOTRValue = Math.min(...(carOTRValueArray as number[]))
-  // const carOTR = `Rp ${carOTRValue / 1000000} juta`
+  const getMetaTitle = () => {
+    switch (selectedTabValue?.toLocaleLowerCase()) {
+      case 'kredit':
+        return `Kredit mobil bekas ${brandName} ${carModel} ${variantName} ${nik} di ${cityName} | SEVA`
+      default:
+        return `Beli mobil bekas ${brandName} ${carModel} ${variantName} ${nik} di ${cityName} | SEVA`
+    }
+  }
 
-  // // const getMetaTitle = () => {
-  // //   switch (selectedTabValue?.toLocaleLowerCase()) {
-  // //     case 'kredit':
-  // //       return `Kredit ${carBrand} ${carModel} ${currentYear}. Simulasi Cicilan OTR ${currentCity.cityName} dengan Loan Calculator | SEVA`
-  // //     case 'spesifikasi':
-  // //       return `Spesifikasi ${carBrand} ${carModel} ${currentYear} | SEVA`
-  // //     case 'harga':
-  // //       return `Harga OTR ${carBrand} ${carModel} ${currentYear} ${currentCity.cityName} Terbaru | SEVA`
-  // //     default:
-  // //       return `Ringkasan Produk ${carBrand} ${carModel} ${currentYear} - Harga OTR Promo Bulan ${currentMonth} | SEVA`
-  // //   }
-  // // }
+  const getMetaDescription = () => {
+    switch (selectedTabValue?.toLocaleLowerCase()) {
+      case 'kredit':
+        return `Kredit mobil bekas ${brandName} ${carModel} ${variantName} ${nik} di ${cityName} secara kredit. Cari tau spesifikasi, dan harga, dan promo bulan ${currentMonth} di SEVA`
 
-  // const getMetaDescription = () => {
-  //   switch (selectedTabValue?.toLocaleLowerCase()) {
-  //     case 'kredit':
-  //       return `Hitung simulasi cicilan ${carBrand} ${carModel} ${currentYear}. Beli mobil ${carBrand} secara kredit, proses aman & mudah dengan Instant Approval* di SEVA."`
-  //     case 'spesifikasi':
-  //       return `Dapatkan informasi lengkap mengenai spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
-  //     case 'harga':
-  //       return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
-
-  //     default:
-  //       return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, dan kredit di SEVA`
-  //   }
-  // }
+      default:
+        return `Beli mobil bekas ${brandName} ${carModel} ${variantName} ${nik} di ${cityName} secara kredit. Cari tau spesifikasi, dan harga, dan promo bulan ${currentMonth} di SEVA`
+    }
+  }
 
   // const modelDetailData =
   //   detail || carModelDetailsRes
@@ -203,6 +175,11 @@ export default function index({
 
   return (
     <div className={styles.mobile}>
+      <Seo
+        title={getMetaTitle()}
+        description={getMetaDescription() ?? ''}
+        image={carGallery[0]?.url ?? defaultSeoImage}
+      />
       <UsedPdpDataLocalContext.Provider
         value={{
           usedCarModelDetailsRes: carModelDetailsRes,
@@ -302,7 +279,9 @@ export async function getServerSideProps(context: any) {
     const [carRecommendationsRes, newCarRecommendationsRes]: any =
       await Promise.all([
         getUsedCarRecommendations(`?bodyType=${carDetailRes.data[0].typeName}`),
-        getUsedNewCarRecommendations(`?modelName=New%20Alphard&bodyType=MPV`),
+        getUsedNewCarRecommendations(
+          `?modelName=${carDetailRes.data[0].modelName}&bodyType=${carDetailRes.data[0].typeName}`,
+        ),
       ])
 
     return {

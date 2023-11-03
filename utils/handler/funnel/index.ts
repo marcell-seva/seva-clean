@@ -85,7 +85,9 @@ export const getUsedCarFunnelRecommendations = (
     modelName,
   } = funnelQuery
 
-  brand && brand.length > 0 && brand.map((item) => params.append('brand', item))
+  brand &&
+    brand.length > 0 &&
+    brand.map((item) => params.append('brand', item.toLowerCase()))
 
   if (modelName && modelName.length > 0) {
     const combinedModelNames = modelName.join('%2C')
