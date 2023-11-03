@@ -225,7 +225,6 @@ export const PLPUsedCar = ({
           mileageStart: mileageStart ? mileageStart : '',
           transmission: transmission ? transmission?.split(',') : [],
           modelName: modelName ? modelName?.split('%2C') : [],
-          // cityId: cityId ? cityId?.split(',') : [],
           sortBy: sortBy || 'lowToHigh',
           page: pagePlus || '1',
           perPage: '10',
