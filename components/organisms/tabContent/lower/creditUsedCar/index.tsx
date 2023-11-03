@@ -514,7 +514,7 @@ export const CreditUsedCarTab = () => {
       (data: any) => data.id !== usedCarModelDetailsRes.carId,
     )
 
-    setUsedCarRecommendationList(temp)
+    setUsedCarRecommendationList(temp.slice(0, 10))
   }, [usedCarRecommendations, usedCarModelDetailsRes])
 
   useEffect(() => {
