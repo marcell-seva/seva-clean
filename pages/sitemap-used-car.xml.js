@@ -1,5 +1,10 @@
-const PLP_DATA_URL = 'https://www.seva.id/mobil-bekas/c'
-const PDP_DATA_URL = 'https://www.seva.id/mobil-bekas/p'
+import getCurrentEnvironment from 'utils/handler/getCurrentEnvironment'
+
+const rootPath = getCurrentEnvironment.rootPath
+const apiBaseUrl = getCurrentEnvironment.apiBaseUrl
+
+const PLP_DATA_URL = `${rootPath}/mobil-bekas/c`
+const PDP_DATA_URL = `${rootPath}/mobil-bekas/p`
 
 export const monthId = (month) => {
   return {
@@ -197,7 +202,7 @@ export async function getServerSideProps({ res }) {
   const fetchedData = []
 
   const requestPLP = await fetch(
-    `https://api.sevaio.xyz/used-car/?sortBy=lowToHigh&page=1&perPage=100`,
+    `${apiBaseUrl}/used-car/?sortBy=lowToHigh&page=1&perPage=100`,
   )
   const posts = await requestPLP.json()
 
@@ -206,7 +211,7 @@ export async function getServerSideProps({ res }) {
 
   while (currentPage <= totalPage) {
     const requestPLP = await fetch(
-      `https://api.sevaio.xyz/used-car/?sortBy=lowToHigh&page=${currentPage}&perPage=100`,
+      `${apiBaseUrl}/used-car/?sortBy=lowToHigh&page=${currentPage}&perPage=100`,
     )
 
     const response = await requestPLP.json()
@@ -218,7 +223,7 @@ export async function getServerSideProps({ res }) {
   }
 
   const requestBrand = await fetch(
-    `https://api.sevaio.xyz/used-car/get-list-brand?isAll=true`,
+    `${apiBaseUrl}/used-car/get-list-brand?isAll=true`,
   )
   const brand = await requestBrand.json()
 
