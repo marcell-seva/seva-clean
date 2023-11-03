@@ -18,15 +18,6 @@ export const monthId = (month) => {
   }[month]
 }
 
-async function getDataImagePLP(data) {
-  const requestPLP = await fetch(
-    `https://api.sevaio.xyz/used-car/?sortBy=lowToHigh&page=1&perPage=10&brand=${data}`,
-  )
-  const posts = await requestPLP.json().then((res) => {
-    return console.log(res.carData[0])
-  })
-}
-
 function escapeCdata(data) {
   return `<![CDATA[ ${data} ]]>`
 }
