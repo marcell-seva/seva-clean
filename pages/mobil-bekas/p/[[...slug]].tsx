@@ -148,10 +148,10 @@ export default function index({
   const getMetaDescription = () => {
     switch (selectedTabValue?.toLocaleLowerCase()) {
       case 'kredit':
-        return `Kredit mobil bekas ${brandName} ${carModel} ${variantName} ${nik} di ${cityName}. Dapatkan informasi mengenai harga dan promo bulan ${currentMonth} di SEVA`
+        return `Kredit mobil bekas ${brandName} ${carModel} ${variantName} ${nik} di ${cityName}. Dapatkan informasi mengenai harga dan promo bulan ${currentMonth?.toLowerCase()} di SEVA`
 
       default:
-        return `Beli mobil bekas ${brandName} ${carModel} ${variantName} ${nik} di ${cityName} secara kredit. Cari tau spesifikasi, dan harga, dan promo bulan ${currentMonth} di SEVA`
+        return `Beli mobil bekas ${brandName} ${carModel} ${variantName} ${nik} di ${cityName} secara kredit. Cari tau spesifikasi, dan harga, dan promo bulan ${currentMonth?.toLowerCase()} di SEVA`
     }
   }
 

@@ -74,7 +74,7 @@ const UsedCarResultPage = ({
       brandSlug,
     )} di ${loc} secara kredit. Cari tau spesifikasi, harga, dan promo bulan ${monthId(
       todayDate.getMonth(),
-    )} di SEVA`
+    )?.toLowerCase()} di SEVA`
   } else {
     if (brandSlug !== null && brandSlug !== undefined) {
       router.query.brand = brandSlug
@@ -85,7 +85,7 @@ const UsedCarResultPage = ({
         brandSlug,
       )} secara kredit. Cari tau spesifikasi, harga, dan promo bulan ${monthId(
         todayDate.getMonth(),
-      )} di SEVA`
+      )?.toLowerCase()} di SEVA`
     } else if (citySlug !== null && citySlug !== undefined) {
       const loc = citySlug[0].cityName
       metaTitle = `Jual Beli Mobil Bekas di ${loc} - Promo Kredit ${monthId(
@@ -93,14 +93,14 @@ const UsedCarResultPage = ({
       )} | SEVA`
       metaDescription = `Beli mobil bekas di ${loc} secara kredit. Cari tau spesifikasi, harga, dan promo bulan ${monthId(
         todayDate.getMonth(),
-      )} di SEVA`
+      )?.toLowerCase()} di SEVA`
     } else {
       metaTitle = `Jual Beli Mobil Bekas - Promo Kredit ${monthId(
         todayDate.getMonth(),
       )} | SEVA`
       metaDescription = `Jual beli mobil bekas di SEVA. Temukan promo kredit bulan ${monthId(
         todayDate.getMonth(),
-      )}`
+      )?.toLowerCase()}`
     }
   }
 
