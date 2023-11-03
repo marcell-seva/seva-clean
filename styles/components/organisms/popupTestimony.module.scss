@@ -41,6 +41,8 @@
   .carBrandAndModelName {
     @extend .timeCityCar;
     margin-bottom: 8px;
+    height: 18px;
+    margin-top: -10px;
   }
 
   .description {
