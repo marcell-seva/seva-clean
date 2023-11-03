@@ -285,25 +285,25 @@ const PromoBottomSheet = ({
             : promoInsuranceTemp[indexForSelectedTenure]
                 .interestRateBeforePromo,
       }
-      setFinalLoan({
-        selectedInsurance:
-          promoInsuranceTemp[indexForSelectedTenure].selectedInsurance,
-        selectedPromoFinal:
-          promoInsuranceTemp[indexForSelectedTenure].selectedPromo,
-        tppFinal: promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo,
-        installmentFinal:
-          promoInsuranceTemp[indexForSelectedTenure].installmentAfterPromo,
-        interestRateFinal:
-          promoInsuranceTemp[indexForSelectedTenure].interestRateAfterPromo,
-        installmentBeforePromo:
-          promoInsuranceTemp[indexForSelectedTenure].installmentBeforePromo,
-        interestRateBeforePromo:
-          promoInsuranceTemp[indexForSelectedTenure].interestRateBeforePromo,
-        tdpBeforePromo:
-          promoInsuranceTemp[indexForSelectedTenure].tdpBeforePromo,
-      })
+
       setSimpleCarVariantDetails(tmpData)
     }
+    setFinalLoan({
+      selectedInsurance:
+        promoInsuranceTemp[indexForSelectedTenure].selectedInsurance,
+      selectedPromoFinal:
+        promoInsuranceTemp[indexForSelectedTenure].selectedPromo,
+      tppFinal: promoInsuranceTemp[indexForSelectedTenure].tdpAfterPromo,
+      installmentFinal:
+        promoInsuranceTemp[indexForSelectedTenure].installmentAfterPromo,
+      interestRateFinal:
+        promoInsuranceTemp[indexForSelectedTenure].interestRateAfterPromo,
+      installmentBeforePromo:
+        promoInsuranceTemp[indexForSelectedTenure].installmentBeforePromo,
+      interestRateBeforePromo:
+        promoInsuranceTemp[indexForSelectedTenure].interestRateBeforePromo,
+      tdpBeforePromo: promoInsuranceTemp[indexForSelectedTenure].tdpBeforePromo,
+    })
     trackCountlyClickSubmit()
     saveLocalStorage(
       LocalStorageKey.SelectablePromo,
