@@ -1,9 +1,15 @@
 import { createContext, useContext, useState } from 'react'
-import { CarDetail, CarModelResponse, CarVariantDetails } from 'utils/types'
+import {
+  CarDetail,
+  CarModelResponse,
+  CarVariantDetails,
+  CityOtrOption,
+} from 'utils/types'
 import { BodyTypes } from 'utils/types/carModel'
 import { UsedCarDetail, UsedCarRecommendation } from 'utils/types/context'
 import { COMData } from 'utils/types/models'
 import { CarModelDetailsResponse, CarRecommendation } from 'utils/types/props'
+import { BrandList } from 'utils/types/utils'
 
 export interface UsedCarContextType {
   car: CarDetail | null
@@ -26,6 +32,10 @@ export interface UsedCarContextType {
   saveDetail: (data: UsedCarDetail) => void
   totalItems: number | null
   saveTotalItems: (data: number) => void
+  cityList: CityOtrOption[] | []
+  saveCityList: (data: CityOtrOption[] | []) => void
+  brandList: BrandList[] | []
+  saveBrandList: (data: BrandList[] | []) => void
 }
 
 export interface UsedCarContextProps
@@ -41,6 +51,8 @@ export interface UsedCarContextProps
     | 'recommendationToyota'
     | 'totalItems'
     | 'detail'
+    | 'cityList'
+    | 'brandList'
   > {
   children: React.ReactNode
 }
@@ -66,6 +78,10 @@ export const UsedCarContext = createContext<UsedCarContextType>({
   saveDetail: () => {},
   totalItems: null,
   saveTotalItems: () => {},
+  cityList: [],
+  saveCityList: () => {},
+  brandList: [],
+  saveBrandList: () => {},
 })
 
 export const UsedCarProvider = ({
@@ -80,6 +96,8 @@ export const UsedCarProvider = ({
   detail = null,
   recommendationToyota = [],
   totalItems = null,
+  cityList = [],
+  brandList = [],
 }: UsedCarContextProps) => {
   const [currentCar, setCar] = useState<CarDetail | null>(car)
   const [currentCarofTheMonth, setCarofTheMonth] = useState<COMData[] | []>(
@@ -101,6 +119,10 @@ export const UsedCarProvider = ({
     CarRecommendation[] | []
   >(recommendationToyota)
   const [currentTotalItems, setTotalItems] = useState<number | null>(totalItems)
+  const [currentCityList, setCityList] = useState<CityOtrOption[] | []>(
+    cityList,
+  )
+  const [currentBrandList, setBrandList] = useState<BrandList[] | []>(brandList)
 
   const saveCar = (car: CarDetail) => {
     setCar(car)
@@ -143,6 +165,12 @@ export const UsedCarProvider = ({
   const saveTotalItems = (totalItems: number | null) => {
     setTotalItems(totalItems)
   }
+  const saveCityList = (cityList: CityOtrOption[] | []) => {
+    setCityList(cityList)
+  }
+  const saveBrandList = (brandList: BrandList[] | []) => {
+    setBrandList(brandList)
+  }
 
   return (
     <UsedCarContext.Provider
@@ -167,6 +195,10 @@ export const UsedCarProvider = ({
         saveRecommendationToyota,
         totalItems: currentTotalItems,
         saveTotalItems,
+        cityList: currentCityList,
+        saveCityList,
+        brandList: currentBrandList,
+        saveBrandList,
       }}
     >
       {children}

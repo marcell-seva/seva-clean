@@ -11,6 +11,7 @@ import {
   UsedCarRecommendationResponse,
 } from 'utils/types/context'
 import {
+  BrandList,
   CityOtrOption,
   FooterSEOAttributes,
   MobileWebTopMenuType,
@@ -52,6 +53,8 @@ const UsedCarResultPage = ({
   dataFooter,
   dataCities,
   isSsrMobileLocal,
+  cityList,
+  brandList,
   brandSlug,
   citySlug,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
@@ -87,7 +90,7 @@ const UsedCarResultPage = ({
         todayDate.getMonth(),
       )?.toLowerCase()} di SEVA`
     } else if (citySlug !== null && citySlug !== undefined) {
-      const loc = citySlug[0].cityName
+      const loc = citySlug[0]?.cityName
       metaTitle = `Jual Beli Mobil Bekas di ${loc} - Promo Kredit ${monthId(
         todayDate.getMonth(),
       )} | SEVA`
@@ -153,6 +156,8 @@ const UsedCarResultPage = ({
         recommendationToyota={[]}
         detail={null}
         totalItems={meta.carRecommendations.totalItems}
+        cityList={cityList}
+        brandList={brandList}
       >
         <div className={styles.mobile}>
           <PLPUsedCar
@@ -206,6 +211,8 @@ export const getServerSideProps: GetServerSideProps<{
   isSsrMobileLocal: boolean
   brandSlug?: string | null
   citySlug?: CitySlug[] | null
+  cityList: CityOtrOption[]
+  brandList: BrandList[]
 }> = async (ctx) => {
   ctx.res.setHeader(
     'Cache-Control',
@@ -249,13 +256,20 @@ export const getServerSideProps: GetServerSideProps<{
       menuMobileRes,
       footerRes,
       cityRes,
+      usedCarCityList,
+      usedCarBrandList,
     ]: any = await Promise.all([
       axios.get(footerTagBaseApi + metabrand),
-      api.getMenu(),
-      api.getMobileHeaderMenu(),
-      api.getMobileFooterMenu(),
-      api.getCities(),
+      getMenu(),
+      getMobileHeaderMenu(),
+      getMobileFooterMenu(),
+      getCities(),
+      getUsedCarCityList(),
+      getBrandList(''),
     ])
+
+    const cityList = usedCarCityList.data
+    const brandList = usedCarBrandList.data
 
     const footerData = fetchFooter.data.data
 
@@ -367,6 +381,8 @@ export const getServerSideProps: GetServerSideProps<{
         dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        cityList,
+        brandList,
         isSsrMobile: getIsSsrMobile(ctx),
         isSsrMobileLocal: getIsSsrMobile(ctx),
       },
@@ -379,6 +395,8 @@ export const getServerSideProps: GetServerSideProps<{
         dataMobileMenu: [],
         dataFooter: [],
         dataCities: [],
+        cityList: [],
+        brandList: [],
         isSsrMobile: getIsSsrMobile(ctx),
         isSsrMobileLocal: getIsSsrMobile(ctx),
       },

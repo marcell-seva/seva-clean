@@ -71,6 +71,7 @@ const FilterMobileUsedCar = ({
   setIsResetFilter,
 }: FilterMobileProps) => {
   const router = useRouter()
+  const { cityList, brandList } = usedCar()
   const { brand, transmission, plate } = router.query
 
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryUsedCarData()
@@ -125,9 +126,6 @@ const FilterMobileUsedCar = ({
     funnelQuery.cityId ? funnelQuery.cityId : [],
   )
 
-  const [cityList, setCityList] = useState([])
-  const [brandList, setBrandList] = useState([])
-
   const [isCheckedBrand, setIsCheckedBrand] = useState<string[]>(
     funnelQuery.brand ? funnelQuery.brand : [],
   )
@@ -135,17 +133,6 @@ const FilterMobileUsedCar = ({
   const { saveRecommendation, saveTotalItems } = usedCar()
   const [isApplied, setIsApplied] = useState(false)
   const [resetTmp, setResetTmp] = useState(false)
-
-  const getCiyList = async () => {
-    const response = await api.getUsedCarCityList()
-    setCityList(response.data)
-    setCityListPLP(response.data)
-  }
-
-  const getListBrand = async () => {
-    const response = await api.getBrandList('')
-    setBrandList(response.data)
-  }
 
   useEffect(() => {
     if (!isButtonClick && resetTmp) {
@@ -338,8 +325,6 @@ const FilterMobileUsedCar = ({
   const yearRef = useRef<null | HTMLDivElement>(null)
 
   useEffect(() => {
-    getCiyList()
-    getListBrand()
     if (isButtonClick) {
       setTimeout(() => scrollToTopDiv(), 200)
     }

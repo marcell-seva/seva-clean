@@ -393,6 +393,13 @@ export interface CityOtrOption {
   id?: string
 }
 
+export interface BrandList {
+  makeId: number | null
+  makeCode: string
+  makeName: string
+  logoUrl: string | null
+}
+
 export interface CarModelBasicInfo {
   id: string
   brand: string

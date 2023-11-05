@@ -3,7 +3,7 @@
 
 .wrapper {
   background-color: #{$primary-white};
-  padding: 0px 16px;
+  // padding: 0px 16px;
 }
 
 .cardInfoDetail {
@@ -282,6 +282,7 @@
 }
 
 .reference {
-  padding: 30px;
+  padding-top: 40px;
   background: white;
+  scroll-margin-top: 80px;
 }

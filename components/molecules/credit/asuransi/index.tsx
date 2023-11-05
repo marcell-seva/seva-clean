@@ -78,6 +78,7 @@ export const FormAsuransiCredit: React.FC<Props> = ({
         options={ageList}
         onChange={handleAgeChange}
         placeholderText="Pilih asuransi"
+        maxHeightDropdown="353px"
         disabled={disabled}
         isSearchable={false}
         rightIcon={(state) => {
