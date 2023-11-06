@@ -654,7 +654,7 @@ export const PLPUsedCar = ({
           isOTO={isOTO}
         />
 
-        {!showLoading && sampleArray?.items?.length === 0 ? (
+        {sampleArray?.items?.length === 0 ? (
           <>
             <NavigationFilterMobileUsedCar
               setRecommendations={saveRecommendation}
