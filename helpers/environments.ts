@@ -61,7 +61,7 @@ const environments = {
   },
   development: {
     name: 'Development',
-    rootPath: 'https://dev.sevaio.xyz',
+    rootPath: 'https://www.dev.sevaio.xyz',
     displayDebugErrors: true,
     amplitude: {
       apiKey: '4e67ca5fd44e8a8e7e7773bc3ababa00',
@@ -87,7 +87,7 @@ const environments = {
 
   staging: {
     name: 'Staging',
-    rootPath: 'https://staging.sevaio.xyz',
+    rootPath: 'https://www.staging.sevaio.xyz',
     displayDebugErrors: true,
     amplitude: {
       apiKey: '4e58240672792efc470e5d1322804d20',
@@ -112,7 +112,7 @@ const environments = {
 
   production: {
     name: 'Production',
-    rootPath: 'https://seva.id',
+    rootPath: 'https://www.seva.id',
     displayDebugErrors: false,
     amplitude: {
       apiKey: '86bd0da4661aa24a7d2c9f658197b49a',
