@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }: any) => {
       setAmplitudeUserId(dataUser.id)
     } catch (error) {
       removeInformationWhenLogout()
-      ;(await import('next/router')).default.replace(LoginSevaUrl)
+      window.location.replace(LoginSevaUrl)
     }
   }
 
