@@ -1038,6 +1038,10 @@ export interface CustomerKtpSeva {
   marriage: string
 }
 
+export interface updateKtpCityPayloadType {
+  nik: string
+  city: string
+}
 export interface GetCustomerKtpSeva {
   province: string
   city: string

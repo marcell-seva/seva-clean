@@ -168,6 +168,7 @@ export enum SessionStorageKey {
   PageReferrerIA = 'PageReferrerIA',
   LastVisitedPageKKIAFlow = 'LastVisitedPageKKIAFlow',
   PtbcLeadId = 'PtbcLeadId',
+  TempCreditQualificationResult = 'TempCreditQualificationResult',
 }
 
 export enum HTTPResponseStatusCode {

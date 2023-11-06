@@ -7,11 +7,11 @@
   flex: none;
   order: 1;
   flex-grow: 0;
+  @include mobileView;
 }
 
 .container {
-  margin: 0 auto;
-  max-width: 480px;
+  @include mobileView;
 }
 
 .antProgress {
@@ -32,9 +32,7 @@
 }
 
 .subTitleText {
-  font-family: var(--kanyon);
-  font-style: normal;
-  font-weight: 400;
+  font-family: 'Kanyon';
   font-size: 20px;
   line-height: 28px;
   color: #{$primary-black};
@@ -45,8 +43,6 @@
 }
 .descTitle {
   font-family: var(--open-sans);
-  font-style: normal;
-  font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   color: #{$shades-grey-75};
@@ -59,8 +55,6 @@
 
 .titleTextForm {
   font-family: var(--open-sans);
-  font-style: normal;
-  font-weight: 400;
   font-size: 12px;
   line-height: 18px;
   color: #{$shades-grey-75};
@@ -71,8 +65,6 @@
 }
 .titleTextTwoForm {
   font-family: var(--open-sans);
-  font-style: normal;
-  font-weight: 400;
   font-size: 12px;
   line-height: 18px;
   color: #{$shades-grey-75};
@@ -83,8 +75,6 @@
 }
 .textForm {
   font-family: var(--open-sans);
-  font-style: normal;
-  font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   color: #{$primary-black};
@@ -120,8 +110,6 @@
 }
 .textType {
   font-family: var(--open-sans);
-  font-style: normal;
-  font-weight: 400;
   font-size: 12px;
   line-height: 18px;
   color: #{$shades-grey-75};
@@ -132,8 +120,6 @@
 }
 .textPrice {
   font-family: var(--kanyon);
-  font-style: normal;
-  font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   color: #{$primary-black};
@@ -179,16 +165,12 @@
 }
 .openSansLigtGrey {
   font-family: var(--open-sans);
-  font-style: normal;
-  font-weight: 400;
   font-size: 12px;
   line-height: 18px !important;
   color: #878d98;
 }
 .openSansSemiblack {
   font-family: var(--open-sans);
-  font-style: normal;
-  font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   color: #13131b;
@@ -235,8 +217,6 @@
 }
 .textIncome {
   font-family: var(--open-sans);
-  font-style: normal;
-  font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   color: #{$primary-black};
@@ -253,15 +233,12 @@
   width: 100%;
   left: 16px;
   top: 148px;
-  background: #ffffff;
   box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
 }
 
 .titleTextCar {
   font-family: var(--open-sans-bold);
-  font-style: normal;
-  font-weight: 700;
   font-size: 11px;
   line-height: 16px;
   color: #{$shades-grey-75};
@@ -273,8 +250,6 @@
 
 .textType {
   font-family: var(--open-sans);
-  font-style: normal;
-  font-weight: 400;
   font-size: 11px;
   line-height: 16px;
   margin-top: 4px;
@@ -287,8 +262,6 @@
 
 .textPrice {
   font-family: var(--kanyon);
-  font-style: normal;
-  font-weight: 400;
   font-size: 16px;
   margin-top: 4px;
   line-height: 24px;
@@ -325,8 +298,6 @@
 
 .textPromo {
   font-family: var(--open-sans);
-  font-style: normal;
-  font-weight: 700;
   font-size: 11px;
   color: #{$secondary-sky-blue};
   display: flex;
@@ -340,8 +311,6 @@
 
 .textPromoSelect {
   font-family: var(--open-sans);
-  font-style: normal;
-  font-weight: 400;
   font-size: 11px;
   line-height: 16px;
   color: #{$shades-grey-75};
@@ -352,8 +321,6 @@
 
 .textPromoBold {
   font-family: var(--open-sans-bold);
-  font-style: normal;
-  font-weight: 400;
   font-size: 11px;
   line-height: 16px;
   color: #{$shades-grey-75};
@@ -387,8 +354,6 @@
   order: 0;
   flex-grow: 0;
   font-family: var(--open-sans);
-  font-style: normal;
-  font-weight: 400;
   font-size: 12px;
   line-height: 18px;
   text-align: center;
@@ -449,8 +414,6 @@
 .textPromo {
   font-family: var(--open-sans-bold);
   font-size: 0.6875rem;
-  font-style: normal;
-  font-weight: 700;
   line-height: 1rem; /* 145.455% */
   color: #{$primarySkyBlue};
   height: 1.25rem;
@@ -459,8 +422,6 @@
 .textPromoBold {
   font-family: var(--open-sans);
   font-size: 11px;
-  font-style: normal;
-  font-weight: 400;
   line-height: 16px;
   color: #{$shades-grey-75};
 }
@@ -471,4 +432,25 @@
   font-size: 14px;
   line-height: 20px;
   color: #{$secondary-blue};
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: none;
+  z-index: 5;
+  overscroll-behavior: contain;
+
+  &.showOverlay {
+    display: block;
+  }
+}
+
+.margin {
+  margin-right: 3px;
 }

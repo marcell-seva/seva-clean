@@ -5,6 +5,7 @@ import {
   DeleteAccountRequestType,
   SendInstantApproval,
   UpdateProfileType,
+  updateKtpCityPayloadType,
   updateLeadFormCM,
   updateLeadFormOTO,
 } from './../../utils/types/utils'
@@ -21,7 +22,10 @@ import {
   SpecialRateRequest,
 } from 'utils/types/utils'
 import environments from 'helpers/environments'
-import { AES } from 'crypto-js'
+import AES from 'crypto-js/aes'
+import { getLocalStorage } from 'utils/handler/localStorage'
+import { LocalStorageKey } from 'utils/enum'
+import put from './put'
 // import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 // import { getLocalStorage } from 'utils/handler/localStorage'
 // import { UTMTagsData } from 'utils/types/props'
@@ -223,6 +227,10 @@ const postSaveKtpSpouse = (
   },
   config: AxiosRequestConfig,
 ) => post(collections.ktp.saveKtpSpouse, body, config)
+const putUpdateKtpCity = (
+  body: updateKtpCityPayloadType,
+  config?: AxiosRequestConfig,
+) => put(collections.ktp.updateKtpCity, body, config)
 const postDeleteAccount = (
   body: DeleteAccountRequestType,
   config?: AxiosRequestConfig,
@@ -304,4 +312,6 @@ export {
   postUpdateProfile,
   postUpdateLeadsCM,
   postCheckTemanSeva,
+  // postSendRefinancingSecondLeadsForm,
+  putUpdateKtpCity,
 }

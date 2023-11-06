@@ -3,6 +3,7 @@
 @import '../abstract/animations';
 
 .container {
+  @include mobileView;
   width: 100%;
   padding: 0px 16px;
 }
@@ -93,7 +94,7 @@
 .agreementTerms {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: start;
   margin-top: 40px;
 }
 

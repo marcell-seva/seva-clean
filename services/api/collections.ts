@@ -88,6 +88,7 @@ const ktp = {
   customerSpouse: `${baseUrl}/customers/get-ktp-spouse-existing`,
   saveKtp: `${baseUrl}/customers/submit-ktp-new`,
   saveKtpSpouse: `${baseUrl}/customers/submit-ktp-spouse-only`,
+  updateKtpCity: `${baseUrl}/customers/update-ktp-city-existing`,
 }
 
 const profile = {
