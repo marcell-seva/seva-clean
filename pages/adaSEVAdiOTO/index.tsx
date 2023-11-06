@@ -1,7 +1,6 @@
 import { InferGetServerSidePropsType } from 'next'
 import { createContext, useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
-
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { HomepageAdaSEVAdiOTO } from 'components/organisms'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'

@@ -813,4 +813,6 @@ export {
   IconColor,
   IconNumberField,
   IconDocumentSigned,
+  IconYoutubeOutlined,
+  IconLinkedinOutlined,
 }

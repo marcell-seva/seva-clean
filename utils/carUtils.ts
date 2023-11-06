@@ -3,7 +3,6 @@ import { LanguageCode, SessionStorageKey } from 'utils/enum'
 // import { getCarModelDetailsById } from 'services/recommendations'
 import { CarRecommendation, CarVariantRecommendation } from 'utils/types'
 import { getModelPriceRange } from './carModelUtils/carModelUtils'
-
 import { getSessionStorage, saveSessionStorage } from './handler/sessionStorage'
 
 // export const getVariantId = async (model: string, variant: string) => {

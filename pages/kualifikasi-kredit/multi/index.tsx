@@ -32,7 +32,6 @@ import { useDownPayment } from 'utils/hooks/useDownPayment'
 import { getToken } from 'utils/handler/auth'
 import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { occupations } from 'utils/occupations'
-
 import {
   AnnouncementBoxDataType,
   FormControlValue,

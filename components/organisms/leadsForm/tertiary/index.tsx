@@ -15,6 +15,7 @@ import elementId from 'utils/helpers/trackerId'
 import { Button, Input, InputPhone, Toast } from 'components/atoms'
 import Image from 'next/image'
 import { IconLoading } from 'components/atoms/icon'
+import { PageOriginationName } from 'utils/types/tracker'
 import { setTrackEventMoEngageWithoutValue } from 'services/moengage'
 import { FunnelQueryContext, FunnelQueryContextType } from 'services/context'
 import { useRouter } from 'next/router'
@@ -172,6 +173,10 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
         }
       }
       await postUnverifiedLeadsNew(data)
+      sendAmplitudeData(AmplitudeEventName.WEB_LEADS_FORM_SUCCESS, {
+        Page_Origination: PageOriginationName.LPLeadsForm,
+        ...(cityOtr && { City: cityOtr.cityName }),
+      })
       trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SUCCESS_VIEW, {
         PAGE_ORIGINATION: 'Homepage - Bottom Section',
         LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',

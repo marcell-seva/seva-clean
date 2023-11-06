@@ -8,7 +8,6 @@ import { getToken } from 'utils/handler/auth'
 import { SessionStorageKey } from 'utils/enum'
 import { CityOtrOption } from 'utils/types'
 import { useToast } from 'components/atoms/OldToast/Toast'
-
 import { MobileWebTopMenuType } from 'utils/types/utils'
 import { Button, IconChevronDown, InputSelect } from 'components/atoms'
 import { removeInformationWhenLogout } from 'utils/logoutUtils'

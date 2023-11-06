@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { Profile } from 'components/organisms'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-
 import { CityOtrOption } from 'utils/types'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import { MobileWebTopMenuType } from 'utils/types/utils'

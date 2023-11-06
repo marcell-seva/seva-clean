@@ -17,7 +17,6 @@ import { defaultSeoImage } from 'utils/helpers/const'
 import styles from 'styles/pages/plp.module.scss'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
-
 import Seo from 'components/atoms/seo'
 import { monthId } from 'utils/handler/date'
 import { getCity } from 'utils/hooks/useGetCity'

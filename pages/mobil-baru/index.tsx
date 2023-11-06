@@ -10,7 +10,6 @@ import {
   NavbarItemResponse,
 } from 'utils/types/utils'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
-
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { useUtils } from 'services/context/utilsContext'

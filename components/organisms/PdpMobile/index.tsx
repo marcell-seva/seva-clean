@@ -39,6 +39,7 @@ import { useRouter } from 'next/router'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useQuery } from 'utils/hooks/useQuery'
+
 import { useCar } from 'services/context/carContext'
 import { getToken } from 'utils/handler/auth'
 import {
@@ -429,7 +430,7 @@ export default function NewCarVariantList({
     if (getToken()) {
       const data: string | null = getLocalStorage(LocalStorageKey.sevaCust)
       if (data === null) {
-        getCustomerInfoSeva().then((response) => {
+        getCustomerInfoSeva().then((response: any) => {
           if (response[0].temanSevaTrxCode) {
             setConnectedRefCode(response[0].temanSevaTrxCode ?? '')
           }
