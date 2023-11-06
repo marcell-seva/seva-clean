@@ -204,7 +204,7 @@ export const PLPUsedCar = ({
   const user: string | null = getLocalStorage(LocalStorageKey.sevaCust)
   const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
   const [cityListPLP, setCityListPLP] = useState(cityList)
-  // funnelQuery.brand = brand?.split(',').map((item) => getCarBrand(item)) || []
+  funnelQuery.brand = brand?.split(',').map((item) => getCarBrand(item)) || []
 
   const fetchMoreData = () => {
     if (sampleArray.items.length >= totalItems!) {

@@ -223,7 +223,7 @@ export const NavigationFilterMobileUsedCar = ({
         yearEnd: filter.yearEnd,
         mileageStart: filter.mileageStart,
         mileageEnd: filter.mileageEnd,
-        cityId: filter.cityId,
+        // cityId: filter.cityId,
         transmission:
           filter.transmission.length > 0
             ? String(filter.transmission).replace(' ', ',')
@@ -231,7 +231,7 @@ export const NavigationFilterMobileUsedCar = ({
         // sortBy: sortBy,
         brand:
           filter.brand.length > 0 ? String(filter.brand).replace(' ', ',') : '',
-        sortBy: String(funnelQuery.sortBy) || 'lowToHigh',
+        // sortBy: funnelQuery.sortBy && String(funnelQuery.sortBy),
       }
 
       isOTO
