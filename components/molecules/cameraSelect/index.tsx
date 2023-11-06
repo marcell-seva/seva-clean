@@ -5,9 +5,8 @@ import elementId from 'helpers/elementIds'
 import { FormControlValue, Option } from 'utils/types'
 import { videoInput } from 'utils/helpers/const'
 import { CameraType } from 'utils/types/models'
-import { DownOutlined } from 'components/atoms'
-import { SelectCameraKtp } from 'components/atoms/selectCameraKtp'
-import { Select } from 'components/atoms/OldSelect'
+import { DownOutlined, InputSelect } from 'components/atoms'
+import styles from 'styles/components/molecules/cameraSelect.module.scss'
 
 interface CameraSelectProps {
   onSelected?: (value: string | null) => void
@@ -112,35 +111,19 @@ export const CameraSelect = ({ onSelected, isKtp }: CameraSelectProps) => {
   return (
     <>
       {options && options.length > 1 && (
-        <StyledSelectWrapper data-testid={elementId.Profil.Dropdown.Camera}>
-          {isKtp ? (
-            <SelectCameraKtp
-              value={selectedDevice}
-              options={options}
-              onChoose={onChoose}
-              suffixIcon={DownOutlined}
-              floatDropdown={true}
-            />
-          ) : (
-            <Select
-              value={selectedDevice}
-              options={options}
-              onChoose={onChoose}
-              suffixIcon={DownOutlined}
-              floatDropdown={true}
-            />
-          )}
-        </StyledSelectWrapper>
+        <div
+          className={styles.selectWrapper}
+          data-testid={elementId.Profil.Dropdown.Camera}
+        >
+          <InputSelect
+            value={String(selectedDevice)}
+            options={options}
+            onChange={onChoose}
+            rightIcon={<DownOutlined />}
+            isSearchable={false}
+          />
+        </div>
       )}
     </>
   )
 }
-
-const StyledSelectWrapper = styled.div`
-  width: 100%;
-  height: 56px;
-  @media (max-width: ${screenSize.mobileS}) {
-    height: 40px;
-  }
-  padding-bottom: 24px;
-`

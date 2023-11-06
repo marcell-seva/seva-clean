@@ -76,8 +76,9 @@ export default function KtpReview() {
     formKtpUrl,
     cameraKtpUrl,
   ])
+  const commonErrorMessage =
+    'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi'
   const router = useRouter()
-  const { t } = useTranslation()
   const [allKtpData, setAllKtpData] = useState<GetCustomerKtpSeva[]>([])
   const [isLoadingKtpData, setIsLoadingKtpData] = useState(false)
   const ktpDataPersonalFromStorage: any = getSessionStorage(
@@ -245,7 +246,6 @@ export default function KtpReview() {
         responsePersonalKtp
       const customerSpouseKtpData: GetCustomerKtpSeva[] | null =
         responseSpouseKtp
-
       if (
         customerPersonalKtpData &&
         customerPersonalKtpData.length > 0 &&
@@ -315,7 +315,6 @@ export default function KtpReview() {
         const index = tempArr.findIndex((item) => !item.isSpouse)
         tempArr.push(...tempArr.splice(0, index))
       }
-
       setAllKtpData(tempArr)
       setIsLoadingKtpData(false)
 
@@ -863,7 +862,7 @@ export default function KtpReview() {
       </div>
       <RenderToast
         type={ToastType.Error}
-        message={t('common.errorMessage')}
+        message={commonErrorMessage}
         overridePositionToBottom={true}
         duration={3}
       />
