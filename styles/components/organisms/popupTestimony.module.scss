@@ -23,6 +23,7 @@
   padding-right: 17px;
   a {
     margin-bottom: 8px;
+    margin-top: -2px;
   }
 
   .nameAge {
@@ -42,7 +43,6 @@
     @extend .timeCityCar;
     margin-bottom: 8px;
     height: 18px;
-    margin-top: -10px;
   }
 
   .description {
