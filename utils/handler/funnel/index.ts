@@ -1,6 +1,9 @@
 import { AxiosRequestConfig } from 'axios'
-import { getRecommendation, postNewFunnelLoanSpecialRate } from 'services/api'
-
+import {
+  getRecommendation,
+  getUsedCars,
+  postNewFunnelLoanSpecialRate,
+} from 'services/api'
 import { PaymentType } from 'utils/enum'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import { FunnelQuery } from 'utils/types/context'
@@ -115,7 +118,7 @@ export const getUsedCarFunnelRecommendations = (
   // getCity().cityCode && params.append('city', getCity().cityCode as string)
   // getCity().id && params.append('cityId', getCity().id as string)
 
-  return api.getUsedCars('', { params })
+  return getUsedCars('', { params })
 }
 
 export const getNewFunnelLoanSpecialRate = (

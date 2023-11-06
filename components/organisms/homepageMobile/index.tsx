@@ -4,8 +4,6 @@ import { useInView } from 'react-intersection-observer'
 import CSAButton from 'components/atoms/floatButton/CSAButton'
 import { setTrackEventMoEngageWithoutValue } from 'services/moengage'
 import { EventName } from 'services/moengage/type'
-import { sendAmplitudeData } from 'services/amplitude'
-import { AmplitudeEventName } from 'services/amplitude/types'
 import { LeadsActionParam, PageOriginationName } from 'utils/types/tracker'
 import { AlephArticleCategoryType, Article, CityOtrOption } from 'utils/types'
 import { COMData, COMDataTracking } from 'utils/types/models'
@@ -27,7 +25,6 @@ import {
   ArticleWidget,
   SearchWidget,
   WebAnnouncementBox,
-  LpSkeleton,
   MainHeroLP,
   SubProduct,
   TestimonyWidget,
@@ -35,10 +32,8 @@ import {
   CarOfTheMonth,
   SearchWidgetSection,
 } from 'components/organisms'
-import { CarContext, CarContextType } from 'services/context'
 import { getCity } from 'utils/hooks/useGetCity'
 import { HomePageDataLocalContext } from 'pages'
-import { trackLPKualifikasiKreditTopCtaClick } from 'helpers/amplitude/seva20Tracking'
 import { getToken } from 'utils/handler/auth'
 import { useRouter } from 'next/router'
 import { multiCreditQualificationPageUrl } from 'utils/helpers/routes'
@@ -58,6 +53,7 @@ import {
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import { RouteName } from 'utils/navigate'
+import { useCar } from 'services/context/carContext'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 import { useUtils } from 'services/context/utilsContext'
@@ -134,6 +130,7 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
       const carofmonth: any = await getCarofTheMonth(
         '?city=' + getCity().cityCode,
       )
+
       setCarOfTheMonthData(carofmonth.data)
     } catch (e: any) {
       throw new Error(e)
@@ -198,10 +195,6 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
         inline: 'center',
         block: 'center',
       })
-      sendAmplitudeData(
-        AmplitudeEventName.WEB_LEADS_FORM_OPEN,
-        trackLeadsLPForm(),
-      )
 
       trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_BUTTON_CLICK, {
         PAGE_ORIGINATION: 'Homepage - Floating Icon',
@@ -263,11 +256,7 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
   }
 
   useEffect(() => {
-    if (
-      getCity().cityCode !== 'jakarta' ||
-      getCity().cityName === 'Depok' ||
-      ssr === 'failed'
-    ) {
+    if (getCity().cityCode !== 'jakarta' || ssr === 'failed') {
       loadCarRecommendation()
       getCarOfTheMonth()
       checkCitiesData()
@@ -284,11 +273,12 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
     cityHandler()
     setTrackEventMoEngageWithoutValue(EventName.view_homepage)
     setTimeout(() => {
-      sendAmplitudeData(AmplitudeEventName.WEB_LANDING_PAGE_VIEW, {})
-      if (!isSentCountlyPageView) {
-        trackCountlyPageView()
-      }
-    }, 500)
+      const timeoutCountlyTracker = setTimeout(() => {
+        if (!isSentCountlyPageView) {
+          trackCountlyPageView()
+        }
+      }, 1000)
+    })
   }, [])
 
   const trackLeadsLPForm = (): LeadsActionParam => {
@@ -315,7 +305,6 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
         LOGIN_STATUS: !!getToken() ? 'Yes' : 'No',
       },
     )
-    trackLPKualifikasiKreditTopCtaClick()
     if (!!getToken()) {
       window.location.href = multiCreditQualificationPageUrl
     } else {

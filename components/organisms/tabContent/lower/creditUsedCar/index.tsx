@@ -378,7 +378,7 @@ export const CreditUsedCarTab = () => {
     if (referralCodeLocalStorage) {
       setIsUserHasReffcode(true)
     } else if (!!getToken()) {
-      getCustomerInfoSeva().then((response) => {
+      getCustomerInfoSeva().then((response: any) => {
         if (response[0].temanSevaTrxCode) {
           setIsUserHasReffcode(true)
         }

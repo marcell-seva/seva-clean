@@ -30,7 +30,6 @@ import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { api } from 'services/api'
 import { useCar } from 'services/context/carContext'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
 import {
@@ -137,10 +136,6 @@ export const PLPUsedCar = ({
     modelName,
   } = router.query as FilterParam
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
-
-  const [minMaxYear, setMinMaxYear] = useState<MinMaxYear>(minmaxYear)
-  const [minMaxMileage, setMinMaxMileage] =
-    useState<MinMaxMileage>(minmaxMileage)
 
   const [minMaxYear, setMinMaxYear] = useState<MinMaxYear>(minmaxYear)
   const [minMaxMileage, setMinMaxMileage] =
@@ -332,9 +327,6 @@ export const PLPUsedCar = ({
       }),
       ...(monthlyIncome && {
         Income: `Rp${filterIncome}`,
-      }),
-      ...(tenure && {
-        Tenure: String(tenure),
       }),
       ...(age && {
         Age: String(age),

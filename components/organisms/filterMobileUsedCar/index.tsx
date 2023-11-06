@@ -28,7 +28,6 @@ import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { FormTransmission } from 'components/molecules/form/formTransmission'
 import { FormPlate } from 'components/molecules/form/formPlate'
 import { getUsedCarFunnelRecommendations } from 'utils/handler/funnel'
-import { api } from 'services/api'
 
 interface ParamsUrl {
   bodyType?: string

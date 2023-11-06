@@ -343,8 +343,6 @@ export {
   getCustomerSpouseKtpSeva,
   getAvailableNIK,
   getLeadsDetail,
-  getFinalDpRangeValidation,
-  postUpdateLeadsOTO,
   getUsedCars,
   getUsedCarCityList,
   getMinMaxPriceUsedCar,

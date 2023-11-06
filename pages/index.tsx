@@ -89,7 +89,6 @@ export default function WithTracker({
   ssr,
   dataFooterMenu,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
   const { saveTypeCar, saveCarOfTheMonth, saveRecommendationToyota } = useCar()
   const {
     saveArticles,
@@ -150,7 +149,7 @@ export default function WithTracker({
         }}
         key="product-jsonld"
       />
-      <HomepageMobile dataReccomendation={dataReccomendation} />
+      <HomepageMobile dataReccomendation={dataReccomendation} ssr={ssr} />
     </HomePageDataLocalContext.Provider>
   )
 }
@@ -160,7 +159,7 @@ export async function getServerSideProps(context: any) {
     'Cache-Control',
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
-  const params = `?city=${getCity().cityCode}&cityId=${getCity().id}`
+  const params = `?city=jakarta&cityId=118`
   try {
     const [
       recommendationRes,
@@ -246,6 +245,7 @@ export async function getServerSideProps(context: any) {
         dataModelUsedCar,
         isSsrMobile: getIsSsrMobile(context),
         dataDesktopMenu,
+        ssr: 'success',
         dataFooterMenu,
       },
     }

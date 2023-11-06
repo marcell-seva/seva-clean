@@ -8,7 +8,7 @@ import { Location } from 'utils/types'
 import { FooterMobile } from '../footerMobile'
 import { AlternativeCarCard } from '../alternativeCarCard'
 import Image from 'next/image'
-import { api } from 'services/api'
+import { getCities } from 'services/api'
 // import { LoanRank } from 'models/models'
 
 const PLPEmptyImage = '/revamp/illustration/plp-empty.webp'
@@ -23,7 +23,7 @@ export const PLPEmptyUsedCar = ({ onClickLabel }: PLPEmptyUsedCarProps) => {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      api.getCities().then((res) => {
+      getCities().then((res) => {
         setCityListApi(res)
       })
     }
