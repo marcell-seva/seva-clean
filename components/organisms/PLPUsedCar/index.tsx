@@ -503,7 +503,8 @@ export const PLPUsedCar = ({
         funnelQuery.mileageStart !== undefined) ||
       (funnelQuery.mileageEnd !== minMaxMileage.maxMileageValue.toString() &&
         funnelQuery.mileageEnd !== '' &&
-        funnelQuery.mileageEnd !== undefined)
+        funnelQuery.mileageEnd !== undefined) ||
+      (brand && brand.length > 0)
     ) {
       setIsFilter(true)
     } else {

@@ -320,7 +320,8 @@ export const getServerSideProps: GetServerSideProps<{
         )
         const resultCheck2 = allCity.data.filter(
           (item: any) =>
-            item.cityName.toLowerCase() === checkData[1].toLowerCase(),
+            item.cityName.toLowerCase() ===
+            checkData[1].split('-').join(' ').toLowerCase(),
         )
         if (resultCheck.length !== 0 && resultCheck2.length !== 0) {
           brandSlug = resultCheck[0].makeCode
@@ -334,13 +335,28 @@ export const getServerSideProps: GetServerSideProps<{
         if (resultCheck.length !== 0) {
           brandSlug = resultCheck[0].makeCode
         } else {
-          const resultCheck2 = allCity.data.filter(
-            (item: any) =>
-              item.cityName.toLowerCase() === checkData[0].toLowerCase(),
+          const resultCheck2 = allCity.data.filter((item: any) =>
+            item.cityName
+              .toLowerCase()
+              .includes(checkData[0].split('-').join(' ').toLowerCase()),
           )
 
           if (resultCheck2 !== 0) {
-            locSlug = resultCheck2
+            if (resultCheck2.length > 1) {
+              const lastChosen = resultCheck2.filter((item: any) =>
+                item.cityName.toLowerCase().includes('kota'),
+              )
+              if (lastChosen.length > 0) {
+                locSlug = lastChosen
+              } else {
+                const jakpus = resultCheck2.filter((item: any) =>
+                  item.cityName.toLowerCase().includes('pusat'),
+                )
+                locSlug = jakpus
+              }
+            } else {
+              locSlug = resultCheck2
+            }
           }
         }
       }
