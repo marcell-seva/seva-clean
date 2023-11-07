@@ -34,6 +34,7 @@ import { getLocalStorage } from 'utils/handler/localStorage'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { NewFunnelCarVariantDetails } from 'utils/types'
 import { SimpleCarVariantDetail } from 'utils/types/utils'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 const LogoACC = '/revamp/icon/logo-acc.webp'
@@ -290,7 +291,7 @@ const LeasingCompanyOptionPage = () => {
     if (ptbc) setIsDisableTAF(true)
   }, [])
 
-  useEffect(() => {
+  useAfterInteractive(() => {
     if (dataCar) sendDataTracker()
   }, [dataCar])
 

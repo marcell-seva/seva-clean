@@ -65,6 +65,7 @@ import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { useCar } from 'services/context/carContext'
 import { postCreditQualification } from 'services/api'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const PopupCarDetail = dynamic(
   () => import('components/organisms/popupCarDetail'),
@@ -426,9 +427,12 @@ const CreditQualificationReviewPage = () => {
     ) {
       trackAmplitudeAndMoengagePageView()
       setFlag(TrackerFlag.Sent)
-      trackCreditQualificationReview({ ctaClick: false })
     }
   }, [dataCar, customerYearBorn])
+
+  useAfterInteractive(() => {
+    if (dataCar) trackCreditQualificationReview({ ctaClick: false })
+  }, [dataCar])
 
   const cityName = getCity()?.cityName || 'Jakarta Pusat'
 

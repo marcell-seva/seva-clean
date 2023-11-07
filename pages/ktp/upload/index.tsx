@@ -56,6 +56,7 @@ import { useValidateUserFlowKKIA } from 'utils/hooks/useValidateUserFlowKKIA'
 import styles from 'styles/pages/ktp-upload.module.scss'
 import dynamic from 'next/dynamic'
 import { useMediaQuery } from 'react-responsive'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const ChevronLeft = '/revamp/icon/chevron-left.webp'
 
@@ -194,7 +195,7 @@ export default function CameraKtp() {
     return new File([ab], 'image.jpg', { type: mimeString })
   }
 
-  useEffect(() => {
+  useAfterInteractive(() => {
     const timeout = setTimeout(() => {
       trackKTPUpload()
     }, 1000)

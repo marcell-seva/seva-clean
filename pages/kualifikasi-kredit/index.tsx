@@ -81,6 +81,7 @@ import { getCity } from 'utils/hooks/useGetCity'
 import { useBadgePromo } from 'utils/hooks/usebadgePromo'
 import { RouteName } from 'utils/navigate'
 import { useCar } from 'services/context/carContext'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const Modal = dynamic(() => import('antd/lib/modal'), { ssr: false })
 
@@ -566,7 +567,7 @@ const CreditQualificationPage = () => {
     }
   }, [])
 
-  useEffect(() => {
+  useAfterInteractive(() => {
     // autofill using useEffect hook because connectedCode value is from API
     if (typeof connectedCode !== 'undefined' && dataCar) autofillRefCodeValue()
   }, [connectedCode, dataCar])

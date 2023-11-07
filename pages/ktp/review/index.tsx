@@ -59,6 +59,7 @@ import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import { useValidateUserFlowKKIA } from 'utils/hooks/useValidateUserFlowKKIA'
 import { defineRouteName } from 'utils/navigate'
 import Tooltip from 'antd/lib/tooltip'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const searchOption = {
   keys: ['label'],
@@ -218,6 +219,14 @@ export default function KtpReview() {
     const list = generateSuggestion(spouseDomicileValue)
     setSpouseSuggestionsLists(list)
   }, [spouseDomicileValue, cityListFromApi, cityListOptionsFull])
+
+  useAfterInteractive(() => {
+    if (allKtpData.length > 0)
+      trackKTPConfirmation({
+        ktpContinue: false,
+        allKtpDataAsParameter: allKtpData,
+      })
+  }, [allKtpData])
 
   const generateKtpData = (dataSource: GetCustomerKtpSeva) => {
     return {

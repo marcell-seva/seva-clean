@@ -464,6 +464,7 @@ export interface FormLCState {
   monthlyIncome: string
   downPaymentAmount: string
   paymentOption: InstallmentTypeOptions
+  leasingOption?: string
 }
 
 export interface CarModelBasicDetailsResponse extends CarModelBasicInfo {

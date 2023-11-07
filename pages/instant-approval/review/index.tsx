@@ -66,6 +66,7 @@ import { postInstantApproval } from 'services/api'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getCity } from 'utils/hooks/useGetCity'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const Modal = dynamic(() => import('antd/lib/modal'), { ssr: false })
 const PopupError = dynamic(() => import('components/organisms/popupError'), {
@@ -442,9 +443,12 @@ const CreditQualificationReviewPage = () => {
     ) {
       trackAmplitudeAndMoengagePageView()
       setFlag(TrackerFlag.Sent)
-      sendDataTracker()
     }
   }, [dataCar, customerYearBorn])
+
+  useAfterInteractive(() => {
+    if (dataCar) sendDataTracker()
+  }, [dataCar])
 
   const cityName = getCity()?.cityName || 'Jakarta Pusat'
 

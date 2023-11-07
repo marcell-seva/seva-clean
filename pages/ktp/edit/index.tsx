@@ -52,6 +52,7 @@ import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import { useValidateUserFlowKKIA } from 'utils/hooks/useValidateUserFlowKKIA'
 import { defineRouteName } from 'utils/navigate'
 import { formatKTPDate } from 'utils/handler/date'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const PopupError = dynamic(() => import('components/organisms/popupError'), {
   ssr: false,
@@ -449,20 +450,26 @@ const KtpForm = () => {
         gender: data.gender,
       })
       checkCitiesData()
-      trackKTPEdit({ ocrStatus: 'yes' })
     } else {
       checkCitiesData()
       setToastType('warning')
       setToast('KTP tidak terbaca. Silakan isi datamu dengan benar.')
+      setTimeout(() => {
+        setToast('')
+      }, 2000)
+    }
+  }, [])
+
+  useAfterInteractive(() => {
+    if (localStorage.getItem('formKtp')) {
+      trackKTPEdit({ ocrStatus: 'yes' })
+    } else {
       trackKTPEdit({ ocrStatus: 'No' })
       setTimeout(() => {
         trackEventCountly(
           CountlyEventNames.WEB_KTP_PAGE_OCR_FAILED_READ_TOAST_MESSAGE_VIEW,
         )
       }, 1000)
-      setTimeout(() => {
-        setToast('')
-      }, 2000)
     }
   }, [])
 

@@ -32,6 +32,7 @@ import { useValidateUserFlowKKIA } from 'utils/hooks/useValidateUserFlowKKIA'
 import { defineRouteName } from 'utils/navigate'
 import { FormLCState } from 'utils/types/utils'
 import dynamic from 'next/dynamic'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const PopupError = dynamic(() => import('components/organisms/popupError'), {
   ssr: false,
@@ -157,7 +158,7 @@ const VerifyKtp = () => {
     }
   }
 
-  useEffect(() => {
+  useAfterInteractive(() => {
     trackKTPVerification({ ktpContinue: false })
   }, [])
 
