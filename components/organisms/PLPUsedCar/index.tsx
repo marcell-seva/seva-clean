@@ -10,46 +10,21 @@ import {
   PLPEmptyUsedCar,
   UsedCarDetailCard,
 } from 'components/organisms'
-import { TrackingEventName } from 'helpers/amplitude/eventTypes'
-import {
-  LeadsActionParam,
-  PageOriginationName,
-  trackCarSearchPageView,
-  trackCekPeluangPopUpCloseClick,
-  trackCekPeluangPopUpCtaClick,
-  trackLeadsFormAction,
-  trackPeluangMudahBadgeClick,
-  trackPeluangMudahPopUpCloseClick,
-  trackPeluangSulitBadgeClick,
-  trackPeluangSulitPopUpCloseClick,
-  trackPLPFilterShow,
-  trackPLPSortShow,
-} from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
 import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { useCar } from 'services/context/carContext'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
-import {
-  getNewFunnelRecommendations,
-  getUsedCarFunnelRecommendations,
-} from 'utils/handler/funnel'
-import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { getUsedCarFunnelRecommendations } from 'utils/handler/funnel'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { getConvertFilterIncome } from 'utils/filterUtils'
 import { getToken } from 'utils/handler/auth'
 import { Currency } from 'utils/handler/calculation'
 import { delayedExec } from 'utils/handler/delayed'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
-import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
-import { hundred, million } from 'utils/helpers/const'
-import {
-  OTONewCarUrl,
-  carResultsUrl,
-  usedCarResultUrl,
-} from 'utils/helpers/routes'
+import { usedCarResultUrl } from 'utils/helpers/routes'
 import {
   defaultCity,
   getCity,
@@ -58,14 +33,12 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { Location } from 'utils/types'
 import {
   CarRecommendation,
-  CarRecommendationResponse,
   FilterParam,
   MinMaxMileage,
   MinMaxPrice,
   MinMaxYear,
 } from 'utils/types/context'
 import { MoengageViewCarSearch } from 'utils/types/moengage'
-import { AnnouncementBoxDataType } from 'utils/types/utils'
 import styles from 'styles/pages/mobil-bekas.module.scss'
 import {
   trackEventCountly,
@@ -83,6 +56,12 @@ import dynamic from 'next/dynamic'
 import { usedCar } from 'services/context/usedCarContext'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import {
+  getMinMaxYearsUsedCar,
+  getMinMaxMileageUsedCar,
+  getMinMaxPriceUsedCar,
+  getMinMaxPrice,
+} from 'services/api'
 
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
@@ -233,7 +212,7 @@ export const PLPUsedCar = ({
         getUsedCarFunnelRecommendations({
           ...(tempQuery ? tempQuery : queryParam),
           page: pagePlus,
-        }).then((response) => {
+        }).then((response: any) => {
           if (response) {
             setSampleArray({
               items: sampleArray.items.concat(response.carData),
@@ -300,45 +279,8 @@ export const PLPUsedCar = ({
     setTrackEventMoEngage(MoengageEventName.view_car_search, properties)
   }
 
-  const trackLeads = (): LeadsActionParam => {
-    const minPrice = funnelQuery.priceRangeGroup
-      ? String(funnelQuery.priceRangeGroup).split('-')[0]
-      : ''
-    const maxPrice = funnelQuery.priceRangeGroup
-      ? String(funnelQuery.priceRangeGroup).split('-')[1]
-      : ''
-
-    const filterIncome = getConvertFilterIncome(String(monthlyIncome))
-    return {
-      ...(brand && {
-        Car_Brand: getCarBrand(brand),
-      }),
-      ...(bodyType && {
-        Car_Body_Type: bodyType,
-      }),
-      ...(minPrice && {
-        Min_Price: `Rp${Currency(String(minPrice))}`,
-      }),
-      ...(maxPrice && {
-        Max_Price: `Rp${Currency(String(maxPrice))}`,
-      }),
-      ...(downPaymentAmount && {
-        DP: `Rp${Currency(String(downPaymentAmount))}`,
-      }),
-      ...(monthlyIncome && {
-        Income: `Rp${filterIncome}`,
-      }),
-      ...(age && {
-        Age: String(age),
-      }),
-      Page_Origination: PageOriginationName.PLPFloatingIcon,
-      ...(cityOtr && { City: cityOtr.cityName }),
-    }
-  }
-
   const showLeadsForm = () => {
     setIsModalOpened(true)
-    trackLeadsFormAction(TrackingEventName.WEB_LEADS_FORM_OPEN, trackLeads())
     trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_BUTTON_CLICK, {
       PAGE_ORIGINATION: 'PLP',
     })
@@ -354,7 +296,6 @@ export const PLPUsedCar = ({
 
   const handleShowFilter = () => {
     setIsButtonClick(true)
-    trackPLPFilterShow(true)
     trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_FILTER_CLICK, {
       CURRENT_FILTER_STATUS: isFilter ? 'On' : 'Off',
     })
@@ -362,7 +303,6 @@ export const PLPUsedCar = ({
 
   const handleShowSort = (open: boolean) => () => {
     setOpenSorting(open)
-    trackPLPSortShow(open)
     trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_SORT_CLICK)
   }
   const getAnnouncementBox = () => {
@@ -521,12 +461,10 @@ export const PLPUsedCar = ({
   const onCloseResultInfo = () => {
     setOpenLabelResultInfo(false)
     saveLocalStorage(LocalStorageKey.flagResultFilterInfoPLP, 'true')
-    trackCekPeluangPopUpCtaClick(getDataForAmplitude())
     trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BANNER_DESC_OK_CLICK)
   }
   const onCloseResultInfoClose = () => {
     setOpenLabelResultInfo(false)
-    trackCekPeluangPopUpCloseClick(getDataForAmplitude())
     trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BANNER_DESC_EXIT_CLICK)
   }
 
@@ -562,7 +500,7 @@ export const PLPUsedCar = ({
       perPage: '10',
     }
     setTempQuery(queryParam)
-    getUsedCarFunnelRecommendations(queryParam).then((response) => {
+    getUsedCarFunnelRecommendations(queryParam).then((response: any) => {
       if (response) {
         patchFunnelQuery(queryParam)
         saveTotalItems(response.totalItems)
@@ -594,31 +532,6 @@ export const PLPUsedCar = ({
     })
   }
 
-  const getDataForAmplitude = () => {
-    return {
-      ...(funnelQuery.monthlyIncome && {
-        Income: `Rp${formatNumberByLocalization(
-          parseInt(monthlyIncome),
-          LanguageCode.id,
-          million,
-          hundred,
-        )} Juta`,
-      }),
-      Age: funnelQuery.age,
-      ...(cityOtr && {
-        City: cityOtr?.cityName,
-      }),
-      ...(funnelQuery.downPaymentAmount && {
-        DP: `Rp${formatNumberByLocalization(
-          parseInt(downPaymentAmount),
-          LanguageCode.en,
-          million,
-          hundred,
-        )} Juta`,
-      }),
-      Tenure: `${funnelQuery.tenure || 5}`,
-    }
-  }
   const trackCountlyPromoBadgeClick = (car: CarRecommendation, index: any) => {
     trackEventCountly(CountlyEventNames.WEB_PROMO_CLICK, {
       CAR_BRAND: car.brand,
@@ -731,7 +644,6 @@ export const PLPUsedCar = ({
                       }}
                       onClickResultMudah={() => {
                         setOpenLabelResultMudah(true)
-                        trackPeluangMudahBadgeClick(getDataForAmplitude())
                         trackEventCountly(
                           CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
                           {
@@ -743,7 +655,6 @@ export const PLPUsedCar = ({
                       }}
                       onClickResultSulit={() => {
                         setOpenLabelResultSulit(true)
-                        trackPeluangSulitBadgeClick(getDataForAmplitude())
                         trackEventCountly(
                           CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
                           {
@@ -767,11 +678,7 @@ export const PLPUsedCar = ({
           data-testid={elementId.PLP.Button.LeadsFormIcon}
         />
         {isModalOpenend && (
-          <LeadsFormPrimary
-            onCancel={closeLeadsForm}
-            trackerProperties={trackLeads()}
-            onPage="LP"
-          />
+          <LeadsFormPrimary onCancel={closeLeadsForm} onPage="LP" />
         )}
         <FilterMobileUsedCar
           onButtonClick={(
@@ -806,11 +713,7 @@ export const PLPUsedCar = ({
           pageOrigination="PLP"
         />
         {openInterestingModal && (
-          <AdaOTOdiSEVALeadsForm
-            onCancel={closeInterestingBtn}
-            trackerProperties={trackLeads()}
-            onPage="LP"
-          />
+          <AdaOTOdiSEVALeadsForm onCancel={closeInterestingBtn} onPage="LP" />
         )}
       </div>
     </>

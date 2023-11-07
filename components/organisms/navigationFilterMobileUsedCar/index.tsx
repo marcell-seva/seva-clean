@@ -129,36 +129,6 @@ export const NavigationFilterMobileUsedCar = ({
       newFunnel(filter)
     } else if (type === 'city') {
       patchFunnelQuery({
-        city_id:
-          funnelQuery.city_id &&
-          funnelQuery.city_id.filter((item: any) => {
-            return item !== key
-          }),
-      })
-      const filter = {
-        ...funnelQuery,
-        city_id:
-          funnelQuery.city_id &&
-          funnelQuery.city_id.filter((item: any) => item !== key),
-      }
-      newFunnel(filter)
-    } else if (type === 'plate') {
-      patchFunnelQuery({
-        plate:
-          funnelQuery.plate &&
-          funnelQuery.plate.filter((item: any) => {
-            return item !== key
-          }),
-      })
-      const filter = {
-        ...funnelQuery,
-        plate:
-          funnelQuery.plate &&
-          funnelQuery.plate.filter((item: any) => item !== key),
-      }
-      newFunnel(filter)
-    } else if (type === 'city') {
-      patchFunnelQuery({
         cityId:
           funnelQuery.cityId &&
           funnelQuery.cityId.filter((item: any) => {
