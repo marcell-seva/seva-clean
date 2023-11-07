@@ -183,7 +183,12 @@ export const NavigationFilterMobileUsedCar = ({
     setLocation(resultFilter)
   }, [funnelQuery.cityId])
   const newFunnel = async (filter: any) => {
-    getUsedCarFunnelRecommendations(filter).then((response: any) => {
+    const filerPagePerpage = {
+      ...filter,
+      page: '1',
+      perPage: '10',
+    }
+    getUsedCarFunnelRecommendations(filerPagePerpage).then((response: any) => {
       setTotalItems(response.totalItems)
       setRecommendations(response.carData)
       const paramUrl = {
