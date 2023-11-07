@@ -63,7 +63,7 @@ export const FormCarLocation = ({
         theme={{
           components: {
             Select: {
-              optionPadding: '0',
+              optionPadding: '0px',
               optionSelectedBg: 'white',
             },
           },
