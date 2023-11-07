@@ -158,11 +158,10 @@ const LeasingCompanyOptionPage = () => {
     }
   }
 
-  const dataQualificationCredit = JSON.parse(
-    localStorage.getItem('qualification_credit')!,
-  )
-
   const sendDataTrackerProceed = () => {
+    const dataQualificationCredit = JSON.parse(
+      localStorage.getItem('qualification_credit')!,
+    )
     let peluangKreditBadge = 'Null'
     const oocupation = dataQualificationCredit.occupations?.replace('&', 'and')
     const pageReferrer =

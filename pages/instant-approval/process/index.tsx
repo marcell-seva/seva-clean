@@ -309,13 +309,14 @@ const CreditQualificationProcess = () => {
   const kkForm: FormLCState | null = getSessionStorage(
     SessionStorageKey.KalkulatorKreditForm,
   )
-  const dataQualificationCredit = JSON.parse(
-    localStorage.getItem('qualification_credit')!,
-  )
+
   const creditQualificationResultStorage: any =
     getSessionStorage(SessionStorageKey.TempCreditQualificationResult) ?? null
 
   const sendDataTracker = () => {
+    const dataQualificationCredit = JSON.parse(
+      localStorage.getItem('qualification_credit')!,
+    )
     let peluangKreditBadge = 'Null'
     const oocupation = dataQualificationCredit.occupations?.replace('&', 'and')
     const pageReferrer =

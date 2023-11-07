@@ -98,7 +98,7 @@ const CreditQualificationReviewPage = () => {
   const [ktpUploaded, setKtpUploaded]: any = useState(sessionKTPUploaded)
   const ktpData: any = getSessionStorage(SessionStorageKey.ReviewedKtpData)
   const mainKTP = getSessionStorage(SessionStorageKey.MainKtpType)
-  const dataReview = JSON.parse(localStorage.getItem('qualification_credit')!)
+  const [dataReview] = useLocalStorage('qualification_credit', null)
   const kkForm: FormLCState | null = getSessionStorage(
     SessionStorageKey.KalkulatorKreditForm,
   )
@@ -127,9 +127,7 @@ const CreditQualificationReviewPage = () => {
       LocalStorageKey.SimpleCarVariantDetails,
       null,
     )
-  const dataQualificationCredit = JSON.parse(
-    localStorage.getItem('qualification_credit')!,
-  )
+
   const creditQualificationResultStorage: any =
     getLocalStorage(LocalStorageKey.CreditQualificationResult) ?? null
   const { fincap } = useFinancialQueryData()
@@ -353,6 +351,9 @@ const CreditQualificationReviewPage = () => {
   }
 
   const sendDataTracker = () => {
+    const dataQualificationCredit = JSON.parse(
+      localStorage.getItem('qualification_credit')!,
+    )
     let peluangKreditBadge = 'Null'
     const oocupation = dataQualificationCredit.occupations?.replace('&', 'and')
     const pageReferrer =

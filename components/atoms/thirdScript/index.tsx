@@ -1,10 +1,18 @@
 import { FB_PIXEL_ID } from 'helpers/facebookPixel'
 import Script from 'next/script'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 export const ThirdScript = () => {
   const [execute, setExecute] = useState(false)
+
+  useEffect(() => {
+    const pageException = ['/kualifikasi-kredit', '/ktp', '/instant-approval']
+    const allowExecute = pageException.some((x) =>
+      window.location.pathname.includes(x),
+    )
+    setExecute(allowExecute)
+  }, [])
 
   useAfterInteractive(() => {
     setExecute(true)
