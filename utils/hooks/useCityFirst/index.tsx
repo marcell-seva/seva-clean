@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
-import { api } from 'services/api'
+import { useState, useEffect, useMemo } from 'react'
+import { useUtils } from 'services/context/utilsContext'
 import { LocalStorageKey } from 'utils/enum'
 import { countDaysDifference } from 'utils/handler/date'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
@@ -15,6 +15,7 @@ import { CityOtrOption } from 'utils/types'
 export const useCityFirst = () => {
   const router = useRouter()
   const [interactive, setInteractive] = useState(false)
+  const { city } = useUtils()
   const currentCity = getLocalStorage<CityOtrOption>(LocalStorageKey.CityOtr)
   const cityFirstRoute = [
     carResultsUrl,
@@ -43,8 +44,11 @@ export const useCityFirst = () => {
   )
 
   const [showCity, setShowCity] = useState(false)
-  const showCondition =
-    filterCity.length > 0 && !currentCity && !isIn30DaysInterval()
+  const showCondition = useMemo(
+    () =>
+      filterCity.length > 0 && !currentCity && !city && !isIn30DaysInterval(),
+    [city],
+  )
 
   const showConditionCity = () => {
     if (!interactive) {
@@ -70,7 +74,7 @@ export const useCityFirst = () => {
         window.removeEventListener(ev, showConditionCity),
       )
     }
-  }, [router.pathname, interactive])
+  }, [router.pathname, interactive, city])
 
   return { showCity, onCloseCity }
 }
