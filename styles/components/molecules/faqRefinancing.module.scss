@@ -1,0 +1,65 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  padding: 0px 16px 32px 16px;
+  margin-top: 16px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.boxFq {
+  max-height: 40px;
+  transition: max-height 500ms ease-out;
+  overflow-y: clip;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  margin-bottom: 16px;
+}
+
+.boxFqOpened {
+  max-height: 150px;
+  transition: max-height 500ms ease-in;
+}
+
+.questionRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  span {
+    font-family: var(--open-sans);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    color: #{$secondaryGrey};
+    width: 307px;
+  }
+}
+
+.styledIcon {
+  transition: all 0.3s ease-in-out;
+}
+
+.styledIconOpened {
+  transform: rotate(180deg);
+}
+
+.answerBox {
+  padding: 7px 28px 0 18px;
+  p {
+    font-family: var(--open-sans);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    color: #{$tertiaryGrey};
+    width: 305px;
+  }
+}

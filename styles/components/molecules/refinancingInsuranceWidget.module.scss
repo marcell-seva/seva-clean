@@ -1,0 +1,24 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 16px 20px;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+}
+
+.styledText {
+  margin-top: 12px;
+  font-family: var(--open-sans);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16.8px;
+  color: #{$tertiaryGrey};
+}

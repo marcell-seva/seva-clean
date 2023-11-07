@@ -114,6 +114,15 @@ const temanSeva = {
   checkTemanSeva: `${baseUrlTemanSeva}/auth/is-teman-seva`,
 }
 
+const refinancing = {
+  refinancingCarsBrand: `${baseUrl}/refinancing-car/brand`,
+  refinancingCarsModel: `${baseUrl}/refinancing-car/models/:model`,
+  refinancingCarsYear: `${baseUrl}/refinancing-car/years`,
+  refinancingSecondLeadsForm: `${baseUrl}/refinancing/product-choice`,
+  sendRefiContact: `${baseUrl}/refinancing/contact`,
+  sendRefiQuestion: `${baseUrl}/refinancing/question`,
+}
+
 export const collections = {
   utils,
   product,
@@ -128,4 +137,6 @@ export const collections = {
   omnicom,
   temanSeva,
   usedCar,
+  temanSeva,
+  refinancing,
 }

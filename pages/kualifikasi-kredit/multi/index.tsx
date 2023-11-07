@@ -537,7 +537,9 @@ const MultiKK = () => {
                 className={clsx({
                   ['multiKKSliderError']: errorMin() || errorMax(),
                 })}
-                onChange={onChangeSlider}
+                onChange={(e: any) => {
+                  onChangeSlider(e)
+                }}
                 defaultValue={[
                   rawPrice.min || limitPrice.min,
                   rawPrice.max || limitPrice.max,

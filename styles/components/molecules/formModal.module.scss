@@ -1,0 +1,234 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.toastText {
+  font-family: var(--open-sans-bold);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0px;
+  color: #{$primary-white};
+  margin-left: 18px;
+}
+
+.styledErrorText {
+  font-family: var(--open-sans);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 20px;
+  color: #{$primaryRed};
+  text-align: start;
+}
+
+.styledCodeCountry {
+  font-family: var(--open-sans-semi-bold);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 20px;
+  color: #{$secondaryGrey};
+}
+
+.spacer {
+  width: 10px;
+}
+
+.styledWrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  padding: 0;
+  margin: auto;
+  @media (max-height: 450px) {
+    width: 100%;
+    height: 50%;
+  }
+
+  .cssanimation,
+  .cssanimation span {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+  }
+
+  .cssanimation span {
+    display: inline-block;
+  }
+
+  .fadeInBottom {
+    animation-name: fadeInBottom;
+  }
+  .fadeOutBottom {
+    animation-name: fadeOutBottom;
+  }
+  @keyframes fadeInBottom {
+    from {
+      opacity: 1;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOutBottom {
+    from {
+      opacity: 1;
+      transform: translateX(0%);
+    }
+    to {
+      transform: translateX(50%);
+      opacity: 0;
+    }
+  }
+}
+
+.styledContent {
+  border-radius: 8px;
+  text-align: center;
+  flex: 1;
+  padding: 15px 19px 24px;
+  display: flex;
+  height: 386px;
+  flex-direction: column;
+  align-items: stretch;
+  background: #{$primary-white};
+}
+
+.styledCloseIcon {
+  display: flex;
+  align-self: flex-end;
+}
+
+.styledContainer {
+  padding: 0px 5px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  flex: 1;
+  align-items: stretch;
+}
+
+.styledTitle {
+  letter-spacing: 0px;
+  margin-top: 12px;
+  font-family: var(--kanyon-bold);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: #{$secondaryGrey};
+
+  @media (max-height: 450px) {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
+
+.styledDesc {
+  letter-spacing: 0px;
+  color: #{$tertiaryGrey};
+  margin-top: 10px;
+  font-family: var(--open-sans-semi-bold);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+
+  @media (max-height: 450px) {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+.styledSpacing {
+  height: 8px;
+  @media (max-height: 450px) {
+    height: 8px;
+  }
+}
+
+.styledLabelText {
+  font-family: var(--open-sans);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: #{$tertiaryGrey};
+  text-align: start;
+}
+
+.topIconWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.styledArrowBack {
+  display: flex;
+  align-self: flex-start;
+}
+
+.styledInputTextArea {
+  height: 135px;
+  align-items: flex-start;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-family: var(--open-sans);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  outline: none !important;
+  input {
+    font-family: var(--open-sans);
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    color: #404040;
+    ::placeholder {
+      color: #{$primaryGrey};
+    }
+  }
+}
+
+.redBorderInput {
+  border: 0.5px solid #{$primaryRed};
+}
+
+.styledInput {
+  padding: 14px 16px;
+  height: 48px;
+  input {
+    font-family: var(--open-sans-semi-bold);
+    font-weight: 600;
+    line-height: 20px;
+    ::placeholder {
+      color: #{$primaryGrey};
+    }
+  }
+}
+
+.styledButton {
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(
+    262.25deg,
+    rgb(36, 110, 212) 34.45%,
+    rgb(7, 33, 68) 151%
+  );
+  box-shadow: rgba(3, 24, 56, 0.1) 0px 1px 16px;
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  justify-content: space-around;
+  margin: 0px auto;
+  font-family: KanyonBold;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  color: rgb(255, 255, 255);
+  border: none;
+}

@@ -96,6 +96,9 @@ import { IconYoutubeOutlined } from './YoutubeOutlined'
 import { IconLinkedinOutlined } from './LinkedinOutlined'
 import { IconLockFill } from './LockFill'
 import { IconThumbsUp } from './ThumbsUp'
+import { DoneTickToast } from './DoneTickToast'
+import { ArrowLeftSmall } from './ArrowLeftSmall'
+import { ArrowLeftOutlined } from './ArrowLeftOutlined'
 
 // const IconChevronUp: React.FC<PropsIcon> = ({
 //   width,
@@ -705,6 +708,7 @@ export {
   IconNextButton,
   IconTriangleDown,
   IconLocation,
+  IconLockFill,
   IconStar,
   IconCross,
   IconArrowRight,
@@ -815,4 +819,8 @@ export {
   IconDocumentSigned,
   IconYoutubeOutlined,
   IconLinkedinOutlined,
+  IconThumbsUp,
+  DoneTickToast,
+  ArrowLeftSmall,
+  ArrowLeftOutlined,
 }

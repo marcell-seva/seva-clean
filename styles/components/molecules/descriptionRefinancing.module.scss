@@ -1,0 +1,61 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+@mixin ClosedStyle {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin OpenedStyle {
+  display: unset;
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: unset;
+  overflow: unset;
+  text-overflow: unset;
+}
+
+.descriptionSection {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 16px;
+  margin-top: 27px;
+  max-width: 480px;
+}
+
+.titleAndSubtitleSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.descriptionTitle {
+  font-family: var(--kanyon-bold);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 14px;
+  color: #252525;
+  margin-bottom: 10px;
+}
+
+.descriptionContent {
+  color: #{$tertiaryGrey};
+  height: 48px;
+  overflow-x: hidden;
+  overflow-y: clip;
+  transition: all 250ms ease-in-out;
+  width: 100%;
+  margin-bottom: 5px;
+  font-family: 'OpenSans';
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #404040;
+  @include ClosedStyle();
+}
+
+.descriptionContentOpened {
+  @include OpenedStyle();
+  height: 100%;
+}
