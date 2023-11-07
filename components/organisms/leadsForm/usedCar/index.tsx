@@ -234,7 +234,7 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
         engineCapacity: carLeads.carSpecifications.find(
           (item: any) => item.specCode === 'engine-capacity',
         ).value,
-        priceValue: carLeads.priceValue.split('.').join(''),
+        priceValue: carLeads.priceValue.split('.')[0],
         seat: carLeads.seat,
         variantTitle: carLeads.variantTitle,
         transmission: carLeads.carSpecifications.find(
@@ -294,7 +294,7 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
         engineCapacity: carLeads.carSpecifications.find(
           (item: any) => item.specCode === 'engine-capacity',
         ).value,
-        priceValue: carLeads.priceValue.split('.').join(''),
+        priceValue: carLeads.priceValue.split('.')[0],
         seat: carLeads.seat,
         variantTitle: carLeads.variantTitle,
         transmission: carLeads.carSpecifications.find(
