@@ -93,6 +93,10 @@ export interface CreateUnverifiedLeadRequestNewUsedCar {
   taxDate?: string
   partnerName?: string
   partnerId?: number
+  sevaUrl?: string
+  cityId?: number
+  tenureAR?: number
+  tenureTLO?: number
 }
 
 const getCustomerAssistantDetails = (phoneNumber: string) => {

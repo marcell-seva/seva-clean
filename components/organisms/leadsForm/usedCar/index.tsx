@@ -23,6 +23,7 @@ import { useRouter } from 'next/router'
 import { useCar } from 'services/context/carContext'
 import { ButtonVersion, ButtonSize } from 'components/atoms/button'
 import {
+  LanguageCode,
   LeadsUsedCar,
   LocalStorageKey,
   SessionStorageKey,
@@ -48,9 +49,17 @@ import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { UsedPdpDataLocalContext } from 'pages/mobil-bekas/p/[[...slug]]'
 import { LeadsActionParam, PageOriginationName } from 'utils/types/props'
 import { SelectedCalculateLoanUsedCar } from 'utils/types/utils'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 
 const SupergraphicLeft = '/revamp/illustration/supergraphic-small.webp'
 const SupergraphicRight = '/revamp/illustration/supergraphic-large.webp'
+
+interface ChoosenAssurance {
+  label: string
+  name: string
+  tenureAR: number
+  tenureTLO: number
+}
 
 interface PropsLeadsForm {
   otpStatus?: any
@@ -58,11 +67,13 @@ interface PropsLeadsForm {
   onVerify?: (e: any) => void
   onFailed?: (e: any) => void
   selectedLoan?: SelectedCalculateLoanUsedCar | null
+  chosenAssurance?: ChoosenAssurance | null
 }
 
 export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
   toLeads,
   selectedLoan = null,
+  chosenAssurance = null,
 }) => {
   const toastSuccessInfo =
     'Agen Setir Kanan akan menghubungi kamu dalam 1x24 jam.'
@@ -77,6 +88,8 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
 
   const { usedCarModelDetailsRes } = useContext(UsedPdpDataLocalContext)
   const carLeads = usedCarModelDetailsRes
+  console.log(carLeads)
+
   const modelName =
     carLeads?.modelName.slice(0, 1) + carLeads?.modelName.slice(1).toLowerCase()
   const infoCar = `${carLeads?.brandName}  ${modelName} ${carLeads?.variantName} ${carLeads?.nik}`
@@ -169,6 +182,9 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
     }
   }
 
+  console.log(selectedLoan)
+  console.log(chosenAssurance)
+
   const saveFlagLeads = (payload: any) => {
     const now = new Date()
     const expiry = now.getTime() + 7 * 24 * 60 * 60 * 1000
@@ -207,7 +223,12 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
         selectedTenure: selectedLoan?.tenor,
         selectedTdp: selectedLoan?.totalDP,
         selectedInstallment: selectedLoan?.totalInstallment,
-        priceFormatedNumber: carLeads.priceValue,
+        priceFormatedNumber:
+          'Rp. ' +
+          replacePriceSeparatorByLocalization(
+            carLeads.priceValue,
+            LanguageCode.id,
+          ),
         carId: carLeads.carId,
         makeName: carLeads.brandName,
         modelName: carLeads.modelName,
@@ -234,6 +255,10 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
         taxDate: carLeads.taxDate,
         partnerName: carLeads.partnerName,
         partnerId: carLeads.partnerId,
+        cityId: carLeads.cityId,
+        sevaUrl: carLeads.sevaUrl,
+        tenureAR: chosenAssurance?.tenureAR,
+        tenureTLO: chosenAssurance?.tenureTLO,
       }
 
       try {
@@ -258,7 +283,12 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
             : LeadsUsedCar.USED_CAR_PDP_LEADS_FORM,
         customerName: name,
         phoneNumber: phone,
-        priceFormatedNumber: carLeads.priceValue,
+        priceFormatedNumber:
+          'Rp. ' +
+          replacePriceSeparatorByLocalization(
+            carLeads.priceValue,
+            LanguageCode.id,
+          ),
         carId: carLeads.carId,
         makeName: carLeads.brandName,
         modelName: carLeads.modelName,
@@ -285,6 +315,8 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
         taxDate: carLeads.taxDate,
         partnerName: carLeads.partnerName,
         partnerId: carLeads.partnerId,
+        cityId: carLeads.cityId,
+        sevaUrl: carLeads.sevaUrl,
       }
 
       try {

@@ -1141,7 +1141,10 @@ export const CreditUsedCarTab = () => {
             />
           </div>
           <div ref={toLeads} className={styles.reference}></div>
-          <LeadsFormUsedCar selectedLoan={selectedLoan} />
+          <LeadsFormUsedCar
+            selectedLoan={selectedLoan}
+            chosenAssurance={chosenAssurance}
+          />
         </>
       ) : (
         <></>
