@@ -88,7 +88,6 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
 
   const { usedCarModelDetailsRes } = useContext(UsedPdpDataLocalContext)
   const carLeads = usedCarModelDetailsRes
-  console.log(carLeads)
 
   const modelName =
     carLeads?.modelName.slice(0, 1) + carLeads?.modelName.slice(1).toLowerCase()
@@ -182,9 +181,6 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
     }
   }
 
-  console.log(selectedLoan)
-  console.log(chosenAssurance)
-
   const saveFlagLeads = (payload: any) => {
     const now = new Date()
     const expiry = now.getTime() + 7 * 24 * 60 * 60 * 1000
@@ -238,7 +234,7 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
         engineCapacity: carLeads.carSpecifications.find(
           (item: any) => item.specCode === 'engine-capacity',
         ).value,
-        priceValue: carLeads.priceValue,
+        priceValue: carLeads.priceValue.split('.').join(''),
         seat: carLeads.seat,
         variantTitle: carLeads.variantTitle,
         transmission: carLeads.carSpecifications.find(
@@ -298,7 +294,7 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
         engineCapacity: carLeads.carSpecifications.find(
           (item: any) => item.specCode === 'engine-capacity',
         ).value,
-        priceValue: carLeads.priceValue,
+        priceValue: carLeads.priceValue.split('.').join(''),
         seat: carLeads.seat,
         variantTitle: carLeads.variantTitle,
         transmission: carLeads.carSpecifications.find(
