@@ -103,6 +103,7 @@ import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 import { IconMoney } from 'components/atoms/icon'
 import { UsedPdpDataLocalContext } from 'pages/mobil-bekas/p/[[...slug]]'
 import { LeadsFormUsedCar } from 'components/organisms'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 
 const CalculationUsedCarResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationUsedCarResult),
@@ -215,6 +216,8 @@ export const CreditUsedCarTab = () => {
   const [carRecommendations, setCarRecommendations] = useState<
     CarRecommendation[]
   >([])
+
+  const { showAnnouncementBox } = useAnnouncementBoxContext()
 
   const [articles, setArticles] = React.useState<Article[]>([])
   const [selectedLoan, setSelectedLoan] =
@@ -1140,7 +1143,14 @@ export const CreditUsedCarTab = () => {
               scrollToLeads={scrollToLeads}
             />
           </div>
-          <div ref={toLeads} className={styles.reference}></div>
+          <div
+            ref={toLeads}
+            className={
+              showAnnouncementBox
+                ? styles.reference
+                : styles.referenceWithoutAnnounce
+            }
+          ></div>
           <LeadsFormUsedCar
             selectedLoan={selectedLoan}
             chosenAssurance={chosenAssurance}
