@@ -161,6 +161,11 @@ export enum SessionStorageKey {
   PageReferrerMultiKK = 'pageReferrerMultiKK',
   prevLoginPath = 'prevLoginPath',
   PAAmbassadorError = 'PAAmbassadorError',
+  BackupDataLoanPermutationWhenIncludeSDD01 = 'backupDataLoanPermutationWhenIncludeSDD01',
+  KKIAFlowType = 'KKIAFlowType',
+  PageReferrerIA = 'PageReferrerIA',
+  LastVisitedPageKKIAFlow = 'LastVisitedPageKKIAFlow',
+  PtbcLeadId = 'PtbcLeadId',
 }
 
 export enum HTTPResponseStatusCode {
@@ -198,6 +203,11 @@ export enum UnverifiedLeadSubCategory {
   OTO_NEW_CAR_PDP_LEADS_FORM = 'OTONCPDP',
   OTO_NEW_CAR_PLP_LEADS_FORM = 'OTONCPLP',
   OTO_NEW_CAR_LP_LEADS_FORM = 'OTONCLPF',
+}
+
+export enum LeadsUsedCar {
+  USED_CAR_PDP_LEADS_FORM = 'Used Car PDP Leads Form',
+  USED_CAR_CALCULATOR_LEADS_FORM = 'Used Car Calculator Leads Form',
 }
 
 export enum ContactType {
@@ -257,4 +267,8 @@ export enum ZIndex {
   'FloatingIcon' = 35,
   'Modal' = 40,
   'Notification' = 50,
+}
+
+export enum TemanSeva {
+  PTBC = 'SEVAPTBC',
 }

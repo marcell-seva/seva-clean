@@ -417,6 +417,29 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     }
   }
 
+  const saveFlagPopUpRecomendation = () => {
+    const now = new Date()
+    const expiry = now.getTime() + 7 * 24 * 60 * 60 * 1000
+    const data = expiry
+    const dataValue = JSON.stringify(data)
+    saveLocalStorage(LocalStorageKey.flagPopUpRecomendation, dataValue)
+    saveLocalStorage(LocalStorageKey.flagResultFilterInfoPLP, 'true')
+  }
+  const checkFlagPopUpRecomendation = () => {
+    const now = new Date()
+    const flagPopUp: any | null = getLocalStorage(
+      LocalStorageKey.flagPopUpRecomendation,
+    )
+    if (flagPopUp !== null) {
+      if (now.getTime() > flagPopUp) {
+        localStorage.removeItem(LocalStorageKey.flagPopUpRecomendation)
+        return
+      } else {
+        return flagPopUp
+      }
+    }
+  }
+
   useAfterInteractive(() => {
     getAnnouncementBox()
   }, [dataAnnouncementBox])
@@ -485,12 +508,14 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   ])
 
   useEffect(() => {
+    checkFlagPopUpRecomendation()
     if (
       isFilterFinancial &&
       getLocalStorage(LocalStorageKey.flagResultFilterInfoPLP) !== true &&
       sampleArray.items.some((a) => a.loanRank === 'Green')
     ) {
       setOpenLabelResultInfo(true)
+      saveFlagPopUpRecomendation()
     }
   }, [isFilterFinancial])
 
