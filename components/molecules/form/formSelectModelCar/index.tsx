@@ -149,6 +149,9 @@ export const FormSelectModelCar = ({
       if (index === -1 && modelCarList.length > 0) {
         setIsError(true)
         setModelError(true)
+      } else {
+        setIsError(false)
+        setModelError(false)
       }
     }
   }, [modelCarList, choosenModel])
