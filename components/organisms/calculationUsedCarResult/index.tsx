@@ -204,13 +204,12 @@ export const CalculationUsedCarResult = ({
     return (
       <div className={styles.disclaimerWrapper}>
         <span className={styles.disclaimerText}>
-          *Total DP: Administrasi + 2 (dua) kali deposit angsuran
+          *Total DP: Administrasi + cicilan pertama
           <br />
-          **Cicilan per bulan: cicilan + premi asuransi mobil (1 Tahun
-          Comprehensive, sisanya TLO)
+          **Cicilan per bulan: cicilan + premi asuransi mobil
           <br />
           ***Hasil perhitungan masih bersifat estimasi. Perhitungan final akan
-          diberikan oleh partner SEVA
+          diberikan oleh mitra SEVA
           <br />
           <br />
           Perhitungan kredit ini disediakan oleh ACC.
