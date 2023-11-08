@@ -19,7 +19,6 @@ import {
 import elementId from 'utils/helpers/trackerId'
 import { Button, Toast } from 'components/atoms'
 import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
-import { initDataWidget } from 'components/organisms/searchWidget'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 
 interface CarButtonProps {
@@ -116,6 +115,8 @@ const typeList = [
 type GridOptionWidgetProps = {
   type: 'brand' | 'bodyType'
   errorToastMessage: string
+  showToastError: { current: boolean; show: boolean }
+  onShowToastError: (show: boolean) => void
   onClose: () => void
   trackCountlyOnSubmit?: (checkedOption: string[]) => void
   trackCountlyOnReset?: () => void
@@ -124,6 +125,8 @@ type GridOptionWidgetProps = {
 const GridOptionWidget = ({
   type,
   onClose,
+  showToastError,
+  onShowToastError,
   errorToastMessage,
   trackCountlyOnSubmit,
   trackCountlyOnReset,
@@ -142,16 +145,14 @@ const GridOptionWidget = ({
     SearchWidgetContext,
   ) as SearchWidgetContextType
   const [checkedOption, setCheckedOption] = useState<string[]>(
-    funnelWidget[type].length > 0 ? funnelWidget[type] : initDataWidget[type],
+    funnelWidget[type].length > 0 ? funnelWidget[type] : [],
   )
   const [disableActionButton, setDisableActionButton] = useState(true)
   const [showToast, setShowToast] = useState<'error' | ''>('')
 
   const onChooseOption = (value: string) => {
+    setDisableActionButton(false)
     if (checkedOption.includes(value)) {
-      if (checkedOption.length === 1) {
-        return setShowToast('error')
-      }
       setCheckedOption(checkedOption.filter((x) => x !== value))
     } else {
       setCheckedOption((prev) => [...prev, value])
@@ -160,10 +161,14 @@ const GridOptionWidget = ({
 
   const clear = () => {
     trackCountlyOnReset && trackCountlyOnReset()
-    setCheckedOption(initDataWidget[type])
+    setCheckedOption([])
+    setDisableActionButton(true)
   }
 
   const submit = () => {
+    if (checkedOption.length === 0) {
+      return setShowToast('error')
+    }
     trackCountlyOnSubmit && trackCountlyOnSubmit(checkedOption)
     saveFunnelWidget({ ...funnelWidget, [type]: checkedOption })
     onClose()
@@ -178,11 +183,19 @@ const GridOptionWidget = ({
   }, [showToast])
 
   useEffect(() => {
-    if (funnelWidget[type].length > 0 || checkedOption.length < 5) {
+    if (funnelWidget[type].length > 0) {
       setDisableActionButton(false)
     } else {
       setDisableActionButton(true)
     }
+  }, [funnelWidget[type]])
+
+  useEffect(() => {
+    if (funnelWidget[type].length > 0) {
+      onShowToastError(checkedOption.length === 0)
+    }
+
+    if (checkedOption.length === 0) setDisableActionButton(true)
   }, [checkedOption])
 
   return (
@@ -236,7 +249,7 @@ const GridOptionWidget = ({
         <Toast
           typeToast="error"
           text={errorToastMessage}
-          visible={showToast === 'error'}
+          open={showToastError.show || showToast === 'error'}
           onCancel={(e: MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation()
             setShowToast('')
