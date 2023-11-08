@@ -125,12 +125,12 @@ export const createUnverifiedLeadNewUsedCar = (
   const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
   return postUnverifiedLeadsNewUsedCar({
     ...requestBody,
-    utmSource: UTMTags?.utm_source ? UTMTags.utm_source : null,
-    utmMedium: UTMTags?.utm_medium ? UTMTags.utm_medium : null,
-    utmCampaign: UTMTags?.utm_campaign ? UTMTags.utm_campaign : null,
+    utmSource: UTMTags?.utm_source ?? null,
+    utmMedium: UTMTags?.utm_medium ?? null,
+    utmCampaign: UTMTags?.utm_campaign ?? null,
     utmContent: null, // temporary
-    utmTerm: UTMTags?.utm_term ? UTMTags.utm_term : null,
-    utmAdset: UTMTags?.adset ? UTMTags.adset : null,
+    utmTerm: UTMTags?.utm_term ?? null,
+    utmAdset: UTMTags?.adset ?? null,
   })
 }
 

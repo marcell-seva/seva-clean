@@ -400,18 +400,6 @@ export const PLPUsedCar = ({
   }, [])
 
   useEffect(() => {
-    ;['scroll', 'touchstart'].forEach((ev) =>
-      window.addEventListener(ev, getAnnouncementBox),
-    )
-
-    return () => {
-      ;['scroll', 'touchstart'].forEach((ev) =>
-        window.removeEventListener(ev, getAnnouncementBox),
-      )
-    }
-  }, [interactive])
-
-  useEffect(() => {
     if (
       (funnelQuery.brand && funnelQuery.brand.length > 0) ||
       (funnelQuery.bodyType && funnelQuery.bodyType.length > 0) ||
