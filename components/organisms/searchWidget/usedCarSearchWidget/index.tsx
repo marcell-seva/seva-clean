@@ -147,6 +147,15 @@ const UsedCarSearchWidget = () => {
       sortBy: 'lowToHigh',
     }).toString()
 
+    patchFunnelQuery({
+      modelName: model,
+      brand: brand,
+      yearStart: minYear,
+      yearEnd: maxYear,
+      transmission: transmission,
+      sortBy: 'lowToHigh',
+    })
+
     navigateToPLP(
       PreviousButton.SmartSearch,
       {

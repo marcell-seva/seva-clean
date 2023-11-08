@@ -93,7 +93,7 @@ export const getUsedCarFunnelRecommendations = (
     brand.map((item) => params.append('brand', item.toLowerCase()))
 
   if (modelName && modelName.length > 0) {
-    const combinedModelNames = modelName.join('%2C')
+    const combinedModelNames = modelName.join(',')
     params.append('modelName', combinedModelNames)
   }
 

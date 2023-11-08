@@ -245,8 +245,17 @@ export const getServerSideProps: GetServerSideProps<{
     },
   }
 
-  const { priceStart, priceEnd, yearStart, yearEnd, mileageStart, mileageEnd } =
-    ctx.query
+  const {
+    priceStart,
+    priceEnd,
+    yearStart,
+    yearEnd,
+    mileageStart,
+    mileageEnd,
+    brand,
+    modelName,
+    transmission,
+  } = ctx.query
 
   try {
     const [
@@ -361,6 +370,21 @@ export const getServerSideProps: GetServerSideProps<{
       }
     }
 
+    const queryModel: any = {
+      ...(brand && {
+        brand: String(brand)
+          ?.split(',')
+          .map((item) => getCarBrand(item)),
+      }),
+      ...(modelName && { modelName: String(modelName).split('%2C') }),
+      ...(yearStart && { yearStart: yearStart }),
+      ...(yearEnd && { yearEnd: yearEnd }),
+      ...(transmission && { transmission: String(transmission).split(',') }),
+      ...{ sortBy: 'lowToHigh' },
+      ...{ page: '1' },
+      ...{ perPage: '10' },
+    }
+
     const queryParam: any = {
       ...(brandSlug && {
         brand: String(brandSlug)
@@ -373,7 +397,11 @@ export const getServerSideProps: GetServerSideProps<{
       ...{ perPage: '10' },
     }
 
-    const response = await getUsedCarFunnelRecommendations({ ...queryParam })
+    const response = await getUsedCarFunnelRecommendations(
+      modelName || brand || yearEnd || yearStart || transmission
+        ? { ...queryModel }
+        : { ...queryParam },
+    )
 
     const recommendation = response.carData
     const totalItems = response.totalItems
