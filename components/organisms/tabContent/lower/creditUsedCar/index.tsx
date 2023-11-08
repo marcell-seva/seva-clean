@@ -522,13 +522,7 @@ export const CreditUsedCarTab = () => {
   }, [usedCarRecommendations, usedCarModelDetailsRes])
 
   useEffect(() => {
-    const temp = usedCarNewRecommendations.filter(
-      (data: any) =>
-        (data.makeName + data.modelName)?.toLowerCase() !==
-        (
-          usedCarModelDetailsRes.brandName + usedCarModelDetailsRes.modelName
-        )?.toLowerCase(),
-    )
+    const temp = usedCarNewRecommendations
 
     const result = temp.slice(0, 10)
 
