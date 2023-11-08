@@ -7,6 +7,7 @@ import LogoDaihatsu from '/public/revamp/icon/logo-daihatsu.webp'
 import Isuzu from '/public/revamp/icon/logo-isuzu.webp'
 import LogoBmw from '/public/revamp/icon/logo-bmw.webp'
 import Peugeot from '/public/revamp/icon/logo-peugeot.webp'
+import Hyundai from '/public/revamp/icon/logo-hyundai.webp'
 import Image from 'next/image'
 import {
   IconHatchback,
@@ -70,6 +71,17 @@ const brandList: CarButtonProps[] = [
       />
     ),
     value: 'Peugeot',
+  },
+  {
+    key: 'Hyundai',
+    icon: (
+      <Image
+        src={Hyundai}
+        alt="Hyundai"
+        style={{ width: 17.49, height: 19.2 }}
+      />
+    ),
+    value: 'Hyundai',
   },
 ]
 

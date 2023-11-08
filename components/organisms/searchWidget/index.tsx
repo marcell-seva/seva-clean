@@ -65,7 +65,7 @@ const TenureOptionWidget = dynamic(
 
 export const initDataWidget = {
   downPaymentAmount: '',
-  brand: ['Toyota', 'Daihatsu', 'Isuzu', 'BMW', 'Peugeot'],
+  brand: ['Toyota', 'Daihatsu', 'Isuzu', 'BMW', 'Peugeot', 'Hyundai'],
   bodyType: ['MPV', 'SUV', 'Sedan', 'Hatchback', 'Sport'],
   priceRangeGroup: '',
   tenure: '5',
