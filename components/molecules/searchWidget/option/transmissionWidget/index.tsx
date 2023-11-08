@@ -98,7 +98,7 @@ const TransmissionUsedCarWidget = ({ onClose }: FilterMobileProps) => {
   return (
     <>
       <div className={styles.container} onBlur={clear}>
-        <div className={styles.wrapperBox}>
+        <div className={styles.childContainer}>
           {transmissionList.map(({ value, isChecked }) => {
             return (
               <>
