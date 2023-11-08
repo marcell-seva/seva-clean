@@ -60,7 +60,6 @@ export const FormSelectModelCar = ({
     CarSillhouete as unknown as string,
   )
   const [isError, setIsError] = React.useState(false)
-
   const [choosenModel, setChoosenModel] = useState(valueId)
 
   const [inputValue, setInputValue] = useState(value)
@@ -240,9 +239,7 @@ export const FormSelectModelCar = ({
 
   useEffect(() => {
     if (inputValue === '') {
-      const sortedCars = sortedModelCarList()
-      setSuggestionsLists(sortedCars)
-      return
+      setSuggestionsLists(modelCarListOptionsFull)
     }
   }, [modelCarListOptionsFull])
 
@@ -251,6 +248,13 @@ export const FormSelectModelCar = ({
       setModelError(true)
     }
   }, [isError])
+
+  useEffect(() => {
+    if (inputValue || isError) {
+      const sorted = getFuseSearchResult(inputValue)
+      setSuggestionsLists(sorted)
+    }
+  }, [selectedCity, modelCarListOptionsFull])
 
   return (
     <>
