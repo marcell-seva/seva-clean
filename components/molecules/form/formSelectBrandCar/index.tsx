@@ -10,6 +10,7 @@ const LogoDaihatsu = '/revamp/icon/logo-daihatsu.webp'
 const Isuzu = '/revamp/icon/logo-isuzu.webp'
 const LogoBmw = '/revamp/icon/logo-bmw.webp'
 const Peugeot = '/revamp/icon/logo-peugeot.webp'
+const Hyundai = '/revamp/icon/logo-hyundai.webp'
 
 export interface FilterMobileProps {
   setIsCheckedBrand: any
@@ -109,6 +110,20 @@ export const FormSelectBrandCar = ({
       ),
       value: 'Peugeot',
       isChecked: isCheckedBrandQuery.includes('Peugeot'),
+    },
+    {
+      key: 'Hyundai',
+      icon: (
+        <Image
+          src={Hyundai}
+          alt="Hyundai"
+          style={{ width: 24, height: 24 }}
+          width={24}
+          height={24}
+        />
+      ),
+      value: 'Hyundai',
+      isChecked: isCheckedBrandQuery.includes('Hyundai'),
     },
   ]
   const onClick = (key: string) => {
