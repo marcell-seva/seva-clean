@@ -141,7 +141,7 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
   return (
     <>
       <div className={styles.container} onBlur={clear}>
-        <Space size={[16, 16]} wrap>
+        <Space size={[16, 16]} wrap className={styles.wrapperBox}>
           {carList.map(({ key, icon, value, isChecked }) => {
             return (
               <>

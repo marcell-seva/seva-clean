@@ -2,8 +2,13 @@
 @import '../../../abstract/mixins';
 
 .container {
-  padding: 16px 24px;
+  padding: 16px 24px !important;
   width: 100%;
+}
+
+.wrapperBox {
+  display: flex;
+  gap: 16px;
 }
 
 .box {
@@ -21,7 +26,7 @@
   background: white;
   border: 1px solid #{$shades-grey-10};
   cursor: pointer;
-
+  box-sizing: border-box;
   border-radius: 8px;
   flex: none;
   order: 0;
@@ -38,7 +43,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  padding: 12px 16px;
+  padding: 11px 16px;
   gap: 8px;
   width: 163.5px;
   height: 44px;
@@ -50,6 +55,50 @@
   flex: none;
   order: 0;
   flex-grow: 0;
+}
+
+@media (max-width: 370px) {
+  .box {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 12px 16px;
+    gap: 8px;
+    max-width: 123.5px;
+    height: 44px;
+    //background: #F3F9FD;
+    //border: 2px solid #51A8DB;
+    background: white;
+    border: 1px solid #{$shades-grey-10};
+    cursor: pointer;
+    box-sizing: border-box;
+    border-radius: 8px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+
+  .boxOnclick {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 11px 16px;
+    gap: 8px;
+    max-width: 123.5px;
+    height: 44px;
+    background: #{$shades-sky-blue-5};
+    border: 2px solid #{$secondary-sky-blue};
+    cursor: pointer;
+
+    border-radius: 8px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
 }
 
 .wrapperHeader {
@@ -96,9 +145,8 @@
   flex-grow: 0;
 }
 
-.childContainer {
+.wrapperBox {
   display: flex;
-  flex-direction: row;
   justify-content: center;
-  width: 100%;
+  gap: 16px;
 }

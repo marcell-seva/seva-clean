@@ -98,7 +98,7 @@ const TransmissionUsedCarWidget = ({ onClose }: FilterMobileProps) => {
   return (
     <>
       <div className={styles.container} onBlur={clear}>
-        <Space size={[24, 24]} wrap className={styles.childContainer}>
+        <div className={styles.wrapperBox}>
           {transmissionList.map(({ value, isChecked }) => {
             return (
               <>
@@ -113,7 +113,7 @@ const TransmissionUsedCarWidget = ({ onClose }: FilterMobileProps) => {
               </>
             )
           })}
-        </Space>
+        </div>
         <div className={stylec.actionButtonWrapper}>
           <Button
             version={ButtonVersion.Secondary}
