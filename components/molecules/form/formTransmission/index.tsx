@@ -88,7 +88,7 @@ export const FormTransmission = ({
 
   return (
     <div className={styles.container}>
-      <Space size={[24, 24]} wrap className={styles.childContainer}>
+      <div className={styles.childContainer}>
         {transmissionList.map(({ value, isChecked }) => {
           return (
             <>
@@ -103,7 +103,7 @@ export const FormTransmission = ({
             </>
           )
         })}
-      </Space>
+      </div>
     </div>
   )
 }

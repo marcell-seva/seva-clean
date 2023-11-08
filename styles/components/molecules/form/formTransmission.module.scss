@@ -14,7 +14,8 @@
   align-items: flex-start;
   padding: 12px 16px;
   gap: 8px;
-  width: 163.5px;
+  flex: 1;
+
   height: 44px;
   //background: #F3F9FD;
   //border: 2px solid #51A8DB;
@@ -23,9 +24,9 @@
   cursor: pointer;
 
   border-radius: 8px;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
+  // flex: none;
+  // order: 0;
+  // flex-grow: 0;
 }
 
 .red {
@@ -40,16 +41,15 @@
   align-items: flex-start;
   padding: 12px 16px;
   gap: 8px;
-  width: 163.5px;
+  width: 100%;
+  // width: 163.5px;
   height: 44px;
   background: #{$shades-sky-blue-5};
   border: 2px solid #{$secondary-sky-blue};
   cursor: pointer;
 
   border-radius: 8px;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
+  flex: 1;
 }
 
 .wrapperHeader {
@@ -98,7 +98,7 @@
 
 .childContainer {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 15px;
 }

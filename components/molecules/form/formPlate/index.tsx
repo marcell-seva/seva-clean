@@ -86,7 +86,7 @@ export const FormPlate = ({
 
   return (
     <div className={styles.container}>
-      <Space size={[18, 18]} wrap className={styles.childContainer}>
+      <div className={styles.childContainer}>
         {plateList.map(({ value, isChecked }) => {
           return (
             <>
@@ -101,7 +101,7 @@ export const FormPlate = ({
             </>
           )
         })}
-      </Space>
+      </div>
     </div>
   )
 }
