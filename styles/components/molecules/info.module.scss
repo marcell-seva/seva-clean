@@ -18,6 +18,11 @@
   overflow: hidden;
 }
 
+@mixin expandedStyle {
+  max-height: 1000px; // max height needs to be bigger than content
+  transition: all 500ms ease-in-out;
+}
+
 .wrapper {
   padding: 16px;
   background-color: #{$primary-white};
@@ -45,9 +50,10 @@
 
 .textDesc {
   @include descriptionStyle();
+  @include expandedStyle();
 }
 
-.elipsed {
+.elipsedParagraph {
   @include elipsedStyle();
 }
 
@@ -62,6 +68,8 @@
 }
 
 .innerHtmlWrapper {
+  @include expandedStyle();
+
   p {
     @include descriptionStyle();
   }
@@ -77,6 +85,12 @@
   a {
     text-decoration: underline;
   }
+}
+
+.collapsed {
+  max-height: 40px; // match height with ellipsed style
+  transition: all 500ms cubic-bezier(0, 1, 0, 1);
+  overflow: hidden;
 }
 
 .innerHtmlWrapperElipsed {

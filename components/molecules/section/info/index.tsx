@@ -19,6 +19,7 @@ import {
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import DOMPurify from 'dompurify'
+import clsx from 'clsx'
 
 export interface PropsInfo {
   isWithIcon?: boolean
@@ -34,6 +35,7 @@ export const Info: React.FC<PropsInfo> = ({
   isUsingSetInnerHtmlDescText = false,
 }): JSX.Element => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
+  const [isDoneDelayedExpand, setIsDoneDelayedExpand] = useState<boolean>(false)
   const readMoreText = 'Baca Selengkapnya'
   const closeText = 'Tutup'
 
@@ -103,15 +105,26 @@ export const Info: React.FC<PropsInfo> = ({
       <div className={styles.desc}>
         {isUsingSetInnerHtmlDescText ? (
           <div
-            className={`${styles.innerHtmlWrapper} ${
-              !isExpanded && styles.innerHtmlWrapperElipsed
-            }`}
+            className={clsx({
+              [styles.innerHtmlWrapper]: true,
+              [styles.collapsed]: !isExpanded,
+              // ellipsis text needs to be delayed because it makes transition broken
+              [styles.innerHtmlWrapperElipsed]:
+                !isExpanded && !isDoneDelayedExpand,
+            })}
             dangerouslySetInnerHTML={{
               __html: client ? DOMPurify.sanitize(descText) : descText,
             }}
           ></div>
         ) : (
-          <p className={`${styles.textDesc} ${!isExpanded && styles.elipsed}`}>
+          <p
+            className={clsx({
+              [styles.textDesc]: true,
+              [styles.collapsed]: !isExpanded,
+              // ellipsis text needs to be delayed because it makes transition broken
+              [styles.elipsedParagraph]: !isExpanded && !isDoneDelayedExpand,
+            })}
+          >
             {descText}
           </p>
         )}
@@ -125,6 +138,9 @@ export const Info: React.FC<PropsInfo> = ({
               handleClickCollapse()
             }
             setIsExpanded(!isExpanded)
+            setTimeout(() => {
+              setIsDoneDelayedExpand(!isDoneDelayedExpand)
+            }, 500) // match duration with transition
           }}
           data-testid={elementId.PDP.CTA.BacaSelengkapnya}
         >
