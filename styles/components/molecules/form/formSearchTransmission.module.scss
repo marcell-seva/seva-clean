@@ -17,16 +17,11 @@
   flex: 1;
 
   height: 44px;
-  //background: #F3F9FD;
-  //border: 2px solid #51A8DB;
   background: white;
   border: 1px solid #{$shades-grey-10};
   cursor: pointer;
 
   border-radius: 8px;
-  // flex: none;
-  // order: 0;
-  // flex-grow: 0;
 }
 
 .red {
@@ -42,7 +37,6 @@
   padding: 11px 16px;
   gap: 8px;
   width: 100%;
-  // width: 163.5px;
   height: 44px;
   background: #{$shades-sky-blue-5};
   border: 2px solid #{$secondary-sky-blue};
