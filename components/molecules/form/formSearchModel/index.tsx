@@ -59,7 +59,7 @@ export const FormSearchModel = ({
 
   const onBlurAction = (value: any) => {
     const temp = distinctData.filter((data: any) =>
-      value.includes(data.modelCode),
+      value.includes(data.modelName),
     )
 
     const mappingTemp = temp.map((data: any) =>
@@ -151,7 +151,7 @@ export const FormSearchModel = ({
             {distinctData.map((item: Option, index: number) => (
               <Option
                 key={index}
-                value={item.modelCode}
+                value={item.modelName}
                 label={item.brandName + ' ' + item.modelName}
                 style={{
                   padding: '18px 16px',
