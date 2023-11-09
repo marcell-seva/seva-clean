@@ -1,7 +1,7 @@
 /* eslint-disable react/no-children-prop */
 import Seo from 'components/atoms/seo'
 import { CreditQualificationRejected } from 'components/organisms/resultPages/rejected'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { defaultSeoImage } from 'utils/helpers/const'
 import styles from 'styles/pages/kualifikasi-kredit-result.module.scss'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
@@ -64,7 +64,7 @@ const CreditQualificationPageRejected = ({
         image={defaultSeoImage}
       />
       <div className={styles.container}>
-        <CreditQualificationRejected />
+        <CreditQualificationRejected onPage="KK-rejected" />
       </div>
     </>
   )

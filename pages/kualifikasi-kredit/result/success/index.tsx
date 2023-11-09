@@ -1,7 +1,7 @@
 /* eslint-disable react/no-children-prop */
 import Seo from 'components/atoms/seo'
 import { CreditQualificationSuccess } from 'components/organisms/resultPages/success'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
 import styles from 'styles/pages/kualifikasi-kredit-result.module.scss'

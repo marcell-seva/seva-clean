@@ -6,33 +6,30 @@ import { getSessionStorage } from 'utils/handler/sessionStorage'
 import clsx from 'clsx'
 
 import { getLocalStorage } from 'utils/handler/localStorage'
-import {
-  CreditQualificationReviewParam,
-  trackKualifikasiKreditRejectResultPageView,
-  trackKualifikasiKreditWaDirectClick,
-} from 'helpers/amplitude/seva20Tracking'
+import { trackKualifikasiKreditRejectResultPageView } from 'helpers/amplitude/seva20Tracking'
 import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
-import { AxiosResponse } from 'axios'
 import { useRouter } from 'next/router'
-import { CityOtrOption } from 'utils/types'
 import {
-  AnnouncementBoxDataType,
   CustomerPreApprovalResponse,
+  trackDataCarType,
 } from 'utils/types/utils'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 
 import { isIsoDateFormat } from 'utils/handler/regex'
-import { million, ten } from 'utils/helpers/const'
 import { BannerCard } from 'components/molecules/card/bannerCard'
 import { Gap, IconCSA } from 'components/atoms'
 import { IconHome } from 'components/atoms/icon/Home'
 import { CitySelectorModal, FooterMobile } from 'components/molecules'
 import { getToken } from 'utils/handler/auth'
-import { formatNumberByLocalization } from 'utils/handler/rupiah'
+import {
+  formatNumberByLocalization,
+  replacePriceSeparatorByLocalization,
+} from 'utils/handler/rupiah'
 import { TrackerFlag } from 'utils/types/models'
 import { HeaderMobile } from 'components/organisms'
 import {
   PreviousButton,
+  RouteName,
   saveDataForCountlyTrackerPageViewHomepage,
 } from 'utils/navigate'
 import Image from 'next/image'
@@ -40,49 +37,57 @@ import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 import dynamic from 'next/dynamic'
 import { getCities, getAnnouncementBox as gab } from 'services/api'
+import { CreditQualificationReviewParam } from 'utils/types/props'
+import dynamic from 'next/dynamic'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import { useUtils } from 'services/context/utilsContext'
 
 const RejectedImage = '/revamp/illustration/rejected-approval.webp'
 
-export const CreditQualificationRejected = () => {
+interface Props {
+  onPage: string
+}
+
+export const CreditQualificationRejected = ({ onPage }: Props) => {
   const titleText = 'Terima kasih, Agen SEVA akan segera menghubungimu'
   const descText =
     'Maaf, datamu belum berhasil mendapatkan persetujuan secara instan. Tapi jangan khawatir, SEVA tetap akan membantu proses kredit mobil impianmu. Pastikan nomor HPmu selalu aktif ya!'
   const router = useRouter()
   const [isActive, setIsActive] = useState(false)
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
-  const [cityListApi, setCityListApi] = useState<Array<CityOtrOption>>([])
   const [customerYearBorn, setCustomerYearBorn] = useState('')
   const [resultPreApproval, setResultPreApproval] =
     useState<CustomerPreApprovalResponse>()
-  const [showAnnouncementBox, setShowAnnouncementBox] = useState<
-    boolean | null
-  >(
-    getSessionStorage(
-      getToken()
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ) ?? true,
-  )
+  const { dataAnnouncementBox, cities } = useUtils()
+  const { showAnnouncementBox, saveShowAnnouncementBox } =
+    useAnnouncementBoxContext()
+
   const [flag, setFlag] = useState<TrackerFlag>(TrackerFlag.Init)
 
-  const checkCitiesData = () => {
-    if (cityListApi.length === 0) {
-      getCities().then((res) => {
-        setCityListApi(res)
-      })
-    }
-  }
+  const referralCodeFromUrl: string | null = getLocalStorage(
+    LocalStorageKey.referralTemanSeva,
+  )
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
 
   const getAnnouncementBox = () => {
-    gab({
-      headers: {
-        'is-login': getToken() ? 'true' : 'false',
-      },
-    }).then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-      if (res.data === undefined) {
-        setShowAnnouncementBox(false)
+    if (dataAnnouncementBox) {
+      const isShowAnnouncement = getSessionStorage(
+        getToken()
+          ? SessionStorageKey.ShowWebAnnouncementLogin
+          : SessionStorageKey.ShowWebAnnouncementNonLogin,
+      )
+      if (typeof isShowAnnouncement !== 'undefined') {
+        saveShowAnnouncementBox(isShowAnnouncement as boolean)
+      } else {
+        saveShowAnnouncementBox(true)
       }
-    })
+    } else {
+      saveShowAnnouncementBox(false)
+    }
   }
 
   const getTotalIncome = () => {
@@ -153,33 +158,105 @@ export const CreditQualificationRejected = () => {
       })
   }
 
+  const trackCountly = async () => {
+    let temanSevaStatus = 'No'
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
+    trackEventCountly(CountlyEventNames.WEB_WA_DIRECT_CLICK, {
+      PAGE_ORIGINATION: resultPreApproval?.leadOrigination
+        ?.toLowerCase()
+        .includes('multi')
+        ? 'Instant Approval (Multi)'
+        : 'Instant Approval (Reg)',
+      SOURCE_BUTTON: 'CTA button Hubungi Agen SEVA',
+      CAR_BRAND: resultPreApproval?.modelDetail.brand,
+      CAR_MODEL: resultPreApproval?.modelDetail.model,
+      CAR_VARIANT: resultPreApproval?.variantDetail.name,
+      PELUANG_KREDIT_BADGE:
+        dataCar?.PELUANG_KREDIT_BADGE &&
+        dataCar?.PELUANG_KREDIT_BADGE === 'Green'
+          ? 'Mudah disetujui'
+          : dataCar?.PELUANG_KREDIT_BADGE &&
+            dataCar?.PELUANG_KREDIT_BADGE === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      TENOR_OPTION: resultPreApproval?.loanTenure + ' Tahun',
+      TENOR_RESULT:
+        dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Green'
+          ? 'Mudah disetujui'
+          : dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      KK_RESULT: 'Null',
+      IA_RESULT: onPage === 'IA-rejected' ? 'Rejected' : 'Null',
+      TEMAN_SEVA_STATUS: temanSevaStatus,
+      INCOME_LOAN_CALCULATOR: 'Null',
+      INCOME_KUALIFIKASI_KREDIT: 'Null',
+      INCOME_CHANGE: 'Null',
+      OCCUPATION: 'Null',
+    })
+  }
+
   const redirectWhatsapp = async () => {
-    trackKualifikasiKreditWaDirectClick(getDataForTracker())
+    trackCountly()
     const loanTenure = resultPreApproval?.loanTenure
     const promoCode: string | undefined = resultPreApproval?.promoCode
     const brandModel = `${resultPreApproval?.modelDetail?.brand} ${resultPreApproval?.modelDetail?.model} ${resultPreApproval?.variantDetail?.name}`
-    const loanDownPayment = formatNumberByLocalization(
+    const loanDownPayment = replacePriceSeparatorByLocalization(
       resultPreApproval!.loanDownPayment,
-      LanguageCode.en,
-      million,
-      ten,
+      LanguageCode.id,
     )
-    const loanMonthlyInstallment = formatNumberByLocalization(
+    const loanMonthlyInstallment = replacePriceSeparatorByLocalization(
       resultPreApproval!.loanMonthlyInstallment,
-      LanguageCode.en,
-      million,
-      ten,
+      LanguageCode.id,
+    )
+    const discountUnit = replacePriceSeparatorByLocalization(
+      resultPreApproval!.dpDiscount,
+      LanguageCode.id,
     )
 
-    const messageWithPromo = `Halo, saya tertarik cek kualifikasi kredit untuk mobil ${brandModel} dengan DP sebesar Rp ${loanDownPayment} jt, cicilan per bulannya Rp ${loanMonthlyInstallment} jt, tenor ${loanTenure} tahun, dan kode promo ${promoCode}.`
-    const messageWithoutPromo = `Halo, saya tertarik cek kualifikasi kredit untuk mobil ${brandModel} dengan DP sebesar Rp ${loanDownPayment} jt, cicilan per bulannya Rp ${loanMonthlyInstallment} jt dengan tenor ${loanTenure} tahun`
-    const finalMessage =
-      promoCode === '' || promoCode === undefined
-        ? messageWithoutPromo
-        : messageWithPromo
-    const whatsAppUrl = await getCustomerAssistantWhatsAppNumber()
+    const selectedPromo = resultPreApproval!.selectedPromo?.toString()
 
-    window.open(`${whatsAppUrl}?text=${encodeURI(finalMessage)}`, '_blank')
+    if (onPage === 'IA-rejected') {
+      const messageWithPromo = `Halo saya tertarik melakukan instant approval untuk ${brandModel} dengan DP sebesar Rp${loanDownPayment}, cicilan per bulannya Rp${loanMonthlyInstallment} tenor ${loanTenure} tahun, dan kode promo ${promoCode}.`
+      const messageWithoutPromo = `Halo saya tertarik melakukan instant approval untuk ${brandModel} dengan DP sebesar Rp${loanDownPayment}, cicilan per bulannya Rp${loanMonthlyInstallment}, dan tenor ${loanTenure} tahun.`
+      const messageWithDiscountUnit = ` Saya juga ingin menggunakan promo ${selectedPromo?.replaceAll(
+        ',',
+        ', ',
+      )}, dan diskon unit sebesar Rp${discountUnit}.`
+      let finalMessage
+      if (promoCode === '' || promoCode === undefined) {
+        finalMessage = messageWithoutPromo
+      } else {
+        finalMessage = messageWithPromo
+      }
+      if (
+        resultPreApproval?.selectedPromo &&
+        resultPreApproval?.selectedPromo?.length > 0 &&
+        resultPreApproval?.dpDiscount !== 0
+      ) {
+        finalMessage = finalMessage + messageWithDiscountUnit
+      }
+      const whatsAppUrl = await getCustomerAssistantWhatsAppNumber()
+
+      window.open(`${whatsAppUrl}?text=${encodeURI(finalMessage)}`, '_blank')
+    } else {
+      const messageWithPromo = `Halo, saya tertarik cek kualifikasi kredit untuk mobil ${brandModel} dengan DP sebesar Rp${loanDownPayment} jt, cicilan per bulannya Rp${loanMonthlyInstallment} jt, tenor ${loanTenure} tahun, dan kode promo ${promoCode}.`
+      const messageWithoutPromo = `Halo, saya tertarik cek kualifikasi kredit untuk mobil ${brandModel} dengan DP sebesar Rp${loanDownPayment} jt, cicilan per bulannya Rp${loanMonthlyInstallment} jt dengan tenor ${loanTenure} tahun`
+      const finalMessage =
+        promoCode === '' || promoCode === undefined
+          ? messageWithoutPromo
+          : messageWithPromo
+      const whatsAppUrl = await getCustomerAssistantWhatsAppNumber()
+
+      window.open(`${whatsAppUrl}?text=${encodeURI(finalMessage)}`, '_blank')
+    }
   }
 
   const checkDataResultPreApproval = () => {
@@ -208,14 +285,46 @@ export const CreditQualificationRejected = () => {
     )
   }
 
+  const sendDataTracker = () => {
+    const data = {
+      CAR_BRAND: resultPreApproval?.modelDetail.brand ?? '',
+      CAR_MODEL: resultPreApproval?.modelDetail.model ?? '',
+      CAR_VARIANT: resultPreApproval?.variantDetail.name ?? '',
+      INSTANT_APPROVAL_RESULT: resultPreApproval?.status,
+      FINANCING_COMPANY: resultPreApproval?.finco,
+    }
+    trackEventCountly(
+      CountlyEventNames.WEB_INSTANT_APPROVAL_PAGE_RESULT_VIEW,
+      data,
+    )
+  }
+
+  const sendDataTrackerBackToHome = () => {
+    const data = {
+      CAR_BRAND: resultPreApproval?.modelDetail.brand ?? '',
+      CAR_MODEL: resultPreApproval?.modelDetail.model ?? '',
+      CAR_VARIANT: resultPreApproval?.variantDetail.name ?? '',
+    }
+    trackEventCountly(
+      CountlyEventNames.WEB_INSTANT_APPROVAL_PAGE_FINISH_BACK_TO_HOMEPAGE_CLICK,
+      data,
+    )
+  }
+
   useEffect(() => {
     checkDataResultPreApproval()
-    checkCitiesData()
-    getAnnouncementBox()
     if (!!getToken()) {
       getCurrentUserInfo()
     }
   }, [])
+
+  useEffect(() => {
+    getAnnouncementBox()
+  }, [dataAnnouncementBox])
+
+  useEffect(() => {
+    if (resultPreApproval) sendDataTracker()
+  }, [resultPreApproval])
 
   useEffect(() => {
     document.body.style.overflowY = isActive ? 'hidden' : 'auto'
@@ -244,8 +353,9 @@ export const CreditQualificationRejected = () => {
           position: 'fixed',
         }}
         emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
-        setShowAnnouncementBox={setShowAnnouncementBox}
+        setShowAnnouncementBox={saveShowAnnouncementBox}
         isShowAnnouncementBox={showAnnouncementBox}
+        pageOrigination={RouteName.IARejected}
       />
       <div
         className={clsx({
@@ -280,6 +390,7 @@ export const CreditQualificationRejected = () => {
               subTitle="Jelajahi lebih lanjut layanan lain dari SEVA."
               icon={<IconHome width={24} height={24} color="#B4231E" />}
               onClick={() => {
+                sendDataTrackerBackToHome()
                 saveDataForCountlyTrackerPageViewHomepage(
                   PreviousButton.ButtonBackToHomepage,
                 )
@@ -289,12 +400,13 @@ export const CreditQualificationRejected = () => {
           </div>
         </div>
       </div>
-      <FooterMobile />
-
+      <FooterMobile pageOrigination={RouteName.IARejected} />
       <CitySelectorModal
         isOpen={isOpenCitySelectorModal}
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
-        cityListFromApi={cityListApi}
+        cityListFromApi={cities}
+        pageOrigination={RouteName.IARejected}
+        sourceButton="Location Icon (Navbar)"
       />
     </div>
   )

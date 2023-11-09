@@ -932,6 +932,9 @@ export interface CustomerPreApprovalResponse {
   city?: string
   occupation?: string
   temanSevaTrxCode?: string
+  leadOrigination?: string
+  dpDiscount: number
+  selectedPromo?: string
 }
 
 export interface SendKualifikasiKreditRequest {
