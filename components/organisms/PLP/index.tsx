@@ -517,7 +517,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       setOpenLabelResultInfo(true)
       saveFlagPopUpRecomendation()
     }
-  }, [isFilterFinancial])
+  }, [isFilterFinancial, sampleArray])
 
   useEffect(() => {
     setPage(1)
