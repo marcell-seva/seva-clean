@@ -44,6 +44,7 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
   const { funnelWidget, saveFunnelWidget } = useContext(
     SearchUsedCarWidgetContext,
   ) as SearchUsedCarWidgetContextType
+
   const [isCheckedBrandQuery, setIsCheckedBrandQuery] = useState<string[]>(
     funnelWidget.brand ? funnelWidget.brand : [],
   )
@@ -91,6 +92,7 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
       isChecked: isCheckedBrandQuery.includes(obj.makeCode),
     }
   })
+
   const onClick = (key: string) => {
     if (isCheckedBrandQuery.includes(key)) {
       setIsCheckedBrandQuery(isCheckedBrandQuery.filter((item) => item !== key))
@@ -113,7 +115,11 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
   }
 
   const clear = () => {
-    setIsCheckedBrandQuery([])
+    if (funnelWidget.brand.length > 0) {
+      return
+    } else {
+      setIsCheckedBrandQuery([])
+    }
     setDisableActionButton(true)
   }
 
@@ -147,7 +153,7 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
               <>
                 {value === 'other' ? (
                   <div
-                    onClick={() => onChooseOption(value)}
+                    onClick={() => onClick(value)}
                     key={key}
                     className={!isChecked ? styles.box : styles.boxOnclick}
                   >
@@ -155,7 +161,7 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
                   </div>
                 ) : (
                   <div
-                    onClick={() => onChooseOption(value)}
+                    onClick={() => onClick(value)}
                     key={key}
                     className={!isChecked ? styles.box : styles.boxOnclick}
                   >
