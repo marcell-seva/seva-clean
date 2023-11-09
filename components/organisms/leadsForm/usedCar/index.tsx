@@ -222,7 +222,7 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
         priceFormatedNumber:
           'Rp. ' +
           replacePriceSeparatorByLocalization(
-            carLeads.priceValue,
+            carLeads.priceValue.split('.')[0],
             LanguageCode.id,
           ),
         carId: carLeads.carId,
@@ -282,7 +282,7 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
         priceFormatedNumber:
           'Rp. ' +
           replacePriceSeparatorByLocalization(
-            carLeads.priceValue,
+            carLeads.priceValue.split('.')[0],
             LanguageCode.id,
           ),
         carId: carLeads.carId,
