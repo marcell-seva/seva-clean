@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@georgedrpg/pannellum-react-next": "^1.2.5",
+    "@next/bundle-analyzer": "^13.5.4",
     "@next/font": "^13.1.1",
     "@types/crypto-js": "^4.1.1",
     "@types/node": "18.11.18",
