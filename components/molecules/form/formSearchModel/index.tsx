@@ -51,12 +51,6 @@ export const FormSearchModel = ({
     return indexOfItem === index
   })
 
-  const formattedData = distinctData.map((item: any) => ({
-    brandName: item.brandName.charAt(0) + item.brandName.slice(1).toLowerCase(),
-    modelName: item.modelName,
-    modelCode: item.modelCode,
-  }))
-
   const onBlurAction = (value: any) => {
     const temp = distinctData.filter((data: any) =>
       value.includes(data.modelName),
