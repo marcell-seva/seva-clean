@@ -78,7 +78,9 @@ export const FormSelectBrandUsedCar = ({
         />
       ),
       value: obj.makeCode,
-      isChecked: isCheckedBrandQuery.includes(obj.makeCode),
+      isChecked: isCheckedBrandQuery.some(
+        (brand: any) => brand.toLowerCase() === obj.makeCode,
+      ),
     }
   })
   const onClick = (key: string) => {

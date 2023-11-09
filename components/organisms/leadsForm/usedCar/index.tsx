@@ -102,9 +102,7 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
           carLeads?.modelName.toLowerCase().split(' ')[1],
         )}`
       : capitalizeFirstLetter(carLeads?.modelName.toLowerCase())
-  const infoCar = `${capitalizeFirstLetter(
-    carLeads?.brandName.toLowerCase(),
-  )}  ${modelName} ${carLeads?.variantName} ${carLeads?.nik}`
+  const infoCar = `${carLeads?.brandName}  ${modelName} ${carLeads?.variantName} ${carLeads?.nik}`
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
