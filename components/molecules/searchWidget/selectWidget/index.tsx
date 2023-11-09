@@ -158,7 +158,11 @@ const forwardSelectWidget = (
         />
         {errorText && <span className={styles.errorText}>{errorText}</span>}
       </div>
-      <BottomSheet title={title} open={openOption} onDismiss={onClose}>
+      <BottomSheet
+        title={title}
+        open={openOption}
+        onDismiss={!showToastError.show ? onClose : undefined}
+      >
         {sheetOption ? (
           sheetOption(returnProps)
         ) : sheetList ? (
