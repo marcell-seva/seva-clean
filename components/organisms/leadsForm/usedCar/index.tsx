@@ -10,7 +10,11 @@ import {
 } from 'components/atoms'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
-import { capitalizeWords, filterNonDigitCharacters } from 'utils/stringUtils'
+import {
+  capitalizeFirstLetter,
+  capitalizeWords,
+  filterNonDigitCharacters,
+} from 'utils/stringUtils'
 import { onlyLettersAndSpaces } from 'utils/handler/regex'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
@@ -88,10 +92,19 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
 
   const { usedCarModelDetailsRes } = useContext(UsedPdpDataLocalContext)
   const carLeads = usedCarModelDetailsRes
-
+  const capitalizeWord = (word: string) =>
+    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
   const modelName =
-    carLeads?.modelName.slice(0, 1) + carLeads?.modelName.slice(1).toLowerCase()
-  const infoCar = `${carLeads?.brandName}  ${modelName} ${carLeads?.variantName} ${carLeads?.nik}`
+    carLeads?.modelName.toLowerCase().split(' ').length > 1
+      ? `${capitalizeFirstLetter(
+          carLeads?.modelName.toLowerCase().split(' ')[0],
+        )} ${capitalizeFirstLetter(
+          carLeads?.modelName.toLowerCase().split(' ')[1],
+        )}`
+      : capitalizeFirstLetter(carLeads?.modelName.toLowerCase())
+  const infoCar = `${capitalizeFirstLetter(
+    carLeads?.brandName.toLowerCase(),
+  )}  ${modelName} ${carLeads?.variantName} ${carLeads?.nik}`
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,

@@ -82,8 +82,13 @@ export default function UsedCarVariantList({
   const { usedCarModelDetailsRes } = useContext(UsedPdpDataLocalContext)
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
   const modelName =
-    usedCarModelDetailsRes?.modelName.slice(0, 1) +
-    usedCarModelDetailsRes?.modelName.slice(1).toLowerCase()
+    usedCarModelDetailsRes?.modelName.toLowerCase().split(' ').length > 1
+      ? `${capitalizeFirstLetter(
+          usedCarModelDetailsRes?.modelName.toLowerCase().split(' ')[0],
+        )} ${capitalizeFirstLetter(
+          usedCarModelDetailsRes?.modelName.toLowerCase().split(' ')[1],
+        )}`
+      : capitalizeFirstLetter(usedCarModelDetailsRes?.modelName.toLowerCase())
 
   // const [isOpenCitySelectorOTRPrice, setIsOpenCitySelectorOTRPrice] =
   //   useState(false)
@@ -487,7 +492,11 @@ export default function UsedCarVariantList({
             />
             <div className={styles.wrapper}>
               <h1 className={styles.titleCar}>
-                {`${usedCarModelDetailsRes?.brandName}  ${modelName} ${usedCarModelDetailsRes?.variantName} ${usedCarModelDetailsRes?.nik}`}
+                {`${capitalizeFirstLetter(
+                  usedCarModelDetailsRes?.brandName,
+                )}  ${modelName} ${usedCarModelDetailsRes?.variantName} ${
+                  usedCarModelDetailsRes?.nik
+                }`}
               </h1>
               <h3 className={styles.titlePrice}>
                 Rp
