@@ -269,7 +269,13 @@ export const FormMileage = ({
           </div>
         </div>
       </div>
-      <div className={styles.errorContainer}></div>
+      <div
+        className={
+          isErrorMin || isErrorMinTwo || isErrorMax || isErrorMaxTwo
+            ? styles.errorContainer
+            : ''
+        }
+      ></div>
       <div
         className={
           isErrorMinTwo || isErrorMaxTwo || isErrorMin || isErrorMax
