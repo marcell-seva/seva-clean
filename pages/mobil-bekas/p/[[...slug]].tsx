@@ -132,7 +132,11 @@ export default function index({
   const capitalizeWord = (word: string) =>
     word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
 
-  const carModel = capitalizeWord(modelName as string)
+  const carModel =
+    modelName?.split(' ').length > 1
+      ? `${capitalizeWord(modelName.split(' ')[0] as string)}
+         ${capitalizeWord(modelName.split(' ')[1] as string)}`
+      : modelName
 
   const currentMonth = monthId(todayDate.getMonth())
 
