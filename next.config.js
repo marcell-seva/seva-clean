@@ -7,7 +7,7 @@ const nextConfig = {
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },
-  experimental: { scrollRestoration: true },
+  experimental: { scrollRestoration: false },
   compiler: {
     styledComponents: true,
   },
