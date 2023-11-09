@@ -371,6 +371,8 @@ export const CreditQualificationRejected = ({ onPage }: Props) => {
               src={RejectedImage}
               alt="approval-image"
               className={styles.rejectedImage}
+              height={200}
+              width={200}
             />
           </div>
           <h2 className={styles.titleText}>{titleText}</h2>
@@ -399,8 +401,8 @@ export const CreditQualificationRejected = ({ onPage }: Props) => {
             />
           </div>
         </div>
+        <FooterMobile pageOrigination={RouteName.IARejected} />
       </div>
-      <FooterMobile pageOrigination={RouteName.IARejected} />
       <CitySelectorModal
         isOpen={isOpenCitySelectorModal}
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}

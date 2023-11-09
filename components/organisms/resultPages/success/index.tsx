@@ -44,9 +44,8 @@ const LogoAppStore = '/revamp/icon/app-store.webp'
 
 export const CreditQualificationSuccess = () => {
   const titleText = 'Instant Approval Kamu Disetujui'
-  const dateText = JSON.parse(
-    localStorage.getItem('preApprovalResult') || '',
-  ).fincoResultAt
+  const [preApprovalResult] = useLocalStorage('preApprovalResult', '')
+  const dateText = preApprovalResult?.fincoResultAt
   const dateIAResult =
     Number(
       dayjs(dateText).add(7, 'days').format('DD MMMM YYYY').substring(0, 2),
@@ -222,6 +221,8 @@ export const CreditQualificationSuccess = () => {
           src={LogoGooglePlay}
           alt="google-play"
           className={styles.logoGooglePlay}
+          width={152}
+          height={46}
         />
       </a>
       <a
@@ -235,6 +236,8 @@ export const CreditQualificationSuccess = () => {
           src={LogoAppStore}
           alt="app-store"
           className={styles.logoAppStore}
+          width={152}
+          height={46}
         />
       </a>
     </div>
@@ -398,14 +401,15 @@ export const CreditQualificationSuccess = () => {
           <div className={styles.bundleImage}>
             <Image
               src={
-                JSON.parse(
-                  localStorage.getItem('preApprovalResult') || '',
-                ).finco.toLowerCase() === 'acc'
+                preApprovalResult?.finco &&
+                preApprovalResult?.finco.toLowerCase() === 'acc'
                   ? ApprovalImageAcc
                   : ApprovalImageTaf
               }
               alt="approval-image"
               className={styles.approvalImage}
+              width={200}
+              height={134}
             />
           </div>
           <h2 className={styles.titleText}>
@@ -432,8 +436,8 @@ export const CreditQualificationSuccess = () => {
             />
           </div>
         </div>
+        <FooterMobile pageOrigination="Instant Approval - Approved" />
       </div>
-      <FooterMobile pageOrigination="Instant Approval - Approved" />
       <CitySelectorModal
         isOpen={isOpenCitySelectorModal}
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}

@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import styles from 'styles/pages/credit-qualification-result.module.scss'
-
 import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
-import { AxiosResponse } from 'axios'
 import clsx from 'clsx'
-import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
-import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { useRouter } from 'next/router'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { CityOtrOption, NewFunnelCarVariantDetails } from 'utils/types'
 import { getToken } from 'utils/handler/auth'
-
 import {
   AnnouncementBoxDataType,
   MobileWebTopMenuType,
@@ -29,7 +25,6 @@ import {
   loanCalculatorDefaultUrl,
   loanCalculatorWithCityBrandModelVariantUrl,
 } from 'utils/helpers/routes'
-import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import { HeaderMobile } from 'components/organisms'
 import {
   Button,
@@ -62,7 +57,6 @@ import {
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
-import endpoints from 'helpers/endpoints'
 import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import { Currency } from 'utils/handler/calculation'
 import { useBadgePromo } from 'utils/hooks/usebadgePromo'
@@ -70,6 +64,8 @@ import { useUtils } from 'services/context/utilsContext'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { MobileWebFooterMenuType } from 'utils/types/props'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
 
 const MainImageGreenMale = '/revamp/illustration/credit-result-green-male.webp'
 const MainImageGreenFemale =
@@ -100,10 +96,7 @@ export default function CreditQualificationResultPage({
   const creditOccupationStatus =
     creditQualificationResultStorage?.occupation ?? ''
   const isOccupationPass = creditOccupationStatus.toLowerCase() === 'pass'
-  const dataReviewLocalStorage = localStorage.getItem('qualification_credit')
-  const dataReview = dataReviewLocalStorage
-    ? JSON.parse(dataReviewLocalStorage)
-    : null
+  const [dataReview] = useLocalStorage('qualification_credit', null)
   const [isActive, setIsActive] = useState(false)
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const {
@@ -166,7 +159,7 @@ export default function CreditQualificationResultPage({
   const getCarDetails = () => {
     if (dataReview?.variantId) {
       getCarVariantDetailsById(dataReview?.variantId).then((res) => {
-        setCarData(res.data)
+        setCarData(res)
       })
     }
   }
@@ -175,8 +168,8 @@ export default function CreditQualificationResultPage({
     getCustomerInfoSeva()
       .then((response) => {
         // setLoadShimmer2(false)
-        if (!!response.data[0].gender) {
-          setCustomerGender(response.data[0].gender)
+        if (!!response[0].gender) {
+          setCustomerGender(response[0].gender)
         }
       })
       .catch((err) => {
@@ -250,7 +243,7 @@ export default function CreditQualificationResultPage({
   }
 
   useEffect(() => {
-    if (!creditQualificationResultStorage || !dataReviewLocalStorage) {
+    if (!creditQualificationResultStorage || !dataReview) {
       router.replace(loanCalculatorDefaultUrl)
     } else {
       saveMobileWebTopMenus(dataMobileMenu)
@@ -536,7 +529,7 @@ export default function CreditQualificationResultPage({
     try {
       const dataKTPUser = await getCustomerKtpSeva()
       saveSessionStorage(SessionStorageKey.OCRKTP, 'kualifikasi-kredit')
-      if (dataKTPUser.data.data.length > 0) {
+      if (dataKTPUser.data.length > 0) {
         saveSessionStorage(SessionStorageKey.KTPUploaded, 'uploaded')
         saveSessionStorage(
           SessionStorageKey.LastVisitedPageKKIAFlow,
@@ -583,7 +576,7 @@ export default function CreditQualificationResultPage({
       temanSevaStatus = 'Yes'
     } else if (!!getToken()) {
       const response = await getCustomerInfoSeva()
-      if (response.data[0].temanSevaTrxCode) {
+      if (response[0].temanSevaTrxCode) {
         temanSevaStatus = 'Yes'
       }
     }

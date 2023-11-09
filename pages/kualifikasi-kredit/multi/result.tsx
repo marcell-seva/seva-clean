@@ -175,7 +175,7 @@ const MultiKKResult = ({
           'is-login': getToken() ? 'true' : 'false',
         },
       })
-      saveDataAnnouncementBox(res)
+      saveDataAnnouncementBox(res.data)
     } catch (error) {}
   }
   const sendToWhatsapp = async () => {

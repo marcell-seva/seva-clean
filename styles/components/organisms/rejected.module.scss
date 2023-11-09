@@ -7,7 +7,7 @@
 }
 
 .container {
-  max-width: 480px;
+  max-width: 570px;
   margin-top: 54px; // page header height is 54px
   margin-left: auto;
   margin-right: auto;
@@ -15,7 +15,8 @@
 
 .contentWithSpace {
   @extend .content;
-  margin-top: 114px !important; // page header with announcement box
+  @include mobileView;
+  margin: 114px auto 0 !important;
 }
 
 .announcementboxpadding {
