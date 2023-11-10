@@ -4,6 +4,7 @@ import { Space } from 'antd'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
 import elementId from 'helpers/elementIds'
 import Image from 'next/image'
+import { capitalizeFirstLetter } from 'utils/stringUtils'
 
 const LogoToyota = '/revamp/icon/logo-toyota.webp'
 const LogoDaihatsu = '/revamp/icon/logo-daihatsu.webp'
@@ -83,14 +84,39 @@ export const FormSelectBrandUsedCar = ({
       ),
     }
   })
+
   const onClick = (key: string) => {
-    if (isCheckedBrandQuery.includes(key)) {
-      setIsCheckedBrand(isCheckedBrandQuery.filter((item) => item !== key))
-      setIsCheckedBrandQuery(isCheckedBrandQuery.filter((item) => item !== key))
-      // paramQuery.brand = isCheckedBrandQuery.filter((item) => item !== key)
+    if (
+      isCheckedBrandQuery.includes(
+        key === 'bmw' ? key.toUpperCase() : capitalizeFirstLetter(key),
+      )
+    ) {
+      setIsCheckedBrand(
+        isCheckedBrandQuery.filter(
+          (item) =>
+            item !==
+            (key === 'bmw' ? key.toUpperCase() : capitalizeFirstLetter(key)),
+        ),
+      )
+      setIsCheckedBrandQuery(
+        isCheckedBrandQuery.filter(
+          (item) =>
+            item !==
+            (key === 'bmw' ? key.toUpperCase() : capitalizeFirstLetter(key)),
+        ),
+      )
+      // paramQuery.brand = isCheckedBrandQuery.filter((item) => item !== capitalizeFirstLetter(key))
     } else {
-      setIsCheckedBrand(isCheckedBrandQuery.concat(key))
-      setIsCheckedBrandQuery(isCheckedBrandQuery.concat(key))
+      setIsCheckedBrand(
+        isCheckedBrandQuery.concat(
+          key === 'bmw' ? key.toUpperCase() : capitalizeFirstLetter(key),
+        ),
+      )
+      setIsCheckedBrandQuery(
+        isCheckedBrandQuery.concat(
+          key === 'bmw' ? key.toUpperCase() : capitalizeFirstLetter(key),
+        ),
+      )
       // paramQuery.brand = isCheckedBrandQuery.concat(key)
     }
   }

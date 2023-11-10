@@ -4,7 +4,7 @@ import styles from 'styles/components/organisms/description.module.scss'
 const promoBannerTSO = '/revamp/illustration/PromoTSO.webp'
 const promoBannerCumaDiSEVA = '/revamp/illustration/PromoCumaDiSEVA.webp'
 const promoTradeIn = '/revamp/illustration/PromoTradeIn.webp'
-const setirKanan = '/revamp/images/logo/setir-kanan.png'
+const setirKanan = '/revamp/images/logo/logo_setirkanan.webp'
 
 import {
   IconChevronRight,
@@ -77,7 +77,12 @@ const DescriptionSection = ({ scrollToLeads }: DescriptionSectionProps) => {
         </div>
         <div className={styles.row}>
           <div className={styles.setirKananSection}>
-            <Image src={setirKanan} width={64} height={23} alt="Setir Kanan" />
+            <Image
+              src={setirKanan}
+              width={64}
+              height={22.561}
+              alt="Setir Kanan"
+            />
             <p className={styles.openSansRegular}>
               Mobil bekas berkualitas ini disediakan oleh Setir Kanan.
             </p>
