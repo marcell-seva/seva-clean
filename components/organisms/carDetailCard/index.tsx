@@ -274,7 +274,11 @@ export const CarDetailCard = ({
     saveDataLeads(recommendation)
     setOpenInterestingModal(true)
   }
-  const IconThumbs = () => <IconThumbsUp />
+  const IconThumbs = () => (
+    <div>
+      <IconThumbsUp />
+    </div>
+  )
 
   return (
     <div className={styles.container}>
