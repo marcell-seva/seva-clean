@@ -287,6 +287,7 @@ const YearRangeWidget = ({ minMaxYear, onClose }: YearRangeWidgetProps) => {
             defaultValue={[minTemp || minDefault, maxTemp || maxDefault]}
             value={[minTemp || minDefault, maxTemp || maxDefault]}
             autoFocus={false}
+            tooltip={{ open: false }}
           />
         </div>
       </div>
