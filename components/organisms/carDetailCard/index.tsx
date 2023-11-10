@@ -275,8 +275,8 @@ export const CarDetailCard = ({
     setOpenInterestingModal(true)
   }
   const IconThumbs = () => (
-    <div>
-      <IconThumbsUp />
+    <div style={{ marginTop: '3.5px' }}>
+      <IconThumbsUp width={14} height={14} />
     </div>
   )
 
