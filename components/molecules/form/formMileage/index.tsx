@@ -292,7 +292,7 @@ export const FormMileage = ({
             onChange={onChangeSlider}
             defaultValue={[minTemp || minDefault, maxTemp || maxDefault]}
             value={[minTemp || minDefault, maxTemp || maxDefault]}
-            tooltip={{ defaultOpen: false }}
+            tooltip={{ open: false }}
           />
         </div>
       </div>

@@ -12,11 +12,11 @@ export const sortOptions = [
 ]
 
 export const sortOptionsUsedCar = [
-  {
-    label: 'Relevansi',
-    value: 'relevance',
-    testid: 'sorting-relevansi',
-  },
+  // {
+  //   label: 'Relevansi',
+  //   value: 'relevance',
+  //   testid: 'sorting-relevansi',
+  // },
   {
     label: 'Harga Terendah',
     value: 'lowToHigh',

@@ -289,6 +289,7 @@ export const FormPriceUsedCar = ({
             onChange={onChangeSlider}
             defaultValue={[minTemp || minDefault, maxTemp || maxDefault]}
             value={[minTemp || minDefault, maxTemp || maxDefault]}
+            tooltip={{ open: false }}
           />
         </div>
       </div>

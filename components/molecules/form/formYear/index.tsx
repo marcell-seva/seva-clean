@@ -290,7 +290,7 @@ export const FormYear = ({
             defaultValue={[minTemp || minDefault, maxTemp || maxDefault]}
             value={[minTemp || minDefault, maxTemp || maxDefault]}
             autoFocus={false}
-            tooltip={{ defaultOpen: false }}
+            tooltip={{ open: false }}
           />
         </div>
       </div>
