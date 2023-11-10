@@ -10,6 +10,7 @@ import {
   SearchUsedCarWidgetContextType,
 } from 'services/context'
 import { getModelUsedCar } from 'services/api'
+import { capitalizeFirstLetter } from 'utils/stringUtils'
 
 const { Option } = Select
 
@@ -158,8 +159,7 @@ export const FormSearchModel = ({
                   ? item.brandName.toUpperCase()
                   : item.brandName.toUpperCase() === 'MERCEDEZ-BENZ'
                   ? 'Mercedez-Benz'
-                  : item.brandName.charAt(0).toUpperCase() +
-                    item.brandName.slice(1)}{' '}
+                  : capitalizeFirstLetter(item.brandName)}{' '}
                 {item.modelName}
               </Option>
             ))}
