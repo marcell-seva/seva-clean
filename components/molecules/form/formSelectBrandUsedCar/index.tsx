@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styles from 'styles/components/molecules/form/formSelectBrandCar.module.scss'
+import styles from 'styles/components/molecules/form/formSelectBrandCarFilter.module.scss'
 import { Space } from 'antd'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
 import elementId from 'helpers/elementIds'
@@ -160,7 +160,7 @@ export const FormSelectBrandUsedCar = ({
 
   return (
     <div className={styles.container}>
-      <Space size={[16, 16]} wrap>
+      <div className={styles.wrapperContainer}>
         {carList.map(({ key, icon, value, isChecked }) => {
           return (
             <>
@@ -168,7 +168,9 @@ export const FormSelectBrandUsedCar = ({
                 <div
                   onClick={() => onClick(value)}
                   key={key}
-                  className={!isChecked ? styles.box : styles.boxOnclick}
+                  className={
+                    !isChecked ? styles.boxFilter : styles.boxOnclickFilter
+                  }
                 >
                   <div className={styles.content}>{key}</div>
                 </div>
@@ -176,7 +178,9 @@ export const FormSelectBrandUsedCar = ({
                 <div
                   onClick={() => onClick(value)}
                   key={key}
-                  className={!isChecked ? styles.box : styles.boxOnclick}
+                  className={
+                    !isChecked ? styles.boxFilter : styles.boxOnclickFilter
+                  }
                 >
                   <div className={styles.content}>
                     {icon} {key}
@@ -186,7 +190,7 @@ export const FormSelectBrandUsedCar = ({
             </>
           )
         })}
-      </Space>
+      </div>
     </div>
   )
 }
