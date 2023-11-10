@@ -34,7 +34,6 @@
 .upperInfoGreen {
   @include greenBorder();
   background: #{$secondary-green};
-  border-bottom: none;
 }
 
 .detailSection {
@@ -52,6 +51,7 @@
 .detailSectionGreen {
   @include greenBorder();
   background: #{$shades-green-5};
+  border-top: none;
   border-bottom: none;
   border-radius: 0;
 }

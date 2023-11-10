@@ -215,7 +215,9 @@ export default function CarRecommendations({
                   <LabelMudah
                     style={{ left: 0 }}
                     prefixComponent={() => (
-                      <IconThumbsUp width={16} height={16} color="white" />
+                      <div style={{ marginTop: '3.5px' }}>
+                        <IconThumbsUp width={14} height={14} color="white" />
+                      </div>
                     )}
                     labelText="Rekomendasi"
                     onClick={onClick}
