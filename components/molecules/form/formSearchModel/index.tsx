@@ -154,7 +154,13 @@ export const FormSearchModel = ({
                   fontWeight: '400',
                 }}
               >
-                {item.brandName} {item.modelName}
+                {item.brandName.toUpperCase() === 'BMW'
+                  ? item.brandName.toUpperCase()
+                  : item.brandName.toUpperCase() === 'MERCEDEZ-BENZ'
+                  ? 'Mercedez-Benz'
+                  : item.brandName.charAt(0).toUpperCase() +
+                    item.brandName.slice(1)}{' '}
+                {item.modelName}
               </Option>
             ))}
           </Select>
