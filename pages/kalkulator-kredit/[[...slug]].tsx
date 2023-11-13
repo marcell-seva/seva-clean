@@ -1544,7 +1544,7 @@ export default function LoanCalculatorPage() {
     saveCities(cityRes)
   }
   const fetchMobileTopMenus = async () => {
-    const menus = await api.getMobileHeaderMenu()
+    const menus = await getMobileHeaderMenu()
     saveMobileWebTopMenus(menus.data)
   }
 
