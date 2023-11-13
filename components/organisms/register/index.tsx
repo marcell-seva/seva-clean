@@ -140,9 +140,9 @@ export const Register = () => {
         (response: any) => {
           setDataCar(response)
           trackEventCountly(CountlyEventNames.WEB_REGISTRATION_PAGE_VIEW, {
-            CAR_BRAND: response.data.modelDetail.brand,
-            CAR_MODEL: response.data.modelDetail.model,
-            CAR_VARIANT: response.data.variantDetail.name,
+            CAR_BRAND: response.modelDetail.brand,
+            CAR_MODEL: response.modelDetail.model,
+            CAR_VARIANT: response.variantDetail.name,
           })
         },
       )
