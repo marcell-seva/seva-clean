@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { isIphone, screenSize } from 'utils/window'
-import { useTranslation } from 'react-i18next'
 import elementId from 'helpers/elementIds'
 import { FormControlValue, Option } from 'utils/types'
 import { videoInput } from 'utils/helpers/const'
@@ -17,8 +16,6 @@ interface CameraSelectProps {
 export const CameraSelect = ({ onSelected, isKtp }: CameraSelectProps) => {
   const [selectedDevice, setSelectedDevice] = useState<FormControlValue>('')
   const [options, setOptions] = useState<Option<FormControlValue>[]>([])
-
-  const { t } = useTranslation()
 
   const handleDevices = useCallback(
     (mediaDevices: any) => {
@@ -56,11 +53,11 @@ export const CameraSelect = ({ onSelected, isKtp }: CameraSelectProps) => {
 
   const getCameraLabel = (next: MediaDeviceInfo) => {
     if (!next.label) {
-      return t('camera.camera')
+      return 'Kamera'
     } else if (isBackCamera(next.label)) {
-      return t('camera.backCamera')
+      return 'Kamera Belakang'
     } else {
-      return t('camera.frontCamera')
+      return 'Kamera Depan'
     }
   }
 
