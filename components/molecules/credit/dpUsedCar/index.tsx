@@ -235,7 +235,7 @@ const DpUsedCarForm: React.FC<DpFormProps> = ({
     <div className={styles.wrapper}>
       <label className={styles.titleText}>{label}</label>
       <Row gutter={16}>
-        <Col span={18}>
+        <Col span={18} xs={16}>
           <Input
             type="tel"
             className={clsx({
@@ -267,7 +267,7 @@ const DpUsedCarForm: React.FC<DpFormProps> = ({
             </div>
           )}
         </Col>
-        <Col span={6} style={{ gap: '16px', alignItems: 'center' }}>
+        <Col span={6} xs={8} style={{ gap: '16px', alignItems: 'center' }}>
           <Input
             type="tel"
             className={clsx({

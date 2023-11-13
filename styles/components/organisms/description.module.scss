@@ -12,10 +12,15 @@
   align-items: flex-start;
   // padding: 16px;
   gap: 16px;
-  height: 288px;
+  // height: 288px;
+  // padding: 24px 16px 40px 16px;
+  margin-top: 24px;
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-bottom: 40px;
   background: #ffffff;
   border-radius: 8px;
-  margin: 24px 0px;
+  // margin: 24px 0px;
   .bannerPromo {
     &:first-child {
       margin-left: 18px;
@@ -46,11 +51,18 @@
   gap: 10px;
   width: 50%;
 }
-.rowWithGap24 {
+.rowWithGap242 {
   display: flex;
   align-items: center;
   gap: 24px;
+  width: 100%;
+}
+.rowWithGap24 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   width: 50%;
+  padding-bottom: 16px;
 }
 .rowWithGap24SetirKanan {
   display: flex;
@@ -327,4 +339,11 @@ $layarHP: 375px;
 }
 .button {
   margin-top: 8px;
+}
+
+.specification {
+  margin-top: 16px;
+  padding: 0 16px 0 16px;
+  width: 100%;
+  gap: 16px;
 }

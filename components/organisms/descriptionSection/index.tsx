@@ -88,108 +88,110 @@ const DescriptionSection = ({ scrollToLeads }: DescriptionSectionProps) => {
             </p>
           </div>
         </div>
-        <div className={styles.row}>
-          <div className={styles.rowWithGap24}>
-            <IconSpeed
-              width={16}
-              height={16}
-              color="#878D98"
-              alt="SEVA Speedometer Icon"
-            />
-            <p className={styles.openSans} style={{ color: '#13131B' }}>
-              {addSeparator(item.mileage.toString())}km
-            </p>
+        <div className={styles.specification}>
+          <div className={styles.rowWithGap242}>
+            <div className={styles.rowWithGap24}>
+              <IconSpeed
+                width={16}
+                height={16}
+                color="#878D98"
+                alt="SEVA Speedometer Icon"
+              />
+              <p className={styles.openSans} style={{ color: '#13131B' }}>
+                {addSeparator(item.mileage.toString())}km
+              </p>
+            </div>
+            <div className={styles.rowWithGap24}>
+              <IconCalendar
+                width={16}
+                height={16}
+                color={'#878D98'}
+                alt="SEVA Year Icon"
+              />
+              <p className={styles.openSans} style={{ color: '#13131B' }}>
+                {item.nik}
+              </p>
+            </div>
           </div>
-          <div className={styles.rowWithGap24}>
-            <IconCalendar
-              width={16}
-              height={16}
-              color={'#878D98'}
-              alt="SEVA Year Icon"
-            />
-            <p className={styles.openSans} style={{ color: '#13131B' }}>
-              {item.nik}
-            </p>
+          <div className={styles.rowWithGap242}>
+            <div className={styles.rowWithGap24}>
+              <IconColor
+                width={16}
+                height={16}
+                color={'#878D98'}
+                alt="SEVA Color Icon"
+              />
+              <p className={styles.openSans} style={{ color: '#13131B' }}>
+                {item.color}
+              </p>
+            </div>
+            <div className={styles.rowWithGap24}>
+              <IconTransmission
+                width={16}
+                height={16}
+                color={'#878D98'}
+                alt="SEVA Transmission Icon"
+              />
+              <p className={styles.openSans} style={{ color: '#13131B' }}>
+                {
+                  item.carSpecifications.find(
+                    (item: any) => item.specCode === 'transmission',
+                  ).value
+                }
+              </p>
+            </div>
           </div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.rowWithGap24}>
-            <IconColor
-              width={16}
-              height={16}
-              color={'#878D98'}
-              alt="SEVA Color Icon"
-            />
-            <p className={styles.openSans} style={{ color: '#13131B' }}>
-              {item.color}
-            </p>
+          <div className={styles.rowWithGap242}>
+            <div className={styles.rowWithGap24}>
+              <IconLocation
+                width={16}
+                height={16}
+                color={'#878D98'}
+                alt="SEVA Location Icon"
+              />
+              <p className={styles.openSans} style={{ color: '#13131B' }}>
+                {item.cityName}
+              </p>
+            </div>
+            <div className={styles.rowWithGap24}>
+              <IconNumberField
+                width={16}
+                height={16}
+                color={'#878D98'}
+                alt="SEVA Plat Icon"
+              />
+              <p className={styles.openSans} style={{ color: '#13131B' }}>
+                Plat {item.plate}
+              </p>
+            </div>
           </div>
-          <div className={styles.rowWithGap24}>
-            <IconTransmission
-              width={16}
-              height={16}
-              color={'#878D98'}
-              alt="SEVA Transmission Icon"
-            />
-            <p className={styles.openSans} style={{ color: '#13131B' }}>
-              {
-                item.carSpecifications.find(
-                  (item: any) => item.specCode === 'transmission',
-                ).value
-              }
-            </p>
-          </div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.rowWithGap24}>
-            <IconLocation
-              width={16}
-              height={16}
-              color={'#878D98'}
-              alt="SEVA Location Icon"
-            />
-            <p className={styles.openSans} style={{ color: '#13131B' }}>
-              {item.cityName}
-            </p>
-          </div>
-          <div className={styles.rowWithGap24}>
-            <IconNumberField
-              width={16}
-              height={16}
-              color={'#878D98'}
-              alt="SEVA Plat Icon"
-            />
-            <p className={styles.openSans} style={{ color: '#13131B' }}>
-              Plat {item.plate}
-            </p>
-          </div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.rowWithGap24}>
-            <IconDocumentSigned
-              width={16}
-              height={16}
-              color={'#878D98'}
-              alt="SEVA Pajak Kendaraan"
-            />
-            <p className={styles.openSans} style={{ color: '#13131B' }}>
-              {convertStringDateToMonthYear(item.taxDate)}
-            </p>
-          </div>
-          <div className={styles.rowWithGap24}>
-            <IconFuel
-              width={16}
-              height={16}
-              color={'#878D98'}
-              alt="SEVA Gas Station Icon"
-            />
-            <p className={styles.openSans} style={{ color: '#13131B' }}>
-              {
-                item.carSpecifications.find(
-                  (item: any) => item.specCode === 'fuel-type',
-                ).value
-              }
-            </p>
+          <div className={styles.rowWithGap242}>
+            <div className={styles.rowWithGap24}>
+              <IconDocumentSigned
+                width={16}
+                height={16}
+                color={'#878D98'}
+                alt="SEVA Pajak Kendaraan"
+              />
+              <p className={styles.openSans} style={{ color: '#13131B' }}>
+                {convertStringDateToMonthYear(item.taxDate)}
+              </p>
+            </div>
+            <div className={styles.rowWithGap24}>
+              <IconFuel
+                width={16}
+                height={16}
+                color={'#878D98'}
+                alt="SEVA Gas Station Icon"
+              />
+              <p className={styles.openSans} style={{ color: '#13131B' }}>
+                {
+                  item.carSpecifications.find(
+                    (item: any) => item.specCode === 'fuel-type',
+                  ).value
+                }
+              </p>
+            </div>
           </div>
         </div>
         <div className={styles.row}>

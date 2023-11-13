@@ -3,6 +3,7 @@
 
 .wrapper {
   background-color: #{$primary-white};
+  box-shadow: inset 0px 6px 12px -1px rgba(76, 82, 95, 0.08);
   // padding: 0px 16px;
 }
 
@@ -282,13 +283,13 @@
 }
 
 .reference {
-  padding-top: 40px;
+  // padding-top: 40px;
   background: white;
   scroll-margin-top: 80px;
 }
 
 .referenceWithoutAnnounce {
-  padding-top: 40px;
+  // padding-top: 40px;
   background: white;
   scroll-margin-top: 10px;
 }
