@@ -4,7 +4,6 @@ import { User, Token, Filter } from 'utils/types'
 import { encryptValue } from 'utils/encryptionUtils'
 import { saveLocalStorage } from 'utils/handler/localStorage'
 import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
-import { getUserInfo as gui } from 'services/api'
 import { LoginSevaUrl } from 'utils/helpers/routes'
 import { destroySessionMoEngage } from 'helpers/moengage'
 
