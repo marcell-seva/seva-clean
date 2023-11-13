@@ -6,7 +6,6 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { colors, transparent } from '../../../styles/colors'
 import { createPortal } from 'react-dom'
@@ -59,13 +58,12 @@ export const Select = <T extends FormControlValue>({
   disabled,
   rotateSuffixIcon = true,
 }: SelectProps<T>): ReactElement => {
-  const { t } = useTranslation()
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
   const getOptionLabel = (valueParam: FormControlValue) => {
     const labelKey = options?.find((option) => {
       return option.value === valueParam
     })?.label
-    return t(labelKey || '')
+    return labelKey || ''
   }
   const [showOptionArea, setShowOptionArea] = useState(false)
   const [inputValue, setInputValue] = useState(
@@ -93,13 +91,13 @@ export const Select = <T extends FormControlValue>({
         {options?.map((option, index) => (
           <StyledOption
             key={index}
-            isSelected={t(option.label) === inputValue}
+            isSelected={option.label === inputValue}
             onMouseDown={() => {
               onSelect(option)
             }}
             className={'select-item-element'}
           >
-            {enableSearch ? option.label : t(option.label)}
+            {option.label}
           </StyledOption>
         ))}
       </StyledOptionArea>
@@ -155,7 +153,7 @@ export const Select = <T extends FormControlValue>({
           }}
           onChange={handleInputChange}
           readOnly={!enableSearch}
-          placeholder={placeholder || t('common.select')}
+          placeholder={placeholder || 'Pilih'}
           inputValue={inputValue}
           disabled={disabled}
           className={'select-element'}
@@ -191,7 +189,7 @@ export const Select = <T extends FormControlValue>({
           floatDropdown={floatDropdown}
         >
           <NoOptionText>
-            <TextLegalMedium>{t(noOptionText || '')}</TextLegalMedium>
+            <TextLegalMedium>{noOptionText || ''}</TextLegalMedium>
           </NoOptionText>
         </StyledOptionArea>
       )}
