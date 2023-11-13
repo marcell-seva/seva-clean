@@ -233,7 +233,7 @@ export const Login = () => {
       ).then((result) => {
         saveLocalStorage(
           LocalStorageKey.IdCustomerRefi,
-          encryptValue(result?.id),
+          encryptValue(result?.data.id),
         )
       })
     }
@@ -249,7 +249,7 @@ export const Login = () => {
       ).then((result) => {
         saveLocalStorage(
           LocalStorageKey.IdCustomerRefi,
-          encryptValue(result?.id),
+          encryptValue(result?.data.id),
         )
       })
     }
