@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from 'styles/pages/instant-approval-review.module.scss'
-import { Modal, Progress, Tooltip } from 'antd'
+import { Progress, Tooltip } from 'antd'
 import { Button, IconInfo } from '../../../components/atoms'
 import { ButtonSize, ButtonVersion } from '../../../components/atoms/button'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
@@ -51,7 +51,7 @@ import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { navigateToKK } from 'utils/navigate'
 import Image from 'next/image'
-import { api } from 'services/api'
+
 import {
   getCustomerInfoSeva,
   getCustomerKtpSeva,
@@ -60,6 +60,10 @@ import {
 } from 'utils/handler/customer'
 import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
+import dynamic from 'next/dynamic'
+import { postInstantApproval } from 'services/api'
+
+const Modal = dynamic(() => import('antd/lib/modal'), { ssr: false })
 
 const CreditQualificationReviewPage = () => {
   useProtectPage()
@@ -179,7 +183,7 @@ const CreditQualificationReviewPage = () => {
         cityDom: mainKtpDomicileOptionData.lastChoosenDomicile,
         leadName: mainKTP === 'spouse' ? ktpData[1].name : ktpData[0].name,
       }
-      const res = await api.postInstantApproval(dataBodyIA, {
+      const res = await postInstantApproval(dataBodyIA, {
         headers: { Authorization: getToken()?.idToken },
       })
       if (res) {

@@ -1,4 +1,5 @@
 import {
+  CheckTemanSeva,
   CreateProbeTrackRequest,
   CustomerKtpSeva,
   DeleteAccountRequestType,
@@ -244,7 +245,10 @@ const postUpdateLeadsCM = (
   config: AxiosRequestConfig,
 ) => post(collections.omnicom.updateLeadsCM, body, config)
 
-export const api = {
+const postCheckTemanSeva = (body: CheckTemanSeva) =>
+  post(collections.temanSeva.checkTemanSeva, body)
+
+export {
   getMenu,
   getCities,
   getAgent,
@@ -275,9 +279,7 @@ export const api = {
   getAvailableNIK,
   getLeadsDetail,
   getFinalDpRangeValidation,
-
   postUpdateLeadsOTO,
-
   postUnverifiedLeadsNew,
   postRefreshToken,
   postSendSMSGeneration,
@@ -301,4 +303,5 @@ export const api = {
   postDeleteAccount,
   postUpdateProfile,
   postUpdateLeadsCM,
+  postCheckTemanSeva,
 }

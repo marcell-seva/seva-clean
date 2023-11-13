@@ -7,9 +7,9 @@ import { CarRecommendation } from 'utils/types/context'
 import { Location } from 'utils/types'
 import { AlternativeCarCard } from '../alternativeCarCard'
 import Image from 'next/image'
-import { api } from 'services/api'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Swiper as SwiperType } from 'swiper'
+import { getCities } from 'services/api'
 // import { LoanRank } from 'models/models'
 
 const PLPEmptyImage = '/revamp/illustration/plp-empty.webp'
@@ -25,7 +25,7 @@ export const PLPEmpty = ({ alternativeCars, onClickLabel }: PLPEmptyProps) => {
   const swiperRef = useRef<SwiperType>()
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      api.getCities().then((res) => {
+      getCities().then((res) => {
         setCityListApi(res)
       })
     }

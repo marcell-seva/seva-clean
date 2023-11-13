@@ -8,7 +8,7 @@ import { LocalStorageKey } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { CityOtrOption } from 'utils/types/utils'
 import Image from 'next/image'
-import { api } from 'services/api'
+import { getCities, postNewFunnelCityRecommendations } from 'services/api'
 
 const EmptyCar = '/revamp/illustration/empty-car.webp'
 
@@ -59,7 +59,7 @@ export const ProductDetailEmptyState: React.FC<PropsPDPEmptyState> = ({
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      api.getCities().then((res) => {
+      getCities().then((res) => {
         setCityListApi(res)
       })
     }
@@ -71,7 +71,7 @@ export const ProductDetailEmptyState: React.FC<PropsPDPEmptyState> = ({
         modelName: model,
         city: cityOtr?.cityCode || 'jakarta',
       }
-      const data = await api.postNewFunnelCityRecommendations(payload)
+      const data = await postNewFunnelCityRecommendations(payload)
       setCityRecommendations(data)
     } catch (error) {}
   }

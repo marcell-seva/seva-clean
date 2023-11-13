@@ -1,5 +1,15 @@
-import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { api } from 'services/api'
+import type { AxiosRequestConfig, AxiosResponse } from 'axios'
+import {
+  getAvailableNIK,
+  getUserInfo,
+  postCheckReferralCode,
+  postDeleteAccount,
+  postSaveKtp,
+  postSaveKtpSpouse,
+  postUpdateProfile,
+  getCustomerKtpSeva as gcks,
+  getCustomerSpouseKtpSeva as gcsks,
+} from 'services/api'
 import { encryptValue } from 'utils/encryptionUtils'
 import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { saveLocalStorage } from 'utils/handler/localStorage'
@@ -14,35 +24,33 @@ import {
 import { setAmplitudeUserId } from 'services/amplitude'
 
 export const getCustomerInfoSeva = () => {
-  return api.getUserInfo()
+  return getUserInfo()
 }
 
-export const getCustomerInfoWrapperSeva = () => {
-  return getCustomerInfoSeva()
-    .then((response) => {
-      const customerId = response[0].id ?? ''
-      const customerName = response[0].fullName ?? ''
-      setAmplitudeUserId(response[0].phoneNumber ?? '')
-      saveLocalStorage(
-        LocalStorageKey.CustomerId,
-        encryptValue(customerId.toString()),
-      )
-      saveLocalStorage(LocalStorageKey.CustomerName, encryptValue(customerName))
-      saveSessionStorage(
-        SessionStorageKey.CustomerId,
-        encryptValue(customerId.toString()),
-      )
-      return response
-    })
-    .catch((err: any) => {
-      if (err?.response?.status === 404) {
-        removeInformationWhenLogout()
-      }
-    })
+export const getCustomerInfoWrapperSeva = async () => {
+  try {
+    const response = await getCustomerInfoSeva()
+    const customerId = response[0].id ?? ''
+    const customerName = response[0].fullName ?? ''
+    saveLocalStorage(
+      LocalStorageKey.CustomerId,
+      encryptValue(customerId.toString()),
+    )
+    saveLocalStorage(LocalStorageKey.CustomerName, encryptValue(customerName))
+    saveSessionStorage(
+      SessionStorageKey.CustomerId,
+      encryptValue(customerId.toString()),
+    )
+    return response
+  } catch (err: any) {
+    if (err?.response?.status === 404) {
+      removeInformationWhenLogout()
+    }
+  }
 }
 
 export const getCustomerKtpSeva = () => {
-  return api.getCustomerKtpSeva({
+  return gcks({
     headers: {
       Authorization: getToken()?.idToken,
     },
@@ -50,7 +58,7 @@ export const getCustomerKtpSeva = () => {
 }
 
 export const getCustomerSpouseKtpSeva = () => {
-  return api.getCustomerSpouseKtpSeva({
+  return gcsks({
     headers: {
       Authorization: getToken()?.idToken,
     },
@@ -65,7 +73,7 @@ export const checkReferralCode = (
     data: any
   }>
 > => {
-  return api.postCheckReferralCode(
+  return postCheckReferralCode(
     {
       refcode,
       phoneNumber,
@@ -81,11 +89,11 @@ export const checkReferralCode = (
 export const checkNIKAvailable = (nik: string) => {
   const params = new URLSearchParams()
   params.append('nik', nik)
-  return api.getAvailableNIK({ params })
+  return getAvailableNIK({ params })
 }
 
 export const saveKtp = (data: CustomerKtpSeva, config?: AxiosRequestConfig) => {
-  return api.postSaveKtp(
+  return postSaveKtp(
     { ...data },
     { ...config, headers: { Authorization: getToken()?.idToken } },
   )
@@ -95,7 +103,7 @@ export const saveKtpSpouse = (
   data: CustomerKtpSeva,
   config?: AxiosRequestConfig,
 ) => {
-  return api.postSaveKtpSpouse(
+  return postSaveKtpSpouse(
     { spouseKtpObj: { ...data }, isSpouse: true },
     { ...config, headers: { Authorization: getToken()?.idToken } },
   )
@@ -105,7 +113,7 @@ export const deleteAccount = (
   payload: DeleteAccountRequestType,
   config?: AxiosRequestConfig,
 ) => {
-  return api.postDeleteAccount(
+  return postDeleteAccount(
     {
       phoneNumber: payload.phoneNumber,
       createdBy: payload.reason,
@@ -118,7 +126,7 @@ export const updateProfile = (
   data: UpdateProfileType,
   config?: AxiosRequestConfig,
 ) => {
-  return api.postUpdateProfile(data, {
+  return postUpdateProfile(data, {
     ...config,
     headers: { Authorization: getToken()?.idToken },
   })

@@ -21,6 +21,10 @@
   flex-direction: column;
   margin-top: 16px;
   padding-right: 17px;
+  a {
+    margin-bottom: 8px;
+    margin-top: -2px;
+  }
 
   .nameAge {
     font-family: var(--open-sans-semi-bold);
@@ -34,7 +38,11 @@
     font-size: 12px;
     line-height: 18px;
     color: #{$primary-dark-blue};
+  }
+  .carBrandAndModelName {
+    @extend .timeCityCar;
     margin-bottom: 8px;
+    height: 18px;
   }
 
   .description {

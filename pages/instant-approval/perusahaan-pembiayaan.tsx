@@ -15,10 +15,11 @@ import { defaultSeoImage } from 'utils/helpers/const'
 import { ProgressBar } from 'components/atoms/progressBar'
 import { Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
-import { api } from 'services/api'
+
 import { InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import { getMetaTagData } from 'services/api'
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 const LogoACC = '/revamp/icon/logo-acc.webp'
@@ -232,7 +233,7 @@ export const getServerSideProps = async (ctx: any) => {
   const model = (ctx.query.model as string)?.replaceAll('-', '')
 
   try {
-    const [meta]: any = await Promise.all([api.getMetaTagData(model as string)])
+    const [meta]: any = await Promise.all([getMetaTagData(model as string)])
     return { props: { meta: meta.data } }
   } catch (e) {
     return { props: { meta: {} } }

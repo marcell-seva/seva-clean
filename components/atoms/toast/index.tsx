@@ -20,7 +20,7 @@ export const Toast: React.FC<PropsToast> = ({
       className="toast-custom-modal"
       footer={null}
       width={width}
-      maskStyle={{ background: 'rgba(19, 19, 27, 0.5)' }}
+      styles={{ mask: { background: 'rgba(19, 19, 27, 0.5)' } }}
       {...props}
     >
       <div className={styles.bgModal} />

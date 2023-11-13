@@ -3,9 +3,8 @@ import { useRouter } from 'next/router'
 import {
   useLocalStorage,
   useLocalStorageWithEncryption,
-} from '../useLocalStorage'
+} from 'utils/hooks/useLocalStorage'
 import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
-import { CityOtrOption } from 'utils/types'
 import { SimpleCarVariantDetail } from 'utils/types/utils'
 import {
   LoanRank,
@@ -18,6 +17,7 @@ import {
 } from 'utils/helpers/routes'
 import { getPAAIAInfo } from 'utils/httpUtils/customerUtils'
 import { saveSessionStorage } from 'utils/handler/sessionStorage'
+import { saveLocalStorage } from 'utils/handler/localStorage'
 
 export const usePaAmbassadorData = (orderId?: string) => {
   const router = useRouter()
@@ -27,10 +27,6 @@ export const usePaAmbassadorData = (orderId?: string) => {
       LocalStorageKey.PAAmbassadorInfo,
       null,
     )
-  const [, setCity] = useLocalStorage<CityOtrOption | null>(
-    LocalStorageKey.CityOtr,
-    null,
-  )
   const [, setSimpleCarVariantDetails] =
     useLocalStorage<SimpleCarVariantDetail | null>(
       LocalStorageKey.SimpleCarVariantDetails,
@@ -60,17 +56,20 @@ export const usePaAmbassadorData = (orderId?: string) => {
     }
     getPAAIAInfo(orderId)
       .then((res) => {
-        const paaInfo = res.data.data
+        const paaInfo = res.data
         setValue({
           ...paaInfo,
           orderId,
         })
-        setCity({
-          cityName: paaInfo.customer.city.cityName,
-          cityCode: paaInfo.customer.city.cityCode,
-          province: paaInfo.customer.city.province,
-          id: paaInfo.customer.city.id,
-        })
+        saveLocalStorage(
+          LocalStorageKey.CityOtr,
+          JSON.stringify({
+            cityName: paaInfo.customer.city.cityName,
+            cityCode: paaInfo.customer.city.cityCode,
+            province: paaInfo.customer.city.province,
+            id: paaInfo.customer.city.id,
+          }),
+        )
         setSimpleCarVariantDetails({
           modelId: paaInfo.car.model,
           variantId: paaInfo.car.variant,

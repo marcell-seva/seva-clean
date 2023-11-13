@@ -1,10 +1,11 @@
 import { createContext, useEffect, useState } from 'react'
 import { setAmplitudeUserId } from '../amplitude'
-import { api } from '../api'
 import { User, Token, Filter } from 'utils/types'
 import { encryptValue } from 'utils/encryptionUtils'
 import { saveLocalStorage } from 'utils/handler/localStorage'
-import { LocalStorageKey } from 'utils/enum'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { LoginSevaUrl } from 'utils/helpers/routes'
+import { destroySessionMoEngage } from 'helpers/moengage'
 
 export type AuthContextType = {
   isLoggedIn: boolean
@@ -28,6 +29,17 @@ const getDataFilter = (): Filter => {
   return filter
 }
 
+export const removeInformationWhenLogout = () => {
+  localStorage.removeItem(LocalStorageKey.Token)
+  localStorage.removeItem(LocalStorageKey.CustomerId)
+  localStorage.removeItem(LocalStorageKey.sevaCust)
+  sessionStorage.removeItem(SessionStorageKey.CustomerId)
+  sessionStorage.removeItem(SessionStorageKey.prevLoginPath)
+
+  // MoEngage.destroySession()
+  destroySessionMoEngage()
+}
+
 export const AuthProvider = ({ children }: any) => {
   const [userData, setUserData] = useState<User | null>(null)
   const [filter, setFilter] = useState<Filter | null>(null)
@@ -35,14 +47,15 @@ export const AuthProvider = ({ children }: any) => {
 
   const getUserInfo = async () => {
     try {
-      const res: any = await api.getUserInfo()
+      const res: any = await getUserInfo()
       const dataUser: any = res[0]
       saveAuthData(dataUser)
       const encryptedData = encryptValue(JSON.stringify(dataUser))
       saveLocalStorage(LocalStorageKey.sevaCust, encryptedData)
       setAmplitudeUserId(dataUser.id)
     } catch (error) {
-      throw error
+      removeInformationWhenLogout()
+      window.location.replace(LoginSevaUrl)
     }
   }
 

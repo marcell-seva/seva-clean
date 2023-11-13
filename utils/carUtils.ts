@@ -3,7 +3,7 @@ import { LanguageCode, SessionStorageKey } from 'utils/enum'
 // import { getCarModelDetailsById } from 'services/recommendations'
 import { CarRecommendation, CarVariantRecommendation } from 'utils/types'
 import { getModelPriceRange } from './carModelUtils/carModelUtils'
-import { api } from 'services/api'
+
 import { getSessionStorage, saveSessionStorage } from './handler/sessionStorage'
 
 // export const getVariantId = async (model: string, variant: string) => {
@@ -15,7 +15,7 @@ import { getSessionStorage, saveSessionStorage } from './handler/sessionStorage'
 //       value.model.replace(/ +/g, '-').toLowerCase() === model,
 //   )
 
-//   const response2: any = await api.getCarModelDetails(
+//   const response2: any = await getCarModelDetails(
 //     currentModel[0].id,
 //     '?city=jakarta&cityId=118',
 //   )

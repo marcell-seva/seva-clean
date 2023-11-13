@@ -1,5 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { AES } from 'crypto-js'
+import { AxiosRequestConfig } from 'axios'
 import environments from 'helpers/environments'
 import { collections } from 'services/api/collections'
 import post from 'services/api/post'
@@ -12,7 +11,7 @@ import {
 } from 'utils/handler/customer'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import urls from 'utils/helpers/url'
-import { CustomerRegister, PAALinkInfoProps } from 'utils/types/models'
+import { CustomerRegister } from 'utils/types/models'
 import { UTMTagsData } from 'utils/types/utils'
 
 export const fetchCustomerDetails = async (): Promise<any | null> => {
@@ -84,15 +83,7 @@ export const registerCustomerSeva = ({
   })
 }
 
-export const getPAAIAInfo = (
-  orderId: string,
-): Promise<
-  AxiosResponse<{
-    code: string
-    data: PAALinkInfoProps
-    message: string
-  }>
-> => {
+export const getPAAIAInfo = (orderId: string) => {
   return post(
     collections.leads.paIaInfo + orderId,
     {},
@@ -104,7 +95,7 @@ export const getPAAIAInfo = (
   )
 }
 
-export const sendRefiContact = (
+export const sendRefiContact = async (
   phoneNumber?: string,
   fullName?: string,
   source?: string,
@@ -126,6 +117,7 @@ export const sendRefiContact = (
     utmTerm: UTMTags?.utm_term,
     adSet: UTMTags?.adset,
   }
+  const { AES } = (await import('crypto-js')).default
   const encryptedPayload = AES.encrypt(
     JSON.stringify(payload),
     process.env.REACT_APP_LEAD_PAYLOAD_ENCRYPT_KEY ?? '',

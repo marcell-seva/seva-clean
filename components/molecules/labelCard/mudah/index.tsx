@@ -12,7 +12,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 const LabelMudah = ({
   additionalClassname,
   prefixComponent,
-  labelText = 'Mudah disetujui',
+  labelText = 'Rekomendasi',
   ...restProps
 }: Props) => {
   return (

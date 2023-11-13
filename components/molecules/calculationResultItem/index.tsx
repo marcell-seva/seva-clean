@@ -15,6 +15,7 @@ import clsx from 'clsx'
 import elementId from 'helpers/elementIds'
 import { LoanRank } from 'utils/types/models'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
+import { IconThumbsUp } from 'components/atoms/icon'
 
 interface Props {
   data: SpecialRateListWithPromoType
@@ -47,15 +48,11 @@ export const CalculationResultItem = ({
     if (data.loanRank === LoanRank.Green) {
       return (
         <div className={`${styles.iconWrapper} ${styles.iconWrapperGreen}`}>
-          <IconChecklist width={9} height={9} color="#FFFFFF" />
+          <IconThumbsUp width={12} height={12} color="#FFFFFF" />
         </div>
       )
-    } else if (data.loanRank === LoanRank.Red) {
-      return (
-        <div className={`${styles.iconWrapper} ${styles.iconWrapperRed}`}>
-          <IconWarning width={9} height={9} color="#FFFFFF" />
-        </div>
-      )
+    } else {
+      return <div className={`${styles.iconWrapper}`}></div>
     }
   }
 
@@ -163,9 +160,7 @@ export const CalculationResultItem = ({
 
   const getUpperInfoText = () => {
     if (data.loanRank === LoanRank.Green) {
-      return 'Berpeluang besar untuk mendapatkan persetujuan.'
-    } else if (data.loanRank === LoanRank.Red) {
-      return 'Naikkan jumlah DP untuk mendapatkan cicilan idealmu.'
+      return 'Rekomendasi Cicilan Ideal Untukmu'
     } else {
       return ''
     }
@@ -176,9 +171,8 @@ export const CalculationResultItem = ({
       <div
         className={clsx({
           [styles.upperInfo]: true,
-          [styles.hideComponent]: !isActive,
+          [styles.hideComponent]: !isActive || data.loanRank !== LoanRank.Green,
           [styles.upperInfoGreen]: data.loanRank === LoanRank.Green,
-          [styles.upperInfoRed]: data.loanRank === LoanRank.Red,
         })}
       >
         {getUpperInfoText()}
@@ -188,7 +182,8 @@ export const CalculationResultItem = ({
           [styles.detailSection]: true,
           [styles.detailSectionGreen]:
             isActive && data.loanRank === LoanRank.Green,
-          [styles.detailSectionRed]: isActive && data.loanRank === LoanRank.Red,
+          [styles.detailSectionBlue]:
+            isActive && data.loanRank !== LoanRank.Green,
         })}
         role="button"
         onClick={() => emitOnClick(data)}
@@ -258,7 +253,7 @@ export const CalculationResultItem = ({
           [styles.separator]: true,
           [styles.hideComponent]: !isActive,
           [styles.separatorGreen]: data.loanRank === LoanRank.Green,
-          [styles.separatorRed]: data.loanRank === LoanRank.Red,
+          [styles.separatorBlue]: data.loanRank !== LoanRank.Green,
         })}
       ></div>
 
@@ -268,7 +263,7 @@ export const CalculationResultItem = ({
           [styles.hideComponent]: !isActive,
           [styles.bottomInfoBestPromo]: isUsingBestPromo,
           [styles.bottomInfoGreen]: data.loanRank === LoanRank.Green,
-          [styles.bottomInfoRed]: data.loanRank === LoanRank.Red,
+          [styles.bottomInfoBlue]: data.loanRank !== LoanRank.Green,
         })}
         onClick={() => onClickBottomSection(data)}
       >

@@ -6,7 +6,7 @@ import { LabelWithTooltip } from 'components/molecules'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { FormControlValue, Location, Option } from 'utils/types'
 import { LocalStorageKey } from 'utils/enum'
-import { api } from 'services/api'
+import { getCities } from 'services/api'
 
 const searchOption = {
   keys: ['label'],
@@ -59,7 +59,7 @@ export default function FormSelectCitySevaOTO({
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
 
   const fetchCities = async () => {
-    const response = await api.getCities()
+    const response = await getCities()
     setCityListApi(response)
   }
 

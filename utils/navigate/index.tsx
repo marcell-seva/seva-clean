@@ -1,12 +1,7 @@
-import { valueForUserTypeProperty } from 'helpers/countly/countly'
 import Router from 'next/router'
-import { use } from 'react'
 import { SessionStorageKey } from 'utils/enum'
-import {
-  getSessionStorage,
-  saveSessionStorage,
-} from 'utils/handler/sessionStorage'
-import { carResultsUrl, creditQualificationUrl } from 'utils/helpers/routes'
+import { saveSessionStorage } from 'utils/handler/sessionStorage'
+import { creditQualificationUrl } from 'utils/helpers/routes'
 import urls from 'utils/helpers/url'
 
 export enum RouteName {

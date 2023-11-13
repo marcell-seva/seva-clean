@@ -1,18 +1,16 @@
 import { Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import Image from 'next/image'
-import { HomePageDataLocalContext } from 'pages'
-import { useContext, useEffect, useState } from 'react'
-import { api } from 'services/api'
+import { useEffect, useState } from 'react'
 import styles from 'styles/components/organisms/mainHeroLp.module.scss'
 import elementId from 'utils/helpers/trackerId'
 import { CityOtrOption } from 'utils/types'
 import { HeaderMobile } from '../headerMobile'
 import MainHeroImage from '/public/revamp/illustration/main-hero-raize-cencored.webp'
 import SupergraphicImage from '/public/revamp/illustration/supergraphic-secondary-large.webp'
-import { HomePageDataLocalContext2 } from 'pages/adaSEVAdiOTO'
 import { useUtils } from 'services/context/utilsContext'
 import clsx from 'clsx'
+import { getCities } from 'services/api'
 
 type MainHeroLPProps = {
   onCityIconClick: () => void
@@ -31,7 +29,7 @@ const MainHeroLP = ({
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      api.getCities().then((res: any) => {
+      getCities().then((res: any) => {
         setCityListApi(res.data)
       })
     }
@@ -88,13 +86,13 @@ const MainHeroLP = ({
           className={styles.mainCar}
           src={MainHeroImage}
           alt="raize"
-          loading="lazy"
+          priority
         />
         <Image
           className={styles.supergraphicBg}
           src={SupergraphicImage}
           alt="supergraphic"
-          loading="lazy"
+          priority
         />
       </div>
     </>

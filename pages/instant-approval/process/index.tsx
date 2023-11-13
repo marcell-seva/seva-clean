@@ -39,9 +39,10 @@ import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { PreviousButton, navigateToPLP } from 'utils/navigate'
 import Image from 'next/image'
-import { api } from 'services/api'
+
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
+import { getCities } from 'services/api'
 
 const KualifikasiKreditImage = '/revamp/illustration/kualifikasi-kredit.webp'
 const PlayStoreImage = '/revamp/images/profile/google-play.webp'
@@ -77,7 +78,7 @@ const CreditQualificationProcess = () => {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      api.getCities().then((res) => {
+      getCities().then((res) => {
         setCityListApi(res)
       })
     }
@@ -188,7 +189,7 @@ const CreditQualificationProcess = () => {
       if (simpleCarVariantDetails) {
         getCarVariantDetailsById(
           simpleCarVariantDetails.variantId, // get cheapest variant
-        ).then((response) => {
+        ).then((response: any) => {
           if (response) {
             setDataCar(response.data)
           }
@@ -227,7 +228,7 @@ const CreditQualificationProcess = () => {
   const getDataCar = () => {
     getCarVariantDetailsById(
       simpleCarVariantDetails.variantId, // get cheapest variant
-    ).then((response) => {
+    ).then((response: any) => {
       if (response) {
         setDataCar(response.data)
       }

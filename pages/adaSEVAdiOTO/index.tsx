@@ -1,7 +1,7 @@
 import { InferGetServerSidePropsType } from 'next'
 import { createContext, useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
-import { api } from 'services/api'
+
 import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
 import { HomepageAdaSEVAdiOTO } from 'components/organisms'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
@@ -9,6 +9,17 @@ import { getCity } from 'utils/hooks/useGetCity'
 import styles from 'styles/pages/adaOTOdiSEVA.module.scss'
 import { useUtils } from 'services/context/utilsContext'
 import { useCar } from 'services/context/carContext'
+import {
+  getRecommendation,
+  getBanner,
+  getMobileHeaderMenu,
+  getCities,
+  getTestimony,
+  getUsage,
+  getMainArticle,
+  getTypeCar,
+  getCarofTheMonth,
+} from 'services/api'
 
 interface HomePageDataLocalContextType {
   dataBanner: any
@@ -110,17 +121,17 @@ export async function getServerSideProps(context: any) {
       typeCarRes,
       carofTheMonthRes,
     ]: any = await Promise.all([
-      api.getRecommendation(params),
-      api.getBanner(),
-      api.getMobileHeaderMenu(),
-      api.getCities(),
-      api.getTestimony(),
-      api.getRecommendation('?brand=Toyota&city=jakarta&cityId=118'),
-      api.getRecommendation('?bodyType=MPV&city=jakarta&cityId=118'),
-      api.getUsage(),
-      api.getMainArticle('65'),
-      api.getTypeCar('?city=jakarta'),
-      api.getCarofTheMonth('?city=' + getCity().cityCode),
+      getRecommendation(params),
+      getBanner(),
+      getMobileHeaderMenu(),
+      getCities(),
+      getTestimony(),
+      getRecommendation('?brand=Toyota&city=jakarta&cityId=118'),
+      getRecommendation('?bodyType=MPV&city=jakarta&cityId=118'),
+      getUsage(),
+      getMainArticle('65'),
+      getTypeCar('?city=jakarta'),
+      getCarofTheMonth('?city=' + getCity().cityCode),
     ])
     const [
       dataReccomendation,

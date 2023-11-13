@@ -17,11 +17,17 @@ import { defaultSeoImage } from 'utils/helpers/const'
 import styles from 'styles/pages/plp.module.scss'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
-import { api } from 'services/api'
+
 import Seo from 'components/atoms/seo'
 import { monthId } from 'utils/handler/date'
 import { getCity } from 'utils/hooks/useGetCity'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
+import {
+  getMobileHeaderMenu,
+  getMobileFooterMenu,
+  getCities,
+  getMinMaxPrice,
+} from 'services/api'
 
 const NewCarResultPage = ({
   meta,
@@ -139,9 +145,9 @@ export const getServerSideProps: GetServerSideProps<{
       await Promise.all([
         axios.get(metaTagBaseApi + metabrand),
         axios.get(footerTagBaseApi + metabrand),
-        api.getMobileHeaderMenu(),
-        api.getMobileFooterMenu(),
-        api.getCities(),
+        getMobileHeaderMenu(),
+        getMobileFooterMenu(),
+        getCities(),
       ])
 
     const metaData = fetchMeta.data.data
@@ -150,7 +156,7 @@ export const getServerSideProps: GetServerSideProps<{
     if (!priceRangeGroup) {
       const params = new URLSearchParams()
       getCity().cityCode && params.append('city', getCity().cityCode as string)
-      const minmaxPriceData = await api.getMinMaxPrice('', { params })
+      const minmaxPriceData = await getMinMaxPrice('', { params })
       meta.MinMaxPrice = {
         minPriceValue: minmaxPriceData.minPriceValue,
         maxPriceValue: minmaxPriceData.maxPriceValue,

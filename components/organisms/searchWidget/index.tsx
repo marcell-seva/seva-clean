@@ -33,17 +33,10 @@ import {
   RequiredFunnelErrorMessage,
 } from 'utils/config/funnel.config'
 import { Currency } from 'utils/handler/calculation'
-import {
-  GridOptionWidget,
-  InputWidget,
-  PriceRangeWidget,
-  SelectWidget,
-  TenureOptionWidget,
-} from 'components/molecules'
-import { useRouter } from 'next/router'
+import { InputWidget, SelectWidget } from 'components/molecules'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
-import { api } from 'services/api'
+
 import { getCity } from 'utils/hooks/useGetCity'
 import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
@@ -53,6 +46,22 @@ import { navigateToPLP, PreviousButton } from 'utils/navigate'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { getMinMaxPrice } from 'services/api'
+import dynamic from 'next/dynamic'
+import { useMediaQuery } from 'react-responsive'
+
+const GridOptionWidget = dynamic(
+  () => import('components/molecules').then((mod) => mod.GridOptionWidget),
+  { ssr: false },
+)
+const PriceRangeWidget = dynamic(
+  () => import('components/molecules').then((mod) => mod.PriceRangeWidget),
+  { ssr: false },
+)
+const TenureOptionWidget = dynamic(
+  () => import('components/molecules').then((mod) => mod.TenureOptionWidget),
+  { ssr: false },
+)
 
 export const initDataWidget = {
   downPaymentAmount: '',
@@ -97,10 +106,11 @@ const SearchWidget = () => {
   const [expandFinancial, setExpandFinancial] = useState(false)
   const [errorFinance, setErrorFinance] =
     useState<FinancialFunnelWidgetError>(initErrorFinancial)
+  const isMobile = useMediaQuery({ query: '(max-width: 570px)' })
 
   const fetchMinMaxPrice = () => {
     const params = getCity().cityCode
-    api.getMinMaxPrice(`?city=${params}`).then((response: any) => {
+    getMinMaxPrice(`?city=${params}`).then((response: any) => {
       setLimitPrice({
         min: response.minPriceValue,
         max: response.maxPriceValue,
@@ -393,6 +403,28 @@ const SearchWidget = () => {
     setErrorFinance((prev: any) => ({ ...prev, monthlyIncome }))
   }, [funnelWidget.monthlyIncome])
 
+  const renderText = () => {
+    if (isMobile) {
+      return (
+        <span
+          className={`${styles.expandFinancialInfo} ${styles.expandFinancialInfoClose}`}
+        >
+          Isi data dibawah ini untuk mendapatkan rekomendasi mobil yang cocok
+          dengan kondisi keuanganmu.
+        </span>
+      )
+    } else {
+      return (
+        <span
+          className={`${styles.expandFinancialInfo} ${styles.expandFinancialInfoClose}`}
+        >
+          Isi data dibawah ini untuk mendapatkan rekomendasi mobil yang cocok{' '}
+          <br />
+          dengan kondisi keuanganmu.
+        </span>
+      )
+    }
+  }
   const FinancialEntry = () => {
     if (expandFinancial)
       return (
@@ -413,12 +445,7 @@ const SearchWidget = () => {
               Tutup
             </span>
           </div>
-          <span
-            className={`${styles.expandFinancialInfo} ${styles.expandFinancialInfoClose}`}
-          >
-            Isi semua data di bawah ini untuk melihat peluang pinjamanmu akan
-            disetujui.
-          </span>
+          {renderText()}
         </>
       )
 
@@ -450,7 +477,8 @@ const SearchWidget = () => {
         <span
           className={`${styles.expandFinancialInfo} ${styles.expandFinancialInfoOpen}`}
         >
-          Isi data tambahan untuk melihat peluang pinjamanmu.
+          Isi filter untuk mendapatkan rekomendasi mobil yang cocok dengan
+          kondisi keuanganmu.
         </span>
       </>
     )
@@ -634,7 +662,7 @@ const SearchWidget = () => {
           onClick={submit}
           data-testid={elementId.Homepage.Button.CariMobil}
         >
-          Cari Mobil
+          Cari Mobil Baru
         </Button>
       </div>
     </div>

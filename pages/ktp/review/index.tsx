@@ -44,7 +44,7 @@ import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { ToastType } from 'utils/types/models'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
-import { api } from 'services/api'
+import { getCities } from 'services/api'
 
 const searchOption = {
   keys: ['label'],
@@ -221,7 +221,7 @@ export default function KtpReview() {
 
   const checkCitiesData = () => {
     if (cityListFromApi.length === 0) {
-      api.getCities().then((res) => {
+      getCities().then((res) => {
         setCityListFromApi(res)
       })
     }

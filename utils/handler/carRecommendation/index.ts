@@ -1,4 +1,3 @@
-import { api } from 'services/api'
 import {
   CarModelBasicDetailsResponse,
   CarModelDetailsResponse,
@@ -6,6 +5,7 @@ import {
 } from 'utils/types/utils'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { getCity } from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
+import { getCarModelDetails, getCarVariantDetails } from 'services/api'
 
 export const getCarModelDetailsById = (
   id: string,
@@ -14,7 +14,7 @@ export const getCarModelDetailsById = (
   const params = new URLSearchParams()
   getCity().cityCode && params.append('city', getCity().cityCode as string)
   getCity().id && params.append('cityId', getCity().id as string)
-  return api.getCarModelDetails(id, '', { params })
+  return getCarModelDetails(id, '', { params })
 }
 
 export const getCarVariantDetailsById = (
@@ -24,7 +24,7 @@ export const getCarVariantDetailsById = (
   const params = new URLSearchParams()
   getCity().cityCode && params.append('city', getCity().cityCode as string)
   getCity().id && params.append('cityId', getCity().id as string)
-  return api.getCarVariantDetails(id, '', { params })
+  return getCarVariantDetails(id, '', { params })
 }
 
 export const mergeModelDetailsWithLoanRecommendations = (
@@ -85,7 +85,3 @@ export const handleCarModelDetailsUpdate =
       setCarModelDetails,
     )
   }
-
-export const getIncomeList = () => {
-  return api.getIncomeList()
-}

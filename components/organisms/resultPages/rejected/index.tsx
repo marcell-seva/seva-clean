@@ -20,7 +20,7 @@ import {
   CustomerPreApprovalResponse,
 } from 'utils/types/utils'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
-import { api } from 'services/api'
+
 import { isIsoDateFormat } from 'utils/handler/regex'
 import { million, ten } from 'utils/helpers/const'
 import { BannerCard } from 'components/molecules/card/bannerCard'
@@ -38,6 +38,8 @@ import {
 import Image from 'next/image'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
+import dynamic from 'next/dynamic'
+import { getCities, getAnnouncementBox as gab } from 'services/api'
 
 const RejectedImage = '/revamp/illustration/rejected-approval.webp'
 
@@ -65,24 +67,22 @@ export const CreditQualificationRejected = () => {
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
-      api.getCities().then((res) => {
+      getCities().then((res) => {
         setCityListApi(res)
       })
     }
   }
 
   const getAnnouncementBox = () => {
-    api
-      .getAnnouncementBox({
-        headers: {
-          'is-login': getToken() ? 'true' : 'false',
-        },
-      })
-      .then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-        if (res.data === undefined) {
-          setShowAnnouncementBox(false)
-        }
-      })
+    gab({
+      headers: {
+        'is-login': getToken() ? 'true' : 'false',
+      },
+    }).then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
+      if (res.data === undefined) {
+        setShowAnnouncementBox(false)
+      }
+    })
   }
 
   const getTotalIncome = () => {

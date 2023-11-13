@@ -38,7 +38,7 @@ import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getPageName } from 'utils/pageName'
 import Image from 'next/image'
-import { api } from 'services/api'
+import { postLoanPermutationIncludePromo } from 'services/api'
 
 type CarDetailCardProps = {
   recommendation: MultKKCarRecommendation
@@ -157,18 +157,17 @@ const CarDetailCardMultiCredit = ({
 
   const navigateToInstantApproval = () => {
     setLoadSubmit(true)
-    api
-      .postLoanPermutationIncludePromo({
-        brand: recommendation.brand,
-        model: recommendation.model,
-        angsuranType: 'ADDM',
-        city: getCity().cityCode,
-        discount: 0,
-        dp: getDpPercentageByMapping(Number(multiUnitQuery.downPaymentAmount)),
-        dpAmount: Number(multiUnitQuery.downPaymentAmount),
-        monthlyIncome: multiUnitQuery.monthlyIncome,
-        otr: recommendation.variants[0].priceValue,
-      })
+    postLoanPermutationIncludePromo({
+      brand: recommendation.brand,
+      model: recommendation.model,
+      angsuranType: 'ADDM',
+      city: getCity().cityCode,
+      discount: 0,
+      dp: getDpPercentageByMapping(Number(multiUnitQuery.downPaymentAmount)),
+      dpAmount: Number(multiUnitQuery.downPaymentAmount),
+      monthlyIncome: multiUnitQuery.monthlyIncome,
+      otr: recommendation.variants[0].priceValue,
+    })
       .then((response) => {
         const resultByTenure = response.data.filter(
           (x: { tenure: string }) => String(x.tenure) === multiUnitQuery.tenure,

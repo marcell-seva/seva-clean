@@ -16,9 +16,9 @@ import { Button, IconLoading } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { FooterStakeholder } from 'components/molecules/footerStakeholder'
 import Image from 'next/image'
-import { api } from 'services/api'
 import { getToken } from 'utils/handler/auth'
 import { getCustomerKtpSeva } from 'utils/handler/customer'
+import { postCreditQualification } from 'services/api'
 
 const LandingIAImage = '/revamp/illustration/landing-ia.webp'
 const BGLanding = '/revamp/illustration/bg-landing-ia.webp'
@@ -40,7 +40,7 @@ export const LandingIA = ({
   const gotoIA = async () => {
     setLoading('ia')
     try {
-      const sendKK = await api.postCreditQualification(dataToCaasDaas, {
+      const sendKK = await postCreditQualification(dataToCaasDaas, {
         headers: { Authorization: getToken()?.idToken },
       })
       saveLocalStorage(
@@ -78,7 +78,7 @@ export const LandingIA = ({
   const rejectToIA = async () => {
     setLoading('reject')
     try {
-      const res = await api.postCreditQualification(dataToCaasDaas, {
+      const res = await postCreditQualification(dataToCaasDaas, {
         headers: { Authorization: getToken()?.idToken },
       })
       // posibility return "creditQualificationStatus": null

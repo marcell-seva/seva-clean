@@ -30,8 +30,6 @@ import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { api } from 'services/api'
-
 import { useCar } from 'services/context/carContext'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
@@ -75,6 +73,7 @@ import { temanSevaUrlPath } from 'utils/types/props'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import { getMinMaxPrice, postCheckTemanSeva } from 'services/api'
 
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
@@ -91,11 +90,11 @@ const PopupPromo = dynamic(() =>
 const PopupResultSulit = dynamic(() =>
   import('components/organisms').then((mod) => mod.PopupResultSulit),
 )
-const PopupResultMudah = dynamic(() =>
-  import('components/organisms').then((mod) => mod.PopupResultMudah),
-)
-const PopupResultInfo = dynamic(() =>
-  import('components/organisms').then((mod) => mod.PopupResultInfo),
+// const PopupResultMudah = dynamic(() =>
+//   import('components/organisms').then((mod) => mod.PopupResultMudah),
+// )
+const PopupResultRecommended = dynamic(() =>
+  import('components/organisms').then((mod) => mod.PopupResultRecommended),
 )
 const CitySelectorModal = dynamic(() =>
   import('components/molecules').then((mod) => mod.CitySelectorModal),
@@ -225,7 +224,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   }
 
   const handelSticky = (position: number) => {
-    if (position > 50) return setSticky(true)
+    if (position > 150) return setSticky(true)
     return setSticky(false)
   }
 
@@ -367,7 +366,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       }
 
       try {
-        const temanSeva = await axios.post(temanSevaUrlPath.isTemanSeva, {
+        const temanSeva = await postCheckTemanSeva({
           phoneNumber: decryptUser.phoneNumber,
         })
         if (temanSeva.data.isTemanSeva) return 'Yes'
@@ -415,6 +414,29 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       trackPLPView('Sulit disetujui')
     } else {
       trackPLPView()
+    }
+  }
+
+  const saveFlagPopUpRecomendation = () => {
+    const now = new Date()
+    const expiry = now.getTime() + 7 * 24 * 60 * 60 * 1000
+    const data = expiry
+    const dataValue = JSON.stringify(data)
+    saveLocalStorage(LocalStorageKey.flagPopUpRecomendation, dataValue)
+    saveLocalStorage(LocalStorageKey.flagResultFilterInfoPLP, 'true')
+  }
+  const checkFlagPopUpRecomendation = () => {
+    const now = new Date()
+    const flagPopUp: any | null = getLocalStorage(
+      LocalStorageKey.flagPopUpRecomendation,
+    )
+    if (flagPopUp !== null) {
+      if (now.getTime() > flagPopUp) {
+        localStorage.removeItem(LocalStorageKey.flagPopUpRecomendation)
+        return
+      } else {
+        return flagPopUp
+      }
     }
   }
 
@@ -486,13 +508,16 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   ])
 
   useEffect(() => {
+    checkFlagPopUpRecomendation()
     if (
       isFilterFinancial &&
-      getLocalStorage(LocalStorageKey.flagResultFilterInfoPLP) !== true
+      getLocalStorage(LocalStorageKey.flagResultFilterInfoPLP) !== true &&
+      sampleArray.items.some((a) => a.loanRank === 'Green')
     ) {
       setOpenLabelResultInfo(true)
+      saveFlagPopUpRecomendation()
     }
-  }, [isFilterFinancial])
+  }, [isFilterFinancial, sampleArray])
 
   useEffect(() => {
     setPage(1)
@@ -514,8 +539,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       const params = new URLSearchParams()
       getCity().cityCode && params.append('city', getCity().cityCode as string)
 
-      api
-        .getMinMaxPrice('', { params })
+      getMinMaxPrice('', { params })
         .then((response) => {
           if (response) {
             setMinMaxPrice({
@@ -546,7 +570,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
             }
 
             getNewFunnelRecommendations(queryParam)
-              .then((response) => {
+              .then((response: any) => {
                 if (response) {
                   patchFunnelQuery(queryParam)
                   saveRecommendation(response.carRecommendations)
@@ -602,7 +626,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   }
   const onCloseResultInfoClose = () => {
     setOpenLabelResultInfo(false)
-    trackCekPeluangPopUpCloseClick(getDataForAmplitude())
+    setOpenLabelResultMudah(false)
     trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BANNER_DESC_EXIT_CLICK)
   }
 
@@ -632,7 +656,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       ...funnelQuery,
       sortBy: val || 'lowToHigh',
     }
-    getNewFunnelRecommendations(queryParam).then((response) => {
+    getNewFunnelRecommendations(queryParam).then((response: any) => {
       if (response) {
         patchFunnelQuery(queryParam)
         saveRecommendation(response.carRecommendations)
@@ -726,7 +750,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
           pageOrigination={'PLP'}
           isOTO={isOTO}
         />
-
+        <PLPHeaderTitle />
         {!showLoading && sampleArray.items.length === 0 ? (
           <>
             <NavigationFilterMobile
@@ -877,15 +901,15 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
             trackPeluangSulitPopUpCloseClick(getDataForAmplitude())
           }}
         />
-        <PopupResultMudah
+        {/* <PopupResultMudah
           open={openLabelResultMudah}
           onCancel={() => {
             setOpenLabelResultMudah(false)
             trackPeluangMudahPopUpCloseClick(getDataForAmplitude())
           }}
-        />
-        <PopupResultInfo
-          open={openLabelResultInfo}
+        /> */}
+        <PopupResultRecommended
+          open={openLabelResultInfo || openLabelResultMudah}
           onCancel={onCloseResultInfoClose}
           onOk={onCloseResultInfo}
         />
@@ -907,5 +931,16 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
         )}
       </div>
     </>
+  )
+}
+
+const PLPHeaderTitle = () => {
+  return (
+    <div className={styles.titleHeaderWrapper}>
+      <h1 className={styles.title}>Rekomendasi Mobil Baru di SEVA</h1>
+      <h2 className={styles.subtitle}>
+        Menampilkan beragam pilihan mobil baru sesuai kebutuhan dan finansialmu.
+      </h2>
+    </div>
   )
 }

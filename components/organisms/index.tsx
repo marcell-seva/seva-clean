@@ -53,6 +53,7 @@ import { AdaOTOdiSEVALeadsForm } from './leadsForm/adaOTOdiSEVA/popUp'
 import { Login } from './login'
 import { Register } from './register'
 import Profile from './profile'
+import { PopupResultRecommended } from './popupResultFilter/resultRecommended'
 
 const Exterior360ViewerTab = dynamic(
   () => import('./tabContent/upper/exterior360Viewer'),
@@ -114,4 +115,5 @@ export {
   Login,
   Register,
   Profile,
+  PopupResultRecommended,
 }

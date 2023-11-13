@@ -140,9 +140,9 @@ export const Register = () => {
         (response: any) => {
           setDataCar(response)
           trackEventCountly(CountlyEventNames.WEB_REGISTRATION_PAGE_VIEW, {
-            CAR_BRAND: response.data.modelDetail.brand,
-            CAR_MODEL: response.data.modelDetail.model,
-            CAR_VARIANT: response.data.variantDetail.name,
+            CAR_BRAND: response.modelDetail.brand,
+            CAR_MODEL: response.modelDetail.model,
+            CAR_VARIANT: response.variantDetail.name,
           })
         },
       )
@@ -607,11 +607,13 @@ export const Register = () => {
           open={modalOpened === 'success-toast'}
           width={343}
           text={templateToastMessage + pathDirection}
-          maskStyle={{
-            background: 'rgba(19, 19, 27, 0.5)',
-            maxWidth: '570px',
-            marginLeft: 'auto',
-            marginRight: 'auto',
+          styles={{
+            mask: {
+              background: 'rgba(19, 19, 27, 0.5)',
+              maxWidth: '570px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+            },
           }}
         />
         <Toast
@@ -621,11 +623,13 @@ export const Register = () => {
           typeToast={'error'}
           onCancel={() => setIsOpenToast(false)}
           closeOnToastClick
-          maskStyle={{
-            background: 'rgba(19, 19, 27, 0.5)',
-            maxWidth: '570px',
-            marginLeft: 'auto',
-            marginRight: 'auto',
+          styles={{
+            mask: {
+              background: 'rgba(19, 19, 27, 0.5)',
+              maxWidth: '570px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+            },
           }}
         />
       </div>

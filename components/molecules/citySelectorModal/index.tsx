@@ -371,11 +371,13 @@ const CitySelectorModal = ({
       className="city-selector-custom-modal"
       open={showCity || isOpen}
       footer={null}
-      maskStyle={{
-        background: 'rgba(19, 19, 27, 0.5)',
-        maxWidth: '570px',
-        marginLeft: 'auto',
-        marginRight: 'auto',
+      styles={{
+        mask: {
+          background: 'rgba(19, 19, 27, 0.5)',
+          maxWidth: '570px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        },
       }}
       data-testid={
         elementId.Homepage.GlobalHeader.PopupChangeLocation + getCity().cityName
