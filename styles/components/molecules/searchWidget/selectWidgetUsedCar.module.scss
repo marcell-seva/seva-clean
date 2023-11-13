@@ -1,0 +1,121 @@
+@import '../../../abstract/colors';
+@import '../../../abstract/mixins';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+  margin-bottom: 14px;
+}
+
+.fieldContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+}
+
+.icon {
+  width: 32px;
+}
+
+.fieldWrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 80%;
+  height: 38px;
+}
+
+.title {
+  font-family: var(--open-sans);
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$shades-grey-75};
+  text-shadow: 0px 4px 84px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+}
+
+.placeholder {
+  font-family: var(--open-sans-semi-bold);
+  font-size: 14px;
+  line-height: 20px;
+  color: #{$shades-grey-50};
+  text-shadow: 0px 4px 84px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &.focused {
+    margin-right: 5px;
+  }
+}
+
+.textArrowWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.gapArrow {
+  min-width: 5px;
+}
+
+.arrowIcon {
+  width: 24px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.line {
+  height: 1px;
+  width: 100%;
+  background-color: #{$shades-grey-5};
+  transition: background-color 500ms linear;
+
+  &.error {
+    background-color: #{$secondary-brick-red};
+  }
+
+  &.active {
+    background-color: #{$secondary-blue};
+  }
+}
+
+.prefixInputWrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.inputWrapper {
+  border: none;
+  outline: none;
+  font-family: var(--open-sans-semi-bold);
+  font-size: 14px;
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0px 4px 84px rgba(0, 0, 0, 0.1);
+
+  &:focus {
+    @include placeholder {
+      color: #{$shades-grey-50};
+      font-family: var(--open-sans);
+    }
+  }
+
+  @include placeholder {
+    color: #{$primary-black};
+  }
+}
+
+.errorText {
+  margin-top: -10px;
+  font-family: var(--open-sans);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #{$secondary-brick-red};
+}

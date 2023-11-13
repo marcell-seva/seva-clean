@@ -503,7 +503,12 @@ export default function UsedCarVariantList({
                 {addSeparator(usedCarModelDetailsRes?.priceValue.split('.')[0])}
               </h3>
               <div className={styles.wrapperLocation}>
-                <IconLocation width={18} height={18} color="#B4231E" />
+                <IconLocation
+                  width={18}
+                  height={18}
+                  color="#B4231E"
+                  alt="SEVA Location Icon"
+                />
                 <p className={styles.titleLocation}>
                   {usedCarModelDetailsRes?.cityName}
                 </p>

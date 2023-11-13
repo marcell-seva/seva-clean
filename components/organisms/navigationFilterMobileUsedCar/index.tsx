@@ -375,7 +375,8 @@ export const NavigationFilterMobileUsedCar = ({
             data-testid={elementId.PLP.Button.FilterMobil}
             secondaryClassName={styles.filterButton}
           >
-            <IconFilter width={14} height={14} /> Filter Mobil
+            <IconFilter width={14} height={14} alt="SEVA Filter Icon" /> Filter
+            Mobil
           </Button>
         )}
         {!sticky && (
@@ -389,9 +390,13 @@ export const NavigationFilterMobileUsedCar = ({
                 onClick={onSortClick}
                 data-testid={elementId.FilterButton.Sorting}
               >
-                <IconStrawberry width={16} height={16} /> Urutkan:{' '}
-                <p>{sortFilter}</p>
-                <IconChevronDown width={16} height={16} />
+                <IconStrawberry width={16} height={16} alt="SEVA List icon" />{' '}
+                Urutkan: <p>{sortFilter}</p>
+                <IconChevronDown
+                  width={16}
+                  height={16}
+                  alt="SEVA Dropdown Icon"
+                />
               </div>
               <div
                 className={styles.carSummaryLabel}

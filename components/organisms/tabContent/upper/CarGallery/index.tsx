@@ -17,9 +17,9 @@ export const CarGallery = ({
   useEffect(() => {
     const temp = usedCarModelDetailsRes.carGallery.map((items: any) => {
       if (items.mediaCode === 'main-image') {
-        return items.url
+        return items
       } else if (items.mediaCode === 'detail-images') {
-        return items.url
+        return items
       }
     })
     setEksteriorImage(temp.slice(0, 11))

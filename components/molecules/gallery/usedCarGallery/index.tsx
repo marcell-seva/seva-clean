@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperType } from 'swiper'
 import { FreeMode, Thumbs, Navigation } from 'swiper'
@@ -30,9 +30,10 @@ import { LoanRank } from 'utils/types/models'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import Image from 'next/image'
 import { usedCar } from 'services/context/usedCarContext'
+import { UsedPdpDataLocalContext } from 'pages/mobil-bekas/p/[[...slug]]'
 
 interface PropsGallery {
-  items: Array<string>
+  items: any
   emitActiveIndex: any
   emitDataImages: any
   activeIndex: number
@@ -40,6 +41,7 @@ interface PropsGallery {
 }
 interface PropsGalleryMainImage {
   url: string
+  item: number
 }
 
 export const UsedCarGallery: React.FC<PropsGallery> = ({
@@ -51,7 +53,7 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
 }): JSX.Element => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null)
   const [flagIndex, setFlagIndex] = useState<number>(activeIndex)
-  const { detail } = usedCar()
+  const { usedCarModelDetailsRes } = useContext(UsedPdpDataLocalContext)
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -82,8 +84,8 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
 
   const trackCountlyMainImage = () => {
     trackEventCountly(CountlyEventNames.WEB_PDP_MAIN_PHOTO_CLICK, {
-      CAR_BRAND: detail?.brandName ?? '',
-      CAR_MODEL: detail?.modelName ?? '',
+      CAR_BRAND: usedCarModelDetailsRes.brandName ?? '',
+      CAR_MODEL: usedCarModelDetailsRes.modelName ?? '',
       MENU_TAB_CATEGORY: valueMenuTabCategory(),
       CAR_PHOTO_ORDER: flagIndex + 1,
       VISUAL_TAB_CATEGORY: upperTab ? upperTab : 'Warna',
@@ -95,8 +97,8 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
 
   const trackCountlyCarouselImage = (index: number) => {
     trackEventCountly(CountlyEventNames.WEB_PDP_CAROUSEL_PHOTO_CLICK, {
-      CAR_BRAND: detail?.brandName ?? '',
-      CAR_MODEL: detail?.modelName ?? '',
+      CAR_BRAND: usedCarModelDetailsRes.brandName ?? '',
+      CAR_MODEL: usedCarModelDetailsRes.modelName ?? '',
       PELUANG_KREDIT_BADGE: isUsingFilterFinancial
         ? getCreditBadgeForCountly()
         : 'Null',
@@ -106,11 +108,14 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
     })
   }
 
-  const MainImage: React.FC<PropsGalleryMainImage> = ({ url }): JSX.Element => (
+  const MainImage: React.FC<PropsGalleryMainImage> = ({
+    url,
+    item,
+  }): JSX.Element => (
     <Image
       width={274}
       height={207}
-      alt={`Tampilan ${detail?.brandName} ${detail?.variantTitle}`}
+      alt={`Mobil ${usedCarModelDetailsRes.brandName} ${usedCarModelDetailsRes.modelName} ${usedCarModelDetailsRes.variantName} ${usedCarModelDetailsRes.nik} ${usedCarModelDetailsRes.cityName} ${item}`}
       className={styles.mainImage}
       src={url}
       onClick={() => {
@@ -123,14 +128,14 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
     />
   )
 
-  const CoverSubImage = ({ isActive, url }: any): JSX.Element => {
+  const CoverSubImage = ({ isActive, url, item }: any): JSX.Element => {
     return (
       <div className={styles.subImageWrapper}>
         {!isActive && <div className={styles.coverSubImage} />}
         <Image
           width={61}
           height={46}
-          alt={`Tampilan ${detail?.brandName} ${detail?.variantTitle}`}
+          alt={`Mobil ${usedCarModelDetailsRes.brandName} ${usedCarModelDetailsRes.modelName} ${usedCarModelDetailsRes.variantName} ${usedCarModelDetailsRes.nik} ${usedCarModelDetailsRes.cityName} ${item}`}
           className={`${isActive && styles.active} ${styles.subImage}`}
           src={url}
         />
@@ -198,7 +203,7 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
         >
           {items?.map((item: any, key: number) => (
             <SwiperSlide key={key}>
-              <MainImage url={item} />
+              <MainImage url={item.url} item={item.order} />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -223,7 +228,7 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
             freeMode={true}
             modules={[FreeMode, Navigation, Thumbs]}
           >
-            {items?.map((item: string, key: number) => (
+            {items?.map((item: any, key: number) => (
               <SwiperSlide
                 key={key}
                 onClick={() => {
@@ -232,7 +237,11 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
                 }}
                 className={styles.previewSubImageWrapper}
               >
-                <CoverSubImage url={item} isActive={flagIndex === key} />
+                <CoverSubImage
+                  url={item.url}
+                  isActive={flagIndex === key}
+                  item={item.order}
+                />
               </SwiperSlide>
             ))}
           </Swiper>

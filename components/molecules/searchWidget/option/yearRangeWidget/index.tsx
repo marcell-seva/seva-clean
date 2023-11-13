@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
-import styles from 'styles/components/molecules/form/formYear.module.scss'
+import styles from 'styles/components/molecules/form/formSearchYear.module.scss'
 import stylec from '/styles/components/molecules/searchWidget/priceRangeWidget.module.scss'
 import Input from 'antd/lib/input'
 import Slider from 'antd/lib/slider'

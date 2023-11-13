@@ -283,7 +283,7 @@ export const UsedCarDetailCard = ({
           <Image
             src={recommendation.mainImage || CarSkeleton}
             className={styles.heroImg}
-            alt={`${recommendation.variantName}`}
+            alt={`Mobil ${recommendation.brandName} ${recommendation.modelName} ${recommendation.variantName} ${recommendation.year}`}
             onClick={() => {
               onClickSeeDetail()
             }}
@@ -296,7 +296,7 @@ export const UsedCarDetailCard = ({
           <LazyLoadImage
             src={recommendation.mainImage || CarSkeleton}
             className={styles.heroImg}
-            alt={`${recommendation.variantName}`}
+            alt={`Mobil ${recommendation.brandName} ${recommendation.modelName} ${recommendation.variantName} ${recommendation.year}`}
             onClick={() => {
               onClickSeeDetail()
             }}
@@ -325,7 +325,7 @@ export const UsedCarDetailCard = ({
             {priceFormated}
           </span>
           <span className={styles.locationSmallRegular}>
-            <LocationRed />
+            <LocationRed alt="SEVA Location Mobil Icon" />
             {recommendation.cityName}
           </span>
           <div className={styles.infoWrapper}>

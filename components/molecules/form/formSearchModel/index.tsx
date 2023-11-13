@@ -106,7 +106,7 @@ export const FormSearchModel = ({
         <Space style={{ width: '100%' }} direction="vertical">
           <Select
             mode="multiple"
-            placeholder="Cari mobil bekas"
+            placeholder="Cari model mobil bekas"
             onChange={(e) => {
               handleChange(e)
               onBlurAction(e)

@@ -429,11 +429,40 @@ button {
   @include centeredWithMaxWidth(343.33px);
 }
 
+.ant-divider-horizontal {
+  display: none !important;
+}
+
+.ant-select-focused:where(.css-dev-only-do-not-override-n7fj3n).ant-select:not(
+    .ant-select-disabled
+  ):not(.ant-select-customize-input):not(.ant-pagination-size-changer)
+  .ant-select-selector {
+  border-color: #246ed4 !important;
+}
+
+.ant-select-focused
+  :where(.css-dev-only-do-not-override-n7fj3n).ant-select:not(
+    .ant-select-disabled
+  ):not(.ant-select-customize-input):not(.ant-pagination-size-changer)
+  .ant-select-selector {
+  border-color: #246ed4 !important;
+}
+
+:where(.css-dev-only-do-not-override-n7fj3n).ant-select:not(
+    .ant-select-disabled
+  ):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover
+  .ant-select-selector {
+  border-color: #246ed4 !important;
+}
+
+:where(.css-dev-only-do-not-override-n7fj3n).ant-select-dropdown {
+  padding: 0px !important;
+}
+
 .ant-select-dropdown
   .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
   background-color: transparent;
 }
-
 .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
   .ant-select-item-option-state {
     color: white !important;

@@ -1039,7 +1039,7 @@ export const CreditUsedCarTab = () => {
               width={24}
               height={24}
               color="#B4231E"
-              alt="SEVA Calculator Hitung Kemampuan Icon"
+              alt="SEVA Rupiah Icon"
             />
           </div>
           <h3 className={styles.formCardTitle}>Hitung Angsuran</h3>

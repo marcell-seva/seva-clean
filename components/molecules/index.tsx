@@ -58,6 +58,7 @@ import { RefinancingLocationWidget } from './refinancingLocationWidget'
 import { LoginAlertModal } from './loginAlertModal'
 import { DiscussionRefiForm } from './discussionRefiForm'
 import { RefinancingFormHeader } from './refinancingFormHeader'
+import { SelectWidgetUsedCar } from './searchWidget/selectWidget/usedCar'
 export {
   HowToUseSection,
   Testimony,
@@ -119,4 +120,5 @@ export {
   LoginAlertModal,
   DiscussionRefiForm,
   RefinancingFormHeader,
+  SelectWidgetUsedCar,
 }

@@ -70,7 +70,7 @@ const DescriptionSection = ({ scrollToLeads }: DescriptionSectionProps) => {
               width={24}
               height={24}
               color={'#B4231E'}
-              alt="SEVA Car Icon"
+              alt="SEVA Information icon"
             />
             <h3 className={styles.kanyonMedium}>Informasi Mobil</h3>
           </div>
@@ -94,7 +94,7 @@ const DescriptionSection = ({ scrollToLeads }: DescriptionSectionProps) => {
               width={16}
               height={16}
               color="#878D98"
-              alt="SEVA Speedometer"
+              alt="SEVA Speedometer Icon"
             />
             <p className={styles.openSans} style={{ color: '#13131B' }}>
               {addSeparator(item.mileage.toString())}km
@@ -105,7 +105,7 @@ const DescriptionSection = ({ scrollToLeads }: DescriptionSectionProps) => {
               width={16}
               height={16}
               color={'#878D98'}
-              alt="SEVA calendar Icon"
+              alt="SEVA Year Icon"
             />
             <p className={styles.openSans} style={{ color: '#13131B' }}>
               {item.nik}
@@ -129,7 +129,7 @@ const DescriptionSection = ({ scrollToLeads }: DescriptionSectionProps) => {
               width={16}
               height={16}
               color={'#878D98'}
-              alt="SEVA Transmission icon"
+              alt="SEVA Transmission Icon"
             />
             <p className={styles.openSans} style={{ color: '#13131B' }}>
               {
@@ -157,7 +157,7 @@ const DescriptionSection = ({ scrollToLeads }: DescriptionSectionProps) => {
               width={16}
               height={16}
               color={'#878D98'}
-              alt="SEVA Plat Nomor icon"
+              alt="SEVA Plat Icon"
             />
             <p className={styles.openSans} style={{ color: '#13131B' }}>
               Plat {item.plate}
@@ -181,7 +181,7 @@ const DescriptionSection = ({ scrollToLeads }: DescriptionSectionProps) => {
               width={16}
               height={16}
               color={'#878D98'}
-              alt="SEVA Fuel icon"
+              alt="SEVA Gas Station Icon"
             />
             <p className={styles.openSans} style={{ color: '#13131B' }}>
               {

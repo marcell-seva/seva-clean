@@ -1,65 +1,35 @@
 import clsx from 'clsx'
 import React, {
-  isValidElement,
   MutableRefObject,
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react'
 import styles from 'styles/components/organisms/usedCarSearchWidget.module.scss'
-import { MinAmount } from 'utils/types/models'
 import urls from 'utils/helpers/url'
 import elementId from 'utils/helpers/trackerId'
 import { colors } from 'utils/helpers/style/colors'
 import { Button, CardShadow } from 'components/atoms'
 import {
-  IconAgeRange,
   IconBrand,
   IconCalendar,
-  IconCar,
-  IconDownPayment,
-  IconIncome,
-  IconMoney,
-  IconPlus,
-  IconTenure,
   IconTransmission,
 } from 'components/atoms/icon'
-import {
-  FinancialFunnelWidgetError,
-  FunnelWidget,
-  UsedCarFunnelWidget,
-} from 'utils/types/props'
-import {
-  ageOptions,
-  MinAmountMessage,
-  RequiredFunnelErrorMessage,
-} from 'utils/config/funnel.config'
-import { Currency } from 'utils/handler/calculation'
+import { UsedCarFunnelWidget } from 'utils/types/props'
 import {
   BrandUsedCarWidget,
   FormSearchModel,
-  GridOptionWidget,
-  InputWidget,
-  PriceRangeWidget,
-  SelectWidget,
-  TenureOptionWidget,
+  SelectWidgetUsedCar,
   TransmissionUsedCarWidget,
   YearRangeWidget,
 } from 'components/molecules'
-import { useRouter } from 'next/router'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import {
   SearchUsedCarWidgetContext,
   SearchUsedCarWidgetContextType,
-  SearchWidgetContext,
-  SearchWidgetContextType,
 } from 'services/context'
 import { getMinMaxYearsUsedCar, getUsedCarCityList } from 'services/api'
-import { getCity } from 'utils/hooks/useGetCity'
-import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
-import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import { LocalStorageKey } from 'utils/enum'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { navigateToPLP, PreviousButton } from 'utils/navigate'
@@ -198,7 +168,7 @@ const UsedCarSearchWidget = () => {
           modelList={dataModelUsedCar}
           setLocationSelected={setLocationSelected}
         />
-        <SelectWidget
+        <SelectWidgetUsedCar
           title="Merek"
           placeholder={brandPlaceholder()}
           icon={
@@ -213,7 +183,7 @@ const UsedCarSearchWidget = () => {
           )}
           datatestid={elementId.FilterMerek}
         />
-        <SelectWidget
+        <SelectWidgetUsedCar
           title="Tahun"
           placeholder={yearPlaceholder()}
           icon={
@@ -231,7 +201,7 @@ const UsedCarSearchWidget = () => {
           )}
           datatestid={elementId.FilterType}
         />
-        <SelectWidget
+        <SelectWidgetUsedCar
           ref={priceRangeRef}
           title="Transmisi"
           placeholder={transmissionPlaceholder()}

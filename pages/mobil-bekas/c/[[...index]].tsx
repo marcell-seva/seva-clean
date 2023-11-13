@@ -61,6 +61,8 @@ const UsedCarResultPage = ({
   const todayDate = new Date()
   let metaTitle
   let metaDescription
+  let loca
+  let merek
   if (
     brandSlug !== null &&
     brandSlug !== undefined &&
@@ -72,7 +74,11 @@ const UsedCarResultPage = ({
         ? citySlug[0].cityName.split(' ')[1]
         : citySlug[0].cityName
 
+    loca = loc
+
     router.query.brand = brandSlug
+
+    merek = brandSlug
     metaTitle = `Jual Beli Mobil ${capitalizeFirstLetter(
       brandSlug,
     )} di ${loc} Bekas - Promo Kredit ${monthId(todayDate.getMonth())} | SEVA`
@@ -84,6 +90,8 @@ const UsedCarResultPage = ({
   } else {
     if (brandSlug !== null && brandSlug !== undefined) {
       router.query.brand = brandSlug
+
+      merek = brandSlug
       metaTitle = `Jual Beli Mobil ${capitalizeFirstLetter(
         brandSlug,
       )} Bekas - Promo Kredit ${monthId(todayDate.getMonth())} | SEVA`
@@ -97,6 +105,8 @@ const UsedCarResultPage = ({
         citySlug[0].cityName.split(' ').length > 1
           ? citySlug[0].cityName.split(' ')[1]
           : citySlug[0].cityName
+
+      loca = loc
       metaTitle = `Jual Beli Mobil Bekas di ${loc} - Promo Kredit ${monthId(
         todayDate.getMonth(),
       )} | SEVA`
@@ -146,6 +156,9 @@ const UsedCarResultPage = ({
   }, [isClientMobile])
   return (
     <>
+      <h1 style={{ display: 'none' }}>
+        Mobil Bekas {merek} {loca}
+      </h1>
       <Seo
         title={metaTitle}
         description={metaDescription}
