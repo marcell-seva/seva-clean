@@ -459,11 +459,11 @@ button {
 }
 
 .ant-select-item.ant-select-item-option {
-  border: 1px solid #{$shades-grey-10};
+  border-bottom: 1px solid #{$shades-grey-10};
   border-radius: 0;
   &:after {
     content: ' ';
-    border: 1px solid #05256e;
+    border: 1px solid #afb3ba;
     height: 24px;
     width: 24px;
     border-radius: 4px;

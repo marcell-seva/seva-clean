@@ -65,6 +65,8 @@ export const FormCarLocation = ({
             Select: {
               optionPadding: '0px',
               optionSelectedBg: 'white',
+              controlHeightLG: 48,
+              colorBorder: '#EBECEE',
             },
           },
         }}
