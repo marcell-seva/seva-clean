@@ -63,7 +63,7 @@ const DescriptionSection = ({ scrollToLeads }: DescriptionSectionProps) => {
 
   return (
     <div>
-      <div className={styles.cardInfoDetail} style={{ padding: '16px' }}>
+      <div className={styles.cardInfoDetail}>
         <div className={styles.row}>
           <div className={styles.rowWithGap}>
             <IconBookInformation
