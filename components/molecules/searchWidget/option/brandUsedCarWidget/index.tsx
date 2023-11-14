@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, MouseEvent } from 'react'
-import styles from '/styles/components/molecules/form/formSelectBrandCar.module.scss'
+import styles from '/styles/components/molecules/form/formSelectBrandCarFilter.module.scss'
 import stylec from '/styles/components/molecules/searchWidget/gridOptionWidget.module.scss'
 import Space from 'antd/lib/space'
 import LogoToyota from '/public/revamp/icon/logo-toyota.webp'
@@ -147,7 +147,7 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
   return (
     <>
       <div className={styles.container} onBlur={clear}>
-        <Space size={[16, 16]} wrap className={styles.wrapperBox}>
+        <div className={styles.wrapperContainer}>
           {carList.map(({ key, icon, value, isChecked }) => {
             return (
               <>
@@ -155,7 +155,9 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
                   <div
                     onClick={() => onClick(value)}
                     key={key}
-                    className={!isChecked ? styles.box : styles.boxOnclick}
+                    className={
+                      !isChecked ? styles.boxFilter : styles.boxOnclickFilter
+                    }
                   >
                     <div className={styles.content}>{key}</div>
                   </div>
@@ -163,7 +165,9 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
                   <div
                     onClick={() => onClick(value)}
                     key={key}
-                    className={!isChecked ? styles.box : styles.boxOnclick}
+                    className={
+                      !isChecked ? styles.boxFilter : styles.boxOnclickFilter
+                    }
                   >
                     <div className={styles.content}>
                       {icon} {key}
@@ -173,7 +177,7 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
               </>
             )
           })}
-        </Space>
+        </div>
         <div className={stylec.actionButtonWrapper}>
           <Button
             version={ButtonVersion.Secondary}

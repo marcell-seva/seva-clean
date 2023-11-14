@@ -37,6 +37,7 @@ interface SelectWidgetProps {
   errorText?: string | JSX.Element
   datatestid?: string
   optionDatatestId?: string
+  isValue?: boolean
 }
 
 const forwardSelectWidgetUsedCar = (
@@ -51,6 +52,7 @@ const forwardSelectWidgetUsedCar = (
     errorText,
     datatestid,
     optionDatatestId,
+    isValue = false,
   }: SelectWidgetProps,
   ref?: ForwardedRef<HTMLDivElement>,
 ) => {
@@ -111,7 +113,11 @@ const forwardSelectWidgetUsedCar = (
           <div className={styles.fieldWrapper}>
             <span className={styles.title}>{title}</span>
             <div className={styles.textArrowWrapper}>
-              <div className={styles.placeholder}>
+              <div
+                className={
+                  isValue ? styles.placeholderNotEmpty : styles.placeholder
+                }
+              >
                 {currentValue || placeholder}
               </div>
               <div className={styles.arrowIcon}>

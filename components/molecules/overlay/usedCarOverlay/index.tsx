@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperType } from 'swiper'
 
@@ -13,6 +13,7 @@ import { FreeMode, Navigation, Thumbs, Zoom } from 'swiper'
 import { IconChevronLeft, IconChevronRight } from 'components/atoms'
 import elementId from 'helpers/elementIds'
 import Image from 'next/image'
+import { isMobileDevice } from 'utils/window'
 
 interface PropsGallery {
   items: Array<string>
@@ -36,13 +37,40 @@ export const UsedCarOverlayGallery: React.FC<PropsGallery> = ({
   const [thumbsSwiperPreview, setThumbsSwiperPreview] =
     useState<SwiperType | null>(null)
   const [flagIndex, setFlagIndex] = useState<number>(activeIndex)
+  const [isLandscape, setIsLandscape] = useState(false)
+
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      // Check if the current orientation is landscape
+      setIsLandscape(
+        isMobileDevice
+          ? window.matchMedia('(orientation: landscape)').matches
+          : false,
+      )
+    }
+
+    // Initial check on component mount
+    handleOrientationChange()
+
+    // Listen for orientation changes
+    window.addEventListener('orientationchange', handleOrientationChange)
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('orientationchange', handleOrientationChange)
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log(isLandscape)
+  }, [isLandscape])
 
   const MainImage: React.FC<PropsGalleryMainImage> = ({ url }): JSX.Element => (
     <Image
       width={274}
       height={207}
       alt="car"
-      className={styles.mainImage}
+      className={isLandscape ? styles.mainImageMob : styles.mainImage}
       src={url}
       data-testid={elementId.CarouselPicture}
     />
@@ -58,7 +86,9 @@ export const UsedCarOverlayGallery: React.FC<PropsGallery> = ({
           width={80}
           height={64}
           alt="car"
-          className={`${styles.subImage} ${isActive && styles.active}`}
+          className={`  ${isLandscape ? styles.subImageMob : styles.subImage} ${
+            isActive && styles.active
+          }`}
           src={url}
         />
       </div>
@@ -109,17 +139,21 @@ export const UsedCarOverlayGallery: React.FC<PropsGallery> = ({
         }}
         zoom={true}
       >
-        {items.map((item: string, key: number) => (
+        {items.map((item: any, key: number) => (
           <SwiperSlide key={key}>
             <div className="swiper-zoom-container">
-              <MainImage url={item} />
+              <MainImage url={item.url} />
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
       <Swiper
         initialSlide={flagIndex}
-        className={`paginationPreview ${styles.swiperPreviewNavigation}`}
+        className={`paginationPreview ${
+          isLandscape
+            ? styles.swiperPreviewNavigationMob
+            : styles.swiperPreviewNavigation
+        }`}
         freeMode={true}
         slidesPerView="auto"
         spaceBetween={8}
@@ -129,9 +163,9 @@ export const UsedCarOverlayGallery: React.FC<PropsGallery> = ({
           clickable: true,
         }}
       >
-        {items.map((item: string, key: number) => (
+        {items.map((item: any, key: number) => (
           <SwiperSlide key={key} className={styles.previewSubImageWrapper}>
-            <CoverPreviewSubImage url={item} isActive={flagIndex === key} />
+            <CoverPreviewSubImage url={item.url} isActive={flagIndex === key} />
           </SwiperSlide>
         ))}
       </Swiper>

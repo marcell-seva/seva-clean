@@ -518,3 +518,15 @@ span.ant-select-selection-item {
 span.ant-select-selection-placeholder {
   font-size: 14px !important;
 }
+
+.csa-button-plp {
+  &.ant-float-btn {
+    left: calc(50% + 142px);
+    transform: translateX(-50%);
+    inset-block-end: 32px !important;
+  }
+}
+
+.refinancing-custom-form-modal .ant-modal-content {
+  padding: 0;
+}

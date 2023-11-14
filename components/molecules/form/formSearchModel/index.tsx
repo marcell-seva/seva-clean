@@ -1,6 +1,6 @@
 import { Divider, Select, Space, ConfigProvider } from 'antd'
 import type { SelectProps } from 'antd'
-import { useEffect, useState, useContext } from 'react'
+import { useEffect, useState, useContext, useRef } from 'react'
 import styles from 'styles/components/molecules/form/formSearchModel.module.scss'
 import { CloseOutlined2 } from 'components/atoms/icon/CloseOutlined2'
 import { IconChevronDown, IconChevronUp, IconSearch } from 'components/atoms'
@@ -129,7 +129,9 @@ export const FormSearchModel = ({
               // )
             }
             optionFilterProp="label"
-            dropdownStyle={{ padding: '4px 0' }}
+            dropdownStyle={{
+              padding: '4px 0',
+            }}
             removeIcon={
               <div className={styles.removeIcon}>
                 <CloseOutlined2 color="#F5F6F6" width={4.59} height={4.59} />

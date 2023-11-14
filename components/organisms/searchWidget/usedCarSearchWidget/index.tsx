@@ -159,7 +159,7 @@ const UsedCarSearchWidget = () => {
 
   return (
     <div className={styles.container}>
-      <CardShadow
+      <div
         className={clsx({
           [styles.cardContainer]: true,
         })}
@@ -182,6 +182,7 @@ const UsedCarSearchWidget = () => {
             <BrandUsedCarWidget onClose={onClose} />
           )}
           datatestid={elementId.FilterMerek}
+          isValue={funnelWidget.brand.length > 0}
         />
         <SelectWidgetUsedCar
           title="Tahun"
@@ -200,6 +201,9 @@ const UsedCarSearchWidget = () => {
             />
           )}
           datatestid={elementId.FilterType}
+          isValue={
+            funnelWidget.minYear.length > 0 || funnelWidget.maxYear.length > 0
+          }
         />
         <SelectWidgetUsedCar
           ref={priceRangeRef}
@@ -216,8 +220,9 @@ const UsedCarSearchWidget = () => {
             <TransmissionUsedCarWidget onClose={onClose} />
           )}
           datatestid={elementId.FilterHarga}
+          isValue={funnelWidget.transmission.length > 0}
         />
-      </CardShadow>
+      </div>
       <div className={styles.buttonWrapper}>
         <Button
           version={ButtonVersion.PrimaryDarkBlue}

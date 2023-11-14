@@ -113,11 +113,11 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
     item,
   }): JSX.Element => (
     <Image
+      src={url}
       width={274}
       height={207}
       alt={`Mobil ${usedCarModelDetailsRes.brandName} ${usedCarModelDetailsRes.modelName} ${usedCarModelDetailsRes.variantName} ${usedCarModelDetailsRes.nik} ${usedCarModelDetailsRes.cityName} ${item}`}
       className={styles.mainImage}
-      src={url}
       onClick={() => {
         emitDataImages(items)
         emitActiveIndex(flagIndex)
@@ -133,11 +133,11 @@ export const UsedCarGallery: React.FC<PropsGallery> = ({
       <div className={styles.subImageWrapper}>
         {!isActive && <div className={styles.coverSubImage} />}
         <Image
+          src={url}
           width={61}
           height={46}
           alt={`Mobil ${usedCarModelDetailsRes.brandName} ${usedCarModelDetailsRes.modelName} ${usedCarModelDetailsRes.variantName} ${usedCarModelDetailsRes.nik} ${usedCarModelDetailsRes.cityName} ${item}`}
           className={`${isActive && styles.active} ${styles.subImage}`}
-          src={url}
         />
       </div>
     )

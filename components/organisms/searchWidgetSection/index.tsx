@@ -27,6 +27,8 @@ import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { upperSearchNavigationTab } from 'config/searchWidget.config'
 import { usedCar } from 'services/context/usedCarContext'
 import dynamic from 'next/dynamic'
+import { CardShadow } from 'components/atoms'
+import clsx from 'clsx'
 
 const UsedCarSearchWidget = dynamic(
   () => import('components/organisms').then((mod) => mod.UsedCarSearchWidget),
@@ -122,19 +124,25 @@ export const SearchWidgetSection = ({
 
   return (
     <div className={styles.container}>
-      <div className={styles.upperSpacing} />
-      <div id="pdp-upper-content">
-        <NavigationTabUsedCar
-          itemList={tabItemList}
-          initialTab={upperTabSlug && capitalizeSlugIf360(upperTabSlug)}
-          onSelectTab={(value: any) => onSelectTab(value)}
-          isShowAnnouncementBox={isShowAnnouncementBox}
-          onPage={'PDP'}
-        />
-        <>
-          <div className={styles.content}>{renderContent()}</div>
-        </>
-      </div>
+      <CardShadow
+        className={clsx({
+          [styles.cardContainer]: true,
+        })}
+      >
+        <div id="pdp-upper-content">
+          <NavigationTabUsedCar
+            itemList={tabItemList}
+            initialTab={upperTabSlug && capitalizeSlugIf360(upperTabSlug)}
+            onSelectTab={(value: any) => onSelectTab(value)}
+            isShowAnnouncementBox={isShowAnnouncementBox}
+            onPage={'PDP'}
+          />
+
+          <>
+            <div className={styles.content}>{renderContent()}</div>
+          </>
+        </div>
+      </CardShadow>
     </div>
   )
 }
