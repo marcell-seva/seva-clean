@@ -11,6 +11,7 @@ import {
 } from 'services/context'
 import { getModelUsedCar } from 'services/api'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
+import { isMobileDevice } from 'utils/window'
 
 const { Option } = Select
 
@@ -107,6 +108,7 @@ export const FormSearchModel = ({
           <Select
             mode="multiple"
             placeholder="Cari model mobil bekas"
+            placement={isMobileDevice ? 'topLeft' : 'bottomLeft'}
             onChange={(e) => {
               handleChange(e)
               onBlurAction(e)
