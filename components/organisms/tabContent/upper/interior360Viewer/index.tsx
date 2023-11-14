@@ -27,7 +27,7 @@ export const Interior360ViewerTab = ({ isShowAnnouncementBox }: Props) => {
   }
 
   const renderNonStatic = () => {
-    if (getImage()?.includes('tso')) {
+    if (getImage()?.includes('toyota')) {
       return (
         <div
           className={styles.container}
