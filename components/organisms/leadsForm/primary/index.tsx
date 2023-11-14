@@ -223,6 +223,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
       }
     }
     try {
+      console.log('datas', data)
       await createUnverifiedLeadNew(data)
       if (trackerProperties)
         trackLeadsFormAction(

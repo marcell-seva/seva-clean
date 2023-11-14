@@ -33,6 +33,7 @@ interface PromoProps extends Omit<BottomSheetProps, 'children'> {
   setFinalLoan: (value: FinalLoan) => void
   onOpenInsuranceTooltip: () => void
   pageOrigination?: string
+  isPartnership?: boolean
 }
 
 const PromoBottomSheet = ({
@@ -45,6 +46,7 @@ const PromoBottomSheet = ({
   setFinalLoan,
   onOpenInsuranceTooltip,
   pageOrigination,
+  isPartnership = false,
   ...props
 }: PromoProps) => {
   const [promoInsuranceTemp, setPromoInsuranceTemp] =

@@ -54,6 +54,7 @@ interface Props {
   children?: React.ReactNode
   setFinalLoan: (value: FinalLoan) => void
   pageOrigination?: string
+  isPartnership?: boolean
 }
 
 export const CalculationResult = ({
@@ -71,6 +72,7 @@ export const CalculationResult = ({
   calculationApiPayload,
   setFinalLoan,
   pageOrigination,
+  isPartnership = false,
 }: Props) => {
   const [state, setState] = useState<LoanCalculatorInsuranceAndPromoType[]>(
     insuranceAndPromoForAllTenure,
@@ -325,7 +327,7 @@ export const CalculationResult = ({
                 onClick={() => handleClickButtonQualification(selectedLoan)}
                 data-testid={elementId.LoanCalculator.Info.KualifikasiKredit}
               >
-                Cek Kualifikasi Kredit
+                {isPartnership ? 'Saya Tertarik' : 'Cek Kualifikasi Kredit'}
               </Button>
             )}
 
@@ -367,17 +369,19 @@ export const CalculationResult = ({
               </>
             )}
 
-            <Button
-              version={ButtonVersion.Secondary}
-              size={ButtonSize.Big}
-              onClick={() => handleRedirectToWhatsapp(selectedLoan)}
-              data-testid={elementId.LoanCalculator.Button.HubungiAgenSeva}
-            >
-              <div className={styles.whatsappCtaTextWrapper}>
-                <IconWhatsapp width={16} height={16} />
-                Hubungi Agen SEVA
-              </div>
-            </Button>
+            {!isPartnership && (
+              <Button
+                version={ButtonVersion.Secondary}
+                size={ButtonSize.Big}
+                onClick={() => handleRedirectToWhatsapp(selectedLoan)}
+                data-testid={elementId.LoanCalculator.Button.HubungiAgenSeva}
+              >
+                <div className={styles.whatsappCtaTextWrapper}>
+                  <IconWhatsapp width={16} height={16} />
+                  Hubungi Agen SEVA
+                </div>
+              </Button>
+            )}
           </div>
           {renderDisclaimer()}
           {renderLogoFinco()}
@@ -422,6 +426,7 @@ export const CalculationResult = ({
       </div>
       {selectedCalculatePromo && (
         <PromoBottomSheet
+          isPartnership
           open={openPromo}
           onClose={() => setOpenPromo(false)}
           selectedTenure={tenureForPopUp}
