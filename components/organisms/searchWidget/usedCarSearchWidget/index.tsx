@@ -177,7 +177,6 @@ const UsedCarSearchWidget = () => {
         <FormSearchModel
           modelList={dataModelUsedCar}
           setLocationSelected={setLocationSelected}
-          isClick={scrollToSection}
         />
         <SelectWidgetUsedCar
           title="Merek"
