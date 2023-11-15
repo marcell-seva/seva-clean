@@ -328,7 +328,7 @@ const PromoBottomSheet = ({
       }}
       maxHeight={window.innerHeight * 0.93}
       additionalHeaderClassname={styles.bottomSheetHeader}
-      className={styles.bottomSheet}
+      className={isPartnership ? styles.bottomSheetExtend : styles.bottomSheet}
       {...props}
     >
       <FormSelectAssurance

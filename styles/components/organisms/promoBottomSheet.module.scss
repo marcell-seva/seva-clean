@@ -70,13 +70,17 @@
 }
 
 .bottomSheet [data-rsbs-overlay] {
-  max-width: 720px;
-  margin-left: auto;
-  margin-right: auto;
+  @include centeredWithMaxWidth;
 }
 
 .bottomSheet [data-rsbs-backdrop] {
-  max-width: 720px;
-  margin-left: auto;
-  margin-right: auto;
+  @include centeredWithMaxWidth;
+}
+
+.bottomSheetExtend [data-rsbs-overlay] {
+  @include centeredWithMaxWidthExtend;
+}
+
+.bottomSheetExtend [data-rsbs-backdrop] {
+  @include centeredWithMaxWidthExtend;
 }
