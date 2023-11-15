@@ -10,79 +10,71 @@ export const interiorImagesListNew: InteriorImagesListNewType[] = [
   // === TOYOTA ===
   {
     url: '/mobil-baru/toyota/new-calya',
-    source:
-      'https://tsoimageprod.azureedge.net/static-content/prod/360degview/CALYA/interior_360/Calya_interior.jpg', //calya
+    source: '/revamp/360/toyota/Calya_interior.jpg', //calya
   },
   {
     url: '/mobil-baru/toyota/all-new-avanza',
-    source:
-      'https://tsoimageprod.azureedge.net/static-content/prod/360degview/AVANZA-G/interior_360/avanza_g.jpg', //avanza
+    source: '/revamp/360/toyota/avanza_g.jpg', //avanza
   },
   {
     url: '/mobil-baru/toyota/all-new-veloz',
-    source:
-      'https://tsoimageprod.azureedge.net/static-content/prod/360degview/VELOZ-Q/interior_360/veloz_q.jpg', //veloz
+    source: '/revamp/360/toyota/veloz_q.jpg', //veloz
   },
   {
     url: '/mobil-baru/toyota/all-new-vios',
-    source:
-      'https://tsoimageprod.azureedge.net/static-content/prod/360degview/VIOS/interior_360/Vios%20G%20AT.jpg', //vios
+    source: '/revamp/360/toyota/Vios%20G%20AT.jpg', //vios
   },
   {
     url: '/mobil-baru/toyota/new-sienta',
-    source:
-      'https://tsoimageprod.azureedge.net/static-content/prod/360degview/SIENTA/interior_360/Sienta%201.5%20Q%20CVT%20Black%20Trim.jpg', //sienta
+    source: '/revamp/360/toyota/Sienta%201.5%20Q%20CVT%20Black%20Trim.jpg', //sienta
   },
-  {
-    url: '/mobil-baru/toyota/new-kijang-innova',
-    source: '',
-  },
-  {
-    url: '/mobil-baru/toyota/new-agya',
-    source: '',
-  },
-  {
-    url: '/mobil-baru/toyota/raize',
-    source: '',
-  },
-  {
-    url: '/mobil-baru/toyota/all-new-rush',
-    source: '',
-  },
-  {
-    url: '/mobil-baru/toyota/new-yaris',
-    source: '',
-  },
-  {
-    url: '/mobil-baru/toyota/new-venturer',
-    source: '',
-  },
-  {
-    url: '/mobil-baru/toyota/all-new-corolla-cross',
-    source: '',
-  },
-  {
-    url: '/mobil-baru/toyota/new-fortuner',
-    source: '',
-  },
-  {
-    url: '/mobil-baru/toyota/all-new-c-hr',
-    source: '',
-  },
+  // {
+  //   url: '/mobil-baru/toyota/new-kijang-innova',
+  //   source: '',
+  // },
+  // {
+  //   url: '/mobil-baru/toyota/new-agya',
+  //   source: '',
+  // },
+  // {
+  //   url: '/mobil-baru/toyota/raize',
+  //   source: '',
+  // },
+  // {
+  //   url: '/mobil-baru/toyota/all-new-rush',
+  //   source: '',
+  // },
+  // {
+  //   url: '/mobil-baru/toyota/new-yaris',
+  //   source: '',
+  // },
+  // {
+  //   url: '/mobil-baru/toyota/new-venturer',
+  //   source: '',
+  // },
+  // {
+  //   url: '/mobil-baru/toyota/all-new-corolla-cross',
+  //   source: '',
+  // },
+  // {
+  //   url: '/mobil-baru/toyota/new-fortuner',
+  //   source: '',
+  // },
+  // {
+  //   url: '/mobil-baru/toyota/all-new-c-hr',
+  //   source: '',
+  // },
   {
     url: '/mobil-baru/toyota/all-new-corolla-altis',
-    source:
-      'https://tsoimageprod.azureedge.net/static-content/prod/360degview/ALTIS/interior_360/Altis%20Hybrid%20AT.jpg',
+    source: '/revamp/360/toyota/Altis%20Hybrid%20AT.jpg',
   },
   {
     url: '/mobil-baru/toyota/new-alphard',
-    source:
-      'https://tsoimageprod.azureedge.net/static-content/prod/360degview/ALPHARD/interior_360/Alphard%203.5%20Q%20AT.jpg', //alphard
+    source: '/revamp/360/toyota/Alphard%203.5%20Q%20AT.jpg', //alphard
   },
   {
     url: '/mobil-baru/toyota/all-new-voxy',
-    source:
-      'https://tsoimageprod.azureedge.net/static-content/prod/360degview/VOXY/interior_360/allnewvoxyinterior.jpg', //voxy
+    source: '/revamp/360/toyota/allnewvoxyinterior.jpg', //voxy
   },
 
   // === DAIHTSU ===
