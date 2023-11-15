@@ -39,25 +39,24 @@ export const UsedCarOverlayGallery: React.FC<PropsGallery> = ({
   const [flagIndex, setFlagIndex] = useState<number>(activeIndex)
   const [isLandscape, setIsLandscape] = useState(false)
 
-  useEffect(() => {
-    const handleOrientationChange = () => {
-      // Check if the current orientation is landscape
-      setIsLandscape(
-        isMobileDevice
-          ? window.matchMedia('(orientation: landscape)').matches
-          : false,
-      )
-    }
+  const handleOrientationChange = () => {
+    setIsLandscape(
+      isMobileDevice
+        ? window.matchMedia('(orientation: landscape)').matches
+        : false,
+    )
+  }
 
-    // Initial check on component mount
+  useEffect(() => {
     handleOrientationChange()
 
-    // Listen for orientation changes
     window.addEventListener('orientationchange', handleOrientationChange)
 
-    // Cleanup event listener on component unmount
+    window.addEventListener('resize', handleOrientationChange)
+
     return () => {
       window.removeEventListener('orientationchange', handleOrientationChange)
+      window.removeEventListener('resize', handleOrientationChange)
     }
   }, [])
 

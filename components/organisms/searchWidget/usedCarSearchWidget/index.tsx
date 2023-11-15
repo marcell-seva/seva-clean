@@ -157,6 +157,16 @@ const UsedCarSearchWidget = () => {
     })
   }
 
+  const goToButton = useRef<null | HTMLDivElement>(null)
+  const scrollToSection = () => {
+    if (goToButton.current) {
+      window.scrollTo({
+        top: goToButton.current.offsetTop,
+        behavior: 'smooth', // Optional: adds a smooth scrolling effect
+      })
+    }
+  }
+
   return (
     <div className={styles.container}>
       <div
@@ -167,6 +177,7 @@ const UsedCarSearchWidget = () => {
         <FormSearchModel
           modelList={dataModelUsedCar}
           setLocationSelected={setLocationSelected}
+          isClick={scrollToSection}
         />
         <SelectWidgetUsedCar
           title="Merek"
@@ -223,7 +234,7 @@ const UsedCarSearchWidget = () => {
           isValue={funnelWidget.transmission.length > 0}
         />
       </div>
-      <div className={styles.buttonWrapper}>
+      <div className={styles.buttonWrapper} ref={goToButton}>
         <Button
           version={ButtonVersion.PrimaryDarkBlue}
           size={ButtonSize.Big}
