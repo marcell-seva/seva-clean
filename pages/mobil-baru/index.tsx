@@ -31,6 +31,7 @@ import {
   getMinMaxPrice,
   getAnnouncementBox as gab,
 } from 'services/api'
+import { default as customAxiosGet } from 'services/api/get'
 
 const NewCarResultPage = ({
   meta,
@@ -186,14 +187,14 @@ export const getServerSideProps: GetServerSideProps<{
       footerRes,
       cityRes,
     ]: any = await Promise.all([
-      axios.get(footerTagBaseApi + metabrand),
+      customAxiosGet(footerTagBaseApi + metabrand),
       getMenu(),
       getMobileHeaderMenu(),
       getMobileFooterMenu(),
       getCities(),
     ])
 
-    const footerData = fetchFooter.data.data
+    const footerData = fetchFooter.data
 
     if (!priceRangeGroup) {
       const params = new URLSearchParams()
