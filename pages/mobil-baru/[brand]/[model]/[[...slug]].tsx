@@ -112,6 +112,7 @@ export default function index({
   selectedVideoReview,
   finalSlug,
   checkLoc,
+  checkedLocation,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const {
     saveDataAnnouncementBox,
@@ -135,8 +136,12 @@ export default function index({
       lowerSectionNavigationTab.filter((item) => item.label !== 'Kredit')[0]
         .value,
   )
+  const [currentCity, setCurrentCity] = useState(checkedLocation)
 
   useEffect(() => {
+    if (checkedLocation) {
+      saveCity(checkedLocation)
+    }
     saveDesktopWebTopMenu(dataDesktopMenu)
     saveMobileWebTopMenus(dataMobileMenu)
     saveMobileWebFooterMenus(dataFooter)
@@ -180,7 +185,11 @@ export default function index({
 
   let metaTitle = ''
   let metaDesc = ''
-  const checkColor = router.asPath.split('/').slice(0, 4).join('/')
+  const checkColor = router.asPath
+    .split('?')[0]
+    .split('/')
+    .splice(0, 4)
+    .join('/')
 
   const countColors = availableListColors.filter(
     (item: any) => item.url === checkColor,
@@ -435,26 +444,28 @@ export async function getServerSideProps(context: any) {
 
     let finalSlug = ''
     let checkLoc = false
+    let checkedLocation: CityOtrOption = getCity()
+
+    const checkCityByUrl = (index: number) => {
+      return cityRes.find(
+        (item: CityOtrOption) =>
+          item.cityName.replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase() ===
+          slug[index].replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase(),
+      )
+    }
 
     if (slug?.length !== undefined) {
       if (slug?.length > 2) {
         if (checkUpper.includes(slug[0])) {
           if (checkLower.includes(slug[1])) {
-            if (
-              cityRes.find(
-                (item: CityOtrOption) =>
-                  item.cityName
-                    .replace(/[^a-zA-Z]+/g, '')
-                    .toLocaleLowerCase() ===
-                  slug[2].replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase(),
-              )
-            ) {
+            if (checkCityByUrl(2)) {
               finalSlug =
                 slug[0] +
                 '/' +
                 slug[1] +
                 '/' +
                 slug[2].replace(/[^a-zA-Z]+/g, ' ')
+              checkedLocation = checkCityByUrl(2)
             }
           }
         }
@@ -462,14 +473,15 @@ export async function getServerSideProps(context: any) {
         if (checkUpper.includes(slug[0])) {
           if (checkLower.includes(slug[1])) {
             finalSlug = slug[0] + '/' + slug[1]
-          } else if (
-            cityRes.find(
-              (item: CityOtrOption) =>
-                item.cityName.replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase() ===
-                slug[1].replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase(),
-            )
-          ) {
+          } else if (checkCityByUrl(1)) {
             finalSlug = slug[0] + '/' + slug[1].replace(/[^a-zA-Z]+/g, ' ')
+            checkedLocation = checkCityByUrl(1)
+            checkLoc = true
+          }
+        } else if (checkLower.includes(slug[0])) {
+          if (checkCityByUrl(1)) {
+            finalSlug = slug[0] + '/' + slug[1].replace(/[^a-zA-Z]+/g, ' ')
+            checkedLocation = checkCityByUrl(1)
             checkLoc = true
           }
         } else {
@@ -480,20 +492,16 @@ export async function getServerSideProps(context: any) {
           finalSlug = slug[0]
         } else if (checkLower.includes(slug[0])) {
           finalSlug = slug[0]
-        } else if (
-          cityRes.find(
-            (item: CityOtrOption) =>
-              item.cityName.replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase() ===
-              slug[0].replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase(),
-          )
-        ) {
+        } else if (checkCityByUrl(0)) {
           finalSlug = slug[0].replace(/[^a-zA-Z]+/g, ' ')
+          checkedLocation = checkCityByUrl(0)
           checkLoc = true
         } else {
           finalSlug = ''
         }
       }
     } else {
+      finalSlug = ''
     }
     return {
       props: {
@@ -512,6 +520,7 @@ export async function getServerSideProps(context: any) {
         selectedVideoReview: selectedVideoReview || null,
         finalSlug: finalSlug,
         checkLoc: checkLoc,
+        checkedLocation: checkedLocation,
       },
     }
   } catch (error) {
@@ -526,6 +535,7 @@ export async function getServerSideProps(context: any) {
         isSsrMobileLocal: getIsSsrMobile(context),
         finalSlug: '',
         checkLoc: false,
+        checkedLocation: getCity(),
       },
     }
   }

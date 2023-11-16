@@ -69,6 +69,10 @@ import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import {
+  lowerSectionNavigationTab,
+  upperSectionNavigationTab,
+} from 'config/carVariantList.config'
 
 const OverlayGallery = dynamic(() =>
   import('components/molecules').then((mod) => mod.OverlayGallery),
@@ -657,6 +661,116 @@ export default function NewCarVariantList({
     }
   }, [router, variantIdFuel])
 
+  // useEffect(() => {
+  //   const upperTabUrl = selectedUpperTab
+  //     ? selectedUpperTab.toLocaleLowerCase()
+  //     : 'warna'
+  //   const lowerTabUrl = selectedLowerTab
+  //     ? selectedLowerTab.toLocaleLowerCase()
+  //     : 'ringkasan'
+  //   const urlOTO = isOTO ? '/adaSEVAdiOTO' : ''
+  //   const cityUrl = citySlug ? `/${citySlug}` : ''
+  //   window.history.pushState(
+  //     null,
+  //     '',
+  //     `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${upperTabUrl}/${lowerTabUrl}${cityUrl}`,
+  //   )
+  // }, [selectedLowerTab, selectedUpperTab])
+
+  const isUpperTab = (payload: string) => {
+    const result = upperSectionNavigationTab.filter(
+      (item) => item.value === payload,
+    )
+    return result.length > 0
+  }
+
+  const isLowerTab = (payload: string) => {
+    const result = lowerSectionNavigationTab.filter(
+      (item) => item.value === payload,
+    )
+    return result.length > 0
+  }
+
+  const isCitySelected = (payload: string) => {
+    const result = cities.filter((item) => item.cityName === payload)
+    return result.length > 0
+  }
+
+  const pushUpperTabState = (payload: string) => {
+    const splitQuery = window.location.href.split('?')
+    const slugParam = splitQuery[0]
+    const queryParam = `?${splitQuery[1]}`
+    const slugState = slugParam.split('/').splice(6, 9)
+    const urlOTO = isOTO ? '/adaSEVAdiOTO' : ''
+    var url = ''
+    if (slugState?.length === 1) {
+      const checkIsUpperTab = isUpperTab(slugState[0])
+      if (checkIsUpperTab)
+        url = `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${payload}`
+      else
+        url = `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${payload}/${slugState[0]}`
+    } else if (slugState?.length === 2) {
+      const checkIsUpperTab = isUpperTab(slugState[0])
+      const checkIsLowerTab = isLowerTab(slugState[0])
+      const checkIsLowerTabTemp = isLowerTab(slugState[1])
+      const checkIsCity = isCitySelected(slugState[1])
+      if (checkIsUpperTab && checkIsCity)
+        url = `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${payload}/${slugState[1]}`
+      else if (checkIsLowerTab && checkIsCity)
+        url = `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${payload}/${slugState[0]}/${slugState[1]}`
+      else if (checkIsUpperTab && checkIsLowerTabTemp)
+        url = `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${payload}/${slugState[1]}`
+      else
+        url = `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${payload}/${slugState[0]}/${slugState[1]}`
+    } else if (slugState?.length === 3) {
+      url = `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${payload}/${slugState[1]}/${slugState[2]}`
+    } else {
+      url = `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${payload}`
+    }
+    window.history.pushState(null, '', `${url}${queryParam}`)
+  }
+
+  const pushLowerTabState = (payload: string) => {
+    const splitQuery = window.location.href.split('?')
+    const slugParam = splitQuery[0]
+    const queryParam = `?${splitQuery[1]}`
+    const slugState = slugParam.split('/').splice(6, 9)
+    const urlOTO = isOTO ? '/adaSEVAdiOTO' : ''
+    var url = ''
+    if (slugState?.length === 1) {
+      const checkIsLowerTab = isLowerTab(slugState[0])
+      if (checkIsLowerTab)
+        url = `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${payload}`
+      else
+        url = `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${slugState[0]}/${payload}`
+    } else if (slugState?.length === 2) {
+      const checkIsUpperTab = isUpperTab(slugState[0])
+      const checkIsLowerTab = isLowerTab(slugState[0])
+      const checkIsLowerTabTemp = isLowerTab(slugState[1])
+      const checkIsCity = isCitySelected(slugState[1])
+      if (checkIsUpperTab && checkIsCity)
+        url = `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${slugState[0]}/${payload}/${slugState[1]}`
+      else if (checkIsLowerTab && checkIsCity)
+        url = `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${payload}/${slugState[1]}`
+      else if (checkIsUpperTab && checkIsLowerTabTemp)
+        url = `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${slugState[0]}/${payload}`
+      else
+        url = `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${slugState[0]}/${payload}/${slugState[1]}`
+    } else if (slugState?.length === 3) {
+      url = `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${slugState[0]}/${payload}/${slugState[2]}`
+    } else {
+      url = `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${payload}`
+    }
+    window.history.pushState(null, '', url + queryParam)
+  }
+
+  useEffect(() => {
+    if (cityOtr.cityCode !== getCity().cityCode) {
+      setCityOtr(getCity())
+    }
+    checkCitySlug(citySlug, cities, setCityOtr)
+  }, [citySlug, cities])
+
   const renderContent = () => {
     const parsedModel = capitalizeFirstLetter(model.replace(/-/g, ' '))
     const brandModel =
@@ -777,6 +891,7 @@ export default function NewCarVariantList({
         cityListFromApi={cities}
         pageOrigination="PDP"
         sourceButton={isOpenCitySelectorOTRPrice ? 'OTR Price (PDP)' : ''}
+        onPage="PDP"
       />
       {isModalOpenend && (
         <AdaOTOdiSEVALeadsForm

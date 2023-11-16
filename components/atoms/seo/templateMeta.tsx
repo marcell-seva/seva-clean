@@ -34,7 +34,7 @@ export const metaTitleTemplateOneSlug = (
     case 'spesifikasi':
       return `Spesifikasi ${brand} ${model} ${year} | SEVA`
     case 'harga':
-      return `Harga OTR ${brand} ${model} ${year} | SEVA`
+      return `Harga OTR ${brand} ${model} ${year} Terbaru | SEVA`
     case 'kredit':
       return `Kredit ${brand} ${model} ${year}. Simulasi Cicilan dengan Harga OTR dan Promo ${currentMonth} | SEVA`
     default:
@@ -55,6 +55,7 @@ export const metaTitleTemplateTwoSlug = (
   const currentMonth = monthId(todayDate.getMonth())
   const oneSlug = slug.split('/')[0]
   const twoSlug = slug.split('/')[1]
+
   if (isLoc) {
     switch (oneSlug) {
       case 'warna':
@@ -139,7 +140,7 @@ export const metaTitleTemplateTwoSlug = (
       case '360-interior/harga':
         return `Tampilan 360º Interior ${brand} ${model} ${year} - Harga OTR | SEVA`
       case '360-interior/kredit':
-        return `Tampilan 360º Interior ${brand} ${model} ${year} - Cek Simulasi Kredit Mobil & Cicilan | SEVA`
+        return `Tampilan 360º Interior ${brand} ${model} ${year} - Simulasi Kredit Mobil & Cicilan | SEVA`
       case 'video/ringkasan':
         return `Review ${brand} ${model} ${year} | SEVA`
       case 'video/spesifikasi':
@@ -280,7 +281,7 @@ export const metaDescTemplateOneSlug = (
     case 'eksterior':
       return `Temukan foto eksterior ${brand} ${model} ${year}. Lihat tampilan body mobil, grille, headlights, tampak depan, dan tampak samping`
     case 'interior':
-      return `Temukan foto interior ${brand} ${model} ${year}. Lihat tampilan kabin, konfigurasi, dan kenyamanan interior`
+      return `Temukan foto interior ${brand} ${model} ${year}. Lihat tampilan kabin, konfigurasi, dan kenyamanan interior ${model}`
     case 'video':
       return `Tonton video review lengkap  ${brand} ${model} ${year}. Lihat impresi dan kesan berkendara mobil ${model}`
     case '360-eksterior':
@@ -290,11 +291,11 @@ export const metaDescTemplateOneSlug = (
     case 'spesifikasi':
       return `Dapatkan Informasi lengkap mengenai spesifikasi ${brand} ${model} ${year} terbaru di SEVA`
     case 'harga':
-      return `Daftar harga ${brand} ${model} ${year}. Harga mulai dari Rp ${carOTR} juta, dapatkan informasi mengenai harga OTR ${brand} ${model} terbaru di SEVA`
+      return `Daftar harga ${brand} ${model} ${year}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga OTR ${brand} ${model} terbaru di SEVA`
     case 'kredit':
       return `Hitung simulasi cicilan ${brand} ${model} ${year}. Dapatkan skema cicilan mobil ${model} dengan Loan Calculator di SEVA`
     default:
-      return `Beli mobil ${brand} ${model} ${year} baru secara kredit di SEVA. Harga mulai Rp ${carOTR} Juta, cari tau spesifikasi, daftar harga, dan simulasi kredit`
+      return `Beli mobil ${brand} ${model} ${year} baru secara kredit di SEVA. Harga mulai ${carOTR}, cari tau spesifikasi, daftar harga, dan simulasi kredit`
   }
 }
 
@@ -315,7 +316,7 @@ export const metaDescTemplateTwoSlug = (
       case 'warna':
         return `Lihat beragam pilihan warna yang tersedia untuk ${brand} ${model} ${year} di ${formatLocation(
           twoSlug,
-        )}.  Pilih dari ${color} pilihan warna mobil`
+        )}.  Pilih dari ${color} pilihan warna mobil ${model}`
       case 'eksterior':
         return `Temukan foto eksterior ${brand} ${model} ${year} di ${formatLocation(
           twoSlug,
@@ -335,9 +336,21 @@ export const metaDescTemplateTwoSlug = (
       case 'video':
         return `Tonton video review lengkap ${brand} ${model} ${year} di ${formatLocation(
           twoSlug,
+        )}. Lihat impresi dan kesan berkendara mobil ${model}`
+      case 'spesifikasi':
+        return `Dapatkan informasi lengkap mengenai spesifikasi ${brand} ${model} ${year} OTR ${formatLocation(
+          twoSlug,
         )}.`
+      case 'harga':
+        return `Daftar harga ${brand} ${model} ${year} OTR ${formatLocation(
+          twoSlug,
+        )}. Bandingkan harga ${brand} ${model} dan hitung simulasi cicilan mobil ${model}`
+      case 'kredit':
+        return `Hitung simulasi cicilan ${brand} ${model} ${year} OTR ${formatLocation(
+          twoSlug,
+        )}. Dapatkan skema cicilan mobil ${model} dengan Loan Calculator di SEVA`
       default:
-        return `Beli mobil ${brand} ${model} ${year} baru secara kredit di SEVA. Harga mulai Rp ${carOTR} Juta, cari tau spesifikasi, daftar harga, dan simulasi kredit.`
+        return `Beli mobil ${brand} ${model} ${year} baru secara kredit di SEVA. Harga mulai ${carOTR}, cari tau spesifikasi, daftar harga, dan simulasi kredit.`
     }
   } else {
     switch (slug) {
@@ -390,7 +403,7 @@ export const metaDescTemplateTwoSlug = (
       case 'video/kredit':
         return `Tonton video review ${brand} ${model} ${year} dan simulasi kredit mobil ${model}. Dapatkan informasi mengenai ${brand} ${model} ${year} terbaru di SEVA.`
       default:
-        return `Beli mobil ${brand} ${model} ${year} baru secara kredit di SEVA. Harga mulai Rp ${carOTR} Juta, cari tau spesifikasi, daftar harga, dan simulasi kredit.`
+        return `Beli mobil ${brand} ${model} ${year} baru secara kredit di SEVA. Harga mulai ${carOTR}, cari tau spesifikasi, daftar harga, dan simulasi kredit.`
     }
   }
 }
@@ -501,6 +514,6 @@ export const metaDescTemplateThreeSlug = (
         threeSlug,
       )}. Dapatkan simulasi kredit ${brand} ${model} ${year} terbaru di SEVA.`
     default:
-      return `Beli mobil ${brand} ${model} ${year} baru secara kredit di SEVA. Harga mulai Rp ${carOTR} Juta, cari tau spesifikasi, daftar harga, dan simulasi kredit.`
+      return `Beli mobil ${brand} ${model} ${year} baru secara kredit di SEVA. Harga mulai ${carOTR}, cari tau spesifikasi, daftar harga, dan simulasi kredit.`
   }
 }
