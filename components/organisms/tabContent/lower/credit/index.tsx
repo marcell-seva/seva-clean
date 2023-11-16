@@ -101,6 +101,7 @@ import {
 } from 'services/api'
 import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -438,16 +439,19 @@ export const CreditTab = () => {
   useEffect(() => {
     fetchAllCarModels()
     fetchArticles()
-    const timeoutCountlyTracker = setTimeout(() => {
-      if (!isSentCountlyPageView) {
-        trackCountlyViewCreditTab()
-      }
-    }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
 
     const nextDisplay = localStorage.getItem('tooltipNextDisplay')
     if (nextDisplay) {
       setTooltipNextDisplay(nextDisplay)
     }
+  }, [])
+
+  useAfterInteractive(() => {
+    const timeoutCountlyTracker = setTimeout(() => {
+      if (!isSentCountlyPageView) {
+        trackCountlyViewCreditTab()
+      }
+    }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
 
     return () => clearTimeout(timeoutCountlyTracker)
   }, [])

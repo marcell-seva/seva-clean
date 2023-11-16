@@ -48,6 +48,7 @@ import {
   sendRefiContact,
 } from 'utils/httpUtils/customerUtils'
 import dynamic from 'next/dynamic'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const LoginModalMultiKK = dynamic(
   () => import('../loginModalMultiKK').then((comp) => comp.LoginModalMultiKK),
@@ -135,9 +136,6 @@ export const Login = () => {
   }
 
   useEffect(() => {
-    setTrackEventMoEngageWithoutValue('view_login_page')
-    trackCountlyPageView()
-
     const data: string | null = getLocalStorage(LocalStorageKey.TempLoginPhone)
     if (data !== null) {
       setPhone(data)
@@ -150,6 +148,15 @@ export const Login = () => {
         PAGE_REFERRER: 'Instant Approval Result Page',
       })
     }
+  }, [])
+
+  useAfterInteractive(() => {
+    setTrackEventMoEngageWithoutValue('view_login_page')
+    const timeoutCountly = setTimeout(() => {
+      trackCountlyPageView()
+    }, 1000)
+
+    return () => clearTimeout(timeoutCountly)
   }, [])
 
   const sendOtpCode = async () => {

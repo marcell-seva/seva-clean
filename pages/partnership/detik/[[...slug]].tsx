@@ -574,17 +574,11 @@ export default function LoanCalculatorPage() {
   }
 
   useEffect(() => {
-    trackMoengage()
     checkCitiesData()
     fetchAllCarModels()
     fetchArticles()
     getAnnouncementBox()
     fetchDataContext()
-    const timeoutCountlyTracker = setTimeout(() => {
-      if (!isSentCountlyPageView) {
-        trackCountlyPageView()
-      }
-    }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
 
     // mock validation
     // TODO : replace with the real one later
@@ -593,8 +587,6 @@ export default function LoanCalculatorPage() {
       // use replace, so that user cant go back to error page
       router.replace(loanCalculatorDefaultUrl)
     }
-
-    return () => clearTimeout(timeoutCountlyTracker)
   }, [])
 
   useEffect(() => {
@@ -659,6 +651,17 @@ export default function LoanCalculatorPage() {
       saveShowAnnouncementBox(false)
     }
   }, [dataAnnouncementBox])
+
+  useAfterInteractive(() => {
+    trackMoengage()
+    const timeoutCountlyTracker = setTimeout(() => {
+      if (!isSentCountlyPageView) {
+        trackCountlyPageView()
+      }
+    }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
+
+    return () => clearTimeout(timeoutCountlyTracker)
+  }, [])
 
   const AgeList: Option<string>[] = [
     {
