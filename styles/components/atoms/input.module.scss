@@ -48,6 +48,10 @@
 
 .input:focus {
   @include borderColor(focus);
+
+  &.error {
+    @include borderColor(error);
+  }
 }
 
 .input[disabled] {

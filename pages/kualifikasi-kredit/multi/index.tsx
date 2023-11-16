@@ -359,7 +359,9 @@ const MultiKK = ({
         multiForm.tenure &&
         multiForm.transmission &&
         multiForm.transmission.length > 0 &&
-        multiForm.dob,
+        multiForm.dob &&
+        !errorMin() &&
+        !errorMax(),
     )
   }, [multiForm, price])
 
@@ -741,12 +743,11 @@ const MultiKK = ({
   }, [multiForm.occupation, modelOccupationListOptionsFull])
 
   useEffect(() => {
-    if (rawPrice.max && rawPrice.min) {
-      setMultiForm((prev) => ({
-        ...prev,
-        priceRangeGroup: `${rawPrice.min}-${rawPrice.max}`,
-      }))
-    }
+    setMultiForm((prev: any) => ({
+      ...prev,
+      priceRangeGroup:
+        rawPrice.max && rawPrice.min ? `${rawPrice.min}-${rawPrice.max}` : '',
+    }))
   }, [rawPrice])
 
   useEffect(() => {
@@ -912,12 +913,10 @@ const MultiKK = ({
                       rawPrice.max || limitPrice.max,
                     ]}
                     styles={{
-                      tracks: {
-                        backgroundColor:
-                          errorMin() || errorMax()
-                            ? colors.primaryRed
-                            : colors.primarySkyBlue,
-                      },
+                      track:
+                        errorMin() || errorMax()
+                          ? { backgroundColor: colors.primaryRed }
+                          : { backgroundColor: colors.primarySkyBlue },
                     }}
                   />
                 </div>

@@ -52,16 +52,13 @@ export const usePriceRange = () => {
   }
 
   const onChangeInputMinimum = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value[0] === '0') return patchPrice('min', 0)
+    const value = event.target.value
+    if (value[0] === '0') return patchPrice('min', 0)
 
-    const unformanttedValue = Number(
-      filterNonDigitCharacters(event.target.value),
-    )
+    const unformanttedValue = Number(filterNonDigitCharacters(value))
 
     const showError =
-      unformanttedValue &&
-      unformanttedValue < limitPrice.min &&
-      event.target.value
+      unformanttedValue && unformanttedValue < limitPrice.min && value
         ? true
         : false
     setErrorMinField((prev) => ({ ...prev, min: showError }))
@@ -76,13 +73,11 @@ export const usePriceRange = () => {
   }
 
   const onChangeInputMaximum = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value[0] === '0') return patchPrice('max', 0)
+    const value = event.target.value
+    if (value[0] === '0') return patchPrice('max', 0)
 
-    const unformanttedValue = Number(
-      filterNonDigitCharacters(event.target.value),
-    )
-    const showError =
-      unformanttedValue > limitPrice.max && event.target.value ? true : false
+    const unformanttedValue = Number(filterNonDigitCharacters(value))
+    const showError = unformanttedValue > limitPrice.max && value ? true : false
     setErrorMaxField((prev) => ({ ...prev, max: showError }))
     setErrorMinTwoField(false)
 
@@ -102,6 +97,15 @@ export const usePriceRange = () => {
     }
   }
 
+  const revertPrice = (type: 'min' | 'max') => {
+    patchPrice(type, limitPrice[type])
+    if (type === 'min') {
+      setErrorMinField(initErrorField)
+    } else {
+      setErrorMaxField(initErrorField)
+    }
+  }
+
   useEffect(() => {
     fetchMinMaxPrice()
   }, [])
@@ -114,6 +118,7 @@ export const usePriceRange = () => {
     errorMinField,
     errorMinTwoField,
     errorMaxTwoField,
+    revertPrice,
     onChangeSlider,
     onChangeInputMaximum,
     onChangeInputMinimum,
