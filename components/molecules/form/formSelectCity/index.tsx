@@ -29,6 +29,7 @@ type FormSelectCityProps = {
   datatestid?: TestID
   onOpenTooltip?: () => void
   onShowDropdown?: () => void
+  isPartnership?: boolean
 }
 
 export default function FormSelectCity({
@@ -38,6 +39,7 @@ export default function FormSelectCity({
   isError = false,
   onOpenTooltip,
   onShowDropdown,
+  isPartnership,
 }: FormSelectCityProps) {
   const [cityListApi, setCityListApi] = useState<Array<Location>>([])
   const [defaultCity, setDefaultCity] = useState<Location | null>(null)
@@ -211,6 +213,7 @@ export default function FormSelectCity({
   return (
     <>
       <LabelWithTooltip
+        isPartnership={isPartnership}
         label="Saya ingin beli mobil di kota"
         content="Harga On The Road (OTR) mobil
             berbeda di setiap kota."

@@ -1663,6 +1663,7 @@ export default function LoanCalculatorPage() {
           <div className={styles.formWrapper}>
             <div id="loan-calculator-form-city">
               <FormSelectCity
+                isPartnership
                 isHasCarParameter={isHasCarParameter}
                 handleChange={handleChange}
                 name="city"
