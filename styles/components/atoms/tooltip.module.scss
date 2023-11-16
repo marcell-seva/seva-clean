@@ -61,3 +61,7 @@
 .overlayAdditionalStyle {
   @include centeredWithMaxWidth;
 }
+
+.overlayAdditionalStyleExtend {
+  @include centeredWithMaxWidthExtend;
+}

@@ -46,6 +46,7 @@ import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { SessionStorageKey } from 'utils/enum'
 import { RegExOnlyAlphabetsAndSpaces } from 'utils/handler/regex'
 import dynamic from 'next/dynamic'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const Toast = dynamic(
   () => import('components/atoms/toast').then((mod) => mod.Toast),
@@ -173,9 +174,16 @@ const Profile = () => {
   }
 
   useEffect(() => {
-    setTrackEventMoEngageWithoutValue(MoengageEventName.view_profile_page)
     getCustomerInfoData()
-    trackCountlyProfileWebView()
+  }, [])
+
+  useAfterInteractive(() => {
+    setTrackEventMoEngageWithoutValue(MoengageEventName.view_profile_page)
+    const timeoutCountly = setTimeout(() => {
+      trackCountlyProfileWebView()
+    }, 1000)
+
+    return () => clearTimeout(timeoutCountly)
   }, [])
 
   useEffect(() => {

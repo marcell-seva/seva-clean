@@ -12,6 +12,7 @@ interface Props {
   color?: string
   onOpenTooltip?: () => void
   additionalStyle?: string
+  isPartnership?: boolean
 }
 
 export const Tooltip: React.FC<Props> = ({
@@ -21,6 +22,7 @@ export const Tooltip: React.FC<Props> = ({
   content,
   onOpenTooltip,
   additionalStyle = '',
+  isPartnership,
 }) => {
   const [isShowOverlay, setIsShowOverlay] = React.useState(false)
 
@@ -65,7 +67,11 @@ export const Tooltip: React.FC<Props> = ({
         isShow={isShowOverlay}
         onClick={handleCloseTooltip}
         zIndex={98}
-        additionalstyle={styles.overlayAdditionalStyle}
+        additionalstyle={
+          isPartnership
+            ? styles.overlayAdditionalStyleExtend
+            : styles.overlayAdditionalStyle
+        }
       />
     </>
   )
