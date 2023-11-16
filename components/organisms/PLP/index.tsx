@@ -148,6 +148,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       ? true
       : false
 
+  funnelQuery.brand = brand?.split(',').map((item) => getCarBrand(item)) || []
   const showFilterFinancial =
     age || downPaymentAmount || monthlyIncome ? true : false
   const [isFilter, setIsFilter] = useState(showFilter)
@@ -499,10 +500,10 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       funnelQuery.age
     ) {
       setIsFilterFinancial(true)
-      patchFunnelQuery({ filterFincap: true })
+      patchFunnelQuery({ ...funnelQuery, filterFincap: true })
     } else {
       setIsFilterFinancial(false)
-      patchFunnelQuery({ filterFincap: false })
+      patchFunnelQuery({ ...funnelQuery, filterFincap: false })
     }
   }, [
     funnelQuery.downPaymentAmount,

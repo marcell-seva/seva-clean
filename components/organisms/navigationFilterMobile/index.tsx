@@ -132,7 +132,7 @@ export const NavigationFilterMobile = ({
           '',
         monthlyIncome:
           (filter.monthlyIncome && filter.monthlyIncome.toString()) || '',
-        priceRangeGroup: filter.priceRangeGroup,
+        priceRangeGroup: filter.priceRangeGroup ? filter.priceRangeGroup : '',
         bodyType:
           filter.bodyType.length > 0
             ? String(filter.bodyType).replace(' ', ',')
@@ -158,13 +158,19 @@ export const NavigationFilterMobile = ({
             false,
             urls.internalUrls.duplicatedCarResultsUrl,
           )
-        : navigateToPLP(PreviousButton.SmartSearch, {
-            search: new URLSearchParams(
-              Object.entries(paramUrl).filter(([, v]) => v !== ''),
-            )
-              .toString()
-              .replace('%2C', ','),
-          })
+        : navigateToPLP(
+            PreviousButton.SmartSearch,
+            {
+              search: new URLSearchParams(
+                Object.entries(paramUrl).filter(([, v]) => v !== ''),
+              )
+                .toString()
+                .replace('%2C', ','),
+            },
+            true,
+            false,
+            urls.internalUrls.carResultsUrl,
+          )
     })
   }
 

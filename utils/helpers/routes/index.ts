@@ -5,7 +5,7 @@ export const OTONewCarUrl = '/adaSEVAdiOTO/mobil-baru'
 export const OTOCarResultsUrl = '/adaSEVAdiOTO/mobil-baru/:brand/:model'
 export const loanCalculatorWithCityBrandModelVariantUrl =
   '/kalkulator-kredit/:cityName/:brand/:model/:variant'
-export const variantListUrl = '/mobil-baru/:brand/:model/:tab?'
+export const variantListUrl = '/mobil-baru/p/:brand/:model/:tab?'
 export const OTOVariantListUrl = '/adaSEVAdiOTO/mobil-baru/:brand/:model/:tab?'
 export const loanCalculatorDefaultUrl = '/kalkulator-kredit'
 export const loanCalculatorWithCityBrandModelUrl =

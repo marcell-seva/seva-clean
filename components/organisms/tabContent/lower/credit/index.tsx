@@ -100,8 +100,7 @@ import {
   postLoanPermutationIncludePromo,
 } from 'services/api'
 import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
-import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
-import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { PdpDataLocalContext } from 'pages/mobil-baru/p/[brand]/[model]/[[...slug]]'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),

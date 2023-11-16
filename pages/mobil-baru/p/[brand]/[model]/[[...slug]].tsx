@@ -185,10 +185,11 @@ export default function index({
 
   let metaTitle = ''
   let metaDesc = ''
+
   const checkColor = router.asPath
     .split('?')[0]
     .split('/')
-    .splice(0, 4)
+    .splice(0, 5)
     .join('/')
 
   const countColors = availableListColors.filter(

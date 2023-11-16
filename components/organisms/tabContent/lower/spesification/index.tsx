@@ -18,7 +18,7 @@ import { useCar } from 'services/context/carContext'
 import { LocalStorageKey, LanguageCode } from 'utils/enum'
 import { TrackerFlag } from 'utils/types/models'
 import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
-import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { PdpDataLocalContext } from 'pages/mobil-baru/p/[brand]/[model]/[[...slug]]'
 import { useRouter } from 'next/router'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
