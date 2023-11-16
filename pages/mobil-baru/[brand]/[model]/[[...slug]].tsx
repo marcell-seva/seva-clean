@@ -4,6 +4,7 @@ import {
   CarModelDetailsResponse,
   CarRecommendation,
   CarVariantDetails,
+  CityOtrOption,
   MainVideoResponseType,
 } from 'utils/types/utils'
 import { InferGetServerSidePropsType } from 'next'
@@ -42,7 +43,16 @@ import {
   getCarVariantDetails,
   getAnnouncementBox as gab,
 } from 'services/api'
-import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
+import { mode } from 'crypto-js'
+import {
+  metaDescTemplateOneSlug,
+  metaDescTemplateThreeSlug,
+  metaDescTemplateTwoSlug,
+  metaTitleTemplateOneSlug,
+  metaTitleTemplateThreeSlug,
+  metaTitleTemplateTwoSlug,
+} from 'components/atoms/seo/templateMeta'
+import { availableListColors } from 'config/AvailableListColors'
 
 const checkUpper = [
   'warna',
@@ -100,6 +110,8 @@ export default function index({
   dataFooter,
   dataCities,
   selectedVideoReview,
+  finalSlug,
+  checkLoc,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const {
     saveDataAnnouncementBox,
@@ -110,8 +122,11 @@ export default function index({
   } = useUtils()
   const router = useRouter()
   const { model, brand, slug } = router.query
-  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
-  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
+  const [upperTabSlug, lowerTabSlug, citySlug] = slug?.length
+    ? (slug as Array<string>)
+    : []
+  const totalSlug = finalSlug.split('/').length
+
   const { carModelDetails, recommendation } = useCar()
   const lowerTab = router.query.slug as string
   const path = lowerTab ? capitalizeFirstLetter(lowerTab[0]) : ''
@@ -128,10 +143,6 @@ export default function index({
     saveCities(dataCities)
     getAnnouncementBox()
   }, [])
-
-  useEffect(() => {
-    setIsMobile(isClientMobile)
-  }, [isClientMobile])
 
   const getAnnouncementBox = async () => {
     try {
@@ -167,46 +178,74 @@ export default function index({
   const carOTRValue = Math.min(...((carOTRValueArray as number[]) ?? [0]))
   const carOTR = `Rp ${carOTRValue / 1000000} juta`
 
-  const getMetaTitle = () => {
-    if (isMobile) {
-      switch (selectedTabValue) {
-        case 'Kredit':
-          return `Kredit ${carBrand} ${carModel} ${currentYear}. Simulasi Cicilan OTR ${
-            getCity().cityName
-          } dengan Loan Calculator | SEVA`
-        case 'Spesifikasi':
-          return `Spesifikasi ${carBrand} ${carModel} ${currentYear} | SEVA`
-        case 'Harga':
-          return `Harga OTR ${carBrand} ${carModel} ${currentYear} ${
-            getCity().cityName
-          } Terbaru | SEVA`
-        default:
-          return `Ringkasan Produk ${carBrand} ${carModel} ${currentYear} - Harga OTR Promo Bulan ${currentMonth} | SEVA`
-      }
-    } else {
-      if (Array.isArray(slug)) {
-        const titles = slug.map((s) => {
-          switch (s) {
-            case 'kredit':
-              return `Kredit ${carBrand} ${carModel} ${currentYear}. Simulasi Cicilan OTR ${
-                getCity().cityName
-              } dengan Loan Calculator | SEVA`
-            case 'spesifikasi':
-              return `Spesifikasi ${carBrand} ${carModel} ${currentYear} | SEVA`
-            case 'harga':
-              return `Harga OTR ${carBrand} ${carModel} ${currentYear} ${
-                getCity().cityName
-              } Terbaru | SEVA`
-            default:
-              return `Ringkasan Produk ${carBrand} ${carModel} ${currentYear} - Harga OTR Promo Bulan ${currentMonth} | SEVA`
-          }
-        })
+  let metaTitle = ''
+  let metaDesc = ''
+  const checkColor = router.asPath.split('/').slice(0, 4).join('/')
 
-        return titles.join(' | ')
-      } else {
-        return `Ringkasan Produk ${carBrand} ${carModel} ${currentYear} - Harga OTR Promo Bulan ${currentMonth} | SEVA`
-      }
-    }
+  const countColors = availableListColors.filter(
+    (item: any) => item.url === checkColor,
+  )[0].colors.length
+
+  switch (totalSlug) {
+    case 3:
+      metaTitle = metaTitleTemplateThreeSlug(
+        finalSlug,
+        carBrand,
+        carModel,
+        currentYear.toString(),
+        currentCity.cityName,
+      )
+      metaDesc = metaDescTemplateThreeSlug(
+        finalSlug,
+        carBrand,
+        carModel,
+        currentYear.toString(),
+        carOTR,
+        currentCity.cityName,
+      )
+      break
+    case 2:
+      metaTitle = metaTitleTemplateTwoSlug(
+        finalSlug,
+        carBrand,
+        carModel,
+        currentYear.toString(),
+        currentCity.cityName,
+        checkLoc,
+      )
+      metaDesc = metaDescTemplateTwoSlug(
+        finalSlug,
+        carBrand,
+        carModel,
+        currentYear.toString(),
+        carOTR,
+        currentCity.cityName,
+        countColors,
+        checkLoc,
+      )
+      break
+    case 1:
+      metaTitle = metaTitleTemplateOneSlug(
+        finalSlug,
+        carBrand,
+        carModel,
+        currentYear.toString(),
+        currentCity.cityName,
+        checkLoc,
+      )
+      metaDesc = metaDescTemplateOneSlug(
+        finalSlug,
+        carBrand,
+        carModel,
+        currentYear.toString(),
+        carOTR,
+        currentCity.cityName,
+        countColors,
+      )
+      break
+
+    default:
+      break
   }
 
   const getMetaDescription = () => {
@@ -266,8 +305,8 @@ export default function index({
   return (
     <>
       <Seo
-        title={getMetaTitle()}
-        description={getMetaDescription() ?? ''}
+        title={metaTitle}
+        description={metaDesc ?? ''}
         image={modelDetailData?.images[0] || defaultSeoImage}
       />
       <Script
@@ -308,7 +347,9 @@ export async function getServerSideProps(context: any) {
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
   try {
-    if (context.query.slug?.length > 1) {
+    const slug = context.query.slug
+
+    if (context.query.slug?.length > 3) {
       return {
         notFound: true,
       }
@@ -392,6 +433,68 @@ export async function getServerSideProps(context: any) {
       },
     )
 
+    let finalSlug = ''
+    let checkLoc = false
+
+    if (slug?.length !== undefined) {
+      if (slug?.length > 2) {
+        if (checkUpper.includes(slug[0])) {
+          if (checkLower.includes(slug[1])) {
+            if (
+              cityRes.find(
+                (item: CityOtrOption) =>
+                  item.cityName
+                    .replace(/[^a-zA-Z]+/g, '')
+                    .toLocaleLowerCase() ===
+                  slug[2].replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase(),
+              )
+            ) {
+              finalSlug =
+                slug[0] +
+                '/' +
+                slug[1] +
+                '/' +
+                slug[2].replace(/[^a-zA-Z]+/g, ' ')
+            }
+          }
+        }
+      } else if (slug?.length > 1) {
+        if (checkUpper.includes(slug[0])) {
+          if (checkLower.includes(slug[1])) {
+            finalSlug = slug[0] + '/' + slug[1]
+          } else if (
+            cityRes.find(
+              (item: CityOtrOption) =>
+                item.cityName.replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase() ===
+                slug[1].replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase(),
+            )
+          ) {
+            finalSlug = slug[0] + '/' + slug[1].replace(/[^a-zA-Z]+/g, ' ')
+            checkLoc = true
+          }
+        } else {
+          finalSlug = ''
+        }
+      } else {
+        if (checkUpper.includes(slug[0])) {
+          finalSlug = slug[0]
+        } else if (checkLower.includes(slug[0])) {
+          finalSlug = slug[0]
+        } else if (
+          cityRes.find(
+            (item: CityOtrOption) =>
+              item.cityName.replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase() ===
+              slug[0].replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase(),
+          )
+        ) {
+          finalSlug = slug[0].replace(/[^a-zA-Z]+/g, ' ')
+          checkLoc = true
+        } else {
+          finalSlug = ''
+        }
+      }
+    } else {
+    }
     return {
       props: {
         carRecommendationsRes,
@@ -407,10 +510,24 @@ export async function getServerSideProps(context: any) {
         dataCities: cityRes,
         dataDesktopMenu: menuDesktopRes.data,
         selectedVideoReview: selectedVideoReview || null,
+        finalSlug: finalSlug,
+        checkLoc: checkLoc,
       },
     }
-  } catch (error: any) {
-    return serverSideManualNavigateToErrorPage(error?.response?.status)
+  } catch (error) {
+    console.log('qwe error', error)
+    return {
+      props: {
+        notFound: true,
+        dataMobileMenu: [],
+        dataFooter: [],
+        dataCities: [],
+        dataDesktopMenu: [],
+        isSsrMobileLocal: getIsSsrMobile(context),
+        finalSlug: '',
+        checkLoc: false,
+      },
+    }
   }
 }
 
