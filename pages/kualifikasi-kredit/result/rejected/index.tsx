@@ -8,6 +8,13 @@ import styles from 'styles/pages/kualifikasi-kredit-result.module.scss'
 import { InferGetServerSidePropsType } from 'next'
 import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
 import { getMetaTagData } from 'services/api'
+import {
+  getCities,
+  getMobileFooterMenu,
+  getMobileHeaderMenu,
+  getAnnouncementBox as gab,
+} from 'services/api'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 export interface Params {
   brand: string
@@ -15,30 +22,13 @@ export interface Params {
   tab: string
 }
 
-const CreditQualificationPageRejected = ({
-  meta: dataHead,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const CreditQualificationPageRejected = ({}: InferGetServerSidePropsType<
+  typeof getServerSideProps
+>) => {
   useProtectPage()
-  const head = useMemo(() => {
-    const title =
-      dataHead && dataHead.length > 0
-        ? dataHead[0].attributes.meta_title
-        : 'SEVA'
-    const description =
-      dataHead && dataHead.length > 0
-        ? dataHead[0].attributes.meta_description
-        : ''
-
-    return { title, description }
-  }, [dataHead])
 
   return (
     <>
-      <Seo
-        title={head.title}
-        description={head.description}
-        image={defaultSeoImage}
-      />
       <div className={styles.container}>
         <CreditQualificationRejected />
       </div>
@@ -52,9 +42,20 @@ export const getServerSideProps = async (ctx: any) => {
   const model = (ctx.query.model as string)?.replaceAll('-', '')
 
   try {
-    const [meta]: any = await Promise.all([getMetaTagData(model as string)])
-    return { props: { meta: meta.data } }
-  } catch (e) {
-    return { props: { meta: {} } }
+    const [menuMobileRes, footerRes, cityRes]: any = await Promise.all([
+      getMobileHeaderMenu(),
+      getMobileFooterMenu(),
+      getCities(),
+    ])
+
+    return {
+      props: {
+        dataMobileMenu: menuMobileRes.data,
+        dataFooter: footerRes.data,
+        dataCities: cityRes,
+      },
+    }
+  } catch (e: any) {
+    return serverSideManualNavigateToErrorPage(e?.response?.status)
   }
 }

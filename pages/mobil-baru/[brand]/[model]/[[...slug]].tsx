@@ -42,6 +42,18 @@ import {
   getCarVariantDetails,
   getAnnouncementBox as gab,
 } from 'services/api'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
+
+const checkUpper = [
+  'warna',
+  'eksterior',
+  'interior',
+  'video',
+  '360-eksterior',
+  '360-interior',
+]
+const checkLower = ['ringkasan', 'spesifikasi', 'harga', 'kredit']
+
 interface PdpDataLocalContextType {
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.
@@ -379,18 +391,8 @@ export async function getServerSideProps(context: any) {
         selectedVideoReview: selectedVideoReview || null,
       },
     }
-  } catch (error) {
-    console.log('qwe error', error)
-    return {
-      props: {
-        notFound: true,
-        dataMobileMenu: [],
-        dataFooter: [],
-        dataCities: [],
-        dataDesktopMenu: [],
-        isSsrMobileLocal: getIsSsrMobile(context),
-      },
-    }
+  } catch (error: any) {
+    return serverSideManualNavigateToErrorPage(error?.response?.status)
   }
 }
 

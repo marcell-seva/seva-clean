@@ -33,6 +33,7 @@ import {
   getMinMaxPrice,
 } from 'services/api'
 import { default as customAxiosGet } from 'services/api/get'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 const NewCarResultPage = ({
   meta,
@@ -251,15 +252,7 @@ export const getServerSideProps: GetServerSideProps<{
         isSsrMobile: getIsSsrMobile(ctx),
       },
     }
-  } catch (e) {
-    return {
-      props: {
-        meta,
-        dataDesktopMenu: [],
-        dataMobileMenu: [],
-        dataFooter: [],
-        dataCities: [],
-      },
-    }
+  } catch (e: any) {
+    return serverSideManualNavigateToErrorPage(e?.response?.status)
   }
 }

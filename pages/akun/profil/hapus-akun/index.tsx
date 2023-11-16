@@ -30,6 +30,7 @@ import {
   getCities,
   getAnnouncementBox as gab,
 } from 'services/api'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 const CitySelectorModal = dynamic(
   () => import('components/molecules').then((mod) => mod.CitySelectorModal),
@@ -217,13 +218,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataCities: cityRes,
       },
     }
-  } catch (e) {
-    return {
-      props: {
-        dataMobileMenu: [],
-        dataFooter: [],
-        dataCities: [],
-      },
-    }
+  } catch (e: any) {
+    return serverSideManualNavigateToErrorPage(e?.response?.status)
   }
 }

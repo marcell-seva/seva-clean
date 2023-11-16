@@ -36,6 +36,7 @@ import { occupations } from 'utils/occupations'
 import {
   AnnouncementBoxDataType,
   FormControlValue,
+  MobileWebTopMenuType,
   MultKKCarRecommendation,
   SendMultiKualifikasiKredit,
 } from 'utils/types/utils'
@@ -70,7 +71,12 @@ import {
   getCities,
   postMultiCreditQualification,
   getAnnouncementBox as gab,
+  getMobileHeaderMenu,
+  getMobileFooterMenu,
 } from 'services/api'
+import { GetServerSideProps } from 'next'
+import { MobileWebFooterMenuType } from 'utils/types/props'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 const DatePicker = dynamic(
   () => import('components/atoms/inputDate/datepicker'),
@@ -752,3 +758,32 @@ const MultiKK = () => {
 }
 
 export default MultiKK
+
+export const getServerSideProps: GetServerSideProps<{
+  dataMobileMenu: MobileWebTopMenuType[]
+  dataFooter: MobileWebFooterMenuType[]
+  dataCities: CityOtrOption[]
+}> = async (ctx) => {
+  ctx.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=59, stale-while-revalidate=3000',
+  )
+
+  try {
+    const [menuMobileRes, footerRes, cityRes]: any = await Promise.all([
+      getMobileHeaderMenu(),
+      getMobileFooterMenu(),
+      getCities(),
+    ])
+
+    return {
+      props: {
+        dataMobileMenu: menuMobileRes.data,
+        dataFooter: footerRes.data,
+        dataCities: cityRes,
+      },
+    }
+  } catch (e: any) {
+    return serverSideManualNavigateToErrorPage(e?.response?.status)
+  }
+}

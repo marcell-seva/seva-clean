@@ -13,6 +13,7 @@ import {
   getCities,
   getAnnouncementBox as gab,
 } from 'services/api'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 const ProfilePage = ({
   dataMobileMenu,
@@ -76,13 +77,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataCities: cityRes,
       },
     }
-  } catch (e) {
-    return {
-      props: {
-        dataMobileMenu: [],
-        dataFooter: [],
-        dataCities: [],
-      },
-    }
+  } catch (e: any) {
+    return serverSideManualNavigateToErrorPage(e?.response?.status)
   }
 }

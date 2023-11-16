@@ -14,7 +14,10 @@ import { getLocalStorage } from 'utils/handler/localStorage'
 import { CityOtrOption, NewFunnelCarVariantDetails } from 'utils/types'
 import { getToken } from 'utils/handler/auth'
 
-import { AnnouncementBoxDataType } from 'utils/types/utils'
+import {
+  AnnouncementBoxDataType,
+  MobileWebTopMenuType,
+} from 'utils/types/utils'
 import { Triangle } from 'components/atoms/icon/Triangle'
 import { Star } from 'components/atoms/icon/Star'
 import { Firework } from 'components/atoms/icon/Firework'
@@ -45,7 +48,15 @@ import Image from 'next/image'
 import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
 import { getCustomerInfoSeva, getCustomerKtpSeva } from 'utils/handler/customer'
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
-import { getCities, getAnnouncementBox as gab } from 'services/api'
+import {
+  getCities,
+  getAnnouncementBox as gab,
+  getMobileHeaderMenu,
+  getMobileFooterMenu,
+} from 'services/api'
+import { GetServerSideProps } from 'next'
+import { MobileWebFooterMenuType } from 'utils/types/props'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 const MainImageGreenMale = '/revamp/illustration/credit-result-green-male.webp'
 const MainImageGreenFemale =
@@ -597,4 +608,33 @@ export default function CreditQualificationResultPage() {
       />
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps<{
+  dataMobileMenu: MobileWebTopMenuType[]
+  dataFooter: MobileWebFooterMenuType[]
+  dataCities: CityOtrOption[]
+}> = async (ctx) => {
+  ctx.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=59, stale-while-revalidate=3000',
+  )
+
+  try {
+    const [menuMobileRes, footerRes, cityRes]: any = await Promise.all([
+      getMobileHeaderMenu(),
+      getMobileFooterMenu(),
+      getCities(),
+    ])
+
+    return {
+      props: {
+        dataMobileMenu: menuMobileRes.data,
+        dataFooter: footerRes.data,
+        dataCities: cityRes,
+      },
+    }
+  } catch (e: any) {
+    return serverSideManualNavigateToErrorPage(e?.response?.status)
+  }
 }

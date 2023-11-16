@@ -55,6 +55,7 @@ import { Register } from './register'
 import Profile from './profile'
 import { PopupResultRecommended } from './popupResultFilter/resultRecommended'
 import { InternalServerErrorPageContent } from './internalServerErrorPageContent'
+import { NotFoundErrorPageContent } from './notFoundErrorPageContent'
 
 const Exterior360ViewerTab = dynamic(
   () => import('./tabContent/upper/exterior360Viewer'),
@@ -118,4 +119,5 @@ export {
   Profile,
   PopupResultRecommended,
   InternalServerErrorPageContent,
+  NotFoundErrorPageContent,
 }

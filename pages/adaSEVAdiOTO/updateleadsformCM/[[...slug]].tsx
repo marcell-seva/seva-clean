@@ -21,6 +21,7 @@ import { updateLeadFormCMSEVA } from 'services/leadsCM'
 import { useUtils } from 'services/context/utilsContext'
 import dynamic from 'next/dynamic'
 import { getAgent, getLeadsDetail } from 'services/api'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 const Toast = dynamic(() => import('components/atoms').then((mod) => mod.Toast))
 
@@ -336,11 +337,7 @@ export async function getServerSideProps(context: any) {
         phone,
       },
     }
-  } catch (error) {
-    return {
-      props: {
-        dataAgent: [],
-      },
-    }
+  } catch (error: any) {
+    return serverSideManualNavigateToErrorPage(error?.response?.status)
   }
 }

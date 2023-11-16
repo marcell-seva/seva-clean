@@ -32,6 +32,7 @@ import {
   getAnnouncementBox as gab,
 } from 'services/api'
 import { default as customAxiosGet } from 'services/api/get'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 const NewCarResultPage = ({
   meta,
@@ -253,17 +254,7 @@ export const getServerSideProps: GetServerSideProps<{
         isSsrMobileLocal: getIsSsrMobile(ctx),
       },
     }
-  } catch (e) {
-    return {
-      props: {
-        meta,
-        dataDesktopMenu: [],
-        dataMobileMenu: [],
-        dataFooter: [],
-        dataCities: [],
-        isSsrMobile: getIsSsrMobile(ctx),
-        isSsrMobileLocal: getIsSsrMobile(ctx),
-      },
-    }
+  } catch (e: any) {
+    return serverSideManualNavigateToErrorPage(e?.response?.status)
   }
 }

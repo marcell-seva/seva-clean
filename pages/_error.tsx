@@ -1,4 +1,7 @@
-import { InternalServerErrorPageContent } from 'components/organisms'
+import {
+  InternalServerErrorPageContent,
+  NotFoundErrorPageContent,
+} from 'components/organisms'
 import { NextPageContext } from 'next'
 
 interface Props {
@@ -6,7 +9,11 @@ interface Props {
 }
 
 function Error({ statusCode }: Props) {
-  return statusCode === 404 ? <>404</> : <InternalServerErrorPageContent />
+  return statusCode === 404 ? (
+    <NotFoundErrorPageContent />
+  ) : (
+    <InternalServerErrorPageContent />
+  )
 }
 
 Error.getInitialProps = ({ res, err }: NextPageContext) => {
