@@ -33,6 +33,7 @@ interface PromoProps extends Omit<BottomSheetProps, 'children'> {
   setFinalLoan: (value: FinalLoan) => void
   onOpenInsuranceTooltip: () => void
   pageOrigination?: string
+  isPartnership?: boolean
 }
 
 const PromoBottomSheet = ({
@@ -45,6 +46,7 @@ const PromoBottomSheet = ({
   setFinalLoan,
   onOpenInsuranceTooltip,
   pageOrigination,
+  isPartnership = false,
   ...props
 }: PromoProps) => {
   const [promoInsuranceTemp, setPromoInsuranceTemp] =
@@ -326,7 +328,7 @@ const PromoBottomSheet = ({
       }}
       maxHeight={window.innerHeight * 0.93}
       additionalHeaderClassname={styles.bottomSheetHeader}
-      className={styles.bottomSheet}
+      className={isPartnership ? styles.bottomSheetExtend : styles.bottomSheet}
       {...props}
     >
       <FormSelectAssurance

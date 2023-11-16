@@ -1,12 +1,58 @@
 import { FormControlValue, Location } from './utils'
 import { HTMLAttributes } from 'react'
-import { LoanRank, ToastType } from './models'
+import { LoanRank, QueryKeys, ToastType } from './models'
 import type { ModalProps } from 'antd'
 import { InputVersionType } from 'utils/enum'
 
 import getCurrentEnvironment from 'helpers/environments'
 
 export const temanSevaUrl = getCurrentEnvironment.temanSevaApiBaseUrl
+
+export type UrlOriginationParam = {
+  Page_Origination_URL?: string
+}
+
+export type UTMProps = {
+  [QueryKeys.UtmSource]: string
+  [QueryKeys.UtmMedium]: string
+  [QueryKeys.UtmCampaign]: string
+  [QueryKeys.UtmId]: string
+  [QueryKeys.UtmContent]: string
+  [QueryKeys.AdSet]: string
+  [QueryKeys.UtmTerm]: string
+}
+
+export interface DetikLeadsForm {
+  carBrand: string | undefined
+  carModelText: string | undefined
+  carVariantText: string | undefined
+  otrPrice: string | undefined
+  income: string | undefined
+  age: string | undefined
+  angsuranType: string | undefined
+}
+
+export type CreditQualificationFlowParam = {
+  Car_Brand: string
+  Car_Model: string
+  Car_Variant: string
+  DP: string
+  Monthly_Installment: string
+  Tenure: string
+  Income?: string
+  /** sum customer income with his/her spouse income */
+  Total_Income?: string
+  Promo?: string
+  Year_Born: string
+  City: string
+}
+
+export type CreditQualificationReviewParam = UrlOriginationParam &
+  CreditQualificationFlowParam & {
+    Teman_SEVA_Ref_Code?: string
+    Occupation: string
+    Page_Origination?: string // different key with "UrlOriginationParam"
+  }
 
 export const temanSevaUrlPath = {
   isTemanSeva: temanSevaUrl + '/auth/is-teman-seva',

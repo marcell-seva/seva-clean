@@ -204,6 +204,7 @@ export enum UnverifiedLeadSubCategory {
   OTO_NEW_CAR_PDP_LEADS_FORM = 'OTONCPDP',
   OTO_NEW_CAR_PLP_LEADS_FORM = 'OTONCPLP',
   OTO_NEW_CAR_LP_LEADS_FORM = 'OTONCLPF',
+  DETIK_NEW_CALCULATOR_CREDIT = 'SEVNCWKD',
 }
 
 export enum LeadsUsedCar {

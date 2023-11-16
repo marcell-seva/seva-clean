@@ -76,3 +76,11 @@
 .bottomSheet [data-rsbs-backdrop] {
   @include centeredWithMaxWidth;
 }
+
+.bottomSheetExtend [data-rsbs-overlay] {
+  @include centeredWithMaxWidthExtend;
+}
+
+.bottomSheetExtend [data-rsbs-backdrop] {
+  @include centeredWithMaxWidthExtend;
+}

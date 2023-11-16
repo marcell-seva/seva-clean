@@ -31,6 +31,7 @@ import {
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import Image from 'next/image'
+import clsx from 'clsx'
 
 const LogoAcc = '/revamp/icon/logo-acc.webp'
 const LogoTaf = '/revamp/icon/logo-taf.webp'
@@ -42,7 +43,7 @@ interface Props {
   angsuranType: InstallmentTypeOptions
   handleRedirectToWhatsapp: (loan: SpecialRateListWithPromoType) => void
   isTooltipOpen: boolean
-  isQualificationModalOpen: boolean
+  isQualificationModalOpen?: boolean
   closeTooltip: () => void
   handleClickButtonQualification: (loan: SpecialRateListWithPromoType) => void
   formData: FormLCState
@@ -54,6 +55,7 @@ interface Props {
   children?: React.ReactNode
   setFinalLoan: (value: FinalLoan) => void
   pageOrigination?: string
+  isPartnership?: boolean
 }
 
 export const CalculationResult = ({
@@ -71,6 +73,7 @@ export const CalculationResult = ({
   calculationApiPayload,
   setFinalLoan,
   pageOrigination,
+  isPartnership = false,
 }: Props) => {
   const [state, setState] = useState<LoanCalculatorInsuranceAndPromoType[]>(
     insuranceAndPromoForAllTenure,
@@ -325,7 +328,7 @@ export const CalculationResult = ({
                 onClick={() => handleClickButtonQualification(selectedLoan)}
                 data-testid={elementId.LoanCalculator.Info.KualifikasiKredit}
               >
-                Cek Kualifikasi Kredit
+                {isPartnership ? 'Saya Tertarik' : 'Cek Kualifikasi Kredit'}
               </Button>
             )}
 
@@ -335,7 +338,11 @@ export const CalculationResult = ({
                   isShow={isTooltipOpen}
                   onClick={handleCloseTooltip}
                   zIndex={998}
-                  additionalstyle={styles.overlayAdditionalStyle}
+                  additionalstyle={
+                    isPartnership
+                      ? styles.overlayAdditionalStyleExtend
+                      : styles.overlayAdditionalStyle
+                  }
                 />
                 <div style={{ width: '100%' }}>
                   <Tooltip
@@ -359,7 +366,9 @@ export const CalculationResult = ({
                         size={ButtonSize.Big}
                         onClick={closeTooltip}
                       >
-                        Cek Kualifikasi Kredit
+                        {isPartnership
+                          ? 'Saya Tertarik'
+                          : 'Cek Kualifikasi Kredit'}
                       </Button>
                     </div>
                   </Tooltip>
@@ -367,17 +376,19 @@ export const CalculationResult = ({
               </>
             )}
 
-            <Button
-              version={ButtonVersion.Secondary}
-              size={ButtonSize.Big}
-              onClick={() => handleRedirectToWhatsapp(selectedLoan)}
-              data-testid={elementId.LoanCalculator.Button.HubungiAgenSeva}
-            >
-              <div className={styles.whatsappCtaTextWrapper}>
-                <IconWhatsapp width={16} height={16} />
-                Hubungi Agen SEVA
-              </div>
-            </Button>
+            {!isPartnership && (
+              <Button
+                version={ButtonVersion.Secondary}
+                size={ButtonSize.Big}
+                onClick={() => handleRedirectToWhatsapp(selectedLoan)}
+                data-testid={elementId.LoanCalculator.Button.HubungiAgenSeva}
+              >
+                <div className={styles.whatsappCtaTextWrapper}>
+                  <IconWhatsapp width={16} height={16} />
+                  Hubungi Agen SEVA
+                </div>
+              </Button>
+            )}
           </div>
           {renderDisclaimer()}
           {renderLogoFinco()}
@@ -422,6 +433,7 @@ export const CalculationResult = ({
       </div>
       {selectedCalculatePromo && (
         <PromoBottomSheet
+          isPartnership={isPartnership}
           open={openPromo}
           onClose={() => setOpenPromo(false)}
           selectedTenure={tenureForPopUp}

@@ -47,12 +47,14 @@ interface PropsLeadsForm {
   onCancel?: () => void
   trackerProperties?: LeadsActionParam
   onPage?: string
+  extData?: any
 }
 
 export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
   onCancel,
   trackerProperties,
   onPage,
+  extData,
 }: PropsLeadsForm) => {
   const platform = 'web'
   const toastSuccessInfo = 'Agen kami akan segera menghubungimu dalam 1x24 jam.'
@@ -208,6 +210,15 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
     if (onPage === 'LP') {
       data = {
         origination: UnverifiedLeadSubCategory.SEVA_NEW_CAR_CAR_OF_THE_MONTH,
+        name,
+        phoneNumber: phone,
+        ...(cityOtr?.id && { cityId: cityOtr.id }),
+        platform,
+      }
+    } else if (onPage === 'Partnership') {
+      data = {
+        ...extData,
+        origination: UnverifiedLeadSubCategory.DETIK_NEW_CALCULATOR_CREDIT,
         name,
         phoneNumber: phone,
         ...(cityOtr?.id && { cityId: cityOtr.id }),
@@ -383,6 +394,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
       )}
       {modalOpened === 'otp' && (
         <OTP
+          isExtend={onPage === 'Partnership'}
           isOpened
           phoneNumber={phone}
           closeModal={onCancel}

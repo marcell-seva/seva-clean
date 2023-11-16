@@ -24,6 +24,7 @@ export const OTP = ({
   onFailed,
   savedTokenAfterVerify,
   pageOrigination,
+  isExtend,
 }: any): JSX.Element => {
   const commonErrorText =
     'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi'
@@ -359,7 +360,7 @@ export const OTP = ({
         styles={{
           mask: {
             background: 'rgba(19, 19, 27, 0.5)',
-            maxWidth: '570px',
+            maxWidth: isExtend ? '720px' : '570px',
             marginLeft: 'auto',
             marginRight: 'auto',
           },
