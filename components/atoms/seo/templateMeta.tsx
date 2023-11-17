@@ -244,7 +244,7 @@ export const metaTitleTemplateThreeSlug = (
     case '360-interior/kredit':
       return `Tampilan 360º Interior ${brand} ${model} ${year} ${formatLocation(
         threeSlug,
-      )} - Cek Simulasi Kredit Mobil & Cicilan | SEVA`
+      )} - Simulasi Kredit Mobil & Cicilan | SEVA`
     case 'video/ringkasan':
       return `Review ${brand} ${model} ${year} ${formatLocation(
         threeSlug,
@@ -340,7 +340,7 @@ export const metaDescTemplateTwoSlug = (
       case 'spesifikasi':
         return `Dapatkan informasi lengkap mengenai spesifikasi ${brand} ${model} ${year} OTR ${formatLocation(
           twoSlug,
-        )}.`
+        )} di SEVA.`
       case 'harga':
         return `Daftar harga ${brand} ${model} ${year} OTR ${formatLocation(
           twoSlug,
