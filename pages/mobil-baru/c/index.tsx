@@ -42,11 +42,10 @@ const NewCarResultPage = ({
   const todayDate = new Date()
   const brand = router.query.brand
 
-  const metaTitle = `Daftar Mobil Baru ${todayDate.getFullYear()} - Promo Cicilan ${monthId(
+  const metaTitle = `Beli Mobil Baru ${todayDate.getFullYear()} - Harga OTR dengan Promo Cicilan Bulan ${monthId(
     todayDate.getMonth(),
   )} | SEVA`
-  const metaDesc = `Beli mobil  ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
-  const metaDescBrand = `Beli mobil ${brand} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
+  const metaDesc = `Beli mobil  ${todayDate.getFullYear()} di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
   const {
     saveDesktopWebTopMenu,
     saveMobileWebTopMenus,
@@ -76,15 +75,7 @@ const NewCarResultPage = ({
 
   return (
     <>
-      {brand ? (
-        <Seo
-          title={metaTitle}
-          description={metaDescBrand}
-          image={defaultSeoImage}
-        />
-      ) : (
-        <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
-      )}
+      <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
       <CarProvider
         car={null}
         carOfTheMonth={[]}
