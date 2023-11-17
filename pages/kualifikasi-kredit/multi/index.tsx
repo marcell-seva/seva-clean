@@ -141,6 +141,7 @@ const MultiKK = ({
   const [shake, setShake] = useState({ priceRange: false })
   const priceRangeRef = useRef() as MutableRefObject<HTMLDivElement>
   const dpRef = useRef() as MutableRefObject<HTMLDivElement>
+  const incomeRef = useRef() as MutableRefObject<HTMLDivElement>
   const {
     price,
     limitPrice,
@@ -374,29 +375,33 @@ const MultiKK = ({
       downPaymentAmount.replace('Rp', ''),
     )
 
-    if (
-      !errorDownPayment(
-        Number(formatRawDP),
-        limitMaximumDp,
-        limitMinimumDp,
-        gotoPriceRange,
-      )
+    const errorDp = errorDownPayment(
+      Number(formatRawDP),
+      limitMaximumDp,
+      limitMinimumDp,
+      gotoPriceRange,
     )
+
+    if (!errorDp) {
+      if (errorFinance.monthlyIncome) {
+        incomeRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        })
+        return false
+      }
       return true
+    } else {
+      dpRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      })
+    }
 
     setErrorFinance((prev: any) => ({
       ...prev,
-      downPaymentAmount: errorDownPayment(
-        Number(formatRawDP),
-        limitMaximumDp,
-        limitMinimumDp,
-        gotoPriceRange,
-      ),
+      downPaymentAmount: errorDp,
     }))
-    dpRef.current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-    })
 
     return false
   }
@@ -930,7 +935,7 @@ const MultiKK = ({
                 </div>
               </div>
               <div className={styles.form}>
-                <div>
+                <div ref={dpRef}>
                   <Input
                     maxLength={15}
                     type="tel"
@@ -961,7 +966,7 @@ const MultiKK = ({
                     </span>
                   )}
                 </div>
-                <div>
+                <div ref={incomeRef}>
                   <Input
                     onFocus={trackIncomePrice}
                     maxLength={15}
