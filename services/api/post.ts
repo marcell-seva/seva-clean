@@ -10,7 +10,7 @@ const post = (path: string, data: any, config?: AxiosRequestConfig) => {
       },
       (error: AxiosError) => {
         reject(error)
-        // TODO : remove conditional once "checkRegistered" status code adjustment done
+        // TODO @toni : remove conditional once API status code adjustment done
         if (!path.includes(collections.auth.checkRegistered)) {
           clientInteractionNavigateToErrorPage(error?.response?.status)
         }
