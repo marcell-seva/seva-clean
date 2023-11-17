@@ -15,21 +15,19 @@ export const clientInteractionNavigateToErrorPage = (statusCode?: number) => {
   }
 }
 
-export const serverSideManualNavigateToErrorPage = (statusCode?: number) => {
-  if (statusCode === 404) {
-    return {
-      redirect: {
-        destination: '/404',
-        permanent: false,
-      },
-    }
-  } else {
-    // this will cover other error including "TypeError"
-    return {
-      redirect: {
-        destination: '/500',
-        permanent: false,
-      },
+type serverSideManualNavigateToErrorPageReturnType = (statusCode?: number) => {
+  // use type "true" because GetServerSideProps doesnt accept "boolean"
+  notFound: true
+}
+
+export const serverSideManualNavigateToErrorPage: serverSideManualNavigateToErrorPageReturnType =
+  (statusCode?: number) => {
+    if (statusCode === 404) {
+      return {
+        notFound: true,
+      }
+    } else {
+      // this will cover other error including "TypeError" -> code 500
+      throw new Error()
     }
   }
-}
