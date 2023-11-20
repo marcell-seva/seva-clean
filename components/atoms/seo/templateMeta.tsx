@@ -277,7 +277,9 @@ export const metaDescTemplateOneSlug = (
 ) => {
   switch (slug) {
     case 'warna':
-      return `Lihat pilihan warna yang tersedia untuk ${brand} ${model} ${year} di ${location}. Pilih dari ${warna} Pilihan warna mobil ${model}`
+      return `Lihat pilihan warna yang tersedia untuk ${brand} ${model} ${year} di ${location}. Pilih dari ${
+        warna ? warna : '1'
+      } Pilihan warna mobil ${model}`
     case 'eksterior':
       return `Temukan foto eksterior ${brand} ${model} ${year}. Lihat tampilan body mobil, grille, headlights, tampak depan, dan tampak samping`
     case 'interior':
@@ -316,7 +318,7 @@ export const metaDescTemplateTwoSlug = (
       case 'warna':
         return `Lihat beragam pilihan warna yang tersedia untuk ${brand} ${model} ${year} di ${formatLocation(
           twoSlug,
-        )}.  Pilih dari ${color} pilihan warna mobil ${model}`
+        )}.  Pilih dari ${color ? color : '1'} pilihan warna mobil ${model}`
       case 'eksterior':
         return `Temukan foto eksterior ${brand} ${model} ${year} di ${formatLocation(
           twoSlug,

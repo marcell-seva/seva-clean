@@ -194,7 +194,7 @@ export default function index({
 
   const countColors = availableListColors.filter(
     (item: any) => item.url === checkColor,
-  )[0].colors.length
+  )[0]?.colors?.length
 
   switch (totalSlug) {
     case 3:
