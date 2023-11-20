@@ -96,11 +96,11 @@ export const PopupPromo = ({
       PELUANG_KREDIT_BADGE:
         isUsingFilterFinancial &&
         IsShowBadgeCreditOpportunity &&
-        props.carData.loanRank === 'Green'
+        carData.loanRank === 'Green'
           ? 'Mudah disetujui'
           : isUsingFilterFinancial &&
             IsShowBadgeCreditOpportunity &&
-            props.carData.loanRank === 'Red'
+            carData.loanRank === 'Red'
           ? 'Sulit disetujui'
           : 'Null',
       PAGE_ORIGINATION: 'PLP',
