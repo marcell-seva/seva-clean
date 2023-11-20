@@ -269,11 +269,10 @@ export const CarOverview = ({
     trackHitungKemampuan()
     trackClickCtaCountly()
     saveDataForCountlyTrackerPageViewLC(PreviousButton.MainTopCta)
-    window.location.href =
-      variantListUrl
-        .replace(':brand', brand)
-        .replace(':model', model)
-        .replace(':tab', 'kredit') + queryParamForPDP()
+    window.location.href = variantListUrl
+      .replace(':brand', brand as string)
+      .replace(':model', model as string)
+      .replace(':tab', `${upperTabSlug ?? 'warna'}/kredit`)
   }
 
   if (!modelDetail || !variantDetail) return <></>
