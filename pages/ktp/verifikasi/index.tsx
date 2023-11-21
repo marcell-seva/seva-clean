@@ -15,13 +15,16 @@ import { ProgressBar } from 'components/atoms/progressBar'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { IconLockFill } from 'components/atoms/icon/LockFill'
 import PopupError from 'components/organisms/popupError'
-import { DocumentType, UploadDataKey } from 'utils/enum'
+import { DocumentType, SessionStorageKey, UploadDataKey } from 'utils/enum'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import Image from 'next/image'
 
 import { getToken } from 'utils/handler/auth'
 import { postUploadKTPFile } from 'services/api'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { saveSessionStorage } from 'utils/handler/sessionStorage'
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
@@ -29,6 +32,8 @@ const VerifyKtp = () => {
   const router = useRouter()
   const { ktpType }: { ktpType: string } = useQuery(['ktpType'])
   const [toast, setToast] = useState('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [loadingReupload, setLoadingReupload] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState({
     status: false,
     action: '',
@@ -129,13 +134,25 @@ const VerifyKtp = () => {
               <Button
                 version={ButtonVersion.Outline}
                 size={ButtonSize.Big}
-                onClick={() => router.back()}
+                disabled={loadingReupload}
+                onClick={() => {
+                  setLoadingReupload(true)
+                  trackEventCountly(
+                    CountlyEventNames.WEB_KTP_PAGE_PHOTO_SUCCESS_RETAKE_CLICK,
+                  )
+                  saveSessionStorage(
+                    SessionStorageKey.LastVisitedPageKKIAFlow,
+                    window.location.pathname,
+                  )
+                  router.back()
+                }}
+                loading={loadingReupload}
                 data-testid={elementId.Profil.Button.FotoUlang}
               >
                 Foto Ulang
               </Button>
               <Button
-                version={ButtonVersion.SecondaryDark}
+                version={ButtonVersion.PrimaryDarkBlue}
                 size={ButtonSize.Big}
                 onClick={() => detectText()}
                 data-testid={elementId.Profil.Button.GunakanFotoIni}

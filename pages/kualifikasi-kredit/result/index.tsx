@@ -605,6 +605,7 @@ export default function CreditQualificationResultPage() {
         isOpen={isOpenPopup}
         onClickClosePopup={onClickClosePopup}
         onDismissPopup={onDismissPopup}
+        loadCtaButton={isLoadingContinueApproval}
         loanCalculatorDestinationUrl={getLoanCalculatorDestinationUrl()}
         onClickContinueApproval={onClickContinueApproval}
         onClickChangeCreditPlan={() => {

@@ -42,6 +42,13 @@
   color: #{$primary-dark-blue}; /* Text color */
   font-family: var(--open-sans);
   cursor: pointer;
+
+  &[disabled] {
+    border: 1px solid #{$shades-grey-25};
+    color: #{$shades-grey-25};
+    background-color: transparent;
+    cursor: no-drop;
+  }
 }
 
 .primaryDarkBlue {

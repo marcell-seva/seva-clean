@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from 'styles/components/organisms/popup-credit-qualification-result.module.scss'
 import { BottomSheet } from 'react-spring-bottom-sheet'
 import 'react-spring-bottom-sheet/dist/style.css'
@@ -11,6 +11,7 @@ interface Props {
   isOpen: boolean
   onClickClosePopup: () => void
   onDismissPopup: () => void
+  loadCtaButton: boolean
   loanCalculatorDestinationUrl: string
   onClickChangeCreditPlan?: () => void
   onClickContinueApproval: () => void
@@ -20,6 +21,7 @@ export const PopupCreditQualificationResult = ({
   isOpen,
   onClickClosePopup,
   onDismissPopup,
+  loadCtaButton,
   loanCalculatorDestinationUrl,
   onClickChangeCreditPlan,
   onClickContinueApproval,
@@ -70,6 +72,8 @@ export const PopupCreditQualificationResult = ({
           version={ButtonVersion.PrimaryDarkBlue}
           size={ButtonSize.Big}
           onClick={onClickContinueApproval}
+          loading={loadCtaButton}
+          disabled={loadCtaButton}
         >
           Lanjut Instant Approval
         </Button>
