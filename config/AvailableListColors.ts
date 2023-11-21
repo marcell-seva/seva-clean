@@ -272,7 +272,7 @@ export const availableListColors = [
   },
   {
     colors: ['#000000', '#ffffff', '#9e0000', '#20392c', '#a7a8ad'],
-    url: '/mobil-baru/toyota/all-new-yaris-cross',
+    url: '/mobil-baru/p/toyota/all-new-yaris-cross',
   },
 
   // === bmw cars ===

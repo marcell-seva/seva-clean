@@ -78,7 +78,7 @@ export const interiorImagesListNew: InteriorImagesListNewType[] = [
   },
 
   {
-    url: '/mobil-baru/toyota/all-new-yaris-cross',
+    url: '/mobil-baru/p/toyota/all-new-yaris-cross',
     source: '/revamp/360/toyota/360_interior_yaris_cross_optimized.jpg', //yaris cross
   },
 
