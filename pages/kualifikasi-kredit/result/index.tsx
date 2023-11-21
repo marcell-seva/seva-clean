@@ -389,6 +389,14 @@ export default function CreditQualificationResultPage() {
 
   const onClickContinueApproval = async () => {
     setIsLoadingContinueApproval(true)
+    saveSessionStorage(
+      SessionStorageKey.PageReferrerIA,
+      'Kualifikasi Kredit Result',
+    )
+    saveSessionStorage(
+      SessionStorageKey.PreviousPage,
+      JSON.stringify({ refer: window.location.pathname }),
+    )
     try {
       const dataKTPUser = await getCustomerKtpSeva()
       saveSessionStorage(SessionStorageKey.OCRKTP, 'kualifikasi-kredit')
@@ -396,16 +404,22 @@ export default function CreditQualificationResultPage() {
         saveSessionStorage(SessionStorageKey.KTPUploaded, 'uploaded')
         router.push(ktpReviewUrl)
       } else {
-        router.push(cameraKtpUrl)
+        saveSessionStorage(
+          SessionStorageKey.LastVisitedPageKKIAFlow,
+          window.location.pathname,
+        )
         saveSessionStorage(SessionStorageKey.KTPUploaded, 'not upload')
+        router.push(cameraKtpUrl)
       }
-      setIsLoadingContinueApproval(false)
     } catch (e: any) {
       if (e?.response?.data?.code === 'NO_NIK_REGISTERED') {
         saveSessionStorage(SessionStorageKey.KTPUploaded, 'not upload')
         router.push(cameraKtpUrl)
+      } else if (e?.response?.data?.message) {
+        setIsLoadingContinueApproval(false)
+      } else {
+        setIsLoadingContinueApproval(false)
       }
-      setIsLoadingContinueApproval(false)
     }
   }
 
@@ -559,32 +573,23 @@ export default function CreditQualificationResultPage() {
               version={ButtonVersion.PrimaryDarkBlue}
               size={ButtonSize.Big}
               onClick={onClickContinueApproval}
+              disabled={isLoadingContinueApproval}
+              loading={isLoadingContinueApproval}
             >
-              {isLoadingContinueApproval ? (
-                <div className={`${styles.iconWrapper} rotateAnimation`}>
-                  <IconLoading width={16} height={16} />
-                </div>
-              ) : (
-                'Lanjut Instant Approval'
-              )}
+              Lanjut Instant Approval
             </Button>
             <Button
               version={ButtonVersion.Secondary}
               size={ButtonSize.Big}
               onClick={onClickWhatsapp}
+              loading={isLoadingWhatsApp}
             >
-              {isLoadingWhatsApp ? (
-                <div className={`${styles.iconWrapper} rotateAnimation`}>
-                  <IconLoading width={16} height={16} />
+              <div className={styles.whatsappButtonContent}>
+                <div className={styles.iconWrapper}>
+                  <IconWhatsapp width={16} height={16} />
                 </div>
-              ) : (
-                <div className={styles.whatsappButtonContent}>
-                  <div className={styles.iconWrapper}>
-                    <IconWhatsapp width={16} height={16} />
-                  </div>
-                  Hubungi Agen SEVA
-                </div>
-              )}
+                Hubungi Agen SEVA
+              </div>
             </Button>
           </div>
         </div>

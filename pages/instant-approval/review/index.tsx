@@ -187,7 +187,6 @@ const CreditQualificationReviewPage = () => {
         headers: { Authorization: getToken()?.idToken },
       })
       if (res) {
-        setIsLoading(false)
         sessionStorage.removeItem(SessionStorageKey.KTPUploaded)
         localStorage.removeItem(LocalStorageKey.SelectablePromo)
         router.push(waitingCreditQualificationUrl)

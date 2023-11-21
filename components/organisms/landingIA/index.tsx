@@ -63,15 +63,37 @@ export const LandingIA = ({
           onClose()
           router.push(cameraKtpUrl)
         }
+        saveSessionStorage(SessionStorageKey.KTPUploaded, 'uploaded')
+        saveSessionStorage(
+          SessionStorageKey.LastVisitedPageKKIAFlow,
+          window.location.pathname,
+        )
+        router.push(ktpReviewUrl)
+      } else {
+        saveSessionStorage(SessionStorageKey.KTPUploaded, 'not upload')
+        saveSessionStorage(
+          SessionStorageKey.LastVisitedPageKKIAFlow,
+          window.location.pathname,
+        )
+        router.push(cameraKtpUrl)
       }
-      setLoading('')
     } catch (e: any) {
       if (e.response.data.code === 'NO_NIK_REGISTERED') {
         saveSessionStorage(SessionStorageKey.KTPUploaded, 'not upload')
-        onClose()
+        saveSessionStorage(
+          SessionStorageKey.LastVisitedPageKKIAFlow,
+          window.location.pathname,
+        )
+        saveSessionStorage(
+          SessionStorageKey.PreviousPage,
+          JSON.stringify({ refer: window.location.pathname }),
+        )
         router.push(cameraKtpUrl)
+      } else if (e?.response?.data?.message) {
+        setLoading('')
+      } else {
+        setLoading('')
       }
-      setLoading('')
     }
   }
 
@@ -86,10 +108,9 @@ export const LandingIA = ({
         LocalStorageKey.CreditQualificationLeadPayload,
         JSON.stringify(dataToCaasDaas),
       )
-      onClose()
-      saveLocalStorage(
-        LocalStorageKey.CreditQualificationResult,
-        JSON.stringify(res.data),
+      saveSessionStorage(
+        SessionStorageKey.PreviousPage,
+        JSON.stringify({ refer: window.location.pathname }),
       )
       router.push(creditQualificationResultUrl)
     } catch (e) {
@@ -124,7 +145,7 @@ export const LandingIA = ({
           Lanjut Instant Approval
         </Button>
         <div className={styles.rejectButtonWrapper}>
-          <div role="button" onClick={rejectToIA}>
+          <div role="button" onClick={!loading ? rejectToIA : undefined}>
             Tidak, Terima Kasih{' '}
           </div>
           {loading === 'reject' && (
