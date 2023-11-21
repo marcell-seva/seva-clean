@@ -456,7 +456,6 @@ const CreditQualificationProcess = () => {
         </div>
         <FooterMobile pageOrigination="Instant Approval - Waiting For Result" />
       </div>
-      <FooterMobile pageOrigination="Instant Approval - Waiting For Result" />
       <CitySelectorModal
         isOpen={openCitySelectorModal}
         onClickCloseButton={() => setOpenCitySelectorModal(false)}
