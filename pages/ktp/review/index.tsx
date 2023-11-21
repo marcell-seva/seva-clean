@@ -129,6 +129,7 @@ export default function KtpReview() {
     SessionStorageKey.KalkulatorKreditForm,
   )
   const [loadingNav, setLoadingNav] = useState(false)
+
   const { fincap } = useFinancialQueryData()
   const kkFlowType = getSessionStorage(SessionStorageKey.KKIAFlowType)
   const isInPtbcFlow = kkFlowType && kkFlowType === 'ptbc'

@@ -516,6 +516,7 @@ export default function CreditQualificationResultPage({
   }
 
   const onClickContinueApproval = async () => {
+    setIsLoadingContinueApproval(true)
     saveSessionStorage(
       SessionStorageKey.PageReferrerIA,
       'Kualifikasi Kredit Result',
@@ -524,7 +525,6 @@ export default function CreditQualificationResultPage({
       SessionStorageKey.PreviousPage,
       JSON.stringify({ refer: window.location.pathname }),
     )
-    setIsLoadingContinueApproval(true)
     trackCreditQualificationResultContinueIA()
     try {
       const dataKTPUser = await getCustomerKtpSeva()
@@ -541,7 +541,6 @@ export default function CreditQualificationResultPage({
           SessionStorageKey.LastVisitedPageKKIAFlow,
           window.location.pathname,
         )
-        router.push(cameraKtpUrl)
         saveSessionStorage(SessionStorageKey.KTPUploaded, 'not upload')
         router.push(cameraKtpUrl)
       }
@@ -557,12 +556,14 @@ export default function CreditQualificationResultPage({
         setIsLoadingContinueApproval(false)
         setToastMessage(`${e?.response?.data?.message}`)
         setIsOpenToast(true)
+        setIsLoadingContinueApproval(false)
       } else {
         setIsLoadingContinueApproval(false)
         setToastMessage(
           'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
         )
         setIsOpenToast(true)
+        setIsLoadingContinueApproval(false)
       }
     }
   }

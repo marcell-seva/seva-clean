@@ -367,94 +367,100 @@ const CreditQualificationPage = () => {
       JSON.stringify(updateDataCar),
     )
   }
+
   const onClickCtaNext = async () => {
-    const dataCarValue = {
-      ...dataCarStorage,
-      IA_FLOW: 'Instant Approval (Reg)',
-      INCOME_KK: joinIncomeValue,
-    }
+    try {
+      setIsLoading(true)
 
-    updateValueForTrackingWaDirect()
-
-    setIsLoading(true)
-
-    saveSessionStorage(
-      SessionStorageKey.PreviousCarDataBeforeLogin,
-      JSON.stringify(dataCarValue),
-    )
-
-    const refcode =
-      kkFlowType && kkFlowType === 'ptbc'
-        ? TemanSeva.PTBC
-        : referralCodeInput || ''
-    // ref code input field is removed in PTBC flow, no need to check validitity
-    let refCodeValidity = true
-    if (!isInPtbcFlow) {
-      refCodeValidity = await checkRefCode(referralCodeInput)
-    }
-
-    if (refCodeValidity) {
-      const qualificationData = {
-        modelId: simpleCarVariantDetails?.modelId,
-        variantId: simpleCarVariantDetails?.variantId,
-        loanTenure: simpleCarVariantDetails?.loanTenure,
-        loanDownPayment: simpleCarVariantDetails.loanDownPayment,
-        loanMonthlyInstallment: simpleCarVariantDetails.loanMonthlyInstallment,
-        loanRank: simpleCarVariantDetails.loanRank,
-        totalFirstPayment: simpleCarVariantDetails.totalFirstPayment,
-        flatRate: simpleCarVariantDetails.flatRate,
-        monthlyIncome: joinIncomeValue,
-        address: {
-          province: '',
-          city: '',
-          zipCode: '',
-        },
-        email: email || null,
-        citySelector: cityOtr ? cityOtr?.cityName : 'Jakarta Pusat',
-        spouseIncome: joinIncomeValue,
-        promoCode: promoCode || '',
-        temanSevaTrxCode: refcode,
-        angsuranType: optionADDM,
-        rateType: getLocalStorage(LocalStorageKey.SelectedRateType),
-        platform: 'web',
-        occupations: lastChoosenValue,
-        dob: customerDobForm,
+      const dataCarValue = {
+        ...dataCarStorage,
+        IA_FLOW: 'Instant Approval (Reg)',
+        INCOME_KK: joinIncomeValue,
       }
-      localStorage.setItem(
-        'qualification_credit',
-        JSON.stringify(qualificationData),
+
+      updateValueForTrackingWaDirect()
+
+      saveSessionStorage(
+        SessionStorageKey.PreviousCarDataBeforeLogin,
+        JSON.stringify(dataCarValue),
       )
-      const track = {
-        CAR_BRAND: dataCar?.modelDetail.brand,
-        CAR_VARIANT: dataCar?.variantDetail.name,
-        CAR_MODEL: dataCar?.modelDetail.model,
-        INCOME_CHANGE:
-          Number(currentMonthlyIncome) === Number(joinIncomeValue)
-            ? 'No'
-            : 'Yes',
-        INCOME_KUALIFIKASI_KREDIT: `Rp${Currency(joinIncomeValue)}`,
-        INCOME_LOAN_CALCULATOR: `Rp${Currency(Number(currentMonthlyIncome))}`,
-        INSURANCE_TYPE: selectablePromo?.selectedInsurance.label || 'Null',
-        PROMO_AMOUNT: selectedPromoList ? selectedPromoList.length : 'Null',
-        OCCUPATION: lastChoosenValue.replace('&', ''),
-        TEMAN_SEVA_REFERRAL_CODE: refcode || 'Null',
-      }
-      setTimeout(() => {
-        if (isInPtbcFlow) {
-          trackEventCountly(
-            CountlyEventNames.WEB_PTBC_CREDIT_QUALIFICATION_FORM_PAGE_CTA_CLICK,
-          )
-        } else {
-          trackEventCountly(
-            CountlyEventNames.WEB_CREDIT_QUALIFICATION_FORM_PAGE_CTA_CLICK,
-            track,
-          )
-        }
-      }, 500)
 
-      router.push(creditQualificationReviewUrl)
-      // saveLocalStorage(QualificationCredit, 'REGULAR')
-      // only proceed if currently inputted ref code is valid
+      const refcode =
+        kkFlowType && kkFlowType === 'ptbc'
+          ? TemanSeva.PTBC
+          : referralCodeInput || ''
+      // ref code input field is removed in PTBC flow, no need to check validitity
+      let refCodeValidity = true
+      if (!isInPtbcFlow) {
+        refCodeValidity = await checkRefCode(referralCodeInput)
+      }
+
+      if (refCodeValidity) {
+        const qualificationData = {
+          modelId: simpleCarVariantDetails?.modelId,
+          variantId: simpleCarVariantDetails?.variantId,
+          loanTenure: simpleCarVariantDetails?.loanTenure,
+          loanDownPayment: simpleCarVariantDetails.loanDownPayment,
+          loanMonthlyInstallment:
+            simpleCarVariantDetails.loanMonthlyInstallment,
+          loanRank: simpleCarVariantDetails.loanRank,
+          totalFirstPayment: simpleCarVariantDetails.totalFirstPayment,
+          flatRate: simpleCarVariantDetails.flatRate,
+          monthlyIncome: joinIncomeValue,
+          address: {
+            province: '',
+            city: '',
+            zipCode: '',
+          },
+          email: email || null,
+          citySelector: cityOtr ? cityOtr?.cityName : 'Jakarta Pusat',
+          spouseIncome: joinIncomeValue,
+          promoCode: promoCode || '',
+          temanSevaTrxCode: refcode,
+          angsuranType: optionADDM,
+          rateType: getLocalStorage(LocalStorageKey.SelectedRateType),
+          platform: 'web',
+          occupations: lastChoosenValue,
+          dob: customerDobForm,
+        }
+        localStorage.setItem(
+          'qualification_credit',
+          JSON.stringify(qualificationData),
+        )
+        const track = {
+          CAR_BRAND: dataCar?.modelDetail.brand,
+          CAR_VARIANT: dataCar?.variantDetail.name,
+          CAR_MODEL: dataCar?.modelDetail.model,
+          INCOME_CHANGE:
+            Number(currentMonthlyIncome) === Number(joinIncomeValue)
+              ? 'No'
+              : 'Yes',
+          INCOME_KUALIFIKASI_KREDIT: `Rp${Currency(joinIncomeValue)}`,
+          INCOME_LOAN_CALCULATOR: `Rp${Currency(Number(currentMonthlyIncome))}`,
+          INSURANCE_TYPE: selectablePromo?.selectedInsurance.label || 'Null',
+          PROMO_AMOUNT: selectedPromoList ? selectedPromoList.length : 'Null',
+          OCCUPATION: lastChoosenValue.replace('&', ''),
+          TEMAN_SEVA_REFERRAL_CODE: refcode || 'Null',
+        }
+        setTimeout(() => {
+          if (isInPtbcFlow) {
+            trackEventCountly(
+              CountlyEventNames.WEB_PTBC_CREDIT_QUALIFICATION_FORM_PAGE_CTA_CLICK,
+            )
+          } else {
+            trackEventCountly(
+              CountlyEventNames.WEB_CREDIT_QUALIFICATION_FORM_PAGE_CTA_CLICK,
+              track,
+            )
+          }
+        }, 500)
+
+        router.push(creditQualificationReviewUrl)
+        // saveLocalStorage(QualificationCredit, 'REGULAR')
+        // only proceed if currently inputted ref code is valid
+      }
+    } catch (e) {
+      setIsLoading(false)
     }
   }
 

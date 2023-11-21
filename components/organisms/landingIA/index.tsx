@@ -161,7 +161,6 @@ export const LandingIA = ({
           window.location.pathname,
         )
         router.push(ktpReviewUrl)
-        onClose()
       } else {
         saveSessionStorage(SessionStorageKey.KTPUploaded, 'not upload')
         saveSessionStorage(
@@ -169,7 +168,6 @@ export const LandingIA = ({
           window.location.pathname,
         )
         router.push(cameraKtpUrl)
-        onClose()
       }
     } catch (e: any) {
       if (e.response.data.code === 'NO_NIK_REGISTERED') {
@@ -184,15 +182,16 @@ export const LandingIA = ({
         )
         trackLandingIAContinue('Null')
         router.push(cameraKtpUrl)
-        onClose()
       } else if (e?.response?.data?.message) {
         setToastMessage(`${e?.response?.data?.message}`)
         setIsOpenToast(true)
+        setLoading('')
       } else {
         setToastMessage(
           'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
         )
         setIsOpenToast(true)
+        setLoading('')
       }
     }
   }
