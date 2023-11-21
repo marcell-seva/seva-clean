@@ -22,10 +22,20 @@ export const WarnaTab = ({ isShowAnnouncementBox, isOTO = false }: any) => {
     const currentUrlPathName = router.asPath
     const splitedPath = currentUrlPathName.split('/')
     const carBrandModelUrl = `/${splitedPath[isOTO ? 2 : 1]}/${brand}/${model}`
-
+    const carBrandModelWithPUrl = `/${
+      splitedPath[isOTO ? 2 : 1]
+    }/p/${brand}/${model}`
+    console.log('asdf 123', carBrandModelUrl)
     if (availableList.includes(carBrandModelUrl)) {
       const colorsTmp = availableListColors.filter(
         (url) => url.url === carBrandModelUrl,
+      )[0].colors
+
+      if (colorsTmp.length === 0) return []
+      return colorsTmp
+    } else if (availableList.includes(carBrandModelWithPUrl)) {
+      const colorsTmp = availableListColors.filter(
+        (url) => url.url === carBrandModelWithPUrl,
       )[0].colors
 
       if (colorsTmp.length === 0) return []

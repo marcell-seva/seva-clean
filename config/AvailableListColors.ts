@@ -270,6 +270,10 @@ export const availableListColors = [
     colors: ['#000000', '#ffffff', '#949494', '#737373', '#808080'],
     url: '/mobil-baru/toyota/all-new-kijang-innova-zenix',
   },
+  {
+    colors: ['#000000', '#ffffff', '#9e0000', '#20392c', '#a7a8ad'],
+    url: '/mobil-baru/toyota/all-new-yaris-cross',
+  },
 
   // === bmw cars ===
   {
@@ -439,6 +443,7 @@ export const availableList = [
   '/mobil-baru/toyota/all-new-bz4x',
   '/mobil-baru/toyota/all-new-kijang-innova-zenix',
   '/mobil-baru/toyota/all-new-agya',
+  '/mobil-baru/toyota/all-new-yaris-cross',
 
   // daihatsu cars
   '/mobil-baru/daihatsu/new-ayla', //ayla
