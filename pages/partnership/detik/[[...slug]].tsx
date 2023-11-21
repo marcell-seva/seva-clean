@@ -1635,6 +1635,18 @@ export default function LoanCalculatorPage() {
           : InstallmentTypeOptions.ADDB,
     }
   }
+
+  const onClickResultItemUpperInfoSection = () => {
+    setIsOpenPopupRecommended(true)
+    trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK, {
+      PELUANG_KREDIT_BADGE: 'Mudah disetujui',
+      CAR_BRAND: forms?.model?.brandName,
+      CAR_MODEL: forms?.model?.modelName,
+      PAGE_ORIGINATION: 'Loan Calculator',
+      SOURCE_BUTTON: 'Tenure Card (LC Result)',
+    })
+  }
+
   return (
     <>
       <Seo
@@ -1866,6 +1878,9 @@ export default function LoanCalculatorPage() {
                 calculationApiPayload={calculationApiPayload}
                 setFinalLoan={setFinalLoan}
                 pageOrigination={getPageOriginationForCountlyTracker()}
+                onClickResultItemUpperInfoSection={() =>
+                  onClickResultItemUpperInfoSection()
+                }
               />
             </>
           ) : (

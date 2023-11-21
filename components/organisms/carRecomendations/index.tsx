@@ -39,7 +39,7 @@ import { IconThumbsUp } from 'components/atoms/icon'
 type CarRecommendationsPropss = {
   title: string
   carRecommendationList: CarRecommendation[]
-  onClick: () => void
+  onClick: (carData: CarRecommendation) => void
   selectedCity: string
   additionalContainerStyle?: string
 }
@@ -210,7 +210,7 @@ export default function CarRecommendations({
               <AlternativeCarCard
                 key={index}
                 recommendation={item}
-                onClickLabel={onClick}
+                onClickLabel={() => onClick(item)}
                 label={
                   <LabelMudah
                     style={{ left: 0 }}
@@ -220,7 +220,7 @@ export default function CarRecommendations({
                       </div>
                     )}
                     labelText="Rekomendasi"
-                    onClick={onClick}
+                    onClick={() => onClick(item)}
                   />
                 }
                 pageOrigination="PDP - Kredit"

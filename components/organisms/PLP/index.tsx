@@ -740,6 +740,23 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       PAGE_ORIGINATION: 'PLP',
     })
   }
+
+  const trackCountlyOnClickBadge = (
+    item: any,
+    rank: 'Mudah disetujui' | 'Sulit disetujui',
+  ) => {
+    // use timeout in case Countly is loading after interactive
+    setTimeout(() => {
+      trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK, {
+        PELUANG_KREDIT_BADGE: rank,
+        CAR_BRAND: item.brand,
+        CAR_MODEL: item.model,
+        PAGE_ORIGINATION: 'PLP',
+        SOURCE_BUTTON: 'Product Card Badge (PLP)',
+      })
+    }, 1000)
+  }
+
   return (
     <>
       <div
@@ -831,27 +848,11 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
                       }}
                       onClickResultMudah={() => {
                         setOpenLabelResultMudah(true)
-                        trackPeluangMudahBadgeClick(getDataForAmplitude())
-                        trackEventCountly(
-                          CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
-                          {
-                            PELUANG_KREDIT_BADGE: 'Mudah disetujui',
-                            CAR_BRAND: i.brand,
-                            CAR_MODEL: i.model,
-                          },
-                        )
+                        trackCountlyOnClickBadge(i, 'Mudah disetujui')
                       }}
                       onClickResultSulit={() => {
                         setOpenLabelResultSulit(true)
-                        trackPeluangSulitBadgeClick(getDataForAmplitude())
-                        trackEventCountly(
-                          CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
-                          {
-                            PELUANG_KREDIT_BADGE: 'Sulit disetujui',
-                            CAR_BRAND: i.brand,
-                            CAR_MODEL: i.model,
-                          },
-                        )
+                        trackCountlyOnClickBadge(i, 'Sulit disetujui')
                       }}
                       isFilterTrayOpened={isButtonClick} // fix background click on ios
                     />

@@ -1828,6 +1828,28 @@ export const CreditTab = () => {
     )
   }
 
+  const onClickResultItemUpperInfoSection = () => {
+    setIsOpenPopupRecommended(true)
+    trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK, {
+      PELUANG_KREDIT_BADGE: 'Mudah disetujui',
+      CAR_BRAND: forms?.model?.brandName,
+      CAR_MODEL: forms?.model?.modelName,
+      PAGE_ORIGINATION: 'PDP - Kredit',
+      SOURCE_BUTTON: 'Tenure Card (LC Result)',
+    })
+  }
+
+  const onClickCarRecommendationBadge = (carData: CarRecommendation) => {
+    setIsOpenPopupRecommended(true)
+    trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK, {
+      PELUANG_KREDIT_BADGE: 'Mudah disetujui',
+      CAR_BRAND: carData.brand,
+      CAR_MODEL: carData.model,
+      PAGE_ORIGINATION: 'PDP - Kredit',
+      SOURCE_BUTTON: 'Car Recommendation (LC)',
+    })
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.formCard}>
@@ -2047,15 +2069,16 @@ export const CreditTab = () => {
               calculationApiPayload={calculationApiPayload}
               setFinalLoan={setFinalLoan}
               pageOrigination={'PDP Credit Tab'}
+              onClickResultItemUpperInfoSection={() =>
+                onClickResultItemUpperInfoSection()
+              }
             />
           </div>
           {carRecommendations.length > 0 && (
             <CarRecommendations
               carRecommendationList={carRecommendations}
               title="Rekomendasi Sesuai Kemampuan Finansialmu"
-              onClick={() => {
-                setIsOpenPopupRecommended(true)
-              }}
+              onClick={(carData) => onClickCarRecommendationBadge(carData)}
               selectedCity={forms?.city?.cityName}
               additionalContainerStyle={styles.recommendationAdditionalStyle}
             />
