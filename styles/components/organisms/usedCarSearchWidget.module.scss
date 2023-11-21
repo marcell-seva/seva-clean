@@ -82,11 +82,12 @@
 }
 
 .buttonWrapper {
+  position: absolute;
   z-index: 1;
   width: 50%;
   left: 0;
   right: 0;
-  bottom: -22px;
+  bottom: -38px;
   margin-left: auto;
   margin-right: auto;
   display: flex;
