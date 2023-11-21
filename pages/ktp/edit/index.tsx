@@ -743,6 +743,7 @@ const KtpForm = () => {
                 size={ButtonSize.Big}
                 data-testid={elementId.Profil.Button.Konfirmasi}
                 loading={isLoadingSubmit}
+                disabled={isLoadingSubmit || isLoadingCustomer}
               >
                 Konfirmasi
               </Button>

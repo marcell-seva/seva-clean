@@ -93,7 +93,6 @@ const VerifyKtp = () => {
         },
       })
         .then((response) => {
-          setIsLoading(false)
           localStorage.setItem('formKtp', JSON.stringify(response.data))
         })
         .catch(() => {
@@ -236,13 +235,7 @@ const VerifyKtp = () => {
                 data-testid={elementId.Profil.Button.GunakanFotoIni}
                 loading={isLoading}
               >
-                {isLoading ? (
-                  <div className={`${styles.iconWrapper} rotateAnimation`}>
-                    <IconLoading width={14} height={14} color="#FFFFFF" />
-                  </div>
-                ) : (
-                  'Gunakan Foto Ini'
-                )}
+                Gunakan Foto Ini
               </Button>
             </div>
           </section>
