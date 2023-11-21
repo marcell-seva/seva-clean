@@ -408,6 +408,58 @@ export const availableListColors = [
     colors: ['#000000', '#ffffff', '#c2282e', '#737373', '#a7a8ad', '#d3ca50'],
     url: '/mobil-baru/toyota/all-new-agya',
   },
+
+  // === hyundai cars ===
+  {
+    colors: ['#121210', '#c6c1bd', '#4a4b4f', '#e2e2ea', '#939395'],
+    url: '/mobil-baru/p/hyundai/ioniq-5',
+  },
+  {
+    colors: ['#0b101d', '#e9efe7', '#2d393c', '#9a9890', '#040508'],
+    url: '/mobil-baru/p/hyundai/ioniq-6',
+  },
+  {
+    colors: ['#242527', '#2a3548', '#e9e9e9', '#494e50', '#949999'],
+    url: '/mobil-baru/p/hyundai/palisade',
+  },
+  {
+    colors: ['#181717', '#999b9a', '#36383e', '#cfd0d7'],
+    url: '/mobil-baru/p/hyundai/staria',
+  },
+  {
+    colors: ['#d0d0d0', '#a6a8a7', '#494949', '#262829', '#2d3337'],
+    url: '/mobil-baru/p/hyundai/santa-fe',
+  },
+  {
+    colors: [
+      ['#1b1d1c', '#868684'],
+      ['#1b1d1c', '#862725'],
+      ['#1b1d1c', '#f8f8f6'],
+      '#0a0f14',
+      '#eff1f1',
+      '#888a8c',
+      '#424b51',
+      '#982020',
+    ],
+    url: '/mobil-baru/p/hyundai/stargazer',
+  },
+  {
+    colors: [
+      ['#1b1d1c', '#868684'],
+      ['#1b1d1c', '#862725'],
+      ['#1b1d1c', '#f8f8f6'],
+      '#0a0f14',
+      '#eff1f1',
+      '#888a8c',
+      '#424b51',
+      '#982020',
+    ],
+    url: '/mobil-baru/p/hyundai/stargazer-x',
+  },
+  {
+    colors: ['#0c1015', '#eef0ee', '#85878a', '#3d474c', '#981e1f'],
+    url: '/mobil-baru/p/hyundai/stargazer',
+  },
 ]
 
 export const availableList = [
