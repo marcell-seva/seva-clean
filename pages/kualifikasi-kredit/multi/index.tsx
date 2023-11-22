@@ -75,7 +75,7 @@ import {
   getMobileFooterMenu,
 } from 'services/api'
 import { GetServerSideProps } from 'next'
-import { MobileWebFooterMenuType } from 'utils/types/props'
+import { MobileWebFooterMenuType, temanSevaUrlPath } from 'utils/types/props'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 const DatePicker = dynamic(
@@ -172,26 +172,6 @@ const MultiKK = () => {
     const currentMaximumPrice = multiForm.priceRangeGroup.split('-')[1]
     return Number(currentMaximumPrice) * 0.9
   }, [multiForm.priceRangeGroup, limitPrice.max])
-
-  const getAnnouncementBox = () => {
-    gab({
-      headers: {
-        'is-login': getToken() ? 'true' : 'false',
-      },
-    }).then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-      if (res.data === undefined) {
-        setIsShowAnnouncementBox(false)
-      }
-    })
-  }
-
-  const checkCitiesData = () => {
-    if (cityListApi.length === 0) {
-      getCities().then((res) => {
-        setCityListApi(res)
-      })
-    }
-  }
 
   const getCustomerInfo = () => {
     getCustomerInfoSeva().then((response) => {
@@ -414,8 +394,6 @@ const MultiKK = () => {
   }
 
   useEffect(() => {
-    checkCitiesData()
-    getAnnouncementBox()
     if (!!getToken()) {
       getCustomerInfo()
     }

@@ -51,6 +51,10 @@ import Image from 'next/image'
 import { checkReferralCode, getCustomerInfoSeva } from 'utils/handler/customer'
 import { temanSevaUrlPath } from 'utils/types/props'
 import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
+import dynamic from 'next/dynamic'
+import { default as customAxiosGet } from 'services/api/get'
+
+const Modal = dynamic(() => import('antd/lib/modal'), { ssr: false })
 
 const searchOption = {
   keys: ['label'],
@@ -191,13 +195,12 @@ const CreditQualificationPage = () => {
 
   const getCurrentUserOwnCode = () => {
     // setLoadShimmer1(true)
-    axios
-      .get(temanSevaUrlPath.profile, {
-        headers: { phoneNumber: getToken()?.phoneNumber ?? '' },
-      })
+    customAxiosGet(temanSevaUrlPath.profile, {
+      headers: { phoneNumber: getToken()?.phoneNumber ?? '' },
+    })
       .then((res) => {
         // setLoadShimmer1(false)
-        setCurrentUserOwnCode(res.data.temanSevaRefCode)
+        setCurrentUserOwnCode(res.temanSevaRefCode)
       })
       .catch(() => {
         // setLoadShimmer1(false)
