@@ -221,6 +221,7 @@ const LpCarRecommendations = ({
           isShowAnnouncementBox={false}
           className={stylep.tab}
           autoScroll={isOTO}
+          initialTab={''}
         />
         <div>
           {recommendationList.length === 0 ? (
@@ -337,7 +338,7 @@ const EmptyCarRecommendation = ({
     <span>
       Silakan{' '}
       <span className={stylep.link} onClick={onClickChangeCity}>
-        ubah lokasimu
+        ubah lokasimu.
       </span>
     </span>
   </div>
