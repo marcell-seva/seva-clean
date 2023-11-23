@@ -78,7 +78,10 @@ const FilterMobile = ({
   isOTO,
 }: FilterMobileProps) => {
   const router = useRouter()
-  const { bodyType, brand } = router.query
+  const { bodyType, brand: brandQueryOrLastSlug } = router.query
+  const brand = brandQueryOrLastSlug?.includes('SEVA')
+    ? ''
+    : brandQueryOrLastSlug
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
   const { financialQuery, patchFinancialQuery } = useFinancialQueryData()
   const onClickClose = () => {
