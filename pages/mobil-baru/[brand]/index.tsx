@@ -159,7 +159,7 @@ export const getServerSideProps: GetServerSideProps<{
 
   const {
     downPaymentAmount,
-    brand,
+    brand: brandQueryOrLastSlug,
     bodyType,
     priceRangeGroup,
     age,
@@ -167,6 +167,10 @@ export const getServerSideProps: GetServerSideProps<{
     monthlyIncome,
     sortBy,
   } = ctx.query
+
+  const brand = brandQueryOrLastSlug?.includes('SEVA')
+    ? ''
+    : brandQueryOrLastSlug
 
   try {
     const [
