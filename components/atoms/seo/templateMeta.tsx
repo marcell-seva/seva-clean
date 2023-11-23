@@ -297,7 +297,7 @@ export const metaDescTemplateOneSlug = (
     case 'kredit':
       return `Hitung simulasi cicilan ${brand} ${model} ${year}. Dapatkan skema cicilan mobil ${model} dengan Loan Calculator di SEVA`
     default:
-      return `Beli mobil ${brand} ${model} ${year} baru secara kredit di SEVA. OTR ${location} harga mulai ${carOTR}, cari tau spesifikasi, daftar harga, dan simulasi kredit`
+      return `Beli mobil ${brand} ${model} ${year} baru secara kredit. OTR ${location} harga mulai ${carOTR}, cari tau spesifikasi, daftar harga, dan simulasi kredit`
   }
 }
 

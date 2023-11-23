@@ -258,40 +258,6 @@ export default function index({
       break
   }
 
-  const getMetaDescription = () => {
-    if (isMobile) {
-      switch (selectedTabValue) {
-        case 'Kredit':
-          return `Hitung simulasi cicilan ${carBrand} ${carModel} ${currentYear}. Beli mobil ${carBrand} secara kredit, proses aman & mudah dengan Instant Approval* di SEVA."`
-        case 'Spesifikasi':
-          return `Dapatkan informasi lengkap mengenai spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
-        case 'Harga':
-          return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
-
-        default:
-          return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, dan kredit di SEVA`
-      }
-    }
-    if (Array.isArray(slug)) {
-      const descriptions = slug.map((s) => {
-        switch (s) {
-          case 'kredit':
-            return `Hitung simulasi cicilan ${carBrand} ${carModel} ${currentYear}. Beli mobil ${carBrand} secara kredit, proses aman & mudah dengan Instant Approval* di SEVA."`
-          case 'spesifikasi':
-            return `Dapatkan informasi lengkap mengenai spesifikasi ${carBrand} ${carModel} ${currentYear} terbaru di SEVA`
-          case 'harga':
-            return `Daftar harga ${carBrand} ${carModel} ${currentYear}. Harga mulai dari ${carOTR}, dapatkan informasi mengenai harga ${carBrand} ${carModel} ${currentYear} terbaru di SEVA.`
-
-          default:
-            return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, dan kredit di SEVA`
-        }
-      })
-
-      return descriptions.join(' ')
-    }
-    return `Beli mobil ${carBrand} ${carModel} ${currentYear} terbaru secara kredit dengan Instant Approval*. Harga mulai ${carOTR}, cari tau spesifikasi, harga, dan kredit di SEVA`
-  }
-
   const modelDetailData =
     carModelDetails || dataCombinationOfCarRecomAndModelDetail
   const recommendationsDetailData =
@@ -395,53 +361,6 @@ export async function getServerSideProps(context: any) {
         notFound: true,
       }
     }
-    const carModelDetailsRes: any = await getCarModelDetails(
-      id,
-      '?city=jakarta&cityId=118',
-    )
-
-    if (carModelDetailsRes.variants.length === 0) {
-      // need to stay 200 so that custom empty state UI is rendered
-      return {
-        props: {
-          carRecommendationsRes: null,
-          carModelDetailsRes: null,
-          dataCombinationOfCarRecomAndModelDetail: null,
-          carVariantDetailsRes: null,
-          dataMobileMenu: menuMobileRes.data,
-          dataFooter: footerRes.data,
-          dataCities: cityRes,
-          dataDesktopMenu: menuDesktopRes.data,
-          isSsrMobileLocal: getIsSsrMobile(context),
-        },
-      }
-    }
-
-    const sortedVariantsOfCurrentModel = carModelDetailsRes.variants
-      .map((item: any) => item)
-      .sort((a: any, b: any) => a.priceValue - b.priceValue)
-    const carVariantDetailsRes: any = await getCarVariantDetails(
-      sortedVariantsOfCurrentModel[0].id,
-      '?city=jakarta&cityId=118',
-    )
-
-    const [carArticleReviewRes] = await Promise.all([
-      fetch('https://www.seva.id/wp-json/seva/latest-posts/972').then((res) =>
-        res.json(),
-      ),
-    ])
-
-    const dataCombinationOfCarRecomAndModelDetail =
-      mergeModelDetailsWithLoanRecommendations(
-        carRecommendationsRes.carRecommendations,
-        carModelDetailsRes,
-      )
-
-    const selectedVideoReview = carVideoReviewRes.data.find(
-      (video: MainVideoResponseType) => {
-        return video.modelId === carModelDetailsRes?.id
-      },
-    )
 
     let finalSlug = ''
     let checkLoc = false
@@ -504,6 +423,37 @@ export async function getServerSideProps(context: any) {
     } else {
       finalSlug = ''
     }
+
+    const carModelDetailsRes: any = await getCarModelDetails(
+      id,
+      `?city=${checkedLocation.cityCode}&cityId=${checkedLocation.id}`,
+    )
+    const sortedVariantsOfCurrentModel = carModelDetailsRes.variants
+      .map((item: any) => item)
+      .sort((a: any, b: any) => a.priceValue - b.priceValue)
+    const carVariantDetailsRes: any = await getCarVariantDetails(
+      sortedVariantsOfCurrentModel[0].id,
+      '?city=jakarta&cityId=118',
+    )
+
+    const [carArticleReviewRes] = await Promise.all([
+      fetch('https://www.seva.id/wp-json/seva/latest-posts/972').then((res) =>
+        res.json(),
+      ),
+    ])
+
+    const dataCombinationOfCarRecomAndModelDetail =
+      mergeModelDetailsWithLoanRecommendations(
+        carRecommendationsRes.carRecommendations,
+        carModelDetailsRes,
+      )
+
+    const selectedVideoReview = carVideoReviewRes.data.find(
+      (video: MainVideoResponseType) => {
+        return video.modelId === carModelDetailsRes?.id
+      },
+    )
+
     return {
       props: {
         carRecommendationsRes,
