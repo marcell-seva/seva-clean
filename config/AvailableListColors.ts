@@ -458,7 +458,7 @@ export const availableListColors = [
   },
   {
     colors: ['#0c1015', '#eef0ee', '#85878a', '#3d474c', '#981e1f'],
-    url: '/mobil-baru/p/hyundai/stargazer',
+    url: '/mobil-baru/p/hyundai/creta',
   },
 ]
 
@@ -531,9 +531,19 @@ export const availableList = [
   '/mobil-baru/isuzu/mu-x',
 
   // peugeot cars
-  '/mobil-baru/peugeot/5008',
-  '/mobil-baru/peugeot/3008',
-  '/mobil-baru/peugeot/2008',
+  '/mobil-baru/p/peugeot/5008',
+  '/mobil-baru/p/peugeot/3008',
+  '/mobil-baru/p/peugeot/2008',
+
+  //hyundai cars
+  '/mobil-baru/p/hyundai/ioniq-5',
+  '/mobil-baru/p/hyundai/ioniq-6',
+  '/mobil-baru/p/hyundai/palisade',
+  '/mobil-baru/p/hyundai/staria',
+  '/mobil-baru/p/hyundai/santa-fe',
+  '/mobil-baru/p/hyundai/stargazer',
+  '/mobil-baru/p/hyundai/stargazer-x',
+  '/mobil-baru/p/hyundai/creta',
 ]
 
 export const availableListVideoReview = [
