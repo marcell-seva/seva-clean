@@ -323,8 +323,8 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
   return (
     <>
       <Seo
-        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
-        description={`Beli mobil terbaru dari Toyota, Daihatsu, Isuzu, BMW, Peugeot ${new Date().getFullYear()} secara kredit dengan Instant Approval di SEVA. Proses Aman & Mudah, Terintegrasi dengan ACC & TAF. SEVA member of ASTRA`}
+        title="SEVA - Beli Mobil Baru Dengan Cicilan Kredit Terbaik"
+        description={`Beli mobil baru Toyota, Daihatsu, Isuzu, BMW, Peugeot ${new Date().getFullYear()} secara kredit dengan Instant Approval di SEVA. Proses Aman & Mudah Terintegrasi dengan ACC & TAF. SEVA member of ASTRA`}
         image={defaultSeoImage}
       />
 
