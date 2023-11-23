@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import styles from '../../../../styles/components/molecules/form/formSelectBrandCar.module.scss'
-import { Space } from 'antd'
+import styles from 'styles/components/molecules/form/formSelectBrandCarSevaOto.module.scss'
+import Space from 'antd/lib/space'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
 import Image from 'next/image'
