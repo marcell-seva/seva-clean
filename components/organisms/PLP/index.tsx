@@ -96,7 +96,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   const {
     search,
     bodyType,
-    brand,
+    brand: brandQueryOrLastSlug,
     downPaymentAmount,
     monthlyIncome,
     tenure,
@@ -104,6 +104,9 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     age,
     sortBy,
   } = router.query as FilterParam
+  const brand = brandQueryOrLastSlug.includes('SEVA')
+    ? ''
+    : brandQueryOrLastSlug
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
 
   const [cityOtr] = useLocalStorage<Location | null>(
@@ -553,7 +556,10 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
             const queryParam: any = {
               downPaymentType: 'amount',
               downPaymentAmount: downPaymentAmount || '',
-              brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
+              brand:
+                !brand || brand?.includes('SEVA')
+                  ? undefined
+                  : brand?.split(',')?.map((item) => getCarBrand(item)) || '',
               bodyType: bodyType?.split(',') || '',
               priceRangeGroup: priceRangeGroup ? minTemp + '-' + maxTemp : '',
               age: age || '',
@@ -600,7 +606,10 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       const queryParam: any = {
         downPaymentType: 'amount',
         downPaymentAmount: downPaymentAmount || '',
-        brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
+        brand:
+          !brand || brand?.includes('SEVA')
+            ? undefined
+            : brand?.split(',')?.map((item) => getCarBrand(item)) || '',
         bodyType: bodyType?.split(',') || '',
         priceRangeGroup: priceRangeGroup,
         age: age || '',

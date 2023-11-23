@@ -217,7 +217,7 @@ export const getServerSideProps: GetServerSideProps<{
   const {
     search,
     downPaymentAmount,
-    brand,
+    brand: brandQueryOrLastSlug,
     bodyType,
     priceRangeGroup,
     age,
@@ -227,6 +227,10 @@ export const getServerSideProps: GetServerSideProps<{
   } = ctx.query
   const params = new URLSearchParams()
   params.append('query', '' as string)
+
+  const brand = brandQueryOrLastSlug?.includes('SEVA')
+    ? ''
+    : brandQueryOrLastSlug
 
   try {
     const [
