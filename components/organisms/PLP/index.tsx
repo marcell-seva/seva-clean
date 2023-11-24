@@ -182,6 +182,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     carOrder: 0,
     loanRank: 'Null',
   })
+  const [showEmpty, setShowEmpty] = useState(false)
   const user: string | null = getLocalStorage(LocalStorageKey.sevaCust)
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
   const isUsingFilterFinancial =
@@ -527,6 +528,12 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     setHasMore(true)
     setSampleArray({ items: recommendation.slice(0, 12) })
     saveRecommendation(recommendation)
+    if (recommendation.length === 0 && !showLoading) {
+      setShowEmpty(true)
+      setHasMore(false)
+    } else {
+      setShowEmpty(false)
+    }
   }, [recommendation])
 
   useEffect(() => {
@@ -777,7 +784,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
           isOTO={isOTO}
         />
         <PLPHeaderTitle />
-        {!showLoading && sampleArray.items.length === 0 ? (
+        {showEmpty ? (
           <>
             <NavigationFilterMobile
               setRecommendations={saveRecommendation}
