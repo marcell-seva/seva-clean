@@ -339,8 +339,8 @@ const Profile = () => {
                       id="fullName"
                       onChange={(e) => {
                         if (
-                          e.target.value === '' ||
-                          RegExOnlyAlphabetsAndSpaces.test(e.target.value)
+                          e.target.value !== ' ' &&
+                          !containsSpecialChars(e.target.value)
                         ) {
                           handleChange(e)
                         }
