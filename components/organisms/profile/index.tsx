@@ -47,6 +47,7 @@ import { SessionStorageKey } from 'utils/enum'
 import { RegExOnlyAlphabetsAndSpaces } from 'utils/handler/regex'
 import dynamic from 'next/dynamic'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { containsSpecialChars } from 'utils/stringUtils'
 
 const Toast = dynamic(
   () => import('components/atoms/toast').then((mod) => mod.Toast),

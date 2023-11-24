@@ -18,3 +18,6 @@ export const isIsoDateFormat = (date: string) => {
 
 export const RegExOnlyAlphanumericAndSpace = /^[\w\s]*$/
 export const RegExOnlyAlphabetsAndSpaces = /^[a-zA-Z ]*$/
+// Only Allow Apostrophe
+export const RegExLongAlphabetAndSpaces =
+  /[`!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?~]/

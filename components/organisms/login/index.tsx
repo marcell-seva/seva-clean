@@ -199,7 +199,7 @@ export const Login = () => {
         REGISTRATION_STATUS: 'Yes',
       })
     } catch (e: any) {
-      if (e.response.status === 404) {
+      if (e.response.status >= 400 && e.response.status < 500) {
         trackEventCountly(CountlyEventNames.WEB_LOGIN_PAGE_CTA_CLICK, {
           REGISTRATION_STATUS: 'No',
         })
