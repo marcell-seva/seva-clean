@@ -502,6 +502,10 @@ const KtpForm = () => {
         <div
           className={styles.back__button}
           onClick={() => {
+            saveSessionStorage(
+              SessionStorageKey.LastVisitedPageKKIAFlow,
+              window.location.pathname,
+            )
             router.back()
           }}
         >
