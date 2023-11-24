@@ -3,15 +3,12 @@ import styles from 'styles/components/molecules/form/formSearchYear.module.scss'
 import stylec from '/styles/components/molecules/searchWidget/priceRangeWidget.module.scss'
 import Input from 'antd/lib/input'
 import Slider from 'antd/lib/slider'
-import { Currency } from 'utils/handler/calculation'
 import { filterNonDigitCharacters } from 'utils/handler/stringManipulation'
 import { Button } from 'components/atoms'
 import elementId from 'utils/helpers/trackerId'
 import {
   SearchUsedCarWidgetContext,
   SearchUsedCarWidgetContextType,
-  SearchWidgetContext,
-  SearchWidgetContextType,
 } from 'services/context'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
@@ -22,10 +19,6 @@ interface YearRangeWidgetProps {
 }
 
 const YearRangeWidget = ({ minMaxYear, onClose }: YearRangeWidgetProps) => {
-  const overMaxWarning = 'Harga yang kamu masukkan terlalu tinggi'
-  const underMinWarning = 'Harga yang kamu masukkan terlalu rendah'
-  const overMaxTwoWarning = 'Harga harus lebih kecil dari harga maksimum'
-  const underMinTwoWarning = 'Harga harus lebih besar dari harga minimum'
   const { funnelQuery } = useFunnelQueryUsedCarData()
   const { funnelWidget, saveFunnelWidget } = useContext(
     SearchUsedCarWidgetContext,
@@ -33,12 +26,14 @@ const YearRangeWidget = ({ minMaxYear, onClose }: YearRangeWidgetProps) => {
   const [minDefault] = useState(minMaxYear.minYears)
   const [maxDefault] = useState(minMaxYear.maxYears)
   const [minTemp, setMinTemp] = useState(
-    funnelWidget.minYear ? funnelWidget.minYear : minDefault,
+    funnelWidget.minYear ? funnelWidget.minYear?.toString() : minDefault,
   )
   const [maxTemp, setMaxTemp] = useState(
-    funnelWidget.maxYear ? funnelWidget.maxYear : maxDefault,
+    funnelWidget.maxYear ? funnelWidget.maxYear?.toString() : maxDefault,
   )
-  const [isFirstInit, setIsFirstInit] = useState(true)
+  const [isFirstInit, setIsFirstInit] = useState(
+    funnelWidget.minYear ? false : true,
+  )
   const [isErrorMin, setIsErrorMin] = useState(false)
   const [isErrorMax, setIsErrorMax] = useState(false)
   const [isErrorMinTwo, setIsErrorMinTwo] = useState(false)
@@ -182,6 +177,7 @@ const YearRangeWidget = ({ minMaxYear, onClose }: YearRangeWidgetProps) => {
     setIsErrorMaxTwo(false)
     setMinTemp(minDefault)
     setMaxTemp(maxDefault)
+    saveFunnelWidget({ ...funnelWidget, minYear: '', maxYear: '' })
     setIsFirstInit(true)
   }
 
@@ -221,7 +217,7 @@ const YearRangeWidget = ({ minMaxYear, onClose }: YearRangeWidgetProps) => {
                 ? styles.inputStyle
                 : styles.inputStyleError
             }
-            value={minTemp ? minTemp : minTemp}
+            value={minTempCurrency ? minTempCurrency : minTempCurrency}
             type="tel"
             onBlur={onInputEmpty}
             tabIndex={-1}
@@ -242,7 +238,7 @@ const YearRangeWidget = ({ minMaxYear, onClose }: YearRangeWidgetProps) => {
           <Input
             maxLength={4}
             defaultValue={maxTemp ? maxTemp : maxTemp}
-            value={maxTemp ? maxTemp : maxTemp}
+            value={maxTempCurrency ? maxTempCurrency : maxTempCurrency}
             onChange={onChangeInputMaximum}
             className={
               !isErrorMax && !isErrorMaxTwo

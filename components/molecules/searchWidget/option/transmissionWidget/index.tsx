@@ -66,7 +66,17 @@ const TransmissionUsedCarWidget = ({ onClose }: FilterMobileProps) => {
     }
   }
 
+  const reset = () => {
+    if (funnelWidget.transmission.length > 0) {
+      return
+    } else {
+      setIsCheckedTransmissionQuery([])
+      setDisableActionButton(true)
+    }
+  }
+
   const clear = () => {
+    saveFunnelWidget({ ...funnelWidget, transmission: [] })
     setIsCheckedTransmissionQuery([])
     setDisableActionButton(true)
   }
@@ -97,7 +107,7 @@ const TransmissionUsedCarWidget = ({ onClose }: FilterMobileProps) => {
 
   return (
     <>
-      <div className={styles.container} onBlur={clear}>
+      <div className={styles.container} onBlur={reset}>
         <div className={styles.childContainer}>
           {transmissionList.map(({ value, isChecked }) => {
             return (

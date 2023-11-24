@@ -114,13 +114,24 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
     }
   }
 
-  const clear = () => {
+  const reset = () => {
     if (funnelWidget.brand.length > 0) {
       return
     } else {
       setIsCheckedBrandQuery([])
+      setDisableActionButton(true)
     }
-    setDisableActionButton(true)
+  }
+
+  const clear = () => {
+    if (funnelWidget.brand.length > 0) {
+      saveFunnelWidget({ ...funnelWidget, brand: [] })
+      setIsCheckedBrandQuery([])
+      setDisableActionButton(true)
+    } else {
+      setIsCheckedBrandQuery([])
+      setDisableActionButton(true)
+    }
   }
 
   const submit = () => {
@@ -146,7 +157,7 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
 
   return (
     <>
-      <div className={styles.container} onBlur={clear}>
+      <div className={styles.container} onBlur={reset}>
         <div className={styles.wrapperContainer}>
           {carList.map(({ key, icon, value, isChecked }) => {
             return (
