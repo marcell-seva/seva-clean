@@ -158,7 +158,12 @@ const LeasingCompanyOptionPage = ({
   useEffect(() => {
     if (kkForm !== null) {
       const brand = kkForm.model?.brandName
-      if (brand === 'Isuzu' || brand === 'Peugeot' || brand === 'BMW') {
+      if (
+        brand === 'Isuzu' ||
+        brand === 'Peugeot' ||
+        brand === 'BMW' ||
+        brand === 'Hyundai'
+      ) {
         setIsDisableTAF(true)
         setDescDisabledCard(
           'Perusahaan ini belum bisa digunakan untuk mobil yang kamu pilih.',
