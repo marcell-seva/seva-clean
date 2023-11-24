@@ -214,35 +214,35 @@ export const metaTitleTemplateThreeSlug = (
         threeSlug,
       )} - Cek Simulasi Kredit Mobil & Cicilan | SEVA`
     case '360-eksterior/ringkasan':
-      return `Tampilan 360º Eksterior dan Ringkasan ${brand} ${model} ${year} ${formatLocation(
+      return `Tampilan Eksterior 360º dan Ringkasan ${brand} ${model} ${year} ${formatLocation(
         threeSlug,
       )} | SEVA`
     case '360-eksterior/spesifikasi':
-      return `Tampilan 360º Eksterior ${brand} ${model} ${year} ${formatLocation(
+      return `Tampilan Eksterior 360º ${brand} ${model} ${year} ${formatLocation(
         threeSlug,
       )} - Spesifikasi & Fitur  | SEVA`
     case '360-eksterior/harga':
-      return `Tampilan 360º Eksterior ${brand} ${model} ${year} - Harga OTR ${formatLocation(
+      return `Tampilan Eksterior 360º ${brand} ${model} ${year} - Harga OTR ${formatLocation(
         threeSlug,
       )} | SEVA`
     case '360-eksterior/kredit':
-      return `Tampilan 360º Eksterior ${brand} ${model} ${year} ${formatLocation(
+      return `Tampilan Eksterior 360º ${brand} ${model} ${year} ${formatLocation(
         threeSlug,
       )} - Cek Simulasi Kredit Mobil & Cicilan | SEVA`
     case '360-interior/ringkasan':
-      return `Tampilan 360º Interior dan Ringkasan ${brand} ${model} ${year} ${formatLocation(
+      return `Tampilan Interior 360º dan Ringkasan ${brand} ${model} ${year} ${formatLocation(
         threeSlug,
       )} | SEVA`
     case '360-interior/spesifikasi':
-      return `Tampilan 360º Interior ${brand} ${model} ${year} ${formatLocation(
+      return `Tampilan Interior 360º ${brand} ${model} ${year} ${formatLocation(
         threeSlug,
       )} - Spesifikasi & Fitur  | SEVA`
     case '360-interior/harga':
-      return `Tampilan 360º Interior ${brand} ${model} ${year} - Harga OTR ${formatLocation(
+      return `Tampilan Interior 360º ${brand} ${model} ${year} - Harga OTR ${formatLocation(
         threeSlug,
       )} | SEVA`
     case '360-interior/kredit':
-      return `Tampilan 360º Interior ${brand} ${model} ${year} ${formatLocation(
+      return `Tampilan Interior 360º ${brand} ${model} ${year} ${formatLocation(
         threeSlug,
       )} - Simulasi Kredit Mobil & Cicilan | SEVA`
     case 'video/ringkasan':
