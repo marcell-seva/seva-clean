@@ -120,7 +120,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     age,
     sortBy,
   } = router.query as FilterParam
-  const brand = brandQueryOrLastSlug.includes('SEVA')
+  const brand = brandQueryOrLastSlug?.includes('SEVA')
     ? ''
     : brandQueryOrLastSlug
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
