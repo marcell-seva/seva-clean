@@ -18,6 +18,7 @@ import {
 import { SessionStorageKey } from 'utils/enum'
 import {
   cameraKtpUrl,
+  formKtpUrl,
   ktpReviewUrl,
   uploadKtpSpouseQueryParam,
   verifyKtpUrl,
@@ -53,6 +54,7 @@ import { useValidateUserFlowKKIA } from 'utils/hooks/useValidateUserFlowKKIA'
 import { defineRouteName } from 'utils/navigate'
 import { formatKTPDate } from 'utils/handler/date'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { useBeforePopState } from 'utils/hooks/useBeforePopState'
 
 const PopupError = dynamic(() => import('components/organisms/popupError'), {
   ssr: false,
@@ -85,7 +87,8 @@ const searchOption = {
 }
 
 const KtpForm = () => {
-  useValidateUserFlowKKIA([verifyKtpUrl])
+  useValidateUserFlowKKIA([verifyKtpUrl, ktpReviewUrl])
+  useBeforePopState()
   const router = useRouter()
   const { ktpType }: { ktpType: string } = useQuery(['ktpType'])
   const isSpouse = ktpType && ktpType.toLowerCase() === 'spouse'
@@ -499,10 +502,6 @@ const KtpForm = () => {
         <div
           className={styles.back__button}
           onClick={() => {
-            saveSessionStorage(
-              SessionStorageKey.LastVisitedPageKKIAFlow,
-              window.location.pathname,
-            )
             router.back()
           }}
         >

@@ -60,6 +60,7 @@ import { useValidateUserFlowKKIA } from 'utils/hooks/useValidateUserFlowKKIA'
 import { defineRouteName } from 'utils/navigate'
 import Tooltip from 'antd/lib/tooltip'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { useBeforePopState } from 'utils/hooks/useBeforePopState'
 
 const searchOption = {
   keys: ['label'],
@@ -77,6 +78,7 @@ export default function KtpReview() {
     formKtpUrl,
     cameraKtpUrl,
   ])
+  useBeforePopState()
   const commonErrorMessage =
     'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi'
   const router = useRouter()

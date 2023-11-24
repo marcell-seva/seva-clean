@@ -57,6 +57,7 @@ import styles from 'styles/pages/ktp-upload.module.scss'
 import dynamic from 'next/dynamic'
 import { useMediaQuery } from 'react-responsive'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { useBeforePopState } from 'utils/hooks/useBeforePopState'
 
 const ChevronLeft = '/revamp/icon/chevron-left.webp'
 
@@ -77,6 +78,7 @@ export default function CameraKtp() {
     landingKtpUrl,
     previewKtpUrl,
   ])
+  useBeforePopState()
   const ratio = 4
   const { width: frameWidth, height: frameHeight } = getFrameSize(
     DocumentType.KTP,

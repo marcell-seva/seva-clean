@@ -33,6 +33,7 @@ import { defineRouteName } from 'utils/navigate'
 import { FormLCState } from 'utils/types/utils'
 import dynamic from 'next/dynamic'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { useBeforePopState } from 'utils/hooks/useBeforePopState'
 
 const PopupError = dynamic(() => import('components/organisms/popupError'), {
   ssr: false,
@@ -41,7 +42,8 @@ const PopupError = dynamic(() => import('components/organisms/popupError'), {
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
 const VerifyKtp = () => {
-  useValidateUserFlowKKIA([cameraKtpUrl])
+  useValidateUserFlowKKIA([cameraKtpUrl, formKtpUrl])
+  useBeforePopState()
   const router = useRouter()
   const { ktpType }: { ktpType: string } = useQuery(['ktpType'])
   const [toast, setToast] = useState('')
