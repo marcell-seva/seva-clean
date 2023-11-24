@@ -7,7 +7,7 @@ import {
   VideoTab,
   CarOverview,
 } from 'components/organisms'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { upperSectionNavigationTab } from 'config/carVariantList.config'
 import { NavigationTabV2 } from 'components/molecules'
 import { CityOtrOption, VideoDataType } from 'utils/types/utils'
@@ -54,10 +54,25 @@ export const PdpUpperSection = ({
 }: Props) => {
   const router = useRouter()
 
-  const upperTab = router.query.tab as string
+  const validateSlug = (slug: Array<string>, dataFilter: any) => {
+    if (slug) {
+      var data = dataFilter.filter((item: any) => {
+        var data = slug.filter((items: any) => items === item.value)
+        return data.length > 0
+      })
+      return {
+        isValid: data.length !== 0,
+        data: data[0] ?? dataFilter[0],
+      }
+    } else
+      return {
+        isValid: false,
+        data: upperSectionNavigationTab[0],
+      }
+  }
 
-  const [selectedTabValue, setSelectedTabValue] = useState(
-    upperTab || upperSectionNavigationTab[0].value,
+  const [selectedTabValue, setSelectedTabValue] = useState<any>(
+    upperSectionNavigationTab[0].value,
   )
 
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
@@ -98,16 +113,16 @@ export const PdpUpperSection = ({
   const filterTabItem = () => {
     let temp = upperSectionNavigationTab
     if (!getImageExterior360() || getImageExterior360().length === 0) {
-      temp = temp.filter((item: any) => item.value !== '360º Eksterior')
+      temp = temp.filter((item: any) => item.value !== '360-exterior')
     }
     if (!getImageInterior360()) {
-      temp = temp.filter((item: any) => item.value !== '360º Interior')
+      temp = temp.filter((item: any) => item.value !== '360-interior')
     }
     if (videoData.videoId === '') {
-      temp = temp.filter((item: any) => item.value !== 'Video')
+      temp = temp.filter((item: any) => item.value !== 'video')
     }
     if (getInteriorImage()?.length === 0) {
-      temp = temp.filter((item: any) => item.value !== 'Interior')
+      temp = temp.filter((item: any) => item.value !== 'interior')
     }
     return temp
   }
@@ -184,24 +199,19 @@ export const PdpUpperSection = ({
     }
   }
 
+  useEffect(() => {
+    setSelectedTabValue(
+      validateSlug(slug as Array<string>, tabItemList).data.value,
+    )
+  }, [tabItemList])
+
   return (
     <div>
       <div className={styles.upperSpacing} />
       <NavigationTabV2
-        itemList={tabItemList}
-        onSelectTab={(value: any) => {
-          setSelectedTabValue(value)
-          router.replace({
-            query: {
-              ...router.query,
-              tab: value,
-            },
-          })
-          trackEventPhoto(TrackingEventName.WEB_PDP_TAB_PHOTO_CLICK, value)
-          trackEventCountly(CountlyEventNames.WEB_PDP_VISUAL_TAB_CLICK, {
-            VISUAL_TAB_CATEGORY: value,
-          })
-        }}
+        itemList={filterTabItem()}
+        initialTab={selectedTabValue}
+        onSelectTab={(value: any) => onSelectTab(value)}
         isShowAnnouncementBox={isShowAnnouncementBox}
         onPage={'PDP'}
       />
