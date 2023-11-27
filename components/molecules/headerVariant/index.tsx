@@ -42,6 +42,7 @@ import { removeCarBrand } from 'utils/handler/removeCarBrand'
 import { removeCarModel } from 'utils/handler/removeCarModel'
 import { getCity } from 'utils/hooks/useGetCity'
 import { getCarofTheMonth, getSearchDataQuery } from 'services/api'
+import { filterSpecialChar } from 'utils/stringUtils'
 
 interface HeaderVariantProps {
   overrideDisplay?: string
@@ -129,10 +130,12 @@ export default function HeaderVariant({
 
   const onSearchInputChange = (searchInputValueParam: string) => {
     setSearchInputValue(
-      searchInputValueParam
-        .split(' ')
-        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-        .join(' '),
+      filterSpecialChar(
+        searchInputValueParam
+          .split(' ')
+          .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+          .join(' '),
+      ),
     )
     debounceFn(searchInputValueParam)
     setIsNotFoundClicked(false)
