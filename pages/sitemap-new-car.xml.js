@@ -1,5 +1,5 @@
 import getCurrentEnvironment from 'helpers/environments'
-import { monthId } from './sitemap-used-car.xml'
+import { monthId, escapeCdata } from './sitemap-used-car.xml'
 
 const rootPath = getCurrentEnvironment.rootPath
 const apiBaseUrl = getCurrentEnvironment.apiBaseUrl
@@ -75,10 +75,6 @@ const lowerTabs = [
     },
   },
 ]
-
-function escapeCdata(data) {
-  return `<![CDATA[ ${data} ]]>`
-}
 
 const SiteMap = () => {}
 
@@ -165,7 +161,7 @@ const generateSiteMap = ({ cities, carRecommendations, videoReviews }) => {
                 <news:name>ProductSeva</news:name>
                 <news:language>id</news:language>
                 <news:title>${escapeCdata(
-                  `${tab.metaPrefix} ${car.brand} ${car.model} ${currentYear}`,
+                  `${tab.metaPrefix} ${car.brand} ${car.model} ${currentYear} | SEVA`,
                 )}</news:title>
                 <news:keywords>${escapeCdata(
                   `${tab.metaPrefix} ${car.model}, ${car.model}, ${car.brand} ${car.model}, Mobil ${car.brand}`,
