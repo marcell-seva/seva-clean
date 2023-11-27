@@ -223,7 +223,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       saveRecommendation([])
     }
     setPage(1)
-    setShowLoading(true)
+    setShowLoading(false)
     setSampleArray({ items: [] })
   }
 
