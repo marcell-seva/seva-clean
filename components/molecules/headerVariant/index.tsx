@@ -307,9 +307,9 @@ export default function HeaderVariant({
             <div className={styles.styledCarContentName} key={car.name}>
               <a
                 className={styles.styledCarName}
-                href={`${
-                  isOTO ? `/adaSEVAdiOTO` : ``
-                }/mobil-baru${car.link.toLowerCase()}`}
+                href={`${isOTO ? `/adaSEVAdiOTO` : ``}/mobil-baru${
+                  isOTO ? '' : '/p'
+                }${car.link.toLowerCase()}`}
                 onClick={() => onClickRecommedationList(car)}
               >
                 <div
@@ -363,28 +363,18 @@ export default function HeaderVariant({
       const funnelQueryTemp = {
         brand: data.label,
       }
-      {
-        isOTO
-          ? navigateToPLP(
-              PreviousButton.SearchBar,
-              {
-                search: convertObjectQuery(funnelQueryTemp),
-              },
-              true,
-              false,
-              OTONewCarUrl,
-            )
-          : navigateToPLP(
-              PreviousButton.SearchBar,
-              {
-                search: convertObjectQuery(funnelQueryTemp),
-              },
-              true,
-              false,
-              undefined,
-              pageOrigination === 'PLP' ? true : false,
-            )
-      }
+
+      isOTO
+        ? navigateToPLP(
+            PreviousButton.SearchBar,
+            {
+              search: convertObjectQuery(funnelQueryTemp),
+            },
+            true,
+            false,
+            OTONewCarUrl,
+          )
+        : (window.location.href = carResultsUrl + `?brand=${data.label}`)
     } else {
       saveDataForCountlyTrackerPageViewPDP(
         PreviousButton.SearchIcon,
