@@ -45,6 +45,7 @@ import { SearchModal } from './searchModal'
 import { ProfileUploadKtp } from './profileUploadKtp'
 import BrandUsedCarWidget from './searchWidget/option/brandUsedCarWidget'
 import TransmissionUsedCarWidget from './searchWidget/option/transmissionWidget'
+import { SearchComponent } from './searchComponent'
 import { HeaderRefinancing } from './headerRefinancing'
 import { DescriptionRefinancing } from './descriptionRefinancing'
 import { ExpandAction } from './expandAction'
@@ -120,5 +121,6 @@ export {
   LoginAlertModal,
   DiscussionRefiForm,
   RefinancingFormHeader,
+  SearchComponent,
   SelectWidgetUsedCar,
 }
