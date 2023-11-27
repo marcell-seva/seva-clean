@@ -96,6 +96,9 @@ const CardCarOfTheMonth = ({ item, onSendOffer }: CarOfTheMonthProps) => {
     }
   }
   const price = item.priceValue ?? item.priceValueJkt ?? 0
+  console.log(item.link)
+  console.log(item)
+
   return (
     <div className={styles.cardContainer}>
       <Image
@@ -173,7 +176,10 @@ const CardCarOfTheMonth = ({ item, onSendOffer }: CarOfTheMonthProps) => {
                   saveDataForCountlyTrackerPageViewPDP(
                     PreviousButton.CarOfTheMonth,
                   )
-                  window.location.href = item.link
+                  window.location.href = item.link.replace(
+                    'mobil-baru/',
+                    'mobil-baru/p/',
+                  )
                 }}
                 data-testid={elementId.Homepage.Button.LihatRincian}
               >
