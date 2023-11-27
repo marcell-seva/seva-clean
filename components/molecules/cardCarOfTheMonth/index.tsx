@@ -96,8 +96,6 @@ const CardCarOfTheMonth = ({ item, onSendOffer }: CarOfTheMonthProps) => {
     }
   }
   const price = item.priceValue ?? item.priceValueJkt ?? 0
-  console.log(item.link)
-  console.log(item)
 
   return (
     <div className={styles.cardContainer}>
