@@ -9,10 +9,7 @@ const get = (path: string, config?: AxiosRequestConfig) => {
       },
       (error: AxiosError) => {
         reject(error)
-        // TODO @toni : remove conditional once API status code adjustment done
-        if (!path.includes('/customers/get-ktp')) {
-          clientInteractionNavigateToErrorPage(error?.response?.status)
-        }
+        clientInteractionNavigateToErrorPage(error?.response?.status)
       },
     )
   })
