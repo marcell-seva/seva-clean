@@ -137,6 +137,7 @@ export default function index({
         .value,
   )
   const [currentCity, setCurrentCity] = useState(checkedLocation)
+  const [currentUrl, setCurrentUrl] = useState('')
 
   useEffect(() => {
     if (checkedLocation) {
@@ -268,6 +269,12 @@ export default function index({
 
   useEffect(() => {
     setTabFromDirectUrl()
+    setCurrentUrl(
+      window.location.protocol +
+        '//' +
+        window.location.host +
+        window.location.pathname,
+    )
   }, [])
 
   const setTabFromDirectUrl = () => {
@@ -285,6 +292,7 @@ export default function index({
         title={metaTitle}
         description={metaDesc ?? ''}
         image={modelDetailData?.images[0] || defaultSeoImage}
+        additionalTag={<link href={currentUrl} rel="canonical" />}
       />
       <Script
         id="product-jsonld"

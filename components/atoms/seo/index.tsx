@@ -7,9 +7,15 @@ interface SeoProps {
   description?: string
   slug?: string
   image: string
+  additionalTag?: React.JSX.Element
 }
 
-const Seo: React.FC<SeoProps> = ({ title, description, image }) => {
+const Seo: React.FC<SeoProps> = ({
+  title,
+  description,
+  image,
+  additionalTag,
+}) => {
   const router = useRouter()
   const currentUrl = router.asPath
   if (!title || !description || !image) {
@@ -40,6 +46,7 @@ const Seo: React.FC<SeoProps> = ({ title, description, image }) => {
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
+      {additionalTag}
     </Head>
   )
 }
