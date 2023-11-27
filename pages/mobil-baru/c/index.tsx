@@ -85,7 +85,7 @@ const NewCarResultPage = ({
         carModel={null}
         carModelDetails={null}
         carVariantDetails={null}
-        recommendation={[]}
+        recommendation={meta.carRecommendations.carRecommendations}
         recommendationToyota={[]}
       >
         <PLP minmaxPrice={meta.MinMaxPrice} />
