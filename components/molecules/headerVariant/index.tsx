@@ -363,28 +363,18 @@ export default function HeaderVariant({
       const funnelQueryTemp = {
         brand: data.label,
       }
-      {
-        isOTO
-          ? navigateToPLP(
-              PreviousButton.SearchBar,
-              {
-                search: convertObjectQuery(funnelQueryTemp),
-              },
-              true,
-              false,
-              OTONewCarUrl,
-            )
-          : navigateToPLP(
-              PreviousButton.SearchBar,
-              {
-                search: convertObjectQuery(funnelQueryTemp),
-              },
-              true,
-              false,
-              undefined,
-              pageOrigination === 'PLP' ? true : false,
-            )
-      }
+
+      isOTO
+        ? navigateToPLP(
+            PreviousButton.SearchBar,
+            {
+              search: convertObjectQuery(funnelQueryTemp),
+            },
+            true,
+            false,
+            OTONewCarUrl,
+          )
+        : (window.location.href = carResultsUrl + `?brand=${data.label}`)
     } else {
       saveDataForCountlyTrackerPageViewPDP(
         PreviousButton.SearchIcon,
