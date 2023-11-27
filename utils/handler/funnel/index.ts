@@ -104,8 +104,12 @@ export const getUsedCarFunnelRecommendations = (
     cityId.map((item) => params.append('cityId', item))
   transmission &&
     transmission.length > 0 &&
-    transmission.map((item) => params.append('transmission', item))
-  plate && plate.length > 0 && plate.map((item) => params.append('plate', item))
+    transmission.map((item) =>
+      params.append('transmission', item.toLowerCase()),
+    )
+  plate &&
+    plate.length > 0 &&
+    plate.map((item) => params.append('plate', item.toLowerCase()))
   priceStart && params.append('priceStart', priceStart?.toString() as string)
   priceEnd && params.append('priceEnd', priceEnd?.toString() as string)
   mileageStart &&
