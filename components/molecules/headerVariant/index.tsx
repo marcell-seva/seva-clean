@@ -381,7 +381,12 @@ export default function HeaderVariant({
         isInLoanCalcKK ? 'Loan Calculator - Kualifikasi Kredit' : undefined,
       )
       // use window location to reload page
-      window.location.href = (isOTO ? OTONewCarUrl : carResultsUrl) + data.value
+      console.log(data.value)
+      const checkLong = data.value.split('/').length
+      console.log(checkLong)
+
+      window.location.href =
+        (isOTO ? OTONewCarUrl : carResultsUrl.replace('c', 'p')) + data.value
     }
     // use location reload so that content re-fetched
     // window.location.reload()
