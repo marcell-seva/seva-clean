@@ -524,7 +524,9 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
 
   useEffect(() => {
     setPage(1)
-    setHasMore(true)
+    if (recommendation.length > sampleArray.items.length) {
+      setHasMore(true)
+    }
     setSampleArray({ items: recommendation.slice(0, 12) })
     saveRecommendation(recommendation)
   }, [recommendation])
