@@ -529,7 +529,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     }
     setSampleArray({ items: recommendation.slice(0, 12) })
     saveRecommendation(recommendation)
-    if (sampleArray.items.length === 0) {
+    if (sampleArray.items.length === 0 || recommendation.length === 0) {
       setShowLoading(false)
       setHasMore(false)
     }
