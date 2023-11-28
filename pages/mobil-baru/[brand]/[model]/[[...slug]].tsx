@@ -164,7 +164,7 @@ export default function index({
     dataCombinationOfCarRecomAndModelDetail?.variants.map((item) =>
       Number(item.priceValue),
     )
-  const carOTRValue = Math.min(...(carOTRValueArray as number[]))
+  const carOTRValue = Math.min(...((carOTRValueArray as number[]) ?? [0]))
   const carOTR = `Rp ${carOTRValue / 1000000} juta`
 
   const getMetaTitle = () => {
@@ -348,6 +348,24 @@ export async function getServerSideProps(context: any) {
       id,
       '?city=jakarta&cityId=118',
     )
+
+    if (carModelDetailsRes.variants.length === 0) {
+      // need to stay 200 so that custom empty state UI is rendered
+      return {
+        props: {
+          dataCombinationOfCarRecomAndModelDetail: null,
+          dataMobileMenu: menuMobileRes.data,
+          dataFooter: footerRes.data,
+          dataCities: cityRes,
+          dataDesktopMenu: menuDesktopRes.data,
+          isSsrMobileLocal: getIsSsrMobile(context),
+          finalSlug: finalSlug,
+          checkLoc: checkLoc,
+          checkedLocation: checkedLocation,
+        },
+      }
+    }
+
     const sortedVariantsOfCurrentModel = carModelDetailsRes.variants
       .map((item: any) => item)
       .sort((a: any, b: any) => a.priceValue - b.priceValue)
@@ -447,7 +465,7 @@ const handlingCarLogo = (brand: string) => {
 }
 
 const jsonLD = (
-  carModel: CarModelDetailsResponse | undefined,
+  carModel: CarModelDetailsResponse | undefined | null,
   carVariant: CarVariantDetails | null,
   recommendationsDetailData?: CarRecommendation[],
   videoReview?: MainVideoResponseType,

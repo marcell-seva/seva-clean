@@ -3,6 +3,7 @@ import { SessionStorageKey } from 'utils/enum'
 import { saveSessionStorage } from 'utils/handler/sessionStorage'
 import { creditQualificationUrl } from 'utils/helpers/routes'
 import urls from 'utils/helpers/url'
+import { CityOtrOption } from 'utils/types'
 
 export enum RouteName {
   Homepage = 'Homepage',
@@ -248,4 +249,39 @@ export const saveDataForCountlyTrackerPageViewHomepage = (
     SessionStorageKey.PreviousSourceButtonHomepage,
     previousButton,
   )
+}
+
+export const generateNewPdpUrlWhenChangeCity = (
+  selectedCityData: CityOtrOption,
+  cityListFromApi: CityOtrOption[],
+) => {
+  const selectedCity = selectedCityData.cityName
+    .toLocaleLowerCase()
+    .split(' ')
+    .join('-')
+  const separateUrl = window.location.href.split('?')[0]
+  const queryParam = window.location.href.split('?')[1]
+  const getCitybyUrl = separateUrl.split('/').at(-1)
+  if (getCitybyUrl !== undefined) {
+    const checkCityUrl = cityListFromApi.filter(
+      (item: any) =>
+        item.cityName.replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase() ===
+        getCitybyUrl.replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase(),
+    )
+    if (checkCityUrl.length !== 0) {
+      const url = queryParam
+        ? window.location.href.replace(getCitybyUrl, selectedCity)
+        : window.location.href.replace(getCitybyUrl, selectedCity)
+      return url
+    } else {
+      const url =
+        separateUrl
+          .split('/')
+          .splice(0, separateUrl.length - 1)
+          .join('/') +
+        '/' +
+        selectedCity
+      return url
+    }
+  }
 }

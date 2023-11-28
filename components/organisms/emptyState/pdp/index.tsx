@@ -9,6 +9,7 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { CityOtrOption } from 'utils/types/utils'
 import Image from 'next/image'
 import { getCities, postNewFunnelCityRecommendations } from 'services/api'
+import { generateNewPdpUrlWhenChangeCity } from 'utils/navigate'
 
 const EmptyCar = '/revamp/illustration/empty-car.webp'
 
@@ -20,12 +21,6 @@ interface PropsPDPEmptyState {
 interface OptionCity {
   cityName: string
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
-}
-export interface Location {
-  cityName: string
-  cityCode: string
-  id: number
-  province: string
 }
 
 export const ProductDetailEmptyState: React.FC<PropsPDPEmptyState> = ({
@@ -41,7 +36,7 @@ export const ProductDetailEmptyState: React.FC<PropsPDPEmptyState> = ({
     null,
   )
   const [cityRecommendations, setCityRecommendations] =
-    useState<Array<Location>>()
+    useState<Array<CityOtrOption>>()
 
   const OptionCity: React.FC<OptionCity> = ({
     cityName,
@@ -52,9 +47,14 @@ export const ProductDetailEmptyState: React.FC<PropsPDPEmptyState> = ({
     </button>
   )
 
-  const setLocationOTR = (payload: Location) => {
+  const setLocationOTR = (payload: CityOtrOption) => {
     saveLocalStorage(LocalStorageKey.CityOtr, JSON.stringify(payload))
-    window.location.reload()
+    window.history.pushState(
+      null,
+      '',
+      `${generateNewPdpUrlWhenChangeCity(payload, cityListApi)}`,
+    )
+    location.reload()
   }
 
   const checkCitiesData = () => {
@@ -118,6 +118,7 @@ export const ProductDetailEmptyState: React.FC<PropsPDPEmptyState> = ({
         isOpen={isOpenCitySelectorModal}
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
         cityListFromApi={cityListApi}
+        onPage='PDP'
       />
     </>
   )
