@@ -115,8 +115,7 @@ export const deleteAccount = (
 ) => {
   return postDeleteAccount(
     {
-      phoneNumber: payload.phoneNumber,
-      createdBy: payload.reason,
+      createdBy: payload.createdBy,
     },
     { ...config, headers: { Authorization: getToken()?.idToken } },
   )

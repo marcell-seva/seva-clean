@@ -71,16 +71,24 @@ export const registerCustomerSeva = ({
   marital,
   referralCode,
 }: CustomerRegister) => {
-  return post(collections.auth.createCustomer, {
-    phoneNumber,
-    fullName,
-    dob,
-    gender,
-    email,
-    promoSubscription,
-    marital,
-    referralCode,
-  })
+  return post(
+    collections.auth.createCustomer,
+    {
+      phoneNumber,
+      fullName,
+      dob,
+      gender,
+      email,
+      promoSubscription,
+      marital,
+      referralCode,
+    },
+    {
+      headers: {
+        Authorization: getToken()?.idToken,
+      },
+    },
+  )
 }
 
 export const getPAAIAInfo = (orderId: string) => {
