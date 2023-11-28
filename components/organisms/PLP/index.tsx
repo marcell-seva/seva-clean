@@ -742,6 +742,9 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       PAGE_ORIGINATION: 'PLP',
     })
   }
+  console.log('sampleArray length', sampleArray.items.length)
+  console.log('showLoading value', showLoading)
+  console.log('hasMore value', hasMore)
 
   const trackCountlyOnClickBadge = (
     item: any,
