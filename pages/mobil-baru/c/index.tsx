@@ -207,7 +207,7 @@ export const getServerSideProps: GetServerSideProps<{
       ...(priceRangeGroup
         ? { priceRangeGroup }
         : {
-            priceRangeGroup: undefined,
+            priceRangeGroup: `${meta.MinMaxPrice.minPriceValue}-${meta.MinMaxPrice.maxPriceValue}`,
           }),
       ...(age && { age }),
       ...(tenure && { tenure }),
