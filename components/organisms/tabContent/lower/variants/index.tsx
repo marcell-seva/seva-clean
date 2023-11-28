@@ -436,18 +436,7 @@ const TabContentLowerVariant = ({
                       <div data-testid={elementId.PDP.List.VariantCard}>
                         <div className={styles.row}>
                           <p className={styles.openSansBoldGrey}>
-                            {carVariant.name.includes('Premium Color') &&
-                            !carVariant.name.includes('Non Premium Color')
-                              ? 'Premium Color'
-                              : carVariant.name.includes('Non Premium Color')
-                              ? 'Non Premium Color'
-                              : carVariant.name.includes('One Tone')
-                              ? 'One Tone'
-                              : carVariant.name
-                                  .toLowerCase()
-                                  .includes('two tone')
-                              ? 'Two Tone'
-                              : 'One Tone'}
+                            {topWordingName(carVariant.name)}
                           </p>
                         </div>
                         <div>
@@ -565,18 +554,7 @@ const TabContentLowerVariant = ({
                       <div data-testid={elementId.PDP.List.VariantName}>
                         <div className={styles.row}>
                           <p className={styles.openSansBoldGrey}>
-                            {carVariant.name.includes('Premium Color') &&
-                            !carVariant.name.includes('Non Premium Color')
-                              ? 'Premium Color'
-                              : carVariant.name.includes('Non Premium Color')
-                              ? 'Non Premium Color'
-                              : carVariant.name.includes('One Tone')
-                              ? 'One Tone'
-                              : carVariant.name
-                                  .toLowerCase()
-                                  .includes('two tone')
-                              ? 'Two Tone'
-                              : 'One Tone'}
+                            {topWordingName(carVariant.name)}
                           </p>
                         </div>
                         <div>
