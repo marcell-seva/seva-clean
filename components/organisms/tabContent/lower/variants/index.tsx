@@ -125,6 +125,9 @@ const TabContentLowerVariant = ({
     }
   }
   const removeToneColor = (variantName: string) => {
+    if (carModelDetails.brand === 'Hyundai')
+      return removeToneColorHyundai(variantName)
+
     const variantSplice =
       variantName[variantName.length - 1] === ' '
         ? variantName.slice(0, variantName.length - 1).toLowerCase()
@@ -141,6 +144,89 @@ const TabContentLowerVariant = ({
     } else {
       return variantName
     }
+  }
+
+  const removeToneColorHyundai = (variantName: string) => {
+    let variant = variantName
+    if (variant.toLowerCase().includes('non premium color')) {
+      variant = variant.replace('Non Premium Color', '')
+    } else if (variant.toLowerCase().includes('premium color')) {
+      variant = variant.replace('Premium Color', '')
+    }
+    if (variant.toLowerCase().includes('matte color')) {
+      variant = variant.replace('Matte Color', '')
+    }
+    if (variant.toLowerCase().includes('two tone')) {
+      variant = variant.replace('Two Tone', '')
+    } else if (variant.toLowerCase().includes('one tone')) {
+      variant = variant.replace('One Tone', '')
+    }
+
+    if (variant.toLowerCase().includes('single tone')) {
+      variant = variant.replace('Single Tone', '')
+    } else if (variant.toLowerCase().includes('dual tone')) {
+      variant = variant.replace('Dual Tone', '')
+    }
+
+    if (variant.toLowerCase().includes('captain seat')) {
+      variant = variant.replaceAll('Captain Seat', '')
+    }
+    if (variant.toLowerCase().includes('roof')) {
+      variant = variant.replaceAll('Roof', '')
+    }
+    return variant
+  }
+
+  const topWordingName = (variantName: string) => {
+    if (carModelDetails.brand === 'Hyundai')
+      return topWordingNameHyundai(variantName)
+
+    return variantName.includes('Premium Color') &&
+      !variantName.includes('Non Premium Color')
+      ? 'Premium Color'
+      : variantName.includes('Non Premium Color')
+      ? 'Non Premium Color'
+      : variantName.includes('One Tone')
+      ? 'One Tone'
+      : variantName.toLowerCase().includes('two tone')
+      ? 'Two Tone'
+      : 'One Tone'
+  }
+
+  const topWordingNameHyundai = (variantName: string) => {
+    let word = ''
+    if (
+      variantName.includes('Premium Color') &&
+      !variantName.includes('Non Premium Color')
+    ) {
+      word += 'Premium Color|'
+    }
+    if (variantName.includes('Non Premium Color')) {
+      word += 'Non Premium Color|'
+    }
+    if (variantName.includes('Matte Color')) {
+      word += 'Matte Color|'
+    }
+    if (variantName.includes('One Tone')) {
+      word += 'One Tone|'
+    }
+    if (variantName.toLowerCase().includes('two tone')) {
+      word += 'Two Tone|'
+    }
+
+    if (variantName.toLowerCase().includes('roof')) {
+      word += 'Roof|'
+    }
+
+    if (variantName.includes('Captain Seat')) {
+      word += 'Captain Seat|'
+    }
+
+    if (word === '') {
+      word = 'One Tone'
+    }
+
+    return word.replaceAll('|', ' ')
   }
 
   const closeLeadsForm = () => {
@@ -608,18 +694,7 @@ const TabContentLowerVariant = ({
                           data-testid={elementId.PDP.Grid.VariantName}
                         >
                           <p className={styles.openSansBoldGrey}>
-                            {carVariant.name.includes('Premium Color') &&
-                            !carVariant.name.includes('Non Premium Color')
-                              ? 'Premium Color'
-                              : carVariant.name.includes('Non Premium Color')
-                              ? 'Non Premium Color'
-                              : carVariant.name.includes('One Tone')
-                              ? 'One Tone'
-                              : carVariant.name
-                                  .toLowerCase()
-                                  .includes('two tone')
-                              ? 'Two Tone'
-                              : 'One Tone'}
+                            {topWordingName(carVariant.name)}
                           </p>
                           <div className={styles.tooltip}>
                             {removeToneColor(carVariant.name).length > 30 && (
