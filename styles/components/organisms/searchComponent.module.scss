@@ -101,38 +101,58 @@
 
 .styledDataSuggest {
   margin-top: 7px;
-  width: 100%;
+  max-width: 343px;
   margin-left: 0vw;
   border-radius: 16px;
   height: auto;
-  max-height: 600px;
+  max-height: 540px;
   background-color: #{white};
   overflow-x: hidden;
   overflow-y: auto;
   position: absolute;
   box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
   z-index: 99;
+  top: 58px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  transition: top 500ms;
 
   &::-webkit-scrollbar {
+    display: none;
+  }
+  &.hideHeaderDropdown {
+    top: -600px;
     display: none;
   }
 }
 
 .styledDataResult {
   margin-top: 7px;
-  width: 100%;
+  max-width: 343px;
   margin-left: 0vw;
   border-radius: 16px;
   height: auto;
-  max-height: 600px;
+  max-height: 540px;
   background-color: #{white};
   overflow-x: hidden;
   overflow-y: auto;
   position: absolute;
   box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
   z-index: 99;
+  top: 58px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  transition: top 500ms;
 
   &::-webkit-scrollbar {
+    display: none;
+  }
+  &.hideHeaderDropdown {
+    top: -600px;
     display: none;
   }
 }

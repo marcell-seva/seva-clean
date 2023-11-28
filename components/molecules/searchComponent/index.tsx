@@ -36,6 +36,7 @@ import {
 import { convertObjectQuery } from 'utils/handler/convertObjectQuery'
 import elementId from 'utils/helpers/trackerId'
 import { findAll } from 'highlight-words-core'
+import { SearchInput } from 'components/atoms'
 
 const CarNotFound = '/revamp/illustration/empty-car.webp'
 const Panel = Collapse.Panel
@@ -56,7 +57,7 @@ interface Props {
 const SEARCH_NOT_FOUND_TEXT = 'Mobil tidak ditemukan'
 
 export const SearchComponent = ({
-  isOpen,
+  isOpen = true,
   handleCloseModal,
   isOTO = false,
   pageOrigination,
@@ -263,9 +264,9 @@ export const SearchComponent = ({
             <>
               <SwiperSlide className={styles.containerNewCar} key={car.name}>
                 <Link
-                  href={`${
-                    isOTO ? `/adaSEVAdiOTO` : ``
-                  }/mobil-baru${car.link.toLowerCase()}`}
+                  href={`${isOTO ? `/adaSEVAdiOTO` : ``}/mobil-baru${
+                    isOTO ? '' : '/p'
+                  }${car.link.toLowerCase()}`}
                   onClick={() => onClickRecommedationList(car)}
                 >
                   <div className={styles.linkCar}>
@@ -390,8 +391,6 @@ export const SearchComponent = ({
     )
   }
 
-  console.log(suggestionsLists)
-
   return (
     <>
       <div
@@ -400,7 +399,129 @@ export const SearchComponent = ({
           [styles.hideHeaderSearch]: !isOpen,
         })}
       >
-        <ConfigProvider
+        <SearchInput
+          data-testid={elementId.Homepage.SearchBar.InputSearchCar}
+          onSearchInputChange={onHandleChange}
+          searchInputValue={valueSearch}
+          placeholder="Cari mobil impianmu"
+          searchIconSuffix={true}
+          className={styles.styledSearchInput}
+        />
+        {suggestionsLists.length !== 0 && valueSearch.length > 0 ? (
+          <div
+            className={clsx({
+              [styles.styledDataResult]: true,
+              [styles.hideHeaderDropdown]: !isOpen,
+            })}
+          >
+            {suggestionsLists.map((car) => {
+              return (
+                <>
+                  {car.label.includes('Hmmm...') ? (
+                    <div className={styles.notFoundContainer}>
+                      <Image
+                        src={CarNotFound}
+                        width={200}
+                        height={149}
+                        alt="search not found"
+                        className={styles.imgNotFound}
+                      />
+                      <div>
+                        <h2 className={styles.titleNotFound}>
+                          Hmmm... “{valueSearch}” belum tersedia di SEVA.{' '}
+                        </h2>
+                        <p className={styles.descNotFound}>
+                          Silakan ubah kata kunci pencarian untuk menemukan
+                          mobil impianmu.
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div
+                        data-testid={
+                          elementId.Homepage.SearchBar.CarModelOption +
+                          car.label +
+                          valueSearch
+                        }
+                        onClick={() => clickList(car)}
+                        key={car.value}
+                        className={`${styles.styledLink} ${
+                          suggestionsLists[0].label === SEARCH_NOT_FOUND_TEXT
+                            ? styles.disableClick
+                            : ''
+                        } searchOption`}
+                      >
+                        {car.label && (
+                          <div style={{ width: '100%' }}>
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: renderSearchOptionsItem(car.label),
+                              }}
+                              className={styles.styledCarName}
+                            />
+                          </div>
+                        )}
+                      </div>
+                      <Line
+                        width={'100%'}
+                        height={'1px'}
+                        background="#EBECEE"
+                      />
+                    </>
+                  )}
+                </>
+              )
+            })}
+          </div>
+        ) : (
+          <div
+            className={clsx({
+              [styles.styledDataSuggest]: true,
+              [styles.hideHeaderDropdown]: !isOpen,
+            })}
+          >
+            <div className={styles.styledItem}>
+              <div style={{ width: '100%', textAlign: 'left' }}>
+                {renderSearchHistory()}
+              </div>
+            </div>
+            <Collapse
+              defaultActiveKey={['1', '2']}
+              expandIconPosition="end"
+              size="large"
+              expandIcon={({ isActive }) =>
+                isActive ? (
+                  <IconChevronUp height={24} width={24} />
+                ) : (
+                  <IconChevronDown height={24} width={24} />
+                )
+              }
+            >
+              <Panel
+                header="Cari Mobil Baru"
+                key="1"
+                className={styles.panelStyle}
+              >
+                {renderRecommendation()}
+              </Panel>
+              <Panel
+                header="Cari Mobil Bekas"
+                key="2"
+                className={styles.panelStyle}
+              >
+                <div>{renderRecommendationUsedCar()}</div>
+                <div className={styles.ctaUsedCar}>
+                  <Link href={'#'} className={styles.linkAllCar}>
+                    <h3>Lihat semua mobil bekas</h3>
+                    <IconChevronRight width={20} height={20} color="#246ED4" />
+                  </Link>
+                </div>
+              </Panel>
+            </Collapse>
+          </div>
+        )}
+        {/* <ConfigProvider
           theme={{
             components: {
               Select: {
@@ -422,8 +543,10 @@ export const SearchComponent = ({
             //     </div>
             //   ),
             // }}
-            listHeight={640}
+            listHeight={500}
             searchValue={valueSearch}
+            mode="multiple"
+            open={true}
             onSearch={(value) => onHandleChange(value)}
             showSearch
             className={styles.inputSearch}
@@ -446,6 +569,7 @@ export const SearchComponent = ({
               //   </div>
               // )
             }
+            tagRender={() => <div></div>}
             dropdownRender={(menu) => (
               <div
                 onMouseDown={(e) => {
@@ -571,7 +695,7 @@ export const SearchComponent = ({
               </div>
             )}
           </Select>
-        </ConfigProvider>
+        </ConfigProvider> */}
       </div>
       <Overlay
         isShow={isOpen}
