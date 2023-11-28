@@ -152,7 +152,7 @@ const generateSiteMap = () => {
             </image:image>
         </url>
         <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-            <loc><![CDATA[ ${PLP_DATA_URL}?bodyType=MPV ]]></loc>
+            <loc><![CDATA[ ${PLP_DATA_URL}/mpv ]]></loc>
             <priority>1.0</priority>
             <news:news>
                 <news:name>ProductSeva</news:name>
@@ -170,7 +170,7 @@ const generateSiteMap = () => {
             </image:image>
         </url>
         <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-            <loc><![CDATA[ ${PLP_DATA_URL}?bodyType=SUV ]]></loc>
+            <loc><![CDATA[ ${PLP_DATA_URL}/suv ]]></loc>
             <priority>1.0</priority>
             <news:news>
                 <news:name>ProductSeva</news:name>
@@ -188,7 +188,7 @@ const generateSiteMap = () => {
             </image:image>
         </url>
         <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-            <loc><![CDATA[ ${PLP_DATA_URL}?bodyType=SEDAN ]]></loc>
+            <loc><![CDATA[ ${PLP_DATA_URL}/sedan ]]></loc>
             <priority>1.0</priority>
             <news:news>
                 <news:name>ProductSeva</news:name>
@@ -206,7 +206,7 @@ const generateSiteMap = () => {
             </image:image>
         </url>
         <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-            <loc><![CDATA[ ${PLP_DATA_URL}?bodyType=HATCHBACK ]]></loc>
+            <loc><![CDATA[ ${PLP_DATA_URL}/hatchback ]]></loc>
             <priority>1.0</priority>
             <news:news>
                 <news:name>ProductSeva</news:name>
@@ -224,7 +224,7 @@ const generateSiteMap = () => {
             </image:image>
         </url>
         <url xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-            <loc><![CDATA[ ${PLP_DATA_URL}?bodyType=SPORT ]]></loc>
+            <loc><![CDATA[ ${PLP_DATA_URL}/sport ]]></loc>
             <priority>1.0</priority>
             <news:news>
                 <news:name>ProductSeva</news:name>
