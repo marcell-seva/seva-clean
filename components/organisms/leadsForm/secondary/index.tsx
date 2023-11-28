@@ -98,7 +98,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({
   const loanRankcr = router.query.loanRankCVL ?? ''
 
   const handleInputName = (payload: any): void => {
-    if (payload !== ' ' && onlyLettersAndSpaces(payload)) {
+    if (payload[0] !== ' ' && onlyLettersAndSpaces(payload)) {
       setName(payload)
       checkInputValue(payload, phone)
     }

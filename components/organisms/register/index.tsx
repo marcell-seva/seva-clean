@@ -373,7 +373,7 @@ export const Register = () => {
   }
 
   const setAndCheckNameInput = (payload: string): void => {
-    if (payload !== ' ' && !containsSpecialChars(payload))
+    if (payload[0] !== ' ' && !containsSpecialChars(payload))
       setFormData('name', payload)
   }
 
