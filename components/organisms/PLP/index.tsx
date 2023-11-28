@@ -629,6 +629,11 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
         sortBy: sortBy || 'lowToHigh',
       }
       patchFunnelQuery(queryParam)
+      getNewFunnelRecommendations({ ...queryParam, brand: [] }).then(
+        (response: any) => {
+          if (response) setAlternativeCar(response.carRecommendations)
+        },
+      )
     }
     return () => cleanEffect()
   }, [])
