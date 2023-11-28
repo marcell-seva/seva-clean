@@ -50,6 +50,7 @@ import {
 import Image from 'next/image'
 import { AdaOTOdiSEVALeadsForm } from 'components/organisms/leadsForm/adaOTOdiSEVA/popUp'
 import { useUtils } from 'services/context/utilsContext'
+import clsx from 'clsx'
 
 const rpIcon = '/revamp/illustration/rp-icon.webp'
 
@@ -558,7 +559,7 @@ const TabContentLowerVariant = ({
                       style={{
                         display: 'flex',
                         flexDirection: 'column',
-                        width: '50%',
+                        width: '100%',
                       }}
                     >
                       <div data-testid={elementId.PDP.List.VariantName}>
@@ -583,11 +584,13 @@ const TabContentLowerVariant = ({
                             <div className={styles.tooltip}>
                               {removeToneColor(carVariant.name).length > 35 && (
                                 <div>
-                                  <p className={styles.openSansSemiBoldBlack}>
-                                    {removeToneColor(carVariant.name).slice(
-                                      0,
-                                      35,
-                                    ) + '...'}
+                                  <p
+                                    className={clsx({
+                                      [styles.openSansSemiBoldBlack]: true,
+                                      [styles.responsiveText]: true,
+                                    })}
+                                  >
+                                    {removeToneColor(carVariant.name)}
                                   </p>
                                   <span
                                     className={styles.tooltiptext}
@@ -597,7 +600,12 @@ const TabContentLowerVariant = ({
                                   </span>
                                 </div>
                               )}
-                              <p className={styles.openSansSemiBoldBlack}>
+                              <p
+                                className={clsx({
+                                  [styles.openSansSemiBoldBlack]: true,
+                                  [styles.responsiveText]: true,
+                                })}
+                              >
                                 {removeToneColor(carVariant.name).length <=
                                   35 &&
                                 removeToneColor(carVariant.name).includes('()')
@@ -628,7 +636,6 @@ const TabContentLowerVariant = ({
                       style={{
                         display: 'flex',
                         flexDirection: 'column',
-                        width: '50%',
                         paddingTop:
                           removeToneColor(carVariant.name).slice(0, 30)
                             .length <= 19

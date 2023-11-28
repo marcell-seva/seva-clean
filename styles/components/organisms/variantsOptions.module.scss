@@ -217,6 +217,13 @@
   gap: 5px;
   padding-left: 8px;
 }
+.responsiveText {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
 .openSansSemiBoldBlack {
   @extend .openSansSemiBold;
   color: #13131b !important;
