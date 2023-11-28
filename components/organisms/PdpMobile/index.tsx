@@ -19,16 +19,10 @@ import {
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { savePreviouslyViewed } from 'utils/carUtils'
-
 import { decryptValue } from 'utils/encryptionUtils'
 import { CSAButton, WhatsappButton } from 'components/atoms'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
-import {
-  CarSearchPageMintaPenawaranParam,
-  trackCarVariantPageWaChatbot,
-} from 'helpers/amplitude/seva20Tracking'
-// import { usePreApprovalCarNotAvailable } from 'pages/component/PreApprovalCarNotAvalable/useModalCarNotAvalable'
 import {
   getSessionStorage,
   removeSessionStorage,
@@ -36,16 +30,15 @@ import {
 } from 'utils/handler/sessionStorage'
 import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
-import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import {
+  PdpDataLocalContext,
+  checkCitySlug,
+} from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useQuery } from 'utils/hooks/useQuery'
-
 import { useCar } from 'services/context/carContext'
 import { getToken } from 'utils/handler/auth'
-import {
-  formatNumberByLocalization,
-  replacePriceSeparatorByLocalization,
-} from 'utils/handler/rupiah'
+import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import { LoanRank } from 'utils/types/models'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import {
@@ -57,7 +50,11 @@ import {
 import { client } from 'utils/helpers/const'
 import { defineRouteName } from 'utils/navigate'
 import { useUtils } from 'services/context/utilsContext'
-import { getCity, isCurrentCitySameWithSSR } from 'utils/hooks/useGetCity'
+import {
+  defaultCity,
+  getCity,
+  isCurrentCitySameWithSSR,
+} from 'utils/hooks/useGetCity'
 import dynamic from 'next/dynamic'
 import { Currency } from 'utils/handler/calculation'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
@@ -68,8 +65,12 @@ import {
 } from 'utils/handler/carRecommendation'
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
-import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import {
+  lowerSectionNavigationTab,
+  upperSectionNavigationTab,
+} from 'config/carVariantList.config'
 
 const OverlayGallery = dynamic(() =>
   import('components/molecules').then((mod) => mod.OverlayGallery),
@@ -148,13 +149,12 @@ export default function NewCarVariantList({
 
   const brand = router.query.brand as string
   const model = router.query.model as string
-  const slug = router.query.slug as string
-  const lowerTab = Array.isArray(slug) ? slug[0] : undefined
+  const slug = router.query.slug
+  const [upperTabSlug, lowerTabSlug, citySlug] = Array.isArray(slug) ? slug : []
+  const [selectedLowerTab, setSelectedLowerTab] = useState<string>(lowerTabSlug)
+  const [selectedUpperTab, setSelectedUpperTab] = useState<string>(upperTabSlug)
 
-  const [cityOtr] = useLocalStorage<CityOtrOption | null>(
-    LocalStorageKey.CityOtr,
-    null,
-  )
+  const [cityOtr, setCityOtr] = useState(getCity())
   const {
     saveCarVariantDetails,
     carModelDetails,
@@ -327,31 +327,6 @@ export default function NewCarVariantList({
     )
   }
 
-  const trackFloatingWhatsapp = () => {
-    if (!modelDetail) return
-
-    const trackerProperty: CarSearchPageMintaPenawaranParam = {
-      Car_Brand: brand,
-      Car_Model: model,
-      OTR: `Rp${replacePriceSeparatorByLocalization(
-        modelDetail?.variants[0].priceValue,
-        LanguageCode?.id,
-      )}`,
-      DP: `Rp${getDp()} Juta`,
-      Cicilan: `Rp${getMonthlyInstallment()} jt/bln`,
-      Tenure: `${funnelQuery?.tenure || 5} Tahun`, // convert string
-      City: cityOtr?.cityName || 'Jakarta Pusat',
-      Peluang_Kredit:
-        funnelQuery?.monthlyIncome && funnelQuery?.age && loanRankcr
-          ? loanRankcr === LoanRank.Green
-            ? 'Mudah'
-            : loanRankcr === LoanRank.Red
-            ? 'Sulit'
-            : 'Null'
-          : 'Null',
-    }
-    trackCarVariantPageWaChatbot(trackerProperty)
-  }
   const trackCountlyFloatingWhatsapp = async () => {
     let temanSevaStatus = 'No'
     if (referralCodeFromUrl) {
@@ -397,7 +372,6 @@ export default function NewCarVariantList({
   const onClickFloatingWhatsapp = async () => {
     let message = ''
     trackCountlyFloatingWhatsapp()
-    trackFloatingWhatsapp()
     const parsedModel = capitalizeFirstLetter(model.replace(/-/g, ' '))
     const brandModel =
       capitalizeFirstLetter(brand.replace(/-/g, ' ')) +
@@ -430,7 +404,7 @@ export default function NewCarVariantList({
     if (getToken()) {
       const data: string | null = getLocalStorage(LocalStorageKey.sevaCust)
       if (data === null) {
-        getCustomerInfoSeva().then((response: any) => {
+        getCustomerInfoSeva().then((response) => {
           if (response[0].temanSevaTrxCode) {
             setConnectedRefCode(response[0].temanSevaTrxCode ?? '')
           }
@@ -445,11 +419,12 @@ export default function NewCarVariantList({
   }
 
   const handleAutoscrollOnRender = () => {
+    const currentSlug = slug?.length === 1 ? upperTabSlug : lowerTabSlug
     if (
-      lowerTab?.toLowerCase() === 'ringkasan' ||
-      lowerTab?.toLowerCase() === 'spesifikasi' ||
-      lowerTab?.toLowerCase() === 'harga' ||
-      lowerTab?.toLowerCase() === 'kredit'
+      currentSlug?.toLowerCase() === 'ringkasan' ||
+      currentSlug?.toLowerCase() === 'spesifikasi' ||
+      currentSlug?.toLowerCase() === 'harga' ||
+      currentSlug?.toLowerCase() === 'kredit'
     ) {
       const destinationElm = document.getElementById('pdp-lower-content')
       if (destinationElm) {
@@ -459,8 +434,6 @@ export default function NewCarVariantList({
           window.scrollBy({ top: -100, left: 0 })
         }, 250) // use timeout because components take time to render
       }
-    } else {
-      window.scrollTo(0, 0)
     }
   }
   const getFuelRatio = () => {
@@ -492,9 +465,9 @@ export default function NewCarVariantList({
       !!filterStorage?.tenure
 
     let pageOrigination = 'PDP - Ringkasan'
-    if (!!lowerTab && lowerTab.toLowerCase() === 'kredit') {
+    if (!!lowerTabSlug && lowerTabSlug.toLowerCase() === 'kredit') {
       pageOrigination = 'Null'
-    } else if (!!lowerTab) {
+    } else if (!!lowerTabSlug) {
       pageOrigination = defineRouteName(window.location.href)
     }
 
@@ -569,7 +542,11 @@ export default function NewCarVariantList({
     saveDataCarForLoginPageView()
     saveLocalStorage(LocalStorageKey.Model, model)
 
-    if (!isCurrentCitySameWithSSR() || isCarUnavailableWithDefaultCity) {
+    if (
+      !isCurrentCitySameWithSSR() ||
+      isCarUnavailableWithDefaultCity ||
+      (source && source.toLowerCase() === 'plp') // refetch data to get the same number with PLP when using filter
+    ) {
       getNewFunnelRecommendations(getQueryParamForApiRecommendation()).then(
         (result: any) => {
           let id = ''
@@ -604,11 +581,9 @@ export default function NewCarVariantList({
                 )
 
               runRecommendation(response)
-
               const sortedVariantsOfCurrentModel = response[1].variants
                 .map((item: any) => item)
                 .sort((a: any, b: any) => a.priceValue - b.priceValue)
-
               getCarVariantDetailsById(
                 sortedVariantsOfCurrentModel[0].id, // get cheapest variant
               ).then((result3: any) => {
@@ -637,7 +612,7 @@ export default function NewCarVariantList({
       ])
       saveCarVariantDetails(carVariantDetailsResDefaultCity)
     }
-  }, [brand, model, lowerTab])
+  }, [brand, model, lowerTabSlug])
 
   useEffect(() => {
     if (carModelDetails) {
@@ -651,12 +626,137 @@ export default function NewCarVariantList({
       handleAutoscrollOnRender()
     }
   }, [status, carModelDetails])
+
+  useEffect(() => {
+    if (router.query.selectedVariantId) {
+      handleAutoscrollOnRender()
+    }
+  }, [])
+
   useEffect(() => {
     setIsButtonClick(false)
     if (variantIdFuel) {
       getFuelRatio()
     }
   }, [router, variantIdFuel])
+
+  // useEffect(() => {
+  //   const upperTabUrl = selectedUpperTab
+  //     ? selectedUpperTab.toLocaleLowerCase()
+  //     : 'warna'
+  //   const lowerTabUrl = selectedLowerTab
+  //     ? selectedLowerTab.toLocaleLowerCase()
+  //     : 'ringkasan'
+  //   const urlOTO = isOTO ? '/adaSEVAdiOTO' : ''
+  //   const cityUrl = citySlug ? `/${citySlug}` : ''
+  //   window.history.pushState(
+  //     null,
+  //     '',
+  //     `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${upperTabUrl}/${lowerTabUrl}${cityUrl}`,
+  //   )
+  // }, [selectedLowerTab, selectedUpperTab])
+
+  const isUpperTab = (payload: string) => {
+    const result = upperSectionNavigationTab.filter(
+      (item) => item.value === payload,
+    )
+    return result.length > 0
+  }
+
+  const isLowerTab = (payload: string) => {
+    const result = lowerSectionNavigationTab.filter(
+      (item) => item.value === payload,
+    )
+    return result.length > 0
+  }
+
+  const isCitySelected = (payload: string) => {
+    const result = cities.filter(
+      (item) =>
+        item.cityName.toLowerCase().replace(' ', '-') ===
+        payload.toLowerCase().replace(' ', '-'),
+    )
+    return result.length > 0
+  }
+
+  const pushUpperTabState = (payload: string) => {
+    const splitQuery = window.location.href.split('?')
+    const slugParam = splitQuery[0]
+    const queryParam = splitQuery[1] ? `?${splitQuery[1]}` : ''
+    const slugState = slugParam.split('/').splice(6, 9)
+    const currentURL = isOTO ? '/adaSEVAdiOTO/mobil-baru' : '/mobil-baru'
+    var url = ''
+    if (slugState?.length === 1) {
+      const checkIsUpperTab = isUpperTab(slugState[0])
+      if (checkIsUpperTab)
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}`
+      else
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}/${slugState[0]}`
+    } else if (slugState?.length === 2) {
+      const checkIsUpperTab = isUpperTab(slugState[0])
+      const checkIsLowerTab = isLowerTab(slugState[0])
+      const checkIsLowerTabTemp = isLowerTab(slugState[1])
+      const checkIsCity = isCitySelected(slugState[1])
+      if (checkIsUpperTab && checkIsCity)
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}/${slugState[1]}`
+      else if (checkIsLowerTab && checkIsCity)
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}/${slugState[0]}/${slugState[1]}`
+      else if (checkIsUpperTab && checkIsLowerTabTemp)
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}/${slugState[1]}`
+      else
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}/${slugState[0]}/${slugState[1]}`
+    } else if (slugState?.length === 3) {
+      url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}/${slugState[1]}/${slugState[2]}`
+    } else {
+      url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}`
+    }
+    window.history.pushState(null, '', `${url}${queryParam}`)
+  }
+
+  const pushLowerTabState = (payload: string) => {
+    const splitQuery = window.location.href.split('?')
+    const slugParam = splitQuery[0]
+    const queryParam = splitQuery[1] ? `?${splitQuery[1]}` : ''
+    const slugState = slugParam.split('/').splice(6, 9)
+
+    const currentURL = isOTO ? '/adaSEVAdiOTO/mobil-baru' : '/mobil-baru'
+    var url = ''
+    if (slugState?.length === 1) {
+      const checkIsLowerTab = isLowerTab(slugState[0])
+      const checkIsCity = isCitySelected(slugState[0])
+      if (checkIsLowerTab)
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}`
+      else if (checkIsCity)
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}/${slugState[0]}`
+      else
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${slugState[0]}/${payload}`
+    } else if (slugState?.length === 2) {
+      const checkIsUpperTab = isUpperTab(slugState[0])
+      const checkIsLowerTab = isLowerTab(slugState[0])
+      const checkIsLowerTabTemp = isLowerTab(slugState[1])
+      const checkIsCity = isCitySelected(slugState[1])
+      if (checkIsUpperTab && checkIsCity)
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${slugState[0]}/${payload}/${slugState[1]}`
+      else if (checkIsLowerTab && checkIsCity)
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}/${slugState[1]}`
+      else if (checkIsUpperTab && checkIsLowerTabTemp)
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${slugState[0]}/${payload}`
+      else
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${slugState[0]}/${payload}/${slugState[1]}`
+    } else if (slugState?.length === 3) {
+      url = `${window.location.origin}${currentURL}/${brand}/${model}/${slugState[0]}/${payload}/${slugState[2]}`
+    } else {
+      url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}`
+    }
+    window.history.pushState(null, '', url + queryParam)
+  }
+
+  useEffect(() => {
+    if (cityOtr.cityCode !== getCity().cityCode) {
+      setCityOtr(getCity())
+    }
+    checkCitySlug(citySlug, cities, setCityOtr)
+  }, [citySlug, cities])
 
   const renderContent = () => {
     const parsedModel = capitalizeFirstLetter(model.replace(/-/g, ' '))
@@ -696,12 +796,15 @@ export default function NewCarVariantList({
                 setIsOpenCitySelectorOTRPrice(true)
                 trackCountlyCityOTRClick()
               }}
+              onChangeTab={(value: any) => pushUpperTabState(value)}
               onClickShareButton={() => setIsOpenShareModal(true)}
               isShowAnnouncementBox={showAnnouncementBox}
               isOTO={isOTO}
+              cityOtr={cityOtr}
             />
             <PdpLowerSection
               onButtonClick={setIsButtonClick}
+              onChangeTab={(value: any) => pushLowerTabState(value)}
               setPromoName={setPromoName}
               videoData={videoData}
               showAnnouncementBox={showAnnouncementBox}
@@ -778,6 +881,7 @@ export default function NewCarVariantList({
         cityListFromApi={cities}
         pageOrigination="PDP"
         sourceButton={isOpenCitySelectorOTRPrice ? 'OTR Price (PDP)' : ''}
+        onPage="PDP"
       />
       {isModalOpenend && (
         <AdaOTOdiSEVALeadsForm
