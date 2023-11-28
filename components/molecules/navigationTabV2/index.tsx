@@ -67,6 +67,12 @@ const NavigationTabV2 = ({
     }
   }, [selectedTabValue])
 
+  useEffect(() => {
+    if (initialTab) {
+      setSelectedTabValue(initialTab)
+    }
+  }, [initialTab])
+
   const scrollOTO = (scrollOffset: number) => {
     if (containerRef && containerRef.current) {
       containerRef.current.scrollTo({

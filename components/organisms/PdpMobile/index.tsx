@@ -691,11 +691,15 @@ export default function NewCarVariantList({
     const result = lowerSectionNavigationTab.filter(
       (item) => item.value === payload,
     )
+    console.log(result)
+
     return result.length > 0
   }
 
   const isCitySelected = (payload: string) => {
-    const result = cities.filter((item) => item.cityName === payload)
+    const result = cities.filter(
+      (item) => item.cityName.toLowerCase() === payload.toLowerCase(),
+    )
     return result.length > 0
   }
 
@@ -704,31 +708,31 @@ export default function NewCarVariantList({
     const slugParam = splitQuery[0]
     const queryParam = splitQuery[1] ? `?${splitQuery[1]}` : ''
     const slugState = slugParam.split('/').splice(7, 10)
-    const urlOTO = isOTO ? '/adaSEVAdiOTO/mobil-baru' : '/mobil-baru/p'
+    const currentURL = isOTO ? '/adaSEVAdiOTO/mobil-baru' : '/mobil-baru/p'
     var url = ''
     if (slugState?.length === 1) {
       const checkIsUpperTab = isUpperTab(slugState[0])
       if (checkIsUpperTab)
-        url = `${window.location.origin}${urlOTO}/${brand}/${model}/${payload}`
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}`
       else
-        url = `${window.location.origin}${urlOTO}/${brand}/${model}/${payload}/${slugState[0]}`
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}/${slugState[0]}`
     } else if (slugState?.length === 2) {
       const checkIsUpperTab = isUpperTab(slugState[0])
       const checkIsLowerTab = isLowerTab(slugState[0])
       const checkIsLowerTabTemp = isLowerTab(slugState[1])
       const checkIsCity = isCitySelected(slugState[1])
       if (checkIsUpperTab && checkIsCity)
-        url = `${window.location.origin}${urlOTO}/${brand}/${model}/${payload}/${slugState[1]}`
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}/${slugState[1]}`
       else if (checkIsLowerTab && checkIsCity)
-        url = `${window.location.origin}${urlOTO}/${brand}/${model}/${payload}/${slugState[0]}/${slugState[1]}`
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}/${slugState[0]}/${slugState[1]}`
       else if (checkIsUpperTab && checkIsLowerTabTemp)
-        url = `${window.location.origin}${urlOTO}/${brand}/${model}/${payload}/${slugState[1]}`
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}/${slugState[1]}`
       else
-        url = `${window.location.origin}${urlOTO}/${brand}/${model}/${payload}/${slugState[0]}/${slugState[1]}`
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}/${slugState[0]}/${slugState[1]}`
     } else if (slugState?.length === 3) {
-      url = `${window.location.origin}${urlOTO}/${brand}/${model}/${payload}/${slugState[1]}/${slugState[2]}`
+      url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}/${slugState[1]}/${slugState[2]}`
     } else {
-      url = `${window.location.origin}${urlOTO}/${brand}/${model}/${payload}`
+      url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}`
     }
     window.history.pushState(null, '', `${url}${queryParam}`)
   }
@@ -738,31 +742,35 @@ export default function NewCarVariantList({
     const slugParam = splitQuery[0]
     const queryParam = splitQuery[1] ? `?${splitQuery[1]}` : ''
     const slugState = slugParam.split('/').splice(7, 10)
-    const urlOTO = isOTO ? '/adaSEVAdiOTO/mobil-baru' : '/mobil-baru/p'
+
+    const currentURL = isOTO ? '/adaSEVAdiOTO/mobil-baru' : '/mobil-baru/p'
     var url = ''
     if (slugState?.length === 1) {
       const checkIsLowerTab = isLowerTab(slugState[0])
+      const checkIsCity = isCitySelected(slugState[0])
       if (checkIsLowerTab)
-        url = `${window.location.origin}${urlOTO}/${brand}/${model}/${payload}`
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}`
+      else if (checkIsCity)
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}/${slugState[0]}`
       else
-        url = `${window.location.origin}${urlOTO}/${brand}/${model}/${slugState[0]}/${payload}`
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${slugState[0]}/${payload}`
     } else if (slugState?.length === 2) {
       const checkIsUpperTab = isUpperTab(slugState[0])
       const checkIsLowerTab = isLowerTab(slugState[0])
       const checkIsLowerTabTemp = isLowerTab(slugState[1])
       const checkIsCity = isCitySelected(slugState[1])
       if (checkIsUpperTab && checkIsCity)
-        url = `${window.location.origin}${urlOTO}/${brand}/${model}/${slugState[0]}/${payload}/${slugState[1]}`
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${slugState[0]}/${payload}/${slugState[1]}`
       else if (checkIsLowerTab && checkIsCity)
-        url = `${window.location.origin}${urlOTO}/${brand}/${model}/${payload}/${slugState[1]}`
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}/${slugState[1]}`
       else if (checkIsUpperTab && checkIsLowerTabTemp)
-        url = `${window.location.origin}${urlOTO}/${brand}/${model}/${slugState[0]}/${payload}`
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${slugState[0]}/${payload}`
       else
-        url = `${window.location.origin}${urlOTO}/${brand}/${model}/${slugState[0]}/${payload}/${slugState[1]}`
+        url = `${window.location.origin}${currentURL}/${brand}/${model}/${slugState[0]}/${payload}/${slugState[1]}`
     } else if (slugState?.length === 3) {
-      url = `${window.location.origin}${urlOTO}/${brand}/${model}/${slugState[0]}/${payload}/${slugState[2]}`
+      url = `${window.location.origin}${currentURL}/${brand}/${model}/${slugState[0]}/${payload}/${slugState[2]}`
     } else {
-      url = `${window.location.origin}${urlOTO}/${brand}/${model}/${payload}`
+      url = `${window.location.origin}${currentURL}/${brand}/${model}/${payload}`
     }
     window.history.pushState(null, '', url + queryParam)
   }

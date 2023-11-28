@@ -424,6 +424,8 @@ export async function getServerSideProps(context: any) {
       finalSlug = ''
     }
 
+    console.log(finalSlug)
+
     const carModelDetailsRes: any = await getCarModelDetails(
       id,
       `?city=${checkedLocation.cityCode}&cityId=${checkedLocation.id}`,
