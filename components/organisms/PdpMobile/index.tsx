@@ -691,8 +691,6 @@ export default function NewCarVariantList({
     const result = lowerSectionNavigationTab.filter(
       (item) => item.value === payload,
     )
-    console.log(result)
-
     return result.length > 0
   }
 
