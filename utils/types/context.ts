@@ -42,9 +42,11 @@ export interface Filter {
   bodyType?: Array<string>
   brand?: Array<string>
   priceRangeGroup?: string
+  search?: string
 }
 
 export interface FilterParam extends NextParsedUrlQuery {
+  search?: string
   bodyType: string
   brand: string
   modelName?: string
@@ -91,6 +93,7 @@ export interface FunnelQuery extends Filter {
   page?: string
   perPage?: string
   modelName?: string[]
+  search?: string
 }
 
 export interface UTM {

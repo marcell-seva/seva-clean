@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import styles from '../../../styles/pages/navigationfiltermobile.module.scss'
 import {
   IconFilter,
@@ -66,6 +66,17 @@ export const NavigationFilterMobile = ({
     )
   }
 
+  const removeSearch = () => {
+    patchFunnelQuery({
+      search: '',
+    })
+    const filter = {
+      ...funnelQuery,
+      search: '',
+    }
+    newFunnel(filter)
+  }
+
   const removeFinancialFilter = () => {
     patchFunnelQuery({
       age: '',
@@ -128,6 +139,7 @@ export const NavigationFilterMobile = ({
     getNewFunnelRecommendations(filter).then((response: any) => {
       setRecommendations(response.carRecommendations)
       const paramUrl = {
+        search: (filter.search && String(filter.search)) || '',
         age: String(filter.age),
         downPaymentAmount:
           (filter.downPaymentAmount && filter.downPaymentAmount.toString()) ||
@@ -189,6 +201,18 @@ export const NavigationFilterMobile = ({
               <IconFilter width={24} height={24} /> Filter
             </div>
             <div className={styles.verticalLine} />
+            {funnelQuery.search && (
+              <div className={styles.navOuter}>
+                <div className={styles.navFrame} onClick={removeSearch}>
+                  <span
+                    className={styles.text}
+                  >{`"${funnelQuery.search}"`}</span>{' '}
+                  <div className={styles.onClick}>
+                    <IconRemove width={16} height={16} color="#878D98" />
+                  </div>
+                </div>
+              </div>
+            )}
             {isFilterFinancial && (
               <div className={styles.navOuter}>
                 <div

@@ -99,6 +99,7 @@ export const PLPUsedCar = ({
   } = usedCar()
   const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>([])
   const {
+    search,
     bodyType,
     brand,
     downPaymentAmount,
@@ -132,6 +133,7 @@ export const PLPUsedCar = ({
   const [isButtonClick, setIsButtonClick] = useState(false)
   const [isResetFilter, setIsResetFilter] = useState(false)
   const showFilter =
+    search ||
     brand ||
     priceStart ||
     priceEnd ||
@@ -183,6 +185,7 @@ export const PLPUsedCar = ({
   const user: string | null = getLocalStorage(LocalStorageKey.sevaCust)
   const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
   const [cityListPLP, setCityListPLP] = useState(cityList)
+  funnelQuery.search = search !== '' ? search : ''
   funnelQuery.brand = brand?.split(',').map((item) => getCarBrand(item)) || []
 
   const fetchMoreData = () => {
@@ -194,6 +197,7 @@ export const PLPUsedCar = ({
         const pagePlus = page + 1
         setPage(pagePlus)
         const queryParam: any = {
+          search: search ? search : '',
           brand:
             brand?.split(',')?.map((item) => getCarBrand(item).toLowerCase()) ||
             [],
@@ -401,6 +405,7 @@ export const PLPUsedCar = ({
 
   useEffect(() => {
     if (
+      (funnelQuery.search !== '' && funnelQuery.search !== undefined) ||
       (funnelQuery.brand && funnelQuery.brand.length > 0) ||
       (funnelQuery.bodyType && funnelQuery.bodyType.length > 0) ||
       (funnelQuery.transmission && funnelQuery.transmission.length > 0) ||
@@ -508,6 +513,7 @@ export const PLPUsedCar = ({
       router.replace({
         pathname: usedCarResultUrl,
         query: {
+          ...(search && { search }),
           ...(age && { age }),
           ...(downPaymentAmount && { downPaymentAmount }),
           ...(monthlyIncome && { monthlyIncome }),

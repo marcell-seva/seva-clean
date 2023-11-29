@@ -16,6 +16,7 @@ export const getNewFunnelRecommendations = (
 ) => {
   const params = new URLSearchParams()
   const {
+    search,
     downPaymentAmount,
     downPaymentPercentage,
     monthlyInstallment,
@@ -52,6 +53,8 @@ export const getNewFunnelRecommendations = (
     bodyType.length > 0 &&
     params.append('bodyType', bodyType.join('/'))
 
+  search && params.append('search', search as string)
+
   sortBy && params.append('sortBy', sortBy as string)
 
   monthlyIncome && params.append('monthlyIncome', monthlyIncome as string)
@@ -72,6 +75,7 @@ export const getUsedCarFunnelRecommendations = (
 ) => {
   const params = new URLSearchParams()
   const {
+    search,
     brand,
     sortBy,
     mileageStart,
@@ -96,6 +100,8 @@ export const getUsedCarFunnelRecommendations = (
     const combinedModelNames = modelName.join(',')
     params.append('modelName', combinedModelNames)
   }
+
+  search && params.append('search', search as string)
 
   sortBy && params.append('sortBy', sortBy as string)
 

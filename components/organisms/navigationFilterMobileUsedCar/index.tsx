@@ -76,6 +76,17 @@ export const NavigationFilterMobileUsedCar = ({
     )
   }
 
+  const removeSearch = () => {
+    patchFunnelQuery({
+      search: '',
+    })
+    const filter = {
+      ...funnelQuery,
+      search: '',
+    }
+    newFunnel(filter)
+  }
+
   const removePriceRangeFilter = () => {
     patchFunnelQuery({
       priceStart: '',
@@ -179,7 +190,8 @@ export const NavigationFilterMobileUsedCar = ({
     const resultFilter = cityList?.filter((item: any) => {
       return funnelQuery.cityId?.includes(item.cityId)
     })
-
+    console.log(funnelQuery)
+    console.log(isFilter)
     setLocation(resultFilter)
   }, [funnelQuery.cityId])
   const newFunnel = async (filter: any) => {
@@ -192,6 +204,7 @@ export const NavigationFilterMobileUsedCar = ({
       setTotalItems(response.totalItems)
       setRecommendations(response.carData)
       const paramUrl = {
+        search: (filter.search && String(filter.search)) || '',
         priceStart: filter.priceStart,
         priceEnd: filter.priceEnd,
         yearStart: filter.yearStart,
@@ -258,6 +271,18 @@ export const NavigationFilterMobileUsedCar = ({
               <IconFilter width={24} height={24} /> Filter
             </div>
             <div className={styles.verticalLine} />
+            {funnelQuery.search && (
+              <div className={styles.navOuter}>
+                <div className={styles.navFrame} onClick={removeSearch}>
+                  <span
+                    className={styles.text}
+                  >{`"${funnelQuery.search}"`}</span>{' '}
+                  <div className={styles.onClick}>
+                    <IconRemove width={16} height={16} color="#878D98" />
+                  </div>
+                </div>
+              </div>
+            )}
             {funnelQuery.brand &&
               funnelQuery.brand.map((item: string) => (
                 <div key={item} className={styles.navOuter}>

@@ -4,6 +4,7 @@ import { LocalStorageKey } from 'utils/enum'
 import { FunnelQuery } from 'utils/types/context'
 
 const initData = {
+  search: '',
   brand: [],
   bodyType: [],
   category: [],
@@ -77,6 +78,7 @@ export const FunnelQueryUsedCarContextProvider = ({ children }: any) => {
 
   const clearQueryFilter = () => {
     const initial = {
+      search: '',
       brand: [],
       bodyType: [],
       category: [],

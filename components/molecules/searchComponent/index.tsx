@@ -47,6 +47,8 @@ import { findAll } from 'highlight-words-core'
 import { SearchInput } from 'components/atoms'
 import { SearchNewCar, SearchUsedCar } from 'utils/types/utils'
 import { UsedCarDetailCard } from 'components/organisms'
+import urls from 'utils/helpers/url'
+import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
 
 const CarNotFound = '/revamp/illustration/empty-car.webp'
 const Panel = Collapse.Panel
@@ -70,7 +72,10 @@ export const SearchComponent = ({
   isOTO = false,
   pageOrigination,
 }: Props) => {
-  const { patchFunnelQuery } = useFunnelQueryData()
+  const { patchFunnelQuery: patchFunnelQueryData, setFunnelQueryValue } =
+    useFunnelQueryData()
+  const { patchFunnelQuery: patchFunnelQueryUsedCarData } =
+    useFunnelQueryUsedCarData()
   const [changeIcon, setChangeIcon] = useState(false)
   const [valueSearch, setValueSearch] = useState('')
   const [suggestionsLists, setSuggestionsLists] = useState<SearchNewCar[]>([])
@@ -530,6 +535,50 @@ export const SearchComponent = ({
   }
   console.log(suggestionsLists)
 
+  const navigateToPLPNewCar = (search: string) => {
+    if (window.location.pathname === '/mobil-baru/c') {
+      patchFunnelQueryData({ search: search })
+      router
+        .push({
+          query: { ...router.query, search: search },
+        })
+        .then(() => {
+          router.reload()
+        })
+    } else {
+      navigateToPLP(PreviousButton.undefined, {
+        search: new URLSearchParams({
+          search: search,
+        }).toString(),
+      })
+    }
+  }
+
+  const navigateToPLPUsedCar = (search: string) => {
+    if (window.location.pathname === '/mobil-bekas/c') {
+      patchFunnelQueryUsedCarData({ search: search })
+      router
+        .push({
+          query: { ...router.query, search: search },
+        })
+        .then(() => {
+          router.reload()
+        })
+    } else {
+      navigateToPLP(
+        PreviousButton.undefined,
+        {
+          search: new URLSearchParams({
+            search: search,
+          }).toString(),
+        },
+        true,
+        false,
+        urls.internalUrls.usedCarResultsUrl,
+      )
+    }
+  }
+
   return (
     <>
       <div
@@ -577,10 +626,15 @@ export const SearchComponent = ({
                   <>
                     {renderSuggestionsNewCar()}
                     <div className={styles.ctaUsedCar}>
-                      {/* EDIT */}
-                      <Link href={'#'} className={styles.linkAllCar}>
+                      <Link
+                        href={'#'}
+                        className={styles.linkAllCar}
+                        onClick={() => {
+                          navigateToPLPNewCar(valueSearch)
+                        }}
+                      >
                         <h3>
-                          Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Bekas
+                          Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Baru
                         </h3>
                         <IconChevronRight
                           width={20}
@@ -601,8 +655,13 @@ export const SearchComponent = ({
                       </p>
                     </div>
                     <div className={styles.ctaUsedCar}>
-                      {/* EDIT */}
-                      <Link href={'#'} className={styles.linkAllCar}>
+                      <Link
+                        href={'#'}
+                        className={styles.linkAllCar}
+                        onClick={() => {
+                          router.push(urls.internalUrls.carResultsUrl)
+                        }}
+                      >
                         <h3>Lihat semua mobil baru</h3>
                         <IconChevronRight
                           width={20}
@@ -625,7 +684,13 @@ export const SearchComponent = ({
                     {renderSuggestionUsedCar()}
                     <div className={styles.ctaUsedCar}>
                       {/* EDIT */}
-                      <Link href={'#'} className={styles.linkAllCar}>
+                      <Link
+                        href={'#'}
+                        className={styles.linkAllCar}
+                        onClick={() => {
+                          navigateToPLPUsedCar(valueSearch)
+                        }}
+                      >
                         <h3>
                           Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Bekas
                         </h3>
@@ -651,6 +716,9 @@ export const SearchComponent = ({
                       <Link
                         href={usedCarResultUrl}
                         className={styles.linkAllCar}
+                        onClick={() => {
+                          router.push(urls.internalUrls.usedCarResultsUrl)
+                        }}
                       >
                         <h3>Lihat semua mobil bekas</h3>
                         <IconChevronRight

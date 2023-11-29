@@ -159,6 +159,7 @@ export interface MobileWebTopMenuType extends MobileWebTopMenuItemType {
 }
 
 export interface FunnelQuery {
+  search?: string
   paymentType?: FormControlValue | string
   downPaymentType?: FormControlValue
   monthlyInstallment?: FormControlValue

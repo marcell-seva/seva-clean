@@ -46,6 +46,8 @@ import { getLocalStorage } from 'utils/handler/localStorage'
 import { LocationRed } from 'components/atoms/icon/LocationRed'
 import urls from 'utils/helpers/url'
 import { usedCar } from 'services/context/usedCarContext'
+import { getUsedCarBySKU } from 'services/api'
+import { capitalizeFirstLetter } from 'utils/stringUtils'
 
 const CarSkeleton = '/revamp/illustration/car-skeleton.webp'
 
@@ -258,11 +260,9 @@ export const UsedCarDetailCard = ({
   // }
 
   const onClickSeeDetail = () => {
-    // router.push(urls.internalUrls.usedCarDetailUrl)
     router.push(detailCarRoute)
   }
   const onClickScrollDetail = () => {
-    // router.push(urls.internalUrls.usedCarDetailUrl)
     router.push(detailCarScrollRoute)
   }
 
@@ -343,14 +343,18 @@ export const UsedCarDetailCard = ({
               data-testid={elementId.PLP.Text + 'nominal-cicilan'}
             >
               <span className={styles.smallRegular}>Transmisi</span>
-              <span className={styles.bodyPriceText}>{transmisi?.value}</span>
+              <span className={styles.bodyPriceText}>
+                {capitalizeFirstLetter(transmisi?.value || '-')}
+              </span>
             </div>
             <div
               className={styles.detailInfoWrapper}
               data-testid={elementId.PLP.Text + 'lama-tenor'}
             >
               <span className={styles.smallRegular}>Bahan Bakar</span>
-              <span className={styles.bodyPriceText}>{bahanBakar?.value}</span>
+              <span className={styles.bodyPriceText}>
+                {capitalizeFirstLetter(bahanBakar?.value || '-')}
+              </span>
             </div>
           </div>
 

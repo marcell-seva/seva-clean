@@ -266,6 +266,7 @@ export const getServerSideProps: GetServerSideProps<{
   }
 
   const {
+    search,
     priceStart,
     priceEnd,
     yearStart,
@@ -403,6 +404,7 @@ export const getServerSideProps: GetServerSideProps<{
     }
 
     const queryModel: any = {
+      ...(search && { search: String(search) }),
       ...(brand && {
         brand: String(brand)
           ?.split(',')
@@ -418,6 +420,7 @@ export const getServerSideProps: GetServerSideProps<{
     }
 
     const queryParam: any = {
+      ...(search && { search: String(search) }),
       ...(brandSlug && {
         brand: String(brandSlug)
           ?.split(',')
