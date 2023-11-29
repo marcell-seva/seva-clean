@@ -178,13 +178,6 @@ const TabContentLowerVariant = ({
     return variant
   }
 
-  const variantNameDisplay = (varianName: string) => {
-    const varName = removeToneColor(varianName)
-    if (!varName) return topWordingName(varianName)
-
-    return varName
-  }
-
   const topWordingName = (variantName: string) => {
     if (carModelDetails.brand === 'Hyundai')
       return topWordingNameHyundai(variantName)
@@ -235,6 +228,18 @@ const TabContentLowerVariant = ({
     }
 
     return word.replaceAll('|', ' ')
+  }
+
+  const topWordingNameDisplay = (variantName: string) => {
+    if (!removeToneColor(variantName)) return ''
+    return topWordingName(variantName)
+  }
+
+  const variantNameDisplay = (varianName: string) => {
+    const varName = removeToneColor(varianName)
+    if (!varName) return topWordingName(varianName)
+
+    return varName
   }
 
   const closeLeadsForm = () => {
@@ -443,7 +448,7 @@ const TabContentLowerVariant = ({
                       <div data-testid={elementId.PDP.List.VariantName}>
                         <div className={styles.row}>
                           <p className={styles.openSansBoldGrey}>
-                            {topWordingName(carVariant.name)}
+                            {topWordingNameDisplay(carVariant.name)}
                           </p>
                         </div>
                         <div>
@@ -572,7 +577,7 @@ const TabContentLowerVariant = ({
                           data-testid={elementId.PDP.Grid.VariantName}
                         >
                           <p className={styles.openSansBoldGrey}>
-                            {topWordingName(carVariant.name)}
+                            {topWordingNameDisplay(carVariant.name)}
                           </p>
                           <div className={styles.tooltip}>
                             {variantNameDisplay(carVariant.name).length >
