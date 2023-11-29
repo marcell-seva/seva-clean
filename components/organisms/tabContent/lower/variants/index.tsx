@@ -517,14 +517,7 @@ const TabContentLowerVariant = ({
                       style={{
                         display: 'flex',
                         flexDirection: 'column',
-                        paddingTop:
-                          variantNameDisplay(carVariant.name).slice(0, 30)
-                            .length <= 19
-                            ? '2%'
-                            : variantNameDisplay(carVariant.name).slice(0, 30)
-                                .length > 19
-                            ? '5%'
-                            : '0',
+                        paddingTop: 16,
                       }}
                       onClick={() => handleOpenPopup(carVariant, index)}
                       data-testid={elementId.PDP.List.VariantPrice}
