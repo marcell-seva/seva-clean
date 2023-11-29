@@ -113,7 +113,7 @@ export const PdpUpperSection = ({
   const filterTabItem = () => {
     let temp = upperSectionNavigationTab
     if (!getImageExterior360() || getImageExterior360().length === 0) {
-      temp = temp.filter((item: any) => item.value !== '360-exterior')
+      temp = temp.filter((item: any) => item.value !== '360-eksterior')
     }
     if (!getImageInterior360()) {
       temp = temp.filter((item: any) => item.value !== '360-interior')
