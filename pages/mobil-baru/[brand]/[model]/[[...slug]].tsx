@@ -353,7 +353,10 @@ export async function getServerSideProps(context: any) {
       // need to stay 200 so that custom empty state UI is rendered
       return {
         props: {
+          carRecommendationsRes: null,
+          carModelDetailsRes: null,
           dataCombinationOfCarRecomAndModelDetail: null,
+          carVariantDetailsRes: null,
           dataMobileMenu: menuMobileRes.data,
           dataFooter: footerRes.data,
           dataCities: cityRes,
