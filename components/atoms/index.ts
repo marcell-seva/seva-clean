@@ -108,11 +108,13 @@ import { Separator } from './separator'
 import CustomModal from './modal/custom'
 import BottomSheet from './bottomSheet'
 import { SearchInput } from './searchInput'
-import { SearchInputNew } from './searchInputNew'
+import { SearchInputSecondary } from './searchInput/Secondary'
 import DatePickerCM from './inputDate/datepickerCM'
 import { DatePicker } from './inputDate'
 import { NewInput } from './input/newInput'
 import { ToastSevaRefi } from './toastSevaRefi'
+import { OptionImage } from './optionImage'
+import { InputMultilineSelectV2 } from './inputMultilineSelectV2'
 export {
   DatePickerCM,
   IconLockFill,
@@ -227,4 +229,7 @@ export {
   ArrowLeftSmall,
   ToastSevaRefi,
   ArrowLeftOutlined,
+  OptionImage,
+  InputMultilineSelectV2,
+  SearchInputSecondary,
 }

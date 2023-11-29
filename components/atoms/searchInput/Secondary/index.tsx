@@ -5,7 +5,7 @@ import {
   IconLocationLine,
   IconRemove,
 } from 'components/atoms/icon'
-import { Input } from './searchInputNew'
+import { Input } from './input'
 interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   onSearchInputChange?: (value: string) => void
   onIconSearchClick?: (value: string) => void
@@ -19,7 +19,7 @@ interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   handleCloseModal: () => void
 }
 
-export const SearchInputNew = ({
+export const SearchInputSecondary = ({
   onSearchInputChange,
   onIconSearchClick,
   searchInputValue,

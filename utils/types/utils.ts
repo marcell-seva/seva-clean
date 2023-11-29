@@ -9,6 +9,10 @@ import {
 
 export type FormControlValue = string | number | readonly string[] | undefined
 
+export interface updateKtpCityPayloadType {
+  nik: string
+  city: string
+}
 export interface CreateProbeTrackRequest {
   utmCampaign: string
   campaignId?: number

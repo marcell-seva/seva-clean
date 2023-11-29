@@ -17,7 +17,7 @@ import {
   IconChevronDown,
   IconChevronRight,
   IconChevronUp,
-  SearchInputNew,
+  SearchInputSecondary,
 } from 'components/atoms'
 import dynamic from 'next/dynamic'
 import { getCity } from 'utils/hooks/useGetCity'
@@ -587,7 +587,7 @@ export const SearchComponent = ({
           [styles.hideHeaderSearch]: !isOpen,
         })}
       >
-        <SearchInputNew
+        <SearchInputSecondary
           data-testid={elementId.Homepage.SearchBar.InputSearchCar}
           onSearchInputChange={onHandleChange}
           searchInputValue={valueSearch}
