@@ -208,6 +208,12 @@ const TabContentLowerVariant = ({
     if (variantName.includes('Matte Color')) {
       word += 'Matte Color|'
     }
+    if (variantName.toLowerCase().includes('single tone')) {
+      word += 'Single Tone|'
+    }
+    if (variantName.toLowerCase().includes('dual tone')) {
+      word += 'Dual Tone|'
+    }
     if (variantName.includes('One Tone')) {
       word += 'One Tone|'
     }
