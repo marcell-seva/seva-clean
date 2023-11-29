@@ -56,7 +56,7 @@ import {
 import { client } from 'utils/helpers/const'
 import { defineRouteName } from 'utils/navigate'
 import { useUtils } from 'services/context/utilsContext'
-import { defaultCity, getCity } from 'utils/hooks/useGetCity'
+import { getCity, isCurrentCitySameWithSSR } from 'utils/hooks/useGetCity'
 import dynamic from 'next/dynamic'
 import { Currency } from 'utils/handler/calculation'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
@@ -224,8 +224,6 @@ export default function NewCarVariantList({
     useAnnouncementBoxContext()
   const [variantIdFuel, setVariantIdFuelRatio] = useState<string | undefined>()
   const [variantFuelRatio, setVariantFuelRatio] = useState<string | undefined>()
-  // for disable promo popup after change route
-  const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
   const isCarUnavailableWithDefaultCity =
     !carRecommendationsResDefaultCity ||
     !carModelDetailsResDefaultCity ||
@@ -570,7 +568,7 @@ export default function NewCarVariantList({
     saveDataCarForLoginPageView()
     saveLocalStorage(LocalStorageKey.Model, model)
 
-    if (!isCurrentCitySameWithSSR || isCarUnavailableWithDefaultCity) {
+    if (!isCurrentCitySameWithSSR() || isCarUnavailableWithDefaultCity) {
       getNewFunnelRecommendations(getQueryParamForApiRecommendation()).then(
         (result: any) => {
           let id = ''

@@ -47,3 +47,12 @@ export const getCityWithoutDefault = () => {
 export const saveCity = (city: CityOtrOption) => {
   saveLocalStorage(LocalStorageKey.CityOtr, JSON.stringify(city))
 }
+
+export const isCurrentCitySameWithSSR = () => {
+  if (getCity().cityName === 'Depok') {
+    // need exception because "Depok" code is "jakarta" (case exception hyundai depok)
+    return false
+  } else {
+    return getCity().cityCode === defaultCity.cityCode
+  }
+}
