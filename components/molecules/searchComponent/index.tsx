@@ -124,8 +124,6 @@ export const SearchComponent = ({
         getNewCarSearch('', { params }),
         getUsedCarSearch('', { params: paramsUsed }),
       ])
-      console.log(dataNew.data.length)
-      console.log(dataUsed.data.length)
 
       if (dataNew.data.length === 0 && dataUsed.data.length === 0) {
         setIsNotFound(true)
@@ -285,7 +283,7 @@ export const SearchComponent = ({
   const renderSearchHistory = () => {
     const searchHistory = JSON.parse(
       localStorage.getItem('searchHistory') || '[]',
-    )
+    ).slice(0, 3)
     const renderedLabels: RenderedLabels = {}
 
     return (
@@ -350,7 +348,7 @@ export const SearchComponent = ({
         </Swiper>
         <div>
           <Link href={carResultsUrl} className={styles.linkAllCar}>
-            <h3>Lihat semua mobil baru</h3>
+            <h3 className={styles.linkAllCar}>Lihat semua mobil baru</h3>
             <IconChevronRight width={20} height={20} color="#246ED4" />
           </Link>
         </div>
@@ -524,7 +522,7 @@ export const SearchComponent = ({
             <div>{renderRecommendationUsedCar()}</div>
             <div className={styles.ctaUsedCar}>
               <Link href={usedCarResultUrl} className={styles.linkAllCar}>
-                <h3>Lihat semua mobil bekas</h3>
+                <h3 className={styles.linkAllCar}>Lihat semua mobil bekas</h3>
                 <IconChevronRight width={20} height={20} color="#246ED4" />
               </Link>
             </div>
@@ -533,7 +531,6 @@ export const SearchComponent = ({
       </div>
     )
   }
-  console.log(suggestionsLists)
 
   const navigateToPLPNewCar = (search: string) => {
     if (window.location.pathname === '/mobil-baru/c') {
@@ -633,7 +630,7 @@ export const SearchComponent = ({
                           navigateToPLPNewCar(valueSearch)
                         }}
                       >
-                        <h3>
+                        <h3 className={styles.linkAllCar}>
                           Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Baru
                         </h3>
                         <IconChevronRight
@@ -662,7 +659,9 @@ export const SearchComponent = ({
                           router.push(urls.internalUrls.carResultsUrl)
                         }}
                       >
-                        <h3>Lihat semua mobil baru</h3>
+                        <h3 className={styles.linkAllCar}>
+                          Lihat semua mobil baru
+                        </h3>
                         <IconChevronRight
                           width={20}
                           height={20}
@@ -691,7 +690,7 @@ export const SearchComponent = ({
                           navigateToPLPUsedCar(valueSearch)
                         }}
                       >
-                        <h3>
+                        <h3 className={styles.linkAllCar}>
                           Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Bekas
                         </h3>
                         <IconChevronRight
@@ -720,7 +719,9 @@ export const SearchComponent = ({
                           router.push(urls.internalUrls.usedCarResultsUrl)
                         }}
                       >
-                        <h3>Lihat semua mobil bekas</h3>
+                        <h3 className={styles.linkAllCar}>
+                          Lihat semua mobil bekas
+                        </h3>
                         <IconChevronRight
                           width={20}
                           height={20}

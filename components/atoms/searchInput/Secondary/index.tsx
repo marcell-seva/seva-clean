@@ -66,7 +66,7 @@ export const SearchInputSecondary = ({
   const suffixWhenEmpty = () =>
     searchIconSuffix ? (
       <div onClick={handleCloseModal}>
-        <IconRemove width={24} height={24} />
+        <IconRemove width={24} height={24} color="#13131B" />
       </div>
     ) : (
       <></>
@@ -75,7 +75,7 @@ export const SearchInputSecondary = ({
   const suffixIcon = () =>
     searchInputValue ? (
       <div onClick={suffixIconClick}>
-        <IconRemove width={24} height={24} />
+        <IconRemove width={24} height={24} color="#13131B" />
       </div>
     ) : (
       suffixWhenEmpty()
