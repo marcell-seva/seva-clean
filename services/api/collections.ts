@@ -23,6 +23,7 @@ const utils = {
   checkReferralCode: temanSevaUrlPath.checkRefCode,
   checkNIKAvailable: `${baseUrl}/customers/check-ktp-availability`,
   salesAgent: `${baseUrl}/salesman/tso-dso`,
+  promoBanner: `https://www.seva.id/info/wp-json/v1/posts/promo/`,
 }
 
 const product = {
@@ -35,6 +36,7 @@ const product = {
   modelDetails: baseUrl + '/models/:id',
   variantDetails: baseUrl + '/variants/:id',
   carVideoReview: baseUrl + '/car-video-review',
+  carCollection: baseUrl + '/cars/collection',
 }
 
 const usedCar = {
@@ -96,6 +98,8 @@ const creditQualification = {
   single: `${baseUrl}/kualifikasi-kredit`,
   multi: `${baseUrl}/kualifikasi-kredit/multi`,
   instantApproval: `${baseUrl}/kualifikasi-kredit/ia`,
+  instantApprovalResult: `${baseUrl}/customer-pre-approval/:id`,
+  instantApprovalResultNew: `${baseUrl}/customer-pre-approval/new/:leadId`,
 }
 
 const ktp = {
@@ -103,6 +107,7 @@ const ktp = {
   customerSpouse: `${baseUrl}/customers/get-ktp-spouse-existing`,
   saveKtp: `${baseUrl}/customers/submit-ktp-new`,
   saveKtpSpouse: `${baseUrl}/customers/submit-ktp-spouse-only`,
+  updateKtpCity: `${baseUrl}/customers/update-ktp-city-existing`,
 }
 
 const profile = {
@@ -123,6 +128,11 @@ const refinancing = {
   sendRefiQuestion: `${baseUrl}/refinancing/question`,
 }
 
+const search = {
+  newCar: `${baseUrl}/new-car/search-bar`,
+  usedCar: `${baseUrl}/used-car/search-bar`,
+}
+
 export const collections = {
   utils,
   product,
@@ -135,7 +145,8 @@ export const collections = {
   ktp,
   profile,
   omnicom,
-  temanSeva,
   usedCar,
+  temanSeva,
   refinancing,
+  search,
 }

@@ -5,6 +5,8 @@ import {
   OTONewCarUrl,
   OTOVariantListUrl,
   carResultsUrl,
+  usedCarDetailUrl,
+  usedCarResultUrl,
   variantListUrl,
 } from 'utils/helpers/routes'
 import debounce from 'lodash.debounce'
@@ -15,10 +17,16 @@ import {
   IconChevronDown,
   IconChevronRight,
   IconChevronUp,
+  SearchInputNew,
 } from 'components/atoms'
 import dynamic from 'next/dynamic'
 import { getCity } from 'utils/hooks/useGetCity'
-import { getCarofTheMonth, getSearchDataQuery } from 'services/api'
+import {
+  getCarofTheMonth,
+  getNewCarSearch,
+  getSearchDataQuery,
+  getUsedCarSearch,
+} from 'services/api'
 import { Option } from 'utils/types'
 import { useToast } from 'components/organisms/Toast'
 import { useRouter } from 'next/router'
@@ -37,11 +45,11 @@ import { convertObjectQuery } from 'utils/handler/convertObjectQuery'
 import elementId from 'utils/helpers/trackerId'
 import { findAll } from 'highlight-words-core'
 import { SearchInput } from 'components/atoms'
+import { SearchNewCar, SearchUsedCar } from 'utils/types/utils'
+import { UsedCarDetailCard } from 'components/organisms'
 
 const CarNotFound = '/revamp/illustration/empty-car.webp'
 const Panel = Collapse.Panel
-
-const { Option } = Select
 
 const Overlay = dynamic(() =>
   import('components/atoms').then((mod) => mod.Overlay),
@@ -65,7 +73,10 @@ export const SearchComponent = ({
   const { patchFunnelQuery } = useFunnelQueryData()
   const [changeIcon, setChangeIcon] = useState(false)
   const [valueSearch, setValueSearch] = useState('')
-  const [suggestionsLists, setSuggestionsLists] = useState<Option<string>[]>([])
+  const [suggestionsLists, setSuggestionsLists] = useState<SearchNewCar[]>([])
+  const [suggestionsListsUsedCar, setSuggestionsListsUsedCar] = useState<
+    SearchUsedCar[]
+  >([])
   const { showToast } = useToast()
   const [progress, setProgress] = useState(0)
   const router = useRouter()
@@ -73,6 +84,7 @@ export const SearchComponent = ({
   const [comDataNew, setComDataNew] = useState<COMData[]>([])
   const [isError, setIsError] = useState(false)
   const [isNotFoundClicked, setIsNotFoundClicked] = useState(false)
+  const [notFound, setIsNotFound] = useState(false)
 
   useEffect(() => {
     if (isOpen) {
@@ -92,61 +104,49 @@ export const SearchComponent = ({
       })
   }, [])
 
-  const handleDebounceFn = (inputValue: string) => {
-    console.log(inputValue)
-
+  const handleDebounceFn = async (inputValue: string) => {
     const params = new URLSearchParams()
+    const paramsUsed = new URLSearchParams()
     getCity().cityCode && params.append('city', getCity().cityCode as string)
-    getCity().id && params.append('cityId', getCity().id as string)
     params.append('query', inputValue as string)
+    paramsUsed.append('query', inputValue as string)
 
-    getSearchDataQuery('', { params })
-      .then((response) => {
-        const listedResult = response.map(
-          (item: { value: string; label: string }) => {
-            const splitValue = item.label.split(' ')
-            const carBrand = splitValue[0]
-            const carVariant = splitValue.slice(1).join('-')
-            if (
-              item.label === 'Toyota' ||
-              item.label === 'Daihatsu' ||
-              item.label === 'Isuzu' ||
-              item.label === 'BMW' ||
-              item.label === 'Peugeot'
-            )
-              return { value: '', label: item.label }
+    if (inputValue === '') {
+      return null
+    }
+    try {
+      const [dataNew, dataUsed]: any = await Promise.all([
+        getNewCarSearch('', { params }),
+        getUsedCarSearch('', { params: paramsUsed }),
+      ])
+      console.log(dataNew.data.length)
+      console.log(dataUsed.data.length)
 
-            return {
-              value: `/${carBrand}/${carVariant}`
-                .replace(/ +/g, '')
-                .toLowerCase(),
-              label: item.label,
-            }
-          },
-        )
-        console.log(listedResult)
-
-        if (listedResult.length === 0) {
-          listedResult.push({
-            value: '',
-            label: `Hmmm... "${inputValue}" belum tersedia di SEVA.`,
-          })
-        }
-
-        setSuggestionsLists([...listedResult])
-      })
-      .catch(() => {
-        showToast()
-      })
-      .finally(() => {
-        resetLoadingState()
-      })
+      if (dataNew.data.length === 0 && dataUsed.data.length === 0) {
+        setIsNotFound(true)
+        setSuggestionsLists([])
+        setSuggestionsListsUsedCar([])
+      } else if (dataUsed.data.length !== 0 && dataNew.data.length === 0) {
+        setIsNotFound(false)
+        setSuggestionsLists([])
+        setSuggestionsListsUsedCar([...dataUsed.data])
+      } else if (dataNew.data.length !== 0 && dataUsed.data.length === 0) {
+        setIsNotFound(false)
+        setSuggestionsLists([...dataNew.data])
+        setSuggestionsListsUsedCar([])
+      } else {
+        setIsNotFound(false)
+        setSuggestionsLists([...dataNew.data])
+        setSuggestionsListsUsedCar([...dataUsed.data])
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const debounceFn = useCallback(debounce(handleDebounceFn, 500), [])
 
   const onHandleChange = (value: string) => {
-    console.log(value)
     setValueSearch(
       value
         .split(' ')
@@ -203,127 +203,74 @@ export const SearchComponent = ({
       .replace(':tab?', '')
   }
 
-  const clickList = (item: any) => {
-    if (item.label === SEARCH_NOT_FOUND_TEXT) {
-      return // Jangan lakukan apa pun jika opsi "Mobil tidak ditemukan" diklik
-    }
+  const onClickSuggestionList = (item: SearchNewCar) => {
+    const check = item.url.includes('/p/')
+
     let urlDestination = ''
-    if (item.value.length > 0) {
-      urlDestination = (isOTO ? OTOVariantListUrl : variantListUrl)
-        .replace('/:brand/:model', item.value)
-        .replace(':tab?', '')
+    if (check) {
+      urlDestination = variantListUrl.replace(
+        ':brand/:model/:tab?',
+        item.url.split('/p/')[1],
+      )
     } else {
-      patchFunnelQuery({
-        [FunnelQueryKey.Brand]: [item.label],
-      })
-      urlDestination = isOTO ? OTONewCarUrl : carResultsUrl
+      urlDestination = carResultsUrl + item.url.split('/c')[1]
     }
 
     // simpan pencarian ke dalam local storage
     const searchHistory = JSON.parse(
       localStorage.getItem('searchHistory') || '[]',
     )
-    if (searchHistory.length >= 5) {
+    if (searchHistory.length >= 3) {
       searchHistory.pop() // hapus item terakhir
     }
-    searchHistory.unshift(item)
+    searchHistory.unshift({ value: item.url, label: item.carName })
     localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
 
-    handleCloseModal()
-    removeCarBrand
-    const brandValue = item.label.split(' ')[0]
-    const modelValue = item.label.split(' ').splice(1).join(' ')
-    // use window location to reload page
-    if (item.value.length > 0) {
-      window.location.href = urlDestination
-    } else {
-      const funnelQueryTemp = {
-        brand: [item.label],
-      }
-      navigateToPLP(
-        PreviousButton.SearchBar,
-        { search: convertObjectQuery(funnelQueryTemp) },
-        true,
-        false,
-        urlDestination,
+    window.location.href = urlDestination
+  }
+
+  const clickList = (item: SearchUsedCar) => {
+    const check = item.sevaUrl.includes('/p/')
+
+    let urlDestination = ''
+    if (check) {
+      urlDestination = usedCarDetailUrl.replace(
+        ':id',
+        item.sevaUrl.split('/p/')[1],
       )
+    } else {
+      urlDestination = usedCarResultUrl + item.sevaUrl.split('/c')[1]
     }
-    setIsNotFoundClicked(false)
+
+    // simpan pencarian ke dalam local storage
+    const searchHistory = JSON.parse(
+      localStorage.getItem('searchHistory') || '[]',
+    )
+    if (searchHistory.length >= 3) {
+      searchHistory.pop() // hapus item terakhir
+    }
+    searchHistory.unshift({ value: item.sevaUrl, label: item.carName })
+    localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
+
+    window.location.href = urlDestination
   }
 
   if (isError) return null
-  const renderRecommendation = () => {
-    return (
-      <div>
-        <Swiper
-          slidesPerView={2}
-          spaceBetween={16}
-          className={styles.listNewCar}
-        >
-          {carData.map((car) => (
-            <>
-              <SwiperSlide className={styles.containerNewCar} key={car.name}>
-                <Link
-                  href={`${isOTO ? `/adaSEVAdiOTO` : ``}/mobil-baru${
-                    isOTO ? '' : '/p'
-                  }${car.link.toLowerCase()}`}
-                  onClick={() => onClickRecommedationList(car)}
-                >
-                  <div className={styles.linkCar}>
-                    <Image
-                      src={car.image}
-                      alt={car.name}
-                      style={{
-                        objectFit: 'cover',
-                        objectPosition: 'center',
-                      }}
-                      width={'64'}
-                      height={'48'}
-                    />
-                    <div className={styles.styledCarName}>{car.name}</div>
-                  </div>
-                </Link>
-              </SwiperSlide>
-            </>
-          ))}
-        </Swiper>
-        <div>
-          <Link href={'#'} className={styles.linkAllCar}>
-            <h3>Lihat semua mobil baru</h3>
-            <IconChevronRight width={20} height={20} color="#246ED4" />
-          </Link>
-        </div>
-      </div>
-    )
-  }
+
   const onClickSearchHistory = (data: any) => {
     handleCloseModal()
-    if (data.value === '') {
-      patchFunnelQuery({ brand: [data.label] })
-      const funnelQueryTemp = {
-        brand: data.label,
-      }
-      {
-        isOTO
-          ? navigateToPLP(
-              PreviousButton.SearchBar,
-              {
-                search: convertObjectQuery(funnelQueryTemp),
-              },
-              true,
-              false,
-              OTONewCarUrl,
-            )
-          : navigateToPLP(PreviousButton.SearchBar, {
-              search: convertObjectQuery(funnelQueryTemp),
-            })
-      }
+    const check = data.value.includes('/p/')
+    let urlDestination = ''
+    if (check) {
+      urlDestination = usedCarDetailUrl.replace(
+        ':id',
+        data.value.split('/p/')[1],
+      )
     } else {
-      // use window location to reload page
-      window.location.href = (isOTO ? OTONewCarUrl : carResultsUrl) + data.value
+      urlDestination = usedCarResultUrl + data.value.split('/c')[1]
     }
-    // use location reload so that content re-fetched
-    // window.location.reload()
+
+    window.location.href = urlDestination
   }
 
   type RenderedLabels = {
@@ -361,6 +308,51 @@ export const SearchComponent = ({
     )
   }
 
+  const renderRecommendation = () => {
+    return (
+      <div>
+        <Swiper
+          slidesPerView={2}
+          spaceBetween={16}
+          className={styles.listNewCar}
+        >
+          {carData.map((car) => (
+            <>
+              <SwiperSlide className={styles.containerNewCar} key={car.name}>
+                <Link
+                  href={`${isOTO ? `/adaSEVAdiOTO` : ``}/mobil-baru${
+                    isOTO ? '' : '/p'
+                  }${car.link.toLowerCase()}`}
+                  onClick={() => onClickRecommedationList(car)}
+                >
+                  <div className={styles.linkCar}>
+                    <Image
+                      src={car.image}
+                      alt={car.name}
+                      style={{
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                      }}
+                      width={'64'}
+                      height={'48'}
+                    />
+                    <div className={styles.styledCarName}>{car.name}</div>
+                  </div>
+                </Link>
+              </SwiperSlide>
+            </>
+          ))}
+        </Swiper>
+        <div>
+          <Link href={carResultsUrl} className={styles.linkAllCar}>
+            <h3>Lihat semua mobil baru</h3>
+            <IconChevronRight width={20} height={20} color="#246ED4" />
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   const renderRecommendationUsedCar = () => {
     return (
       <ul>
@@ -391,6 +383,153 @@ export const SearchComponent = ({
     )
   }
 
+  const renderSuggestionsNewCar = () => {
+    return (
+      <div>
+        <Swiper
+          slidesPerView={2}
+          spaceBetween={16}
+          className={styles.listNewCar}
+        >
+          {suggestionsLists.map((car) => (
+            <>
+              <SwiperSlide className={styles.containerNewCar} key={car.carName}>
+                <div onClick={() => onClickSuggestionList(car)}>
+                  <div className={styles.linkCar}>
+                    <Image
+                      src={car?.image ?? ''}
+                      alt={car.carName}
+                      style={{
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                      }}
+                      width={'64'}
+                      height={'48'}
+                    />
+                    <div className={styles.styledCarName}>
+                      {car.carName && (
+                        <div style={{ width: '100%' }}>
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: renderSearchOptionsItem(car.carName),
+                            }}
+                            className={styles.styledCarName}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </SwiperSlide>
+            </>
+          ))}
+        </Swiper>
+      </div>
+    )
+  }
+
+  const renderSuggestionUsedCar = () => {
+    return (
+      <ul>
+        {suggestionsListsUsedCar.map((car) => (
+          <>
+            <div className={styles.styledCarContentName} key={car?.carName}>
+              <div className={styles.styledLink} onClick={() => clickList(car)}>
+                {car?.carName && (
+                  <div style={{ width: '100%' }}>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: renderSearchOptionsItem(car.carName),
+                      }}
+                      className={styles.styledCarName}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+            <Line width={'100%'} height={'1px'} background="#EBECEE" />
+          </>
+        ))}
+      </ul>
+    )
+  }
+
+  const renderNotFound = () => {
+    return (
+      <div
+        className={clsx({
+          [styles.styledDataSuggest]: true,
+          [styles.hideHeaderDropdown]: !isOpen,
+        })}
+      >
+        <div className={styles.notFoundContainer}>
+          <Image
+            src={CarNotFound}
+            width={200}
+            height={149}
+            alt="search not found"
+            className={styles.imgNotFound}
+          />
+          <div className={styles.containerNotFound}>
+            <h2 className={styles.titleNotFound}>
+              Hmmm... “{valueSearch}” belum tersedia di SEVA.{' '}
+            </h2>
+            <p className={styles.descNotFound}>
+              Silakan ubah kata kunci pencarian untuk menemukan mobil impianmu.
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const renderEmptySearch = () => {
+    return (
+      <div
+        className={clsx({
+          [styles.styledDataSuggest]: true,
+          [styles.hideHeaderDropdown]: !isOpen,
+        })}
+      >
+        <div className={styles.styledItem}>
+          <div style={{ width: '100%', textAlign: 'left' }}>
+            {renderSearchHistory()}
+          </div>
+        </div>
+        <Collapse
+          defaultActiveKey={['1', '2']}
+          expandIconPosition="end"
+          size="large"
+          expandIcon={({ isActive }) =>
+            isActive ? (
+              <IconChevronUp height={24} width={24} />
+            ) : (
+              <IconChevronDown height={24} width={24} />
+            )
+          }
+        >
+          <Panel header="Cari Mobil Baru" key="1" className={styles.panelStyle}>
+            {renderRecommendation()}
+          </Panel>
+          <Panel
+            header="Cari Mobil Bekas"
+            key="2"
+            className={styles.panelStyle}
+          >
+            <div>{renderRecommendationUsedCar()}</div>
+            <div className={styles.ctaUsedCar}>
+              <Link href={usedCarResultUrl} className={styles.linkAllCar}>
+                <h3>Lihat semua mobil bekas</h3>
+                <IconChevronRight width={20} height={20} color="#246ED4" />
+              </Link>
+            </div>
+          </Panel>
+        </Collapse>
+      </div>
+    )
+  }
+  console.log(suggestionsLists)
+
   return (
     <>
       <div
@@ -399,93 +538,24 @@ export const SearchComponent = ({
           [styles.hideHeaderSearch]: !isOpen,
         })}
       >
-        <SearchInput
+        <SearchInputNew
           data-testid={elementId.Homepage.SearchBar.InputSearchCar}
           onSearchInputChange={onHandleChange}
           searchInputValue={valueSearch}
           placeholder="Cari mobil impianmu"
           searchIconSuffix={true}
           className={styles.styledSearchInput}
+          handleCloseModal={() => handleCloseModal()}
         />
-        {suggestionsLists.length !== 0 && valueSearch.length > 0 ? (
+        {notFound && valueSearch.length > 0 ? (
+          renderNotFound()
+        ) : valueSearch.length > 0 ? (
           <div
             className={clsx({
               [styles.styledDataResult]: true,
               [styles.hideHeaderDropdown]: !isOpen,
             })}
           >
-            {suggestionsLists.map((car) => {
-              return (
-                <>
-                  {car.label.includes('Hmmm...') ? (
-                    <div className={styles.notFoundContainer}>
-                      <Image
-                        src={CarNotFound}
-                        width={200}
-                        height={149}
-                        alt="search not found"
-                        className={styles.imgNotFound}
-                      />
-                      <div>
-                        <h2 className={styles.titleNotFound}>
-                          Hmmm... “{valueSearch}” belum tersedia di SEVA.{' '}
-                        </h2>
-                        <p className={styles.descNotFound}>
-                          Silakan ubah kata kunci pencarian untuk menemukan
-                          mobil impianmu.
-                        </p>
-                      </div>
-                    </div>
-                  ) : (
-                    <>
-                      <div
-                        data-testid={
-                          elementId.Homepage.SearchBar.CarModelOption +
-                          car.label +
-                          valueSearch
-                        }
-                        onClick={() => clickList(car)}
-                        key={car.value}
-                        className={`${styles.styledLink} ${
-                          suggestionsLists[0].label === SEARCH_NOT_FOUND_TEXT
-                            ? styles.disableClick
-                            : ''
-                        } searchOption`}
-                      >
-                        {car.label && (
-                          <div style={{ width: '100%' }}>
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: renderSearchOptionsItem(car.label),
-                              }}
-                              className={styles.styledCarName}
-                            />
-                          </div>
-                        )}
-                      </div>
-                      <Line
-                        width={'100%'}
-                        height={'1px'}
-                        background="#EBECEE"
-                      />
-                    </>
-                  )}
-                </>
-              )
-            })}
-          </div>
-        ) : (
-          <div
-            className={clsx({
-              [styles.styledDataSuggest]: true,
-              [styles.hideHeaderDropdown]: !isOpen,
-            })}
-          >
-            <div className={styles.styledItem}>
-              <div style={{ width: '100%', textAlign: 'left' }}>
-                {renderSearchHistory()}
-              </div>
-            </div>
             <Collapse
               defaultActiveKey={['1', '2']}
               expandIconPosition="end"
@@ -503,185 +573,85 @@ export const SearchComponent = ({
                 key="1"
                 className={styles.panelStyle}
               >
-                {renderRecommendation()}
+                {suggestionsLists.length !== 0 && valueSearch.length > 0 ? (
+                  <>
+                    {renderSuggestionsNewCar()}
+                    <div className={styles.ctaUsedCar}>
+                      {/* EDIT */}
+                      <Link href={'#'} className={styles.linkAllCar}>
+                        <h3>
+                          Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Bekas
+                        </h3>
+                        <IconChevronRight
+                          width={20}
+                          height={20}
+                          color="#246ED4"
+                        />
+                      </Link>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      <p className={styles.descNotFound}>
+                        Hmmm... “{valueSearch}” belum tersedia di Mobil Baru.
+                      </p>
+                      <p className={styles.descNotFound}>
+                        Silakan ubah kata kunci pencarian
+                      </p>
+                    </div>
+                    <div className={styles.ctaUsedCar}>
+                      {/* EDIT */}
+                      <Link href={'#'} className={styles.linkAllCar}>
+                        <h3>Lihat semua mobil baru</h3>
+                        <IconChevronRight
+                          width={20}
+                          height={20}
+                          color="#246ED4"
+                        />
+                      </Link>
+                    </div>
+                  </>
+                )}
               </Panel>
               <Panel
                 header="Cari Mobil Bekas"
                 key="2"
                 className={styles.panelStyle}
               >
-                <div>{renderRecommendationUsedCar()}</div>
-                <div className={styles.ctaUsedCar}>
-                  <Link href={'#'} className={styles.linkAllCar}>
-                    <h3>Lihat semua mobil bekas</h3>
-                    <IconChevronRight width={20} height={20} color="#246ED4" />
-                  </Link>
-                </div>
-              </Panel>
-            </Collapse>
-          </div>
-        )}
-        {/* <ConfigProvider
-          theme={{
-            components: {
-              Select: {
-                optionPadding: '0',
-                optionSelectedBg: 'white',
-                // paddingContentHorizontalLG: 16,
-                controlPaddingHorizontalSM: 16,
-                controlHeightLG: 48,
-                // colorBorder: '#EBECEE',
-              },
-            },
-          }}
-        >
-          <Select
-            // allowClear={{
-            //   clearIcon: (
-            //     <div className={styles.removeIcon}>
-            //       <CloseOutlined2 color="#F5F6F6" width={6} height={6} />
-            //     </div>
-            //   ),
-            // }}
-            listHeight={500}
-            searchValue={valueSearch}
-            mode="multiple"
-            open={true}
-            onSearch={(value) => onHandleChange(value)}
-            showSearch
-            className={styles.inputSearch}
-            size="large"
-            onBlur={() => handleCloseModal()}
-            onDropdownVisibleChange={() => {
-              setChangeIcon(!changeIcon)
-            }}
-            suffixIcon={
-              <div className={styles.removeIcon}>
-                <CloseOutlined2 color="#F5F6F6" width={6} height={6} />
-              </div>
-              // changeIcon ? (
-              //   <div className={styles.removeIcon}>
-              //     <CloseOutlined2 color="#F5F6F6" width={6} height={6} />
-              //   </div>
-              // ) : (
-              //   <div className={styles.removeIcon}>
-              //     <IconSearch color="#F5F6F6" width={15} height={15} />
-              //   </div>
-              // )
-            }
-            tagRender={() => <div></div>}
-            dropdownRender={(menu) => (
-              <div
-                onMouseDown={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                }}
-              >
-                {menu}
-              </div>
-            )}
-            notFoundContent={
-              <div className={styles.notFoundContainer}>
-                <Image
-                  src={CarNotFound}
-                  width={200}
-                  height={149}
-                  alt="search not found"
-                  className={styles.imgNotFound}
-                />
-                <div>
-                  <h2 className={styles.titleNotFound}>
-                    Hmmm... “aventador” belum tersedia di SEVA.{' '}
-                  </h2>
-                  <p className={styles.descNotFound}>
-                    Silakan ubah kata kunci pencarian untuk menemukan mobil
-                    impianmu.
-                  </p>
-                </div>
-              </div>
-            }
-          >
-            {suggestionsLists.length !== 0 && valueSearch.length > 0 ? (
-              <div className={styles.styledDataResult}>
-                {suggestionsLists.map((car) => {
-                  return (
-                    <>
-                      <div
-                        data-testid={
-                          elementId.Homepage.SearchBar.CarModelOption +
-                          car.label +
-                          valueSearch
-                        }
-                        onClick={() => clickList(car)}
-                        key={car.value}
-                        className={`${styles.styledLink} ${
-                          suggestionsLists[0].label === SEARCH_NOT_FOUND_TEXT
-                            ? styles.disableClick
-                            : ''
-                        } searchOption`}
-                      >
-                        {car.label && (
-                          <div style={{ width: '100%' }}>
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: renderSearchOptionsItem(car.label),
-                              }}
-                              className={styles.styledCarName}
-                            />
-                          </div>
-                        )}
-                      </div>
-                      <Line
-                        width={'100%'}
-                        height={'1px'}
-                        background="#EBECEE"
-                      />
-                    </>
-                  )
-                })}
-                <div className={styles.ctaUsedCar}>
-                  <Link href={'#'} className={styles.linkAllCar}>
-                    <h3>
-                      Cari &rdquo;<b>{valueSearch}</b>&rdquo; mobil bekas
-                    </h3>
-                    <IconChevronRight width={20} height={20} color="#246ED4" />
-                  </Link>
-                </div>
-              </div>
-            ) : (
-              <div className={styles.styledDataSuggest}>
-                <div className={styles.styledItem}>
-                  <div style={{ width: '100%', textAlign: 'left' }}>
-                    {renderSearchHistory()}
-                  </div>
-                </div>
-                <Collapse
-                  defaultActiveKey={['1', '2']}
-                  expandIconPosition="end"
-                  size="large"
-                  expandIcon={({ isActive }) =>
-                    isActive ? (
-                      <IconChevronUp height={24} width={24} />
-                    ) : (
-                      <IconChevronDown height={24} width={24} />
-                    )
-                  }
-                >
-                  <Panel
-                    header="Cari Mobil Baru"
-                    key="1"
-                    className={styles.panelStyle}
-                  >
-                    {renderRecommendation()}
-                  </Panel>
-                  <Panel
-                    header="Cari Mobil Bekas"
-                    key="2"
-                    className={styles.panelStyle}
-                  >
-                    <div>{renderRecommendationUsedCar()}</div>
+                {suggestionsListsUsedCar.length !== 0 &&
+                valueSearch.length > 0 ? (
+                  <>
+                    {renderSuggestionUsedCar()}
                     <div className={styles.ctaUsedCar}>
+                      {/* EDIT */}
                       <Link href={'#'} className={styles.linkAllCar}>
+                        <h3>
+                          Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Bekas
+                        </h3>
+                        <IconChevronRight
+                          width={20}
+                          height={20}
+                          color="#246ED4"
+                        />
+                      </Link>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.containerNotFound}>
+                      <p className={styles.descNotFound}>
+                        Hmmm... “{valueSearch}” tidak tersedia di Mobil Bekas.
+                      </p>
+                      <p className={styles.descNotFound}>
+                        Silakan ubah kata kunci pencarian
+                      </p>
+                    </div>
+                    <div className={styles.ctaUsedCar}>
+                      <Link
+                        href={usedCarResultUrl}
+                        className={styles.linkAllCar}
+                      >
                         <h3>Lihat semua mobil bekas</h3>
                         <IconChevronRight
                           width={20}
@@ -690,12 +660,14 @@ export const SearchComponent = ({
                         />
                       </Link>
                     </div>
-                  </Panel>
-                </Collapse>
-              </div>
-            )}
-          </Select>
-        </ConfigProvider> */}
+                  </>
+                )}
+              </Panel>
+            </Collapse>
+          </div>
+        ) : (
+          renderEmptySearch()
+        )}
       </div>
       <Overlay
         isShow={isOpen}

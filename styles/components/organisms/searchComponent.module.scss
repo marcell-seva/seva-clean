@@ -5,7 +5,7 @@
 .containerSearch {
   position: fixed;
   // left: 50;
-  z-index: 31;
+  z-index: 50 !important;
   display: flex;
   width: 100%;
   max-width: 570px;
@@ -63,6 +63,9 @@
   font-weight: 400;
   line-height: 20px;
 }
+.containerNotFound {
+  padding: 16px 0px;
+}
 
 .removeIcon {
   background-color: #13131b;
@@ -101,7 +104,7 @@
 
 .styledDataSuggest {
   margin-top: 7px;
-  max-width: 343px;
+  max-width: 94%;
   margin-left: 0vw;
   border-radius: 16px;
   height: auto;
@@ -117,20 +120,19 @@
   right: 0;
   margin-left: auto;
   margin-right: auto;
-  transition: top 500ms;
+  transition: top 700ms;
 
   &::-webkit-scrollbar {
     display: none;
   }
   &.hideHeaderDropdown {
     top: -600px;
-    display: none;
   }
 }
 
 .styledDataResult {
   margin-top: 7px;
-  max-width: 343px;
+  max-width: 94%;
   margin-left: 0vw;
   border-radius: 16px;
   height: auto;
@@ -146,14 +148,13 @@
   right: 0;
   margin-left: auto;
   margin-right: auto;
-  transition: top 500ms;
+  transition: top 700ms;
 
   &::-webkit-scrollbar {
     display: none;
   }
   &.hideHeaderDropdown {
     top: -600px;
-    display: none;
   }
 }
 
@@ -198,6 +199,7 @@
 
 .styledCarContentName {
   width: 100%;
+  cursor: pointer;
   &:hover {
     border-radius: 8px;
     background-color: #{$shades-sky-blue-30};
@@ -277,6 +279,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
+  width: 100%;
 }
 
 .styledSearchWrapper {

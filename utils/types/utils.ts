@@ -1165,3 +1165,26 @@ export interface SalesAgent {
   salesCodeNpk: string
   salesName: string
 }
+
+export type RefinancingSecondLeadsData = {
+  carBrandText: string
+  carModelText: string
+  carYear: string
+  cityId: number
+  contactId: number | string
+  loanAmount: number
+  loanTenure: string
+  leasing: string
+  temanSevaTrxCode: string
+}
+
+export type SearchNewCar = {
+  carName: string
+  image: string
+  url: string
+}
+
+export type SearchUsedCar = {
+  carName: string
+  sevaUrl: string
+}
