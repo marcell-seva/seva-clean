@@ -72,7 +72,7 @@ const generateSiteMap = () => {
                     <![CDATA[ Harga OTR Toyota ${currentYear} - Cicilan bulan ${currentMonth} | SEVA ]]>
                 </news:title>
                 <news:keywords>
-                    <![CDATA[ mobil baru, mobil toyota ]]>
+                    <![CDATA[ mobil baru, mobil toyota, mobil all new agya, mobil raize, mobil all new avanza ]]>
                 </news:keywords>
             </news:news>
             <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
@@ -90,7 +90,7 @@ const generateSiteMap = () => {
                     <![CDATA[ Harga OTR Daihatsu ${currentYear} - Cicilan bulan ${currentMonth} | SEVA ]]>
                 </news:title>
                 <news:keywords>
-                    <![CDATA[ mobil baru, mobil daihatsu ]]>
+                    <![CDATA[ mobil baru, mobil daihatsu, mobil sigra, mobil new ayla ]]>
                 </news:keywords>
             </news:news>
             <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
@@ -108,7 +108,7 @@ const generateSiteMap = () => {
                     <![CDATA[ Harga OTR Isuzu ${currentYear} - Cicilan bulan ${currentMonth} | SEVA ]]>
                 </news:title>
                 <news:keywords>
-                    <![CDATA[ mobil baru, mobil isuzu ]]>
+                    <![CDATA[ mobil baru, mobil isuzu, mobil d-max mobil mu-x ]]>
                 </news:keywords>
             </news:news>
             <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
@@ -126,7 +126,7 @@ const generateSiteMap = () => {
                     <![CDATA[ Harga OTR Peugeot ${currentYear} - Cicilan bulan ${currentMonth} | SEVA ]]>
                 </news:title>
                 <news:keywords>
-                    <![CDATA[ mobil baru, mobil peugeot ]]>
+                    <![CDATA[ mobil baru, mobil peugeot, mobil 2008, mobil 3008 ]]>
                 </news:keywords>
             </news:news>
             <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
@@ -144,7 +144,7 @@ const generateSiteMap = () => {
                     <![CDATA[ Harga OTR BMW ${currentYear} - Cicilan bulan ${currentMonth} | SEVA ]]>
                 </news:title>
                 <news:keywords>
-                    <![CDATA[ mobil baru, mobil bmw ]]>
+                    <![CDATA[ mobil baru, mobil bmw, mobil 2 series gran coupe, mobil x1 sdrive18i xline ]]>
                 </news:keywords>
             </news:news>
             <image:image xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
