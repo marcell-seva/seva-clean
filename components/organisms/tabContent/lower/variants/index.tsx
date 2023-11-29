@@ -178,6 +178,13 @@ const TabContentLowerVariant = ({
     return variant
   }
 
+  const variantNameDisplay = (varianName: string) => {
+    const varName = removeToneColor(varianName)
+    if (!varName) return topWordingName(varianName)
+
+    return varName
+  }
+
   const topWordingName = (variantName: string) => {
     if (carModelDetails.brand === 'Hyundai')
       return topWordingNameHyundai(variantName)
@@ -413,125 +420,7 @@ const TabContentLowerVariant = ({
             Harga varian mobil di bawah ini berdasarkan tenor 5 tahun.
           </p>
         </div>
-        {!toggleHorizontal && !expandHorizontal ? (
-          carModelDetails.variants
-            .map((carVariant: CarVariantRecommendation, index: number) => (
-              <div
-                key={carVariant.id}
-                className={styles.containerCard}
-                data-testid={elementId.PDP.List.VariantCard}
-              >
-                <div className={styles.cardCarVariantGrid}>
-                  <div
-                    className={styles.cardCarVariantInfoGrid}
-                    style={{ flexDirection: 'row' }}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '50%',
-                      }}
-                    >
-                      <div data-testid={elementId.PDP.List.VariantCard}>
-                        <div className={styles.row}>
-                          <p className={styles.openSansBoldGrey}>
-                            {topWordingName(carVariant.name)}
-                          </p>
-                        </div>
-                        <div>
-                          <div>
-                            <div className={styles.tooltip}>
-                              {removeToneColor(carVariant.name).length > 35 && (
-                                <div>
-                                  <p className={styles.openSansSemiBoldBlack}>
-                                    {removeToneColor(carVariant.name).slice(
-                                      0,
-                                      35,
-                                    ) + '...'}
-                                  </p>
-                                  <span
-                                    className={styles.tooltiptext}
-                                    onMouseOver={() => setOnHover(!onHover)}
-                                  >
-                                    {removeToneColor(carVariant.name)}
-                                  </span>
-                                </div>
-                              )}
-                              <p className={styles.openSansSemiBoldBlack}>
-                                {removeToneColor(carVariant.name).length <=
-                                  35 &&
-                                removeToneColor(carVariant.name).includes('()')
-                                  ? removeToneColor(carVariant.name).replace(
-                                      '()',
-                                      '',
-                                    )
-                                  : removeToneColor(carVariant.name).length <=
-                                    35
-                                  ? removeToneColor(carVariant.name)
-                                  : null}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className={styles.row}
-                        style={{ marginBottom: '24px', marginTop: '16px' }}
-                        onClick={() => handleOpenPopup(carVariant, index)}
-                        data-testid={elementId.PDP.List.VariantDetail}
-                      >
-                        <p className={styles.openSansLightBlue}>Lihat Detail</p>
-                      </div>
-                    </div>
-
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '50%',
-                        paddingTop:
-                          removeToneColor(carVariant.name).slice(0, 30)
-                            .length <= 19
-                            ? '2%'
-                            : removeToneColor(carVariant.name).slice(0, 30)
-                                .length > 19
-                            ? '8%'
-                            : '0',
-                      }}
-                      onClick={() => handleOpenPopup(carVariant, index)}
-                      data-testid={elementId.PDP.List.VariantPrice}
-                    >
-                      <div className={styles.variantPriceWrapper}>
-                        <p className={styles.openSansSemiBoldBlack}>
-                          {'Rp' +
-                            replacePriceSeparatorByLocalization(
-                              carVariant.priceValue,
-                              LanguageCode.id,
-                            )}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className={styles.buttonPrimary}
-                    onClick={() => {
-                      isOTO
-                        ? showLeadsForm(carVariant.name)
-                        : navigateToCreditTab(carVariant, index)
-                    }}
-                    data-testid={elementId.PDP.List.CTAHitungKemampuan}
-                  >
-                    <p style={{ color: '#ffffff', fontSize: 12 }}>
-                      {isOTO ? 'Saya Tertarik' : 'Hitung Kemampuan'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))
-            .sort((a: any, b: any) => a.priceValue - b.priceValue)
-            .slice(0, 5)
-        ) : !toggleHorizontal && expandHorizontal ? (
+        {!toggleHorizontal ? (
           carModelDetails.variants
             .map((carVariant: CarVariantRecommendation, index: number) => (
               <div
@@ -560,7 +449,8 @@ const TabContentLowerVariant = ({
                         <div>
                           <div>
                             <div className={styles.tooltip}>
-                              {removeToneColor(carVariant.name).length > 35 && (
+                              {variantNameDisplay(carVariant.name).length >
+                                35 && (
                                 <div>
                                   <p
                                     className={clsx({
@@ -568,13 +458,13 @@ const TabContentLowerVariant = ({
                                       [styles.responsiveText]: true,
                                     })}
                                   >
-                                    {removeToneColor(carVariant.name)}
+                                    {variantNameDisplay(carVariant.name)}
                                   </p>
                                   <span
                                     className={styles.tooltiptext}
                                     onMouseOver={() => setOnHover(!onHover)}
                                   >
-                                    {removeToneColor(carVariant.name)}
+                                    {variantNameDisplay(carVariant.name)}
                                   </span>
                                 </div>
                               )}
@@ -584,16 +474,18 @@ const TabContentLowerVariant = ({
                                   [styles.responsiveText]: true,
                                 })}
                               >
-                                {removeToneColor(carVariant.name).length <=
+                                {variantNameDisplay(carVariant.name).length <=
                                   35 &&
-                                removeToneColor(carVariant.name).includes('()')
-                                  ? removeToneColor(carVariant.name).replace(
+                                variantNameDisplay(carVariant.name).includes(
+                                  '()',
+                                )
+                                  ? variantNameDisplay(carVariant.name).replace(
                                       '()',
                                       '',
                                     )
-                                  : removeToneColor(carVariant.name).length <=
-                                    30
-                                  ? removeToneColor(carVariant.name)
+                                  : variantNameDisplay(carVariant.name)
+                                      .length <= 35
+                                  ? variantNameDisplay(carVariant.name)
                                   : null}
                               </p>
                             </div>
@@ -615,10 +507,10 @@ const TabContentLowerVariant = ({
                         display: 'flex',
                         flexDirection: 'column',
                         paddingTop:
-                          removeToneColor(carVariant.name).slice(0, 30)
+                          variantNameDisplay(carVariant.name).slice(0, 30)
                             .length <= 19
                             ? '2%'
-                            : removeToneColor(carVariant.name).slice(0, 30)
+                            : variantNameDisplay(carVariant.name).slice(0, 30)
                                 .length > 19
                             ? '5%'
                             : '0',
@@ -654,6 +546,7 @@ const TabContentLowerVariant = ({
               </div>
             ))
             .sort((a: any, b: any) => a.priceValue - b.priceValue)
+            .slice(0, expandHorizontal ? 100 : 5)
         ) : (
           <div className={styles.rowScrollHorizontal}>
             {carModelDetails.variants
@@ -682,10 +575,11 @@ const TabContentLowerVariant = ({
                             {topWordingName(carVariant.name)}
                           </p>
                           <div className={styles.tooltip}>
-                            {removeToneColor(carVariant.name).length > 30 && (
+                            {variantNameDisplay(carVariant.name).length >
+                              30 && (
                               <div>
                                 <p className={styles.openSansSemiBoldBlack}>
-                                  {removeToneColor(carVariant.name).slice(
+                                  {variantNameDisplay(carVariant.name).slice(
                                     0,
                                     30,
                                   ) + '...'}
@@ -694,19 +588,21 @@ const TabContentLowerVariant = ({
                                   className={styles.tooltiptext}
                                   onMouseOver={() => setOnHover(!onHover)}
                                 >
-                                  {removeToneColor(carVariant.name)}
+                                  {variantNameDisplay(carVariant.name)}
                                 </span>
                               </div>
                             )}
                             <p className={styles.openSansSemiBoldBlack}>
-                              {removeToneColor(carVariant.name).length <= 30 &&
-                              removeToneColor(carVariant.name).includes('()')
-                                ? removeToneColor(carVariant.name).replace(
+                              {variantNameDisplay(carVariant.name).length <=
+                                30 &&
+                              variantNameDisplay(carVariant.name).includes('()')
+                                ? variantNameDisplay(carVariant.name).replace(
                                     '()',
                                     '',
                                   )
-                                : removeToneColor(carVariant.name).length <= 30
-                                ? removeToneColor(carVariant.name)
+                                : variantNameDisplay(carVariant.name).length <=
+                                  30
+                                ? variantNameDisplay(carVariant.name)
                                 : null}
                             </p>
                           </div>
