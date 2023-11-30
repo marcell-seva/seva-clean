@@ -19,7 +19,11 @@
   order: 0;
   flex-grow: 0;
   transition: top 500ms;
-  top: 0;
+  top: 0px;
+
+  &.showBox {
+    top: 64px;
+  }
 
   &.hideHeaderSearch {
     top: -72px;
@@ -257,6 +261,9 @@
   font-weight: 400 !important;
   line-height: 20px;
   font-style: normal;
+  b {
+    font-family: var(--open-sans-semi-bold) !important;
+  }
 }
 
 .ctaUsedCar {

@@ -304,6 +304,7 @@ export const HeaderMobile = ({
           handleCloseModal={() => setIsOpenSearchModal(false)}
           isOTO={adaSeva === 'adaSEVAdiOTO' ? true : false}
           pageOrigination={pageOrigination}
+          isShowbox={isShowAnnouncementBox}
         />
       </header>
       <Overlay

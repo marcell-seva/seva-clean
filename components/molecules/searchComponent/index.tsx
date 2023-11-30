@@ -50,8 +50,10 @@ import { UsedCarDetailCard } from 'components/organisms'
 import urls from 'utils/helpers/url'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
 import { filterSpecialChar } from 'utils/stringUtils'
+import getCurrentEnvironment from 'utils/handler/getCurrentEnvironment'
 
 const CarNotFound = '/revamp/illustration/empty-car.webp'
+const CarSkeleton = '/revamp/illustration/car-skeleton.webp'
 const Panel = Collapse.Panel
 
 const Overlay = dynamic(() =>
@@ -63,6 +65,7 @@ interface Props {
   handleCloseModal: () => void
   isOTO?: boolean
   pageOrigination?: string
+  isShowbox?: boolean | null
 }
 
 const SEARCH_NOT_FOUND_TEXT = 'Mobil tidak ditemukan'
@@ -83,6 +86,7 @@ export const SearchComponent = ({
   handleCloseModal,
   isOTO = false,
   pageOrigination,
+  isShowbox,
 }: Props) => {
   const { patchFunnelQuery: patchFunnelQueryData, setFunnelQueryValue } =
     useFunnelQueryData()
@@ -220,7 +224,7 @@ export const SearchComponent = ({
         const { end, highlight, start } = chunk
         const text = textToHighlight.substr(start, end - start)
         if (highlight) {
-          return `<strong style="font-weight: 700;">${text}</strong>`
+          return `<span style="font-family: var(--open-sans-semi-bold) !important;">${text}</span>`
         } else {
           return text
         }
@@ -404,7 +408,7 @@ export const SearchComponent = ({
         </Swiper>
         <div>
           <Link href={carResultsUrl} className={styles.linkAllCar}>
-            <h3 className={styles.linkAllCar}>Lihat semua mobil baru</h3>
+            <p className={styles.linkAllCar}>Lihat semua mobil baru</p>
             <IconChevronRight width={20} height={20} color="#246ED4" />
           </Link>
         </div>
@@ -453,7 +457,7 @@ export const SearchComponent = ({
                 <div onClick={() => onClickSuggestionList(car)}>
                   <div className={styles.linkCar}>
                     <Image
-                      src={car?.image ?? ''}
+                      src={car?.image ?? CarSkeleton}
                       alt={car.carName}
                       style={{
                         objectFit: 'cover',
@@ -588,7 +592,7 @@ export const SearchComponent = ({
             <div>{renderRecommendationUsedCar()}</div>
             <div className={styles.ctaUsedCar}>
               <Link href={usedCarResultUrl} className={styles.linkAllCar}>
-                <h3 className={styles.linkAllCar}>Lihat semua mobil bekas</h3>
+                <p className={styles.linkAllCar}>Lihat semua mobil bekas</p>
                 <IconChevronRight width={20} height={20} color="#246ED4" />
               </Link>
             </div>
@@ -651,6 +655,7 @@ export const SearchComponent = ({
       <div
         className={clsx({
           [styles.containerSearch]: true,
+          [styles.showBox]: isShowbox,
           [styles.hideHeaderSearch]: !isOpen,
         })}
       >
@@ -700,9 +705,9 @@ export const SearchComponent = ({
                           navigateToPLPNewCar(valueSearch)
                         }}
                       >
-                        <h3 className={styles.linkAllCar}>
+                        <p className={styles.linkAllCar}>
                           Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Baru
-                        </h3>
+                        </p>
                         <IconChevronRight
                           width={20}
                           height={20}
@@ -729,9 +734,9 @@ export const SearchComponent = ({
                           navigateToPLPNewCar(valueSearch)
                         }}
                       >
-                        <h3 className={styles.linkAllCar}>
+                        <p className={styles.linkAllCar}>
                           Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Baru
-                        </h3>
+                        </p>
                         <IconChevronRight
                           width={20}
                           height={20}
@@ -760,9 +765,9 @@ export const SearchComponent = ({
                           navigateToPLPUsedCar(valueSearch)
                         }}
                       >
-                        <h3 className={styles.linkAllCar}>
+                        <p className={styles.linkAllCar}>
                           Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Bekas
-                        </h3>
+                        </p>
                         <IconChevronRight
                           width={20}
                           height={20}
@@ -789,9 +794,9 @@ export const SearchComponent = ({
                           router.push(urls.internalUrls.usedCarResultsUrl)
                         }}
                       >
-                        <h3 className={styles.linkAllCar}>
+                        <p className={styles.linkAllCar}>
                           Lihat semua mobil bekas
-                        </h3>
+                        </p>
                         <IconChevronRight
                           width={20}
                           height={20}
