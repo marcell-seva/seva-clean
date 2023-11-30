@@ -429,7 +429,7 @@ export const exteriorImagesListNew: ExteriorImagesListNewType[] = [
     source: voxyExterior(),
   },
   {
-    url: '/mobil-baru/p/toyota/all-new-yaris-cross',
+    url: '/mobil-baru/toyota/all-new-yaris-cross',
     source: yarisCrossExterior(),
   },
 
