@@ -71,10 +71,16 @@ const NewCarResultPage = ({
   const getUrlBrand = router.query.brand?.toString() ?? ''
   const carBrand = getUrlBrand.charAt(0).toUpperCase() + getUrlBrand.slice(1)
 
-  const metaTitle = `Harga OTR ${carBrand} ${todayDate.getFullYear()} - Promo Cicilan bulan ${monthId(
-    todayDate.getMonth(),
-  )} | SEVA `
-  const metaDesc = `Beli mobil baru ${carBrand} ${todayDate.getFullYear()} secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
+  const metaTitle = isBodyType(carBrand)
+    ? `Daftar Mobil Baru ${carBrand.toUpperCase()} ${todayDate.getFullYear()} - Promo Cicilan Bulan ${monthId(
+        todayDate.getMonth(),
+      )} | SEVA`
+    : `Harga OTR ${carBrand} ${todayDate.getFullYear()} - Promo Cicilan bulan ${monthId(
+        todayDate.getMonth(),
+      )} | SEVA `
+  const metaDesc = isBodyType(carBrand)
+    ? `Beli mobil ${carBrand.toUpperCase()} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
+    : `Beli mobil baru ${carBrand} ${todayDate.getFullYear()} secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
 
   return (
     <>
@@ -115,6 +121,52 @@ const getBrand = (brand: string | string[] | undefined) => {
   } else {
     return ''
   }
+}
+
+export const isBrand = (brand: string | string[] | undefined) => {
+  if (Array.isArray(brand)) {
+    brand.every(
+      (item) =>
+        item.toLowerCase() === 'toyota' ||
+        item.toLowerCase() === 'isuzu' ||
+        item.toLowerCase() === 'daihatsu' ||
+        item.toLowerCase() === 'peugeot' ||
+        item.toLowerCase() === 'bmw' ||
+        item.toLowerCase() === 'hyundai',
+    )
+  } else if (brand) {
+    return (
+      brand.toLowerCase() === 'toyota' ||
+      brand.toLowerCase() === 'isuzu' ||
+      brand.toLowerCase() === 'daihatsu' ||
+      brand.toLowerCase() === 'peugeot' ||
+      brand.toLowerCase() === 'bmw' ||
+      brand.toLowerCase() === 'hyundai'
+    )
+  }
+  return false
+}
+
+export const isBodyType = (bodyType: string | string[] | undefined) => {
+  if (Array.isArray(bodyType)) {
+    bodyType.every(
+      (item) =>
+        item.toLowerCase() === 'mpv' ||
+        item.toLowerCase() === 'suv' ||
+        item.toLowerCase() === 'sedan' ||
+        item.toLowerCase() === 'hatchback' ||
+        item.toLowerCase() === 'sport',
+    )
+  } else if (bodyType) {
+    return (
+      bodyType.toLowerCase() === 'mpv' ||
+      bodyType.toLowerCase() === 'suv' ||
+      bodyType.toLowerCase() === 'sedan' ||
+      bodyType.toLowerCase() === 'hatchback' ||
+      bodyType.toLowerCase() === 'sport'
+    )
+  }
+  return false
 }
 
 export const getServerSideProps: GetServerSideProps<{
@@ -202,12 +254,16 @@ export const getServerSideProps: GetServerSideProps<{
     const queryParam: any = {
       ...(downPaymentAmount && { downPaymentType: 'amount' }),
       ...(downPaymentAmount && { downPaymentAmount }),
-      ...(brand && {
+      ...(!isBodyType(brand) && {
         brand: String(brand)
           ?.split(',')
           .map((item) => getCarBrand(item)),
       }),
-      ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
+      ...(bodyType
+        ? { bodyType: String(bodyType)?.split(',') }
+        : isBodyType(brand)
+        ? { bodyType: String(brand)?.toUpperCase()?.split(',') }
+        : {}),
       ...(priceRangeGroup
         ? { priceRangeGroup }
         : {
