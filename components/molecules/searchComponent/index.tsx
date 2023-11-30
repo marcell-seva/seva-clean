@@ -49,6 +49,7 @@ import { SearchNewCar, SearchUsedCar } from 'utils/types/utils'
 import { UsedCarDetailCard } from 'components/organisms'
 import urls from 'utils/helpers/url'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
+import { filterSpecialChar } from 'utils/stringUtils'
 
 const CarNotFound = '/revamp/illustration/empty-car.webp'
 const Panel = Collapse.Panel
@@ -161,10 +162,12 @@ export const SearchComponent = ({
 
   const onHandleChange = (value: string) => {
     setValueSearch(
-      value
-        .split(' ')
-        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-        .join(' '),
+      filterSpecialChar(
+        value
+          .split(' ')
+          .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+          .join(' '),
+      ),
     )
     debounceFn(value)
   }
