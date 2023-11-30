@@ -259,7 +259,11 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
   }
 
   useEffect(() => {
-    if (getCity().cityCode !== 'jakarta') {
+    if (
+      getCity().cityCode !== 'jakarta' ||
+      getCity().cityName === 'Depok' ||
+      ssr === 'failed'
+    ) {
       loadCarRecommendation()
       getCarOfTheMonth()
       checkCitiesData()
