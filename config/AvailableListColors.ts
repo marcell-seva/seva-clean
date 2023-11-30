@@ -272,7 +272,7 @@ export const availableListColors = [
   },
   {
     colors: ['#000000', '#ffffff', '#9e0000', '#20392c', '#a7a8ad'],
-    url: '/mobil-baru/p/toyota/all-new-yaris-cross',
+    url: '/mobil-baru/toyota/all-new-yaris-cross',
   },
 
   // === bmw cars ===
@@ -412,23 +412,23 @@ export const availableListColors = [
   // === hyundai cars ===
   {
     colors: ['#121210', '#c6c1bd', '#4a4b4f', '#e2e2ea', '#939395'],
-    url: '/mobil-baru/p/hyundai/ioniq-5',
+    url: '/mobil-baru/hyundai/ioniq-5',
   },
   {
     colors: ['#0b101d', '#e9efe7', '#2d393c', '#9a9890', '#040508'],
-    url: '/mobil-baru/p/hyundai/ioniq-6',
+    url: '/mobil-baru/hyundai/ioniq-6',
   },
   {
     colors: ['#242527', '#2a3548', '#e9e9e9', '#494e50', '#949999'],
-    url: '/mobil-baru/p/hyundai/palisade',
+    url: '/mobil-baru/hyundai/palisade',
   },
   {
     colors: ['#181717', '#999b9a', '#36383e', '#cfd0d7'],
-    url: '/mobil-baru/p/hyundai/staria',
+    url: '/mobil-baru/hyundai/staria',
   },
   {
     colors: ['#d0d0d0', '#a6a8a7', '#494949', '#262829', '#2d3337'],
-    url: '/mobil-baru/p/hyundai/santa-fe',
+    url: '/mobil-baru/hyundai/santa-fe',
   },
   {
     colors: [
@@ -441,7 +441,7 @@ export const availableListColors = [
       '#424b51',
       '#982020',
     ],
-    url: '/mobil-baru/p/hyundai/stargazer',
+    url: '/mobil-baru/hyundai/stargazer',
   },
   {
     colors: [
@@ -454,11 +454,11 @@ export const availableListColors = [
       '#424b51',
       '#982020',
     ],
-    url: '/mobil-baru/p/hyundai/stargazer-x',
+    url: '/mobil-baru/hyundai/stargazer-x',
   },
   {
     colors: ['#0c1015', '#eef0ee', '#85878a', '#3d474c', '#981e1f'],
-    url: '/mobil-baru/p/hyundai/creta',
+    url: '/mobil-baru/hyundai/creta',
   },
 ]
 
@@ -531,19 +531,19 @@ export const availableList = [
   '/mobil-baru/isuzu/mu-x',
 
   // peugeot cars
-  '/mobil-baru/p/peugeot/5008',
-  '/mobil-baru/p/peugeot/3008',
-  '/mobil-baru/p/peugeot/2008',
+  '/mobil-baru/peugeot/5008',
+  '/mobil-baru/peugeot/3008',
+  '/mobil-baru/peugeot/2008',
 
   //hyundai cars
-  '/mobil-baru/p/hyundai/ioniq-5',
-  '/mobil-baru/p/hyundai/ioniq-6',
-  '/mobil-baru/p/hyundai/palisade',
-  '/mobil-baru/p/hyundai/staria',
-  '/mobil-baru/p/hyundai/santa-fe',
-  '/mobil-baru/p/hyundai/stargazer',
-  '/mobil-baru/p/hyundai/stargazer-x',
-  '/mobil-baru/p/hyundai/creta',
+  '/mobil-baru/hyundai/ioniq-5',
+  '/mobil-baru/hyundai/ioniq-6',
+  '/mobil-baru/hyundai/palisade',
+  '/mobil-baru/hyundai/staria',
+  '/mobil-baru/hyundai/santa-fe',
+  '/mobil-baru/hyundai/stargazer',
+  '/mobil-baru/hyundai/stargazer-x',
+  '/mobil-baru/hyundai/creta',
 ]
 
 export const availableListVideoReview = [

@@ -275,9 +275,10 @@ export default function HeaderVariant({
 
   const carData = useMemo(() => {
     const data = comDataNew?.slice(0, 5).map((item) => ({
-      name: `${item.brand} ${item.model?.carModel.model ?? ''}`,
-      image: (item.model && item.model.carModel.imageUrls.main_color[0]) || '',
-      link: `/${item.brand}/${item.model?.carModel.model
+      name: `${item.brand} ${item.model?.carModel?.model ?? ''}`,
+      image:
+        (item.model && item.model?.carModel?.imageUrls?.main_color[0]) || '',
+      link: `/${item.brand}/${item.model?.carModel?.model
         .replace(/\s+/g, '-')
         .toLowerCase()}`,
     }))
