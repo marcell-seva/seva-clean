@@ -525,11 +525,28 @@ span.ant-select-selection-placeholder {
 
 div.ant-collapse-content-box {
   padding: 16px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 div.collapse-header {
   padding: 24px 16px;
   padding-inline-start: 0;
+}
+
+div.ant-collapse-header {
+  background-color: #f5f6f6 !important;
+}
+
+div.ant-collapse {
+  border: 0;
+}
+
+div.ant-collapse-content.ant-collapse-content-active {
+  border: 0 !important;
+}
+div.ant-collapse-item.ant-collapse-item-active {
+  border: 0 !important;
 }
 
 .ant-collapse {

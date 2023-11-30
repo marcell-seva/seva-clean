@@ -173,7 +173,7 @@
   padding: 8px;
 
   &:hover {
-    border-radius: 8px;
+    // border-radius: 8px;
     background-color: #{$shades-sky-blue-30};
   }
 }
@@ -193,7 +193,7 @@
   padding: 8px;
 
   &:hover {
-    border-radius: 8px;
+    // border-radius: 8px;
   }
 }
 
@@ -201,12 +201,13 @@
   width: 100%;
   cursor: pointer;
   &:hover {
-    border-radius: 8px;
+    // border-radius: 8px;
     background-color: #{$shades-sky-blue-30};
   }
 }
 
 .listNewCar {
+  margin-left: 16px;
   display: flex;
   gap: 16px;
 }
@@ -226,17 +227,18 @@
 }
 .panelStyle {
   color: var(--primary-black, #13131b);
+  font-family: var(--open-sans);
   text-align: left;
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
-  line-height: 20px;
+  line-height: 20px !important;
 }
 
 .styledCarName {
   // text-align: start;
-  padding-top: 12px;
-  padding-bottom: 14px;
+  padding-left: 16px;
+  padding-right: 16px;
   color: black;
   // margin-left: 0;
   font-size: 14px;
@@ -250,7 +252,6 @@
   gap: 8px;
   align-items: center;
   justify-content: center;
-  // padding-bottom: 16px;
   font-family: var(--open-sans) !important;
   font-size: 14px;
   font-weight: 400 !important;
@@ -268,6 +269,10 @@
   // bottom: 30px;
   // border-end-start-radius: 8px;
   // border-end-end-radius: 8px;
+}
+
+.styledCarImage {
+  margin-bottom: 12px;
 }
 
 .styledUsedCarName {

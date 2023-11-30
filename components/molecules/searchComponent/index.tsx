@@ -1,4 +1,4 @@
-import { Collapse, ConfigProvider, Select } from 'antd'
+import { Collapse } from 'antd'
 import styles from 'styles/components/organisms/searchComponent.module.scss'
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import {
@@ -66,6 +66,17 @@ interface Props {
 }
 
 const SEARCH_NOT_FOUND_TEXT = 'Mobil tidak ditemukan'
+
+const saveHistoryToLocal = (link: string, name: string) => {
+  const searchHistory = JSON.parse(
+    localStorage.getItem('searchHistory') || '[]',
+  )
+  if (searchHistory.length > 2) {
+    searchHistory.pop() // hapus item terakhir
+  }
+  searchHistory.unshift({ value: link, label: name })
+  localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
+}
 
 export const SearchComponent = ({
   isOpen = true,
@@ -233,14 +244,7 @@ export const SearchComponent = ({
     }
 
     // simpan pencarian ke dalam local storage
-    const searchHistory = JSON.parse(
-      localStorage.getItem('searchHistory') || '[]',
-    )
-    if (searchHistory.length > 2) {
-      searchHistory.pop() // hapus item terakhir
-    }
-    searchHistory.unshift({ value: item.url, label: item.carName })
-    localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
+    saveHistoryToLocal(item.url, item.carName)
 
     window.location.href = urlDestination
   }
@@ -252,14 +256,7 @@ export const SearchComponent = ({
     )
 
     // simpan pencarian ke dalam local storage
-    const searchHistory = JSON.parse(
-      localStorage.getItem('searchHistory') || '[]',
-    )
-    if (searchHistory.length > 2) {
-      searchHistory.pop() // hapus item terakhir
-    }
-    searchHistory.unshift({ value: urlDestination, label: item.name })
-    localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
+    saveHistoryToLocal(urlDestination, item.name)
 
     window.location.href = urlDestination
   }
@@ -278,14 +275,7 @@ export const SearchComponent = ({
     }
 
     // simpan pencarian ke dalam local storage
-    const searchHistory = JSON.parse(
-      localStorage.getItem('searchHistory') || '[]',
-    )
-    if (searchHistory.length > 2) {
-      searchHistory.pop() // hapus item terakhir
-    }
-    searchHistory.unshift({ value: item.sevaUrl, label: item.carName })
-    localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
+    saveHistoryToLocal(item.sevaUrl, item.carName)
 
     window.location.href = urlDestination
   }
@@ -304,10 +294,15 @@ export const SearchComponent = ({
           data.value.split('/p/')[1],
         )
       } else {
-        urlDestination = carResultsUrl.replace(
-          ':brand/:model/:tab?',
-          data.value.split('/c/')[1],
-        )
+        const checkSearch = data.value.includes('search')
+        if (checkSearch) {
+          urlDestination = data.value
+        } else {
+          urlDestination = carResultsUrl.replace(
+            ':brand/:model/:tab?',
+            data.value.split('/c/')[1],
+          )
+        }
       }
     } else {
       const checkPDPUsedCar = data.value.includes('/p')
@@ -317,7 +312,12 @@ export const SearchComponent = ({
           data.value.split('/p/')[1],
         )
       } else {
-        urlDestination = usedCarResultUrl + data.value.split('/c')[1]
+        const checkSearch = data.value.includes('search')
+        if (checkSearch) {
+          urlDestination = data.value
+        } else {
+          urlDestination = usedCarResultUrl + data.value.split('/c')[1]
+        }
       }
     }
 
@@ -342,17 +342,27 @@ export const SearchComponent = ({
           if (!renderedLabels[searchTerm.label]) {
             renderedLabels[searchTerm.label] = true
             return (
-              <React.Fragment key={searchTerm.label}>
+              <div
+                className={styles.styledCarContentName}
+                key={searchTerm.value}
+              >
                 <div
-                  className={styles.styledCarContentName}
+                  className={styles.styledCarName}
                   onClick={() => onClickSearchHistory(searchTerm)}
                 >
-                  <div className={styles.styledCarName}>
-                    <a style={{ color: '#000' }}>{searchTerm.label}</a>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <div className={styles.styledUsedCarName}>
+                      {searchTerm.label}
+                    </div>
                   </div>
                 </div>
                 <Line width={'100%'} height={'1px'} background="#EBECEE" />
-              </React.Fragment>
+              </div>
             )
           }
           return null
@@ -383,6 +393,7 @@ export const SearchComponent = ({
                       }}
                       width={'64'}
                       height={'48'}
+                      className={styles.styledCarImage}
                     />
                     <div className={styles.styledCarName}>{car.name}</div>
                   </div>
@@ -450,6 +461,7 @@ export const SearchComponent = ({
                       }}
                       width={'64'}
                       height={'48'}
+                      className={styles.styledCarImage}
                     />
                     <div className={styles.styledCarName}>
                       {car.carName && (
@@ -479,17 +491,29 @@ export const SearchComponent = ({
         {suggestionsListsUsedCar.map((car) => (
           <>
             <div className={styles.styledCarContentName} key={car?.carName}>
-              <div className={styles.styledLink} onClick={() => clickList(car)}>
-                {car?.carName && (
-                  <div style={{ width: '100%' }}>
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: renderSearchOptionsItem(car.carName),
-                      }}
-                      className={styles.styledCarName}
-                    />
+              <div
+                className={styles.styledCarName}
+                onClick={() => clickList(car)}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  <div className={styles.styledUsedCarName}>
+                    {car?.carName && (
+                      <div style={{ width: '100%' }}>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: renderSearchOptionsItem(car.carName),
+                          }}
+                          className={styles.styledCarName}
+                        />
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
             </div>
             <Line width={'100%'} height={'1px'} background="#EBECEE" />
@@ -537,10 +561,8 @@ export const SearchComponent = ({
         })}
       >
         {checkHistory && (
-          <div className={styles.styledItem}>
-            <div style={{ width: '100%', textAlign: 'left' }}>
-              {renderSearchHistory()}
-            </div>
+          <div style={{ width: '100%', textAlign: 'left' }}>
+            {renderSearchHistory()}
           </div>
         )}
         <Collapse
@@ -549,9 +571,9 @@ export const SearchComponent = ({
           size="large"
           expandIcon={({ isActive }) =>
             isActive ? (
-              <IconChevronUp height={24} width={24} />
+              <IconChevronUp height={24} width={24} color="#13131B" />
             ) : (
-              <IconChevronDown height={24} width={24} />
+              <IconChevronDown height={24} width={24} color="#13131B" />
             )
           }
         >
@@ -577,6 +599,8 @@ export const SearchComponent = ({
   }
 
   const navigateToPLPNewCar = (search: string) => {
+    const url = `${carResultsUrl}?search=${search}`
+    saveHistoryToLocal(url, search)
     if (window.location.pathname === '/mobil-baru/c') {
       patchFunnelQueryData({ search: search })
       router
@@ -596,6 +620,8 @@ export const SearchComponent = ({
   }
 
   const navigateToPLPUsedCar = (search: string) => {
+    const url = `${usedCarResultUrl}?search=${search}`
+    saveHistoryToLocal(url, search)
     if (window.location.pathname === '/mobil-bekas/c') {
       patchFunnelQueryUsedCarData({ search: search })
       router
@@ -700,11 +726,11 @@ export const SearchComponent = ({
                         href={'#'}
                         className={styles.linkAllCar}
                         onClick={() => {
-                          router.push(urls.internalUrls.carResultsUrl)
+                          navigateToPLPNewCar(valueSearch)
                         }}
                       >
                         <h3 className={styles.linkAllCar}>
-                          Lihat semua mobil baru
+                          Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Baru
                         </h3>
                         <IconChevronRight
                           width={20}
