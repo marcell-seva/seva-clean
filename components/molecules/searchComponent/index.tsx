@@ -87,6 +87,7 @@ export const SearchComponent = ({
   const router = useRouter()
   const [isShowLoading, setShowLoading] = useState(true)
   const [comDataNew, setComDataNew] = useState<COMData[]>([])
+  const [usedCarRecom, setUsedCarRecom] = useState<SearchUsedCar[]>([])
   const [isError, setIsError] = useState(false)
   const [isNotFoundClicked, setIsNotFoundClicked] = useState(false)
   const [notFound, setIsNotFound] = useState(false)
@@ -100,9 +101,18 @@ export const SearchComponent = ({
   }, [isOpen])
 
   useEffect(() => {
+    const params = new URLSearchParams()
+    params.append('query', ' ' as string)
     getCarofTheMonth('?city=' + getCity().cityCode)
       .then((res) => {
         setComDataNew(res.data)
+      })
+      .catch(() => {
+        setIsError(true)
+      })
+    getUsedCarSearch('', { params })
+      .then((res) => {
+        setUsedCarRecom(res.data)
       })
       .catch(() => {
         setIsError(true)
@@ -176,6 +186,12 @@ export const SearchComponent = ({
     return data ?? []
   }, [comDataNew])
 
+  const usedCarData = useMemo(() => {
+    const data = usedCarRecom?.slice(0, 5)
+
+    return data ?? []
+  }, [usedCarRecom])
+
   const renderSearchOptionsItem = (textToHighlight: string) => {
     const searchWords: string[] = []
     searchWords.push(valueSearch)
@@ -200,12 +216,6 @@ export const SearchComponent = ({
     return temp
   }
 
-  const onClickRecommedationList = (car: any) => {
-    let urlDestination = (isOTO ? OTOVariantListUrl : variantListUrl)
-      .replace('/:brand/:model', car.link)
-      .replace(':tab?', '')
-  }
-
   const onClickSuggestionList = (item: SearchNewCar) => {
     const check = item.url.includes('/p/')
 
@@ -223,10 +233,29 @@ export const SearchComponent = ({
     const searchHistory = JSON.parse(
       localStorage.getItem('searchHistory') || '[]',
     )
-    if (searchHistory.length >= 3) {
+    if (searchHistory.length > 2) {
       searchHistory.pop() // hapus item terakhir
     }
     searchHistory.unshift({ value: item.url, label: item.carName })
+    localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
+
+    window.location.href = urlDestination
+  }
+
+  const onClickRecommendationList = (item: any) => {
+    let urlDestination = variantListUrl.replace(
+      '/:brand/:model/:tab?',
+      item.link,
+    )
+
+    // simpan pencarian ke dalam local storage
+    const searchHistory = JSON.parse(
+      localStorage.getItem('searchHistory') || '[]',
+    )
+    if (searchHistory.length > 2) {
+      searchHistory.pop() // hapus item terakhir
+    }
+    searchHistory.unshift({ value: urlDestination, label: item.name })
     localStorage.setItem('searchHistory', JSON.stringify(searchHistory))
 
     window.location.href = urlDestination
@@ -249,7 +278,7 @@ export const SearchComponent = ({
     const searchHistory = JSON.parse(
       localStorage.getItem('searchHistory') || '[]',
     )
-    if (searchHistory.length >= 3) {
+    if (searchHistory.length > 2) {
       searchHistory.pop() // hapus item terakhir
     }
     searchHistory.unshift({ value: item.sevaUrl, label: item.carName })
@@ -262,15 +291,31 @@ export const SearchComponent = ({
 
   const onClickSearchHistory = (data: any) => {
     handleCloseModal()
-    const check = data.value.includes('/p/')
+    const checkNewCar = data.value.includes('mobil-baru/')
     let urlDestination = ''
-    if (check) {
-      urlDestination = usedCarDetailUrl.replace(
-        ':id',
-        data.value.split('/p/')[1],
-      )
+    if (checkNewCar) {
+      const checkPDP = data.value.includes('/p')
+      if (checkPDP) {
+        urlDestination = variantListUrl.replace(
+          ':brand/:model/:tab?',
+          data.value.split('/p/')[1],
+        )
+      } else {
+        urlDestination = carResultsUrl.replace(
+          ':brand/:model/:tab?',
+          data.value.split('/c/')[1],
+        )
+      }
     } else {
-      urlDestination = usedCarResultUrl + data.value.split('/c')[1]
+      const checkPDPUsedCar = data.value.includes('/p')
+      if (checkPDPUsedCar) {
+        urlDestination = usedCarDetailUrl.replace(
+          ':id',
+          data.value.split('/p/')[1],
+        )
+      } else {
+        urlDestination = usedCarResultUrl + data.value.split('/c')[1]
+      }
     }
 
     window.location.href = urlDestination
@@ -280,6 +325,8 @@ export const SearchComponent = ({
     [label: string]: boolean
   }
 
+  const checkHistory =
+    JSON.parse(localStorage.getItem('searchHistory') || '[]').length > 0
   const renderSearchHistory = () => {
     const searchHistory = JSON.parse(
       localStorage.getItem('searchHistory') || '[]',
@@ -322,12 +369,7 @@ export const SearchComponent = ({
           {carData.map((car) => (
             <>
               <SwiperSlide className={styles.containerNewCar} key={car.name}>
-                <Link
-                  href={`${isOTO ? `/adaSEVAdiOTO` : ``}/mobil-baru${
-                    isOTO ? '' : '/p'
-                  }${car.link.toLowerCase()}`}
-                  onClick={() => onClickRecommedationList(car)}
-                >
+                <div onClick={() => onClickRecommendationList(car)}>
                   <div className={styles.linkCar}>
                     <Image
                       src={car.image}
@@ -341,7 +383,7 @@ export const SearchComponent = ({
                     />
                     <div className={styles.styledCarName}>{car.name}</div>
                   </div>
-                </Link>
+                </div>
               </SwiperSlide>
             </>
           ))}
@@ -359,15 +401,12 @@ export const SearchComponent = ({
   const renderRecommendationUsedCar = () => {
     return (
       <ul>
-        {carData.map((car) => (
+        {usedCarData?.map((car: SearchUsedCar) => (
           <>
-            <div className={styles.styledCarContentName} key={car.name}>
-              <Link
+            <div className={styles.styledCarContentName} key={car.carName}>
+              <div
                 className={styles.styledCarName}
-                href={`${
-                  isOTO ? `/adaSEVAdiOTO` : ``
-                }/mobil-baru${car.link.toLowerCase()}`}
-                onClick={() => onClickRecommedationList(car)}
+                onClick={() => clickList(car)}
               >
                 <div
                   style={{
@@ -375,9 +414,9 @@ export const SearchComponent = ({
                     alignItems: 'center',
                   }}
                 >
-                  <div className={styles.styledUsedCarName}>{car.name}</div>
+                  <div className={styles.styledUsedCarName}>{car.carName}</div>
                 </div>
-              </Link>
+              </div>
             </div>
             <Line width={'100%'} height={'1px'} background="#EBECEE" />
           </>
@@ -494,11 +533,13 @@ export const SearchComponent = ({
           [styles.hideHeaderDropdown]: !isOpen,
         })}
       >
-        <div className={styles.styledItem}>
-          <div style={{ width: '100%', textAlign: 'left' }}>
-            {renderSearchHistory()}
+        {checkHistory && (
+          <div className={styles.styledItem}>
+            <div style={{ width: '100%', textAlign: 'left' }}>
+              {renderSearchHistory()}
+            </div>
           </div>
-        </div>
+        )}
         <Collapse
           defaultActiveKey={['1', '2']}
           expandIconPosition="end"
