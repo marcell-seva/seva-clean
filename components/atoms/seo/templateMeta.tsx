@@ -102,7 +102,7 @@ export const metaTitleTemplateTwoSlug = (
   } else {
     switch (slug) {
       case 'warna/ringkasan':
-        return `${brand} ${model} ${year} - Harga OTR, Promo ${currentMonth}, Warna, Ringkasan | SEVA`
+        return `${brand} ${model} ${year} - Harga OTR, Promo ${currentMonth}, Warna, dan Ringkasan | SEVA`
       case 'warna/spesifikasi':
         return `Spesifikasi & Fitur ${brand} ${model} ${year} | SEVA`
       case 'warna/harga':
