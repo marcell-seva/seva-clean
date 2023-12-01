@@ -47,6 +47,9 @@ import {
   getUsedCarCityList,
   getUsedCarSearch,
 } from 'services/api'
+import { default as customAxiosGet } from 'services/api/get'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
+import Script from 'next/script'
 
 const UsedCarResultPage = ({
   meta,
@@ -169,6 +172,16 @@ const UsedCarResultPage = ({
         description={metaDescription}
         image={defaultSeoImage}
       />
+      {brandSlug && (
+        <Script
+          id="product-jsonld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLD(brandSlug)),
+          }}
+          key="product-jsonld"
+        />
+      )}
       <UsedCarProvider
         car={null}
         carOfTheMonth={[]}
@@ -285,7 +298,7 @@ export const getServerSideProps: GetServerSideProps<{
   } = ctx.query
 
   const params = new URLSearchParams()
-  params.append('query', ' ' as string)
+  params.append('query', '' as string)
 
   try {
     const [
@@ -298,7 +311,7 @@ export const getServerSideProps: GetServerSideProps<{
       usedCarBrandList,
       dataSearchRes,
     ]: any = await Promise.all([
-      axios.get(footerTagBaseApi + metabrand),
+      customAxiosGet(footerTagBaseApi + metabrand),
       getMenu(),
       getMobileHeaderMenu(),
       getMobileFooterMenu(),
@@ -311,7 +324,7 @@ export const getServerSideProps: GetServerSideProps<{
     const cityList = usedCarCityList.data
     const brandList = usedCarBrandList.data
 
-    const footerData = fetchFooter.data.data
+    const footerData = fetchFooter.data
 
     if (!priceStart && !priceEnd) {
       const minmax = await getMinMaxPriceUsedCar('')
@@ -477,19 +490,88 @@ export const getServerSideProps: GetServerSideProps<{
         dataSearchUsedCar: dataSearchRes.data,
       },
     }
-  } catch (e) {
-    return {
-      props: {
-        meta,
-        dataDesktopMenu: [],
-        dataMobileMenu: [],
-        dataFooter: [],
-        dataCities: [],
-        cityList: [],
-        brandList: [],
-        isSsrMobile: getIsSsrMobile(ctx),
-        isSsrMobileLocal: getIsSsrMobile(ctx),
-      },
-    }
+  } catch (e: any) {
+    return serverSideManualNavigateToErrorPage(e?.response?.status)
+  }
+}
+
+const jsonLD = (carModel: string | undefined) => {
+  return {
+    brand: {
+      '@type': 'Brand',
+      name: carModel,
+      url: `https://www.seva.id/mobil-bekas/c/${carModel}`,
+    },
+    SiteNavigationElement: {
+      '@type': 'SiteNavigationElement',
+      name: 'SEVA',
+      potentialAction: [
+        {
+          '@type': 'Action',
+          name: 'Mobil',
+          url: 'https://www.seva.id/mobil-baru',
+        },
+        {
+          '@type': 'Action',
+          name: 'Mobil',
+          url: 'https://www.seva.id/mobil-bekas/c',
+        },
+        {
+          '@type': 'Action',
+          name: 'Fasilitas Dana',
+          url: 'https://www.seva.id/fasilitas-dana',
+        },
+        {
+          '@type': 'Action',
+          name: 'Layanan Surat Kendaraan',
+          url: 'https://www.seva.id/layanan-surat-kendaraan',
+        },
+        {
+          '@type': 'Action',
+          name: 'Tentang SEVA',
+          url: 'https://www.seva.id/info/tentang-kami/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Promo',
+          url: 'https://www.seva.id/info/promo/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Teman SEVA',
+          url: 'https://www.seva.id/teman-seva/dashboard',
+        },
+        {
+          '@type': 'Action',
+          name: 'Berita Utama Otomotif',
+          url: 'https://www.seva.id/blog/category/otomotif/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Review Otomotif',
+          url: 'https://www.seva.id/blog/category/otomotif/review-otomotif/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Tips & Rekomendasi',
+          url: 'https://www.seva.id/blog/category/otomotif/tips-rekomendasi-otomotif/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Keuangan',
+          url: 'https://www.seva.id/blog/category/keuangan/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Semua Artikel',
+          url: 'https://www.seva.id/blog/',
+        },
+        {
+          '@type': 'Action',
+          name: 'Akun Saya',
+          url: 'https://www.seva.id/akun/profil',
+        },
+      ],
+    },
   }
 }
