@@ -274,13 +274,13 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
 
   useAfterInteractive(() => {
     cityHandler()
-    sendAmplitudeData(AmplitudeEventName.WEB_LANDING_PAGE_VIEW, {})
     setTrackEventMoEngageWithoutValue(EventName.view_homepage)
     setTimeout(() => {
+      sendAmplitudeData(AmplitudeEventName.WEB_LANDING_PAGE_VIEW, {})
       if (!isSentCountlyPageView) {
         trackCountlyPageView()
       }
-    }, 1000)
+    }, 500)
   }, [])
 
   const trackLeadsLPForm = (): LeadsActionParam => {
