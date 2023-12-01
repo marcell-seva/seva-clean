@@ -55,7 +55,6 @@ export const Faq: React.FC<PropsInfo> = ({
     if (collIndex.includes(index)) {
       const removeItem = collIndex.filter((item) => item !== index)
       setCollIndex([...removeItem])
-      trackExpandFaq(String(index + 1), false)
       return setTimeout(() => {
         setExpandItem([...removeItem])
       }, 450)
