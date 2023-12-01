@@ -77,7 +77,9 @@ const brandList: CarButtonProps[] = [
       <Image
         src={Hyundai}
         alt="Hyundai"
-        style={{ width: 17.49, height: 19.2 }}
+        style={{ width: 24, height: 24 }}
+        width={24}
+        height={24}
       />
     ),
     value: 'Hyundai',
