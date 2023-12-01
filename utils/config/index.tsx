@@ -80,7 +80,9 @@ const brandList: TabItemData[] = [
         <Image
           src={LogoHyundai}
           alt="Hyundai"
-          style={{ width: 18, height: 18 }}
+          style={{ width: 24, height: 24 }}
+          width={24}
+          height={24}
         />
         Hyundai
       </div>
