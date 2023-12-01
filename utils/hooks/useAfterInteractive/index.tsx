@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
+const eventList = ['scroll', 'touchstart', 'keydown', 'click']
+
 export const useAfterInteractive = (
   executeFunc: () => void,
   dependencies: any[],
@@ -11,17 +13,13 @@ export const useAfterInteractive = (
   const [interactive, setInteractive] = useState(false)
 
   const onInteractive = useCallback(() => {
-    ;['scroll', 'touchstart', 'keydown'].forEach((ev) =>
-      window.removeEventListener(ev, onInteractive),
-    )
+    eventList.forEach((ev) => window.removeEventListener(ev, onInteractive))
     setInteractive(true)
   }, [...dependencies])
 
   useEffect(() => {
     if (!interactive) {
-      ;['scroll', 'touchstart', 'keydown'].forEach((ev) =>
-        window.addEventListener(ev, onInteractive),
-      )
+      eventList.forEach((ev) => window.addEventListener(ev, onInteractive))
 
       return () => setInteractive(false)
     }

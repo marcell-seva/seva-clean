@@ -25,6 +25,7 @@ import { getNewFunnelLoanSpecialRate } from 'utils/handler/funnel'
 import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useRouter } from 'next/router'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const Modal = dynamic(() => import('antd/lib/modal'), { ssr: false })
 
@@ -107,11 +108,15 @@ export const PriceTab = ({
     )
   }, [carModelDetails])
 
-  useEffect(() => {
-    if (carModelDetails && flag === TrackerFlag.Init) {
-      sendAmplitude()
-      setFlag(TrackerFlag.Sent)
-    }
+  useAfterInteractive(() => {
+    const timeoutAfterInteractive = setTimeout(() => {
+      if (carModelDetails && flag === TrackerFlag.Init) {
+        sendAmplitude()
+        setFlag(TrackerFlag.Sent)
+      }
+    }, 500)
+
+    return () => clearTimeout(timeoutAfterInteractive)
   }, [carModelDetails])
   useEffect(() => {
     if (variantView) {

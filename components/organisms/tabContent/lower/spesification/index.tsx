@@ -20,6 +20,7 @@ import { TrackerFlag } from 'utils/types/models'
 import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useRouter } from 'next/router'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 interface SpecificationTabProps {
   isOTO?: boolean
@@ -98,11 +99,15 @@ export const SpecificationTab = ({ isOTO = false }: SpecificationTabProps) => {
     }
   }, [carVariantDetails, carModelDetails, recommendation])
 
-  useEffect(() => {
-    if (carModelDetails && flag === TrackerFlag.Init) {
-      sendAmplitude()
-      setFlag(TrackerFlag.Sent)
-    }
+  useAfterInteractive(() => {
+    const timeoutAfterInteractive = setTimeout(() => {
+      if (carModelDetails && flag === TrackerFlag.Init) {
+        sendAmplitude()
+        setFlag(TrackerFlag.Sent)
+      }
+    }, 500)
+
+    return () => clearTimeout(timeoutAfterInteractive)
   }, [carModelDetails])
 
   const sendAmplitude = (): void => {
