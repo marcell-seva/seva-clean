@@ -567,11 +567,15 @@ export const CreditTab = () => {
     )
   }, [carModelDetails])
 
-  useEffect(() => {
-    if (carModelDetails && flag === TrackerFlag.Init) {
-      sendAmplitude()
-      setFlag(TrackerFlag.Sent)
-    }
+  useAfterInteractive(() => {
+    const timeoutAfterInteractive = setTimeout(() => {
+      if (carModelDetails && flag === TrackerFlag.Init) {
+        sendAmplitude()
+        setFlag(TrackerFlag.Sent)
+      }
+    }, 500)
+
+    return () => clearTimeout(timeoutAfterInteractive)
   }, [carModelDetails])
 
   const sendAmplitude = (): void => {

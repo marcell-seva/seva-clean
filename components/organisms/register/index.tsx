@@ -43,6 +43,8 @@ import { titleCase } from 'utils/handler/titleCase'
 import { registerCustomerSeva } from 'utils/httpUtils/customerUtils'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
 import dynamic from 'next/dynamic'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { trackRegistrationPageView } from 'helpers/amplitude/seva20Tracking'
 
 const Toast = dynamic(
   () => import('components/atoms/toast').then((comp) => comp.Toast),
@@ -113,10 +115,19 @@ export const Register = () => {
     }
     if (phoneNumber === undefined) {
       router.push('/masuk-akun')
-    } else {
-      trackCountlyRegistrationPageView()
-      setTrackEventMoEngageWithoutValue('view_registration_page')
     }
+  }, [])
+
+  useAfterInteractive(() => {
+    const timeoutAfterInteractive = setTimeout(() => {
+      if (phoneNumber !== undefined) {
+        trackRegistrationPageView()
+        trackCountlyRegistrationPageView()
+        setTrackEventMoEngageWithoutValue('view_registration_page')
+      }
+    }, 500)
+
+    return () => clearTimeout(timeoutAfterInteractive)
   }, [])
 
   useEffect(() => {

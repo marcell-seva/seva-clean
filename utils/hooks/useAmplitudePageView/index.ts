@@ -1,5 +1,5 @@
 import { useFunnelFormData } from 'services/context/funnelFormContext'
-import { useEffect } from 'react'
+import { useAfterInteractive } from '../useAfterInteractive'
 
 type CarResultQuery = {
   downPayment?: number | null
@@ -9,8 +9,12 @@ type CarResultParameters = {
   carResultParameters: CarResultQuery
 }
 export const useAmplitudePageView = (eventTrackingFunction: () => void) => {
-  useEffect(() => {
-    eventTrackingFunction()
+  useAfterInteractive(() => {
+    const timeoutAfterInteractive = setTimeout(() => {
+      eventTrackingFunction()
+    }, 500)
+
+    return () => clearTimeout(timeoutAfterInteractive)
   }, [])
 }
 

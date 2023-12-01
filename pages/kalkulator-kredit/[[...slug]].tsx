@@ -637,7 +637,6 @@ export default function LoanCalculatorPage() {
   }
 
   useEffect(() => {
-    trackRegularCalculatorPage(getDataForAmplitude())
     checkCitiesData()
     fetchAllCarModels()
     fetchArticles()
@@ -720,10 +719,11 @@ export default function LoanCalculatorPage() {
   useAfterInteractive(() => {
     trackMoengage()
     const timeoutCountlyTracker = setTimeout(() => {
+      trackRegularCalculatorPage(getDataForAmplitude())
       if (!isSentCountlyPageView) {
         trackCountlyPageView()
       }
-    }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
+    }, 500) // use timeout because countly tracker cant process multiple event triggered at the same time
 
     return () => clearTimeout(timeoutCountlyTracker)
   }, [])

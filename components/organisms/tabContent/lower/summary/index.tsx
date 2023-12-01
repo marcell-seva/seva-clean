@@ -34,6 +34,7 @@ import { TrackerFlag, InstallmentTypeOptions } from 'utils/types/models'
 import dynamic from 'next/dynamic'
 import { getNewFunnelLoanSpecialRate } from 'utils/handler/funnel'
 import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const Modal = dynamic(() => import('antd/lib/modal'), { ssr: false })
 
@@ -151,12 +152,16 @@ export const SummaryTab = ({
     setTrackEventMoEngage('view_variant_list', objData)
   }
 
-  useEffect(() => {
-    if (carModelDetails && cheapestVariantData && flag === TrackerFlag.Init) {
-      sendAmplitude()
-      trackEventMoengage()
-      setFlag(TrackerFlag.Sent)
-    }
+  useAfterInteractive(() => {
+    const timeoutAfterInteractive = setTimeout(() => {
+      if (carModelDetails && cheapestVariantData && flag === TrackerFlag.Init) {
+        sendAmplitude()
+        trackEventMoengage()
+        setFlag(TrackerFlag.Sent)
+      }
+    }, 500)
+
+    return () => clearTimeout(timeoutAfterInteractive)
   }, [carModelDetails, cheapestVariantData])
 
   useEffect(() => {

@@ -49,6 +49,7 @@ import {
 } from 'utils/httpUtils/customerUtils'
 import dynamic from 'next/dynamic'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { trackLoginPageView } from 'helpers/amplitude/seva20Tracking'
 
 const LoginModalMultiKK = dynamic(
   () => import('../loginModalMultiKK').then((comp) => comp.LoginModalMultiKK),
@@ -153,8 +154,9 @@ export const Login = () => {
   useAfterInteractive(() => {
     setTrackEventMoEngageWithoutValue('view_login_page')
     const timeoutCountly = setTimeout(() => {
+      trackLoginPageView()
       trackCountlyPageView()
-    }, 1000)
+    }, 500)
 
     return () => clearTimeout(timeoutCountly)
   }, [])

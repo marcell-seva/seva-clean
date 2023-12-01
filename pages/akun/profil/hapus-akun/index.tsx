@@ -91,6 +91,14 @@ export default function HapusAkun({
   }, [isActive])
 
   useAfterInteractive(() => {
+    const timeoutAfterInteractive = setTimeout(() => {
+      trackDeleteAccountPageView()
+    }, 500)
+
+    return () => clearTimeout(timeoutAfterInteractive)
+  }, [])
+
+  useAfterInteractive(() => {
     if (dataAnnouncementBox) {
       const isShowAnnouncement = getSessionStorage(
         getToken()
