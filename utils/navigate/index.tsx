@@ -170,6 +170,7 @@ export const navigateToPLP = (
   navigate: boolean = true,
   replace = false,
   customUrl?: string,
+  isUsingWindowLocation?: boolean,
 ) => {
   const origin = window.location.origin
   const refer = defineRouteName(window.location.href.replace(origin, ''))
@@ -181,15 +182,34 @@ export const navigateToPLP = (
   )
 
   if (!navigate) return
-  if (replace)
-    return Router.replace({
-      pathname: urls.internalUrls.carResultsUrl,
-      ...option,
-    })
-  return Router.push({
-    pathname: customUrl || urls.internalUrls.carResultsUrl,
-    ...option,
-  })
+
+  if (isUsingWindowLocation) {
+    if (replace) {
+      window.location.replace(
+        urls.internalUrls.carResultsUrl +
+          (!!option?.search ? `?${option?.search}` : ''),
+      )
+    } else {
+      window.location.href =
+        (customUrl || urls.internalUrls.carResultsUrl) +
+        (!!option?.search ? `?${option?.search}` : '')
+    }
+  } else {
+    import('next/router')
+      .then((mod) => mod.default)
+      .then((Router) => {
+        if (replace)
+          Router.replace({
+            pathname: urls.internalUrls.carResultsUrl,
+            ...option,
+          })
+        else
+          Router.push({
+            pathname: customUrl || urls.internalUrls.carResultsUrl,
+            ...option,
+          })
+      })
+  }
 }
 
 export const navigateToKK = (
