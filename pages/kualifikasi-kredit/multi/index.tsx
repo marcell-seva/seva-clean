@@ -37,6 +37,7 @@ import {
   FormControlValue,
   MobileWebTopMenuType,
   MultKKCarRecommendation,
+  SearchUsedCar,
   SendMultiKualifikasiKredit,
 } from 'utils/types/utils'
 import { MinAmount } from 'utils/types/models'
@@ -68,14 +69,17 @@ import { getCustomerInfoSeva } from 'utils/handler/customer'
 import dynamic from 'next/dynamic'
 import {
   getCities,
-  postMultiCreditQualification,
-  getAnnouncementBox as gab,
-  getMobileHeaderMenu,
   getMobileFooterMenu,
+  getMobileHeaderMenu,
+  getAnnouncementBox as gab,
+  postMultiCreditQualification,
+  getUsedCarSearch,
 } from 'services/api'
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { MobileWebFooterMenuType, temanSevaUrlPath } from 'utils/types/props'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import { useUtils } from 'services/context/utilsContext'
 
 const DatePicker = dynamic(
   () => import('components/atoms/inputDate/datepicker'),
@@ -107,7 +111,12 @@ const searchOption = {
   threshold: 0.3,
 }
 
-const MultiKK = () => {
+const MultiKK = ({
+  dataMobileMenu,
+  dataFooter,
+  dataCities,
+  dataSearchUsedCar,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   useProtectPage()
   const router = useRouter()
   const currentCity = getCity()
@@ -133,15 +142,27 @@ const MultiKK = () => {
   const { errorDownPayment } = useDownPayment()
   const [multiForm, setMultiForm] = useState(initEmptyData)
   const [errorFinance, setErrorFinance] = useState(initErrorFinancial)
-  const [showAnnouncementBox, setIsShowAnnouncementBox] = useState<
-    boolean | null
-  >(
-    getSessionStorage(
-      getToken()
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ) ?? true,
-  )
+
+  const { showAnnouncementBox, saveShowAnnouncementBox } =
+    useAnnouncementBoxContext()
+  const {
+    saveDataAnnouncementBox,
+    saveMobileWebTopMenus,
+    saveMobileWebFooterMenus,
+    saveCities,
+    saveDataSearchUsedCar,
+  } = useUtils()
+
+  const getAnnouncementBox = async () => {
+    try {
+      const res: any = await gab({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
+      })
+      saveDataAnnouncementBox(res.data)
+    } catch (error) {}
+  }
 
   const errorMin = () => {
     return Boolean(errorMinField.min || errorMinField.max || errorMinTwoField)
@@ -393,6 +414,11 @@ const MultiKK = () => {
   }
 
   useEffect(() => {
+    saveMobileWebTopMenus(dataMobileMenu)
+    saveMobileWebFooterMenus(dataFooter)
+    saveCities(dataCities)
+    saveDataSearchUsedCar(dataSearchUsedCar)
+    getAnnouncementBox()
     if (!!getToken()) {
       getCustomerInfo()
     }
@@ -444,7 +470,7 @@ const MultiKK = () => {
         isActive={isActive}
         setIsActive={setIsActive}
         emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
-        setShowAnnouncementBox={setIsShowAnnouncementBox}
+        setShowAnnouncementBox={saveShowAnnouncementBox}
         isShowAnnouncementBox={showAnnouncementBox}
       />
       <MobileView
@@ -742,24 +768,30 @@ export const getServerSideProps: GetServerSideProps<{
   dataMobileMenu: MobileWebTopMenuType[]
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
+  dataSearchUsedCar: SearchUsedCar[]
 }> = async (ctx) => {
   ctx.res.setHeader(
     'Cache-Control',
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
+  const params = new URLSearchParams()
+  params.append('query', ' ' as string)
 
   try {
-    const [menuMobileRes, footerRes, cityRes]: any = await Promise.all([
-      getMobileHeaderMenu(),
-      getMobileFooterMenu(),
-      getCities(),
-    ])
+    const [menuMobileRes, footerRes, cityRes, dataSearchRes]: any =
+      await Promise.all([
+        getMobileHeaderMenu(),
+        getMobileFooterMenu(),
+        getCities(),
+        getUsedCarSearch('', { params }),
+      ])
 
     return {
       props: {
         dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        dataSearchUsedCar: dataSearchRes.data,
       },
     }
   } catch (e: any) {

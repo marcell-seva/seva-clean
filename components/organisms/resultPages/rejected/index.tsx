@@ -42,8 +42,10 @@ import dynamic from 'next/dynamic'
 import { getCities, getAnnouncementBox as gab } from 'services/api'
 
 const RejectedImage = '/revamp/illustration/rejected-approval.webp'
-
-export const CreditQualificationRejected = () => {
+interface Props {
+  onPage: string
+}
+export const CreditQualificationRejected = ({ onPage }: Props) => {
   const titleText = 'Terima kasih, Agen SEVA akan segera menghubungimu'
   const descText =
     'Maaf, datamu belum berhasil mendapatkan persetujuan secara instan. Tapi jangan khawatir, SEVA tetap akan membantu proses kredit mobil impianmu. Pastikan nomor HPmu selalu aktif ya!'

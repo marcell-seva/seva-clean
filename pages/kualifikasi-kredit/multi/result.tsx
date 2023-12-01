@@ -30,6 +30,7 @@ import {
   MultKKCarRecommendation,
   PopupPromoDataItemType,
   PromoItemType,
+  SearchUsedCar,
 } from 'utils/types/utils'
 import styles from 'styles/pages/multi-kk-result.module.scss'
 import Seo from 'components/atoms/seo'
@@ -42,6 +43,7 @@ import {
   getAnnouncementBox as gab,
   getMobileFooterMenu,
   getMobileHeaderMenu,
+  getUsedCarSearch,
 } from 'services/api'
 import CarDetailCardMultiCredit from 'components/organisms/carDetailCardMultiCredit'
 import { GetServerSideProps } from 'next'
@@ -98,7 +100,16 @@ const sortLowToHighList = (recommendationTmp: MultKKCarRecommendation[]) => {
   return [...easyChance, ...difficultChance]
 }
 
+<<<<<<< HEAD
 const MultiKKResult = () => {
+=======
+const MultiKKResult = ({
+  dataMobileMenu,
+  dataFooter,
+  dataCities,
+  dataSearchUsedCar,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+>>>>>>> bc263846 (move to SSR for search used car recommendation)
   useProtectPage()
   const router = useRouter()
   const [offsetPage, setOffsetPage] = useState(1)
@@ -122,6 +133,7 @@ const MultiKKResult = () => {
     useState<MultKKCarRecommendation>()
   const [dataPromoPopup, setDataPromoPopup] =
     useState<PopupPromoDataItemType[]>()
+<<<<<<< HEAD
   const [showAnnouncementBox, setIsShowAnnouncementBox] = useState<
     boolean | null
   >(
@@ -141,6 +153,16 @@ const MultiKKResult = () => {
       })
     }
   }
+=======
+  const { showAnnouncementBox } = useAnnouncementBoxContext()
+  const {
+    saveDataAnnouncementBox,
+    saveMobileWebTopMenus,
+    saveMobileWebFooterMenus,
+    saveCities,
+    saveDataSearchUsedCar,
+  } = useUtils()
+>>>>>>> bc263846 (move to SSR for search used car recommendation)
 
   const [sortFilter, setSortFilter] = useState('Harga Tertinggi')
   const checkQuery = () => {
@@ -202,6 +224,7 @@ const MultiKKResult = () => {
   }
 
   useEffect(() => {
+<<<<<<< HEAD
     if (!checkQuery()) router.replace(multiCreditQualificationPageUrl)
     checkCitiesData()
     getAnnouncementBox()
@@ -213,6 +236,20 @@ const MultiKKResult = () => {
     }, 500)
 
     return () => clearTimeout(timeout)
+=======
+    if (!checkQuery()) {
+      router.replace(multiCreditQualificationPageUrl)
+    } else {
+      getAnnouncementBox()
+      onShowToolTip()
+      removeLocalStorage()
+      trackMultiKKResult()
+      saveMobileWebTopMenus(dataMobileMenu)
+      saveMobileWebFooterMenus(dataFooter)
+      saveCities(dataCities)
+      saveDataSearchUsedCar(dataSearchUsedCar)
+    }
+>>>>>>> bc263846 (move to SSR for search used car recommendation)
   }, [])
 
   const onDismissPopup = () => {
@@ -502,24 +539,30 @@ export const getServerSideProps: GetServerSideProps<{
   dataMobileMenu: MobileWebTopMenuType[]
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
+  dataSearchUsedCar: SearchUsedCar[]
 }> = async (ctx) => {
   ctx.res.setHeader(
     'Cache-Control',
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
+  const params = new URLSearchParams()
+  params.append('query', ' ' as string)
 
   try {
-    const [menuMobileRes, footerRes, cityRes]: any = await Promise.all([
-      getMobileHeaderMenu(),
-      getMobileFooterMenu(),
-      getCities(),
-    ])
+    const [menuMobileRes, footerRes, cityRes, dataSearchRes]: any =
+      await Promise.all([
+        getMobileHeaderMenu(),
+        getMobileFooterMenu(),
+        getCities(),
+        getUsedCarSearch('', { params }),
+      ])
 
     return {
       props: {
         dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        dataSearchUsedCar: dataSearchRes.data,
       },
     }
   } catch (e: any) {

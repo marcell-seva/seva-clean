@@ -18,6 +18,7 @@ import {
   getMainArticle,
   getTypeCar,
   getCarofTheMonth,
+  getUsedCarSearch,
 } from 'services/api'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
@@ -60,10 +61,16 @@ export default function WithTracker({
   dataMainArticle,
   dataTypeCar,
   dataCarofTheMonth,
+  dataSearchUsedCar,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isMobile, setIsMobile] = useState(useIsMobileSSr())
   const { saveTypeCar, saveCarOfTheMonth, saveRecommendationToyota } = useCar()
-  const { saveArticles, saveCities, saveMobileWebTopMenus } = useUtils()
+  const {
+    saveArticles,
+    saveCities,
+    saveMobileWebTopMenus,
+    saveDataSearchUsedCar,
+  } = useUtils()
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
   useEffect(() => {
@@ -77,6 +84,7 @@ export default function WithTracker({
     saveTypeCar(dataTypeCar)
     saveCities(dataCities)
     saveRecommendationToyota(dataRecToyota)
+    saveDataSearchUsedCar(dataSearchUsedCar)
   }, [])
 
   return (
@@ -107,6 +115,8 @@ export async function getServerSideProps(context: any) {
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
   const params = `?city=${getCity().cityCode}&cityId=${getCity().id}`
+  const paramsUsedCar = new URLSearchParams()
+  paramsUsedCar.append('query', ' ' as string)
   try {
     const [
       recommendationRes,
@@ -120,6 +130,7 @@ export async function getServerSideProps(context: any) {
       mainArticleRes,
       typeCarRes,
       carofTheMonthRes,
+      dataSearchRes,
     ]: any = await Promise.all([
       getRecommendation(params),
       getBanner(),
@@ -132,6 +143,7 @@ export async function getServerSideProps(context: any) {
       getMainArticle('65'),
       getTypeCar('?city=jakarta'),
       getCarofTheMonth('?city=' + getCity().cityCode),
+      getUsedCarSearch('', { params: paramsUsedCar }),
     ])
     const [
       dataReccomendation,
@@ -145,6 +157,7 @@ export async function getServerSideProps(context: any) {
       dataMainArticle,
       dataTypeCar,
       dataCarofTheMonth,
+      dataSearchUsedCar,
     ] = await Promise.all([
       recommendationRes.carRecommendations,
       bannerRes.data,
@@ -157,6 +170,7 @@ export async function getServerSideProps(context: any) {
       mainArticleRes,
       typeCarRes,
       carofTheMonthRes.data,
+      dataSearchRes.data,
     ])
     return {
       props: {
@@ -172,6 +186,7 @@ export async function getServerSideProps(context: any) {
         dataTypeCar,
         dataCarofTheMonth,
         isSsrMobile: getIsSsrMobile(context),
+        dataSearchUsedCar,
       },
     }
   } catch (error: any) {

@@ -32,6 +32,7 @@ import {
   getMobileFooterMenu,
   getMinMaxYearsUsedCar,
   getModelUsedCar,
+  getUsedCarSearch,
 } from 'services/api'
 
 interface HomePageDataLocalContextType {
@@ -88,6 +89,7 @@ export default function WithTracker({
   dataModelUsedCar,
   ssr,
   dataFooterMenu,
+  dataSearchUsedCar,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { saveTypeCar, saveCarOfTheMonth, saveRecommendationToyota } = useCar()
   const {
@@ -96,6 +98,7 @@ export default function WithTracker({
     saveMobileWebTopMenus,
     saveDataAnnouncementBox,
     saveMobileWebFooterMenus,
+    saveDataSearchUsedCar,
   } = useUtils()
 
   const getAnnouncementBox = async () => {
@@ -118,6 +121,7 @@ export default function WithTracker({
     saveRecommendationToyota(dataRecToyota)
     getAnnouncementBox()
     saveMobileWebFooterMenus(dataFooterMenu)
+    saveDataSearchUsedCar(dataSearchUsedCar)
   }, [])
 
   return (
@@ -160,6 +164,8 @@ export async function getServerSideProps(context: any) {
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
   const params = `?city=jakarta&cityId=118`
+  const paramsUsedCar = new URLSearchParams()
+  paramsUsedCar.append('query', ' ' as string)
   try {
     const [
       recommendationRes,
@@ -177,6 +183,7 @@ export async function getServerSideProps(context: any) {
       footerMenuRes,
       minmaxYearRes,
       modelUsedCarRes,
+      dataSearchRes,
     ]: any = await Promise.all([
       getRecommendation(params),
       getBanner(),
@@ -193,6 +200,7 @@ export async function getServerSideProps(context: any) {
       getMobileFooterMenu(),
       getMinMaxYearsUsedCar(''),
       getModelUsedCar(''),
+      getUsedCarSearch('', { params: paramsUsedCar }),
     ])
 
     const [
@@ -211,6 +219,7 @@ export async function getServerSideProps(context: any) {
       dataFooterMenu,
       dataMinMaxYearUsedCar,
       dataModelUsedCar,
+      dataSearchUsedCar,
     ] = await Promise.all([
       recommendationRes.carRecommendations,
       bannerRes.data,
@@ -227,6 +236,7 @@ export async function getServerSideProps(context: any) {
       footerMenuRes.data,
       minmaxYearRes.data,
       modelUsedCarRes.data,
+      dataSearchRes.data,
     ])
     return {
       props: {
@@ -247,6 +257,7 @@ export async function getServerSideProps(context: any) {
         dataDesktopMenu,
         ssr: 'success',
         dataFooterMenu,
+        dataSearchUsedCar,
       },
     }
   } catch (error) {

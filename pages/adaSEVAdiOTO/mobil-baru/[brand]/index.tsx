@@ -12,6 +12,7 @@ import {
   CityOtrOption,
   FooterSEOAttributes,
   MobileWebTopMenuType,
+  SearchUsedCar,
 } from 'utils/types/utils'
 import { defaultSeoImage } from 'utils/helpers/const'
 import styles from 'styles/pages/plp.module.scss'
@@ -26,6 +27,7 @@ import {
   getMobileFooterMenu,
   getCities,
   getMinMaxPrice,
+  getUsedCarSearch,
 } from 'services/api'
 import { default as customAxiosGet } from 'services/api/get'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
@@ -35,16 +37,22 @@ const NewCarResultPage = ({
   dataHeader,
   dataFooter,
   dataCities,
+  dataSearchUsedCar,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const id = router.query.brand
-  const { saveMobileWebTopMenus, saveMobileWebFooterMenus, saveCities } =
-    useUtils()
+  const {
+    saveMobileWebTopMenus,
+    saveMobileWebFooterMenus,
+    saveCities,
+    saveDataSearchUsedCar,
+  } = useUtils()
 
   useEffect(() => {
     saveMobileWebTopMenus(dataHeader)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
+    saveDataSearchUsedCar(dataSearchUsedCar)
 
     if (id && typeof id === 'string' && id.includes('SEVA')) {
       saveLocalStorage(LocalStorageKey.referralTemanSeva, id)
@@ -96,6 +104,7 @@ export const getServerSideProps: GetServerSideProps<{
   dataHeader: MobileWebTopMenuType[]
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
+  dataSearchUsedCar: SearchUsedCar[]
 }> = async (ctx) => {
   ctx.res.setHeader(
     'Cache-Control',
@@ -141,14 +150,18 @@ export const getServerSideProps: GetServerSideProps<{
     sortBy,
   } = ctx.query
 
+  const params = new URLSearchParams()
+  params.append('query', ' ' as string)
+
   try {
-    const [fetchMeta, fetchFooter, menuRes, footerRes, cityRes] =
+    const [fetchMeta, fetchFooter, menuRes, footerRes, cityRes, dataSearchRes] =
       await Promise.all([
         customAxiosGet(metaTagBaseApi + metabrand),
         customAxiosGet(footerTagBaseApi + metabrand),
         getMobileHeaderMenu(),
         getMobileFooterMenu(),
         getCities(),
+        getUsedCarSearch('', { params }),
       ])
 
     const metaData = fetchMeta.data
@@ -203,6 +216,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataHeader: menuRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        dataSearchUsedCar: dataSearchRes.data,
       },
     }
   } catch (e: any) {

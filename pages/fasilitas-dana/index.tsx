@@ -1,47 +1,48 @@
-/* eslint-disable react/no-children-prop */
+import React, { useEffect } from 'react'
+import { RefinancingLandingPageContent } from 'components/organisms'
 import Seo from 'components/atoms/seo'
-import { CreditQualificationSuccess } from 'components/organisms/resultPages/success'
+import { defaultSeoImage } from 'utils/helpers/const'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { useEffect, useMemo } from 'react'
 import {
-  getCities,
-  getMetaTagData,
-  getMobileFooterMenu,
+  getMenu,
   getMobileHeaderMenu,
+  getMobileFooterMenu,
+  getCities,
   getAnnouncementBox as gab,
   getUsedCarSearch,
 } from 'services/api'
-import { useUtils } from 'services/context/utilsContext'
-
-import styles from 'styles/pages/kualifikasi-kredit-result.module.scss'
 import { getToken } from 'utils/handler/auth'
-import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
-import { defaultSeoImage } from 'utils/helpers/const'
-import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
-import { CityOtrOption } from 'utils/types'
+import {
+  CityOtrOption,
+  MobileWebTopMenuType,
+  NavbarItemResponse,
+  SearchUsedCar,
+} from 'utils/types/utils'
 import { MobileWebFooterMenuType } from 'utils/types/props'
-import { MobileWebTopMenuType, SearchUsedCar } from 'utils/types/utils'
+import { useUtils } from 'services/context/utilsContext'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
-export interface Params {
-  brand: string
-  model: string
-  tab: string
-}
-
-const CreditQualificationPageSuccess = ({
+const RefinancingPage = ({
   dataMobileMenu,
   dataFooter,
   dataCities,
+  dataDesktopMenu,
   dataSearchUsedCar,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  useProtectPage()
+  const metaTitle =
+    'Fasilitas Dana SEVA. Dana Tunai Jaminan BPKB Aman dari ACC | SEVA'
+  const metaDesc =
+    'Jaminkan BPKB mobilmu di SEVA dan dapatkan Fasilitas Dana tunai untuk beragam kebutuhan terjamin dari ACC.'
+
   const {
+    saveDesktopWebTopMenu,
     saveMobileWebTopMenus,
     saveMobileWebFooterMenus,
     saveCities,
     saveDataAnnouncementBox,
     saveDataSearchUsedCar,
   } = useUtils()
+
   const getAnnouncementBox = async () => {
     try {
       const res: any = await gab({
@@ -54,6 +55,7 @@ const CreditQualificationPageSuccess = ({
   }
 
   useEffect(() => {
+    saveDesktopWebTopMenu(dataDesktopMenu)
     saveMobileWebTopMenus(dataMobileMenu)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
@@ -63,16 +65,16 @@ const CreditQualificationPageSuccess = ({
 
   return (
     <>
-      <div className={styles.container}>
-        <CreditQualificationSuccess />
-      </div>
+      <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
+      <RefinancingLandingPageContent />
     </>
   )
 }
 
-export default CreditQualificationPageSuccess
+export default RefinancingPage
 
 export const getServerSideProps: GetServerSideProps<{
+  dataDesktopMenu: NavbarItemResponse[]
   dataMobileMenu: MobileWebTopMenuType[]
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
@@ -86,16 +88,23 @@ export const getServerSideProps: GetServerSideProps<{
   params.append('query', ' ' as string)
 
   try {
-    const [menuMobileRes, footerRes, cityRes, dataSearchRes]: any =
-      await Promise.all([
-        getMobileHeaderMenu(),
-        getMobileFooterMenu(),
-        getCities(),
-        getUsedCarSearch('', { params }),
-      ])
+    const [
+      menuDesktopRes,
+      menuMobileRes,
+      footerRes,
+      cityRes,
+      dataSearchRes,
+    ]: any = await Promise.all([
+      getMenu(),
+      getMobileHeaderMenu(),
+      getMobileFooterMenu(),
+      getCities(),
+      getUsedCarSearch('', { params }),
+    ])
 
     return {
       props: {
+        dataDesktopMenu: menuDesktopRes.data,
         dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,

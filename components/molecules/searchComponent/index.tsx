@@ -51,6 +51,7 @@ import urls from 'utils/helpers/url'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
 import { filterSpecialChar } from 'utils/stringUtils'
 import getCurrentEnvironment from 'utils/handler/getCurrentEnvironment'
+import { useUtils } from 'services/context/utilsContext'
 
 const CarNotFound = '/revamp/illustration/empty-car.webp'
 const CarSkeleton = '/revamp/illustration/car-skeleton.webp'
@@ -92,6 +93,7 @@ export const SearchComponent = ({
     useFunnelQueryData()
   const { patchFunnelQuery: patchFunnelQueryUsedCarData } =
     useFunnelQueryUsedCarData()
+  const { dataSearchUsedCar } = useUtils()
   const [changeIcon, setChangeIcon] = useState(false)
   const [valueSearch, setValueSearch] = useState('')
   const [suggestionsLists, setSuggestionsLists] = useState<SearchNewCar[]>([])
@@ -103,7 +105,8 @@ export const SearchComponent = ({
   const router = useRouter()
   const [isShowLoading, setShowLoading] = useState(true)
   const [comDataNew, setComDataNew] = useState<COMData[]>([])
-  const [usedCarRecom, setUsedCarRecom] = useState<SearchUsedCar[]>([])
+  const [usedCarRecom, setUsedCarRecom] =
+    useState<SearchUsedCar[]>(dataSearchUsedCar)
   const [isError, setIsError] = useState(false)
   const [isNotFoundClicked, setIsNotFoundClicked] = useState(false)
   const [notFound, setIsNotFound] = useState(false)
@@ -117,18 +120,9 @@ export const SearchComponent = ({
   }, [isOpen])
 
   useEffect(() => {
-    const params = new URLSearchParams()
-    params.append('query', ' ' as string)
     getCarofTheMonth('?city=' + getCity().cityCode)
       .then((res) => {
         setComDataNew(res.data)
-      })
-      .catch(() => {
-        setIsError(true)
-      })
-    getUsedCarSearch('', { params })
-      .then((res) => {
-        setUsedCarRecom(res.data)
       })
       .catch(() => {
         setIsError(true)

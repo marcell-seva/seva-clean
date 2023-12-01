@@ -16,6 +16,7 @@ import {
   FooterSEOAttributes,
   MobileWebTopMenuType,
   NavbarItemResponse,
+  SearchUsedCar,
 } from 'utils/types/utils'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import Seo from 'components/atoms/seo'
@@ -44,6 +45,7 @@ import {
   getAnnouncementBox as gab,
   getBrandList,
   getUsedCarCityList,
+  getUsedCarSearch,
 } from 'services/api'
 
 const UsedCarResultPage = ({
@@ -56,6 +58,7 @@ const UsedCarResultPage = ({
   brandList,
   brandSlug,
   citySlug,
+  dataSearchUsedCar,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const todayDate = new Date()
@@ -131,6 +134,7 @@ const UsedCarResultPage = ({
     saveMobileWebFooterMenus,
     saveCities,
     saveDataAnnouncementBox,
+    saveDataSearchUsedCar,
   } = useUtils()
 
   const getAnnouncementBox = async () => {
@@ -148,6 +152,7 @@ const UsedCarResultPage = ({
     saveMobileWebTopMenus(dataMobileMenu)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
+    saveDataSearchUsedCar(dataSearchUsedCar)
     getAnnouncementBox()
   }, [])
 
@@ -232,6 +237,7 @@ export const getServerSideProps: GetServerSideProps<{
   citySlug?: CitySlug[] | null
   cityList: CityOtrOption[]
   brandList: BrandList[]
+  dataSearchUsedCar: SearchUsedCar[]
 }> = async (ctx) => {
   ctx.res.setHeader(
     'Cache-Control',
@@ -278,6 +284,9 @@ export const getServerSideProps: GetServerSideProps<{
     transmission,
   } = ctx.query
 
+  const params = new URLSearchParams()
+  params.append('query', ' ' as string)
+
   try {
     const [
       fetchFooter,
@@ -287,6 +296,7 @@ export const getServerSideProps: GetServerSideProps<{
       cityRes,
       usedCarCityList,
       usedCarBrandList,
+      dataSearchRes,
     ]: any = await Promise.all([
       axios.get(footerTagBaseApi + metabrand),
       getMenu(),
@@ -295,6 +305,7 @@ export const getServerSideProps: GetServerSideProps<{
       getCities(),
       getUsedCarCityList(),
       getBrandList(''),
+      getUsedCarSearch('', { params }),
     ])
 
     const cityList = usedCarCityList.data
@@ -463,6 +474,7 @@ export const getServerSideProps: GetServerSideProps<{
         brandList,
         isSsrMobile: getIsSsrMobile(ctx),
         isSsrMobileLocal: getIsSsrMobile(ctx),
+        dataSearchUsedCar: dataSearchRes.data,
       },
     }
   } catch (e) {

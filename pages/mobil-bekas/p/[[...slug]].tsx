@@ -39,6 +39,7 @@ import {
   getUsedCarBySKU,
   getUsedCarRecommendations,
   getUsedNewCarRecommendations,
+  getUsedCarSearch,
 } from 'services/api'
 import Seo from 'components/atoms/seo'
 interface UsedPdpDataLocalContextType {
@@ -81,6 +82,7 @@ export default function index({
   dataMobileMenu,
   dataFooter,
   dataCities,
+  dataSearchUsedCar,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const {
     saveDataAnnouncementBox,
@@ -88,6 +90,7 @@ export default function index({
     saveMobileWebTopMenus,
     saveMobileWebFooterMenus,
     saveCities,
+    saveDataSearchUsedCar,
   } = useUtils()
   const router = useRouter()
   const { brand, slug } = router.query
@@ -112,6 +115,7 @@ export default function index({
     saveMobileWebTopMenus(dataMobileMenu)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
+    saveDataSearchUsedCar(dataSearchUsedCar)
     getAnnouncementBox()
     checkCitySlug(citySlug, dataCities, setCurrentCity)
   }, [])
@@ -207,6 +211,8 @@ export async function getServerSideProps(context: any) {
     //     notFound: true,
     //   }
     // }
+    const params = new URLSearchParams()
+    params.append('query', ' ' as string)
 
     let id = context.query.slug[0]
     const parts = id.split('/')
@@ -221,6 +227,7 @@ export async function getServerSideProps(context: any) {
       cityRes,
       menuDesktopRes,
       carDetailRes,
+      dataSearchRes,
     ]: any = await Promise.all([
       // api.getRecommendation('?city=jakarta&cityId=118'),
       // api.getMetaTagData(context.query.model.replaceAll('-', '')),
@@ -230,6 +237,7 @@ export async function getServerSideProps(context: any) {
       getCities(),
       getMenu(),
       getUsedCarBySKU(uuid, ''),
+      getUsedCarSearch('', { params }),
     ])
 
     const selectedCity = getCity()
@@ -305,6 +313,8 @@ export async function getServerSideProps(context: any) {
         dataFooter: footerRes.data,
         dataCities: cityRes,
         dataDesktopMenu: menuDesktopRes.data,
+        dataSearchUsedCar: dataSearchRes.data,
+
         // selectedVideoReview: selectedVideoReview || null,
       },
     }

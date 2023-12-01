@@ -2,9 +2,6 @@ import { PLP } from 'components/organisms'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { useRouter } from 'next/router'
-import { saveLocalStorage } from 'utils/handler/localStorage'
-import { LocalStorageKey } from 'utils/enum'
 import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
 import {
   CityOtrOption,
@@ -13,47 +10,64 @@ import {
   NavbarItemResponse,
   SearchUsedCar,
 } from 'utils/types/utils'
+import { getIsSsrMobile } from 'utils/getIsSsrMobile'
+
+import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
-
-import Seo from 'components/atoms/seo'
+import { CarProvider } from 'services/context'
 import { monthId } from 'utils/handler/date'
 import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
-import { useIsMobileSSr } from 'utils/hooks/useIsMobileSsr'
-import { useMediaQuery } from 'react-responsive'
-import { CarProvider } from 'services/context'
-import { getIsSsrMobile } from 'utils/getIsSsrMobile'
+import { useRouter } from 'next/router'
 import { getCity } from 'utils/hooks/useGetCity'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
+import { getToken } from 'utils/handler/auth'
 import {
   getMenu,
   getMobileHeaderMenu,
   getMobileFooterMenu,
   getCities,
   getMinMaxPrice,
+  getAnnouncementBox as gab,
   getUsedCarSearch,
 } from 'services/api'
 
 const NewCarResultPage = ({
   meta,
-  dataDesktopMenu,
   dataMobileMenu,
   dataFooter,
   dataCities,
+  dataDesktopMenu,
   dataSearchUsedCar,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
-  const id = router.query.brand
+  const todayDate = new Date()
+  const brand = router.query.brand
+
+  const metaTitle = `Beli Mobil Baru ${todayDate.getFullYear()} - Harga OTR dengan Promo Cicilan Bulan ${monthId(
+    todayDate.getMonth(),
+  )} | SEVA`
+  const metaDesc = `Beli mobil  ${todayDate.getFullYear()} di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
   const {
     saveDesktopWebTopMenu,
     saveMobileWebTopMenus,
     saveMobileWebFooterMenus,
     saveCities,
+    saveDataAnnouncementBox,
     saveDataSearchUsedCar,
   } = useUtils()
-  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
-  const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
+
+  const getAnnouncementBox = async () => {
+    try {
+      const res: any = await gab({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
+      })
+      saveDataAnnouncementBox(res.data)
+    } catch (error) {}
+  }
 
   useEffect(() => {
     saveDesktopWebTopMenu(dataDesktopMenu)
@@ -61,30 +75,8 @@ const NewCarResultPage = ({
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
     saveDataSearchUsedCar(dataSearchUsedCar)
-    if (id && typeof id === 'string' && id.includes('SEVA')) {
-      saveLocalStorage(LocalStorageKey.referralTemanSeva, id)
-    }
+    getAnnouncementBox()
   }, [])
-
-  useEffect(() => {
-    setIsMobile(isClientMobile)
-  }, [isClientMobile])
-
-  const todayDate = new Date()
-
-  const getUrlBrand = router.query.brand?.toString() ?? ''
-  const carBrand = getUrlBrand.charAt(0).toUpperCase() + getUrlBrand.slice(1)
-
-  const metaTitle = isBodyType(carBrand)
-    ? `Daftar Mobil Baru ${carBrand.toUpperCase()} ${todayDate.getFullYear()} - Promo Cicilan Bulan ${monthId(
-        todayDate.getMonth(),
-      )} | SEVA`
-    : `Harga OTR ${carBrand} ${todayDate.getFullYear()} - Promo Cicilan bulan ${monthId(
-        todayDate.getMonth(),
-      )} | SEVA `
-  const metaDesc = isBodyType(carBrand)
-    ? `Beli mobil ${carBrand.toUpperCase()} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
-    : `Beli mobil baru ${carBrand} ${todayDate.getFullYear()} secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
 
   return (
     <>
@@ -127,62 +119,13 @@ const getBrand = (brand: string | string[] | undefined) => {
   }
 }
 
-export const isBrand = (brand: string | string[] | undefined) => {
-  if (Array.isArray(brand)) {
-    return brand.every(
-      (item) =>
-        item.toLowerCase() === 'toyota' ||
-        item.toLowerCase() === 'isuzu' ||
-        item.toLowerCase() === 'daihatsu' ||
-        item.toLowerCase() === 'peugeot' ||
-        item.toLowerCase() === 'bmw' ||
-        item.toLowerCase() === 'hyundai',
-    )
-  } else if (brand) {
-    const arrSplit = brand?.split(',')
-    return arrSplit.every(
-      (item) =>
-        item.toLowerCase() === 'toyota' ||
-        item.toLowerCase() === 'isuzu' ||
-        item.toLowerCase() === 'daihatsu' ||
-        item.toLowerCase() === 'peugeot' ||
-        item.toLowerCase() === 'bmw' ||
-        item.toLowerCase() === 'hyundai',
-    )
-  }
-  return false
-}
-
-export const isBodyType = (bodyType: string | string[] | undefined) => {
-  if (Array.isArray(bodyType)) {
-    return bodyType.every(
-      (item) =>
-        item.toLowerCase() === 'mpv' ||
-        item.toLowerCase() === 'suv' ||
-        item.toLowerCase() === 'sedan' ||
-        item.toLowerCase() === 'hatchback' ||
-        item.toLowerCase() === 'sport',
-    )
-  } else if (bodyType) {
-    const arrType = bodyType?.split(',')
-    return arrType.every(
-      (item) =>
-        item.toLowerCase() === 'mpv' ||
-        item.toLowerCase() === 'suv' ||
-        item.toLowerCase() === 'sedan' ||
-        item.toLowerCase() === 'hatchback' ||
-        item.toLowerCase() === 'sport',
-    )
-  }
-  return false
-}
-
 export const getServerSideProps: GetServerSideProps<{
   meta: PLPProps
   dataDesktopMenu: NavbarItemResponse[]
   dataMobileMenu: MobileWebTopMenuType[]
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
+  isSsrMobileLocal: boolean
   dataSearchUsedCar: SearchUsedCar[]
 }> = async (ctx) => {
   ctx.res.setHeader(
@@ -190,8 +133,6 @@ export const getServerSideProps: GetServerSideProps<{
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
   const metabrand = getBrand(ctx.query.brand)
-  const metaTagBaseApi =
-    'https://api.sslpots.com/api/meta-seos/?filters[location_page3][$eq]=CarSearchResult'
   const footerTagBaseApi =
     'https://api.sslpots.com/api/footer-seos/?filters[location_page2][$eq]=CarSearchResult'
   const meta = {
@@ -234,15 +175,13 @@ export const getServerSideProps: GetServerSideProps<{
 
   try {
     const [
-      fetchMeta,
       fetchFooter,
       menuDesktopRes,
       menuMobileRes,
       footerRes,
       cityRes,
       dataSearchRes,
-    ] = await Promise.all([
-      axios.get(metaTagBaseApi + metabrand),
+    ]: any = await Promise.all([
       axios.get(footerTagBaseApi + metabrand),
       getMenu(),
       getMobileHeaderMenu(),
@@ -251,14 +190,14 @@ export const getServerSideProps: GetServerSideProps<{
       getUsedCarSearch('', { params }),
     ])
 
-    const metaData = fetchMeta.data.data
     const footerData = fetchFooter.data.data
 
     if (!priceRangeGroup) {
       const params = new URLSearchParams()
       getCity().cityCode && params.append('city', getCity().cityCode as string)
 
-      const minmaxPriceData = await getMinMaxPrice('', { params })
+      const minmax = await getMinMaxPrice('', { params })
+      const minmaxPriceData = minmax
       meta.MinMaxPrice = {
         minPriceValue: minmaxPriceData.minPriceValue,
         maxPriceValue: minmaxPriceData.maxPriceValue,
@@ -266,19 +205,15 @@ export const getServerSideProps: GetServerSideProps<{
     }
 
     const queryParam: any = {
-      ...(search && { search: String(search) }),
+      ...(search && search !== undefined && { search: String(search) }),
       ...(downPaymentAmount && { downPaymentType: 'amount' }),
       ...(downPaymentAmount && { downPaymentAmount }),
-      ...(!isBodyType(brand) && {
+      ...(brand && {
         brand: String(brand)
           ?.split(',')
           .map((item) => getCarBrand(item)),
       }),
-      ...(bodyType
-        ? { bodyType: String(bodyType)?.split(',') }
-        : isBodyType(brand)
-        ? { bodyType: String(brand)?.toUpperCase()?.split(',') }
-        : {}),
+      ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
       ...(priceRangeGroup
         ? { priceRangeGroup }
         : {
@@ -296,16 +231,13 @@ export const getServerSideProps: GetServerSideProps<{
 
     const recommendation = funnel
 
-    if (metaData && metaData.length > 0) {
-      meta.title = metaData[0].attributes.meta_title
-      meta.description = metaData[0].attributes.meta_description
-    }
-
     if (footerData && footerData.length > 0) {
       meta.footer = footerData[0].attributes
     }
 
-    if (recommendation) meta.carRecommendations = recommendation
+    if (recommendation) {
+      meta.carRecommendations = recommendation
+    }
 
     return {
       props: {
@@ -315,6 +247,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataFooter: footerRes.data,
         dataCities: cityRes,
         isSsrMobile: getIsSsrMobile(ctx),
+        isSsrMobileLocal: getIsSsrMobile(ctx),
         dataSearchUsedCar: dataSearchRes.data,
       },
     }
@@ -326,6 +259,8 @@ export const getServerSideProps: GetServerSideProps<{
         dataMobileMenu: [],
         dataFooter: [],
         dataCities: [],
+        isSsrMobile: getIsSsrMobile(ctx),
+        isSsrMobileLocal: getIsSsrMobile(ctx),
       },
     }
   }

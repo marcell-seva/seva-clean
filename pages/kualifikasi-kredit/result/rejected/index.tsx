@@ -1,19 +1,23 @@
 /* eslint-disable react/no-children-prop */
 import Seo from 'components/atoms/seo'
 import { CreditQualificationRejected } from 'components/organisms/resultPages/rejected'
-import React, { useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { defaultSeoImage } from 'utils/helpers/const'
 import styles from 'styles/pages/kualifikasi-kredit-result.module.scss'
-
-import { InferGetServerSidePropsType } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
-import { getMetaTagData } from 'services/api'
 import {
   getCities,
   getMobileFooterMenu,
   getMobileHeaderMenu,
   getAnnouncementBox as gab,
+  getUsedCarSearch,
 } from 'services/api'
+import { useUtils } from 'services/context/utilsContext'
+import { getToken } from 'utils/handler/auth'
+import { CityOtrOption } from 'utils/types'
+import { MobileWebFooterMenuType } from 'utils/types/props'
+import { MobileWebTopMenuType, SearchUsedCar } from 'utils/types/utils'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 export interface Params {
@@ -22,15 +26,49 @@ export interface Params {
   tab: string
 }
 
-const CreditQualificationPageRejected = ({}: InferGetServerSidePropsType<
-  typeof getServerSideProps
->) => {
+const CreditQualificationPageRejected = ({
+  dataMobileMenu,
+  dataFooter,
+  dataCities,
+  dataSearchUsedCar,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   useProtectPage()
+
+  const {
+    saveMobileWebTopMenus,
+    saveMobileWebFooterMenus,
+    saveCities,
+    saveDataAnnouncementBox,
+    saveDataSearchUsedCar,
+  } = useUtils()
+  const getAnnouncementBox = async () => {
+    try {
+      const res: any = await gab({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
+      })
+      saveDataAnnouncementBox(res.data)
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    saveMobileWebTopMenus(dataMobileMenu)
+    saveMobileWebFooterMenus(dataFooter)
+    saveCities(dataCities)
+    saveDataSearchUsedCar(dataSearchUsedCar)
+    getAnnouncementBox()
+  }, [])
 
   return (
     <>
+      <Seo
+        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
+        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
+        image={defaultSeoImage}
+      />
       <div className={styles.container}>
-        <CreditQualificationRejected />
+        <CreditQualificationRejected onPage="KK-rejected" />
       </div>
     </>
   )
@@ -38,21 +76,34 @@ const CreditQualificationPageRejected = ({}: InferGetServerSidePropsType<
 
 export default CreditQualificationPageRejected
 
-export const getServerSideProps = async (ctx: any) => {
-  const model = (ctx.query.model as string)?.replaceAll('-', '')
+export const getServerSideProps: GetServerSideProps<{
+  dataMobileMenu: MobileWebTopMenuType[]
+  dataFooter: MobileWebFooterMenuType[]
+  dataCities: CityOtrOption[]
+  dataSearchUsedCar: SearchUsedCar[]
+}> = async (ctx) => {
+  ctx.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=59, stale-while-revalidate=3000',
+  )
+  const params = new URLSearchParams()
+  params.append('query', '' as string)
 
   try {
-    const [menuMobileRes, footerRes, cityRes]: any = await Promise.all([
-      getMobileHeaderMenu(),
-      getMobileFooterMenu(),
-      getCities(),
-    ])
+    const [menuMobileRes, footerRes, cityRes, dataSearchRes]: any =
+      await Promise.all([
+        getMobileHeaderMenu(),
+        getMobileFooterMenu(),
+        getCities(),
+        getUsedCarSearch('', { params }),
+      ])
 
     return {
       props: {
         dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        dataSearchUsedCar: dataSearchRes.data,
       },
     }
   } catch (e: any) {
