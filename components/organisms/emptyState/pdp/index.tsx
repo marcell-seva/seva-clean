@@ -118,7 +118,6 @@ export const ProductDetailEmptyState: React.FC<PropsPDPEmptyState> = ({
         isOpen={isOpenCitySelectorModal}
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
         cityListFromApi={cityListApi}
-        onPage='PDP'
       />
     </>
   )

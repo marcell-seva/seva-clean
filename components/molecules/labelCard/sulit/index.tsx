@@ -5,10 +5,7 @@ import { colors } from 'utils/helpers/style/colors'
 
 const LabelSulit = ({ ...props }: HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div
-      className={` ${styles.container} ${styles.labelResult} ${additionalClassname}`}
-      {...props}
-    >
+    <div className={` ${styles.container} ${styles.labelResult}`} {...props}>
       <IconWarningCircle
         height={16}
         width={16}

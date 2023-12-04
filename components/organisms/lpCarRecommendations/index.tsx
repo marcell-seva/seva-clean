@@ -221,7 +221,6 @@ const LpCarRecommendations = ({
           isShowAnnouncementBox={false}
           className={stylep.tab}
           autoScroll={isOTO}
-          initialTab={''}
         />
         <div>
           {recommendationList.length === 0 ? (

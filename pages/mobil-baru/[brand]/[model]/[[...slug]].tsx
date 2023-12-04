@@ -362,9 +362,6 @@ export async function getServerSideProps(context: any) {
           dataCities: cityRes,
           dataDesktopMenu: menuDesktopRes.data,
           isSsrMobileLocal: getIsSsrMobile(context),
-          finalSlug: finalSlug,
-          checkLoc: checkLoc,
-          checkedLocation: checkedLocation,
         },
       }
     }
