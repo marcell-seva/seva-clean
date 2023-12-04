@@ -157,8 +157,21 @@ const postUnverifiedLeadsNew = (body: any) => {
     },
   }
 
+  const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
+
+  const payload = {
+    ...body,
+    utmSource: UTMTags?.utm_source,
+    utmMedium: UTMTags?.utm_medium,
+    utmCampaign: UTMTags?.utm_campaign,
+    utmId: UTMTags?.utm_id,
+    utmContent: null, // temporary
+    utmTerm: UTMTags?.utm_term,
+    adSet: UTMTags?.adset,
+  }
+
   const encryptedPayload = AES.encrypt(
-    JSON.stringify(body),
+    JSON.stringify(payload),
     process.env.NEXT_PUBLIC_LEAD_PAYLOAD_ENCRYPTION_KEY ?? '',
   ).toString()
 
