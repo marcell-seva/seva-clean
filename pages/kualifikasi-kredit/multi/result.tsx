@@ -26,17 +26,27 @@ import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
 import {
   AnnouncementBoxDataType,
   CityOtrOption,
+  MobileWebTopMenuType,
   MultKKCarRecommendation,
   PopupPromoDataItemType,
   PromoItemType,
 } from 'utils/types/utils'
 import styles from 'styles/pages/multi-kk-result.module.scss'
-import CarDetailCardMultiCredit from 'components/organisms/carDetailCardMultiCredit'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
-import { getCities, getAnnouncementBox as gab } from 'services/api'
+import dynamic from 'next/dynamic'
+import {
+  getCities,
+  getAnnouncementBox as gab,
+  getMobileFooterMenu,
+  getMobileHeaderMenu,
+} from 'services/api'
+import CarDetailCardMultiCredit from 'components/organisms/carDetailCardMultiCredit'
+import { GetServerSideProps } from 'next'
+import { MobileWebFooterMenuType } from 'utils/types/props'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 const discountedDp = undefined // for current promo, it will not affect DP
 
@@ -487,3 +497,32 @@ const MultiKKResult = () => {
 }
 
 export default MultiKKResult
+
+export const getServerSideProps: GetServerSideProps<{
+  dataMobileMenu: MobileWebTopMenuType[]
+  dataFooter: MobileWebFooterMenuType[]
+  dataCities: CityOtrOption[]
+}> = async (ctx) => {
+  ctx.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=59, stale-while-revalidate=3000',
+  )
+
+  try {
+    const [menuMobileRes, footerRes, cityRes]: any = await Promise.all([
+      getMobileHeaderMenu(),
+      getMobileFooterMenu(),
+      getCities(),
+    ])
+
+    return {
+      props: {
+        dataMobileMenu: menuMobileRes.data,
+        dataFooter: footerRes.data,
+        dataCities: cityRes,
+      },
+    }
+  } catch (e: any) {
+    return serverSideManualNavigateToErrorPage(e?.response?.status)
+  }
+}

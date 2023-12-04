@@ -14,7 +14,10 @@ import { getLocalStorage } from 'utils/handler/localStorage'
 import { CityOtrOption, NewFunnelCarVariantDetails } from 'utils/types'
 import { getToken } from 'utils/handler/auth'
 
-import { AnnouncementBoxDataType } from 'utils/types/utils'
+import {
+  AnnouncementBoxDataType,
+  MobileWebTopMenuType,
+} from 'utils/types/utils'
 import { Triangle } from 'components/atoms/icon/Triangle'
 import { Star } from 'components/atoms/icon/Star'
 import { Firework } from 'components/atoms/icon/Firework'
@@ -45,7 +48,15 @@ import Image from 'next/image'
 import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
 import { getCustomerInfoSeva, getCustomerKtpSeva } from 'utils/handler/customer'
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
-import { getCities, getAnnouncementBox as gab } from 'services/api'
+import {
+  getCities,
+  getAnnouncementBox as gab,
+  getMobileHeaderMenu,
+  getMobileFooterMenu,
+} from 'services/api'
+import { GetServerSideProps } from 'next'
+import { MobileWebFooterMenuType } from 'utils/types/props'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 const MainImageGreenMale = '/revamp/illustration/credit-result-green-male.webp'
 const MainImageGreenFemale =
@@ -378,6 +389,14 @@ export default function CreditQualificationResultPage() {
 
   const onClickContinueApproval = async () => {
     setIsLoadingContinueApproval(true)
+    saveSessionStorage(
+      SessionStorageKey.PageReferrerIA,
+      'Kualifikasi Kredit Result',
+    )
+    saveSessionStorage(
+      SessionStorageKey.PreviousPage,
+      JSON.stringify({ refer: window.location.pathname }),
+    )
     try {
       const dataKTPUser = await getCustomerKtpSeva()
       saveSessionStorage(SessionStorageKey.OCRKTP, 'kualifikasi-kredit')
@@ -385,16 +404,22 @@ export default function CreditQualificationResultPage() {
         saveSessionStorage(SessionStorageKey.KTPUploaded, 'uploaded')
         router.push(ktpReviewUrl)
       } else {
-        router.push(cameraKtpUrl)
+        saveSessionStorage(
+          SessionStorageKey.LastVisitedPageKKIAFlow,
+          window.location.pathname,
+        )
         saveSessionStorage(SessionStorageKey.KTPUploaded, 'not upload')
+        router.push(cameraKtpUrl)
       }
-      setIsLoadingContinueApproval(false)
     } catch (e: any) {
       if (e?.response?.data?.code === 'NO_NIK_REGISTERED') {
         saveSessionStorage(SessionStorageKey.KTPUploaded, 'not upload')
         router.push(cameraKtpUrl)
+      } else if (e?.response?.data?.message) {
+        setIsLoadingContinueApproval(false)
+      } else {
+        setIsLoadingContinueApproval(false)
       }
-      setIsLoadingContinueApproval(false)
     }
   }
 
@@ -548,32 +573,23 @@ export default function CreditQualificationResultPage() {
               version={ButtonVersion.PrimaryDarkBlue}
               size={ButtonSize.Big}
               onClick={onClickContinueApproval}
+              disabled={isLoadingContinueApproval}
+              loading={isLoadingContinueApproval}
             >
-              {isLoadingContinueApproval ? (
-                <div className={`${styles.iconWrapper} rotateAnimation`}>
-                  <IconLoading width={16} height={16} />
-                </div>
-              ) : (
-                'Lanjut Instant Approval'
-              )}
+              Lanjut Instant Approval
             </Button>
             <Button
               version={ButtonVersion.Secondary}
               size={ButtonSize.Big}
               onClick={onClickWhatsapp}
+              loading={isLoadingWhatsApp}
             >
-              {isLoadingWhatsApp ? (
-                <div className={`${styles.iconWrapper} rotateAnimation`}>
-                  <IconLoading width={16} height={16} />
+              <div className={styles.whatsappButtonContent}>
+                <div className={styles.iconWrapper}>
+                  <IconWhatsapp width={16} height={16} />
                 </div>
-              ) : (
-                <div className={styles.whatsappButtonContent}>
-                  <div className={styles.iconWrapper}>
-                    <IconWhatsapp width={16} height={16} />
-                  </div>
-                  Hubungi Agen SEVA
-                </div>
-              )}
+                Hubungi Agen SEVA
+              </div>
             </Button>
           </div>
         </div>
@@ -589,6 +605,7 @@ export default function CreditQualificationResultPage() {
         isOpen={isOpenPopup}
         onClickClosePopup={onClickClosePopup}
         onDismissPopup={onDismissPopup}
+        loadCtaButton={isLoadingContinueApproval}
         loanCalculatorDestinationUrl={getLoanCalculatorDestinationUrl()}
         onClickContinueApproval={onClickContinueApproval}
         onClickChangeCreditPlan={() => {
@@ -597,4 +614,33 @@ export default function CreditQualificationResultPage() {
       />
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps<{
+  dataMobileMenu: MobileWebTopMenuType[]
+  dataFooter: MobileWebFooterMenuType[]
+  dataCities: CityOtrOption[]
+}> = async (ctx) => {
+  ctx.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=59, stale-while-revalidate=3000',
+  )
+
+  try {
+    const [menuMobileRes, footerRes, cityRes]: any = await Promise.all([
+      getMobileHeaderMenu(),
+      getMobileFooterMenu(),
+      getCities(),
+    ])
+
+    return {
+      props: {
+        dataMobileMenu: menuMobileRes.data,
+        dataFooter: footerRes.data,
+        dataCities: cityRes,
+      },
+    }
+  } catch (e: any) {
+    return serverSideManualNavigateToErrorPage(e?.response?.status)
+  }
 }

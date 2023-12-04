@@ -1,6 +1,7 @@
 import React, { ButtonHTMLAttributes } from 'react'
 import styles from 'styles/components/atoms/button.module.scss'
 import { IconLoading } from '../icon'
+import { colors } from 'utils/helpers/style/colors'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   version: ButtonVersion
@@ -50,17 +51,59 @@ const Button = ({
     }
   }
 
+  const loadingColor = () => {
+    switch (version) {
+      case ButtonVersion.Secondary:
+        return colors.primaryDarkBlue
+      case ButtonVersion.SecondaryDark:
+        return colors.white
+      case ButtonVersion.PrimaryDarkBlue:
+        return colors.white
+      case ButtonVersion.Outline:
+        return colors.primaryDarkBlue
+      case ButtonVersion.Disable:
+        return colors.white
+      case ButtonVersion.Default:
+        return colors.primaryDarkBlue
+      default:
+        return colors.primaryDarkBlue
+    }
+  }
+
+  const loadingDisableColor = () => {
+    switch (version) {
+      case ButtonVersion.Secondary:
+        return colors.shadesGrey25
+      case ButtonVersion.SecondaryDark:
+        return colors.white
+      case ButtonVersion.PrimaryDarkBlue:
+        return colors.white
+      case ButtonVersion.Outline:
+        return colors.shadesGrey25
+      case ButtonVersion.Disable:
+        return colors.white
+      case ButtonVersion.Default:
+        return colors.shadesGrey25
+      default:
+    }
+  }
+
   const buttonSize = size === ButtonSize.Big ? styles.big : styles.small
 
   return (
     <button
       disabled={buttonVersion() === ButtonVersion.Disable}
       className={`${buttonVersion()} ${buttonSize} ${secondaryClassName}`}
+      onClick={loading ? undefined : props.onClick}
       {...props}
     >
       {loading ? (
         <div className={`${styles.iconLoading} rotateAnimation`}>
-          <IconLoading width={14} height={14} color="#FFFFFF" />
+          <IconLoading
+            width={14}
+            height={14}
+            color={props.disabled ? loadingDisableColor() : loadingColor()}
+          />
         </div>
       ) : (
         children

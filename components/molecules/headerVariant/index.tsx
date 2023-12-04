@@ -98,7 +98,8 @@ export default function HeaderVariant({
               item.label === 'Daihatsu' ||
               item.label === 'Isuzu' ||
               item.label === 'BMW' ||
-              item.label === 'Peugeot'
+              item.label === 'Peugeot' ||
+              item.label === 'Hyundai'
             )
               return { value: '', label: item.label }
 
@@ -203,6 +204,7 @@ export default function HeaderVariant({
         true,
         false,
         urlDestination,
+        pageOrigination === 'PLP' ? true : false,
       )
     }
     setIsNotFoundClicked(false)
@@ -275,9 +277,10 @@ export default function HeaderVariant({
 
   const carData = useMemo(() => {
     const data = comDataNew?.slice(0, 5).map((item) => ({
-      name: `${item.brand} ${item.model?.carModel.model ?? ''}`,
-      image: (item.model && item.model.carModel.imageUrls.main_color[0]) || '',
-      link: `/${item.brand}/${item.model?.carModel.model
+      name: `${item.brand} ${item.model?.carModel?.model ?? ''}`,
+      image:
+        (item.model && item.model?.carModel?.imageUrls?.main_color[0]) || '',
+      link: `/${item.brand}/${item.model?.carModel?.model
         .replace(/\s+/g, '-')
         .toLowerCase()}`,
     }))
@@ -371,9 +374,16 @@ export default function HeaderVariant({
               false,
               OTONewCarUrl,
             )
-          : navigateToPLP(PreviousButton.SearchBar, {
-              search: convertObjectQuery(funnelQueryTemp),
-            })
+          : navigateToPLP(
+              PreviousButton.SearchBar,
+              {
+                search: convertObjectQuery(funnelQueryTemp),
+              },
+              true,
+              false,
+              undefined,
+              pageOrigination === 'PLP' ? true : false,
+            )
       }
     } else {
       saveDataForCountlyTrackerPageViewPDP(

@@ -1807,6 +1807,31 @@ export default function LoanCalculatorPage() {
     )
   }
 
+  const onClickResultItemUpperInfoSection = () => {
+    setIsOpenPopupRecommended(true)
+    const modelNameOnly = forms?.model?.modelName
+      .replace(forms?.model?.brandName, '')
+      .trim()
+    trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK, {
+      PELUANG_KREDIT_BADGE: 'Mudah disetujui',
+      CAR_BRAND: forms?.model?.brandName,
+      CAR_MODEL: modelNameOnly,
+      PAGE_ORIGINATION: 'Loan Calculator',
+      SOURCE_BUTTON: 'Tenure Card (LC Result)',
+    })
+  }
+
+  const onClickCarRecommendationBadge = (carData: CarRecommendation) => {
+    setIsOpenPopupRecommended(true)
+    trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK, {
+      PELUANG_KREDIT_BADGE: 'Mudah disetujui',
+      CAR_BRAND: carData.brand,
+      CAR_MODEL: carData.model,
+      PAGE_ORIGINATION: 'Loan Calculator',
+      SOURCE_BUTTON: 'Car Recommendation (LC)',
+    })
+  }
+
   return (
     <>
       <Seo
@@ -2046,15 +2071,16 @@ export default function LoanCalculatorPage() {
                 calculationApiPayload={calculationApiPayload}
                 setFinalLoan={setFinalLoan}
                 pageOrigination={getPageOriginationForCountlyTracker()}
+                onClickResultItemUpperInfoSection={() =>
+                  onClickResultItemUpperInfoSection()
+                }
               />
               {carRecommendations.length > 0 && (
                 <CarRecommendations
                   carRecommendationList={carRecommendations}
                   title="Rekomendasi Sesuai
 Kemampuan Finansialmu"
-                  onClick={() => {
-                    setIsOpenPopupRecommended(true)
-                  }}
+                  onClick={(carData) => onClickCarRecommendationBadge(carData)}
                   selectedCity={forms?.city?.cityName}
                 />
               )}

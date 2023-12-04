@@ -43,6 +43,7 @@ import Image from 'next/image'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
 import { getCities } from 'services/api'
+import { getSessionStorage } from 'utils/handler/sessionStorage'
 
 const KualifikasiKreditImage = '/revamp/illustration/kualifikasi-kredit.webp'
 const PlayStoreImage = '/revamp/images/profile/google-play.webp'
@@ -75,6 +76,9 @@ const CreditQualificationProcess = () => {
     null,
   )
   const [flag, setFlag] = useState<TrackerFlag>(TrackerFlag.Init)
+  const kkFlowType = getSessionStorage(SessionStorageKey.KKIAFlowType)
+  const [loading, setLoading] = useState(false)
+  const isInPtbcFlow = kkFlowType && kkFlowType === 'ptbc'
 
   const checkCitiesData = () => {
     if (cityListApi.length === 0) {
@@ -98,7 +102,7 @@ const CreditQualificationProcess = () => {
   }
 
   const gotoPLP = () => {
-    trackKualifikasiKreditCariMobilClick(getDataForTracker())
+    setLoading(true)
     const urlParam = new URLSearchParams({
       ...(age && { age: String(age) }),
       ...(monthlyIncome && { monthlyIncome: String(monthlyIncome) }),
@@ -172,15 +176,12 @@ const CreditQualificationProcess = () => {
   const getCurrentUserInfo = () => {
     getCustomerInfoSeva()
       .then((response) => {
-        // setLoadShimmer2(false)
         if (!!response[0].dob && isIsoDateFormat(response[0].dob)) {
           setCustomerYearBorn(response[0].dob.slice(0, 4))
         }
       })
       .catch((err) => {
         console.error(err)
-        // setLoadShimmer2(false)
-        // showToast()
       })
   }
 
@@ -311,6 +312,8 @@ const CreditQualificationProcess = () => {
             size={ButtonSize.Big}
             secondaryClassName={styles.cariMobil}
             onClick={gotoPLP}
+            loading={loading}
+            disabled={loading}
           >
             Cari Mobil Lain
           </Button>
@@ -356,20 +359,20 @@ const CreditQualificationProcess = () => {
         <div className={styles.directAppsContainer}>
           <div className={styles.title}>Download Aplikasi SEVA</div>
           <div className={styles.directAppsWrapper}>
-            <Image
+            <img
               src={PlayStoreImage}
               alt="Playstore Seva"
               onClick={onClickPlayStore}
             />
-            <Image
+            <img
               src={AppStoreImage}
               alt="App Store Seva"
               onClick={onClickAppStore}
             />
           </div>
         </div>
+        <FooterMobile pageOrigination="Instant Approval - Waiting For Result" />
       </div>
-      <FooterMobile />
       <CitySelectorModal
         isOpen={openCitySelectorModal}
         onClickCloseButton={() => setOpenCitySelectorModal(false)}

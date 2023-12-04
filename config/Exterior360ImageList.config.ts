@@ -216,6 +216,19 @@ export const voxyExterior = () => {
   return arr
 }
 
+export const yarisCrossExterior = () => {
+  const urlPrefix =
+    'https://tsoimageprod.azureedge.net/static-content/prod/360degview/YARIS_CROSS_2023/Exterior_360/HEV/SuperWhite2/all-new-yaris-cross-hev-('
+  const urlSuffix = ')_optimized.png'
+  const arr = []
+  for (let i = 1; i < 24; i++) {
+    const url = urlPrefix + i + urlSuffix
+    arr.push(url)
+  }
+
+  return arr
+}
+
 export const alphardExterior = [
   'https://tsoimageprod.azureedge.net/static-content/prod/360degview/ALPHARD/exterior_360/images/Alphard.png',
 ]
@@ -414,6 +427,10 @@ export const exteriorImagesListNew: ExteriorImagesListNewType[] = [
   {
     url: '/mobil-baru/toyota/all-new-voxy',
     source: voxyExterior(),
+  },
+  {
+    url: '/mobil-baru/toyota/all-new-yaris-cross',
+    source: yarisCrossExterior(),
   },
 
   // === DAIHATSU ===

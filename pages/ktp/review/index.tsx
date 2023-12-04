@@ -11,6 +11,7 @@ import { useRouter } from 'next/router'
 import {
   CityOtrOption,
   FormControlValue,
+  FormLCState,
   GetCustomerKtpSeva,
   Option,
 } from 'utils/types/utils'
@@ -90,6 +91,25 @@ export default function KtpReview() {
     [],
   )
   const { showToast, RenderToast } = useToast()
+  const [isShowPersonalDomicileTooltip, setIsShowPersonalDomicileTooltip] =
+    useState(false)
+  const [isUserNeverSetPersonalDomicile, setIsUserNeverSetPersonalDomicile] =
+    useState(false)
+  const [
+    isErrorPersonalDomicileFieldEmpty,
+    setIsErrorPersonalDomicileFieldEmpty,
+  ] = useState(false)
+  const [isErrorSpouseDomicileFieldEmpty, setIsErrorSpouseDomicileFieldEmpty] =
+    useState(false)
+  const domicileFieldRef = useRef<HTMLDivElement | null>(null)
+  const kkForm: FormLCState | null = getSessionStorage(
+    SessionStorageKey.KalkulatorKreditForm,
+  )
+  const [loadingNav, setLoadingNav] = useState(false)
+
+  // const { fincap } = useFinancialQueryData()
+  const kkFlowType = getSessionStorage(SessionStorageKey.KKIAFlowType)
+  const isInPtbcFlow = kkFlowType && kkFlowType === 'ptbc'
 
   useEffect(() => {
     getCustomerInfoData()
@@ -668,6 +688,7 @@ export default function KtpReview() {
                 size={ButtonSize.Big}
                 disabled={getButtonDisabledStatus()}
                 onClick={onClickNextButton}
+                loading={loadingNav}
               >
                 Selanjutnya
               </Button>

@@ -337,7 +337,7 @@ const EmptyCarRecommendation = ({
     <span>
       Silakan{' '}
       <span className={stylep.link} onClick={onClickChangeCity}>
-        ubah lokasimu
+        ubah lokasimu.
       </span>
     </span>
   </div>

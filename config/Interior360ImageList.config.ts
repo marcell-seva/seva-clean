@@ -77,6 +77,11 @@ export const interiorImagesListNew: InteriorImagesListNewType[] = [
     source: '/revamp/360/toyota/allnewvoxyinterior.jpg', //voxy
   },
 
+  {
+    url: '/mobil-baru/toyota/all-new-yaris-cross',
+    source: '/revamp/360/toyota/360_interior_yaris_cross_optimized.jpg', //yaris cross
+  },
+
   // === DAIHTSU ===
   {
     url: '/mobil-baru/daihatsu/new-ayla',

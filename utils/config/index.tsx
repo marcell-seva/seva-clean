@@ -3,6 +3,7 @@ import LogoDaihatsu from '/public/revamp/icon/logo-daihatsu.webp'
 import Isuzu from '/public/revamp/icon/logo-isuzu.webp'
 import LogoBmw from '/public/revamp/icon/logo-bmw.webp'
 import Peugeot from '/public/revamp/icon/logo-peugeot.webp'
+import LogoHyundai from '/public/revamp/icon/logo-hyundai.webp'
 import Image from 'next/image'
 import styles from '/styles/components/organisms/lpCarRecommendations.module.scss'
 
@@ -72,6 +73,21 @@ const brandList: TabItemData[] = [
       </div>
     ),
     value: 'Peugeot',
+  },
+  {
+    label: (
+      <div className={styles.tabBrand}>
+        <Image
+          src={LogoHyundai}
+          alt="Hyundai"
+          style={{ width: 24, height: 24 }}
+          width={24}
+          height={24}
+        />
+        Hyundai
+      </div>
+    ),
+    value: 'Hyundai',
   },
 ]
 

@@ -3,19 +3,28 @@ import clsx from 'clsx'
 import React, {
   ForwardedRef,
   forwardRef,
-  use,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react'
 import styles from 'styles/components/molecules/searchWidget/selectWidget.module.scss'
 import { colors } from 'utils/helpers/style/colors'
-import { BottomSheet, IconChevronDown } from 'components/atoms'
-import { BottomSheetList } from 'components/molecules'
+import { IconChevronDown } from 'components/atoms'
 import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
 import { FormControlValue, Option } from 'utils/types'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import dynamic from 'next/dynamic'
+
+const BottomSheet = dynamic(() => import('components/atoms/bottomSheet'), {
+  ssr: false,
+})
+
+const BottomSheetList = dynamic(
+  () => import('components/molecules/bottomSheetList'),
+  { ssr: false },
+)
 
 type ContentSheetProps = {
   onClose: () => void
@@ -53,13 +62,28 @@ const forwardSelectWidget = (
   const { funnelWidget, saveFunnelWidget } = useContext(
     SearchWidgetContext,
   ) as SearchWidgetContextType
+  const [showToastError, setShowToastError] = useState({
+    current: false,
+    show: false,
+  })
   const onClose = () => {
-    setOpenOption(false)
+    if (!showToastError.current) {
+      setOpenOption(false)
+    } else {
+      setShowToastError((prev) => ({ ...prev, show: true }))
+    }
   }
+
+  const onShowToastError = (show: boolean) => {
+    setShowToastError((prev) => ({ ...prev, current: show }))
+  }
+
   const [currentValue, setCurrentValue] = useState('')
 
   const returnProps = {
     onClose,
+    onShowToastError,
+    showToastError,
   }
 
   const onChooseOption = (value: FormControlValue, label: FormControlValue) => {
@@ -81,6 +105,13 @@ const forwardSelectWidget = (
       return 'Age'
     }
   }
+
+  useEffect(() => {
+    if (showToastError.show)
+      setTimeout(() => {
+        setShowToastError((prev) => ({ ...prev, show: false }))
+      }, 1200)
+  }, [showToastError.show])
 
   return (
     <>
@@ -130,7 +161,7 @@ const forwardSelectWidget = (
       <BottomSheet
         title={title}
         open={openOption}
-        onDismiss={() => setOpenOption(false)}
+        onDismiss={!showToastError.show ? onClose : undefined}
       >
         {sheetOption ? (
           sheetOption(returnProps)

@@ -31,7 +31,7 @@ import {
 } from 'utils/handler/getBrandAndModel'
 import { trackDataCarType } from 'utils/types/utils'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
-import { RouteName } from 'utils/navigate'
+import { RouteName, generateNewPdpUrlWhenChangeCity } from 'utils/navigate'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
 import dynamic from 'next/dynamic'
 import { useCityFirst } from 'utils/hooks/useCityFirst'

@@ -58,6 +58,7 @@ export const colors = {
   supportSuccess: '#26C649',
   greyscale2: '#E4E9F1',
   offwhite: '#D4D4D4',
+  shadesGrey25: '#CDD0D4',
 } as const
 
 type ColorName = keyof typeof colors

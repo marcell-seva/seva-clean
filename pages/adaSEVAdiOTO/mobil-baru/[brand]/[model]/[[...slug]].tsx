@@ -26,6 +26,7 @@ import {
   getCarVariantDetails,
   getAnnouncementBox as gab,
 } from 'services/api'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 interface PdpDataOTOLocalContextType {
   /**
@@ -202,15 +203,7 @@ export async function getServerSideProps(context: any) {
         dataCities: cityRes,
       },
     }
-  } catch (error) {
-    console.log('qwe error', error)
-    return {
-      props: {
-        notFound: true,
-        dataHeader: [],
-        dataFooter: [],
-        dataCities: [],
-      },
-    }
+  } catch (error: any) {
+    return serverSideManualNavigateToErrorPage(error?.response?.status)
   }
 }

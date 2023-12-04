@@ -42,6 +42,18 @@ import {
   getCarVariantDetails,
   getAnnouncementBox as gab,
 } from 'services/api'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
+
+const checkUpper = [
+  'warna',
+  'eksterior',
+  'interior',
+  'video',
+  '360-eksterior',
+  '360-interior',
+]
+const checkLower = ['ringkasan', 'spesifikasi', 'harga', 'kredit']
+
 interface PdpDataLocalContextType {
   /**
    * this variable use "jakarta" as default payload, so that search engine could see page content.
@@ -152,7 +164,7 @@ export default function index({
     dataCombinationOfCarRecomAndModelDetail?.variants.map((item) =>
       Number(item.priceValue),
     )
-  const carOTRValue = Math.min(...(carOTRValueArray as number[]))
+  const carOTRValue = Math.min(...((carOTRValueArray as number[]) ?? [0]))
   const carOTR = `Rp ${carOTRValue / 1000000} juta`
 
   const getMetaTitle = () => {
@@ -336,6 +348,24 @@ export async function getServerSideProps(context: any) {
       id,
       '?city=jakarta&cityId=118',
     )
+
+    if (carModelDetailsRes.variants.length === 0) {
+      // need to stay 200 so that custom empty state UI is rendered
+      return {
+        props: {
+          carRecommendationsRes: null,
+          carModelDetailsRes: null,
+          dataCombinationOfCarRecomAndModelDetail: null,
+          carVariantDetailsRes: null,
+          dataMobileMenu: menuMobileRes.data,
+          dataFooter: footerRes.data,
+          dataCities: cityRes,
+          dataDesktopMenu: menuDesktopRes.data,
+          isSsrMobileLocal: getIsSsrMobile(context),
+        },
+      }
+    }
+
     const sortedVariantsOfCurrentModel = carModelDetailsRes.variants
       .map((item: any) => item)
       .sort((a: any, b: any) => a.priceValue - b.priceValue)
@@ -379,18 +409,8 @@ export async function getServerSideProps(context: any) {
         selectedVideoReview: selectedVideoReview || null,
       },
     }
-  } catch (error) {
-    console.log('qwe error', error)
-    return {
-      props: {
-        notFound: true,
-        dataMobileMenu: [],
-        dataFooter: [],
-        dataCities: [],
-        dataDesktopMenu: [],
-        isSsrMobileLocal: getIsSsrMobile(context),
-      },
-    }
+  } catch (error: any) {
+    return serverSideManualNavigateToErrorPage(error?.response?.status)
   }
 }
 
@@ -445,7 +465,7 @@ const handlingCarLogo = (brand: string) => {
 }
 
 const jsonLD = (
-  carModel: CarModelDetailsResponse | undefined,
+  carModel: CarModelDetailsResponse | undefined | null,
   carVariant: CarVariantDetails | null,
   recommendationsDetailData?: CarRecommendation[],
   videoReview?: MainVideoResponseType,

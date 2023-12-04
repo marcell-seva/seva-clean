@@ -10,7 +10,8 @@
     "lint": "next lint",
     "export": "next build && next export",
     "analyze": "ANALYZE=true next build",
-    "tsc": "bash -c tsc"
+    "tsc": "bash -c tsc",
+    "serve": "next build && next start"
   },
   "resolutions": {
     "styled-components": "^5"

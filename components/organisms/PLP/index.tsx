@@ -74,6 +74,7 @@ import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 import { getMinMaxPrice, postCheckTemanSeva } from 'services/api'
+import { isCurrentCitySameWithSSR } from 'utils/hooks/useGetCity'
 
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
@@ -182,7 +183,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     loanRank: 'Null',
   })
   const user: string | null = getLocalStorage(LocalStorageKey.sevaCust)
-  const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
   const isUsingFilterFinancial =
     !!filterStorage?.age &&
@@ -218,11 +218,11 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   }
 
   const cleanEffect = () => {
-    if (!isCurrentCitySameWithSSR) {
+    if (!isCurrentCitySameWithSSR()) {
       saveRecommendation([])
     }
     setPage(1)
-    setShowLoading(true)
+    setShowLoading(false)
     setSampleArray({ items: [] })
   }
 
@@ -524,9 +524,15 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
 
   useEffect(() => {
     setPage(1)
-    setHasMore(true)
+    if (recommendation.length > sampleArray.items.length) {
+      setHasMore(true)
+    }
     setSampleArray({ items: recommendation.slice(0, 12) })
     saveRecommendation(recommendation)
+    if (sampleArray.items.length === 0 || recommendation.length === 0) {
+      setShowLoading(false)
+      setHasMore(false)
+    }
   }, [recommendation])
 
   useEffect(() => {
@@ -538,7 +544,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       })
     }
 
-    if (!isCurrentCitySameWithSSR || recommendation.length === 0) {
+    if (!isCurrentCitySameWithSSR() || recommendation.length === 0) {
       const params = new URLSearchParams()
       getCity().cityCode && params.append('city', getCity().cityCode as string)
 
@@ -623,6 +629,11 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
         sortBy: sortBy || 'lowToHigh',
       }
       patchFunnelQuery(queryParam)
+      getNewFunnelRecommendations({ ...queryParam, brand: [] }).then(
+        (response: any) => {
+          if (response) setAlternativeCar(response.carRecommendations)
+        },
+      )
     }
     return () => cleanEffect()
   }, [])
@@ -740,6 +751,23 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       PAGE_ORIGINATION: 'PLP',
     })
   }
+
+  const trackCountlyOnClickBadge = (
+    item: any,
+    rank: 'Mudah disetujui' | 'Sulit disetujui',
+  ) => {
+    // use timeout in case Countly is loading after interactive
+    setTimeout(() => {
+      trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK, {
+        PELUANG_KREDIT_BADGE: rank,
+        CAR_BRAND: item.brand,
+        CAR_MODEL: item.model,
+        PAGE_ORIGINATION: 'PLP',
+        SOURCE_BUTTON: 'Product Card Badge (PLP)',
+      })
+    }, 1000)
+  }
+
   return (
     <>
       <div
@@ -831,27 +859,11 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
                       }}
                       onClickResultMudah={() => {
                         setOpenLabelResultMudah(true)
-                        trackPeluangMudahBadgeClick(getDataForAmplitude())
-                        trackEventCountly(
-                          CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
-                          {
-                            PELUANG_KREDIT_BADGE: 'Mudah disetujui',
-                            CAR_BRAND: i.brand,
-                            CAR_MODEL: i.model,
-                          },
-                        )
+                        trackCountlyOnClickBadge(i, 'Mudah disetujui')
                       }}
                       onClickResultSulit={() => {
                         setOpenLabelResultSulit(true)
-                        trackPeluangSulitBadgeClick(getDataForAmplitude())
-                        trackEventCountly(
-                          CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
-                          {
-                            PELUANG_KREDIT_BADGE: 'Sulit disetujui',
-                            CAR_BRAND: i.brand,
-                            CAR_MODEL: i.model,
-                          },
-                        )
+                        trackCountlyOnClickBadge(i, 'Sulit disetujui')
                       }}
                       isFilterTrayOpened={isButtonClick} // fix background click on ios
                     />

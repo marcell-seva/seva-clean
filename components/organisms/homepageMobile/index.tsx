@@ -259,7 +259,11 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
   }
 
   useEffect(() => {
-    if (getCity().cityCode !== 'jakarta') {
+    if (
+      getCity().cityCode !== 'jakarta' ||
+      getCity().cityName === 'Depok' ||
+      ssr === 'failed'
+    ) {
       loadCarRecommendation()
       getCarOfTheMonth()
       checkCitiesData()
@@ -309,7 +313,7 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
     )
     trackLPKualifikasiKreditTopCtaClick()
     if (!!getToken()) {
-      router.push(multiCreditQualificationPageUrl)
+      window.location.href = multiCreditQualificationPageUrl
     } else {
       savePageBeforeLogin(multiCreditQualificationPageUrl)
       setIsLoginModalOpened(true)

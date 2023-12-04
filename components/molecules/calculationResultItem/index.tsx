@@ -23,6 +23,7 @@ interface Props {
   isActive: boolean
   onClickBottomSection: (selectedData: SpecialRateListWithPromoType) => void
   insuranceAndPromoData: LoanCalculatorInsuranceAndPromoType
+  onClickUpperInfoSection?: () => void
 }
 
 export const CalculationResultItem = ({
@@ -31,6 +32,7 @@ export const CalculationResultItem = ({
   isActive,
   onClickBottomSection,
   insuranceAndPromoData,
+  onClickUpperInfoSection,
 }: Props) => {
   const { currentLanguage } = useUtils()
 
@@ -174,6 +176,7 @@ export const CalculationResultItem = ({
           [styles.hideComponent]: !isActive || data.loanRank !== LoanRank.Green,
           [styles.upperInfoGreen]: data.loanRank === LoanRank.Green,
         })}
+        onClick={() => onClickUpperInfoSection && onClickUpperInfoSection()}
       >
         {getUpperInfoText()}
       </div>

@@ -50,6 +50,7 @@ import {
 import dynamic from 'next/dynamic'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { trackLoginPageView } from 'helpers/amplitude/seva20Tracking'
+import { default as customAxiosPost } from 'services/api/post'
 
 const LoginModalMultiKK = dynamic(
   () => import('../loginModalMultiKK').then((comp) => comp.LoginModalMultiKK),
@@ -198,7 +199,7 @@ export const Login = () => {
         REGISTRATION_STATUS: 'Yes',
       })
     } catch (e: any) {
-      if (e.response.status === 404) {
+      if (e?.response?.status === 400) {
         trackEventCountly(CountlyEventNames.WEB_LOGIN_PAGE_CTA_CLICK, {
           REGISTRATION_STATUS: 'No',
         })
@@ -267,11 +268,10 @@ export const Login = () => {
   const checkTemanSevaCustomer = async (data: any) => {
     if (getPageBeforeLogin() === TemanSevaOnboardingUrl) {
       try {
-        const fetchAxios = (await import('axios')).default
-        const temanSeva = await fetchAxios.post(temanSevaUrlPath.isTemanSeva, {
+        const temanSeva = await customAxiosPost(temanSevaUrlPath.isTemanSeva, {
           phoneNumber: data.phoneNumber,
         })
-        if (temanSeva.data.isTemanSeva) {
+        if (temanSeva.isTemanSeva) {
           router.push(TemanSevaRegisterSuccessUrl)
         }
       } catch (error) {}

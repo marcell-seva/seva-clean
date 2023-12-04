@@ -28,6 +28,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { getCarModelDetailsById } from 'utils/handler/carRecommendation'
 import { getLeadsDetail, getRecommendation } from 'services/api'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 const Toast = dynamic(() => import('components/atoms').then((mod) => mod.Toast))
 
@@ -638,7 +639,7 @@ export async function getServerSideProps(context: any) {
         phoneNumber,
       },
     }
-  } catch (error) {
-    throw error
+  } catch (error: any) {
+    return serverSideManualNavigateToErrorPage(error?.response?.status)
   }
 }

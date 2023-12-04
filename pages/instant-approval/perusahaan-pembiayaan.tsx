@@ -61,7 +61,7 @@ const LeasingCompanyOptionPage = ({
   }, [dataHead])
 
   const [option, setOption] = useState<'none' | '' | 'acc' | 'taf'>('none')
-
+  const [loading, setLoading] = useState(false)
   const [agreement, setAgreement] = useState<boolean>(false)
   const [isDisableTAF, setIsDisableTAF] = useState<boolean>(false)
   const [isFilled, setIsFilled] = useState<boolean>(false)
@@ -143,6 +143,7 @@ const LeasingCompanyOptionPage = ({
   }
 
   const proceedFinancing = () => {
+    setLoading(true)
     const data = {
       ...kkForm,
       leasingOption: option,
@@ -157,7 +158,12 @@ const LeasingCompanyOptionPage = ({
   useEffect(() => {
     if (kkForm !== null) {
       const brand = kkForm.model?.brandName
-      if (brand === 'Isuzu' || brand === 'Peugeot' || brand === 'BMW') {
+      if (
+        brand === 'Isuzu' ||
+        brand === 'Peugeot' ||
+        brand === 'BMW' ||
+        brand === 'Hyundai'
+      ) {
         setIsDisableTAF(true)
         setDescDisabledCard(
           'Perusahaan ini belum bisa digunakan untuk mobil yang kamu pilih.',
@@ -213,7 +219,8 @@ const LeasingCompanyOptionPage = ({
         <AgreementTerms />
         <div className={styles.button}>
           <Button
-            disabled={!isFilled}
+            disabled={loading || !isFilled}
+            loading={loading}
             version={
               isFilled ? ButtonVersion.PrimaryDarkBlue : ButtonVersion.Disable
             }

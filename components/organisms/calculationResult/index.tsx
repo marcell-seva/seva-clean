@@ -56,6 +56,7 @@ interface Props {
   setFinalLoan: (value: FinalLoan) => void
   pageOrigination?: string
   isPartnership?: boolean
+  onClickResultItemUpperInfoSection?: () => void
 }
 
 export const CalculationResult = ({
@@ -74,6 +75,7 @@ export const CalculationResult = ({
   setFinalLoan,
   pageOrigination,
   isPartnership = false,
+  onClickResultItemUpperInfoSection,
 }: Props) => {
   const [state, setState] = useState<LoanCalculatorInsuranceAndPromoType[]>(
     insuranceAndPromoForAllTenure,
@@ -426,6 +428,10 @@ export const CalculationResult = ({
                 state.filter(
                   (selectedDataItem) => selectedDataItem.tenure === item.tenure,
                 )[0]
+              }
+              onClickUpperInfoSection={() =>
+                onClickResultItemUpperInfoSection &&
+                onClickResultItemUpperInfoSection()
               }
             />
           )

@@ -45,6 +45,7 @@ import { getSessionStorage } from 'utils/handler/sessionStorage'
 import dynamic from 'next/dynamic'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { trackRegistrationPageView } from 'helpers/amplitude/seva20Tracking'
+import { containsSpecialChars } from 'utils/stringUtils'
 
 const Toast = dynamic(
   () => import('components/atoms/toast').then((comp) => comp.Toast),
@@ -372,7 +373,8 @@ export const Register = () => {
   }
 
   const setAndCheckNameInput = (payload: string): void => {
-    if (payload !== ' ') setFormData('name', payload)
+    if (payload[0] !== ' ' && !containsSpecialChars(payload))
+      setFormData('name', payload)
   }
 
   const setAndCheckReferralCodeInput = (payload: string): void => {

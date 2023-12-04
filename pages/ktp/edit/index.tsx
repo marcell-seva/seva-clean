@@ -157,6 +157,7 @@ const KtpForm = () => {
             ) as any
             if (dataPersonal) {
               if (value.nik === dataPersonal.nik) {
+                setIsLoadingSubmit(false)
                 return setIsModalOpen(true)
               }
             }
@@ -191,8 +192,15 @@ const KtpForm = () => {
           //   }
           // }
         }
-      } catch (e) {
-        console.error(e)
+      } catch (e: any) {
+        if (e?.response?.data?.message) {
+          setToast(`${e?.response?.data?.message}`)
+        } else {
+          setToast(
+            'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+          )
+        }
+        setIsLoadingSubmit(false)
       }
     },
     validateOnBlur: true,
@@ -631,6 +639,7 @@ const KtpForm = () => {
                   !checkCityOCR(cityListFromApi, values.city)
                 }
                 data-testid={elementId.Profil.Button.Konfirmasi}
+                loading={isLoadingSubmit}
               >
                 Konfirmasi
               </Button>

@@ -31,6 +31,7 @@ import {
   getAnnouncementBox as gab,
   getMobileFooterMenu,
 } from 'services/api'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 interface HomePageDataLocalContextType {
   dataBanner: any
@@ -227,8 +228,8 @@ export async function getServerSideProps(context: any) {
         dataFooterMenu,
       },
     }
-  } catch (error) {
-    throw error
+  } catch (error: any) {
+    return serverSideManualNavigateToErrorPage(error?.response?.status)
   }
 }
 

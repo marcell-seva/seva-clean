@@ -3,6 +3,7 @@ import { SessionStorageKey } from 'utils/enum'
 import { saveSessionStorage } from 'utils/handler/sessionStorage'
 import { creditQualificationUrl } from 'utils/helpers/routes'
 import urls from 'utils/helpers/url'
+import { CityOtrOption } from 'utils/types'
 
 export enum RouteName {
   Homepage = 'Homepage',
@@ -169,6 +170,7 @@ export const navigateToPLP = (
   navigate: boolean = true,
   replace = false,
   customUrl?: string,
+  isUsingWindowLocation?: boolean,
 ) => {
   const origin = window.location.origin
   const refer = defineRouteName(window.location.href.replace(origin, ''))
@@ -180,15 +182,34 @@ export const navigateToPLP = (
   )
 
   if (!navigate) return
-  if (replace)
-    return Router.replace({
-      pathname: urls.internalUrls.carResultsUrl,
-      ...option,
-    })
-  return Router.push({
-    pathname: customUrl || urls.internalUrls.carResultsUrl,
-    ...option,
-  })
+
+  if (isUsingWindowLocation) {
+    if (replace) {
+      window.location.replace(
+        urls.internalUrls.carResultsUrl +
+          (!!option?.search ? `?${option?.search}` : ''),
+      )
+    } else {
+      window.location.href =
+        (customUrl || urls.internalUrls.carResultsUrl) +
+        (!!option?.search ? `?${option?.search}` : '')
+    }
+  } else {
+    import('next/router')
+      .then((mod) => mod.default)
+      .then((Router) => {
+        if (replace)
+          Router.replace({
+            pathname: urls.internalUrls.carResultsUrl,
+            ...option,
+          })
+        else
+          Router.push({
+            pathname: customUrl || urls.internalUrls.carResultsUrl,
+            ...option,
+          })
+      })
+  }
 }
 
 export const navigateToKK = (
@@ -248,4 +269,39 @@ export const saveDataForCountlyTrackerPageViewHomepage = (
     SessionStorageKey.PreviousSourceButtonHomepage,
     previousButton,
   )
+}
+
+export const generateNewPdpUrlWhenChangeCity = (
+  selectedCityData: CityOtrOption,
+  cityListFromApi: CityOtrOption[],
+) => {
+  const selectedCity = selectedCityData.cityName
+    .toLocaleLowerCase()
+    .split(' ')
+    .join('-')
+  const separateUrl = window.location.href.split('?')[0]
+  const queryParam = window.location.href.split('?')[1]
+  const getCitybyUrl = separateUrl.split('/').at(-1)
+  if (getCitybyUrl !== undefined) {
+    const checkCityUrl = cityListFromApi.filter(
+      (item: any) =>
+        item.cityName.replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase() ===
+        getCitybyUrl.replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase(),
+    )
+    if (checkCityUrl.length !== 0) {
+      const url = queryParam
+        ? window.location.href.replace(getCitybyUrl, selectedCity)
+        : window.location.href.replace(getCitybyUrl, selectedCity)
+      return url
+    } else {
+      const url =
+        separateUrl
+          .split('/')
+          .splice(0, separateUrl.length - 1)
+          .join('/') +
+        '/' +
+        selectedCity
+      return url
+    }
+  }
 }

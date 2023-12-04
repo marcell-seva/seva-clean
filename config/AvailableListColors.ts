@@ -270,6 +270,10 @@ export const availableListColors = [
     colors: ['#000000', '#ffffff', '#949494', '#737373', '#808080'],
     url: '/mobil-baru/toyota/all-new-kijang-innova-zenix',
   },
+  {
+    colors: ['#000000', '#ffffff', '#9e0000', '#20392c', '#a7a8ad'],
+    url: '/mobil-baru/toyota/all-new-yaris-cross',
+  },
 
   // === bmw cars ===
   {
@@ -404,6 +408,58 @@ export const availableListColors = [
     colors: ['#000000', '#ffffff', '#c2282e', '#737373', '#a7a8ad', '#d3ca50'],
     url: '/mobil-baru/toyota/all-new-agya',
   },
+
+  // === hyundai cars ===
+  {
+    colors: ['#121210', '#c6c1bd', '#4a4b4f', '#e2e2ea', '#939395'],
+    url: '/mobil-baru/hyundai/ioniq-5',
+  },
+  {
+    colors: ['#0b101d', '#e9efe7', '#2d393c', '#9a9890', '#040508'],
+    url: '/mobil-baru/hyundai/ioniq-6',
+  },
+  {
+    colors: ['#242527', '#2a3548', '#e9e9e9', '#494e50', '#949999'],
+    url: '/mobil-baru/hyundai/palisade',
+  },
+  {
+    colors: ['#181717', '#999b9a', '#36383e', '#cfd0d7'],
+    url: '/mobil-baru/hyundai/staria',
+  },
+  {
+    colors: ['#d0d0d0', '#a6a8a7', '#494949', '#262829', '#2d3337'],
+    url: '/mobil-baru/hyundai/santa-fe',
+  },
+  {
+    colors: [
+      ['#1b1d1c', '#868684'],
+      ['#1b1d1c', '#862725'],
+      ['#1b1d1c', '#f8f8f6'],
+      '#0a0f14',
+      '#eff1f1',
+      '#888a8c',
+      '#424b51',
+      '#982020',
+    ],
+    url: '/mobil-baru/hyundai/stargazer',
+  },
+  {
+    colors: [
+      ['#1b1d1c', '#868684'],
+      ['#1b1d1c', '#862725'],
+      ['#1b1d1c', '#f8f8f6'],
+      '#0a0f14',
+      '#eff1f1',
+      '#888a8c',
+      '#424b51',
+      '#982020',
+    ],
+    url: '/mobil-baru/hyundai/stargazer-x',
+  },
+  {
+    colors: ['#0c1015', '#eef0ee', '#85878a', '#3d474c', '#981e1f'],
+    url: '/mobil-baru/hyundai/creta',
+  },
 ]
 
 export const availableList = [
@@ -439,6 +495,7 @@ export const availableList = [
   '/mobil-baru/toyota/all-new-bz4x',
   '/mobil-baru/toyota/all-new-kijang-innova-zenix',
   '/mobil-baru/toyota/all-new-agya',
+  '/mobil-baru/toyota/all-new-yaris-cross',
 
   // daihatsu cars
   '/mobil-baru/daihatsu/new-ayla', //ayla
@@ -477,6 +534,16 @@ export const availableList = [
   '/mobil-baru/peugeot/5008',
   '/mobil-baru/peugeot/3008',
   '/mobil-baru/peugeot/2008',
+
+  //hyundai cars
+  '/mobil-baru/hyundai/ioniq-5',
+  '/mobil-baru/hyundai/ioniq-6',
+  '/mobil-baru/hyundai/palisade',
+  '/mobil-baru/hyundai/staria',
+  '/mobil-baru/hyundai/santa-fe',
+  '/mobil-baru/hyundai/stargazer',
+  '/mobil-baru/hyundai/stargazer-x',
+  '/mobil-baru/hyundai/creta',
 ]
 
 export const availableListVideoReview = [

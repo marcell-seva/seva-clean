@@ -50,6 +50,7 @@ import {
 import Image from 'next/image'
 import { AdaOTOdiSEVALeadsForm } from 'components/organisms/leadsForm/adaOTOdiSEVA/popUp'
 import { useUtils } from 'services/context/utilsContext'
+import clsx from 'clsx'
 
 const rpIcon = '/revamp/illustration/rp-icon.webp'
 
@@ -125,6 +126,9 @@ const TabContentLowerVariant = ({
     }
   }
   const removeToneColor = (variantName: string) => {
+    if (carModelDetails.brand === 'Hyundai')
+      return removeToneColorHyundai(variantName)
+
     const variantSplice =
       variantName[variantName.length - 1] === ' '
         ? variantName.slice(0, variantName.length - 1).toLowerCase()
@@ -141,6 +145,107 @@ const TabContentLowerVariant = ({
     } else {
       return variantName
     }
+  }
+
+  const removeToneColorHyundai = (variantName: string) => {
+    let variant = variantName
+    if (variant.toLowerCase().includes('non premium color')) {
+      variant = variant.replace('Non Premium Color', '')
+    } else if (variant.toLowerCase().includes('premium color')) {
+      variant = variant.replace('Premium Color', '')
+    }
+    if (variant.toLowerCase().includes('matte color')) {
+      variant = variant.replace('Matte Color', '')
+    }
+    if (variant.toLowerCase().includes('two tone')) {
+      variant = variant.replace('Two Tone', '')
+    } else if (variant.toLowerCase().includes('one tone')) {
+      variant = variant.replace('One Tone', '')
+    }
+
+    if (variant.toLowerCase().includes('single tone')) {
+      variant = variant.replace('Single Tone', '')
+    } else if (variant.toLowerCase().includes('dual tone')) {
+      variant = variant.replace('Dual Tone', '')
+    }
+
+    if (variant.toLowerCase().includes('captain seat')) {
+      variant = variant.replaceAll('Captain Seat', '')
+    }
+    if (variant.toLowerCase().includes('roof')) {
+      variant = variant.replaceAll('Roof', '')
+    }
+    return variant
+  }
+
+  const topWordingName = (variantName: string) => {
+    if (carModelDetails.brand === 'Hyundai')
+      return topWordingNameHyundai(variantName)
+
+    return variantName.includes('Premium Color') &&
+      !variantName.includes('Non Premium Color')
+      ? 'Premium Color'
+      : variantName.includes('Non Premium Color')
+      ? 'Non Premium Color'
+      : variantName.includes('One Tone')
+      ? 'One Tone'
+      : variantName.toLowerCase().includes('two tone')
+      ? 'Two Tone'
+      : 'One Tone'
+  }
+
+  const topWordingNameHyundai = (variantName: string) => {
+    let word = ''
+    if (
+      variantName.includes('Premium Color') &&
+      !variantName.includes('Non Premium Color')
+    ) {
+      word += 'Premium Color|'
+    }
+    if (variantName.includes('Non Premium Color')) {
+      word += 'Non Premium Color|'
+    }
+    if (variantName.includes('Matte Color')) {
+      word += 'Matte Color|'
+    }
+    if (variantName.toLowerCase().includes('single tone')) {
+      word += 'Single Tone|'
+    }
+    if (variantName.toLowerCase().includes('dual tone')) {
+      word += 'Dual Tone|'
+    }
+    if (variantName.includes('One Tone')) {
+      word += 'One Tone|'
+    }
+    if (variantName.toLowerCase().includes('two tone')) {
+      word += 'Two Tone|'
+    }
+
+    if (variantName.toLowerCase().includes('roof')) {
+      word += 'Roof|'
+    }
+
+    if (variantName.includes('Captain Seat')) {
+      word += 'Captain Seat|'
+    }
+
+    if (word === '') {
+      word = 'One Tone'
+    }
+
+    return word.replaceAll('|', ' ')
+  }
+
+  const topWordingNameDisplay = (variantName: string) => {
+    if (!removeToneColor(variantName)) return ''
+    return topWordingName(variantName)
+  }
+
+  const variantNameDisplay = (varianName: string) => {
+    const varName = removeToneColor(varianName)
+    if (!varName) return topWordingName(varianName)
+
+    return varName
   }
 
   const closeLeadsForm = () => {
@@ -326,7 +431,7 @@ const TabContentLowerVariant = ({
             Harga varian mobil di bawah ini berdasarkan tenor 5 tahun.
           </p>
         </div>
-        {!toggleHorizontal && !expandHorizontal ? (
+        {!toggleHorizontal ? (
           carModelDetails.variants
             .map((carVariant: CarVariantRecommendation, index: number) => (
               <div
@@ -343,185 +448,55 @@ const TabContentLowerVariant = ({
                       style={{
                         display: 'flex',
                         flexDirection: 'column',
-                        width: '50%',
-                      }}
-                    >
-                      <div data-testid={elementId.PDP.List.VariantCard}>
-                        <div className={styles.row}>
-                          <p className={styles.openSansBoldGrey}>
-                            {carVariant.name.includes('Premium Color') &&
-                            !carVariant.name.includes('Non Premium Color')
-                              ? 'Premium Color'
-                              : carVariant.name.includes('Non Premium Color')
-                              ? 'Non Premium Color'
-                              : carVariant.name.includes('One Tone')
-                              ? 'One Tone'
-                              : carVariant.name
-                                  .toLowerCase()
-                                  .includes('two tone')
-                              ? 'Two Tone'
-                              : 'One Tone'}
-                          </p>
-                        </div>
-                        <div>
-                          <div>
-                            <div className={styles.tooltip}>
-                              {removeToneColor(carVariant.name).length > 35 && (
-                                <div>
-                                  <p className={styles.openSansSemiBoldBlack}>
-                                    {removeToneColor(carVariant.name).slice(
-                                      0,
-                                      35,
-                                    ) + '...'}
-                                  </p>
-                                  <span
-                                    className={styles.tooltiptext}
-                                    onMouseOver={() => setOnHover(!onHover)}
-                                  >
-                                    {removeToneColor(carVariant.name)}
-                                  </span>
-                                </div>
-                              )}
-                              <p className={styles.openSansSemiBoldBlack}>
-                                {removeToneColor(carVariant.name).length <=
-                                  35 &&
-                                removeToneColor(carVariant.name).includes('()')
-                                  ? removeToneColor(carVariant.name).replace(
-                                      '()',
-                                      '',
-                                    )
-                                  : removeToneColor(carVariant.name).length <=
-                                    35
-                                  ? removeToneColor(carVariant.name)
-                                  : null}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className={styles.row}
-                        style={{ marginBottom: '24px', marginTop: '16px' }}
-                        onClick={() => handleOpenPopup(carVariant, index)}
-                        data-testid={elementId.PDP.List.VariantDetail}
-                      >
-                        <p className={styles.openSansLightBlue}>Lihat Detail</p>
-                      </div>
-                    </div>
-
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '50%',
-                        paddingTop:
-                          removeToneColor(carVariant.name).slice(0, 30)
-                            .length <= 19
-                            ? '2%'
-                            : removeToneColor(carVariant.name).slice(0, 30)
-                                .length > 19
-                            ? '8%'
-                            : '0',
-                      }}
-                      onClick={() => handleOpenPopup(carVariant, index)}
-                      data-testid={elementId.PDP.List.VariantPrice}
-                    >
-                      <div className={styles.variantPriceWrapper}>
-                        <p className={styles.openSansSemiBoldBlack}>
-                          {'Rp' +
-                            replacePriceSeparatorByLocalization(
-                              carVariant.priceValue,
-                              LanguageCode.id,
-                            )}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className={styles.buttonPrimary}
-                    onClick={() => {
-                      isOTO
-                        ? showLeadsForm(carVariant.name)
-                        : navigateToCreditTab(carVariant, index)
-                    }}
-                    data-testid={elementId.PDP.List.CTAHitungKemampuan}
-                  >
-                    <p style={{ color: '#ffffff', fontSize: 12 }}>
-                      {isOTO ? 'Saya Tertarik' : 'Hitung Kemampuan'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))
-            .sort((a: any, b: any) => a.priceValue - b.priceValue)
-            .slice(0, 5)
-        ) : !toggleHorizontal && expandHorizontal ? (
-          carModelDetails.variants
-            .map((carVariant: CarVariantRecommendation, index: number) => (
-              <div
-                key={carVariant.id}
-                className={styles.containerCard}
-                data-testid={elementId.PDP.List.VariantCard}
-              >
-                <div className={styles.cardCarVariantGrid}>
-                  <div
-                    className={styles.cardCarVariantInfoGrid}
-                    style={{ flexDirection: 'row' }}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '50%',
+                        width: '100%',
                       }}
                     >
                       <div data-testid={elementId.PDP.List.VariantName}>
                         <div className={styles.row}>
                           <p className={styles.openSansBoldGrey}>
-                            {carVariant.name.includes('Premium Color') &&
-                            !carVariant.name.includes('Non Premium Color')
-                              ? 'Premium Color'
-                              : carVariant.name.includes('Non Premium Color')
-                              ? 'Non Premium Color'
-                              : carVariant.name.includes('One Tone')
-                              ? 'One Tone'
-                              : carVariant.name
-                                  .toLowerCase()
-                                  .includes('two tone')
-                              ? 'Two Tone'
-                              : 'One Tone'}
+                            {topWordingNameDisplay(carVariant.name)}
                           </p>
                         </div>
                         <div>
                           <div>
                             <div className={styles.tooltip}>
-                              {removeToneColor(carVariant.name).length > 35 && (
+                              {variantNameDisplay(carVariant.name).length >
+                                35 && (
                                 <div>
-                                  <p className={styles.openSansSemiBoldBlack}>
-                                    {removeToneColor(carVariant.name).slice(
-                                      0,
-                                      35,
-                                    ) + '...'}
+                                  <p
+                                    className={clsx({
+                                      [styles.openSansSemiBoldBlack]: true,
+                                      [styles.responsiveText]: true,
+                                    })}
+                                  >
+                                    {variantNameDisplay(carVariant.name)}
                                   </p>
                                   <span
                                     className={styles.tooltiptext}
                                     onMouseOver={() => setOnHover(!onHover)}
                                   >
-                                    {removeToneColor(carVariant.name)}
+                                    {variantNameDisplay(carVariant.name)}
                                   </span>
                                 </div>
                               )}
-                              <p className={styles.openSansSemiBoldBlack}>
-                                {removeToneColor(carVariant.name).length <=
+                              <p
+                                className={clsx({
+                                  [styles.openSansSemiBoldBlack]: true,
+                                  [styles.responsiveText]: true,
+                                })}
+                              >
+                                {variantNameDisplay(carVariant.name).length <=
                                   35 &&
-                                removeToneColor(carVariant.name).includes('()')
-                                  ? removeToneColor(carVariant.name).replace(
+                                variantNameDisplay(carVariant.name).includes(
+                                  '()',
+                                )
+                                  ? variantNameDisplay(carVariant.name).replace(
                                       '()',
                                       '',
                                     )
-                                  : removeToneColor(carVariant.name).length <=
-                                    30
-                                  ? removeToneColor(carVariant.name)
+                                  : variantNameDisplay(carVariant.name)
+                                      .length <= 35
+                                  ? variantNameDisplay(carVariant.name)
                                   : null}
                               </p>
                             </div>
@@ -542,15 +517,7 @@ const TabContentLowerVariant = ({
                       style={{
                         display: 'flex',
                         flexDirection: 'column',
-                        width: '50%',
-                        paddingTop:
-                          removeToneColor(carVariant.name).slice(0, 30)
-                            .length <= 19
-                            ? '2%'
-                            : removeToneColor(carVariant.name).slice(0, 30)
-                                .length > 19
-                            ? '5%'
-                            : '0',
+                        paddingTop: 16,
                       }}
                       onClick={() => handleOpenPopup(carVariant, index)}
                       data-testid={elementId.PDP.List.VariantPrice}
@@ -583,6 +550,7 @@ const TabContentLowerVariant = ({
               </div>
             ))
             .sort((a: any, b: any) => a.priceValue - b.priceValue)
+            .slice(0, expandHorizontal ? 100 : 5)
         ) : (
           <div className={styles.rowScrollHorizontal}>
             {carModelDetails.variants
@@ -608,24 +576,14 @@ const TabContentLowerVariant = ({
                           data-testid={elementId.PDP.Grid.VariantName}
                         >
                           <p className={styles.openSansBoldGrey}>
-                            {carVariant.name.includes('Premium Color') &&
-                            !carVariant.name.includes('Non Premium Color')
-                              ? 'Premium Color'
-                              : carVariant.name.includes('Non Premium Color')
-                              ? 'Non Premium Color'
-                              : carVariant.name.includes('One Tone')
-                              ? 'One Tone'
-                              : carVariant.name
-                                  .toLowerCase()
-                                  .includes('two tone')
-                              ? 'Two Tone'
-                              : 'One Tone'}
+                            {topWordingNameDisplay(carVariant.name)}
                           </p>
                           <div className={styles.tooltip}>
-                            {removeToneColor(carVariant.name).length > 30 && (
+                            {variantNameDisplay(carVariant.name).length >
+                              30 && (
                               <div>
                                 <p className={styles.openSansSemiBoldBlack}>
-                                  {removeToneColor(carVariant.name).slice(
+                                  {variantNameDisplay(carVariant.name).slice(
                                     0,
                                     30,
                                   ) + '...'}
@@ -634,19 +592,21 @@ const TabContentLowerVariant = ({
                                   className={styles.tooltiptext}
                                   onMouseOver={() => setOnHover(!onHover)}
                                 >
-                                  {removeToneColor(carVariant.name)}
+                                  {variantNameDisplay(carVariant.name)}
                                 </span>
                               </div>
                             )}
                             <p className={styles.openSansSemiBoldBlack}>
-                              {removeToneColor(carVariant.name).length <= 30 &&
-                              removeToneColor(carVariant.name).includes('()')
-                                ? removeToneColor(carVariant.name).replace(
+                              {variantNameDisplay(carVariant.name).length <=
+                                30 &&
+                              variantNameDisplay(carVariant.name).includes('()')
+                                ? variantNameDisplay(carVariant.name).replace(
                                     '()',
                                     '',
                                   )
-                                : removeToneColor(carVariant.name).length <= 30
-                                ? removeToneColor(carVariant.name)
+                                : variantNameDisplay(carVariant.name).length <=
+                                  30
+                                ? variantNameDisplay(carVariant.name)
                                 : null}
                             </p>
                           </div>

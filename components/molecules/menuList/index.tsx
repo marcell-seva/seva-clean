@@ -17,6 +17,7 @@ import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { PreviousButton, navigateToPLP } from 'utils/navigate'
 import { getPageName } from 'utils/pageName'
 import { saveSessionStorage } from 'utils/handler/sessionStorage'
+import { default as customAxiosPost } from 'services/api/post'
 
 type MenuListProps = {
   menuList?: MobileWebTopMenuType[]
@@ -49,13 +50,13 @@ export const MenuList: React.FC<MenuListProps> = ({
 
   const checkTemanSeva = async () => {
     if (customerDetail) {
-      const temanSeva = await axios.post(
+      const temanSeva = await customAxiosPost(
         `https://teman.prod.seva.id/auth/is-teman-seva`,
         {
           phoneNumber: customerDetail.phoneNumber,
         },
       )
-      setIsTemanSeva(temanSeva.data.isTemanSeva)
+      setIsTemanSeva(temanSeva.isTemanSeva)
     }
   }
 

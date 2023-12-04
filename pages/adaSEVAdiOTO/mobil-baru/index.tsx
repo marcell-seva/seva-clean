@@ -27,6 +27,8 @@ import {
   getCities,
   getMinMaxPrice,
 } from 'services/api'
+import { default as customAxiosGet } from 'services/api/get'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 const NewCarResultPage = ({
   meta,
@@ -147,15 +149,15 @@ export const getServerSideProps: GetServerSideProps<{
   try {
     const [fetchMeta, fetchFooter, menuRes, footerRes, cityRes]: any =
       await Promise.all([
-        axios.get(metaTagBaseApi + metabrand),
-        axios.get(footerTagBaseApi + metabrand),
+        customAxiosGet(metaTagBaseApi + metabrand),
+        customAxiosGet(footerTagBaseApi + metabrand),
         getMobileHeaderMenu(),
         getMobileFooterMenu(),
         getCities(),
       ])
 
-    const metaData = fetchMeta.data.data
-    const footerData = fetchFooter.data.data
+    const metaData = fetchMeta.data
+    const footerData = fetchFooter.data
 
     if (!priceRangeGroup) {
       const params = new URLSearchParams()
@@ -221,14 +223,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataCities: cityRes,
       },
     }
-  } catch (e) {
-    return {
-      props: {
-        meta,
-        dataHeader: [],
-        dataFooter: [],
-        dataCities: [],
-      },
-    }
+  } catch (e: any) {
+    return serverSideManualNavigateToErrorPage(e?.response?.status)
   }
 }

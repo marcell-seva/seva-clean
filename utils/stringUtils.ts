@@ -1,3 +1,5 @@
+import { RegExLongAlphabetAndSpaces } from './handler/regex'
+
 export const DOT = '.'
 export const COMMA = ','
 
@@ -152,4 +154,8 @@ export const getMaskingDob = async (dob: string) => {
 export const removeFirstWordFromString = (value: string) => {
   const trimmed = value.trim()
   return trimmed.trim().substring(trimmed.indexOf(' ') + 1)
+}
+
+export const containsSpecialChars = (str: string) => {
+  return RegExLongAlphabetAndSpaces.test(str)
 }

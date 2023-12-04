@@ -65,7 +65,7 @@ const TenureOptionWidget = dynamic(
 
 export const initDataWidget = {
   downPaymentAmount: '',
-  brand: ['Toyota', 'Daihatsu', 'Isuzu', 'BMW', 'Peugeot'],
+  brand: ['Toyota', 'Daihatsu', 'Isuzu', 'BMW', 'Peugeot', 'Hyundai'],
   bodyType: ['MPV', 'SUV', 'Sedan', 'Hatchback', 'Sport'],
   priceRangeGroup: '',
   tenure: '5',
@@ -539,9 +539,9 @@ const SearchWidget = () => {
               color={colors.secondaryBrickRed}
             />
           }
-          sheetOption={({ onClose }: any) => (
+          sheetOption={({ ...props }: any) => (
             <GridOptionWidget
-              onClose={onClose}
+              {...props}
               type="brand"
               errorToastMessage="Silahkan pilih salah satu merk mobil"
               trackCountlyOnSubmit={trackCountlyOnSubmitCarBrand}
@@ -556,9 +556,9 @@ const SearchWidget = () => {
           icon={
             <IconCar width={32} height={32} color={colors.secondaryBrickRed} />
           }
-          sheetOption={({ onClose }: any) => (
+          sheetOption={({ ...props }: any) => (
             <GridOptionWidget
-              onClose={onClose}
+              {...props}
               type="bodyType"
               errorToastMessage="Silahkan pilih salah satu tipe mobil"
               trackCountlyOnSubmit={trackCountlyOnSubmitCarBodyType}
