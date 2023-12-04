@@ -16,7 +16,7 @@ import {
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { useRouter } from 'next/router'
-import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { CookieKey, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { trackDataCarType } from 'utils/types/utils'
@@ -51,6 +51,7 @@ import dynamic from 'next/dynamic'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { trackLoginPageView } from 'helpers/amplitude/seva20Tracking'
 import { default as customAxiosPost } from 'services/api/post'
+import { saveCookie } from 'utils/handler/cookie'
 
 const LoginModalMultiKK = dynamic(
   () => import('../loginModalMultiKK').then((comp) => comp.LoginModalMultiKK),
@@ -64,6 +65,8 @@ const OTP = dynamic(() => import('../otp').then((comp) => comp.OTP), {
   ssr: false,
 })
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
+
+const CUSTOMER_NOT_EXIST_THROW_MESSAGE = 'Customer Not Exist'
 
 export const Login = () => {
   const headerText = 'Selamat Datang di SEVA'
@@ -189,36 +192,24 @@ export const Login = () => {
     else setIsFilled(false)
   }
 
-  const verified = async () => {
-    try {
-      await checkRegisteredCustomer(`+62${phone}`)
-      setTrackEventMoEngageWithoutValue('login_success')
-      setModalOpened('success-toast')
-      getDataCustomer()
+  const customerNotExistHandler = (e: any) => {
+    if (e?.response?.status === 400 || e === CUSTOMER_NOT_EXIST_THROW_MESSAGE) {
       trackEventCountly(CountlyEventNames.WEB_LOGIN_PAGE_CTA_CLICK, {
-        REGISTRATION_STATUS: 'Yes',
+        REGISTRATION_STATUS: 'No',
       })
-    } catch (e: any) {
-      if (e?.response?.status === 400) {
-        trackEventCountly(CountlyEventNames.WEB_LOGIN_PAGE_CTA_CLICK, {
-          REGISTRATION_STATUS: 'No',
-        })
-        router.push({
-          pathname: '/daftar-akun',
-          query: { phoneNumber: phone },
-        })
-      }
+      const encryptedPhoneNumber = encryptValue(`+62${phone}`)
+      saveCookie(CookieKey.PhoneNumber, encryptedPhoneNumber)
+      router.push('/daftar-akun')
     }
   }
 
-  const setCustomerDetail = (payload: any) => {
-    const encryptedData = encryptValue(JSON.stringify(payload))
-    saveLocalStorage(LocalStorageKey.sevaCust, encryptedData)
-  }
-
-  const getDataCustomer = async () => {
+  const verified = async () => {
     try {
-      const response: any = await getCustomerInfoWrapperSeva()
+      const response: any = await getCustomerInfoWrapperSeva(true)
+      if (!response) {
+        throw CUSTOMER_NOT_EXIST_THROW_MESSAGE
+      }
+
       const customerData = response[0]
       setCustomerDetail(customerData)
       const data = {
@@ -226,11 +217,24 @@ export const Login = () => {
         email: customerData.email,
         phoneNumber: customerData.phoneNumber,
       }
+      setTrackEventMoEngageWithoutValue('login_success')
+      setModalOpened('success-toast')
+      trackEventCountly(CountlyEventNames.WEB_LOGIN_PAGE_CTA_CLICK, {
+        REGISTRATION_STATUS: 'Yes',
+      })
+
       setTimeout(() => {
         setModalOpened('none')
         redirectAndSendTrackerData(data)
       }, 3000)
-    } catch (error) {}
+    } catch (e: any) {
+      customerNotExistHandler(e)
+    }
+  }
+
+  const setCustomerDetail = (payload: any) => {
+    const encryptedData = encryptValue(JSON.stringify(payload))
+    saveLocalStorage(LocalStorageKey.sevaCust, encryptedData)
   }
 
   const sendTrackingRefiDefault = (data: any) => {

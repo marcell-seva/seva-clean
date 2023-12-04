@@ -23,13 +23,15 @@ import {
 } from 'utils/types/utils'
 import { setAmplitudeUserId } from 'services/amplitude'
 
-export const getCustomerInfoSeva = () => {
-  return getUserInfo()
+export const getCustomerInfoSeva = (isUsingTempToken?: boolean) => {
+  return getUserInfo(isUsingTempToken)
 }
 
-export const getCustomerInfoWrapperSeva = async () => {
+export const getCustomerInfoWrapperSeva = async (
+  isUsingTempToken?: boolean,
+) => {
   try {
-    const response = await getCustomerInfoSeva()
+    const response = await getCustomerInfoSeva(isUsingTempToken)
     const customerId = response[0].id ?? ''
     const customerName = response[0].fullName ?? ''
     saveLocalStorage(
@@ -43,7 +45,7 @@ export const getCustomerInfoWrapperSeva = async () => {
     )
     return response
   } catch (err: any) {
-    if (err?.response?.status === 404) {
+    if (err?.response?.status === 400) {
       removeInformationWhenLogout()
     }
   }

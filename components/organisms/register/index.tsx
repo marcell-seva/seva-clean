@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from 'styles/components/organisms/register.module.scss'
-import { encryptValue } from 'utils/encryptionUtils'
+import { decryptValue, encryptValue } from 'utils/encryptionUtils'
 import { setTrackEventMoEngageWithoutValue } from 'helpers/moengage'
 import Image from 'next/image'
 import { getPageBeforeLogin } from 'utils/loginUtils'
@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 import { NewFunnelCarVariantDetails } from 'utils/types'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { CustomerInfoSeva, SimpleCarVariantDetail } from 'utils/types/utils'
-import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { CookieKey, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { usePaAmbassadorData } from 'utils/hooks/usePaAmbassadorData/usePaAmbassadorData'
 import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
 import {
@@ -46,6 +46,7 @@ import dynamic from 'next/dynamic'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { trackRegistrationPageView } from 'helpers/amplitude/seva20Tracking'
 import { containsSpecialChars } from 'utils/stringUtils'
+import { deleteCookie, getCookie } from 'utils/handler/cookie'
 
 const Toast = dynamic(
   () => import('components/atoms/toast').then((comp) => comp.Toast),
@@ -65,7 +66,9 @@ interface RegisterForm {
 }
 export const Register = () => {
   const router = useRouter()
-  const { phoneNumber, isPtbc } = router.query
+  const { isPtbc } = router.query
+  const encryptedCookiePhoneNumber = getCookie(CookieKey.PhoneNumber) ?? ''
+  const cookiePhoneNumber = decryptValue(encryptedCookiePhoneNumber)
   const termsAndConditionsUrl = 'https://ext.seva.id/syarat-ketentuan'
   const privacyPolicyUrl = 'https://ext.seva.id/kebijakan-privasi'
   const headerText = 'Daftar Akun'
@@ -73,7 +76,7 @@ export const Register = () => {
     'Nikmati promo tambahan dari SEVA dengan cek Kualifikasi Kredit.'
   const [form, setForm] = useState<RegisterForm>({
     name: '',
-    phoneNumber: `+62${phoneNumber}`,
+    phoneNumber: `${cookiePhoneNumber}`,
     email: '',
     dateOfBirth: '',
     subscription: true,
@@ -110,14 +113,15 @@ export const Register = () => {
   const [dataCar, setDataCar] = useState<NewFunnelCarVariantDetails>()
 
   useEffect(() => {
-    if (isPtbc) {
+    // need to use "isReady" because PTBC is using "window.location.href"
+    if (isPtbc && router.isReady) {
       setTempRefCode('SEVAPTBC')
       setFormData('referralCode', 'SEVAPTBC')
     }
-    if (phoneNumber === undefined) {
+    if (!cookiePhoneNumber) {
       router.push('/masuk-akun')
     }
-  }, [])
+  }, [router.isReady])
 
   useAfterInteractive(() => {
     const timeoutAfterInteractive = setTimeout(() => {
@@ -209,6 +213,7 @@ export const Register = () => {
       trackEventCountly(CountlyEventNames.WEB_REGISTRATION_PAGE_SUCCESS_VIEW)
       getDataCustomer()
       setIsLoading(false)
+      deleteCookie(CookieKey.PhoneNumber)
 
       setTimeout(() => {
         setModalOpened('none')

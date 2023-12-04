@@ -225,9 +225,11 @@ export const OTP = ({
         payload,
         `+62${phoneNumber}`,
       )
+      if (savedTokenAfterVerify) {
+        localStorage.setItem(LocalStorageKey.Token, JSON.stringify(res))
+        localStorage.setItem(LocalStorageKey.TempToken, JSON.stringify(res))
+      }
       isOtpVerified()
-      if (savedTokenAfterVerify)
-        localStorage.setItem('token', JSON.stringify(res))
       sessionStorage.removeItem('lastOtpSent')
       sessionStorage.removeItem('lastOtpSentPhoneNumber')
     } catch (error: any) {
