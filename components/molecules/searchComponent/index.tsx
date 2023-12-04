@@ -692,14 +692,13 @@ export const SearchComponent = ({
                   <>
                     {renderSuggestionsNewCar()}
                     <div className={styles.ctaUsedCar}>
-                      <Link
-                        href={'#'}
+                      <div
                         className={styles.linkAllCar}
                         onClick={() => {
                           navigateToPLPNewCar(valueSearch)
                         }}
                       >
-                        <p className={styles.linkAllCar}>
+                        <p>
                           Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Baru
                         </p>
                         <IconChevronRight
@@ -707,7 +706,7 @@ export const SearchComponent = ({
                           height={20}
                           color="#246ED4"
                         />
-                      </Link>
+                      </div>
                     </div>
                   </>
                 ) : (
@@ -721,14 +720,13 @@ export const SearchComponent = ({
                       </p>
                     </div>
                     <div className={styles.ctaUsedCar}>
-                      <Link
-                        href={'#'}
+                      <div
                         className={styles.linkAllCar}
                         onClick={() => {
                           navigateToPLPNewCar(valueSearch)
                         }}
                       >
-                        <p className={styles.linkAllCar}>
+                        <p>
                           Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Baru
                         </p>
                         <IconChevronRight
@@ -736,7 +734,7 @@ export const SearchComponent = ({
                           height={20}
                           color="#246ED4"
                         />
-                      </Link>
+                      </div>
                     </div>
                   </>
                 )}
@@ -752,14 +750,13 @@ export const SearchComponent = ({
                     {renderSuggestionUsedCar()}
                     <div className={styles.ctaUsedCar}>
                       {/* EDIT */}
-                      <Link
-                        href={'#'}
+                      <div
                         className={styles.linkAllCar}
                         onClick={() => {
                           navigateToPLPUsedCar(valueSearch)
                         }}
                       >
-                        <p className={styles.linkAllCar}>
+                        <p>
                           Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Bekas
                         </p>
                         <IconChevronRight
@@ -767,7 +764,7 @@ export const SearchComponent = ({
                           height={20}
                           color="#246ED4"
                         />
-                      </Link>
+                      </div>
                     </div>
                   </>
                 ) : (

@@ -227,6 +227,7 @@
   flex-direction: column;
   text-align: center;
   max-width: 120px;
+  cursor: pointer;
 }
 .panelStyle {
   color: var(--primary-black, #13131b);
@@ -269,6 +270,8 @@
   font-weight: 400 !important;
   line-height: 20px;
   font-style: normal;
+  cursor: pointer;
+  color: #246ed4;
   b {
     font-family: var(--open-sans-semi-bold) !important;
   }
