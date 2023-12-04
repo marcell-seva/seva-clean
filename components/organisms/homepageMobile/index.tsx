@@ -313,7 +313,7 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
     )
     trackLPKualifikasiKreditTopCtaClick()
     if (!!getToken()) {
-      router.push(multiCreditQualificationPageUrl)
+      window.location.href = multiCreditQualificationPageUrl
     } else {
       savePageBeforeLogin(multiCreditQualificationPageUrl)
       setIsLoginModalOpened(true)
