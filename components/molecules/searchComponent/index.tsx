@@ -461,14 +461,14 @@ export const SearchComponent = ({
                       height={'48'}
                       className={styles.styledCarImage}
                     />
-                    <div className={styles.styledCarName}>
+                    <div className={styles.carName}>
                       {car.carName && (
                         <div style={{ width: '100%' }}>
                           <div
                             dangerouslySetInnerHTML={{
                               __html: renderSearchOptionsItem(car.carName),
                             }}
-                            className={styles.styledCarName}
+                            className={styles.carName}
                           />
                         </div>
                       )}

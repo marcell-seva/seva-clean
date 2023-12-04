@@ -250,6 +250,15 @@
   font-family: var(--open-sans);
 }
 
+.carName {
+  color: black;
+  // margin-left: 0;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  font-family: var(--open-sans);
+}
+
 .linkAllCar {
   display: flex;
   gap: 8px;
