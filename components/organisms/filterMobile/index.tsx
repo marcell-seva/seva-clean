@@ -43,6 +43,7 @@ import { saveSessionStorage } from 'utils/handler/sessionStorage'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 
 interface ParamsUrl {
+  search?: string
   age?: string
   downPaymentAmount?: string
   monthlyIncome?: string
@@ -283,6 +284,7 @@ const FilterMobile = ({
       brand: !resetTmp && isCheckedBrand.length > 0 ? isCheckedBrand : [],
       tenure: tenureFilter,
       sortBy: funnelQuery.sortBy,
+      search: String(funnelQuery.search),
     }
     if (!resetTmp) {
       if (
@@ -340,12 +342,14 @@ const FilterMobile = ({
       brand: !resetTmp && isCheckedBrand.length > 0 ? isCheckedBrand : [],
       tenure: tenureFilter,
       sortBy: funnelQuery.sortBy || 'lowToHigh',
+      search: String(funnelQuery.search) || '',
       filterFincap: Boolean(
         ageFilter && downPaymentAmount && incomeAmount && tenureFilter,
       ),
     }
     const paramUrl: ParamsUrl = {
       // sortBy: sortBy,
+      ...(funnelQuery.search && { search: String(funnelQuery.search) }),
       ...(ageFilter && { age: String(ageFilter) }),
       ...(downPaymentAmount && {
         downPaymentAmount: downPaymentAmount.toString(),

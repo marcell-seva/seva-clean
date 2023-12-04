@@ -30,6 +30,7 @@ import { FormPlate } from 'components/molecules/form/formPlate'
 import { getUsedCarFunnelRecommendations } from 'utils/handler/funnel'
 
 interface ParamsUrl {
+  search?: string
   bodyType?: string
   brand?: string
   sortBy?: string
@@ -71,7 +72,7 @@ const FilterMobileUsedCar = ({
 }: FilterMobileProps) => {
   const router = useRouter()
   const { cityList, brandList } = usedCar()
-  const { brand, transmission, plate } = router.query
+  const { brand, transmission, plate, search } = router.query
 
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryUsedCarData()
   const [transmissionFilter, setTransmissionFilter] = useState(
@@ -80,6 +81,7 @@ const FilterMobileUsedCar = ({
   const [plateFilter, setPlateFilter] = useState(
     funnelQuery?.plate ? funnelQuery?.plate : [],
   )
+
   const onClickClose = () => {
     setTimeout(() => {
       onButtonClick && onButtonClick(false)
@@ -149,6 +151,7 @@ const FilterMobileUsedCar = ({
     setIsApplied(true)
     if (resetTmp) {
       const resetBrandAndBodyType: FunnelQuery = {
+        search: '',
         brand: [],
         modelName: [],
         cityId: [],
@@ -183,6 +186,7 @@ const FilterMobileUsedCar = ({
         !resetTmp && transmissionFilter.length > 0 ? transmissionFilter : [],
       plate: !resetTmp && plateFilter.length > 0 ? plateFilter : [],
       sortBy: funnelQuery.sortBy,
+      search: funnelQuery.search,
       yearEnd: '',
       yearStart: '',
       mileageEnd: '',
@@ -245,6 +249,7 @@ const FilterMobileUsedCar = ({
       transmission:
         !resetTmp && transmissionFilter.length > 0 ? transmissionFilter : [],
       plate: !resetTmp && plateFilter.length > 0 ? plateFilter : [],
+      search: funnelQuery.search || '',
       sortBy: funnelQuery.sortBy || 'lowToHigh',
       modelName: [],
       priceStart: '',
@@ -255,6 +260,7 @@ const FilterMobileUsedCar = ({
       mileageStart: '',
     }
     const paramUrl: ParamsUrl = {
+      ...(funnelQuery.search && { search: String(funnelQuery.search) }),
       ...(!resetTmp &&
         isCheckedBrand.length > 0 && { brand: String(isCheckedBrand) }),
       ...(!resetTmp &&

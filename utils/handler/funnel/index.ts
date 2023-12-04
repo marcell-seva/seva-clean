@@ -45,9 +45,9 @@ export const getNewFunnelRecommendations = (
     params.append('recommendationType', PaymentType.MonthlyInstallment)
     params.append('maxMonthlyInstallment', monthlyInstallment as string)
   }
-  if (funnelQuery.paymentType === 'carModel' && useKeySearch === true) {
-    params.append('search', carModel as string)
-  }
+  // if (funnelQuery.paymentType === 'carModel' && useKeySearch === true) {
+  //   params.append('search', carModel as string)
+  // }
   brand && brand.length > 0 && params.append('brand', brand.join('/'))
   bodyType &&
     bodyType.length > 0 &&

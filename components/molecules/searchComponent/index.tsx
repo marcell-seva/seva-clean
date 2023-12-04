@@ -89,10 +89,14 @@ export const SearchComponent = ({
   pageOrigination,
   isShowbox,
 }: Props) => {
-  const { patchFunnelQuery: patchFunnelQueryData, setFunnelQueryValue } =
-    useFunnelQueryData()
-  const { patchFunnelQuery: patchFunnelQueryUsedCarData } =
-    useFunnelQueryUsedCarData()
+  const {
+    patchFunnelQuery: patchFunnelQueryData,
+    clearQueryFilter: clearQueryFilterData,
+  } = useFunnelQueryData()
+  const {
+    patchFunnelQuery: patchFunnelQueryUsedCarData,
+    clearQueryFilter: clearQueryFilterUsedCarData,
+  } = useFunnelQueryUsedCarData()
   const { dataSearchUsedCar } = useUtils()
   const [changeIcon, setChangeIcon] = useState(false)
   const [valueSearch, setValueSearch] = useState('')
@@ -318,7 +322,8 @@ export const SearchComponent = ({
         }
       }
     }
-
+    clearQueryFilterData()
+    clearQueryFilterUsedCarData()
     window.location.href = urlDestination
   }
 
@@ -597,13 +602,14 @@ export const SearchComponent = ({
   }
 
   const navigateToPLPNewCar = (search: string) => {
+    clearQueryFilterData()
     const url = `${carResultsUrl}?search=${search}`
     saveHistoryToLocal(url, search)
     if (window.location.pathname === '/mobil-baru/c') {
       patchFunnelQueryData({ search: search })
       router
         .push({
-          query: { ...router.query, search: search },
+          query: { search: search },
         })
         .then(() => {
           router.reload()
@@ -624,7 +630,7 @@ export const SearchComponent = ({
       patchFunnelQueryUsedCarData({ search: search })
       router
         .push({
-          query: { ...router.query, search: search },
+          query: { search: search },
         })
         .then(() => {
           router.reload()
