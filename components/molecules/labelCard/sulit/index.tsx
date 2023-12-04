@@ -20,12 +20,16 @@ const LabelSulit = ({
       className={` ${styles.container} ${styles.labelResult} ${additionalClassname}`}
       {...props}
     >
-      <IconWarningCircle
-        height={16}
-        width={16}
-        color={colors.white}
-        fillColor="#B4231E"
-      />
+      {prefixComponent ? (
+        prefixComponent()
+      ) : (
+        <IconWarningCircle
+          height={16}
+          width={16}
+          color={colors.white}
+          fillColor="#B4231E"
+        />
+      )}
       <span className={styles.microBold}>Sulit disetujui</span>
     </div>
   )
