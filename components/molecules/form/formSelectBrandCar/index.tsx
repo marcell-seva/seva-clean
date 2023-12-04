@@ -117,7 +117,7 @@ export const FormSelectBrandCar = ({
         <Image
           src={Hyundai}
           alt="Hyundai"
-          style={{ width: 24, height: 24 }}
+          style={{ width: 24, height: 24, marginTop: 2 }}
           width={24}
           height={24}
         />
