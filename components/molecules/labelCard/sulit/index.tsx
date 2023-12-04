@@ -30,7 +30,7 @@ const LabelSulit = ({
           fillColor="#B4231E"
         />
       )}
-      <span className={styles.microBold}>Sulit disetujui</span>
+      <span className={styles.microBold}>{labelText}</span>
     </div>
   )
 }
