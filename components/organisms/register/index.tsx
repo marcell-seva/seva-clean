@@ -214,13 +214,13 @@ export const Register = () => {
 
       setModalOpened('success-toast')
       trackEventCountly(CountlyEventNames.WEB_REGISTRATION_PAGE_SUCCESS_VIEW)
-      getDataCustomer()
-      setIsLoading(false)
-      deleteCookie(CookieKey.PhoneNumber)
       // need to copy "tempToken" to "token", because "token" will be deleted when getting "400" error code
       const tempTokenRaw = localStorage.getItem(LocalStorageKey.TempToken) ?? ''
       localStorage.setItem(LocalStorageKey.Token, tempTokenRaw)
       localStorage.removeItem(LocalStorageKey.TempToken)
+      getDataCustomer()
+      setIsLoading(false)
+      deleteCookie(CookieKey.PhoneNumber)
 
       setTimeout(() => {
         setModalOpened('none')
