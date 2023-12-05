@@ -61,16 +61,19 @@ export const checkRegisteredCustomer = (
   )
 }
 
-export const registerCustomerSeva = ({
-  phoneNumber,
-  fullName,
-  dob,
-  gender,
-  email,
-  promoSubscription,
-  marital,
-  referralCode,
-}: CustomerRegister) => {
+export const registerCustomerSeva = (
+  {
+    phoneNumber,
+    fullName,
+    dob,
+    gender,
+    email,
+    promoSubscription,
+    marital,
+    referralCode,
+  }: CustomerRegister,
+  isUsingTempToken?: boolean,
+) => {
   return post(
     collections.auth.createCustomer,
     {
@@ -85,7 +88,7 @@ export const registerCustomerSeva = ({
     },
     {
       headers: {
-        Authorization: getToken()?.idToken,
+        Authorization: getToken(isUsingTempToken)?.idToken,
       },
     },
   )

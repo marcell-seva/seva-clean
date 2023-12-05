@@ -200,20 +200,27 @@ export const Register = () => {
   const createCustomer = async (isRefCodeValidated: boolean): Promise<void> => {
     try {
       setIsLoading(true)
-      await registerCustomerSeva({
-        phoneNumber: form.phoneNumber,
-        fullName: form.name,
-        dob: form.dateOfBirth,
-        email: form.email,
-        promoSubscription: form.subscription,
-        referralCode: isRefCodeValidated ? tempRefCode : '',
-      })
+      await registerCustomerSeva(
+        {
+          phoneNumber: form.phoneNumber,
+          fullName: form.name,
+          dob: form.dateOfBirth,
+          email: form.email,
+          promoSubscription: form.subscription,
+          referralCode: isRefCodeValidated ? tempRefCode : '',
+        },
+        true,
+      )
 
       setModalOpened('success-toast')
       trackEventCountly(CountlyEventNames.WEB_REGISTRATION_PAGE_SUCCESS_VIEW)
       getDataCustomer()
       setIsLoading(false)
       deleteCookie(CookieKey.PhoneNumber)
+      // need to copy "tempToken" to "token", because "token" will be deleted when getting "400" error code
+      const tempTokenRaw = localStorage.getItem(LocalStorageKey.TempToken) ?? ''
+      localStorage.setItem(LocalStorageKey.Token, tempTokenRaw)
+      localStorage.removeItem(LocalStorageKey.TempToken)
 
       setTimeout(() => {
         setModalOpened('none')
