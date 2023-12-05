@@ -704,7 +704,7 @@ export const SearchComponent = ({
                           navigateToPLPNewCar(valueSearch)
                         }}
                       >
-                        <p>
+                        <p className={styles.carName}>
                           Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Baru
                         </p>
                         <IconChevronRight
@@ -732,7 +732,7 @@ export const SearchComponent = ({
                           navigateToPLPNewCar(valueSearch)
                         }}
                       >
-                        <p>
+                        <p className={styles.carName}>
                           Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Baru
                         </p>
                         <IconChevronRight
@@ -762,7 +762,7 @@ export const SearchComponent = ({
                           navigateToPLPUsedCar(valueSearch)
                         }}
                       >
-                        <p>
+                        <p className={styles.carName}>
                           Cari <b>&quot;{valueSearch}&quot;</b> di Mobil Bekas
                         </p>
                         <IconChevronRight
