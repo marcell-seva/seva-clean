@@ -32,6 +32,7 @@
     "axios": "0.21.1",
     "axios-auth-refresh": "3.1.0",
     "clsx": "^1.2.1",
+    "cookies-next": "^4.1.0",
     "countly-sdk-web": "^23.6.0",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.9",

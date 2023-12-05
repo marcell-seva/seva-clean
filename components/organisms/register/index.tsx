@@ -46,7 +46,7 @@ import dynamic from 'next/dynamic'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { trackRegistrationPageView } from 'helpers/amplitude/seva20Tracking'
 import { containsSpecialChars } from 'utils/stringUtils'
-import { deleteCookie, getCookie } from 'utils/handler/cookie'
+import { deleteCookie, getCookie } from 'cookies-next'
 
 const Toast = dynamic(
   () => import('components/atoms/toast').then((comp) => comp.Toast),

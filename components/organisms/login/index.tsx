@@ -43,15 +43,12 @@ import { ContactFormKey, PreApprovalFlowType } from 'utils/types/models'
 import { temanSevaUrlPath } from 'utils/types/props'
 import { useContextContactFormPatch } from 'services/context/contactFormContext'
 import { usePaAmbassadorData } from 'utils/hooks/usePaAmbassadorData/usePaAmbassadorData'
-import {
-  checkRegisteredCustomer,
-  sendRefiContact,
-} from 'utils/httpUtils/customerUtils'
+import { sendRefiContact } from 'utils/httpUtils/customerUtils'
 import dynamic from 'next/dynamic'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { trackLoginPageView } from 'helpers/amplitude/seva20Tracking'
 import { default as customAxiosPost } from 'services/api/post'
-import { saveCookie } from 'utils/handler/cookie'
+import { setCookie } from 'cookies-next'
 
 const LoginModalMultiKK = dynamic(
   () => import('../loginModalMultiKK').then((comp) => comp.LoginModalMultiKK),
@@ -198,7 +195,7 @@ export const Login = () => {
         REGISTRATION_STATUS: 'No',
       })
       const encryptedPhoneNumber = encryptValue(`+62${phone}`)
-      saveCookie(CookieKey.PhoneNumber, encryptedPhoneNumber)
+      setCookie(CookieKey.PhoneNumber, encryptedPhoneNumber)
       router.push('/daftar-akun')
     }
   }
