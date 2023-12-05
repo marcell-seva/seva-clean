@@ -142,7 +142,7 @@ export async function getServerSideProps(context: any) {
       }
     }
     const params = new URLSearchParams()
-    params.append('query', ' ' as string)
+    params.append('query', '' as string)
     const [
       carRecommendationsRes,
       metaTagDataRes,

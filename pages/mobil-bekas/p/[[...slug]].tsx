@@ -212,7 +212,7 @@ export async function getServerSideProps(context: any) {
     //   }
     // }
     const params = new URLSearchParams()
-    params.append('query', ' ' as string)
+    params.append('query', '' as string)
 
     let id = context.query.slug[0]
     const parts = id.split('/')

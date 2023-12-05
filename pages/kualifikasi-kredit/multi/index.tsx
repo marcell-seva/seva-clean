@@ -775,7 +775,7 @@ export const getServerSideProps: GetServerSideProps<{
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
   const params = new URLSearchParams()
-  params.append('query', ' ' as string)
+  params.append('query', '' as string)
 
   try {
     const [menuMobileRes, footerRes, cityRes, dataSearchRes]: any =

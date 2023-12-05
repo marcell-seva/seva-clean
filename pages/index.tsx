@@ -165,7 +165,7 @@ export async function getServerSideProps(context: any) {
   )
   const params = `?city=jakarta&cityId=118`
   const paramsUsedCar = new URLSearchParams()
-  paramsUsedCar.append('query', ' ' as string)
+  paramsUsedCar.append('query', '' as string)
   try {
     const [
       recommendationRes,

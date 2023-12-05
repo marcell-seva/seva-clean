@@ -176,7 +176,7 @@ export const getServerSideProps: GetServerSideProps<{
     sortBy,
   } = ctx.query
   const params = new URLSearchParams()
-  params.append('query', ' ' as string)
+  params.append('query', '' as string)
 
   const brand = brandQueryOrLastSlug?.includes('SEVA')
     ? ''

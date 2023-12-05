@@ -210,7 +210,7 @@ export const getServerSideProps: GetServerSideProps<{
   )
 
   const params = new URLSearchParams()
-  params.append('query', ' ' as string)
+  params.append('query', '' as string)
 
   try {
     const [menuMobileRes, footerRes, cityRes, dataSearchRes]: any =
