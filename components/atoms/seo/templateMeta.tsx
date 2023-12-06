@@ -170,7 +170,7 @@ export const metaTitleTemplateThreeSlug = (
     case 'warna/ringkasan':
       return `${brand} ${model} ${year} ${formatLocation(
         threeSlug,
-      )} - Harga OTR, Promo ${currentMonth}, Warna, Ringkasan | SEVA`
+      )} - Harga OTR, Promo ${currentMonth}, Warna, dan Ringkasan | SEVA`
     case 'warna/spesifikasi':
       return `Spesifikasi & Fitur ${brand} ${model} ${formatLocation(
         threeSlug,
