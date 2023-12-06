@@ -247,10 +247,12 @@ const LpCarRecommendations = ({
                     onClickLabel={handleClickLabel}
                     isOTO={isOTO}
                     label={
-                      <LabelPromo
-                        className={stylec.labelCard}
-                        onClick={handleClickLabel}
-                      />
+                      selectedBrand !== 'Hyundai' && (
+                        <LabelPromo
+                          className={stylec.labelCard}
+                          onClick={handleClickLabel}
+                        />
+                      )
                     }
                   >
                     <div
