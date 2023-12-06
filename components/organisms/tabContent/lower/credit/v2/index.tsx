@@ -55,10 +55,7 @@ import IncomeForm from 'components/molecules/credit/income'
 import DpForm from 'components/molecules/credit/dp'
 import { CicilOptionForm } from 'components/molecules/credit/cicil'
 import { FormAgeCredit } from 'components/molecules/credit/age'
-import {
-  useSessionStorage,
-  useSessionStorageWithEncryption,
-} from 'utils/hooks/useSessionStorage/useSessionStorage'
+import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import {
   CarRecommendation,
