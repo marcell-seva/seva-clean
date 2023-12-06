@@ -125,7 +125,7 @@ export const Register = () => {
 
   useAfterInteractive(() => {
     const timeoutAfterInteractive = setTimeout(() => {
-      if (phoneNumber !== undefined) {
+      if (!!cookiePhoneNumber) {
         trackRegistrationPageView()
         trackCountlyRegistrationPageView()
         setTrackEventMoEngageWithoutValue('view_registration_page')

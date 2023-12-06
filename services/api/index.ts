@@ -22,6 +22,7 @@ import {
 } from 'utils/types/utils'
 import environments from 'helpers/environments'
 import { AES } from 'crypto-js'
+import { LocalStorageKey } from 'utils/enum'
 // import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 // import { getLocalStorage } from 'utils/handler/localStorage'
 // import { UTMTagsData } from 'utils/types/props'
