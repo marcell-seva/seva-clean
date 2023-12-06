@@ -1,15 +1,25 @@
 import { BottomSheet } from 'react-spring-bottom-sheet'
 import 'react-spring-bottom-sheet/dist/style.css'
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from 'styles/components/organisms/educationalPopup.module.scss'
 import { Button } from 'components/atoms'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { CityOtrOption, trackDataCarType } from 'utils/types/utils'
+import { useCar } from 'services/context/carContext'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getLocalStorage } from 'utils/handler/localStorage'
+import { useRouter } from 'next/router'
+import { LoanRank } from 'utils/types/models'
+import Image from 'next/image'
+import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { isIphone } from 'utils/window'
-import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { ButtonVersion } from 'components/atoms/button'
 import { IconIdea } from 'components/atoms/icon/IconIdea'
-import stylesButton from 'styles/components/atoms/button.module.scss'
 
 type FilterMobileProps = {
-  onButtonClick?: () => void
+  onButtonClick?: (value: boolean) => void
   isOpenBottomSheet?: boolean
   educationalName: string
 }
@@ -18,8 +28,30 @@ const EducationalContentPopup = ({
   isOpenBottomSheet,
   educationalName = 'Down Payment (DP)',
 }: FilterMobileProps) => {
+  const { carModelDetails } = useCar()
+  const [cityOtr] = useLocalStorage<CityOtrOption | null>(
+    LocalStorageKey.CityOtr,
+    null,
+  )
+
+  const router = useRouter()
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
+  const IsShowBadgeCreditOpportunity = getSessionStorage(
+    SessionStorageKey.IsShowBadgeCreditOpportunity,
+  )
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
+
+  const loanRankcr = router.query.loanRankCVL ?? ''
+
   const onClickClose = () => {
-    onButtonClick && onButtonClick()
+    onButtonClick && onButtonClick(false)
   }
   const EducationalDP = (): JSX.Element => (
     <div className={styles.container}>
@@ -37,7 +69,7 @@ const EducationalContentPopup = ({
           <b className={styles.kanyonSemiBold}>
             Apa bedanya DP dengan Total DP (TDP)?
           </b>
-          <p className={styles.openSans} style={{ paddingTop: '16px' }}>
+          <p className={styles.openSans} style={{ paddingtop: '16px' }}>
             Total DP (juga dikenal dengan Total Pembayaran Pertama) adalah total
             uang muka yang harus dibayar di awal pembelian mobil. Besarannya
             mencakup penjumlahan dari beberapa biaya, seperti DP, biaya
@@ -45,11 +77,7 @@ const EducationalContentPopup = ({
             <br />
             <br />
           </p>
-          <Button
-            version={ButtonVersion.PrimaryDarkBlue}
-            onClick={onClickClose}
-            size={ButtonSize.Big}
-          >
+          <Button version={ButtonVersion.PrimaryDarkBlue}>
             Oke, Saya Mengerti
           </Button>
         </div>
@@ -118,12 +146,9 @@ const EducationalContentPopup = ({
           </div>
         </p>
         <div className={styles.wrapper}>
-          <div
-            className={`${stylesButton.big} ${stylesButton.primaryDarkBlue} ${styles.wrapperButton}`} // use div because always scroll to bottom
-            onClick={onClickClose}
-          >
+          <Button version={ButtonVersion.PrimaryDarkBlue}>
             Oke, Saya Mengerti
-          </div>
+          </Button>
         </div>
       </div>
     </div>
@@ -140,13 +165,24 @@ const EducationalContentPopup = ({
     }
   }
 
+  useEffect(() => {
+    window.addEventListener('popstate', () => {
+      onButtonClick && onButtonClick(false)
+    })
+
+    return () => {
+      window.removeEventListener('popstate', () => {
+        onButtonClick && onButtonClick(false)
+      })
+    }
+  }, [])
   return (
     <div>
       <BottomSheet
         open={isOpenBottomSheet || false}
         onDismiss={() => onClickClose()}
         className={styles.bottomSheet}
-        // scrollLocking={!isIphone}
+        scrollLocking={!isIphone}
       >
         {renderEducationalSection(educationalName)}
       </BottomSheet>

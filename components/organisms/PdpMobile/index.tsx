@@ -71,6 +71,7 @@ import {
   lowerSectionNavigationTab,
   upperSectionNavigationTab,
 } from 'config/carVariantList.config'
+import EducationalContentPopup from '../educationalContentPopup'
 
 const OverlayGallery = dynamic(() =>
   import('components/molecules').then((mod) => mod.OverlayGallery),
@@ -817,6 +818,10 @@ export default function NewCarVariantList({
               onButtonClick={setIsButtonClick}
               isButtonClick={isButtonClick}
               promoName={promoName}
+            />
+            <EducationalContentPopup
+              promoName="Down Payment (DP)"
+              isOpenBottomSheet={true}
             />
             {isOTO ? (
               !isPreviewGalleryOpened && <CSAButton onClick={showLeadsForm} />
