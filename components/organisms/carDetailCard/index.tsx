@@ -289,11 +289,13 @@ export const CarDetailCard = ({
           <LazyLoadImage {...generalImgProps} />
         )}
 
-        <LabelPromo
-          className={styles.labelCard}
-          onClick={onClickLabel}
-          data-testid={elementId.PLP.Button.Promo}
-        />
+        {recommendation.brand !== 'Hyundai' && (
+          <LabelPromo
+            className={styles.labelCard}
+            onClick={onClickLabel}
+            data-testid={elementId.PLP.Button.Promo}
+          />
+        )}
         {isOTO && (
           <Image
             src={LogoPrimary}
