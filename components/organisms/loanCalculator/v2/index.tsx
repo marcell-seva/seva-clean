@@ -1971,7 +1971,6 @@ export function LoanCalculatorPageV2() {
                 ? renderErrorMessageEmpty()
                 : null}
             </div>
-
             <div id="loan-calculator-form-dp">
               <DpForm
                 label="Down Payment (DP)"
