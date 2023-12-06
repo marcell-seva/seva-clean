@@ -152,16 +152,18 @@ export const Register = () => {
   }
   const trackCountlyRegistrationPageView = () => {
     if (simpleCarVariantDetails) {
-      getCarVariantDetailsById(simpleCarVariantDetails?.variantId).then(
-        (response: any) => {
-          setDataCar(response)
-          trackEventCountly(CountlyEventNames.WEB_REGISTRATION_PAGE_VIEW, {
-            CAR_BRAND: response.modelDetail.brand,
-            CAR_MODEL: response.modelDetail.model,
-            CAR_VARIANT: response.variantDetail.name,
-          })
-        },
-      )
+      getCarVariantDetailsById(
+        simpleCarVariantDetails?.variantId,
+        undefined,
+        true,
+      ).then((response: any) => {
+        setDataCar(response)
+        trackEventCountly(CountlyEventNames.WEB_REGISTRATION_PAGE_VIEW, {
+          CAR_BRAND: response.modelDetail.brand,
+          CAR_MODEL: response.modelDetail.model,
+          CAR_VARIANT: response.variantDetail.name,
+        })
+      })
     } else {
       trackEventCountly(CountlyEventNames.WEB_REGISTRATION_PAGE_VIEW, {
         CAR_BRAND: 'Null',

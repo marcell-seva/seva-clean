@@ -106,7 +106,13 @@ const getCarVariantDetails = (
   id: string,
   params: string,
   config?: AxiosRequestConfig,
-) => get(collections.product.variantDetails.replace(':id', id) + params, config)
+  ignoreErrorHandlerNavigation?: boolean,
+) =>
+  get(
+    collections.product.variantDetails.replace(':id', id) + params,
+    config,
+    ignoreErrorHandlerNavigation,
+  )
 const getVariantCar = (params?: string, config?: AxiosRequestConfig) =>
   get(collections.product.variant + params, config)
 const getTypeCar = (params: string, config?: AxiosRequestConfig) =>

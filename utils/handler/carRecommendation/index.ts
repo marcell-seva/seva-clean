@@ -20,11 +20,12 @@ export const getCarModelDetailsById = (
 export const getCarVariantDetailsById = (
   id: string,
   config?: AxiosRequestConfig,
+  ignoreErrorHandlerNavigation?: boolean,
 ) => {
   const params = new URLSearchParams()
   getCity().cityCode && params.append('city', getCity().cityCode as string)
   getCity().id && params.append('cityId', getCity().id as string)
-  return getCarVariantDetails(id, '', { params })
+  return getCarVariantDetails(id, '', { params }, ignoreErrorHandlerNavigation)
 }
 
 export const mergeModelDetailsWithLoanRecommendations = (
