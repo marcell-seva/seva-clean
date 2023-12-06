@@ -13,6 +13,7 @@ import { getSessionStorage } from 'utils/handler/sessionStorage'
 
 interface DpFormProps {
   label: string
+  labelWithCta?: string
   value: number
   percentage?: number
   onChange: (
@@ -40,10 +41,12 @@ interface DpFormProps {
   emitOnAfterChangeDpSlider?: () => void
   finalMinInputDp: number
   finalMaxInputDp: number
+  setIsOpenEducationalPopup?: (value: boolean) => void
 }
 
 const DpForm: React.FC<DpFormProps> = ({
   label,
+  labelWithCta,
   value,
   onChange,
   carPriceMinusDiscount,
@@ -59,6 +62,7 @@ const DpForm: React.FC<DpFormProps> = ({
   emitOnFocusDpAmountField,
   finalMinInputDp,
   finalMaxInputDp,
+  setIsOpenEducationalPopup,
 }) => {
   const formatCurrency = (value: number): string => {
     return `Rp${value.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`
@@ -157,7 +161,19 @@ const DpForm: React.FC<DpFormProps> = ({
 
   return (
     <div className={styles.wrapper}>
-      <label className={styles.titleText}>{label}</label>
+      {labelWithCta && labelWithCta.length !== 0 ? (
+        <>
+          <label className={styles.titleText}>{label}</label>
+          <label
+            className={styles.titleWithCtaText}
+            onClick={() => setIsOpenEducationalPopup(true)}
+          >
+            {labelWithCta}
+          </label>
+        </>
+      ) : (
+        <label className={styles.titleText}>{label}</label>
+      )}
       <Input
         type="tel"
         className={clsx({

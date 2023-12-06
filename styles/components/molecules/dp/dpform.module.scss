@@ -140,3 +140,16 @@
   color: #{$secondary-brick-red};
   mix-blend-mode: normal;
 }
+.wrapperLabelText {
+  display: flex;
+  justify-content: space-between;
+}
+.titleWithCtaText {
+  font-family: var(--open-sans);
+  color: #246ed4;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  float: right;
+}

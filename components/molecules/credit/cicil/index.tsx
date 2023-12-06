@@ -11,6 +11,8 @@ interface CicilOptionFormProps {
   name: string
   handleChange: (name: string, value: any) => void
   value?: string
+  labelWithCta?: string
+  setIsOpenEducationalPopup?: (value: boolean) => void
 }
 
 export function CicilOptionForm({
@@ -18,10 +20,24 @@ export function CicilOptionForm({
   name,
   handleChange,
   value,
+  labelWithCta,
+  setIsOpenEducationalPopup,
 }: CicilOptionFormProps) {
   return (
     <div style={{ marginTop: '24px' }}>
-      <p className={styles.titleText}>Pembayaran cicilan pertama</p>
+      {labelWithCta && labelWithCta.length ? (
+        <div className={styles.wrapperTextWithCta}>
+          <p className={styles.titleText}>Pembayaran cicilan pertama</p>
+          <p
+            className={styles.textWithCta}
+            onClick={() => setIsOpenEducationalPopup(true)}
+          >
+            {labelWithCta}
+          </p>
+        </div>
+      ) : (
+        <p className={styles.titleText}>Pembayaran cicilan pertama</p>
+      )}
       <div className={styles.cicilOptionForm}>
         <Row>
           <Button

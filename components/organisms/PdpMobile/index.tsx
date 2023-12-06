@@ -819,10 +819,6 @@ export default function NewCarVariantList({
               isButtonClick={isButtonClick}
               promoName={promoName}
             />
-            <EducationalContentPopup
-              promoName="Down Payment (DP)"
-              isOpenBottomSheet={true}
-            />
             {isOTO ? (
               !isPreviewGalleryOpened && <CSAButton onClick={showLeadsForm} />
             ) : (

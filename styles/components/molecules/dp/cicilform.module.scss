@@ -55,6 +55,20 @@
 }
 
 .selectedStyle {
-  background: rgba(243, 249, 253, 0.50) !important;
+  background: rgba(243, 249, 253, 0.5) !important;
   border: 1.5px solid #{$secondary-sky-blue} !important;
+}
+.textWithCta {
+  font-family: var(--open-sans);
+  color: #246ed4;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  float: right;
+}
+.wrapperTextWithCta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

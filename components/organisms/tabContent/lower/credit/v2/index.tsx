@@ -111,6 +111,7 @@ import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { IncomeAgeSection } from 'components/molecules/incomAgeSection'
 import { useUtils } from 'services/context/utilsContext'
+import EducationalContentPopup from 'components/organisms/educationalContentPopup'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -2113,6 +2114,7 @@ export const CreditTabV2 = () => {
           <div id="loan-calculator-form-dp">
             <DpForm
               label="Down Payment (DP)"
+              labelWithCta="Pelajari Lebih Lanjut"
               value={dpValue}
               percentage={dpPercentage}
               onChange={handleDpChange}
@@ -2140,14 +2142,7 @@ export const CreditTabV2 = () => {
               emitOnAfterChangeDpSlider={onAfterChangeDpSlider}
               finalMinInputDp={finalMinInputDp}
               finalMaxInputDp={finalMaxInputDp}
-              // setIsOpenEducationalPopup={setIsOpenEducationalDpPopup}
-              // onCalculationResult={
-              //   calculationResult.length > 0 &&
-              //   !isLoadingCalculation &&
-              //   !isLoadingInsuranceAndPromo &&
-              //   isDataSubmitted
-              // }
-              // setIsChangedMaxDp={setIsChangedMaxDp}
+              setIsOpenEducationalPopup={setIsOpenEducationalDpPopup}
             />
           </div>
           <div id="loan-calculator-form-installment-type">
@@ -2159,8 +2154,8 @@ export const CreditTabV2 = () => {
               }
               handleChange={handleChange}
               value={forms.paymentOption}
-              // labelWithCta="Pelajari Lebih Lanjut"
-              // setIsOpenEducationalPopup={setIsOpenEducationalPaymentTypePopup}
+              labelWithCta="Pelajari Lebih Lanjut"
+              setIsOpenEducationalPopup={setIsOpenEducationalPaymentTypePopup}
             />
             {isValidatingEmptyField && !forms.paymentOption
               ? renderErrorMessageEmpty()
@@ -2343,10 +2338,19 @@ export const CreditTabV2 = () => {
         onCancel={() => setIsOpenToast(false)}
         closeOnToastClick
       />
-      <Toast
-        width={343}
-        text={'DP telah disesuaikan dengan varian mobil pilihan kamu.'}
-        open={isChangedMaxDp}
+      <EducationalContentPopup
+        educationalName={
+          isOpenEducationalDpPopup
+            ? 'Down Payment (DP)'
+            : 'Pilihan Pembayaran Cicilan Pertama'
+        }
+        isOpenBottomSheet={
+          isOpenEducationalDpPopup || isOpenEducationalPaymentTypePopup
+        }
+        onButtonClick={() => {
+          setIsOpenEducationalDpPopup(false)
+          setIsOpenEducationalPaymentTypePopup(false)
+        }}
       />
       <PopupResultRecommended
         open={isOpenPopupRecommended}
