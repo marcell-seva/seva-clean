@@ -35,10 +35,7 @@ import {
 import { loanCalculatorDefaultUrl } from 'utils/helpers/routes'
 import { defaultCity, getCity, saveCity } from 'utils/hooks/useGetCity'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import {
-  useSessionStorage,
-  useSessionStorageWithEncryption,
-} from 'utils/hooks/useSessionStorage/useSessionStorage'
+import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import {
   generateAllBestPromoList,
   getInstallmentAffectedByPromo,
@@ -195,7 +192,6 @@ export function LoanCalculatorPageV2() {
     useState<LoanCalculatorInsuranceAndPromoType[]>([])
   const [isLoadingInsuranceAndPromo, setIsLoadingInsuranceAndPromo] =
     useState(false)
-
   const [isUserChooseVariantDropdown, setIsUserChooseVariantDropdown] =
     useState(false)
   const [isSelectPassengerCar, setIsSelectPassengerCar] = useState(false)
