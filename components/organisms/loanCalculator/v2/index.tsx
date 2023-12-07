@@ -104,6 +104,7 @@ import { IncomeAgeSection } from 'components/molecules/incomAgeSection'
 import EducationalContentPopupDp from 'components/organisms/educationalContentPopupDp'
 import EducationalContentPopupType from 'components/organisms/educationalContentPopupType'
 import { CalculationResultSkeleton } from 'components/organisms/calculationResultSkeleton'
+import EducationalContentPopup from 'components/organisms/educationalContentPopup'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -1975,7 +1976,7 @@ export function LoanCalculatorPageV2() {
             <div id="loan-calculator-form-dp">
               <DpForm
                 label="Down Payment (DP)"
-                // labelWithCta="Pelajari Lebih Lanjut"
+                labelWithCta="Pelajari Lebih Lanjut"
                 value={dpValue}
                 percentage={dpPercentage}
                 onChange={handleDpChange}
@@ -2005,14 +2006,7 @@ export function LoanCalculatorPageV2() {
                 emitOnAfterChangeDpSlider={onAfterChangeDpSlider}
                 finalMinInputDp={finalMinInputDp}
                 finalMaxInputDp={finalMaxInputDp}
-                // setIsOpenEducationalPopup={setIsOpenEducationalDpPopup}
-                // onCalculationResult={
-                //   calculationResult.length > 0 &&
-                //   !isLoadingCalculation &&
-                //   !isLoadingInsuranceAndPromo &&
-                //   isDataSubmitted
-                // }
-                // setIsChangedMaxDp={setIsChangedMaxDp}
+                setIsOpenEducationalPopup={setIsOpenEducationalDpPopup}
               />
             </div>
             <div id="loan-calculator-form-installment-type">
@@ -2027,8 +2021,8 @@ export function LoanCalculatorPageV2() {
                 }
                 handleChange={handleChange}
                 value={forms.paymentOption}
-                // labelWithCta="Pelajari Lebih Lanjut"
-                // setIsOpenEducationalPopup={setIsOpenEducationalPaymentTypePopup}
+                labelWithCta="Pelajari Lebih Lanjut"
+                setIsOpenEducationalPopup={setIsOpenEducationalPaymentTypePopup}
               />
               {isValidatingEmptyField && !forms.paymentOption
                 ? renderErrorMessageEmpty()
@@ -2192,19 +2186,19 @@ Kemampuan Finansialmu"
           closeOnToastClick
         />
 
-        <EducationalContentPopupDp
-          isOpenBottomSheet={isOpenEducationalDpPopup}
-          onButtonClick={() => setIsOpenEducationalDpPopup(false)}
-        />
-
-        <EducationalContentPopupType
-          isOpenBottomSheet={isOpenEducationalPaymentTypePopup}
-          onButtonClick={() => setIsOpenEducationalPaymentTypePopup(false)}
-        />
-        <Toast
-          width={343}
-          text={'DP telah disesuaikan dengan varian mobil pilihan kamu.'}
-          open={isChangedMaxDp}
+        <EducationalContentPopup
+          educationalName={
+            isOpenEducationalDpPopup
+              ? 'Down Payment (DP)'
+              : 'Pilihan Pembayaran Cicilan Pertama'
+          }
+          isOpenBottomSheet={
+            isOpenEducationalDpPopup || isOpenEducationalPaymentTypePopup
+          }
+          onButtonClick={() => {
+            setIsOpenEducationalDpPopup(false)
+            setIsOpenEducationalPaymentTypePopup(false)
+          }}
         />
         <PopupResultRecommended
           open={isOpenPopupRecommended}

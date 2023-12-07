@@ -2113,8 +2113,7 @@ export const CreditTabV2 = () => {
           {/* TODO : Implement carPrice by Car Variant Price */}
           <div id="loan-calculator-form-dp">
             <DpForm
-              label="Down Payment (DP)"
-              labelWithCta="Pelajari Lebih Lanjut"
+              label="Kemampuan DP"
               value={dpValue}
               percentage={dpPercentage}
               onChange={handleDpChange}
@@ -2142,7 +2141,6 @@ export const CreditTabV2 = () => {
               emitOnAfterChangeDpSlider={onAfterChangeDpSlider}
               finalMinInputDp={finalMinInputDp}
               finalMaxInputDp={finalMaxInputDp}
-              setIsOpenEducationalPopup={setIsOpenEducationalDpPopup}
             />
           </div>
           <div id="loan-calculator-form-installment-type">
@@ -2154,8 +2152,6 @@ export const CreditTabV2 = () => {
               }
               handleChange={handleChange}
               value={forms.paymentOption}
-              labelWithCta="Pelajari Lebih Lanjut"
-              setIsOpenEducationalPopup={setIsOpenEducationalPaymentTypePopup}
             />
             {isValidatingEmptyField && !forms.paymentOption
               ? renderErrorMessageEmpty()
@@ -2337,20 +2333,6 @@ export const CreditTabV2 = () => {
         typeToast={'error'}
         onCancel={() => setIsOpenToast(false)}
         closeOnToastClick
-      />
-      <EducationalContentPopup
-        educationalName={
-          isOpenEducationalDpPopup
-            ? 'Down Payment (DP)'
-            : 'Pilihan Pembayaran Cicilan Pertama'
-        }
-        isOpenBottomSheet={
-          isOpenEducationalDpPopup || isOpenEducationalPaymentTypePopup
-        }
-        onButtonClick={() => {
-          setIsOpenEducationalDpPopup(false)
-          setIsOpenEducationalPaymentTypePopup(false)
-        }}
       />
       <PopupResultRecommended
         open={isOpenPopupRecommended}
