@@ -239,14 +239,17 @@ export const SearchComponent = ({
     if (check) {
       urlDestination = variantListUrl.replace(
         ':brand/:model/:tab?',
-        item.url.split('/p/')[1],
+        item.url.split('/p/')[1].replaceAll(' ', '-'),
       )
     } else {
       urlDestination = carResultsUrl + item.url.split('/c')[1]
     }
 
     // simpan pencarian ke dalam local storage
-    saveHistoryToLocal(item.url, item.carName)
+    saveHistoryToLocal(
+      item.url.split('/p/')[1].replaceAll(' ', '-'),
+      item.carName,
+    )
 
     window.location.href = urlDestination
   }
