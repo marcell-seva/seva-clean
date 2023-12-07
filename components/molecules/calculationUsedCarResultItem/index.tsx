@@ -91,31 +91,60 @@ export const CalculationUsedCarResultItem = ({
       <div
         className={clsx({
           [styles.detailSection]: true,
-          [styles.detailSectionGreen]: isActive,
+          [styles.detailSectionBlue]: isActive,
+          [styles.activeSection]: isActive,
         })}
         role="button"
         onClick={() => emitOnClick(data)}
       >
-        <div className={styles.rankTenureInterestWrapper}>
-          <div className={styles.tenureInterestWrapper}>
-            <span className={styles.priceText}>{`${data.tenor} Tahun`}</span>
+        <div
+          className={clsx({
+            [styles.rowCicilan]: true,
+            [styles.activeRow]: isActive,
+          })}
+        >
+          <div className={styles.rankTenureInterestWrapper}>
+            <div className={styles.tenureInterestWrapper}>
+              <span className={styles.priceText}>{`${data.tenor} Tahun`}</span>
+            </div>
+          </div>
+          <div className={styles.priceTextWrapper}>
+            <span
+              className={styles.priceText}
+            >{`Rp${replacePriceSeparatorByLocalization(
+              data.totalDP,
+              currentLanguage,
+            )}`}</span>
+          </div>
+          <div className={styles.priceTextWrapperEnd}>
+            <span
+              className={styles.priceText}
+            >{`Rp${replacePriceSeparatorByLocalization(
+              data.totalInstallment,
+              currentLanguage,
+            )}`}</span>
           </div>
         </div>
-        <div className={styles.priceTextWrapper}>
-          <span
-            className={styles.priceText}
-          >{`Rp${replacePriceSeparatorByLocalization(
-            data.totalDP,
-            currentLanguage,
-          )}`}</span>
-        </div>
-        <div className={styles.priceTextWrapperEnd}>
-          <span
-            className={styles.priceText}
-          >{`Rp${replacePriceSeparatorByLocalization(
-            data.totalInstallment,
-            currentLanguage,
-          )}`}</span>
+        <div
+          className={clsx({
+            [styles.separator]: true,
+            [styles.hideComponent]: !isActive,
+          })}
+        ></div>
+        <div
+          className={clsx({
+            [styles.bottomInfo]: true,
+            [styles.hideComponent]: !isActive,
+          })}
+          onClick={() => {}}
+        >
+          <TextButton
+            rightIcon={() => (
+              <IconChevronDown width={16} height={16} color="#246ED4" />
+            )}
+          >
+            <span className={styles.checkOtherPromo}>Cek Asuransi</span>
+          </TextButton>
         </div>
       </div>
     </div>

@@ -204,6 +204,7 @@ export const CreditUsedCarTab = () => {
   const [installmentType, setInstallmentType] =
     useState<InstallmentTypeOptions>(InstallmentTypeOptions.ADDB)
   const [calculationResult, setCalculationResult] = useState([])
+  const [defaultCalculcationResult, setDefaultCalculationResult] = useState([])
   const [isTooltipOpen, setIsTooltipOpen] = useState(false)
   const [tooltipNextDisplay, setTooltipNextDisplay] = useState<string | null>(
     null,
@@ -354,6 +355,55 @@ export const CreditUsedCarTab = () => {
       ...tempData,
     })
   }
+
+  const defaultValueCalculcator = async () => {
+    const payloadUsedCar: CreditCarCalculation = {
+      nik: usedCarModelDetailsRes.nik,
+      DP: dpValue,
+      priceValue: Number(usedCarModelDetailsRes.priceValue.split('.')[0]),
+      tenureAR: 0,
+      tenureTLO: 60,
+      presentaseDP: dpPercentage,
+    }
+
+    const queryParam = new URLSearchParams()
+    queryParam.append('nik', payloadUsedCar.nik.toString())
+    queryParam.append('DP', payloadUsedCar.DP.toString())
+    queryParam.append('priceValue', payloadUsedCar.priceValue.toString())
+    queryParam.append('tenureAR', payloadUsedCar.tenureAR.toString())
+    queryParam.append('tenureTLO', payloadUsedCar.tenureTLO.toString())
+    queryParam.append('presentaseDP', payloadUsedCar.presentaseDP.toString())
+    getCarCreditsSk('', { params: queryParam })
+      .then((response) => {
+        const result = response.data.reverse()
+        console.log(result)
+
+        const filteredResult = getFilteredCalculationResults(result)
+        setDefaultCalculationResult(filteredResult)
+        const selectedLoanInitialValue = filteredResult[0] ?? null
+        setSelectedLoan(selectedLoanInitialValue)
+        scrollToResult()
+      })
+      .catch((error: any) => {
+        if (error?.response?.data?.message) {
+          setToastMessage(`${error?.response?.data?.message}`)
+        } else {
+          setToastMessage(
+            'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+          )
+        }
+        setIsOpenToast(true)
+        setDisableBtnCalculate(false)
+      })
+      .finally(() => {
+        setIsLoadingCalculation(false)
+        setDisableBtnCalculate(false)
+      })
+  }
+
+  useEffect(() => {
+    defaultValueCalculcator()
+  }, [])
 
   const updateSelectedVariantData = () => {
     if (!!forms.variant?.variantId) {
@@ -533,13 +583,13 @@ export const CreditUsedCarTab = () => {
   }, [usedCarNewRecommendations, usedCarModelDetailsRes])
 
   useEffect(() => {
-    if (chosenAssurance.label === '' || isDpTooLow || isDpExceedLimit) {
+    if (isDpTooLow || isDpExceedLimit) {
       setIsDisableCtaCalculate(true)
       return
     } else {
       setIsDisableCtaCalculate(false)
     }
-  }, [chosenAssurance, isDpTooLow, isDpExceedLimit])
+  }, [isDpTooLow, isDpExceedLimit])
 
   useEffect(() => {
     updateSelectedVariantData()
@@ -856,8 +906,8 @@ export const CreditUsedCarTab = () => {
       nik: usedCarModelDetailsRes.nik,
       DP: dpValue,
       priceValue: Number(usedCarModelDetailsRes.priceValue.split('.')[0]),
-      tenureAR: chosenAssurance.tenureAR,
-      tenureTLO: chosenAssurance.tenureTLO,
+      tenureAR: 0,
+      tenureTLO: 60,
       presentaseDP: dpPercentage,
     }
     const queryParam = new URLSearchParams()
@@ -1072,7 +1122,7 @@ export const CreditUsedCarTab = () => {
               setIsOpenEducationalPopup={setIsOpenEducationalDpPopup}
             />
           </div>
-          <div
+          {/* <div
             id="loan-calculator-form-age"
             className={styles.loanCalculatorFormAge}
           >
@@ -1091,7 +1141,7 @@ export const CreditUsedCarTab = () => {
             {isValidatingEmptyField && chosenAssurance?.label === ''
               ? renderErrorMessageEmpty()
               : null}
-          </div>
+          </div> */}
           <Button
             version={ButtonVersion.PrimaryDarkBlue}
             size={ButtonSize.Big}
@@ -1155,7 +1205,43 @@ export const CreditUsedCarTab = () => {
           />
         </>
       ) : (
-        <></>
+        defaultCalculcationResult.length && (
+          <>
+            <div className={styles.formCardCalculationResult}>
+              <CalculationUsedCarResult
+                data={defaultCalculcationResult}
+                selectedLoan={selectedLoan}
+                setSelectedLoan={setSelectedLoan}
+                angsuranType={forms.paymentOption}
+                isTooltipOpen={isTooltipOpen}
+                isQualificationModalOpen={isAssuranceModalOpen}
+                closeTooltip={handleTooltipClose}
+                handleClickButtonQualification={handleClickButtonQualification}
+                formData={forms}
+                insuranceAndPromoForAllTenure={insuranceAndPromoForAllTenure}
+                setInsuranceAndPromoForAllTenure={
+                  setInsuranceAndPromoForAllTenure
+                }
+                calculationApiPayload={calculationApiPayload}
+                setFinalLoan={setFinalLoan}
+                pageOrigination={'PDP Credit Tab'}
+                scrollToLeads={scrollToLeads}
+              />
+            </div>
+            <div
+              ref={toLeads}
+              className={
+                showAnnouncementBox
+                  ? styles.reference
+                  : styles.referenceWithoutAnnounce
+              }
+            ></div>
+            <LeadsFormUsedCar
+              selectedLoan={selectedLoan}
+              chosenAssurance={chosenAssurance}
+            />
+          </>
+        )
       )}
 
       <div className={styles.wrapper}>

@@ -304,33 +304,6 @@ const DpUsedCarForm: React.FC<DpFormProps> = ({
       ) : (
         <></>
       )}
-      <Row>
-        <Slider
-          className={styles.slider}
-          min={carPriceMinusDiscount * 0.2}
-          max={carPriceMinusDiscount * 0.9}
-          step={100000}
-          value={value}
-          onChange={handleSliderChange}
-          handleStyle={sliderIconStyle}
-          disabled={isDisabled}
-          onAfterChange={() => {
-            emitOnAfterChangeDpSlider && emitOnAfterChangeDpSlider()
-          }}
-        />
-      </Row>
-      <Row>
-        <div className={styles.labelSliderContent}>
-          <Row>
-            <span className={styles.labelSliderOne}>
-              {formatCurrency(carPriceMinusDiscount * 0.2)}
-            </span>
-            <span className={styles.labelSliderTwo}>
-              {formatCurrency(carPriceMinusDiscount * 0.9)}
-            </span>
-          </Row>
-        </div>
-      </Row>
     </div>
   )
 }

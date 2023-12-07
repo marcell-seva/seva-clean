@@ -9,6 +9,10 @@
   border: 2px solid #{$secondary-brick-red};
 }
 
+@mixin blueBorder {
+  border: 2px solid #{$secondary-sky-blue};
+}
+
 .container {
   width: 100%;
   display: flex;
@@ -43,7 +47,7 @@
   border-bottom: none;
 }
 
-$layarHP: 375px;
+$layarHP: 376px;
 
 .detailSection {
   @media screen and (max-width: $layarHP) {
@@ -52,26 +56,38 @@ $layarHP: 375px;
     border: 1px solid #{$shades-grey-10};
     border-radius: 8px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 22px 10px;
-    gap: 8px;
+    padding: 22px 10px 22px 6px;
     border-radius: 8px;
-    padding-left: 40px;
+    // padding-left: 40px;
+    &.activeSection {
+      padding: 13px 0px 0px 0px !important;
+    }
   }
   width: 100%;
   background: #{$primary-white};
   border: 1px solid #{$shades-grey-10};
   border-radius: 8px;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 22px 10px;
-  gap: 8px;
+  flex-direction: column;
+  // align-items: center;
+  // justify-content: space-between;
+  padding: 22px 10px 22px 40px;
+  // gap: 8px;
   border-radius: 8px;
   padding-left: 40px;
+  &.activeSection {
+    padding: 13px 9px 0px 41px;
+  }
+}
+
+.rowCicilan {
+  display: flex;
+  &.activeRow {
+    padding-bottom: 15px;
+  }
 }
 
 .detailSectionGreen {
@@ -85,6 +101,12 @@ $layarHP: 375px;
   background: #{$shades-brick-red-5};
   border-bottom: none;
   border-radius: 0;
+}
+
+.detailSectionBlue {
+  @include blueBorder();
+  background: #{$shades-sky-blue-5};
+  border-radius: 8px;
 }
 
 .rankTenureInterestWrapper {
@@ -120,6 +142,7 @@ $layarHP: 375px;
   @media screen and (max-width: $layarHP) {
     justify-content: space-between;
     //   min-height: 34px;
+    padding-left: 38px;
     text-align: center;
     align-items: center;
     display: flex;
@@ -129,6 +152,7 @@ $layarHP: 375px;
   text-align: center;
   align-items: center;
   display: flex;
+  padding-left: 43px;
   flex: 1;
 }
 .priceTextWrapperEnd {
@@ -136,12 +160,13 @@ $layarHP: 375px;
     justify-content: flex-end;
     text-align: center;
     align-items: center;
+    padding-left: 28px;
     display: flex;
   }
-  text-align: center;
   align-items: center;
   display: flex;
   flex: 1;
+  padding-left: 33px;
   justify-content: center;
 }
 
@@ -194,12 +219,12 @@ $layarHP: 375px;
 }
 
 .bottomInfo {
-  flex: 1;
-  position: relative;
-  padding: 10px 16px 14px 12px;
+  width: 100%;
+  display: flex;
+  padding: 8px 14px 13px 0px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   border-radius: 0px 0px 8px 8px;
   cursor: pointer;
 }
