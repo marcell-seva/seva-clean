@@ -30,7 +30,9 @@ export function CicilOptionForm({
           <p className={styles.titleText}>Pembayaran cicilan pertama</p>
           <p
             className={styles.textWithCta}
-            onClick={() => setIsOpenEducationalPopup(true)}
+            onClick={() =>
+              setIsOpenEducationalPopup && setIsOpenEducationalPopup(true)
+            }
           >
             {labelWithCta}
           </p>

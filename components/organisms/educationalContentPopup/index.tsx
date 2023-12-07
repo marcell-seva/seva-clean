@@ -4,7 +4,7 @@ import React from 'react'
 import styles from 'styles/components/organisms/educationalPopup.module.scss'
 import { Button } from 'components/atoms'
 import { isIphone } from 'utils/window'
-import { ButtonVersion } from 'components/atoms/button'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { IconIdea } from 'components/atoms/icon/IconIdea'
 import stylesButton from 'styles/components/atoms/button.module.scss'
 
@@ -37,7 +37,7 @@ const EducationalContentPopup = ({
           <b className={styles.kanyonSemiBold}>
             Apa bedanya DP dengan Total DP (TDP)?
           </b>
-          <p className={styles.openSans} style={{ paddingtop: '16px' }}>
+          <p className={styles.openSans} style={{ paddingTop: '16px' }}>
             Total DP (juga dikenal dengan Total Pembayaran Pertama) adalah total
             uang muka yang harus dibayar di awal pembelian mobil. Besarannya
             mencakup penjumlahan dari beberapa biaya, seperti DP, biaya
@@ -48,6 +48,7 @@ const EducationalContentPopup = ({
           <Button
             version={ButtonVersion.PrimaryDarkBlue}
             onClick={onClickClose}
+            size={ButtonSize.Big}
           >
             Oke, Saya Mengerti
           </Button>
@@ -59,7 +60,7 @@ const EducationalContentPopup = ({
   const EducationalSchemeType = (): JSX.Element => (
     <div className={styles.container}>
       <div className={`${styles.popupSubHeader} ${styles.wrapper}`}>
-        <p className={styles.kanyonMedium} ref={myRef}>
+        <p className={styles.kanyonMedium}>
           Pilihan Pembayaran Cicilan Pertama
         </p>
       </div>

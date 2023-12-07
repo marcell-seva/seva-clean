@@ -166,7 +166,9 @@ const DpForm: React.FC<DpFormProps> = ({
           <label className={styles.titleText}>{label}</label>
           <label
             className={styles.titleWithCtaText}
-            onClick={() => setIsOpenEducationalPopup(true)}
+            onClick={() =>
+              setIsOpenEducationalPopup && setIsOpenEducationalPopup(true)
+            }
           >
             {labelWithCta}
           </label>
