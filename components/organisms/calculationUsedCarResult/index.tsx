@@ -208,7 +208,6 @@ export const CalculationUsedCarResult = ({
           <br />
           **Cicilan per bulan: Sudah termasuk cicilan dan premi asuransi mobil
           <br />
-          <br />
           Perhitungan kredit ini disediakan oleh ACC.
         </span>
       </div>
