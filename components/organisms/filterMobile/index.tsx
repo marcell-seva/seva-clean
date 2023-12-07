@@ -257,21 +257,7 @@ const FilterMobile = ({
     setIsErrorAge(false)
     setIsErrorMinMaxDP('0')
     setIsResetFilter && setIsResetFilter(false)
-    const filterCarResult = {
-      maxMonthlyInstallments: toNumber(
-        funnelQuery.monthlyInstallment as string,
-      ),
-      downPayment: toNumber(funnelQuery.downPaymentAmount as string),
-      downPaymentPercentage: funnelQuery.downPaymentPercentage
-        ? Number(funnelQuery.downPaymentPercentage) / 100
-        : null,
-      brands: funnelQuery.brand ? funnelQuery.brand : [],
-      tenure: tenureFilter,
-      minPrice: minPriceFilter,
-      maxPrice: maxPriceFilter,
-    }
-    trackFilterCarResults(filterCarResult)
-
+    console.log(isCheckedBrand)
     setLoading(true)
     const paramUpdate = {
       ...paramQuery,
@@ -284,7 +270,7 @@ const FilterMobile = ({
       brand: !resetTmp && isCheckedBrand.length > 0 ? isCheckedBrand : [],
       tenure: tenureFilter,
       sortBy: funnelQuery.sortBy,
-      search: String(funnelQuery.search),
+      ...(funnelQuery.search && { search: funnelQuery.search }),
     }
     if (!resetTmp) {
       if (

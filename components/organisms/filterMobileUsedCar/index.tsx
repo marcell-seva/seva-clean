@@ -186,7 +186,7 @@ const FilterMobileUsedCar = ({
         !resetTmp && transmissionFilter.length > 0 ? transmissionFilter : [],
       plate: !resetTmp && plateFilter.length > 0 ? plateFilter : [],
       sortBy: funnelQuery.sortBy,
-      search: funnelQuery.search,
+      ...(funnelQuery.search && { search: funnelQuery.search }),
       yearEnd: '',
       yearStart: '',
       mileageEnd: '',
