@@ -257,7 +257,6 @@ const FilterMobile = ({
     setIsErrorAge(false)
     setIsErrorMinMaxDP('0')
     setIsResetFilter && setIsResetFilter(false)
-    console.log(isCheckedBrand)
     setLoading(true)
     const paramUpdate = {
       ...paramQuery,
