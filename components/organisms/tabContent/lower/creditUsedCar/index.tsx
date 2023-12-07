@@ -1042,7 +1042,7 @@ export const CreditUsedCarTab = () => {
               alt="SEVA Rupiah Icon"
             />
           </div>
-          <h3 className={styles.formCardTitle}>Hitung Angsuran</h3>
+          <h3 className={styles.formCardTitle}>Hitung Cicilan</h3>
         </div>
 
         <div className={styles.formWrapper}>
@@ -1101,7 +1101,7 @@ export const CreditUsedCarTab = () => {
                 <IconLoading width={14} height={14} color="#FFFFFF" />
               </div>
             ) : (
-              'Hitung Angsuran'
+              'Hitung Cicilan'
             )}
           </Button>
         </div>

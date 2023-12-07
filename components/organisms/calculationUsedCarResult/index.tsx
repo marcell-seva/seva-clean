@@ -204,12 +204,9 @@ export const CalculationUsedCarResult = ({
     return (
       <div className={styles.disclaimerWrapper}>
         <span className={styles.disclaimerText}>
-          *Total DP: Administrasi + cicilan pertama
+          *Total DP: DP + Administrasi + Cicilan Pertama + Polis
           <br />
-          **Cicilan per bulan: cicilan + premi asuransi mobil
-          <br />
-          ***Hasil perhitungan masih bersifat estimasi. Perhitungan final akan
-          diberikan oleh mitra SEVA
+          **Cicilan per bulan: Sudah termasuk cicilan dan premi asuransi mobil
           <br />
           <br />
           Perhitungan kredit ini disediakan oleh ACC.
@@ -244,7 +241,7 @@ export const CalculationUsedCarResult = ({
       className={styles.container}
       data-testid={elementId.LoanCalculator.Result.LoanCalculator}
     >
-      <h3 className={styles.title}>Pilih Angsuran</h3>
+      <h3 className={styles.title}>Pilih Cicilan</h3>
       <span className={styles.subtitle}>
         Perhitungan final akan diberikan oleh partner SEVA.
       </span>
