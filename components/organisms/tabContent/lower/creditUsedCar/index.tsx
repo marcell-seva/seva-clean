@@ -104,6 +104,7 @@ import { IconMoney } from 'components/atoms/icon'
 import { UsedPdpDataLocalContext } from 'pages/mobil-bekas/p/[[...slug]]'
 import { LeadsFormUsedCar } from 'components/organisms'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import EducationalContentPopup from 'components/organisms/educationalContentPopup'
 
 const CalculationUsedCarResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationUsedCarResult),
@@ -183,6 +184,8 @@ export const CreditUsedCarTab = () => {
   const [disableBtnCalculate, setDisableBtnCalculate] = useState(false)
   const [isValidatingEmptyField, setIsValidatingEmptyField] = useState(false)
   const [isLoadingCalculation, setIsLoadingCalculation] = useState(false)
+  const [isOpenEducationalDpPopup, setIsOpenEducationalDpPopup] =
+    useState(false)
   const [, setPromoCodeSessionStorage] =
     useSessionStorageWithEncryption<string>(
       SessionStorageKey.PromoCodeGiiass,
@@ -1066,6 +1069,7 @@ export const CreditUsedCarTab = () => {
               emitOnFocusDpAmountField={onFocusDpAmountField}
               emitOnFocusDpPercentageField={onFocusDpPercentageField}
               emitOnAfterChangeDpSlider={onAfterChangeDpSlider}
+              setIsOpenEducationalPopup={setIsOpenEducationalDpPopup}
             />
           </div>
           <div
@@ -1190,6 +1194,17 @@ export const CreditUsedCarTab = () => {
         typeToast={'error'}
         onCancel={() => setIsOpenToast(false)}
         closeOnToastClick
+      />
+      <EducationalContentPopup
+        educationalName={
+          isOpenEducationalDpPopup
+            ? 'Down Payment (DP)'
+            : 'Pilihan Pembayaran Cicilan Pertama'
+        }
+        isOpenBottomSheet={isOpenEducationalDpPopup}
+        onButtonClick={() => {
+          setIsOpenEducationalDpPopup(false)
+        }}
       />
     </div>
   )

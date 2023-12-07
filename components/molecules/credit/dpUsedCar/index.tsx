@@ -35,6 +35,7 @@ interface DpFormProps {
   emitOnFocusDpAmountField?: () => void
   emitOnFocusDpPercentageField?: () => void
   emitOnAfterChangeDpSlider?: () => void
+  setIsOpenEducationalPopup?: (value: boolean) => void
 }
 
 const DpUsedCarForm: React.FC<DpFormProps> = ({
@@ -56,6 +57,7 @@ const DpUsedCarForm: React.FC<DpFormProps> = ({
   emitOnFocusDpAmountField,
   emitOnFocusDpPercentageField,
   emitOnAfterChangeDpSlider,
+  setIsOpenEducationalPopup,
 }) => {
   const formatCurrency = (value: number): string => {
     return `Rp${value.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`
@@ -233,7 +235,17 @@ const DpUsedCarForm: React.FC<DpFormProps> = ({
 
   return (
     <div className={styles.wrapper}>
-      <label className={styles.titleText}>{label}</label>
+      <div className={styles.labelContainer}>
+        <label className={styles.titleText}>{label}</label>
+        <label
+          className={styles.tooltip}
+          onClick={() =>
+            setIsOpenEducationalPopup && setIsOpenEducationalPopup(true)
+          }
+        >
+          Pelajari Lebih Lanjut
+        </label>
+      </div>
       <Row gutter={16}>
         <Col span={18} xs={16}>
           <Input
