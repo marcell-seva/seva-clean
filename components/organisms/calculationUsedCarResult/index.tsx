@@ -240,7 +240,7 @@ export const CalculationUsedCarResult = ({
       className={styles.container}
       data-testid={elementId.LoanCalculator.Result.LoanCalculator}
     >
-      <h3 className={styles.title}>Pilih Cicilan</h3>
+      <h3 className={styles.title}>Simulasi Cicilan</h3>
       <span className={styles.subtitle}>
         Perhitungan final akan diberikan oleh partner SEVA.
       </span>
