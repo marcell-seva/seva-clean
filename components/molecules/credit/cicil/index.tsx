@@ -57,7 +57,7 @@ export function CicilOptionForm({
             }}
             data-testid={elementId.Field.ADDM}
           >
-            <p className={styles.buttonOptionText}>Bayar di Muka</p>
+            <p className={styles.buttonOptionText}>Bayar di Muka (ADDM)</p>
             <p className={styles.titleTextDP}>Dibayar bersama dengan DP</p>
           </Button>
         </Row>
@@ -77,7 +77,7 @@ export function CicilOptionForm({
             }}
             data-testid={elementId.Field.ADDB}
           >
-            <p className={styles.buttonOptionText}>Bayar di Belakang</p>
+            <p className={styles.buttonOptionText}>Bayar di Belakang (ADDB)</p>
             <p className={styles.titleTextDP}>Dibayar sebulan setelah DP</p>
           </Button>
         </Row>
