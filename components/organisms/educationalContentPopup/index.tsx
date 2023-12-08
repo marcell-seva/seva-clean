@@ -7,6 +7,7 @@ import { isIphone } from 'utils/window'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { IconIdea } from 'components/atoms/icon/IconIdea'
 import stylesButton from 'styles/components/atoms/button.module.scss'
+import clsx from 'clsx'
 
 type FilterMobileProps = {
   onButtonClick?: () => void
@@ -145,7 +146,10 @@ const EducationalContentPopup = ({
       <BottomSheet
         open={isOpenBottomSheet || false}
         onDismiss={() => onClickClose()}
-        className={styles.bottomSheet}
+        className={clsx({
+          [styles.bottomSheet]: educationalName !== 'Down Payment (DP)',
+          [styles.bottomSheetSmall]: educationalName === 'Down Payment (DP)',
+        })}
         // scrollLocking={!isIphone}
       >
         {renderEducationalSection(educationalName)}
