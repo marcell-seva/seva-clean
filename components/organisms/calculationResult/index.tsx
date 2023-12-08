@@ -32,6 +32,8 @@ import {
 } from 'utils/handler/sessionStorage'
 import Image from 'next/image'
 import clsx from 'clsx'
+import CardVariantOptions from '../cardVariantOptions'
+import { ModelVariant } from 'utils/types/carVariant'
 
 const LogoAcc = '/revamp/icon/logo-acc.webp'
 const LogoTaf = '/revamp/icon/logo-taf.webp'
@@ -57,6 +59,11 @@ interface Props {
   pageOrigination?: string
   isPartnership?: boolean
   onClickResultItemUpperInfoSection?: () => void
+  isV2: boolean
+  handleChangeVariants: (name: string, value: any) => void
+  carVariantList?: ModelVariant[]
+  onShowDropdown?: () => void
+  onChangeInformation?: () => void
 }
 
 export const CalculationResult = ({
@@ -76,7 +83,13 @@ export const CalculationResult = ({
   pageOrigination,
   isPartnership = false,
   onClickResultItemUpperInfoSection,
+  handleChangeVariants,
+  isV2 = true,
+  carVariantList,
+  onShowDropdown,
+  onChangeInformation,
 }: Props) => {
+  console.log('asdf', isV2)
   const [state, setState] = useState<LoanCalculatorInsuranceAndPromoType[]>(
     insuranceAndPromoForAllTenure,
   ) // assume this state as Context, mind about re-render
@@ -404,11 +417,29 @@ export const CalculationResult = ({
       className={styles.container}
       data-testid={elementId.LoanCalculator.Result.LoanCalculator}
     >
-      <h3 className={styles.title}>Kemampuan Finansialmu</h3>
-      <span className={styles.subtitle}>
-        Perhitungan final akan diberikan oleh partner SEVA.
-      </span>
-      <div className={styles.dataHeaderWrapperUsedCar}>
+      {!isV2 ? (
+        <>
+          <h3 className={styles.title}>Kemampuan Finansialmu</h3>
+          <span className={styles.subtitle}>
+            Perhitungan final akan diberikan oleh partner SEVA.
+          </span>
+        </>
+      ) : (
+        <CardVariantOptions
+          selectedModel={formData?.model?.modelName || ''}
+          handleChange={handleChangeVariants}
+          name="variant"
+          carVariantList={carVariantList || []}
+          value={formData.variant}
+          modelError={false}
+          onShowDropdown={onShowDropdown && onShowDropdown}
+          isError={false}
+          carModelImage={formData.model?.modelImage}
+          cityName={formData.city.cityName}
+          onChangeInformation={onChangeInformation && onChangeInformation}
+        />
+      )}
+      <div className={styles.dataHeaderWrapper}>
         <span className={`${styles.dataHeaderText} ${styles.tenorHeader}`}>
           Tenor
         </span>

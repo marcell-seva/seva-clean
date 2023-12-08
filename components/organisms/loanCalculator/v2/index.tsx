@@ -767,6 +767,63 @@ export function LoanCalculatorPageV2() {
   const onChangeInformation = () => {
     window.scrollTo({ top: 130, behavior: 'smooth' })
   }
+  const handleChangeVariantOnCalculationResult = (name: string, value: any) => {
+    setIsLoadingAfterChangeVariant(true)
+    setIsUserChooseVariantDropdown(true)
+    setForms({
+      ...forms,
+      [name]: value,
+    })
+    const payload: LoanCalculatorIncludePromoPayloadType = {
+      brand: forms.model?.brandName ?? '',
+      model: removeFirstWordFromString(forms.model?.modelName ?? ''),
+      age: forms.age,
+      angsuranType: forms.paymentOption,
+      city: forms.city.cityCode,
+      discount: getCarDiscountNumber(),
+      dp: mappedDpPercentage,
+      dpAmount: dpValue,
+      monthlyIncome: forms.monthlyIncome,
+      otr: getCarOtrNumber() - getCarDiscountNumber(),
+      variantId: forms.variant?.variantId,
+    }
+
+    postLoanPermutationIncludePromo(payload)
+      .then((response) => {
+        const result = response.data.reverse()
+        const filteredResult = getFilteredCalculationResults(result)
+        setCalculationResult(filteredResult)
+        generateSelectedInsuranceAndPromo(filteredResult, true)
+        trackCountlyResult(filteredResult)
+
+        // select loan with the longest tenure as default
+        const selectedLoanInitialValue =
+          filteredResult.sort(
+            (
+              a: SpecialRateListWithPromoType,
+              b: SpecialRateListWithPromoType,
+            ) => b.tenure - a.tenure,
+          )[0] ?? null
+        setSelectedLoan(selectedLoanInitialValue)
+
+        setIsDataSubmitted(true)
+        setCalculationApiPayload(payload)
+        // scrollToResult()
+      })
+      .catch((error: any) => {
+        if (error?.response?.data?.message) {
+          setToastMessage(`${error?.response?.data?.message}`)
+        } else {
+          setToastMessage(
+            'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+          )
+        }
+        setIsOpenToast(true)
+      })
+      .finally(() => {
+        setIsLoadingAfterChangeVariant(false)
+      })
+  }
 
   useEffect(() => {
     if (!forms?.city?.cityCode) {
@@ -1166,96 +1223,6 @@ export function LoanCalculatorPageV2() {
       })
       .finally(() => {
         setIsLoadingCalculation(false)
-      })
-  }
-
-  const handleChangeVariantOnCalculationResult = async (
-    name: string,
-    value: any,
-  ) => {
-    setIsLoadingAfterChangeVariant(true)
-    setIsUserChooseVariantDropdown(true)
-    setForms({
-      ...forms,
-      [name]: value,
-    })
-    const finalDpRange = await getFinalDpRangeValidation(
-      value.variantId,
-      forms.city.cityCode,
-    )
-    let minDp =
-      (getCarOtrNumber(value.otr) - getCarDiscountNumber(value.discount)) * 0.2
-    let maxDp =
-      (getCarOtrNumber(value.otr) - getCarDiscountNumber(value.discount)) * 0.9
-    if (finalDpRange?.minAmount !== 0 && finalDpRange?.maxAmount !== 0) {
-      minDp = finalDpRange?.minAmount
-      maxDp = finalDpRange?.maxAmount
-    }
-    if (
-      Number(forms.downPaymentAmount) < minDp ||
-      Number(forms.downPaymentAmount) > maxDp
-    ) {
-      setIsChangedMaxDp(true)
-    }
-    const updatedDPValue =
-      Number(forms.downPaymentAmount) > maxDp
-        ? maxDp
-        : Number(forms.downPaymentAmount) < minDp
-        ? minDp
-        : forms.downPaymentAmount
-
-    const dataFinancial = {
-      ...financialQuery,
-      downPaymentAmount: updatedDPValue,
-    }
-
-    patchFinancialQuery(dataFinancial)
-    const payload: LoanCalculatorIncludePromoPayloadType = {
-      brand: forms.model?.brandName ?? '',
-      model: removeFirstWordFromString(forms.model?.modelName ?? ''),
-      age: forms.age,
-      angsuranType: forms.paymentOption,
-      city: forms.city.cityCode,
-      discount: getCarDiscountNumber(value.discount),
-      dp: mappedDpPercentage,
-      dpAmount: Number(updatedDPValue),
-      monthlyIncome: forms.monthlyIncome,
-      otr: getCarOtrNumber(value.otr) - getCarDiscountNumber(value.discount),
-      variantId: value.variantId,
-    }
-
-    postLoanPermutationIncludePromo(payload)
-      .then((response) => {
-        const result = response.data.reverse()
-        const filteredResult = getFilteredCalculationResults(result)
-
-        setCalculationResult(filteredResult)
-        setKKForm({ ...kkForm, downPaymentAmount: updatedDPValue })
-
-        generateSelectedInsuranceAndPromo(filteredResult, true)
-
-        // select loan with the longest tenure as default
-        const selectedLoanInitialValue =
-          filteredResult.sort(
-            (
-              a: SpecialRateListWithPromoType,
-              b: SpecialRateListWithPromoType,
-            ) => b.tenure - a.tenure,
-          )[0] ?? null
-        setSelectedLoan(selectedLoanInitialValue)
-
-        setIsDataSubmitted(true)
-        setCalculationApiPayload(payload)
-      })
-      .catch((error: any) => {
-        if (error?.response?.data?.message) {
-          setToastMessage(`${error?.response?.data?.message}`)
-        } else {
-          setToastMessage(
-            'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
-          )
-        }
-        setIsOpenToast(true)
       })
   }
 
@@ -2130,10 +2097,10 @@ export function LoanCalculatorPageV2() {
                 onClickResultItemUpperInfoSection={() =>
                   onClickResultItemUpperInfoSection()
                 }
-                // carVariantList={carVariantList}
-                // handleChangeVariants={handleChangeVariantOnCalculationResult}
-                // onChangeInformation={onChangeInformation}
-                // isV2={true}
+                carVariantList={carVariantList}
+                handleChangeVariants={handleChangeVariantOnCalculationResult}
+                onChangeInformation={onChangeInformation}
+                isV2={true}
               />
               {carRecommendations.length > 0 && (
                 <CarRecommendations

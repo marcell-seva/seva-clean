@@ -21,14 +21,12 @@ export type FormSelectCarVariantProps = {
   handleChange: (name: string, value: any) => void
   name: string
   carVariantList: ModelVariant[]
-  value:
-    | {
-        variantId: string
-        variantName: string
-        otr: string
-        discount: number
-      }
-    | undefined
+  value: {
+    variantId: string
+    variantName: string
+    otr: string
+    discount: number
+  }
   modelError: boolean
   onShowDropdown?: () => void
   isError?: boolean
@@ -45,7 +43,7 @@ export const variantEmptyValue = {
   discount: 0,
 }
 
-export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
+export const FormSelectCarVariantV2: React.FC<FormSelectCarVariantProps> = ({
   selectedModel,
   handleChange,
   name,
@@ -86,16 +84,14 @@ export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
   }
 
   const onChangeInputHandler = (value: string) => {
-    if (value && inputValue) {
-      setInputValue({
-        ...inputValue,
-        variantName: value
-          .toLowerCase()
-          .split(' ')
-          .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-          .join(' '),
-      })
-    }
+    setInputValue({
+      ...inputValue,
+      variantName: value
+        .toLowerCase()
+        .split(' ')
+        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+        .join(' '),
+    })
   }
 
   const onBlurHandler = () => {
@@ -139,37 +135,32 @@ export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
   }, [carVariantList])
 
   useEffect(() => {
-    if (inputValue?.variantName === '' || lastChoosenValue?.variantName) {
+    if (inputValue?.variantName === '' || lastChoosenValue.variantName) {
       const sortedCars = sortedVariantCarList()
       setSuggestionsLists(sortedCars)
       return
     }
-    if (inputValue) {
-      const fuse = new Fuse(carVariantListOptionsFull, searchOption)
-      const suggestion = fuse.search(inputValue.variantName)
-      const result = suggestion.map((obj) => obj.item)
-      // sort alphabetically
-      // result.sort((a: any, b: any) => a.label.localeCompare(b.label))
-      // sort based on input
-      const sorted = result.sort((a: any, b: any) => {
-        if (a.label.startsWith(inputValue) && b.label.startsWith(inputValue))
-          return a.label.localeCompare(b.label)
-        else if (a.label.startsWith(inputValue)) return -1
-        else if (b.label.startsWith(inputValue)) return 1
+    const fuse = new Fuse(carVariantListOptionsFull, searchOption)
+    const suggestion = fuse.search(inputValue.variantName)
+    const result = suggestion.map((obj) => obj.item)
+    // sort alphabetically
+    // result.sort((a: any, b: any) => a.label.localeCompare(b.label))
+    // sort based on input
+    const sorted = result.sort((a: any, b: any) => {
+      if (a.label.startsWith(inputValue) && b.label.startsWith(inputValue))
         return a.label.localeCompare(b.label)
-      })
-      setSuggestionsLists(sorted)
-    }
+      else if (a.label.startsWith(inputValue)) return -1
+      else if (b.label.startsWith(inputValue)) return 1
+      return a.label.localeCompare(b.label)
+    })
+    setSuggestionsLists(sorted)
   }, [inputValue])
 
   return (
     <>
-      <div className={styles.labelWrapper}>
-        <Label name="model">Varian mobil</Label>
-      </div>
       <InputMultilineSelect
         ref={inputRef}
-        value={inputValue ? inputValue.variantName : ''}
+        value={inputValue.variantName}
         options={suggestionsLists}
         onChange={onChangeInputHandler}
         placeholderText="Pilih varian"

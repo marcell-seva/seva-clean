@@ -2261,10 +2261,10 @@ export const CreditTabV2 = () => {
               onClickResultItemUpperInfoSection={() =>
                 onClickResultItemUpperInfoSection()
               }
-              // carVariantList={carVariantList}
-              // handleChangeVariants={handleChangeVariantOnCalculationResult}
+              carVariantList={carVariantList}
+              handleChangeVariants={handleChangeVariantOnCalculationResult}
               // onChangeInformation={onChangeInformation}
-              // isV2={true}
+              isV2={true}
             />
           </div>
           {carRecommendations.length > 0 && (
