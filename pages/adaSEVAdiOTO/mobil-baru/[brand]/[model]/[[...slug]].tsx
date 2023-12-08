@@ -190,7 +190,7 @@ export async function getServerSideProps(context: any) {
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
   try {
-    if (context.query.slug?.length > 1) {
+    if (context.query.slug?.length > 3) {
       return {
         notFound: true,
       }
