@@ -768,12 +768,12 @@ export function LoanCalculatorPageV2() {
     window.scrollTo({ top: 130, behavior: 'smooth' })
   }
   const handleChangeVariantOnCalculationResult = (name: string, value: any) => {
-    setIsLoadingAfterChangeVariant(true)
     setIsUserChooseVariantDropdown(true)
     setForms({
       ...forms,
       [name]: value,
     })
+    setIsLoadingAfterChangeVariant(true)
     const payload: LoanCalculatorIncludePromoPayloadType = {
       brand: forms.model?.brandName ?? '',
       model: removeFirstWordFromString(forms.model?.modelName ?? ''),
@@ -787,42 +787,39 @@ export function LoanCalculatorPageV2() {
       otr: getCarOtrNumber() - getCarDiscountNumber(),
       variantId: forms.variant?.variantId,
     }
+    // postLoanPermutationIncludePromo(payload)
+    //   .then((response) => {
+    //     const result = response.data.reverse()
+    //     const filteredResult = getFilteredCalculationResults(result)
+    //     console.log('asdf', filteredResult)
+    //     setCalculationResult(filteredResult)
 
-    postLoanPermutationIncludePromo(payload)
-      .then((response) => {
-        const result = response.data.reverse()
-        const filteredResult = getFilteredCalculationResults(result)
-        setCalculationResult(filteredResult)
-        generateSelectedInsuranceAndPromo(filteredResult, true)
-        trackCountlyResult(filteredResult)
+    postLoanPermutationIncludePromo(payload).then((response) => {
+      const result = response.data.reverse()
+      const filteredResult = getFilteredCalculationResults(result)
+      setCalculationResult(filteredResult)
+      generateSelectedInsuranceAndPromo(filteredResult, true)
+      trackCountlyResult(filteredResult)
+    })
+    //     setIsDataSubmitted(true)
+    //     setCalculationApiPayload(payload)
 
-        // select loan with the longest tenure as default
-        const selectedLoanInitialValue =
-          filteredResult.sort(
-            (
-              a: SpecialRateListWithPromoType,
-              b: SpecialRateListWithPromoType,
-            ) => b.tenure - a.tenure,
-          )[0] ?? null
-        setSelectedLoan(selectedLoanInitialValue)
-
-        setIsDataSubmitted(true)
-        setCalculationApiPayload(payload)
-        // scrollToResult()
-      })
-      .catch((error: any) => {
-        if (error?.response?.data?.message) {
-          setToastMessage(`${error?.response?.data?.message}`)
-        } else {
-          setToastMessage(
-            'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
-          )
-        }
-        setIsOpenToast(true)
-      })
-      .finally(() => {
-        setIsLoadingAfterChangeVariant(false)
-      })
+    //     scrollToElement('loan-calculator-result')
+    //     // scrollToResult()
+    //   })
+    //   .catch((error: any) => {
+    //     if (error?.response?.data?.message) {
+    //       setToastMessage(`${error?.response?.data?.message}`)
+    //     } else {
+    //       setToastMessage(
+    //         'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+    //       )
+    //     }
+    //     setIsOpenToast(true)
+    //   })
+    //   .finally(() => {
+    //     setIsLoadingAfterChangeVariant(false)
+    //   })
   }
 
   useEffect(() => {
@@ -2076,32 +2073,36 @@ export function LoanCalculatorPageV2() {
           !isLoadingInsuranceAndPromo &&
           isDataSubmitted ? (
             <>
-              <CalculationResult
-                handleRedirectToWhatsapp={handleRedirectToWhatsapp}
-                data={calculationResult}
-                selectedLoan={selectedLoan}
-                setSelectedLoan={setSelectedLoan}
-                angsuranType={forms.paymentOption}
-                isTooltipOpen={isTooltipOpen}
-                isQualificationModalOpen={isQualificationModalOpen}
-                closeTooltip={handleTooltipClose}
-                handleClickButtonQualification={handleClickButtonQualification}
-                formData={forms}
-                insuranceAndPromoForAllTenure={insuranceAndPromoForAllTenure}
-                setInsuranceAndPromoForAllTenure={
-                  setInsuranceAndPromoForAllTenure
-                }
-                calculationApiPayload={calculationApiPayload}
-                setFinalLoan={setFinalLoan}
-                pageOrigination={getPageOriginationForCountlyTracker()}
-                onClickResultItemUpperInfoSection={() =>
-                  onClickResultItemUpperInfoSection()
-                }
-                carVariantList={carVariantList}
-                handleChangeVariants={handleChangeVariantOnCalculationResult}
-                onChangeInformation={onChangeInformation}
-                isV2={true}
-              />
+              <div id="loan-calculator-result">
+                <CalculationResult
+                  handleRedirectToWhatsapp={handleRedirectToWhatsapp}
+                  data={calculationResult}
+                  selectedLoan={selectedLoan}
+                  setSelectedLoan={setSelectedLoan}
+                  angsuranType={forms.paymentOption}
+                  isTooltipOpen={isTooltipOpen}
+                  isQualificationModalOpen={isQualificationModalOpen}
+                  closeTooltip={handleTooltipClose}
+                  handleClickButtonQualification={
+                    handleClickButtonQualification
+                  }
+                  formData={forms}
+                  insuranceAndPromoForAllTenure={insuranceAndPromoForAllTenure}
+                  setInsuranceAndPromoForAllTenure={
+                    setInsuranceAndPromoForAllTenure
+                  }
+                  calculationApiPayload={calculationApiPayload}
+                  setFinalLoan={setFinalLoan}
+                  pageOrigination={getPageOriginationForCountlyTracker()}
+                  onClickResultItemUpperInfoSection={() =>
+                    onClickResultItemUpperInfoSection()
+                  }
+                  carVariantList={carVariantList}
+                  handleChangeVariants={handleChangeVariantOnCalculationResult}
+                  onChangeInformation={onChangeInformation}
+                  isV2
+                />
+              </div>
               {carRecommendations.length > 0 && (
                 <CarRecommendations
                   carRecommendationList={carRecommendations}
@@ -2166,6 +2167,11 @@ Kemampuan Finansialmu"
             setIsOpenEducationalDpPopup(false)
             setIsOpenEducationalPaymentTypePopup(false)
           }}
+        />
+        <Toast
+          width={343}
+          text={'DP telah disesuaikan dengan varian mobil pilihan kamu.'}
+          open={false}
         />
         <PopupResultRecommended
           open={isOpenPopupRecommended}

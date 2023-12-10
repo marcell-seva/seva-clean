@@ -17,6 +17,15 @@
     height: 37.3px;
   }
 }
+.title {
+  font-family: var(--kanyon);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  color: #404040;
+  margin-bottom: 16px;
+}
 .wrapperCard {
   width: 100%;
 }
@@ -25,6 +34,11 @@
   display: flex;
   gap: 16px;
   width: 100%;
+}
+.wrapperText {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
 }
 .textCarModel {
   font-family: var(--open-sans-bold);

@@ -3,9 +3,7 @@ import styles from '../../../styles/components/organisms/calculationResultSkelet
 import { Button, IconWhatsapp, Skeleton } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import Image from 'next/image'
-
-const LogoAcc = '/revamp/icon/logo-acc.webp'
-const LogoTaf = '/revamp/icon/logo-taf.webp'
+import { LogoAcc, LogoTaf } from '../calculationResult'
 
 const Shimmer = '/revamp/illustration/placeholder.gif'
 

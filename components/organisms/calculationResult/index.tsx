@@ -35,8 +35,8 @@ import clsx from 'clsx'
 import CardVariantOptions from '../cardVariantOptions'
 import { ModelVariant } from 'utils/types/carVariant'
 
-const LogoAcc = '/revamp/icon/logo-acc.webp'
-const LogoTaf = '/revamp/icon/logo-taf.webp'
+export const LogoAcc = '/revamp/icon/logo-acc.webp'
+export const LogoTaf = '/revamp/icon/logo-taf.webp'
 
 interface Props {
   data: SpecialRateListWithPromoType[]
@@ -60,7 +60,7 @@ interface Props {
   isPartnership?: boolean
   onClickResultItemUpperInfoSection?: () => void
   isV2: boolean
-  handleChangeVariants: (name: string, value: any) => void
+  handleChangeVariants?: (name: string, value: any) => void
   carVariantList?: ModelVariant[]
   onShowDropdown?: () => void
   onChangeInformation?: () => void
@@ -89,7 +89,6 @@ export const CalculationResult = ({
   onShowDropdown,
   onChangeInformation,
 }: Props) => {
-  console.log('asdf', isV2)
   const [state, setState] = useState<LoanCalculatorInsuranceAndPromoType[]>(
     insuranceAndPromoForAllTenure,
   ) // assume this state as Context, mind about re-render
@@ -193,6 +192,15 @@ export const CalculationResult = ({
     })
   }
 
+  const resultRef = useRef<null | HTMLDivElement>(null)
+  const scrollToSectionResult = () => {
+    resultRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end',
+      inline: 'end',
+    })
+  }
+
   const trackCountlyOnClickUnderstandTooltip = () => {
     trackEventCountly(
       CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_KUALIFIKASI_KREDIT_COACHMARK_CLICK,
@@ -285,7 +293,10 @@ export const CalculationResult = ({
       tdpBeforePromo: selectPromo[0].tdpBeforePromo,
     })
   }
-
+  const handleScrollAfterChangeVariant = (name: string, value: any) => {
+    handleChangeVariants && handleChangeVariants(name, value)
+    scrollToSectionResult()
+  }
   const renderLogoFinco = () => {
     return (
       <div className={styles.logoFincoWrapper}>
@@ -427,7 +438,7 @@ export const CalculationResult = ({
       ) : (
         <CardVariantOptions
           selectedModel={formData?.model?.modelName || ''}
-          handleChange={handleChangeVariants}
+          handleChange={handleScrollAfterChangeVariant}
           name="variant"
           carVariantList={carVariantList || []}
           value={formData.variant}

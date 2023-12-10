@@ -31,6 +31,7 @@ const CardVariantOptions = ({
   isError = false,
   carModelImage,
   cityName,
+  onChangeInformation,
 }: CardVariantOptionsProps) => {
   return (
     <div className={styles.container}>
@@ -52,9 +53,11 @@ const CardVariantOptions = ({
               isError={isError}
             />
           </div>
-          <span className={styles.textChangeDP}>
-            Ubah DP atau Informasi Lainnya
-          </span>
+          <div className={styles.wrapperText} onClick={onChangeInformation}>
+            <span className={styles.textChangeDP}>
+              Ubah DP atau Informasi Lainnya
+            </span>
+          </div>
         </div>
       </div>
     </div>
