@@ -4,6 +4,7 @@ import {
   CreditCarCalculation,
   FinalLoan,
   FormLCState,
+  InsuranceDataUsedCar,
   LoanCalculatorIncludePromoPayloadType,
   LoanCalculatorInsuranceAndPromoType,
   SelectedCalculateLoanUsedCar,
@@ -29,6 +30,7 @@ import {
 import Image from 'next/image'
 import UsedCarBottomSheet from '../usedCarBottomSheet'
 import { InsuranceTooltip } from '../insuranceTooltip'
+import { assuranceOptionsUsedCar } from 'utils/config/funnel.config'
 
 const LogoAcc = '/revamp/icon/logo-acc.webp'
 const LogoTaf = '/revamp/icon/logo-taf.webp'
@@ -70,7 +72,9 @@ export const CalculationUsedCarResult = ({
   scrollToLeads,
   setCalculationResult,
 }: Props) => {
-  const [state, setState] = useState<SelectedCalculateLoanUsedCar[]>(data) // assume this state as Context, mind about re-render
+  const [state, setState] = useState<InsuranceDataUsedCar[]>(
+    assuranceOptionsUsedCar,
+  ) // assume this state as Context, mind about re-render
 
   const [tenureForPopUp, setTenureForPopUp] = useState(data[0].tenor)
   const [openPromo, setOpenPromo] = useState(false)
@@ -271,6 +275,10 @@ export const CalculationUsedCarResult = ({
           onClose={() => setOpenPromo(false)}
           selectedTenure={tenureForPopUp}
           calculationApiPayload={calculationApiPayload}
+          promoInsuranceReal={state}
+          setPromoInsuranceReal={(value: InsuranceDataUsedCar[]) => {
+            setState(value)
+          }}
           onOpenInsuranceTooltip={() => {
             setOpenPromo(false)
             setTimeout(() => {

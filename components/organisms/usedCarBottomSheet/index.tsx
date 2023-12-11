@@ -33,6 +33,8 @@ interface PromoProps extends Omit<BottomSheetProps, 'children'> {
   onClose: () => void
   selectedTenure: number
   calculationApiPayload?: CreditCarCalculation
+  promoInsuranceReal: InsuranceDataUsedCar[]
+  setPromoInsuranceReal: (value: InsuranceDataUsedCar[]) => void
   onOpenInsuranceTooltip: () => void
   pageOrigination?: string
   isPartnership?: boolean
@@ -49,11 +51,12 @@ const UsedCarBottomSheet = ({
   isPartnership = false,
   data,
   setCalculationResult,
+  promoInsuranceReal,
+  setPromoInsuranceReal,
   ...props
 }: PromoProps) => {
-  const [promoInsuranceTemp, setPromoInsuranceTemp] = useState(
-    assuranceOptionsUsedCar,
-  )
+  const [promoInsuranceTemp, setPromoInsuranceTemp] =
+    useState(promoInsuranceReal)
   const indexForSelectedTenure = data.findIndex(
     (obj: SelectedCalculateLoanUsedCar) => obj.tenor === selectedTenure,
   )
@@ -93,6 +96,7 @@ const UsedCarBottomSheet = ({
       LocalStorageKey.SelectablePromo,
       JSON.stringify(promoInsuranceTemp[indexForSelectedTenure]),
     )
+    setPromoInsuranceReal(promoInsuranceTemp)
     onClose()
   }
 
@@ -100,7 +104,7 @@ const UsedCarBottomSheet = ({
     <BottomSheet
       title={`Tenor ${selectedTenure} Tahun`}
       onDismiss={() => {
-        setPromoInsuranceTemp(assuranceOptionsUsedCar)
+        setPromoInsuranceTemp(promoInsuranceReal)
         setTempFinal({
           tenor: selectedTenure,
           totalTDP: 0,
