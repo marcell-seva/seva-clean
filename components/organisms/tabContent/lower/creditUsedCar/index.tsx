@@ -964,7 +964,7 @@ export const CreditUsedCarTab = () => {
   }
 
   const validateFormFields = () => {
-    setIsValidatingEmptyField(true)
+    setIsValidatingEmptyField(false)
 
     if (chosenAssurance.label === '') {
       scrollToElement('loan-calculator-form-age')
