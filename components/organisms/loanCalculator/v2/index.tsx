@@ -35,7 +35,10 @@ import {
 import { loanCalculatorDefaultUrl } from 'utils/helpers/routes'
 import { defaultCity, getCity, saveCity } from 'utils/hooks/useGetCity'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
+import {
+  useSessionStorage,
+  useSessionStorageWithEncryption,
+} from 'utils/hooks/useSessionStorage/useSessionStorage'
 import {
   generateAllBestPromoList,
   getInstallmentAffectedByPromo,
@@ -193,6 +196,7 @@ export function LoanCalculatorPageV2() {
     useState<LoanCalculatorInsuranceAndPromoType[]>([])
   const [isLoadingInsuranceAndPromo, setIsLoadingInsuranceAndPromo] =
     useState(false)
+
   const [isUserChooseVariantDropdown, setIsUserChooseVariantDropdown] =
     useState(false)
   const [isSelectPassengerCar, setIsSelectPassengerCar] = useState(false)
@@ -259,7 +263,13 @@ export function LoanCalculatorPageV2() {
   }
 
   const getAutofilledDownPayment = () => {
-    if (storedFilter?.downPaymentAmount) {
+    if (kkForm?.downPaymentAmount) {
+      if (kkForm.downPaymentAmount < finalMinInputDp)
+        return String(finalMinInputDp)
+      if (kkForm.downPaymentAmount > finalMaxInputDp)
+        return String(finalMaxInputDp)
+      return kkForm?.downPaymentAmount.toString()
+    } else if (storedFilter?.downPaymentAmount) {
       if (storedFilter.downPaymentAmount < finalMinInputDp)
         return String(finalMinInputDp)
       if (storedFilter.downPaymentAmount > finalMaxInputDp)
@@ -1143,7 +1153,7 @@ export function LoanCalculatorPageV2() {
 
     setIsLoadingCalculation(true)
 
-    const dpInputRangeValidity = await validateDpInputRange()
+    const dpInputRangeValidity = validateDpInputRange()
     if (!dpInputRangeValidity) {
       setIsLoadingCalculation(false)
       return

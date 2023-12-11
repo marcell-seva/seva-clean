@@ -8,8 +8,11 @@ import {
 } from 'utils/types/utils'
 import clsx from 'clsx'
 import elementId from 'helpers/elementIds'
-import { SessionStorageKey } from 'utils/enum'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { getLocalStorage } from 'utils/handler/localStorage'
+import { FinancialQuery } from 'utils/types/props'
 
 interface DpFormProps {
   label: string
@@ -75,14 +78,25 @@ const DpForm: React.FC<DpFormProps> = ({
   const kkForm: FormLCState | null = getSessionStorage(
     SessionStorageKey.KalkulatorKreditForm,
   )
+  const financialData: FinancialQuery | null = getLocalStorage(
+    LocalStorageKey.FinancialData,
+  )
 
   useEffect(() => {
     setIsDpTooLow(false)
     setIsDpExceedLimit(false)
     if (isAutofillValueFromCreditQualificationData) {
-      const initialDpValue = kkForm?.downPaymentAmount
+      const dpValue = financialData?.downPaymentAmount
+        ? Number(financialData.downPaymentAmount)
+        : kkForm?.downPaymentAmount
         ? parseInt(kkForm?.downPaymentAmount)
         : 0
+      const initialDpValue =
+        finalMinInputDp > dpValue
+          ? finalMinInputDp
+          : finalMaxInputDp < dpValue
+          ? finalMaxInputDp
+          : dpValue
       const carOtrFromStorage = parseInt(
         kkForm?.variant?.otr.replaceAll('Rp', '').replaceAll('.', '') ?? '0',
       )
@@ -106,7 +120,7 @@ const DpForm: React.FC<DpFormProps> = ({
       )
       handleChange(name, initialDpValue)
     }
-  }, [carPriceMinusDiscount])
+  }, [carPriceMinusDiscount, finalMaxInputDp, finalMinInputDp])
 
   const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputtedValue = event.target.value

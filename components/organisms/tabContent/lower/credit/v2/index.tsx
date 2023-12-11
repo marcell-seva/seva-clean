@@ -55,7 +55,10 @@ import IncomeForm from 'components/molecules/credit/income'
 import DpForm from 'components/molecules/credit/dp'
 import { CicilOptionForm } from 'components/molecules/credit/cicil'
 import { FormAgeCredit } from 'components/molecules/credit/age'
-import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
+import {
+  useSessionStorage,
+  useSessionStorageWithEncryption,
+} from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import {
   CarRecommendation,
@@ -192,6 +195,7 @@ export const CreditTabV2 = () => {
     LocalStorageKey.KalkulatorKreditForm,
     null,
   )
+
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
   const [isDisableCtaCalculate, setIsDisableCtaCalculate] = useState(true)
   const { financialQuery, patchFinancialQuery } = useFinancialQueryData()
@@ -255,7 +259,6 @@ export const CreditTabV2 = () => {
     LocalStorageKey.referralTemanSeva,
   )
   const [isUserHasReffcode, setIsUserHasReffcode] = useState(false)
-  const [identifyInitDp, setIdentifiyInitDp] = useState(false)
   const [isOpenToast, setIsOpenToast] = useState(false)
   const [finalLoan, setFinalLoan] = useState<FinalLoan>({
     selectedInsurance: {},
