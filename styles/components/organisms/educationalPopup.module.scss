@@ -1,23 +1,11 @@
 @import '../../abstract/colors';
 @import '../../abstract/mixins';
 
-.popupHeader {
-  height: 550px;
-  padding: 0px 24px;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #{$shades-grey-25};
-    border-radius: 20px;
-    right: -20px;
+.bottomSheetContainer {
+  [data-rsbs-header] {
+    padding-top: 27px;
   }
 }
-
 .popupSubHeader {
   flex-direction: row;
   align-items: center;
@@ -31,25 +19,19 @@
   display: flex;
   justify-content: space-between;
 }
-.textPromoBanner {
-  @extend .openSans;
-  margin-top: -34px;
-  margin-left: 16px;
-  color: #ffffff !important;
-}
 .kanyonMedium {
   font-family: var(--kanyon);
   font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 20px;
+  line-height: 28px;
   color: #13131b;
 }
 
 .kanyonSemiBold {
   font-family: var(--kanyon-medium);
   font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 16px;
+  line-height: 24px;
   color: #000000;
 }
 .openSans {
@@ -63,55 +45,13 @@
     font-weight: 600;
   }
 }
-.bannerPromo {
-  min-height: 165px;
-}
-.imagePromoSpacing {
-  margin-top: 16px;
-  margin-bottom: 24px;
-  width: 100%;
-}
-.spacingChevronIcon {
-  margin-left: 9px;
-}
-.pdpLowerSection {
-  background: #f5f6f6;
-}
-.promoBannerSmall {
-  border-radius: 8px;
-}
-.promoBanner {
-  position: relative !important;
-  object-fit: cover;
-  width: 100%;
-  border-radius: 8px;
-}
-.containerPromoPopup {
-  height: 550px;
-  display: flex;
-  flex-direction: column;
-  -webkit-overflow-scrolling: touch;
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #{$shades-grey-25};
-    border-radius: 20px;
-    right: -20px;
-  }
-}
 
 .container {
-  height: 526px;
   display: flex;
   flex-direction: column;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
 
-  padding-bottom: 20px;
-  padding-top: 8px;
   &::-webkit-scrollbar {
     width: 4px;
   }
@@ -122,7 +62,10 @@
     right: -20px;
   }
 }
-
+.containerDP {
+  @extend .container;
+  height: auto !important;
+}
 .contentPromo {
   display: flex;
   flex-direction: column;
@@ -130,7 +73,7 @@
 
 .bottomSheetSmall [data-rsbs-overlay] {
   @include centeredWithMaxWidth;
-  height: 394px;
+  height: 433px;
 }
 
 .bottomSheetSmall [data-rsbs-backdrop] {
@@ -138,6 +81,7 @@
 }
 .bottomSheet [data-rsbs-overlay] {
   @include centeredWithMaxWidth;
+  height: 760px;
 }
 
 .bottomSheet [data-rsbs-backdrop] {
@@ -150,6 +94,7 @@
   padding: 16px;
   display: flex;
   gap: 16px;
+  align-items: center;
 }
 .informationTitleText {
   font-family: var(--open-sans-bold);
@@ -175,7 +120,7 @@
   margin-bottom: 32px;
 }
 .wrapper {
-  padding: 0px 24px;
+  padding: 0px 16px;
 }
 .content {
   margin-top: 25px;
@@ -184,9 +129,12 @@
   padding: 10px 0px;
 }
 .spacingText {
-  margin-bottom: 25px;
+  margin-bottom: 32px;
 }
-.wrapperButton {
+.wrapperButtonCta {
+  margin: 32px 24px 24px 24px;
+}
+.buttonCta {
   display: flex;
   align-items: center;
   justify-content: center;

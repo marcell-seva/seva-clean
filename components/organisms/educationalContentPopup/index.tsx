@@ -23,7 +23,7 @@ const EducationalContentPopup = ({
     onButtonClick && onButtonClick()
   }
   const EducationalDP = (): JSX.Element => (
-    <div className={styles.container}>
+    <div className={styles.containerDP}>
       <div className={styles.wrapper}>
         <div className={styles.popupSubHeader}>
           <p className={styles.kanyonMedium}>Down Payment (DP)</p>
@@ -43,16 +43,15 @@ const EducationalContentPopup = ({
             uang muka yang harus dibayar di awal pembelian mobil. Besarannya
             mencakup penjumlahan dari beberapa biaya, seperti DP, biaya
             administrasi, asuransi, dan cicilan pertama.
-            <br />
-            <br />
           </p>
-          <Button
-            version={ButtonVersion.PrimaryDarkBlue}
-            onClick={onClickClose}
-            size={ButtonSize.Big}
-          >
-            Oke, Saya Mengerti
-          </Button>
+        </div>
+      </div>
+      <div className={styles.wrapperButtonCta}>
+        <div
+          className={`${stylesButton.big} ${stylesButton.primaryDarkBlue} ${styles.buttonCta}`} // use div because always scroll to bottom
+          onClick={onClickClose}
+        >
+          Oke, Saya Mengerti
         </div>
       </div>
     </div>
@@ -72,9 +71,9 @@ const EducationalContentPopup = ({
             <br />
             <div className={styles.wrapperText}>
               Dalam skema pembayaran ini, cicilan pertama dibayarkan bersama DP
-              sehingga Total DP menjadi lebih tinggi, namun
-              <span>jumlah tenor</span>
-              pinjamanmu akan <span>berkurang satu kali.</span>
+              sehingga Total DP menjadi lebih tinggi, namun{' '}
+              <span>jumlah tenor </span> pinjamanmu akan{' '}
+              <span>berkurang satu kali.</span>
               <br />
               <br />
               Contoh: Kamu memilih <span> Bayar di Muka </span>dengan tenor 36
@@ -87,13 +86,14 @@ const EducationalContentPopup = ({
               <div>
                 <p className={styles.informationTitleText}>Tahukah Kamu?</p>
                 <p className={styles.informationTitleDesciption}>
-                  Cicilan untuk Bayar di Muka (ADDM) lebih rendah, lho!
+                  Cicilan untuk Bayar di Muka (ADDM) <span>lebih rendah</span> ,
+                  lho!
                 </p>
               </div>
             </div>
           </div>
           <div className={styles.line} />
-          <div className={styles.wrapper} style={{ marginBottom: '32px' }}>
+          <div className={styles.wrapper}>
             <b className={styles.kanyonSemiBold}>Bayar di Belakang (ADDB)</b>
             <br />
             <div className={styles.wrapperText}>
@@ -112,19 +112,20 @@ const EducationalContentPopup = ({
               <div>
                 <p className={styles.informationTitleText}>Tahukah Kamu?</p>
                 <p className={styles.informationTitleDesciption}>
-                  Cicilan untuk Bayar di Muka (ADDM) lebih rendah, lho!
+                  Total DP untuk Bayar di Belakang (ADDB){' '}
+                  <span> lebih rendah</span>, lho!
                 </p>
               </div>
             </div>
           </div>
         </p>
-        <div className={styles.wrapper}>
-          <div
-            className={`${stylesButton.big} ${stylesButton.primaryDarkBlue} ${styles.wrapperButton}`} // use div because always scroll to bottom
-            onClick={onClickClose}
-          >
-            Oke, Saya Mengerti
-          </div>
+      </div>
+      <div className={styles.wrapperButtonCta}>
+        <div
+          className={`${stylesButton.big} ${stylesButton.primaryDarkBlue} ${styles.buttonCta}`} // use div because always scroll to bottom
+          onClick={onClickClose}
+        >
+          Oke, Saya Mengerti
         </div>
       </div>
     </div>
@@ -149,6 +150,7 @@ const EducationalContentPopup = ({
         className={clsx({
           [styles.bottomSheet]: educationalName !== 'Down Payment (DP)',
           [styles.bottomSheetSmall]: educationalName === 'Down Payment (DP)',
+          [styles.bottomSheetContainer]: true,
         })}
         // scrollLocking={!isIphone}
       >
