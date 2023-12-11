@@ -163,7 +163,8 @@ export const FormSearchModel = ({
                   ? item.brandName.toUpperCase()
                   : item.brandName.toUpperCase() === 'MERCEDEZ-BENZ'
                   ? 'Mercedez-Benz'
-                  : capitalizeFirstLetter(item.brandName)}{' '}
+                  : item.brandName.charAt(0).toUpperCase() +
+                    item.brandName.slice(1)}{' '}
                 {item.modelName}
               </Option>
             ))}

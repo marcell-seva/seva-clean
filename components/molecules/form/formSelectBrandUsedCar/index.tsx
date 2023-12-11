@@ -11,6 +11,10 @@ const LogoDaihatsu = '/revamp/icon/logo-daihatsu.webp'
 const Isuzu = '/revamp/icon/logo-isuzu.webp'
 const LogoBmw = '/revamp/icon/logo-bmw.webp'
 const Peugeot = '/revamp/icon/logo-peugeot.webp'
+const Honda = '/revamp/icon/honda.webp'
+const Hyundai = '/revamp/icon/hyundai.webp'
+const Suzuki = '/revamp/icon/suzuki.webp'
+const Mitsubishi = '/revamp/icon/mitsubishi.webp'
 
 export interface FilterMobileProps {
   setIsCheckedBrand: any
@@ -55,6 +59,10 @@ export const FormSelectBrandUsedCar = ({
     Isuzu: Isuzu,
     BMW: LogoBmw,
     Peugeot: Peugeot,
+    Honda: Honda,
+    Hyundai: Hyundai,
+    Mitsubishi: Mitsubishi,
+    Suzuki: Suzuki,
   }
   const sizeLogo = {
     Toyota: '21,18',
@@ -62,6 +70,10 @@ export const FormSelectBrandUsedCar = ({
     Isuzu: '21.6,7.2',
     BMW: '19.2,19.2',
     Peugeot: '17.49,19.2',
+    Honda: '27,14.25',
+    Hyundai: '18,18',
+    Mitsubishi: '26,15',
+    Suzuki: '21,14.25',
   }
   const carList: CarButtonProps[] = brandList.map((obj: BrandList) => {
     return {

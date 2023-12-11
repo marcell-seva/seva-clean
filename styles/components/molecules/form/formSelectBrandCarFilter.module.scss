@@ -7,7 +7,8 @@
 }
 
 .wrapperContainer {
-  display: flex;
+  display: grid;
+  grid-template-columns: 48.21% 48.21%;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 16px;
@@ -22,7 +23,7 @@
   align-items: flex-start;
   padding: 12px 16px;
   gap: 8px;
-  width: 155.5px;
+  // width: 155.5px;
   height: 48px;
   //background: #F3F9FD;
   //border: 2px solid #51A8DB;
@@ -30,93 +31,10 @@
   border: 1px solid #{$shades-grey-10};
 
   border-radius: 8px;
-  flex: none;
+  flex: 1;
+  // align-self: stretch;
   order: 0;
   flex-grow: 1;
-}
-
-@media (max-width: 375px) {
-  .boxFilter {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 12px 16px;
-    gap: 8px;
-    // max-width: 105.5px;
-    height: 48px;
-    //background: #F3F9FD;
-    //border: 2px solid #51A8DB;
-    background: white;
-    border: 1px solid #{$shades-grey-10};
-
-    border-radius: 8px;
-    flex: 1;
-  }
-
-  .boxOnclickFilter {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 11px 16px;
-    gap: 8px;
-    // max-width: 105.5px;
-    height: 48px;
-    background: #{$shades-sky-blue-5};
-    border: 2px solid #{$secondary-sky-blue};
-
-    border-radius: 8px;
-    flex-grow: 1;
-  }
-}
-
-@media (max-width: 375px) {
-  .wrapperBox {
-    justify-content: center;
-  }
-
-  .box {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 12px 16px;
-    gap: 8px;
-    max-width: 105.5px;
-    height: 48px;
-    //background: #F3F9FD;
-    //border: 2px solid #51A8DB;
-    background: white;
-    border: 1px solid #{$shades-grey-10};
-
-    border-radius: 8px;
-    flex: none;
-    order: 0;
-    flex-grow: 1;
-  }
-
-  .boxOnclick {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 11px 16px;
-    gap: 8px;
-    max-width: 105.5px;
-    height: 48px;
-    background: #{$shades-sky-blue-5};
-    border: 2px solid #{$secondary-sky-blue};
-
-    border-radius: 8px;
-    flex: none;
-    order: 0;
-    flex-grow: 1;
-  }
 }
 
 .boxOnclickFilter {
@@ -127,13 +45,13 @@
   align-items: flex-start;
   padding: 11px 16px;
   gap: 8px;
-  width: 155.5px;
+  // width: 155.5px;
   height: 48px;
   background: #{$shades-sky-blue-5};
   border: 2px solid #{$secondary-sky-blue};
 
   border-radius: 8px;
-  flex: none;
+  flex: 1;
   order: 0;
   flex-grow: 1;
 }

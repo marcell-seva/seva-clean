@@ -151,6 +151,12 @@ export const getCarBrand = (brand: string | string[] | undefined) => {
     return 'Peugeot'
   } else if (String(brand).toLowerCase() === 'hyundai') {
     return 'Hyundai'
+  } else if (String(brand).toLowerCase() === 'honda') {
+    return 'Honda'
+  } else if (String(brand).toLowerCase() === 'suzuki') {
+    return 'Suzuki'
+  } else if (String(brand).toLowerCase() === 'mitsubishi') {
+    return 'Mitsubishi'
   } else {
     return 'Other'
   }

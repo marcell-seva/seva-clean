@@ -2,19 +2,7 @@ import React, { useContext, useEffect, useState, MouseEvent } from 'react'
 import styles from '/styles/components/molecules/form/formSelectBrandCarFilter.module.scss'
 import stylec from '/styles/components/molecules/searchWidget/gridOptionWidget.module.scss'
 import Space from 'antd/lib/space'
-import LogoToyota from '/public/revamp/icon/logo-toyota.webp'
-import LogoDaihatsu from '/public/revamp/icon/logo-daihatsu.webp'
-import Isuzu from '/public/revamp/icon/logo-isuzu.webp'
-import LogoBmw from '/public/revamp/icon/logo-bmw.webp'
-import Peugeot from '/public/revamp/icon/logo-peugeot.webp'
 import Image from 'next/image'
-import {
-  IconHatchback,
-  IconMPV,
-  IconSUV,
-  IconSedan,
-  IconSport,
-} from 'components/atoms/icon'
 import elementId from 'utils/helpers/trackerId'
 import { Button, Toast } from 'components/atoms'
 import {
@@ -28,6 +16,16 @@ import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
 import { CarButtonProps } from 'utils/types/context'
 import { getBrandList } from 'services/api'
+
+const LogoToyota = '/revamp/icon/logo-toyota.webp'
+const LogoDaihatsu = '/revamp/icon/logo-daihatsu.webp'
+const Isuzu = '/revamp/icon/logo-isuzu.webp'
+const LogoBmw = '/revamp/icon/logo-bmw.webp'
+const Peugeot = '/revamp/icon/logo-peugeot.webp'
+const Honda = '/revamp/icon/honda.webp'
+const Hyundai = '/revamp/icon/hyundai.webp'
+const Suzuki = '/revamp/icon/suzuki.webp'
+const Mitsubishi = '/revamp/icon/mitsubishi.webp'
 
 interface BrandList {
   makeId: number | null
@@ -60,11 +58,15 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
   }, [])
 
   const logoList = {
-    Toyota: LogoToyota,
     Daihatsu: LogoDaihatsu,
+    Toyota: LogoToyota,
     Isuzu: Isuzu,
     BMW: LogoBmw,
     Peugeot: Peugeot,
+    Honda: Honda,
+    Hyundai: Hyundai,
+    Mitsubishi: Mitsubishi,
+    Suzuki: Suzuki,
   }
   const sizeLogo = {
     Toyota: '21,18',
@@ -72,6 +74,10 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
     Isuzu: '21.6,7.2',
     BMW: '19.2,19.2',
     Peugeot: '17.49,19.2',
+    Honda: '27,14.25',
+    Hyundai: '18,18',
+    Mitsubishi: '26,15',
+    Suzuki: '21,14.25',
   }
   const carList: CarButtonProps[] = brandList.map((obj: BrandList) => {
     return {

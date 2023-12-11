@@ -18,7 +18,6 @@ import {
 } from 'components/atoms/icon'
 import { UsedCarFunnelWidget } from 'utils/types/props'
 import {
-  BrandUsedCarWidget,
   FormSearchModel,
   SelectWidgetUsedCar,
   TransmissionUsedCarWidget,
@@ -40,6 +39,13 @@ import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarCo
 
 import { HomePageDataLocalContext } from 'pages'
 import { MinMaxYear } from 'utils/types/context'
+import { capitalizeWords } from 'utils/stringUtils'
+import dynamic from 'next/dynamic'
+
+const BrandUsedCarWidget = dynamic(
+  () => import('components/molecules').then((mod) => mod.BrandUsedCarWidget),
+  { ssr: false },
+)
 
 const initEmptyDataWidget = {
   model: [],
@@ -107,6 +113,24 @@ const UsedCarSearchWidget = () => {
 
   const submit = () => {
     const { brand, minYear, maxYear, transmission, model } = funnelWidget
+    let carModel
+    const tempArray: any = []
+    carModel = dataModelUsedCar.filter((data: any) => {
+      model.map((item: string) => {
+        return data.modelName.includes(item)
+          ? tempArray.push(
+              data.brandName.toUpperCase() === 'BMW'
+                ? data.brandName.toUpperCase() + ' ' + data.modelName
+                : data.brandName.toUpperCase() === 'MERCEDEZ-BENZ'
+                ? 'Mercedez-Benz' + ' ' + data.modelName
+                : data.brandName.charAt(0).toUpperCase() +
+                  data.brandName.slice(1) +
+                  ' ' +
+                  data.modelName,
+            )
+          : ''
+      })
+    })
     const urlParam = new URLSearchParams({
       ...(model && model.length > 0 && { modelName: model.join(',') }),
       ...(brand && brand.length > 0 && { brand: brand.join(',') }),
