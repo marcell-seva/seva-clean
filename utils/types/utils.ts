@@ -906,6 +906,24 @@ export interface SelectedCalculateLoanUsedCar {
   totalInstallment: string
 }
 
+export interface InsuranceOptionUsedCar {
+  value: string
+  label: string
+  tenureAR: number
+  tenureTLO: number
+}
+
+export interface InsuranceDataUsedCar {
+  tenor: number
+  allInsurenceList: InsuranceOptionUsedCar[]
+  selectedInsurance: {
+    value: string
+    label: string
+    tenureAR: number
+    tenureTLO: number
+  }
+}
+
 export interface LoanCalculatorInsuranceAndPromoType {
   tenure: number
   allInsuranceList: Option<string>[]

@@ -222,8 +222,7 @@ export const CreditUsedCarTab = () => {
   >([])
 
   const { showAnnouncementBox } = useAnnouncementBoxContext()
-
-  const [articles, setArticles] = React.useState<Article[]>([])
+  const [hidden, setHidden] = useState(false)
   const [selectedLoan, setSelectedLoan] =
     useState<SelectedCalculateLoanUsedCar | null>(null)
   const [storedFilter] = useLocalStorage<null>(
@@ -245,23 +244,21 @@ export const CreditUsedCarTab = () => {
     useState(false)
   const [isSelectPassengerCar, setIsSelectPassengerCar] = useState(false)
   const [calculationApiPayload, setCalculationApiPayload] =
-    useState<LoanCalculatorIncludePromoPayloadType>()
+    useState<CreditCarCalculation>()
 
   const referralCodeLocalStorage = getLocalStorage<string>(
     LocalStorageKey.referralTemanSeva,
   )
   const [isUserHasReffcode, setIsUserHasReffcode] = useState(false)
   const [isOpenToast, setIsOpenToast] = useState(false)
-  const [finalLoan, setFinalLoan] = useState<FinalLoan>({
-    selectedInsurance: {},
-    selectedPromoFinal: [],
-    tppFinal: 0,
-    tdpBeforePromo: 0,
-    installmentFinal: 0,
-    interestRateFinal: 0,
-    interestRateBeforePromo: 0,
-    installmentBeforePromo: 0,
-  })
+  // const [finalLoan, setFinalLoan] = useState<CreditCarCalculation>({
+  //   priceValue: 0,
+  // presentaseDP: 0,
+  // DP: 0,
+  // tenureAR: 0,
+  // tenureTLO: 0,
+  // nik: 0,
+  // })
   const [toastMessage, setToastMessage] = useState(
     'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
   )
@@ -357,9 +354,12 @@ export const CreditUsedCarTab = () => {
   }
 
   const defaultValueCalculcator = async () => {
+    const priceValue = parseInt(usedCarModelDetailsRes.priceValue.split('.')[0])
+    const initialDpValue = Math.round((priceValue * 20) / 100)
+
     const payloadUsedCar: CreditCarCalculation = {
       nik: usedCarModelDetailsRes.nik,
-      DP: dpValue,
+      DP: dpValue === 0 ? initialDpValue : dpValue,
       priceValue: Number(usedCarModelDetailsRes.priceValue.split('.')[0]),
       tenureAR: 0,
       tenureTLO: 60,
@@ -376,12 +376,11 @@ export const CreditUsedCarTab = () => {
     getCarCreditsSk('', { params: queryParam })
       .then((response) => {
         const result = response.data.reverse()
-        console.log(result)
-
         const filteredResult = getFilteredCalculationResults(result)
         setDefaultCalculationResult(filteredResult)
         const selectedLoanInitialValue = filteredResult[0] ?? null
         setSelectedLoan(selectedLoanInitialValue)
+        setCalculationApiPayload(payloadUsedCar)
         scrollToResult()
       })
       .catch((error: any) => {
@@ -505,6 +504,18 @@ export const CreditUsedCarTab = () => {
 
     return () => clearTimeout(timeoutCountlyTracker)
   }, [])
+
+  useEffect(() => {
+    if (calculationResult.length) {
+      setIsDataSubmitted(true)
+    }
+  }, [calculationResult])
+
+  useEffect(() => {
+    if (dpPercentage !== 20) {
+      setHidden(true)
+    }
+  }, [dpPercentage])
 
   React.useEffect(() => {
     setForms({
@@ -926,6 +937,7 @@ export const CreditUsedCarTab = () => {
         // // select loan with the longest tenure as default
         const selectedLoanInitialValue = filteredResult[0] ?? null
         setSelectedLoan(selectedLoanInitialValue)
+        setCalculationApiPayload(payloadUsedCar)
         saveDefaultTenureCarForLoginPageView(
           selectedLoanInitialValue.tenure,
           selectedLoanInitialValue.loanRank,
@@ -1186,9 +1198,45 @@ export const CreditUsedCarTab = () => {
                 setInsuranceAndPromoForAllTenure
               }
               calculationApiPayload={calculationApiPayload}
-              setFinalLoan={setFinalLoan}
               pageOrigination={'PDP Credit Tab'}
               scrollToLeads={scrollToLeads}
+              setCalculationResult={setCalculationResult}
+            />
+          </div>
+          <div
+            ref={toLeads}
+            className={
+              showAnnouncementBox
+                ? styles.reference
+                : styles.referenceWithoutAnnounce
+            }
+          ></div>
+          <LeadsFormUsedCar
+            selectedLoan={selectedLoan}
+            chosenAssurance={chosenAssurance}
+          />
+        </>
+      ) : defaultCalculcationResult.length && !hidden ? (
+        <>
+          <div className={styles.formCardCalculationResult}>
+            <CalculationUsedCarResult
+              data={defaultCalculcationResult}
+              selectedLoan={selectedLoan}
+              setSelectedLoan={setSelectedLoan}
+              angsuranType={forms.paymentOption}
+              isTooltipOpen={isTooltipOpen}
+              isQualificationModalOpen={isAssuranceModalOpen}
+              closeTooltip={handleTooltipClose}
+              handleClickButtonQualification={handleClickButtonQualification}
+              formData={forms}
+              insuranceAndPromoForAllTenure={insuranceAndPromoForAllTenure}
+              setInsuranceAndPromoForAllTenure={
+                setInsuranceAndPromoForAllTenure
+              }
+              calculationApiPayload={calculationApiPayload}
+              pageOrigination={'PDP Credit Tab'}
+              scrollToLeads={scrollToLeads}
+              setCalculationResult={setCalculationResult}
             />
           </div>
           <div
@@ -1205,43 +1253,7 @@ export const CreditUsedCarTab = () => {
           />
         </>
       ) : (
-        defaultCalculcationResult.length && (
-          <>
-            <div className={styles.formCardCalculationResult}>
-              <CalculationUsedCarResult
-                data={defaultCalculcationResult}
-                selectedLoan={selectedLoan}
-                setSelectedLoan={setSelectedLoan}
-                angsuranType={forms.paymentOption}
-                isTooltipOpen={isTooltipOpen}
-                isQualificationModalOpen={isAssuranceModalOpen}
-                closeTooltip={handleTooltipClose}
-                handleClickButtonQualification={handleClickButtonQualification}
-                formData={forms}
-                insuranceAndPromoForAllTenure={insuranceAndPromoForAllTenure}
-                setInsuranceAndPromoForAllTenure={
-                  setInsuranceAndPromoForAllTenure
-                }
-                calculationApiPayload={calculationApiPayload}
-                setFinalLoan={setFinalLoan}
-                pageOrigination={'PDP Credit Tab'}
-                scrollToLeads={scrollToLeads}
-              />
-            </div>
-            <div
-              ref={toLeads}
-              className={
-                showAnnouncementBox
-                  ? styles.reference
-                  : styles.referenceWithoutAnnounce
-              }
-            ></div>
-            <LeadsFormUsedCar
-              selectedLoan={selectedLoan}
-              chosenAssurance={chosenAssurance}
-            />
-          </>
-        )
+        <></>
       )}
 
       <div className={styles.wrapper}>

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styles from 'styles/components/organisms/calculationResult.module.scss'
 import {
+  CreditCarCalculation,
   FinalLoan,
   FormLCState,
   LoanCalculatorIncludePromoPayloadType,
@@ -26,12 +27,14 @@ import {
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import Image from 'next/image'
+import UsedCarBottomSheet from '../usedCarBottomSheet'
+import { InsuranceTooltip } from '../insuranceTooltip'
 
 const LogoAcc = '/revamp/icon/logo-acc.webp'
 const LogoTaf = '/revamp/icon/logo-taf.webp'
 
 interface Props {
-  data: SpecialRateListWithPromoType[]
+  data: SelectedCalculateLoanUsedCar[]
   selectedLoan: SelectedCalculateLoanUsedCar | null
   setSelectedLoan: (value: SelectedCalculateLoanUsedCar) => void
   angsuranType: InstallmentTypeOptions
@@ -44,11 +47,11 @@ interface Props {
   setInsuranceAndPromoForAllTenure: (
     value: LoanCalculatorInsuranceAndPromoType[],
   ) => void
-  calculationApiPayload?: LoanCalculatorIncludePromoPayloadType
+  calculationApiPayload?: CreditCarCalculation
   children?: React.ReactNode
-  setFinalLoan: (value: FinalLoan) => void
   pageOrigination?: string
   scrollToLeads: any
+  setCalculationResult: any
 }
 
 export const CalculationUsedCarResult = ({
@@ -63,15 +66,15 @@ export const CalculationUsedCarResult = ({
   insuranceAndPromoForAllTenure,
   setInsuranceAndPromoForAllTenure,
   calculationApiPayload,
-  setFinalLoan,
   pageOrigination,
   scrollToLeads,
+  setCalculationResult,
 }: Props) => {
-  const [state, setState] = useState<LoanCalculatorInsuranceAndPromoType[]>(
-    insuranceAndPromoForAllTenure,
-  ) // assume this state as Context, mind about re-render
-  const [tenureForPopUp, setTenureForPopUp] = useState(data[0].tenure)
+  const [state, setState] = useState<SelectedCalculateLoanUsedCar[]>(data) // assume this state as Context, mind about re-render
+
+  const [tenureForPopUp, setTenureForPopUp] = useState(data[0].tenor)
   const [openPromo, setOpenPromo] = useState(false)
+  const [openTooltipInsurance, setOpenTooltipInsurance] = useState(false)
   const [selectedCalculatePromo, setSelectedCalculatePromo] =
     useState<LoanCalculatorInsuranceAndPromoType | null>()
 
@@ -168,22 +171,20 @@ export const CalculationUsedCarResult = ({
     closeTooltip()
   }
 
-  const handleOpenPopup = (selectedData: SpecialRateListWithPromoType) => {
-    setTenureForPopUp(selectedData.tenure)
+  const handleOpenPopup = (selectedData: SelectedCalculateLoanUsedCar) => {
+    setTenureForPopUp(selectedData.tenor)
     setOpenPromo(true)
-    const selectPromo = state.filter((x) => x.tenure === selectedData.tenure)
-    trackCountlyOpenPromoPopup(selectedData, selectPromo[0])
-    setSelectedCalculatePromo(selectPromo[0])
-    setFinalLoan({
-      selectedInsurance: selectPromo[0].selectedInsurance,
-      selectedPromoFinal: selectPromo[0].selectedPromo,
-      tppFinal: selectPromo[0].tdpAfterPromo,
-      installmentFinal: selectPromo[0].installmentAfterPromo,
-      interestRateFinal: selectPromo[0].interestRateAfterPromo,
-      installmentBeforePromo: selectPromo[0].installmentBeforePromo,
-      interestRateBeforePromo: selectPromo[0].interestRateBeforePromo,
-      tdpBeforePromo: selectPromo[0].tdpBeforePromo,
-    })
+    // const selectPromo = state.filter((x) => x.tenor === selectedData.tenor)
+    // trackCountlyOpenPromoPopup(selectedData, selectPromo[0])
+    // setSelectedCalculatePromo(selectPromo[0])
+    // setFinalLoan({
+    //   nik: nik,
+    //   DP: selectPromo[0].totalDP,
+    //   presentaseDP: presentaseDP,
+    //   priceValue: 0,
+    //   tenureAR: 0,
+    //   tenureTLO: 0,
+    // })
   }
 
   const renderLogoFinco = () => {
@@ -262,6 +263,33 @@ export const CalculationUsedCarResult = ({
           )
         })}
       </div>
+      {selectedLoan && (
+        <UsedCarBottomSheet
+          data={data}
+          open={openPromo}
+          isPartnership={false}
+          onClose={() => setOpenPromo(false)}
+          selectedTenure={tenureForPopUp}
+          calculationApiPayload={calculationApiPayload}
+          onOpenInsuranceTooltip={() => {
+            setOpenPromo(false)
+            setTimeout(() => {
+              setOpenTooltipInsurance(true)
+            }, 700)
+          }}
+          pageOrigination={pageOrigination}
+          setCalculationResult={setCalculationResult}
+        />
+      )}
+      <InsuranceTooltip
+        open={openTooltipInsurance}
+        onClose={() => {
+          setOpenTooltipInsurance(false)
+          setTimeout(() => {
+            setOpenPromo(true)
+          }, 700)
+        }}
+      />
       {renderCtaAndDisclaimer()}
     </div>
   )

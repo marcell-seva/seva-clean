@@ -2,6 +2,7 @@ import React from 'react'
 import styles from 'styles/components/molecules/calculationUsedCarResultItem.module.scss'
 import {
   LoanCalculatorInsuranceAndPromoType,
+  SelectedCalculateLoanUsedCar,
   SpecialRateListWithPromoType,
 } from 'utils/types/utils'
 import {
@@ -18,9 +19,9 @@ import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 
 interface Props {
   data: any
-  emitOnClick: (value: SpecialRateListWithPromoType) => void
+  emitOnClick: (value: SelectedCalculateLoanUsedCar) => void
   isActive: boolean
-  onClickBottomSection: (selectedData: SpecialRateListWithPromoType) => void
+  onClickBottomSection: (selectedData: SelectedCalculateLoanUsedCar) => void
 }
 
 export const CalculationUsedCarResultItem = ({
@@ -30,6 +31,7 @@ export const CalculationUsedCarResultItem = ({
   onClickBottomSection,
 }: Props) => {
   const { currentLanguage } = useUtils()
+  console.log(data)
 
   const renderLoanRankIcon = () => {
     if (data.loanRank === LoanRank.Green) {
@@ -136,7 +138,7 @@ export const CalculationUsedCarResultItem = ({
             [styles.bottomInfo]: true,
             [styles.hideComponent]: !isActive,
           })}
-          onClick={() => {}}
+          onClick={() => onClickBottomSection(data)}
         >
           <TextButton
             rightIcon={() => (
