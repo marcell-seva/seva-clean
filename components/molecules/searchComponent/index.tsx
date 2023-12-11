@@ -136,7 +136,7 @@ export const SearchComponent = ({
   const handleDebounceFn = async (inputValue: string) => {
     const params = new URLSearchParams()
     const paramsUsed = new URLSearchParams()
-    getCity().cityCode && params.append('city', getCity().cityCode as string)
+    getCity().cityName && params.append('city', getCity().cityName as string)
     params.append('query', inputValue as string)
     paramsUsed.append('query', inputValue as string)
 
