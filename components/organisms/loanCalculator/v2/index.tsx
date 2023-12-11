@@ -1153,7 +1153,7 @@ export function LoanCalculatorPageV2() {
 
     setIsLoadingCalculation(true)
 
-    const dpInputRangeValidity = validateDpInputRange()
+    const dpInputRangeValidity = await validateDpInputRange()
     if (!dpInputRangeValidity) {
       setIsLoadingCalculation(false)
       return
