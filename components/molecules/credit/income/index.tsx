@@ -59,7 +59,7 @@ const IncomeForm = ({
   }
 
   return (
-    <div style={{ marginTop: '24px' }}>
+    <div style={{ marginTop: '16px' }}>
       <Input
         {...inputProps}
         value={formattedValue}
