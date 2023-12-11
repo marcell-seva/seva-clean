@@ -77,6 +77,7 @@ import { RefinancingLandingPageContent } from './refinancingLandingPageContent'
 import { TemanSevaPageHeader } from './temanSevaPageHeader'
 import { InternalServerErrorPageContent } from './internalServerErrorPageContent'
 import { NotFoundErrorPageContent } from './notFoundErrorPageContent'
+import EducationalContentPopupUsedCar from './educationalContentPopup/usedCar'
 
 const Exterior360ViewerTab = dynamic(
   () => import('./tabContent/upper/exterior360Viewer'),
@@ -162,4 +163,5 @@ export {
   TemanSevaPageHeader,
   InternalServerErrorPageContent,
   NotFoundErrorPageContent,
+  EducationalContentPopupUsedCar,
 }

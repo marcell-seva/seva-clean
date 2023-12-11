@@ -24,6 +24,7 @@ import {
 } from 'utils/types/models'
 import React, { useEffect, useMemo, useState, useContext, useRef } from 'react'
 import {
+  EducationalContentPopupUsedCar,
   LeadsFormSecondary,
   UsedCarRecommendations,
 } from 'components/organisms'
@@ -1293,12 +1294,7 @@ export const CreditUsedCarTab = () => {
         onCancel={() => setIsOpenToast(false)}
         closeOnToastClick
       />
-      <EducationalContentPopup
-        educationalName={
-          isOpenEducationalDpPopup
-            ? 'Down Payment (DP)'
-            : 'Pilihan Pembayaran Cicilan Pertama'
-        }
+      <EducationalContentPopupUsedCar
         isOpenBottomSheet={isOpenEducationalDpPopup}
         onButtonClick={() => {
           setIsOpenEducationalDpPopup(false)
