@@ -129,7 +129,7 @@ const UsedCarBottomSheet = ({
         pageOrigination={pageOrigination}
         setTempFinal={setTempFinal}
       />
-      <div className={styles.lineDividerWhenCarDontHavePromo} />
+      <div className={styles.lineDividerWhenCarDontHavePromoUsedCar} />
       <UsedCarBottomCalculation
         onClose={() => {
           onClickSubmit()

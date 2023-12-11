@@ -14,6 +14,19 @@
   bottom: 0;
   width: 100%;
 }
+.containerUsedCar {
+  padding: 15px 16px 40px 16px;
+  height: 165px;
+  border-radius: 6px 6px 0px 0px;
+  border: 2px solid #eef6fb;
+  background: #ffffff;
+  margin-top: 20px;
+  /* Shadow Button */
+  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.08);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
 .row {
   display: flex;
   flex-direction: row;

@@ -65,7 +65,7 @@ const UsedCarBottomCalculation = ({
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.containerUsedCar}>
       <div className={styles.row}>
         <p className={styles.labelText}>Total DP</p>
         <div className={styles.priceWrapper}>

@@ -32,7 +32,7 @@ export const InsuranceTooltip = ({
       additionalHeaderClassname={styles.bottomSheetHeader}
       {...props}
     >
-      <div style={{ height: window.innerHeight * 0.93 }}>
+      <div style={{ height: window.innerHeight * 0.76 }}>
         <div className={styles.container}>
           {tooltipInformation.map((item, index) => (
             <>
