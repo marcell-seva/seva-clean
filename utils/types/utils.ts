@@ -1221,3 +1221,40 @@ export type SearchUsedCar = {
   carName: string
   sevaUrl: string
 }
+export interface TemanSevaTransactionDataType {
+  leadId: string
+  category: string
+  carBrand: string
+  carModel: string
+  carVariant: string
+  priceOtr: number
+  loanAmount: number
+  phoneNumber: string
+  name: string
+  goodIssueTime: string
+  preApprovalCreatedAt: string
+  lmsLeadCreatedAt: string
+  spkCreatedAt: string
+  referralCode: string
+  fullName: string
+  incentiveLabel: string
+  incentive: number
+  statusLabel: string
+  statusDate: any
+  tenure: number
+  potentialIncentiveLabel: string
+  potentialIncentive: number
+}
+
+export interface WordpressPromoData {
+  author: string
+  categories: string[]
+  created_date: string
+  description: string
+  id: number
+  image_url: string
+  permalink: string
+  publish_status: string
+  title: string
+  updated_date: string
+}

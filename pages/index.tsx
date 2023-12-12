@@ -33,6 +33,7 @@ import {
   getMinMaxYearsUsedCar,
   getModelUsedCar,
   getUsedCarSearch,
+  getPromoBanner,
 } from 'services/api'
 
 interface HomePageDataLocalContextType {
@@ -50,6 +51,7 @@ interface HomePageDataLocalContextType {
   dataFooterMenu: any
   dataMinMaxYearUsedCar: any
   dataModelUsedCar: any
+  dataPromoBanner: any
 }
 /**
  * used to pass props without drilling through components
@@ -70,6 +72,7 @@ export const HomePageDataLocalContext =
     dataFooterMenu: [],
     dataMinMaxYearUsedCar: null,
     dataModelUsedCar: [],
+    dataPromoBanner: [],
   })
 
 export default function WithTracker({
@@ -90,6 +93,7 @@ export default function WithTracker({
   ssr,
   dataFooterMenu,
   dataSearchUsedCar,
+  dataPromoBanner,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { saveTypeCar, saveCarOfTheMonth, saveRecommendationToyota } = useCar()
   const {
@@ -141,6 +145,7 @@ export default function WithTracker({
         dataFooterMenu,
         dataMinMaxYearUsedCar,
         dataModelUsedCar,
+        dataPromoBanner,
       }}
     >
       <Script
@@ -184,6 +189,7 @@ export async function getServerSideProps(context: any) {
       minmaxYearRes,
       modelUsedCarRes,
       dataSearchRes,
+      promoBannerRes,
     ]: any = await Promise.all([
       getRecommendation(params),
       getBanner(),
@@ -201,6 +207,7 @@ export async function getServerSideProps(context: any) {
       getMinMaxYearsUsedCar(''),
       getModelUsedCar(''),
       getUsedCarSearch('', { params: paramsUsedCar }),
+      getPromoBanner(),
     ])
 
     const [
@@ -220,6 +227,7 @@ export async function getServerSideProps(context: any) {
       dataMinMaxYearUsedCar,
       dataModelUsedCar,
       dataSearchUsedCar,
+      dataPromoBanner,
     ] = await Promise.all([
       recommendationRes.carRecommendations,
       bannerRes.data,
@@ -237,7 +245,9 @@ export async function getServerSideProps(context: any) {
       minmaxYearRes.data,
       modelUsedCarRes.data,
       dataSearchRes.data,
+      promoBannerRes,
     ])
+
     return {
       props: {
         dataReccomendation,
@@ -258,6 +268,7 @@ export async function getServerSideProps(context: any) {
         ssr: 'success',
         dataFooterMenu,
         dataSearchUsedCar,
+        dataPromoBanner,
       },
     }
   } catch (error) {

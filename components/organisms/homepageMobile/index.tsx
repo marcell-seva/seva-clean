@@ -80,7 +80,9 @@ const LoginModalMultiKK = dynamic(
 )
 
 const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
-  const { dataCities, dataCarofTheMonth } = useContext(HomePageDataLocalContext)
+  const { dataCities, dataCarofTheMonth, dataPromoBanner } = useContext(
+    HomePageDataLocalContext,
+  )
   const { saveRecommendation } = useCar()
   const [openCitySelectorModal, setOpenCitySelectorModal] = useState(false)
   const [cityListApi, setCityListApi] =
@@ -348,7 +350,7 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
             }}
           />
           <div className={styles.line} />
-          <PromoSection onPage={'Homepage'} />
+          <PromoSection onPage={'Homepage'} dataFromApi={dataPromoBanner} />
           <LpCarRecommendations
             dataReccomendation={dataReccomendation}
             onClickOpenCityModal={() => setOpenCitySelectorModal(true)}
