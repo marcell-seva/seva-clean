@@ -330,30 +330,35 @@ export const CarOverview = ({
         </div>
       </div>
 
-      <div className={styles.downloadBrochureWrapper}>
-        <a
-          href={variantDetail?.variantDetail.pdfUrl}
-          style={{ width: '100%' }}
-          target="_blank"
-          rel="noreferrer"
-          data-testid={elementId.PDP.CarOverview.DownloadBrochure}
-          onClick={onClickDownloadBrochure}
-        >
-          <TextButton
-            leftIcon={() => (
-              <IconDownload
-                width={16}
-                height={16}
-                color="#246ED4"
-                alt="SEVA download Icon"
-              />
-            )}
-            data-testid={elementId.PDP.CTA.UnduhBrosur}
+      {variantDetail?.variantDetail?.pdfUrl !== '' &&
+      variantDetail?.variantDetail?.pdfUrl !== null ? (
+        <div className={styles.downloadBrochureWrapper}>
+          <a
+            href={variantDetail?.variantDetail.pdfUrl}
+            style={{ width: '100%' }}
+            target="_blank"
+            rel="noreferrer"
+            data-testid={elementId.PDP.CarOverview.DownloadBrochure}
+            onClick={onClickDownloadBrochure}
           >
-            Unduh Brosur
-          </TextButton>
-        </a>
-      </div>
+            <TextButton
+              leftIcon={() => (
+                <IconDownload
+                  width={16}
+                  height={16}
+                  color="#246ED4"
+                  alt="SEVA download Icon"
+                />
+              )}
+              data-testid={elementId.PDP.CTA.UnduhBrosur}
+            >
+              Unduh Brosur
+            </TextButton>
+          </a>
+        </div>
+      ) : (
+        <></>
+      )}
 
       <div className={styles.ctaAndShareGroup}>
         <div className={styles.ctaWrapper}>
