@@ -139,7 +139,10 @@ export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
   }, [carVariantList])
 
   useEffect(() => {
-    if (inputValue?.variantName === '' || lastChoosenValue?.variantName) {
+    if (
+      (inputValue && inputValue?.variantName === '') ||
+      (lastChoosenValue && lastChoosenValue.variantName)
+    ) {
       const sortedCars = sortedVariantCarList()
       setSuggestionsLists(sortedCars)
       return
@@ -172,7 +175,7 @@ export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
         value={inputValue ? inputValue.variantName : ''}
         options={suggestionsLists}
         onChange={onChangeInputHandler}
-        placeholderText={inputValue.variantName}
+        placeholderText={inputValue ? inputValue.variantName : ''}
         noOptionsText="Varian tidak ditemukan"
         onBlurInput={onBlurHandler}
         onChoose={onChooseHandler}

@@ -59,7 +59,7 @@ interface Props {
   pageOrigination?: string
   isPartnership?: boolean
   onClickResultItemUpperInfoSection?: () => void
-  isV2: boolean
+  isV2?: boolean
   handleChangeVariants?: (name: string, value: any) => void
   carVariantList?: ModelVariant[]
   onShowDropdown?: () => void
@@ -84,7 +84,7 @@ export const CalculationResult = ({
   isPartnership = false,
   onClickResultItemUpperInfoSection,
   handleChangeVariants,
-  isV2 = true,
+  isV2 = false,
   carVariantList,
   onShowDropdown,
   onChangeInformation,
