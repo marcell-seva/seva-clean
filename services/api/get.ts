@@ -1,7 +1,11 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { clientInteractionNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
-const get = (path: string, config?: AxiosRequestConfig) => {
+const get = (
+  path: string,
+  config?: AxiosRequestConfig,
+  ignoreErrorHandlerNavigation?: boolean,
+) => {
   const promise: Promise<any> = new Promise((resolve, reject) => {
     axios.get(`${path}`, config).then(
       (result: AxiosResponse) => {
@@ -9,7 +13,9 @@ const get = (path: string, config?: AxiosRequestConfig) => {
       },
       (error: AxiosError) => {
         reject(error)
-        clientInteractionNavigateToErrorPage(error?.response?.status)
+        if (!ignoreErrorHandlerNavigation) {
+          clientInteractionNavigateToErrorPage(error?.response?.status)
+        }
       },
     )
   })

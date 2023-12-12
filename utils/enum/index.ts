@@ -104,6 +104,7 @@ export enum LocalStorageKey {
   carModelLoanRank = 'carModelLoanRank', // loan rank on plp
   LastTimeUpdateUtm = 'lastTimeUpdateUtm',
   flagPopUpRecomendation = 'flagPopUpRecomendation',
+  TempToken = 'tempToken', // used for check registered customer
 }
 
 export enum SessionStorageKey {
@@ -273,4 +274,8 @@ export enum ZIndex {
 
 export enum TemanSeva {
   PTBC = 'SEVAPTBC',
+}
+
+export enum CookieKey {
+  PhoneNumber = 'phoneNumber',
 }
