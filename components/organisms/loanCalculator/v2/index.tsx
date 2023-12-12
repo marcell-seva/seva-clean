@@ -777,60 +777,6 @@ export function LoanCalculatorPageV2() {
   const onChangeInformation = () => {
     window.scrollTo({ top: 130, behavior: 'smooth' })
   }
-  const handleChangeVariantOnCalculationResult = (name: string, value: any) => {
-    setIsUserChooseVariantDropdown(true)
-    setForms({
-      ...forms,
-      [name]: value,
-    })
-    setIsLoadingAfterChangeVariant(true)
-    const payload: LoanCalculatorIncludePromoPayloadType = {
-      brand: forms.model?.brandName ?? '',
-      model: removeFirstWordFromString(forms.model?.modelName ?? ''),
-      age: forms.age,
-      angsuranType: forms.paymentOption,
-      city: forms.city.cityCode,
-      discount: getCarDiscountNumber(),
-      dp: mappedDpPercentage,
-      dpAmount: dpValue,
-      monthlyIncome: forms.monthlyIncome,
-      otr: getCarOtrNumber() - getCarDiscountNumber(),
-      variantId: forms.variant?.variantId,
-    }
-    // postLoanPermutationIncludePromo(payload)
-    //   .then((response) => {
-    //     const result = response.data.reverse()
-    //     const filteredResult = getFilteredCalculationResults(result)
-    //     console.log('asdf', filteredResult)
-    //     setCalculationResult(filteredResult)
-
-    postLoanPermutationIncludePromo(payload).then((response) => {
-      const result = response.data.reverse()
-      const filteredResult = getFilteredCalculationResults(result)
-      setCalculationResult(filteredResult)
-      generateSelectedInsuranceAndPromo(filteredResult, true)
-      trackCountlyResult(filteredResult)
-    })
-    //     setIsDataSubmitted(true)
-    //     setCalculationApiPayload(payload)
-
-    //     scrollToElement('loan-calculator-result')
-    //     // scrollToResult()
-    //   })
-    //   .catch((error: any) => {
-    //     if (error?.response?.data?.message) {
-    //       setToastMessage(`${error?.response?.data?.message}`)
-    //     } else {
-    //       setToastMessage(
-    //         'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
-    //       )
-    //     }
-    //     setIsOpenToast(true)
-    //   })
-    //   .finally(() => {
-    //     setIsLoadingAfterChangeVariant(false)
-    //   })
-  }
 
   useEffect(() => {
     if (!forms?.city?.cityCode) {
@@ -1230,6 +1176,73 @@ export function LoanCalculatorPageV2() {
       })
       .finally(() => {
         setIsLoadingCalculation(false)
+      })
+  }
+
+  const handleChangeVariantOnCalculationResult = async (
+    name: string,
+    value: any,
+  ) => {
+    setIsUserChooseVariantDropdown(true)
+    setForms({
+      ...forms,
+      [name]: value,
+    })
+    const initialOtr =
+      getCarOtrNumber(value.otr) - getCarDiscountNumber(value.discount)
+    const updatedDPValue = initialOtr * 0.2
+    setIsLoadingAfterChangeVariant(true)
+    const payload: LoanCalculatorIncludePromoPayloadType = {
+      brand: forms.model?.brandName ?? '',
+      model: removeFirstWordFromString(forms.model?.modelName ?? ''),
+      age: forms.age,
+      angsuranType: forms.paymentOption,
+      city: forms.city.cityCode,
+      discount: getCarDiscountNumber(value.discount),
+      dp: mappedDpPercentage,
+      dpAmount: updatedDPValue,
+      monthlyIncome: forms.monthlyIncome,
+      otr: getCarOtrNumber(value.otr) - getCarDiscountNumber(value.discount),
+      variantId: value.variantId,
+    }
+
+    postLoanPermutationIncludePromo(payload)
+      .then((response) => {
+        const result = response.data.reverse()
+        const filteredResult = getFilteredCalculationResults(result)
+
+        setCalculationResult(filteredResult)
+
+        generateSelectedInsuranceAndPromo(filteredResult, true)
+
+        // select loan with the longest tenure as default
+        const selectedLoanInitialValue =
+          filteredResult.sort(
+            (
+              a: SpecialRateListWithPromoType,
+              b: SpecialRateListWithPromoType,
+            ) => b.tenure - a.tenure,
+          )[0] ?? null
+        setSelectedLoan(selectedLoanInitialValue)
+
+        setIsDataSubmitted(true)
+        setCalculationApiPayload(payload)
+
+        scrollToElement('loan-calculator-result')
+        // scrollToResult()
+      })
+      .catch((error: any) => {
+        if (error?.response?.data?.message) {
+          setToastMessage(`${error?.response?.data?.message}`)
+        } else {
+          setToastMessage(
+            'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+          )
+        }
+        setIsOpenToast(true)
+      })
+      .finally(() => {
+        setIsLoadingAfterChangeVariant(false)
       })
   }
 

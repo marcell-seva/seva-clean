@@ -181,7 +181,7 @@ export const CalculationResult = ({
     if (isTooltipOpen) {
       scrollToSection()
     }
-  }, [isTooltipOpen])
+  }, [isTooltipOpen, data])
 
   const goToButton = useRef<null | HTMLDivElement>(null)
   const scrollToSection = () => {
@@ -293,7 +293,7 @@ export const CalculationResult = ({
       tdpBeforePromo: selectPromo[0].tdpBeforePromo,
     })
   }
-  const handleScrollAfterChangeVariant = (name: string, value: any) => {
+  const handleScrollAfterChangeVariant = (name: any, value: any) => {
     handleChangeVariants && handleChangeVariants(name, value)
     scrollToSectionResult()
   }
@@ -436,19 +436,21 @@ export const CalculationResult = ({
           </span>
         </>
       ) : (
-        <CardVariantOptions
-          selectedModel={formData?.model?.modelName || ''}
-          handleChange={handleScrollAfterChangeVariant}
-          name="variant"
-          carVariantList={carVariantList || []}
-          value={formData.variant}
-          modelError={false}
-          onShowDropdown={onShowDropdown && onShowDropdown}
-          isError={false}
-          carModelImage={formData.model?.modelImage}
-          cityName={formData.city.cityName}
-          onChangeInformation={onChangeInformation && onChangeInformation}
-        />
+        <div ref={resultRef}>
+          <CardVariantOptions
+            selectedModel={formData?.model?.modelName || ''}
+            handleChange={handleScrollAfterChangeVariant}
+            name="variant"
+            carVariantList={carVariantList || []}
+            value={formData.variant}
+            modelError={false}
+            onShowDropdown={onShowDropdown && onShowDropdown}
+            isError={false}
+            carModelImage={formData.model?.modelImage}
+            cityName={formData.city.cityName}
+            onChangeInformation={onChangeInformation && onChangeInformation}
+          />
+        </div>
       )}
       <div className={styles.dataHeaderWrapper}>
         <span className={`${styles.dataHeaderText} ${styles.tenorHeader}`}>
