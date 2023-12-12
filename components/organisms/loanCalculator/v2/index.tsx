@@ -262,13 +262,7 @@ export function LoanCalculatorPageV2() {
   }
 
   const getAutofilledDownPayment = () => {
-    if (kkForm?.downPaymentAmount) {
-      if (kkForm.downPaymentAmount < finalMinInputDp)
-        return String(finalMinInputDp)
-      if (kkForm.downPaymentAmount > finalMaxInputDp)
-        return String(finalMaxInputDp)
-      return kkForm?.downPaymentAmount.toString()
-    } else if (storedFilter?.downPaymentAmount) {
+    if (storedFilter?.downPaymentAmount) {
       if (storedFilter.downPaymentAmount < finalMinInputDp)
         return String(finalMinInputDp)
       if (storedFilter.downPaymentAmount > finalMaxInputDp)

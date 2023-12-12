@@ -13,6 +13,7 @@ import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { FinancialQuery } from 'utils/types/props'
+import { useRouter } from 'next/router'
 
 interface DpFormProps {
   label: string
@@ -67,6 +68,8 @@ const DpForm: React.FC<DpFormProps> = ({
   finalMaxInputDp,
   setIsOpenEducationalPopup,
 }) => {
+  const router = useRouter()
+  const { v } = router.query
   const formatCurrency = (value: number): string => {
     return `Rp${value.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`
   }
@@ -86,11 +89,12 @@ const DpForm: React.FC<DpFormProps> = ({
     setIsDpTooLow(false)
     setIsDpExceedLimit(false)
     if (isAutofillValueFromCreditQualificationData) {
-      const dpValue = financialData?.downPaymentAmount
-        ? Number(financialData.downPaymentAmount)
-        : kkForm?.downPaymentAmount
-        ? parseInt(kkForm?.downPaymentAmount)
-        : 0
+      const dpValue =
+        v !== '1' && financialData?.downPaymentAmount
+          ? Number(financialData.downPaymentAmount)
+          : kkForm?.downPaymentAmount
+          ? parseInt(kkForm?.downPaymentAmount)
+          : 0
       const initialDpValue =
         finalMinInputDp > dpValue
           ? finalMinInputDp
