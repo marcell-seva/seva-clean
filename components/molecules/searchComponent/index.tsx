@@ -393,7 +393,7 @@ export const SearchComponent = ({
     return (
       <div>
         <Swiper
-          slidesPerView={2}
+          slidesPerView="auto"
           spaceBetween={16}
           className={styles.listNewCar}
         >
@@ -461,7 +461,7 @@ export const SearchComponent = ({
     return (
       <div>
         <Swiper
-          slidesPerView={2}
+          slidesPerView="auto"
           spaceBetween={16}
           className={styles.listNewCar}
         >
