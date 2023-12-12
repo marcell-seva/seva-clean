@@ -52,6 +52,8 @@ import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarCo
 import { filterSpecialChar } from 'utils/stringUtils'
 import getCurrentEnvironment from 'utils/handler/getCurrentEnvironment'
 import { useUtils } from 'services/context/utilsContext'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { LocalStorageKey } from 'utils/enum'
 
 const CarNotFound = '/revamp/illustration/empty-car.webp'
 const CarSkeleton = '/revamp/illustration/car-skeleton.webp'
@@ -114,6 +116,14 @@ export const SearchComponent = ({
   const [isError, setIsError] = useState(false)
   const [isNotFoundClicked, setIsNotFoundClicked] = useState(false)
   const [notFound, setIsNotFound] = useState(false)
+  const [cityOtr] = useLocalStorage<Location | null>(
+    LocalStorageKey.CityOtr,
+    null,
+  )
+  const getCityUrl = () => {
+    if (cityOtr) return `/${cityOtr.cityName.toLowerCase().replace(' ', '-')}`
+    else return '/'
+  }
 
   useEffect(() => {
     if (isOpen) {
@@ -237,10 +247,11 @@ export const SearchComponent = ({
 
     let urlDestination = ''
     if (check) {
-      urlDestination = variantListUrl.replace(
-        ':brand/:model/:tab?',
-        item.url.split('/p/')[1].replaceAll(' ', '-'),
-      )
+      urlDestination =
+        variantListUrl.replace(
+          ':brand/:model/:tab?',
+          item.url.split('/p/')[1].replaceAll(' ', '-'),
+        ) + `/${getCityUrl()}`
     } else {
       urlDestination = carResultsUrl + item.url.split('/c')[1]
     }
@@ -263,7 +274,7 @@ export const SearchComponent = ({
     // simpan pencarian ke dalam local storage
     saveHistoryToLocal(urlDestination, item.name)
 
-    window.location.href = urlDestination
+    window.location.href = urlDestination + `/${getCityUrl()}`
   }
 
   const clickList = (item: SearchUsedCar) => {
@@ -294,10 +305,11 @@ export const SearchComponent = ({
     if (checkNewCar) {
       const checkPDP = data.value.includes('/p')
       if (checkPDP) {
-        urlDestination = variantListUrl.replace(
-          ':brand/:model/:tab?',
-          data.value.split('/p/')[1],
-        )
+        urlDestination =
+          variantListUrl.replace(
+            ':brand/:model/:tab?',
+            data.value.split('/p/')[1],
+          ) + `/${getCityUrl()}`
       } else {
         const checkSearch = data.value.includes('search')
         if (checkSearch) {

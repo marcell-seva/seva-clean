@@ -23,6 +23,7 @@ import {
   PreviousButton,
   saveDataForCountlyTrackerPageViewPDP,
 } from 'utils/navigate'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 
 type carOfTheMonthData = {
   name: string
@@ -96,6 +97,16 @@ const CardCarOfTheMonth = ({ item, onSendOffer }: CarOfTheMonthProps) => {
     }
   }
   const price = item.priceValue ?? item.priceValueJkt ?? 0
+
+  const [cityOtr] = useLocalStorage<Location | null>(
+    LocalStorageKey.CityOtr,
+    null,
+  )
+  const getCityUrl = () => {
+    if (cityOtr) return `/${cityOtr.cityName.toLowerCase().replace(' ', '-')}`
+    else return '/'
+  }
+
   return (
     <div className={styles.cardContainer}>
       <Image
