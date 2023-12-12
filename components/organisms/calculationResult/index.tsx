@@ -181,6 +181,7 @@ export const CalculationResult = ({
     if (isTooltipOpen) {
       scrollToSection()
     }
+    window.scrollTo({ top: 1480, behavior: 'smooth' }) // scroll button cta on bottom
   }, [isTooltipOpen, data])
 
   const goToButton = useRef<null | HTMLDivElement>(null)

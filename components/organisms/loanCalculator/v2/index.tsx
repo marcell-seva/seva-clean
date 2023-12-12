@@ -1183,6 +1183,7 @@ export function LoanCalculatorPageV2() {
     name: string,
     value: any,
   ) => {
+    setIsLoadingAfterChangeVariant(true)
     setIsUserChooseVariantDropdown(true)
     setForms({
       ...forms,
@@ -1229,7 +1230,6 @@ export function LoanCalculatorPageV2() {
         setCalculationApiPayload(payload)
 
         scrollToElement('loan-calculator-result')
-        // scrollToResult()
       })
       .catch((error: any) => {
         if (error?.response?.data?.message) {
@@ -1240,9 +1240,6 @@ export function LoanCalculatorPageV2() {
           )
         }
         setIsOpenToast(true)
-      })
-      .finally(() => {
-        setIsLoadingAfterChangeVariant(false)
       })
   }
 
