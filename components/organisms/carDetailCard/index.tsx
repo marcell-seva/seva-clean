@@ -101,6 +101,11 @@ export const CarDetailCard = ({
     LanguageCode.id,
   )
 
+  const getCityUrl = () => {
+    if (cityOtr) return `/${cityOtr.cityName.toLowerCase().replace(' ', '-')}`
+    else return '/'
+  }
+
   const priceRange =
     recommendation.variants.length > 1
       ? variantPriceRange
@@ -130,7 +135,12 @@ export const CarDetailCard = ({
   const detailCarRoute = isOTO
     ? OTOVariantListUrl.replace(
         ':brand/:model',
-        (recommendation.brand + '/' + recommendation.model.replace(/ +/g, '-'))
+        (
+          recommendation.brand +
+          '/' +
+          recommendation.model.replace(/ +/g, '-') +
+          getCityUrl()
+        )
           .replace(/ +/g, '')
           .toLowerCase(),
       )
@@ -142,7 +152,8 @@ export const CarDetailCard = ({
           (
             recommendation.brand +
             '/' +
-            recommendation.model.replace(/ +/g, '-')
+            recommendation.model.replace(/ +/g, '-') +
+            getCityUrl()
           )
             .replace(/ +/g, '')
             .toLowerCase(),
