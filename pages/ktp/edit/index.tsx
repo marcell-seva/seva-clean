@@ -15,7 +15,7 @@ import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
-import { SessionStorageKey } from 'utils/enum'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import {
   cameraKtpUrl,
   formKtpUrl,
@@ -118,8 +118,8 @@ const KtpForm = () => {
   const [isLoadingCustomer] = useState(false)
   const { galleryFile } = useGalleryContext()
 
-  const kkForm: FormLCState | null = getSessionStorage(
-    SessionStorageKey.KalkulatorKreditForm,
+  const kkForm: FormLCState | null = getLocalStorage(
+    LocalStorageKey.KalkulatorKreditForm,
   )
   const { fincap } = useFinancialQueryData()
   const kkFlowType = getSessionStorage(SessionStorageKey.KKIAFlowType)

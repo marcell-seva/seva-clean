@@ -139,7 +139,6 @@ export enum SessionStorageKey {
   ExternalPreApprovalData = 'externalPreApprovalData',
   PAAmbassadorUrlId = 'PAAmbassadorUrlId',
   LoanRankFromPLP = 'LoanRankFromPLP',
-  KalkulatorKreditForm = 'KalkulatorKreditForm',
   DataUploadKTP = 'DataUploadKTP',
   DataUploadKTPSpouse = 'DataUploadKTPSpouse',
   MainKtpDomicileOptionData = 'mainKtpDomicileOptionData',

@@ -7,7 +7,8 @@ import styles from 'styles/components/molecules/dp/dpform.module.scss'
 import { dpRateCollectionNewCalculator } from 'utils/helpers/const'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
 import clsx from 'clsx'
-import { SessionStorageKey } from 'utils/enum'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { getLocalStorage } from 'utils/handler/localStorage'
 interface DpFormProps {
   label: string
   value: number
@@ -65,8 +66,8 @@ const DpUsedCarForm: React.FC<DpFormProps> = ({
   const [formattedValue, setFormattedValue] = useState<string>(
     formatCurrency(value),
   )
-  const kkForm: any | null = getSessionStorage(
-    SessionStorageKey.KalkulatorKreditForm,
+  const kkForm: any | null = getLocalStorage(
+    LocalStorageKey.KalkulatorKreditForm,
   )
 
   useEffect(() => {

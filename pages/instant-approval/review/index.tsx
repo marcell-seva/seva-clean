@@ -98,8 +98,8 @@ const CreditQualificationReviewPage = () => {
   const ktpData: any = getSessionStorage(SessionStorageKey.ReviewedKtpData)
   const mainKTP = getSessionStorage(SessionStorageKey.MainKtpType)
   const [dataReview] = useLocalStorage('qualification_credit', null)
-  const kkForm: FormLCState | null = getSessionStorage(
-    SessionStorageKey.KalkulatorKreditForm,
+  const kkForm: FormLCState | null = getLocalStorage(
+    LocalStorageKey.KalkulatorKreditForm,
   )
   const optionADDM: InstallmentTypeOptions | null = getLocalStorage(
     LocalStorageKey.SelectedAngsuranType,

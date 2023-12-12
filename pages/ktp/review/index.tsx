@@ -16,7 +16,7 @@ import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
-import { SessionStorageKey } from 'utils/enum'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { useToast } from 'components/atoms/OldToast/Toast'
 import {
   fetchCustomerKtp,
@@ -61,6 +61,7 @@ import { defineRouteName } from 'utils/navigate'
 import Tooltip from 'antd/lib/tooltip'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useBeforePopState } from 'utils/hooks/useBeforePopState'
+import { getLocalStorage } from 'utils/handler/localStorage'
 
 const searchOption = {
   keys: ['label'],
@@ -127,8 +128,8 @@ export default function KtpReview() {
   const [isErrorSpouseDomicileFieldEmpty, setIsErrorSpouseDomicileFieldEmpty] =
     useState(false)
   const domicileFieldRef = useRef<HTMLDivElement | null>(null)
-  const kkForm: FormLCState | null = getSessionStorage(
-    SessionStorageKey.KalkulatorKreditForm,
+  const kkForm: FormLCState | null = getLocalStorage(
+    LocalStorageKey.KalkulatorKreditForm,
   )
   const [loadingNav, setLoadingNav] = useState(false)
 

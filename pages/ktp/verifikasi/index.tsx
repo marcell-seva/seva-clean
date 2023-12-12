@@ -14,7 +14,12 @@ import { Button, IconChevronLeft, IconLoading, Toast } from 'components/atoms'
 import { ProgressBar } from 'components/atoms/progressBar'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { IconLockFill } from 'components/atoms/icon/LockFill'
-import { DocumentType, SessionStorageKey, UploadDataKey } from 'utils/enum'
+import {
+  DocumentType,
+  LocalStorageKey,
+  SessionStorageKey,
+  UploadDataKey,
+} from 'utils/enum'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import Image from 'next/image'
@@ -34,6 +39,7 @@ import { FormLCState } from 'utils/types/utils'
 import dynamic from 'next/dynamic'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useBeforePopState } from 'utils/hooks/useBeforePopState'
+import { getLocalStorage } from 'utils/handler/localStorage'
 
 const PopupError = dynamic(() => import('components/organisms/popupError'), {
   ssr: false,
@@ -55,8 +61,8 @@ const VerifyKtp = () => {
   })
   const { galleryFile, photoFile } = useGalleryContext()
   const file = photoFile
-  const kkForm: FormLCState | null = getSessionStorage(
-    SessionStorageKey.KalkulatorKreditForm,
+  const kkForm: FormLCState | null = getLocalStorage(
+    LocalStorageKey.KalkulatorKreditForm,
   )
   const { fincap } = useFinancialQueryData()
   const kkFlowType = getSessionStorage(SessionStorageKey.KKIAFlowType)

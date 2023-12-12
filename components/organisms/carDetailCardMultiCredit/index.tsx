@@ -264,8 +264,8 @@ const CarDetailCardMultiCredit = ({
           totalFirstPayment: dataToCaasDaasTemp.totalFirstPayment,
           flatRate: dataToCaasDaasTemp.flatRate,
         })
-        saveSessionStorage(
-          SessionStorageKey.KalkulatorKreditForm,
+        saveLocalStorage(
+          LocalStorageKey.KalkulatorKreditForm,
           JSON.stringify(kkForm()),
         )
         localStorage.setItem(

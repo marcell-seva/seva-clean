@@ -90,8 +90,8 @@ const CreditQualificationReviewPage = () => {
   const ptbcLeadId = getSessionStorage(SessionStorageKey.PtbcLeadId)
   const { selectedPromoList, BadgeList, promoList } = useBadgePromo()
   const { recommendation, saveRecommendation } = useCar()
-  const kkForm: FormLCState | null = getSessionStorage(
-    SessionStorageKey.KalkulatorKreditForm,
+  const kkForm: FormLCState | null = getLocalStorage(
+    LocalStorageKey.KalkulatorKreditForm,
   )
   const optionADDM: InstallmentTypeOptions | null = getLocalStorage(
     LocalStorageKey.SelectedAngsuranType,

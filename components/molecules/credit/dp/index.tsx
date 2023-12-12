@@ -75,8 +75,8 @@ const DpForm: React.FC<DpFormProps> = ({
     formatCurrency(value),
   )
 
-  const kkForm: FormLCState | null = getSessionStorage(
-    SessionStorageKey.KalkulatorKreditForm,
+  const kkForm: FormLCState | null = getLocalStorage(
+    LocalStorageKey.KalkulatorKreditForm,
   )
   const financialData: FinancialQuery | null = getLocalStorage(
     LocalStorageKey.FinancialData,

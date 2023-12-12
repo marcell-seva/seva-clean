@@ -306,8 +306,8 @@ const CreditQualificationProcess = () => {
     window.open(urls.appStoreHerf, '_blank')
   }
 
-  const kkForm: FormLCState | null = getSessionStorage(
-    SessionStorageKey.KalkulatorKreditForm,
+  const kkForm: FormLCState | null = getLocalStorage(
+    LocalStorageKey.KalkulatorKreditForm,
   )
 
   const creditQualificationResultStorage: any =

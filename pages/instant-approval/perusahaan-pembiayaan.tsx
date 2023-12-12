@@ -29,7 +29,7 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
-import { getLocalStorage } from 'utils/handler/localStorage'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { NewFunnelCarVariantDetails } from 'utils/types'
 import { SimpleCarVariantDetail } from 'utils/types/utils'
@@ -67,8 +67,8 @@ const LeasingCompanyOptionPage = () => {
   const [isDisableTAF, setIsDisableTAF] = useState<boolean>(false)
   const [isFilled, setIsFilled] = useState<boolean>(false)
   const router = useRouter()
-  const kkForm: FormLCState | null = getSessionStorage(
-    SessionStorageKey.KalkulatorKreditForm,
+  const kkForm: FormLCState | null = getLocalStorage(
+    LocalStorageKey.KalkulatorKreditForm,
   )
   const dataReviewLocalStorage = getLocalStorage('qualification_credit')
   const dataReview = dataReviewLocalStorage
@@ -203,10 +203,7 @@ const LeasingCompanyOptionPage = () => {
       ...kkForm,
       leasingOption: option,
     }
-    saveSessionStorage(
-      SessionStorageKey.KalkulatorKreditForm,
-      JSON.stringify(data),
-    )
+    saveLocalStorage(LocalStorageKey.KalkulatorKreditForm, JSON.stringify(data))
     router.push(instantApprovalReviewPage)
   }
 

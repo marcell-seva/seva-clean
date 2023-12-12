@@ -11,7 +11,12 @@ import elementId from 'helpers/elementIds'
 import { useAmplitudePageView } from 'utils/hooks/useAmplitudePageView'
 import { trackViewPreapprovalKTPUploadCamera } from 'helpers/amplitude/preApprovalEventTracking'
 import { getFrameSize, getImageBase64ByFile } from 'utils/handler/image'
-import { DocumentType, FrameType, SessionStorageKey } from 'utils/enum'
+import {
+  DocumentType,
+  FrameType,
+  LocalStorageKey,
+  SessionStorageKey,
+} from 'utils/enum'
 import { useRouter } from 'next/router'
 import { useQuery } from 'utils/hooks/useQuery'
 import { useToast } from 'components/atoms/OldToast/Toast'
@@ -58,6 +63,7 @@ import dynamic from 'next/dynamic'
 import { useMediaQuery } from 'react-responsive'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useBeforePopState } from 'utils/hooks/useBeforePopState'
+import { getLocalStorage } from 'utils/handler/localStorage'
 
 const ChevronLeft = '/revamp/icon/chevron-left.webp'
 
@@ -85,8 +91,8 @@ export default function CameraKtp() {
     FrameType.Capture,
   )
   const inputRef = useRef<HTMLInputElement>(null)
-  const kkForm: FormLCState | null = getSessionStorage(
-    SessionStorageKey.KalkulatorKreditForm,
+  const kkForm: FormLCState | null = getLocalStorage(
+    LocalStorageKey.KalkulatorKreditForm,
   )
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const { fincap } = useFinancialQueryData()
