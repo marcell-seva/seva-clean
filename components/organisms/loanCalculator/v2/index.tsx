@@ -107,7 +107,6 @@ import { IncomeAgeSection } from 'components/molecules/incomAgeSection'
 import EducationalContentPopupDp from 'components/organisms/educationalContentPopupDp'
 import EducationalContentPopupType from 'components/organisms/educationalContentPopupType'
 import { CalculationResultSkeleton } from 'components/organisms/calculationResultSkeleton'
-import EducationalContentPopup from 'components/organisms/educationalContentPopup'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -2174,19 +2173,14 @@ Kemampuan Finansialmu"
           closeOnToastClick
         />
 
-        <EducationalContentPopup
-          educationalName={
-            isOpenEducationalDpPopup
-              ? 'Down Payment (DP)'
-              : 'Pilihan Pembayaran Cicilan Pertama'
-          }
-          isOpenBottomSheet={
-            isOpenEducationalDpPopup || isOpenEducationalPaymentTypePopup
-          }
-          onButtonClick={() => {
-            setIsOpenEducationalDpPopup(false)
-            setIsOpenEducationalPaymentTypePopup(false)
-          }}
+        <EducationalContentPopupDp
+          isOpenBottomSheet={isOpenEducationalDpPopup}
+          onButtonClick={() => setIsOpenEducationalDpPopup(false)}
+        />
+
+        <EducationalContentPopupType
+          isOpenBottomSheet={isOpenEducationalPaymentTypePopup}
+          onButtonClick={() => setIsOpenEducationalPaymentTypePopup(false)}
         />
         <Toast
           width={343}

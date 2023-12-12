@@ -71,7 +71,6 @@ import {
   lowerSectionNavigationTab,
   upperSectionNavigationTab,
 } from 'config/carVariantList.config'
-import EducationalContentPopup from '../educationalContentPopup'
 
 const OverlayGallery = dynamic(() =>
   import('components/molecules').then((mod) => mod.OverlayGallery),

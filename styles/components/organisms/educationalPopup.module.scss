@@ -72,7 +72,7 @@
 
 .bottomSheetSmall [data-rsbs-overlay] {
   @include centeredWithMaxWidth;
-  height: 433px;
+  height: 413px;
   bottom: -21px;
 }
 
@@ -81,7 +81,7 @@
 }
 .bottomSheet [data-rsbs-overlay] {
   @include centeredWithMaxWidth;
-  height: 760px;
+  height: 87%;
   bottom: -16px;
 }
 
@@ -139,4 +139,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.iconWrapper {
+  width: 40px;
+  height: 40px;
 }
