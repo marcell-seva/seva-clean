@@ -251,6 +251,7 @@ export default function index({
         carOTR,
         currentCity.cityName,
         countColors,
+        checkLoc,
       )
       break
 

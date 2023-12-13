@@ -274,6 +274,7 @@ export const metaDescTemplateOneSlug = (
   carOTR?: string,
   location?: string,
   warna?: number,
+  isLoc?: boolean,
 ) => {
   switch (slug) {
     case 'warna':
@@ -297,7 +298,11 @@ export const metaDescTemplateOneSlug = (
     case 'kredit':
       return `Hitung simulasi cicilan ${brand} ${model} ${year}. Dapatkan skema cicilan mobil ${model} dengan Loan Calculator di SEVA`
     default:
-      return `Beli mobil ${brand} ${model} ${year} baru secara kredit. OTR ${location} harga mulai ${carOTR}, cari tau spesifikasi, daftar harga, dan simulasi kredit`
+      if (isLoc) {
+        return `Beli mobil ${brand} ${model} ${year} baru secara kredit. OTR ${location} harga mulai ${carOTR}, cari tau spesifikasi, daftar harga, dan simulasi kredit`
+      } else {
+        return `Beli mobil ${brand} ${model} ${year} baru secara kredit di SEVA. Harga mulai ${carOTR}, cari tau spesifikasi, daftar harga, dan simulasi kredit`
+      }
   }
 }
 
