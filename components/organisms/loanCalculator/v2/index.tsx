@@ -1321,6 +1321,8 @@ export function LoanCalculatorPageV2() {
     fetch()
   }, [forms.variant?.variantId, cities])
 
+  console.log(finalMaxInputDp, finalMinInputDp)
+
   useEffect(() => {
     if (isHasCarParameter && !shakeIncomeAge) {
       if (!forms.age || !forms.monthlyIncome) {

@@ -279,23 +279,15 @@ const TabContentLowerVariant = ({
     saveDataCarForLoginPageView(carVariant.name)
     saveDataForCountlyTrackerPageViewLC(PreviousButton.VariantPriceList)
 
-    setSelectedTabValue && setSelectedTabValue('Kredit')
+    // should use window.location.href because the not updated
+    const url = variantListUrl
+      .replace(':brand', brand)
+      .replace(':model', model)
+      .replace(':tab?', 'kredit')
 
-    // no need to use window.location.href because user still in PDP
-    router.replace(
-      {
-        pathname: variantListUrl
-          .replace(':brand', brand)
-          .replace(':model', model)
-          .replace(':tab?', 'kredit'),
-        query: {
-          selectedVariantId: carVariant.id,
-          ...(loanRankcr && { loanRankCVL: loanRankcr }),
-        },
-      },
-      undefined,
-      { scroll: false },
-    )
+    window.location.href = `${url}?selectedVariantId=${carVariant.id}${
+      loanRankcr && `&loanRankcr=${loanRankcr}`
+    }`
   }
 
   const trackClickCtaCountly = (

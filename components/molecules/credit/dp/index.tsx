@@ -115,7 +115,7 @@ const DpForm: React.FC<DpFormProps> = ({
       )
       handleChange(name, initialDpValue)
     } else {
-      const initialDpValue = carPriceMinusDiscount * 0.2
+      const initialDpValue = finalMinInputDp
       setFormattedValue(formatCurrency(initialDpValue))
       onChange(
         initialDpValue,
