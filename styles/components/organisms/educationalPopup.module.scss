@@ -89,6 +89,17 @@
   @include centeredWithMaxWidth;
   height: 197px;
 }
+
+.bottomSheetDismiss [data-rsbs-overlay] {
+  @include centeredWithMaxWidth;
+  height: auto;
+  top: 137px;
+}
+
+.bottomSheetDismiss [data-rsbs-backdrop] {
+  @include centeredWithMaxWidth;
+}
+
 .informationWrapper {
   border-radius: 8px;
   background: var(--shades-sky-blue-sky-blue-10, #eef6fb);
