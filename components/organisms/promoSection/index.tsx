@@ -135,7 +135,12 @@ const PromoSection = ({
 
   const publishedPromo = useMemo(() => {
     if (dataFromApi && dataFromApi.length > 0) {
-      return dataFromApi.filter((item) => item.publish_status === 'publish')
+      return dataFromApi.filter(
+        (item) =>
+          item.publish_status === 'publish' &&
+          !!item.image_url &&
+          !!item.permalink,
+      )
     } else {
       return []
     }
@@ -160,7 +165,7 @@ const PromoSection = ({
                 className={styles.promoBannerSmall}
                 height={156}
                 width={208}
-                alt={item.title}
+                alt={item.title ?? 'Promo Illustration'}
                 loading="lazy"
               />
 
