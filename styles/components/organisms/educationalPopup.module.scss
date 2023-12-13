@@ -64,6 +64,7 @@
 }
 .containerDP {
   @extend .container;
+  overflow: auto !important;
 }
 .contentPromo {
   display: flex;
@@ -72,8 +73,7 @@
 
 .bottomSheetSmall [data-rsbs-overlay] {
   @include centeredWithMaxWidth;
-  height: 413px;
-  bottom: -21px;
+  height: auto;
 }
 
 .bottomSheetSmall [data-rsbs-backdrop] {
@@ -81,8 +81,8 @@
 }
 .bottomSheet [data-rsbs-overlay] {
   @include centeredWithMaxWidth;
-  height: 85%;
-  bottom: -2px;
+  height: auto;
+  top: 137px;
 }
 
 .bottomSheet [data-rsbs-backdrop] {
