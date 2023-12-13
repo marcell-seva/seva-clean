@@ -81,8 +81,8 @@
 }
 .bottomSheet [data-rsbs-overlay] {
   @include centeredWithMaxWidth;
-  height: 85.2%;
-  bottom: -16px;
+  height: 85%;
+  bottom: -2px;
 }
 
 .bottomSheet [data-rsbs-backdrop] {
