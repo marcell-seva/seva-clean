@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import styles from 'styles/components/organisms/carOverView.module.scss'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import {
@@ -11,12 +11,6 @@ import {
 import { useDetectClickOutside } from 'react-detect-click-outside'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
-import {
-  CarVariantHitungKemampuanParam,
-  trackCarVariantShareClick,
-  trackDownloadBrosurClick,
-  trackPDPHitungKemampuan,
-} from 'helpers/amplitude/seva20Tracking'
 import { variantListUrl } from 'utils/helpers/routes'
 import { CityOtrOption, VariantDetail } from 'utils/types/utils'
 import { useRouter } from 'next/router'
@@ -41,12 +35,14 @@ import {
 } from 'utils/navigate'
 import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
 import { AdaOTOdiSEVALeadsForm } from 'components/organisms/leadsForm/adaOTOdiSEVA/popUp'
+import { getCity } from 'utils/hooks/useGetCity'
 
 interface Props {
   onClickCityOtrCarOverview: () => void
   onClickShareButton: () => void
   currentTabMenu: string
   isOTO?: boolean
+  cityOtr?: CityOtrOption
 }
 
 export const CarOverview = ({
@@ -54,6 +50,7 @@ export const CarOverview = ({
   onClickShareButton,
   currentTabMenu,
   isOTO = false,
+  cityOtr,
 }: Props) => {
   const {
     dataCombinationOfCarRecomAndModelDetailDefaultCity,
@@ -61,10 +58,7 @@ export const CarOverview = ({
   } = useContext(isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext)
 
   const { carModelDetails, carVariantDetails } = useCar()
-  const [cityOtr] = useLocalStorage<CityOtrOption | null>(
-    LocalStorageKey.CityOtr,
-    null,
-  )
+  const [currentCityOtr, setCurrentCityOtr] = useState(cityOtr ?? getCity())
 
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
 
@@ -82,9 +76,10 @@ export const CarOverview = ({
   })
   const { funnelQuery } = useFunnelQueryData()
   const router = useRouter()
-  const brand = router.query.brand as string
-  const model = router.query.model as string
-  const upperTab = router.query.tab as string
+  const { model, brand, slug } = router.query
+  const [upperTabSlug, lowerTabSlug, citySlug] = slug?.length
+    ? (slug as Array<string>)
+    : []
   const loanRankcr = router.query.loanRankCVL ?? ''
 
   const sortedCarModelVariant = useMemo(() => {
@@ -94,6 +89,10 @@ export const CarOverview = ({
       }) || []
     )
   }, [modelDetail])
+
+  useEffect(() => {
+    if (cityOtr) setCurrentCityOtr(cityOtr)
+  }, [cityOtr])
 
   const closeLeadsForm = () => {
     setIsModalOpened(false)
@@ -107,9 +106,9 @@ export const CarOverview = ({
     onClickCityOtrCarOverview()
   }
 
-  const getCity = () => {
-    if (cityOtr && cityOtr.cityName) {
-      return cityOtr.cityName
+  const getCityWithDefault = () => {
+    if (currentCityOtr && currentCityOtr.cityName) {
+      return currentCityOtr.cityName
     } else {
       return 'Jakarta Pusat'
     }
@@ -173,51 +172,9 @@ export const CarOverview = ({
     return sortedCarModelVariant[0].tenure
   }
 
-  const trackAmplitudeShare = () => {
-    trackCarVariantShareClick({
-      Car_Brand: modelDetail?.brand ?? '',
-      Car_Model: modelDetail?.model ?? '',
-      // OTR: `Rp${replacePriceSeparatorByLocalization(
-      //   modelDetail?.variants[0].priceValue as number,
-      //   LanguageCode.id,
-      // )}`,
-      City: cityOtr?.cityName || 'null',
-      Page_Origination_URL: window.location.href,
-    })
-  }
-
   const onClickShareButtonHandler = () => {
-    trackAmplitudeShare()
     trackClickShareCountly()
     onClickShareButton()
-  }
-
-  const trackAmplitudeBrochure = () => {
-    if (modelDetail) {
-      trackDownloadBrosurClick({
-        Car_Brand: modelDetail?.brand as string,
-        Car_Model: modelDetail?.model as string,
-        City: cityOtr?.cityName || 'null',
-      })
-    }
-  }
-
-  const trackHitungKemampuan = () => {
-    const currentDp =
-      funnelQuery.downPaymentAmount &&
-      funnelQuery.downPaymentAmount?.toString().length > 0
-        ? funnelQuery.downPaymentAmount
-        : sortedCarModelVariant[0].dpAmount
-    const properties: CarVariantHitungKemampuanParam = {
-      Car_Brand: modelDetail?.brand as string,
-      Car_Model: modelDetail?.model as string,
-      City: cityOtr?.cityName || 'null',
-      DP: `Rp${Currency(String(currentDp))}`,
-      Cicilan: `Rp${getMonthlyInstallment()}`,
-      Tenure: `${getTenure()} tahun`,
-      Photo_Type: currentTabMenu,
-    }
-    trackPDPHitungKemampuan(properties)
   }
 
   const trackClickCtaCountly = () => {
@@ -251,28 +208,20 @@ export const CarOverview = ({
   }
 
   const onClickDownloadBrochure = () => {
-    trackAmplitudeBrochure()
     trackClickBrochureCountly()
   }
 
-  const queryParamForPDP = () => {
-    const params = new URLSearchParams({
-      ...(upperTab && { tab: `${upperTab}` }),
-      ...(loanRankcr &&
-        typeof loanRankcr === 'string' && { loanRankCVL: loanRankcr }),
-    })
-
-    return params
-  }
-
   const onClickCalculateCta = () => {
-    trackHitungKemampuan()
     trackClickCtaCountly()
     saveDataForCountlyTrackerPageViewLC(PreviousButton.MainTopCta)
-    window.location.href = variantListUrl
-      .replace(':brand', brand as string)
-      .replace(':model', model as string)
-      .replace(':tab', `${upperTabSlug ?? 'warna'}/kredit`)
+    const getQuery = window.location.href.split('?')[1]
+    const checkQuery = getQuery?.length > 1 ? `?${getQuery}` : ''
+
+    window.location.href =
+      variantListUrl
+        .replace(':brand', brand as string)
+        .replace(':model', model as string)
+        .replace(':tab?', `${upperTabSlug ?? 'warna'}/kredit`) + checkQuery
   }
 
   if (!modelDetail || !variantDetail) return <></>
@@ -325,7 +274,7 @@ export const CarOverview = ({
               onClick={onClickOtrCity}
               data-testid={elementId.PDP.CarOverview.CityOtr}
             >
-              {getCity()}
+              {getCityWithDefault()}
             </span>
           </span>
           <button
@@ -381,35 +330,31 @@ export const CarOverview = ({
         </div>
       </div>
 
-      {variantDetail?.variantDetail?.pdfUrl !== '' ||
-      variantDetail?.variantDetail?.pdfUrl !== null ? (
-        <div className={styles.downloadBrochureWrapper}>
-          <a
-            href={variantDetail?.variantDetail.pdfUrl}
-            style={{ width: '100%' }}
-            target="_blank"
-            rel="noreferrer"
-            data-testid={elementId.PDP.CarOverview.DownloadBrochure}
-            onClick={onClickDownloadBrochure}
+      <div className={styles.downloadBrochureWrapper}>
+        <a
+          href={variantDetail?.variantDetail.pdfUrl}
+          style={{ width: '100%' }}
+          target="_blank"
+          rel="noreferrer"
+          data-testid={elementId.PDP.CarOverview.DownloadBrochure}
+          onClick={onClickDownloadBrochure}
+        >
+          <TextButton
+            leftIcon={() => (
+              <IconDownload
+                width={16}
+                height={16}
+                color="#246ED4"
+                alt="SEVA download Icon"
+              />
+            )}
+            data-testid={elementId.PDP.CTA.UnduhBrosur}
           >
-            <TextButton
-              leftIcon={() => (
-                <IconDownload
-                  width={16}
-                  height={16}
-                  color="#246ED4"
-                  alt="SEVA download Icon"
-                />
-              )}
-              data-testid={elementId.PDP.CTA.UnduhBrosur}
-            >
-              Unduh Brosur
-            </TextButton>
-          </a>
-        </div>
-      ) : (
-        <></>
-      )}
+            Unduh Brosur
+          </TextButton>
+        </a>
+      </div>
+
       <div className={styles.ctaAndShareGroup}>
         <div className={styles.ctaWrapper}>
           <Button

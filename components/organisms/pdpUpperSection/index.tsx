@@ -14,20 +14,14 @@ import { CityOtrOption, VideoDataType } from 'utils/types/utils'
 import styles from 'styles/components/organisms/pdpUpperSection.module.scss'
 import { exteriorImagesListNew } from 'config/Exterior360ImageList.config'
 import { interiorImagesListNew } from 'config/Interior360ImageList.config'
-import {
-  TrackingEventName,
-  TrackingEventWebPDPPhoto,
-} from 'helpers/amplitude/eventTypes'
-import {
-  CarVariantPhotoParam,
-  trackPDPPhotoClick,
-} from 'helpers/amplitude/seva20Tracking'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { LocalStorageKey } from 'utils/enum'
 import { useRouter } from 'next/router'
 import { useCar } from 'services/context/carContext'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getCity } from 'utils/hooks/useGetCity'
+import { capitalizeFirstLetter } from 'utils/stringUtils'
 
 interface Props {
   emitActiveIndex: (e: number) => void
@@ -39,6 +33,8 @@ interface Props {
   onClickShareButton: () => void
   isShowAnnouncementBox: boolean | null
   isOTO?: boolean
+  onChangeTab: (value: any) => void
+  cityOtr?: CityOtrOption
 }
 
 export const PdpUpperSection = ({
@@ -51,8 +47,12 @@ export const PdpUpperSection = ({
   onClickShareButton,
   isShowAnnouncementBox,
   isOTO = false,
+  onChangeTab,
+  cityOtr,
 }: Props) => {
   const router = useRouter()
+  const { slug } = router.query || []
+  const [currentCityOtr, setCurrentCityOtr] = useState(cityOtr ?? getCity())
 
   const validateSlug = (slug: Array<string>, dataFilter: any) => {
     if (slug) {
@@ -75,10 +75,9 @@ export const PdpUpperSection = ({
     upperSectionNavigationTab[0].value,
   )
 
-  const [cityOtr] = useLocalStorage<CityOtrOption | null>(
-    LocalStorageKey.CityOtr,
-    null,
-  )
+  useEffect(() => {
+    if (cityOtr) setCurrentCityOtr(cityOtr)
+  }, [cityOtr])
 
   const getImageExterior360 = () => {
     const currentUrlPathname = router.asPath
@@ -131,30 +130,24 @@ export const PdpUpperSection = ({
     return filterTabItem()
   }, [videoData, carModelDetails])
 
-  const trackEventPhoto = (
-    event: TrackingEventWebPDPPhoto,
-    photoType: string,
-  ) => {
-    const trackProperties: CarVariantPhotoParam = {
-      Car_Brand: carModelDetails?.brand as string,
-      Car_Model: carModelDetails?.model as string,
-      Page_Origination_URL: window.location.href.replace('https://www.', ''),
-      Photo_Type: photoType,
-      City: cityOtr?.cityName || 'null',
-    }
-    trackPDPPhotoClick(event, trackProperties)
+  const onSelectTab = (value: any) => {
+    setSelectedTabValue(value)
+    onChangeTab(value)
+    trackEventCountly(CountlyEventNames.WEB_PDP_VISUAL_TAB_CLICK, {
+      VISUAL_TAB_CATEGORY: value,
+    })
   }
 
   const renderContent = () => {
     switch (selectedTabValue) {
-      case 'Warna':
+      case 'warna':
         return (
           <WarnaTab
             isShowAnnouncementBox={isShowAnnouncementBox}
             isOTO={isOTO}
           />
         )
-      case 'Eksterior':
+      case 'eksterior':
         return (
           <ExteriorTab
             isPreviewOpened={isPreviewOpened}
@@ -164,7 +157,7 @@ export const PdpUpperSection = ({
             isShowAnnouncementBox={isShowAnnouncementBox}
           />
         )
-      case 'Interior':
+      case 'interior':
         return (
           <InteriorTab
             emitDataImages={emitDataImages}
@@ -174,18 +167,18 @@ export const PdpUpperSection = ({
             isShowAnnouncementBox={isShowAnnouncementBox}
           />
         )
-      case 'Video':
+      case 'video':
         return (
           <VideoTab
             data={videoData}
             isShowAnnouncementBox={isShowAnnouncementBox}
           />
         )
-      case '360º Eksterior':
+      case '360-eksterior':
         return (
           <Exterior360ViewerTab isShowAnnouncementBox={isShowAnnouncementBox} />
         )
-      case '360º Interior':
+      case '360-interior':
         return (
           <Interior360ViewerTab isShowAnnouncementBox={isShowAnnouncementBox} />
         )
@@ -223,9 +216,17 @@ export const PdpUpperSection = ({
             onClickShareButton={onClickShareButton}
             currentTabMenu={selectedTabValue}
             isOTO={isOTO}
+            cityOtr={currentCityOtr}
           />
         </>
       </div>
     </div>
   )
+}
+
+const capitalizeSlugIf360 = (slug: string) => {
+  if (slug.toLocaleLowerCase() == '360º eksterior') {
+    return slug.slice(0, 4) + ' ' + slug.charAt(5).toUpperCase() + slug.slice(6)
+  }
+  return capitalizeFirstLetter(slug)
 }

@@ -12,11 +12,6 @@ import {
   SpecialRateListWithPromoType,
   trackDataCarType,
 } from 'utils/types/utils'
-import {
-  trackVariantListPageCodeFailed,
-  trackVariantListPageCodeSuccess,
-  trackWebPDPCreditTab,
-} from 'helpers/amplitude/seva20Tracking'
 import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import {
@@ -136,6 +131,7 @@ interface FormState {
         modelName: string
         modelImage: string
         brandName: string
+        loanRank: string
       }
     | undefined
   variant:
@@ -291,6 +287,7 @@ export const CreditTab = () => {
       modelName: '',
       modelId: '',
       modelImage: CarSillhouete,
+      loanRank: '',
     },
     variant: {
       variantId: '',
@@ -318,6 +315,7 @@ export const CreditTab = () => {
         modelName: '',
         modelId: '',
         modelImage: '',
+        loanRank: '',
       },
       variant: {
         ...variantEmptyValue,
@@ -438,19 +436,16 @@ export const CreditTab = () => {
   useEffect(() => {
     fetchAllCarModels()
     fetchArticles()
-
-    const nextDisplay = localStorage.getItem('tooltipNextDisplay')
-    if (nextDisplay) {
-      setTooltipNextDisplay(nextDisplay)
-    }
-  }, [])
-
-  useAfterInteractive(() => {
     const timeoutCountlyTracker = setTimeout(() => {
       if (!isSentCountlyPageView) {
         trackCountlyViewCreditTab()
       }
     }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
+
+    const nextDisplay = localStorage.getItem('tooltipNextDisplay')
+    if (nextDisplay) {
+      setTooltipNextDisplay(nextDisplay)
+    }
 
     return () => clearTimeout(timeoutCountlyTracker)
   }, [])
@@ -496,6 +491,7 @@ export const CreditTab = () => {
           modelName: '',
           modelId: '',
           modelImage: '',
+          loanRank: '',
         },
       }
 
@@ -566,50 +562,11 @@ export const CreditTab = () => {
     )
   }, [carModelDetails])
 
-  useAfterInteractive(() => {
-    const timeoutAfterInteractive = setTimeout(() => {
-      if (carModelDetails && flag === TrackerFlag.Init) {
-        sendAmplitude()
-        setFlag(TrackerFlag.Sent)
-      }
-    }, 500)
-
-    return () => clearTimeout(timeoutAfterInteractive)
-  }, [carModelDetails])
-
-  const sendAmplitude = (): void => {
-    if (!carModelDetails) return
-
-    const data: TrackVariantList = {
-      Car_Brand: carModelDetails?.brand || '',
-      Car_Model: carModelDetails?.model || '',
-      Car_Variant:
-        passedVariantData.length > 0 ? passedVariantData[0].name : '',
-      DP: `Rp${formatNumberByLocalization(
-        sortedCarModelVariant[0].dpAmount,
-        LanguageCode.id,
-        1000000,
-        10,
-      )} Juta`,
-      Monthly_Installment: `Rp${formatNumberByLocalization(
-        sortedCarModelVariant[0].monthlyInstallment,
-        LanguageCode.id,
-        1000000,
-        10,
-      )} jt/bln`,
-      Income:
-        storedFilter && storedFilter?.monthlyIncome?.length > 0
-          ? storedFilter?.monthlyIncome.toString()
-          : '',
-      Age:
-        storedFilter && storedFilter?.age?.length > 0
-          ? storedFilter?.age.toString()
-          : '',
-      Tenure: `${sortedCarModelVariant[0].tenure} Tahun`,
-      City: cityOtr?.cityName || '',
+  useEffect(() => {
+    if (carModelDetails && flag === TrackerFlag.Init) {
+      setFlag(TrackerFlag.Sent)
     }
-    trackWebPDPCreditTab(data)
-  }
+  }, [carModelDetails])
 
   const trackEventMoengage = () => {
     if (
@@ -952,7 +909,6 @@ export const CreditTab = () => {
       setIsLoadingPromoCode(false)
 
       if (result.message === 'valid promo code') {
-        trackVariantListPageCodeSuccess(forms.promoCode)
         if (result.citySelector) {
           const citygias = {
             id: result.citySelector.id,
@@ -968,14 +924,12 @@ export const CreditTab = () => {
         handlePromoCodeValidResult(true)
         return true
       }
-      trackVariantListPageCodeFailed(forms.promoCode)
       setIsErrorPromoCode(true)
       setisSuccessPromoCode(false)
       handlePromoCodeValidResult(false)
       return false
     } catch (err: any) {
       setIsLoadingPromoCode(false)
-      trackVariantListPageCodeFailed(forms.promoCode)
       setIsErrorPromoCode(true)
       setisSuccessPromoCode(false)
       handlePromoCodeValidResult(false)
@@ -1827,31 +1781,6 @@ export const CreditTab = () => {
     )
   }
 
-  const onClickResultItemUpperInfoSection = () => {
-    setIsOpenPopupRecommended(true)
-    const modelNameOnly = forms?.model?.modelName
-      .replace(forms?.model?.brandName, '')
-      .trim()
-    trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK, {
-      PELUANG_KREDIT_BADGE: 'Mudah disetujui',
-      CAR_BRAND: forms?.model?.brandName,
-      CAR_MODEL: modelNameOnly,
-      PAGE_ORIGINATION: 'PDP - Kredit',
-      SOURCE_BUTTON: 'Tenure Card (LC Result)',
-    })
-  }
-
-  const onClickCarRecommendationBadge = (carData: CarRecommendation) => {
-    setIsOpenPopupRecommended(true)
-    trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK, {
-      PELUANG_KREDIT_BADGE: 'Mudah disetujui',
-      CAR_BRAND: carData.brand,
-      CAR_MODEL: carData.model,
-      PAGE_ORIGINATION: 'PDP - Kredit',
-      SOURCE_BUTTON: 'Car Recommendation (LC)',
-    })
-  }
-
   return (
     <div className={styles.container}>
       <div className={styles.formCard}>
@@ -2071,16 +2000,15 @@ export const CreditTab = () => {
               calculationApiPayload={calculationApiPayload}
               setFinalLoan={setFinalLoan}
               pageOrigination={'PDP Credit Tab'}
-              onClickResultItemUpperInfoSection={() =>
-                onClickResultItemUpperInfoSection()
-              }
             />
           </div>
           {carRecommendations.length > 0 && (
             <CarRecommendations
               carRecommendationList={carRecommendations}
               title="Rekomendasi Sesuai Kemampuan Finansialmu"
-              onClick={(carData) => onClickCarRecommendationBadge(carData)}
+              onClick={() => {
+                setIsOpenPopupRecommended(true)
+              }}
               selectedCity={forms?.city?.cityName}
               additionalContainerStyle={styles.recommendationAdditionalStyle}
             />

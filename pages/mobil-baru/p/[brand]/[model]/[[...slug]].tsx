@@ -23,7 +23,7 @@ import {
 import { getModelPriceRange } from 'utils/carModelUtils/carModelUtils'
 import { articleDateFormat, monthId } from 'utils/handler/date'
 import { useRouter } from 'next/router'
-import { getCity } from 'utils/hooks/useGetCity'
+import { getCity, saveCity } from 'utils/hooks/useGetCity'
 import { useCar } from 'services/context/carContext'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { lowerSectionNavigationTab } from 'config/carVariantList.config'
@@ -817,5 +817,23 @@ const jsonLD = (
         },
       },
     ],
+  }
+}
+
+export const checkCitySlug = (
+  citySlug: string | undefined,
+  dataCities: Array<CityOtrOption>,
+  setState: (city: CityOtrOption) => void,
+) => {
+  if (citySlug) {
+    const cityOtrFromUrl = dataCities.find(
+      (city) =>
+        city.cityName.replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase() ===
+        citySlug.replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase(),
+    )
+    if (cityOtrFromUrl && cityOtrFromUrl?.cityCode !== getCity().cityCode) {
+      saveCity(cityOtrFromUrl)
+      setState(cityOtrFromUrl)
+    }
   }
 }

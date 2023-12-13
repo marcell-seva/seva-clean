@@ -17,7 +17,7 @@ const internalUrls = {
   variantListOldDesignUrl: '/var/mobil-baru/:brand/:model',
   variantListUrlId: '/mobil-baru/:brand/:model/:id/:tab?',
   variantListPriceUrl: '/mobil-baru/:brand/:model/:tab',
-  variantListUrl: '/mobil-baru/:brand/:model/:tab?',
+  variantListUrl: '/mobil-baru/p/:brand/:model/:tab?',
   duplicatedVariantListUrl: '/adaSEVAdiOTO/mobil-baru/:brand/:model/:tab?',
   loginUrl: '/login',
   preApprovalStartUrl: '/pre-approval-start',
