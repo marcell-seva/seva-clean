@@ -582,6 +582,7 @@ export const CreditTabV2 = () => {
     if (forms.model?.modelId && forms.city) {
       fetchCarVariant()
     }
+
     if (isChangedMaxDp) {
       setTimeout(() => {
         setIsChangedMaxDp(false)
@@ -1375,6 +1376,7 @@ export const CreditTabV2 = () => {
     value: any,
   ) => {
     setIsLoadingAfterChangeVariant(true)
+    setIsUserChooseVariantDropdown(true)
     setForms({
       ...forms,
       [name]: value,
@@ -2269,7 +2271,7 @@ export const CreditTabV2 = () => {
               }
               carVariantList={carVariantList}
               handleChangeVariants={handleChangeVariantOnCalculationResult}
-              // onChangeInformation={onChangeInformation}
+              onChangeInformation={onChangeInformation}
               isV2={true}
             />
           </div>
@@ -2339,6 +2341,11 @@ export const CreditTabV2 = () => {
         typeToast={'error'}
         onCancel={() => setIsOpenToast(false)}
         closeOnToastClick
+      />
+      <Toast
+        width={343}
+        text={'DP telah disesuaikan dengan varian mobil pilihan kamu.'}
+        open={isChangedMaxDp}
       />
       <PopupResultRecommended
         open={isOpenPopupRecommended}

@@ -1221,8 +1221,6 @@ export function LoanCalculatorPageV2() {
 
         setIsDataSubmitted(true)
         setCalculationApiPayload(payload)
-
-        scrollToElement('loan-calculator-result')
       })
       .catch((error: any) => {
         if (error?.response?.data?.message) {
@@ -1984,6 +1982,13 @@ export function LoanCalculatorPageV2() {
                 finalMinInputDp={finalMinInputDp}
                 finalMaxInputDp={finalMaxInputDp}
                 setIsOpenEducationalPopup={setIsOpenEducationalDpPopup}
+                onCalculationResult={
+                  calculationResult.length > 0 &&
+                  !isLoadingCalculation &&
+                  !isLoadingInsuranceAndPromo &&
+                  isDataSubmitted
+                }
+                setIsChangedMaxDp={setIsChangedMaxDp}
               />
             </div>
             <div id="loan-calculator-form-installment-type">
@@ -2086,36 +2091,32 @@ export function LoanCalculatorPageV2() {
           !isLoadingInsuranceAndPromo &&
           isDataSubmitted ? (
             <>
-              <div id="loan-calculator-result">
-                <CalculationResult
-                  handleRedirectToWhatsapp={handleRedirectToWhatsapp}
-                  data={calculationResult}
-                  selectedLoan={selectedLoan}
-                  setSelectedLoan={setSelectedLoan}
-                  angsuranType={forms.paymentOption}
-                  isTooltipOpen={isTooltipOpen}
-                  isQualificationModalOpen={isQualificationModalOpen}
-                  closeTooltip={handleTooltipClose}
-                  handleClickButtonQualification={
-                    handleClickButtonQualification
-                  }
-                  formData={forms}
-                  insuranceAndPromoForAllTenure={insuranceAndPromoForAllTenure}
-                  setInsuranceAndPromoForAllTenure={
-                    setInsuranceAndPromoForAllTenure
-                  }
-                  calculationApiPayload={calculationApiPayload}
-                  setFinalLoan={setFinalLoan}
-                  pageOrigination={getPageOriginationForCountlyTracker()}
-                  onClickResultItemUpperInfoSection={() =>
-                    onClickResultItemUpperInfoSection()
-                  }
-                  carVariantList={carVariantList}
-                  handleChangeVariants={handleChangeVariantOnCalculationResult}
-                  onChangeInformation={onChangeInformation}
-                  isV2
-                />
-              </div>
+              <CalculationResult
+                handleRedirectToWhatsapp={handleRedirectToWhatsapp}
+                data={calculationResult}
+                selectedLoan={selectedLoan}
+                setSelectedLoan={setSelectedLoan}
+                angsuranType={forms.paymentOption}
+                isTooltipOpen={isTooltipOpen}
+                isQualificationModalOpen={isQualificationModalOpen}
+                closeTooltip={handleTooltipClose}
+                handleClickButtonQualification={handleClickButtonQualification}
+                formData={forms}
+                insuranceAndPromoForAllTenure={insuranceAndPromoForAllTenure}
+                setInsuranceAndPromoForAllTenure={
+                  setInsuranceAndPromoForAllTenure
+                }
+                calculationApiPayload={calculationApiPayload}
+                setFinalLoan={setFinalLoan}
+                pageOrigination={getPageOriginationForCountlyTracker()}
+                onClickResultItemUpperInfoSection={() =>
+                  onClickResultItemUpperInfoSection()
+                }
+                carVariantList={carVariantList}
+                handleChangeVariants={handleChangeVariantOnCalculationResult}
+                onChangeInformation={onChangeInformation}
+                isV2={true}
+              />
               {carRecommendations.length > 0 && (
                 <CarRecommendations
                   carRecommendationList={carRecommendations}
@@ -2179,7 +2180,7 @@ Kemampuan Finansialmu"
         <Toast
           width={343}
           text={'DP telah disesuaikan dengan varian mobil pilihan kamu.'}
-          open={false}
+          open={isChangedMaxDp}
         />
         <PopupResultRecommended
           open={isOpenPopupRecommended}

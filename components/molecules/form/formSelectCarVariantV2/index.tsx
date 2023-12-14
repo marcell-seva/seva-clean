@@ -167,8 +167,8 @@ export const FormSelectCarVariantV2: React.FC<FormSelectCarVariantProps> = ({
           return (
             <div style={{ cursor: 'pointer' }}>
               <IconChevronDown
-                width={25}
-                height={25}
+                width={24}
+                height={24}
                 color={'#13131B'}
                 alt="SEVA Dropdown Icon"
               />

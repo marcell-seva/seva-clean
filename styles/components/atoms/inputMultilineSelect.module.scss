@@ -35,6 +35,15 @@
   }
 }
 
+.inputAreaCalculationResult {
+  @extend .inputArea;
+  cursor: pointer !important;
+  &.hasNotSelectedValue {
+    padding: 34px 16px !important;
+  }
+  // width: 237px !important;
+}
+
 .inputField {
   width: 100%;
   height: 100%;
@@ -87,6 +96,15 @@
   color: #{$shades-grey-75};
 }
 
+.selectedTextWithElipsis {
+  @extend .selectedText;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
 .selectedLabel {
   font-family: var(--open-sans);
   font-weight: 400;
@@ -96,6 +114,10 @@
   margin-top: 4px;
 }
 
+.selectedLabelCalculationResult {
+  @extend .selectedLabel;
+  margin-top: 2px !important;
+}
 .iconWrapper {
   position: absolute;
   right: 16px;

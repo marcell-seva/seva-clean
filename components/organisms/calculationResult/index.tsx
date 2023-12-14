@@ -34,6 +34,7 @@ import Image from 'next/image'
 import clsx from 'clsx'
 import CardVariantOptions from '../cardVariantOptions'
 import { ModelVariant } from 'utils/types/carVariant'
+import { useMediaQuery } from 'react-responsive'
 
 export const LogoAcc = '/revamp/icon/logo-acc.webp'
 export const LogoTaf = '/revamp/icon/logo-taf.webp'
@@ -97,6 +98,7 @@ export const CalculationResult = ({
   const [openTooltipInsurance, setOpenTooltipInsurance] = useState(false)
   const [selectedCalculatePromo, setSelectedCalculatePromo] =
     useState<LoanCalculatorInsuranceAndPromoType | null>()
+  const isMobileSM = useMediaQuery({ query: '(max-height: 400px)' })
 
   const trackCountlyClickResultItem = (
     selectedTenureData: SpecialRateListWithPromoType,
@@ -181,7 +183,11 @@ export const CalculationResult = ({
     if (isTooltipOpen) {
       scrollToSection()
     }
-    window.scrollTo({ top: 1480, behavior: 'smooth' }) // scroll button cta on bottom
+    if (isMobileSM) {
+      window.scrollTo({ top: 1455, behavior: 'smooth' }) // scroll button cta on bottom
+    } else {
+      window.scrollTo({ top: 1470, behavior: 'smooth' })
+    }
   }, [isTooltipOpen, data])
 
   const goToButton = useRef<null | HTMLDivElement>(null)

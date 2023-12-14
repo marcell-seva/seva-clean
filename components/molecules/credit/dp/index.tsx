@@ -46,6 +46,8 @@ interface DpFormProps {
   finalMinInputDp: number
   finalMaxInputDp: number
   setIsOpenEducationalPopup?: (value: boolean) => void
+  onCalculationResult?: boolean
+  setIsChangedMaxDp?: (value: boolean) => void
 }
 
 const DpForm: React.FC<DpFormProps> = ({
@@ -67,6 +69,8 @@ const DpForm: React.FC<DpFormProps> = ({
   finalMinInputDp,
   finalMaxInputDp,
   setIsOpenEducationalPopup,
+  onCalculationResult = false,
+  setIsChangedMaxDp,
 }) => {
   const router = useRouter()
   const { v } = router.query
@@ -115,14 +119,29 @@ const DpForm: React.FC<DpFormProps> = ({
       )
       handleChange(name, initialDpValue)
     } else {
-      const initialDpValue = finalMinInputDp > 0 ? finalMinInputDp : 0
-      setFormattedValue(formatCurrency(initialDpValue))
-      onChange(
-        initialDpValue,
-        calculatePercentage(initialDpValue, carPriceMinusDiscount),
-        getDpPercentageByMapping(initialDpValue),
-      )
-      handleChange(name, initialDpValue)
+      if (onCalculationResult) {
+        let initialDpValue = carPriceMinusDiscount * 0.2
+        const maksDp = carPriceMinusDiscount * 0.9
+        if (value > maksDp) {
+          initialDpValue = carPriceMinusDiscount * 0.9
+        }
+        setFormattedValue(formatCurrency(initialDpValue))
+        onChange(
+          initialDpValue,
+          calculatePercentage(initialDpValue, carPriceMinusDiscount),
+          getDpPercentageByMapping(initialDpValue),
+        )
+        handleChange(name, initialDpValue)
+      } else {
+        const initialDpValue = carPriceMinusDiscount * 0.2
+        setFormattedValue(formatCurrency(initialDpValue))
+        onChange(
+          initialDpValue,
+          calculatePercentage(initialDpValue, carPriceMinusDiscount),
+          getDpPercentageByMapping(initialDpValue),
+        )
+        handleChange(name, initialDpValue)
+      }
     }
   }, [carPriceMinusDiscount, finalMaxInputDp, finalMinInputDp])
 
