@@ -58,6 +58,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'setirkanan.oss-ap-southeast-5.aliyuncs.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'setirkanantesting.oss-ap-southeast-5.aliyuncs.com',
+      },
     ],
   },
 
