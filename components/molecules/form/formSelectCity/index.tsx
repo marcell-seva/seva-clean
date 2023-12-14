@@ -7,6 +7,7 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { FormControlValue, Location, Option } from 'utils/types'
 import { LocalStorageKey } from 'utils/enum'
 import { getCities } from 'services/api'
+import { defaultCity as defaultCityOtr } from 'utils/hooks/useGetCity'
 
 const searchOption = {
   keys: ['label'],
@@ -45,7 +46,7 @@ export default function FormSelectCity({
 
   const [cityOtr, saveCityOtrToLocalStorage] = useLocalStorage<Location | null>(
     LocalStorageKey.CityOtr,
-    defaultCity,
+    defaultCityOtr,
   )
 
   const [inputValue, setInputValue] = useState(cityOtr?.cityName ?? '')
