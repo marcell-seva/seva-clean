@@ -120,10 +120,13 @@ const DpForm: React.FC<DpFormProps> = ({
       handleChange(name, initialDpValue)
     } else {
       if (onCalculationResult) {
-        let initialDpValue = carPriceMinusDiscount * 0.2
-        const maksDp = carPriceMinusDiscount * 0.9
+        let initialDpValue = finalMinInputDp > 0 ? finalMinInputDp : 0
+        const maksDp = finalMaxInputDp
         if (value > maksDp) {
-          initialDpValue = carPriceMinusDiscount * 0.9
+          initialDpValue = finalMaxInputDp
+          setIsChangedMaxDp && setIsChangedMaxDp(true)
+        } else if (value < initialDpValue) {
+          setIsChangedMaxDp && setIsChangedMaxDp(true)
         }
         setFormattedValue(formatCurrency(initialDpValue))
         onChange(
@@ -133,7 +136,7 @@ const DpForm: React.FC<DpFormProps> = ({
         )
         handleChange(name, initialDpValue)
       } else {
-        const initialDpValue = carPriceMinusDiscount * 0.2
+        const initialDpValue = finalMinInputDp > 0 ? finalMinInputDp : 0
         setFormattedValue(formatCurrency(initialDpValue))
         onChange(
           initialDpValue,
