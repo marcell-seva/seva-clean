@@ -90,6 +90,14 @@
   height: 197px;
 }
 
+.bottomSheetStart [data-rsbs-overlay] {
+  @include centeredWithMaxWidth;
+  height: 85%;
+}
+
+.bottomSheetStart [data-rsbs-backdrop] {
+  @include centeredWithMaxWidth;
+}
 .bottomSheetDismiss [data-rsbs-overlay] {
   @include centeredWithMaxWidth;
   height: auto;
