@@ -217,7 +217,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
                     highlightSelectedOption &&
                     (item.value === value || item.label === value),
                 })}
-                key={index}
+                key={item?.value?.toString() ?? index}
                 onMouseDown={
                   (item as OptionWithImage<string>).disabled
                     ? (e) => onFocus(e)
