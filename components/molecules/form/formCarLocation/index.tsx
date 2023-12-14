@@ -29,7 +29,7 @@ export const FormCarLocation = ({
 }: CarLocationProps) => {
   const { funnelQuery } = useFunnelQueryUsedCarData()
   const [chosen, setChosen] = useState(
-    funnelQuery.city_id ? funnelQuery.city_id : [],
+    funnelQuery.cityId ? funnelQuery.cityId : [],
   )
   const [totalChosen, setTotalChosen] = useState(0)
   const [changeIcon, setChangeIcon] = useState(false)

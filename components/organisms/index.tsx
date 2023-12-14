@@ -72,6 +72,8 @@ import { AlternativeUsedCarRecomendationCard } from './alternativeUsedCarRecomen
 import { PopupResultRecommended } from './popupResultFilter/resultRecommended'
 import { CarGallery } from './tabContent/upper/CarGallery'
 import PdpUsedCarUpperSection from './PdpUsedCarUpperSection'
+import { InternalServerErrorPageContent } from './internalServerErrorPageContent'
+import { NotFoundErrorPageContent } from './notFoundErrorPageContent'
 import { RefinancingLandingPageContent } from './refinancingLandingPageContent'
 import { TemanSevaPageHeader } from './temanSevaPageHeader'
 
@@ -136,11 +138,6 @@ export {
   HomepageAdaSEVAdiOTO,
   LeadsFormAdaOTOdiSEVA,
   AdaOTOdiSEVALeadsForm,
-  InformationSection,
-  Login,
-  Register,
-  Profile,
-  PopupResultRecommended,
   InternalServerErrorPageContent,
   NotFoundErrorPageContent,
   UsedCarDetailCard,

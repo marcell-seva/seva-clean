@@ -53,7 +53,6 @@ import {
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import { RouteName } from 'utils/navigate'
-import { useCar } from 'services/context/carContext'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 import { useUtils } from 'services/context/utilsContext'

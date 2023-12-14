@@ -137,6 +137,5 @@ export const collections = {
   omnicom,
   temanSeva,
   usedCar,
-  temanSeva,
   refinancing,
 }

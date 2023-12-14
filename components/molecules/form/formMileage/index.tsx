@@ -4,6 +4,8 @@ import { Input, Slider } from 'antd'
 import { addSeparator, filterNonDigitCharacters } from 'utils/stringUtils'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
 import elementId from 'helpers/elementIds'
+import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
+import { LanguageCode } from 'utils/enum'
 
 type FormMileageProps = {
   minMaxMileage?: any
@@ -24,6 +26,13 @@ export const FormMileage = ({
   isButtonClick,
 }: FormMileageProps) => {
   const { funnelQuery } = useFunnelQueryUsedCarData()
+
+  const separatorThousand = (value: any) => {
+    return replacePriceSeparatorByLocalization(
+      filterNonDigitCharacters(value.toString()),
+      LanguageCode.id,
+    )
+  }
 
   const [minDefault] = useState(minMaxMileage.minMileageValue)
   const [maxDefault] = useState(minMaxMileage.maxMileageValue)
