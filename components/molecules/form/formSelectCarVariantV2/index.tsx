@@ -164,16 +164,29 @@ export const FormSelectCarVariantV2: React.FC<FormSelectCarVariantProps> = ({
         onChoose={onChooseHandler}
         isClearable={false}
         rightIcon={(state) => {
-          return (
-            <div style={{ cursor: 'pointer' }}>
-              <IconChevronDown
-                width={24}
-                height={24}
-                color={'#13131B'}
-                alt="SEVA Dropdown Icon"
-              />
-            </div>
-          )
+          if (state.isOpen) {
+            return (
+              <div style={{ cursor: 'pointer', rotate: '180deg' }}>
+                <IconChevronDown
+                  width={24}
+                  height={24}
+                  color={'#13131B'}
+                  alt="SEVA Dropdown Icon"
+                />
+              </div>
+            )
+          } else {
+            return (
+              <div style={{ cursor: 'pointer' }}>
+                <IconChevronDown
+                  width={24}
+                  height={24}
+                  color={'#13131B'}
+                  alt="SEVA Dropdown Icon"
+                />
+              </div>
+            )
+          }
         }}
         disabled={!selectedModel || modelError}
         maxHeightDropdown="365px"
