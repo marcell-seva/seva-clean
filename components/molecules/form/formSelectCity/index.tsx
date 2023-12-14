@@ -45,12 +45,7 @@ export default function FormSelectCity({
 
   const [cityOtr, saveCityOtrToLocalStorage] = useLocalStorage<Location | null>(
     LocalStorageKey.CityOtr,
-    {
-      cityName: 'Jakarta Pusat',
-      cityCode: 'jakarta',
-      province: 'DKI Jakarta',
-      id: '118',
-    },
+    defaultCity,
   )
 
   const [inputValue, setInputValue] = useState(cityOtr?.cityName ?? '')

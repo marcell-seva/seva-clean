@@ -1,6 +1,6 @@
 import Fuse from 'fuse.js'
 import elementId from 'helpers/elementIds'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { formatPriceNumberThousandDivisor } from 'utils/numberUtils/numberUtils'
 import { IconChevronDown, IconRemove, Label } from 'components/atoms'
 import { InputMultilineSelect } from 'components/atoms/inputMultilineSelect'
@@ -62,6 +62,9 @@ export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
   >([])
   const [suggestionsLists, setSuggestionsLists] = useState<any>([])
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
+  const [disableInput, setDisableInput] = useState(false)
+
+  console.log('tes', !selectedModel, modelError)
 
   useEffect(() => {
     setInputValue(value)
@@ -165,6 +168,10 @@ export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
     }
   }, [inputValue])
 
+  useEffect(() => {
+    setDisableInput(!selectedModel || modelError)
+  }, [selectedModel, modelError])
+
   return (
     <>
       <div className={styles.labelWrapper}>
@@ -208,7 +215,7 @@ export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
             )
           }
         }}
-        disabled={!selectedModel || modelError}
+        disabled={disableInput}
         maxHeightDropdown="365px"
         datatestid={elementId.PDP.Drowpdown.CarVariant}
         onShowDropdown={onShowDropdown}

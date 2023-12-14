@@ -2116,7 +2116,7 @@ export const CreditTabV2 = () => {
           {/* TODO : Implement carPrice by Car Variant Price */}
           <div id="loan-calculator-form-dp">
             <DpForm
-              label="Kemampuan DP"
+              label="Down Payment (DP)"
               value={dpValue}
               percentage={dpPercentage}
               onChange={handleDpChange}
