@@ -47,7 +47,6 @@ import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 import { getMinMaxPrice, postCheckTemanSeva } from 'services/api'
-import { isCurrentCitySameWithSSR } from 'utils/hooks/useGetCity'
 
 const Spin = dynamic(() => import('antd/lib/spin'), { ssr: false })
 const LeadsFormPrimary = dynamic(() =>
@@ -165,6 +164,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     loanRank: 'Null',
   })
   const user: string | null = getLocalStorage(LocalStorageKey.sevaCust)
+  const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
   const isUsingFilterFinancial =
     !!filterStorage?.age &&
@@ -203,7 +203,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   }
 
   const cleanEffect = () => {
-    if (!isCurrentCitySameWithSSR()) {
+    if (!isCurrentCitySameWithSSR) {
       saveRecommendation([])
     }
     setPage(1)
@@ -528,7 +528,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       })
     }
 
-    if (!isCurrentCitySameWithSSR() || recommendation.length === 0) {
+    if (!isCurrentCitySameWithSSR || recommendation.length === 0) {
       const params = new URLSearchParams()
       getCity().cityCode && params.append('city', getCity().cityCode as string)
 

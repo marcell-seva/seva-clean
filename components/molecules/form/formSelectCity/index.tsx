@@ -6,7 +6,6 @@ import { LabelWithTooltip } from 'components/molecules'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { FormControlValue, Location, Option } from 'utils/types'
 import { LocalStorageKey } from 'utils/enum'
-import { useUtils } from 'services/context/utilsContext'
 import { getCities } from 'services/api'
 
 const searchOption = {
@@ -43,7 +42,7 @@ export default function FormSelectCity({
 }: FormSelectCityProps) {
   const [cityListApi, setCityListApi] = useState<Array<Location>>([])
   const [defaultCity, setDefaultCity] = useState<Location | null>(null)
-  const { saveCity } = useUtils()
+
   const [cityOtr, saveCityOtrToLocalStorage] = useLocalStorage<Location | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -134,7 +133,6 @@ export default function FormSelectCity({
     if (selectedCity) {
       handleChange(name, selectedCity)
       saveCityOtrToLocalStorage(selectedCity)
-      saveCity(selectedCity)
       window.dispatchEvent(new Event('storage'))
     }
   }

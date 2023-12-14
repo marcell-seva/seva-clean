@@ -32,6 +32,8 @@ import {
   getAnnouncementBox as gab,
   getUsedCarSearch,
 } from 'services/api'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
+import { default as customAxiosGet } from 'services/api/get'
 
 const NewCarResultPage = ({
   meta,
@@ -182,7 +184,7 @@ export const getServerSideProps: GetServerSideProps<{
       cityRes,
       dataSearchRes,
     ]: any = await Promise.all([
-      axios.get(footerTagBaseApi + metabrand),
+      customAxiosGet(footerTagBaseApi + metabrand),
       getMenu(),
       getMobileHeaderMenu(),
       getMobileFooterMenu(),
@@ -190,7 +192,7 @@ export const getServerSideProps: GetServerSideProps<{
       getUsedCarSearch('', { params }),
     ])
 
-    const footerData = fetchFooter.data.data
+    const footerData = fetchFooter.data
 
     if (!priceRangeGroup) {
       const params = new URLSearchParams()
@@ -251,17 +253,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataSearchUsedCar: dataSearchRes.data,
       },
     }
-  } catch (e) {
-    return {
-      props: {
-        meta,
-        dataDesktopMenu: [],
-        dataMobileMenu: [],
-        dataFooter: [],
-        dataCities: [],
-        isSsrMobile: getIsSsrMobile(ctx),
-        isSsrMobileLocal: getIsSsrMobile(ctx),
-      },
-    }
+  } catch (e: any) {
+    return serverSideManualNavigateToErrorPage(e?.response?.status)
   }
 }

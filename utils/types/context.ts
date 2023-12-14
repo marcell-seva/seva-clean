@@ -94,6 +94,7 @@ export interface FunnelQuery extends Filter {
   perPage?: string
   modelName?: string[]
   search?: string
+  modelFullName?: string[]
 }
 
 export interface UTM {

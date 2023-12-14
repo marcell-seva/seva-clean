@@ -34,6 +34,8 @@ import {
   getMinMaxPrice,
   getUsedCarSearch,
 } from 'services/api'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
+import { default as customAxiosGet } from 'services/api/get'
 
 const NewCarResultPage = ({
   meta,
@@ -75,16 +77,10 @@ const NewCarResultPage = ({
   const getUrlBrand = router.query.brand?.toString() ?? ''
   const carBrand = getUrlBrand.charAt(0).toUpperCase() + getUrlBrand.slice(1)
 
-  const metaTitle = isBodyType(carBrand)
-    ? `Daftar Mobil Baru ${carBrand.toUpperCase()} ${todayDate.getFullYear()} - Promo Cicilan Bulan ${monthId(
-        todayDate.getMonth(),
-      )} | SEVA`
-    : `Harga OTR ${carBrand} ${todayDate.getFullYear()} - Promo Cicilan bulan ${monthId(
-        todayDate.getMonth(),
-      )} | SEVA `
-  const metaDesc = isBodyType(carBrand)
-    ? `Beli mobil ${carBrand.toUpperCase()} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
-    : `Beli mobil baru ${carBrand} ${todayDate.getFullYear()} secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
+  const metaTitle = `Harga OTR ${carBrand} ${todayDate.getFullYear()} - Promo Cicilan bulan ${monthId(
+    todayDate.getMonth(),
+  )} | SEVA `
+  const metaDesc = `Beli mobil baru ${carBrand} ${todayDate.getFullYear()} secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
 
   return (
     <>
@@ -125,56 +121,6 @@ const getBrand = (brand: string | string[] | undefined) => {
   } else {
     return ''
   }
-}
-
-export const isBrand = (brand: string | string[] | undefined) => {
-  if (Array.isArray(brand)) {
-    return brand.every(
-      (item) =>
-        item.toLowerCase() === 'toyota' ||
-        item.toLowerCase() === 'isuzu' ||
-        item.toLowerCase() === 'daihatsu' ||
-        item.toLowerCase() === 'peugeot' ||
-        item.toLowerCase() === 'bmw' ||
-        item.toLowerCase() === 'hyundai',
-    )
-  } else if (brand) {
-    const arrSplit = brand?.split(',')
-    return arrSplit.every(
-      (item) =>
-        item.toLowerCase() === 'toyota' ||
-        item.toLowerCase() === 'isuzu' ||
-        item.toLowerCase() === 'daihatsu' ||
-        item.toLowerCase() === 'peugeot' ||
-        item.toLowerCase() === 'bmw' ||
-        item.toLowerCase() === 'hyundai',
-    )
-  }
-  return false
-}
-
-export const isBodyType = (bodyType: string | string[] | undefined) => {
-  if (Array.isArray(bodyType)) {
-    return bodyType.every(
-      (item) =>
-        item.toLowerCase() === 'mpv' ||
-        item.toLowerCase() === 'suv' ||
-        item.toLowerCase() === 'sedan' ||
-        item.toLowerCase() === 'hatchback' ||
-        item.toLowerCase() === 'sport',
-    )
-  } else if (bodyType) {
-    const arrType = bodyType?.split(',')
-    return arrType.every(
-      (item) =>
-        item.toLowerCase() === 'mpv' ||
-        item.toLowerCase() === 'suv' ||
-        item.toLowerCase() === 'sedan' ||
-        item.toLowerCase() === 'hatchback' ||
-        item.toLowerCase() === 'sport',
-    )
-  }
-  return false
 }
 
 export const getServerSideProps: GetServerSideProps<{
@@ -242,8 +188,8 @@ export const getServerSideProps: GetServerSideProps<{
       cityRes,
       dataSearchRes,
     ] = await Promise.all([
-      axios.get(metaTagBaseApi + metabrand),
-      axios.get(footerTagBaseApi + metabrand),
+      customAxiosGet(metaTagBaseApi + metabrand),
+      customAxiosGet(footerTagBaseApi + metabrand),
       getMenu(),
       getMobileHeaderMenu(),
       getMobileFooterMenu(),
@@ -251,8 +197,8 @@ export const getServerSideProps: GetServerSideProps<{
       getUsedCarSearch('', { params }),
     ])
 
-    const metaData = fetchMeta.data.data
-    const footerData = fetchFooter.data.data
+    const metaData = fetchMeta.data
+    const footerData = fetchFooter.data
 
     if (!priceRangeGroup) {
       const params = new URLSearchParams()
@@ -269,16 +215,12 @@ export const getServerSideProps: GetServerSideProps<{
       ...(search && { search: String(search) }),
       ...(downPaymentAmount && { downPaymentType: 'amount' }),
       ...(downPaymentAmount && { downPaymentAmount }),
-      ...(!isBodyType(brand) && {
+      ...(brand && {
         brand: String(brand)
           ?.split(',')
           .map((item) => getCarBrand(item)),
       }),
-      ...(bodyType
-        ? { bodyType: String(bodyType)?.split(',') }
-        : isBodyType(brand)
-        ? { bodyType: String(brand)?.toUpperCase()?.split(',') }
-        : {}),
+      ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
       ...(priceRangeGroup
         ? { priceRangeGroup }
         : {
@@ -318,15 +260,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataSearchUsedCar: dataSearchRes.data,
       },
     }
-  } catch (e) {
-    return {
-      props: {
-        meta,
-        dataDesktopMenu: [],
-        dataMobileMenu: [],
-        dataFooter: [],
-        dataCities: [],
-      },
-    }
+  } catch (e: any) {
+    return serverSideManualNavigateToErrorPage(e?.response?.status)
   }
 }

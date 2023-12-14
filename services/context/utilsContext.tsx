@@ -22,8 +22,6 @@ export type UtilsContextType = {
   saveDataAnnouncementBox: (data: AnnouncementBoxDataType | undefined) => void
   cities: CityOtrOption[]
   saveCities: (data: CityOtrOption[]) => void
-  city: CityOtrOption | undefined
-  saveCity: (data: CityOtrOption) => void
   agent: SalesAgent[]
   saveAgent: (data: SalesAgent[]) => void
   articles: ArticleData[]
@@ -87,8 +85,6 @@ export const UtilsContextProvider = ({ children }: any) => {
   const saveDataSearchUsedCar = (searchData: SearchUsedCar[] | []) =>
     setDataSearchUsedCar(searchData)
 
-  const saveCity = (cityData: CityOtrOption | undefined) => setCity(cityData)
-
   const saveDataLeads = (leadsData: CarRecommendation | undefined) =>
     setDataLeads(leadsData)
 
@@ -129,8 +125,6 @@ export const UtilsContextProvider = ({ children }: any) => {
         saveDataAnnouncementBox,
         cities,
         saveCities,
-        city,
-        saveCity,
         agent,
         saveAgent,
         articles,
