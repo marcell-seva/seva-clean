@@ -46,13 +46,15 @@ const EducationalContentPopupUsedCar = ({
             <br />
             <br />
           </p>
-          <Button
-            version={ButtonVersion.PrimaryDarkBlue}
-            onClick={onClickClose}
-            size={ButtonSize.Big}
-          >
-            Oke, Saya Mengerti
-          </Button>
+          <div className={styles.wrapperButton}>
+            <Button
+              version={ButtonVersion.PrimaryDarkBlue}
+              onClick={onClickClose}
+              size={ButtonSize.Big}
+            >
+              Oke, Saya Mengerti
+            </Button>
+          </div>
         </div>
       </div>
     </div>

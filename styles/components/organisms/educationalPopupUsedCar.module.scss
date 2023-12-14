@@ -7,15 +7,6 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #{$shades-grey-25};
-    border-radius: 20px;
-    right: -20px;
-  }
 }
 
 .popupSubHeader {
@@ -90,37 +81,17 @@
   height: 550px;
   display: flex;
   flex-direction: column;
-  -webkit-overflow-scrolling: touch;
   overflow-y: auto;
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #{$shades-grey-25};
-    border-radius: 20px;
-    right: -20px;
-  }
 }
 
 .container {
-  height: 526px;
+  height: 394px;
   display: flex;
   flex-direction: column;
-  overflow: scroll;
-  -webkit-overflow-scrolling: touch;
+  overflow: auto;
 
   padding-bottom: 20px;
   padding-top: 8px;
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #{$shades-grey-25};
-    border-radius: 20px;
-    right: -20px;
-  }
 }
 
 .contentPromo {
@@ -131,6 +102,10 @@
 .bottomSheetSmall [data-rsbs-overlay] {
   @include centeredWithMaxWidth;
   height: 394px;
+}
+
+.bottomSheetSmall [data-rsbs-scroll] {
+  overflow: hidden;
 }
 
 .bottomSheetSmall [data-rsbs-backdrop] {
@@ -188,7 +163,8 @@
 }
 .wrapperButton {
   display: flex;
-  align-items: center;
+  padding: 32px 8px 24px 8px;
   justify-content: center;
-  margin-bottom: 15px;
+  align-items: center;
+  gap: 16px;
 }
