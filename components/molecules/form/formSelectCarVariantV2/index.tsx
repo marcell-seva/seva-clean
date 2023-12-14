@@ -123,11 +123,6 @@ export const FormSelectCarVariantV2: React.FC<FormSelectCarVariantProps> = ({
     setInputValue(variantEmptyValue)
   }
 
-  const onClickArrowHandler = (event: any) => {
-    event.preventDefault()
-    inputRef.current?.focus()
-  }
-
   useEffect(() => {
     const options = sortedVariantCarList()
     setCarVariantOptionsFull(options)
@@ -169,32 +164,16 @@ export const FormSelectCarVariantV2: React.FC<FormSelectCarVariantProps> = ({
         onChoose={onChooseHandler}
         isClearable={false}
         rightIcon={(state) => {
-          if (state.isOpen) {
-            return (
-              <div
-                onMouseDown={onResetHandler}
-                onClick={onResetHandler}
-                style={{ cursor: 'pointer' }}
-              >
-                <IconRemove width={25} height={25} color={'#13131B'} />
-              </div>
-            )
-          } else {
-            return (
-              <div
-                onMouseDown={onClickArrowHandler}
-                onClick={onClickArrowHandler}
-                style={{ cursor: 'pointer' }}
-              >
-                <IconChevronDown
-                  width={25}
-                  height={25}
-                  color={'#13131B'}
-                  alt="SEVA Dropdown Icon"
-                />
-              </div>
-            )
-          }
+          return (
+            <div style={{ cursor: 'pointer' }}>
+              <IconChevronDown
+                width={25}
+                height={25}
+                color={'#13131B'}
+                alt="SEVA Dropdown Icon"
+              />
+            </div>
+          )
         }}
         disabled={!selectedModel || modelError}
         maxHeightDropdown="365px"
@@ -202,6 +181,7 @@ export const FormSelectCarVariantV2: React.FC<FormSelectCarVariantProps> = ({
         onShowDropdown={onShowDropdown}
         isError={isError}
         isAnimateShakeOnError={true}
+        isOnCalculationResult={true}
       />
     </>
   )

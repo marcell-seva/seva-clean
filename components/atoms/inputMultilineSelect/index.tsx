@@ -39,6 +39,7 @@ interface Props<T extends FormControlValue> {
   datatestid?: string
   onShowDropdown?: () => void
   isAnimateShakeOnError?: boolean
+  isOnCalculationResult?: boolean
 }
 
 const forwardedInputSelect = <T extends FormControlValue>(
@@ -68,6 +69,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
     datatestid,
     onShowDropdown,
     isAnimateShakeOnError = false,
+    isOnCalculationResult = false,
   }: Props<T>,
   ref?: ForwardedRef<HTMLInputElement>,
 ) => {
@@ -147,6 +149,13 @@ const forwardedInputSelect = <T extends FormControlValue>(
           [styles.error]: !isFocused && isError,
           ['shake-animation-X']: isError && isAnimateShakeOnError,
         })}
+        onClick={() => {
+          if (isOnCalculationResult) {
+            console.log('asdf')
+            setIsFocused(false)
+            openDropdown().onOpen(!isOpenDropdown)
+          }
+        }}
       >
         {renderValue()}
         <input
@@ -191,7 +200,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
               rightIcon
             )
           ) : (
-            <IconSearch width={24} height={24} color={'#13131B'} />
+            rightIcon(<IconSearch width={24} height={24} color={'#13131B'} />)
           )}
         </div>
       </div>
