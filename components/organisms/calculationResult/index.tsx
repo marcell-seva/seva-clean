@@ -178,16 +178,19 @@ export const CalculationResult = ({
 
     return ''
   }
-
+  const scrollToBottom = () => {
+    if (!window.location.pathname.includes('/kredit'))
+      if (isMobileSM) {
+        window.scrollTo({ top: 1455, behavior: 'smooth' }) // scroll button cta on bottom
+      } else {
+        window.scrollTo({ top: 1470, behavior: 'smooth' })
+      }
+  }
   useEffect(() => {
     if (isTooltipOpen) {
       scrollToSection()
     }
-    if (isMobileSM) {
-      window.scrollTo({ top: 1455, behavior: 'smooth' }) // scroll button cta on bottom
-    } else {
-      window.scrollTo({ top: 1470, behavior: 'smooth' })
-    }
+    scrollToBottom()
   }, [isTooltipOpen, data])
 
   const goToButton = useRef<null | HTMLDivElement>(null)

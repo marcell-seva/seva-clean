@@ -582,7 +582,6 @@ export const CreditTabV2 = () => {
     if (forms.model?.modelId && forms.city) {
       fetchCarVariant()
     }
-
     if (isChangedMaxDp) {
       setTimeout(() => {
         setIsChangedMaxDp(false)
@@ -1376,7 +1375,6 @@ export const CreditTabV2 = () => {
     value: any,
   ) => {
     setIsLoadingAfterChangeVariant(true)
-    setIsUserChooseVariantDropdown(true)
     setForms({
       ...forms,
       [name]: value,

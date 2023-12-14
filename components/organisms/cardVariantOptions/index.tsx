@@ -38,8 +38,10 @@ const CardVariantOptions = ({
       <h3 className={styles.title}>Simulasi Cicilan</h3>
       <div className={styles.cardContent}>
         <div className={styles.wrapperCard}>
-          <span className={styles.textCarModel}>{selectedModel}</span>
-          <span className={styles.textCityName}>{' di ' + cityName}</span>
+          <p className={styles.wrapper}>
+            <span className={styles.textCarModel}>{selectedModel}</span>
+            <span className={styles.textCityName}>{' di ' + cityName}</span>
+          </p>
           <div className={styles.wrapperOptions}>
             <img src={carModelImage} alt="" />
             <FormSelectCarVariantV2

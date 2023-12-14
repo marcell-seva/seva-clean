@@ -57,6 +57,13 @@
   line-height: 16px;
   color: #878d98;
 }
+.wrapper {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
 .textChangeDP {
   font-family: var(--open-sans);
   color: #246ed4;

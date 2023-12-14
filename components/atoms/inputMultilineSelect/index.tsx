@@ -177,7 +177,12 @@ const forwardedInputSelect = <T extends FormControlValue>(
   }
 
   return (
-    <div className={styles.container}>
+    <div
+      className={clsx({
+        [styles.container]: !isOnCalculationResult,
+        [styles.containerCalculationResult]: isOnCalculationResult,
+      })}
+    >
       <div
         className={clsx({
           [styles.inputArea]: !isOnCalculationResult,
@@ -241,7 +246,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
               rightIcon
             )
           ) : (
-            rightIcon(<IconSearch width={24} height={24} color={'#13131B'} />)
+            <IconSearch width={24} height={24} color={'#13131B'} />
           )}
         </div>
       </div>
