@@ -114,7 +114,6 @@ import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { IncomeAgeSection } from 'components/molecules/incomAgeSection'
 import { useUtils } from 'services/context/utilsContext'
-import EducationalContentPopup from 'components/organisms/educationalContentPopup'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -2144,6 +2143,8 @@ export const CreditTabV2 = () => {
               emitOnAfterChangeDpSlider={onAfterChangeDpSlider}
               finalMinInputDp={finalMinInputDp}
               finalMaxInputDp={finalMaxInputDp}
+              labelWithCta="Pelajari Lebih Lanjut"
+              setIsOpenEducationalPopup={setIsOpenEducationalDpPopup}
             />
           </div>
           <div id="loan-calculator-form-installment-type">
@@ -2155,6 +2156,8 @@ export const CreditTabV2 = () => {
               }
               handleChange={handleChange}
               value={forms.paymentOption}
+              labelWithCta="Pelajari Lebih Lanjut"
+              setIsOpenEducationalPopup={setIsOpenEducationalPaymentTypePopup}
             />
             {isValidatingEmptyField && !forms.paymentOption
               ? renderErrorMessageEmpty()
