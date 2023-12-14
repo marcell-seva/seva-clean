@@ -43,14 +43,12 @@ export const FormSelectTypeCar = ({
     if (isCheckedTypeQuery.includes(key)) {
       setIsCheckedTypeQuery(isCheckedTypeQuery.filter((item) => item !== key))
       setIsCheckedType(isCheckedTypeQuery.filter((item) => item !== key))
-      paramQuery.bodyType = isCheckedTypeQuery.filter((item) => item !== key)
     } else {
       setIsCheckedTypeQuery(isCheckedTypeQuery.concat(key))
       setIsCheckedType(isCheckedTypeQuery.concat(key))
-      paramQuery.bodyType = isCheckedTypeQuery.concat(key)
     }
   }
-  const paramQuery = funnelQuery
+
   const carList: CarButtonProps[] = [
     {
       key: 'MPV',
@@ -89,14 +87,12 @@ export const FormSelectTypeCar = ({
       setIsCheckedTypeQuery([])
       // setResetTmp(false)
       // setIsCheckedType([])
-      // paramQuery.bodyType = []
     }
 
     if (!isApplied && bodyType && bodyType.length === 0) {
       setIsCheckedTypeQuery([])
     } else if (funnelQuery.bodyType && !isResetFilter && isApplied) {
       setIsCheckedType(funnelQuery.bodyType)
-      paramQuery.bodyType = funnelQuery.bodyType
     }
     if (
       isButtonClick &&
