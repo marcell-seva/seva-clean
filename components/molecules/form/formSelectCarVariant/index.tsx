@@ -64,8 +64,6 @@ export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
   const [disableInput, setDisableInput] = useState(false)
 
-  console.log('tes', !selectedModel, modelError)
-
   useEffect(() => {
     setInputValue(value)
     setLastChoosenValue(value)

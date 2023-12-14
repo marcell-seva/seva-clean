@@ -189,7 +189,7 @@ export const CreditTabV2 = () => {
     LocalStorageKey.CityOtr,
     defaultCity,
   )
-  const { cities } = useUtils()
+  const { city } = useUtils()
   const [kkForm, setKKForm] = useLocalStorage<FormLCState | null>(
     LocalStorageKey.KalkulatorKreditForm,
     null,
@@ -548,7 +548,7 @@ export const CreditTabV2 = () => {
     }
 
     fetch()
-  }, [forms.variant?.variantId, cities])
+  }, [forms.variant?.variantId, city])
 
   useEffect(() => {
     if (!forms.age || !forms.monthlyIncome) {

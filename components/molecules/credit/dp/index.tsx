@@ -96,7 +96,7 @@ const DpForm: React.FC<DpFormProps> = ({
           ? parseInt(kkForm?.downPaymentAmount)
           : 0
       const initialDpValue =
-        finalMinInputDp > dpValue
+        finalMinInputDp > 0 && finalMinInputDp > dpValue
           ? finalMinInputDp
           : finalMaxInputDp < dpValue
           ? finalMaxInputDp
@@ -115,7 +115,7 @@ const DpForm: React.FC<DpFormProps> = ({
       )
       handleChange(name, initialDpValue)
     } else {
-      const initialDpValue = finalMinInputDp
+      const initialDpValue = finalMinInputDp > 0 ? finalMinInputDp : 0
       setFormattedValue(formatCurrency(initialDpValue))
       onChange(
         initialDpValue,

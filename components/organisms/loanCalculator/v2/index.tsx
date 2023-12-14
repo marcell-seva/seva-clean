@@ -242,7 +242,7 @@ export function LoanCalculatorPageV2() {
   const dataCar: trackDataCarType | null = getSessionStorage(
     SessionStorageKey.PreviousCarDataBeforeLogin,
   )
-  const { dataAnnouncementBox, cities } = useUtils()
+  const { dataAnnouncementBox, cities, city } = useUtils()
   const [finalMinInputDp, setFinalMinInputDp] = useState(0)
   const [finalMaxInputDp, setFinalMaxInputDp] = useState(0)
   const [isOpenPopupRecommended, setIsOpenPopupRecommended] = useState(false)
@@ -1319,7 +1319,7 @@ export function LoanCalculatorPageV2() {
     }
 
     fetch()
-  }, [forms.variant?.variantId, cities])
+  }, [forms.variant?.variantId, city])
 
   useEffect(() => {
     if (isHasCarParameter && !shakeIncomeAge) {
