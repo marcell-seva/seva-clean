@@ -92,7 +92,8 @@
 
 .bottomSheetStart [data-rsbs-overlay] {
   @include centeredWithMaxWidth;
-  height: 85%;
+  height: auto;
+  top: 137px;
 }
 
 .bottomSheetStart [data-rsbs-backdrop] {
