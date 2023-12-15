@@ -119,13 +119,23 @@ const DpForm: React.FC<DpFormProps> = ({
       )
       handleChange(name, initialDpValue)
     } else {
+      const dpValueKKForm =
+        v !== '1' && financialData?.downPaymentAmount
+          ? Number(financialData.downPaymentAmount)
+          : kkForm?.downPaymentAmount
+          ? parseInt(kkForm?.downPaymentAmount)
+          : 0
       if (onCalculationResult) {
-        let initialDpValue = finalMinInputDp > 0 ? finalMinInputDp : 0
+        const initialDpValue =
+          dpValueKKForm > finalMaxInputDp
+            ? finalMaxInputDp
+            : dpValueKKForm < finalMinInputDp
+            ? finalMinInputDp
+            : dpValueKKForm
         const maksDp = finalMaxInputDp
-        if (value > maksDp) {
-          initialDpValue = finalMaxInputDp
+        if (dpValueKKForm > maksDp) {
           setIsChangedMaxDp && setIsChangedMaxDp(true)
-        } else if (value < initialDpValue) {
+        } else if (dpValueKKForm < initialDpValue) {
           setIsChangedMaxDp && setIsChangedMaxDp(true)
         }
         setFormattedValue(formatCurrency(initialDpValue))
@@ -136,7 +146,12 @@ const DpForm: React.FC<DpFormProps> = ({
         )
         handleChange(name, initialDpValue)
       } else {
-        const initialDpValue = finalMinInputDp > 0 ? finalMinInputDp : 0
+        const initialDpValue =
+          dpValueKKForm > finalMaxInputDp
+            ? finalMaxInputDp
+            : dpValueKKForm < finalMinInputDp
+            ? finalMinInputDp
+            : dpValueKKForm
         setFormattedValue(formatCurrency(initialDpValue))
         onChange(
           initialDpValue,

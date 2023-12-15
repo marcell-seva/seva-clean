@@ -1287,6 +1287,7 @@ export function LoanCalculatorPageV2() {
             : kkForm?.downPaymentAmount
             ? parseInt(kkForm?.downPaymentAmount)
             : 0
+
         let minDp = 0
         let maxDp = 0
         if (finalDpRange?.minAmount !== 0 && finalDpRange?.maxAmount !== 0) {
@@ -1318,7 +1319,7 @@ export function LoanCalculatorPageV2() {
 
     fetch()
   }, [forms.variant?.variantId, city])
-
+  console.log('isChangedMaxDp', isChangedMaxDp)
   useEffect(() => {
     if (isHasCarParameter && !shakeIncomeAge) {
       if (!forms.age || !forms.monthlyIncome) {
