@@ -17,7 +17,7 @@ const LabelMudah = ({
 }: Props) => {
   return (
     <div
-      className={`${styles.container} ${styles.labelResult} ${additionalClassname}`}
+      className={`${styles.container} ${additionalClassname}`}
       {...restProps}
     >
       {prefixComponent ? (
