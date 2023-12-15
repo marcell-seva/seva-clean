@@ -1182,10 +1182,17 @@ export function LoanCalculatorPageV2() {
       ...forms,
       [name]: value,
     })
-    const initialOtr =
-      getCarOtrNumber(value.otr) - getCarDiscountNumber(value.discount)
-    const updatedDPValue = initialOtr * 0.2
-    setIsLoadingAfterChangeVariant(true)
+    const minDp =
+      (getCarOtrNumber(value.otr) - getCarDiscountNumber(value.discount)) * 0.2
+    const maxDp =
+      (getCarOtrNumber(value.otr) - getCarDiscountNumber(value.discount)) * 0.9
+    const updatedDPValue =
+      Number(forms.downPaymentAmount) > maxDp
+        ? maxDp
+        : Number(forms.downPaymentAmount) < minDp
+        ? minDp
+        : forms.downPaymentAmount
+
     const payload: LoanCalculatorIncludePromoPayloadType = {
       brand: forms.model?.brandName ?? '',
       model: removeFirstWordFromString(forms.model?.modelName ?? ''),
@@ -1194,7 +1201,7 @@ export function LoanCalculatorPageV2() {
       city: forms.city.cityCode,
       discount: getCarDiscountNumber(value.discount),
       dp: mappedDpPercentage,
-      dpAmount: updatedDPValue,
+      dpAmount: Number(updatedDPValue),
       monthlyIncome: forms.monthlyIncome,
       otr: getCarOtrNumber(value.otr) - getCarDiscountNumber(value.discount),
       variantId: value.variantId,
@@ -1319,7 +1326,7 @@ export function LoanCalculatorPageV2() {
 
     fetch()
   }, [forms.variant?.variantId, city])
-  console.log('isChangedMaxDp', isChangedMaxDp)
+
   useEffect(() => {
     if (isHasCarParameter && !shakeIncomeAge) {
       if (!forms.age || !forms.monthlyIncome) {
