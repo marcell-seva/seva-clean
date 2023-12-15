@@ -1142,7 +1142,7 @@ export function LoanCalculatorPageV2() {
         setCalculationResult(filteredResult)
         generateSelectedInsuranceAndPromo(filteredResult, false)
         trackCountlyResult(filteredResult)
-        setKKForm(forms)
+        setKKForm({ ...kkForm, downPaymentAmount: updatedDPValue })
         // select loan with the longest tenure as default
         const selectedLoanInitialValue =
           filteredResult.sort(
