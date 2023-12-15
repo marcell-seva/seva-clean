@@ -479,32 +479,40 @@ const CarDetailCardMultiCredit = ({
             width={279}
             height={209}
           />
-          <LabelPromo
-            className={styles.labelCard}
-            onClick={() => onClickLabelPromo(recommendation.promo)}
-            regulerText={recommendation.promo ? '1 ' : 'Tersedia '}
-            boldText={recommendation.promo ? 'promo diterapkan' : 'promo'}
-            data-testid={elementId.PLP.Button.Promo}
-          />
+          {recommendation.brand !== 'Hyundai' && (
+            <LabelPromo
+              className={styles.labelCard}
+              onClick={() => onClickLabelPromo(recommendation.promo)}
+              regulerText={recommendation.promo ? '1 ' : 'Tersedia '}
+              boldText={recommendation.promo ? 'promo diterapkan' : 'promo'}
+              data-testid={elementId.PLP.Button.Promo}
+            />
+          )}
           {recommendation.creditQualificationStatus.toLowerCase() ===
             'sedang' && (
             <LabelSedang
-              additionalClassname={
-                recommendation.promo
-                  ? styles.loanRankLabelAdditionalStyle
-                  : styles.loanRankLabelAdditionalStyle2
-              }
+              additionalClassname={clsx({
+                [styles.loanRankLabelAdditionalHyundaiStyle]:
+                  recommendation.brand === 'Hyundai',
+                [styles.loanRankLabelAdditionalStyle]:
+                  recommendation.promo && recommendation.brand !== 'Hyundai',
+                [styles.loanRankLabelAdditionalStyle2]:
+                  !recommendation.promo && recommendation.brand !== 'Hyundai',
+              })}
               prefixComponent={() => <></>}
             />
           )}
           {recommendation.creditQualificationStatus.toLowerCase() ===
             'mudah' && (
             <LabelMudah
-              additionalClassname={
-                recommendation.promo
-                  ? styles.loanRankLabelAdditionalStyle
-                  : styles.loanRankLabelAdditionalStyle2
-              }
+              additionalClassname={clsx({
+                [styles.loanRankLabelAdditionalHyundaiStyle]:
+                  recommendation.brand === 'Hyundai',
+                [styles.loanRankLabelAdditionalStyle]:
+                  recommendation.promo && recommendation.brand !== 'Hyundai',
+                [styles.loanRankLabelAdditionalStyle2]:
+                  !recommendation.promo && recommendation.brand !== 'Hyundai',
+              })}
               labelText="Kualifikasi Kredit Mudah"
               prefixComponent={() => <></>}
             />
@@ -513,9 +521,12 @@ const CarDetailCardMultiCredit = ({
             'sulit' && (
             <LabelSulit
               additionalClassname={clsx({
-                [styles.labelSulit]: true,
-                [styles.loanRankLabelAdditionalStyle]: recommendation.promo,
-                [styles.loanRankLabelAdditionalStyle2]: !recommendation.promo,
+                [styles.loanRankLabelAdditionalHyundaiStyle]:
+                  recommendation.brand === 'Hyundai',
+                [styles.loanRankLabelAdditionalStyle]:
+                  recommendation.promo && recommendation.brand !== 'Hyundai',
+                [styles.loanRankLabelAdditionalStyle2]:
+                  !recommendation.promo && recommendation.brand !== 'Hyundai',
               })}
               labelText="Kualifikasi Kredit Sulit"
               prefixComponent={() => <></>}
