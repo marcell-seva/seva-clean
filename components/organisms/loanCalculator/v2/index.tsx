@@ -1182,10 +1182,19 @@ export function LoanCalculatorPageV2() {
       ...forms,
       [name]: value,
     })
-    const minDp =
+    const finalDpRange = await getFinalDpRangeValidation(
+      forms.variant?.variantId,
+      forms.city.cityCode,
+    )
+    let minDp =
       (getCarOtrNumber(value.otr) - getCarDiscountNumber(value.discount)) * 0.2
-    const maxDp =
+    let maxDp =
       (getCarOtrNumber(value.otr) - getCarDiscountNumber(value.discount)) * 0.9
+    if (finalDpRange?.minAmount !== 0 && finalDpRange?.maxAmount !== 0) {
+      minDp = finalDpRange?.minAmount
+      maxDp = finalDpRange?.maxAmount
+    }
+
     const updatedDPValue =
       Number(forms.downPaymentAmount) > maxDp
         ? maxDp
@@ -1193,6 +1202,12 @@ export function LoanCalculatorPageV2() {
         ? minDp
         : forms.downPaymentAmount
 
+    const dataFinancial = {
+      ...financialQuery,
+      downPaymentAmount: updatedDPValue,
+    }
+
+    patchFinancialQuery(dataFinancial)
     const payload: LoanCalculatorIncludePromoPayloadType = {
       brand: forms.model?.brandName ?? '',
       model: removeFirstWordFromString(forms.model?.modelName ?? ''),
@@ -1213,7 +1228,7 @@ export function LoanCalculatorPageV2() {
         const filteredResult = getFilteredCalculationResults(result)
 
         setCalculationResult(filteredResult)
-
+        setKKForm(forms)
         generateSelectedInsuranceAndPromo(filteredResult, true)
 
         // select loan with the longest tenure as default
