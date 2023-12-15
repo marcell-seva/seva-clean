@@ -686,6 +686,7 @@ export default function NewCarVariantList({
     const slugState = slugParam.split('/').splice(6, 9)
     const currentURL = isOTO ? '/adaSEVAdiOTO/mobil-baru' : '/mobil-baru'
     var url = ''
+    console.log('datas', slugParam)
     if (slugState?.length === 1) {
       const checkIsUpperTab = isUpperTab(slugState[0])
       if (checkIsUpperTab)

@@ -8,8 +8,10 @@ import {
   FooterSEOAttributes,
   MobileWebTopMenuType,
   NavbarItemResponse,
+  SearchUsedCar,
 } from 'utils/types/utils'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
+
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { useUtils } from 'services/context/utilsContext'
@@ -17,10 +19,9 @@ import { MobileWebFooterMenuType } from 'utils/types/props'
 import { CarProvider } from 'services/context'
 import { monthId } from 'utils/handler/date'
 import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
-import { useMediaQuery } from 'react-responsive'
-import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { useRouter } from 'next/router'
 import { getCity } from 'utils/hooks/useGetCity'
+import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { getToken } from 'utils/handler/auth'
 import {
   getMenu,
@@ -29,9 +30,10 @@ import {
   getCities,
   getMinMaxPrice,
   getAnnouncementBox as gab,
+  getUsedCarSearch,
 } from 'services/api'
-import { default as customAxiosGet } from 'services/api/get'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
+import { default as customAxiosGet } from 'services/api/get'
 
 const NewCarResultPage = ({
   meta,
@@ -39,22 +41,23 @@ const NewCarResultPage = ({
   dataFooter,
   dataCities,
   dataDesktopMenu,
+  dataSearchUsedCar,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const todayDate = new Date()
   const brand = router.query.brand
 
-  const metaTitle = `Daftar Mobil Baru ${todayDate.getFullYear()} - Promo Cicilan ${monthId(
+  const metaTitle = `Beli Mobil Baru ${todayDate.getFullYear()} - Harga OTR dengan Promo Cicilan Bulan ${monthId(
     todayDate.getMonth(),
   )} | SEVA`
-  const metaDesc = `Beli mobil  ${todayDate.getFullYear()} terbaru di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
-  const metaDescBrand = `Beli mobil ${brand} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
+  const metaDesc = `Beli mobil  ${todayDate.getFullYear()} di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
   const {
     saveDesktopWebTopMenu,
     saveMobileWebTopMenus,
     saveMobileWebFooterMenus,
     saveCities,
     saveDataAnnouncementBox,
+    saveDataSearchUsedCar,
   } = useUtils()
 
   const getAnnouncementBox = async () => {
@@ -73,20 +76,13 @@ const NewCarResultPage = ({
     saveMobileWebTopMenus(dataMobileMenu)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
+    saveDataSearchUsedCar(dataSearchUsedCar)
     getAnnouncementBox()
   }, [])
 
   return (
     <>
-      {brand ? (
-        <Seo
-          title={metaTitle}
-          description={metaDescBrand}
-          image={defaultSeoImage}
-        />
-      ) : (
-        <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
-      )}
+      <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
       <CarProvider
         car={null}
         carOfTheMonth={[]}
@@ -132,6 +128,7 @@ export const getServerSideProps: GetServerSideProps<{
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
   isSsrMobileLocal: boolean
+  dataSearchUsedCar: SearchUsedCar[]
 }> = async (ctx) => {
   ctx.res.setHeader(
     'Cache-Control',
@@ -165,8 +162,9 @@ export const getServerSideProps: GetServerSideProps<{
   }
 
   const {
+    search,
     downPaymentAmount,
-    brand: brandQueryOrLastSlug,
+    brand,
     bodyType,
     priceRangeGroup,
     age,
@@ -174,10 +172,8 @@ export const getServerSideProps: GetServerSideProps<{
     monthlyIncome,
     sortBy,
   } = ctx.query
-
-  const brand = brandQueryOrLastSlug?.includes('SEVA')
-    ? ''
-    : brandQueryOrLastSlug
+  const params = new URLSearchParams()
+  params.append('query', '' as string)
 
   try {
     const [
@@ -186,12 +182,14 @@ export const getServerSideProps: GetServerSideProps<{
       menuMobileRes,
       footerRes,
       cityRes,
+      dataSearchRes,
     ]: any = await Promise.all([
       customAxiosGet(footerTagBaseApi + metabrand),
       getMenu(),
       getMobileHeaderMenu(),
       getMobileFooterMenu(),
       getCities(),
+      getUsedCarSearch('', { params }),
     ])
 
     const footerData = fetchFooter.data
@@ -209,6 +207,7 @@ export const getServerSideProps: GetServerSideProps<{
     }
 
     const queryParam: any = {
+      ...(search && search !== undefined && { search: String(search) }),
       ...(downPaymentAmount && { downPaymentType: 'amount' }),
       ...(downPaymentAmount && { downPaymentAmount }),
       ...(brand && {
@@ -251,6 +250,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataCities: cityRes,
         isSsrMobile: getIsSsrMobile(ctx),
         isSsrMobileLocal: getIsSsrMobile(ctx),
+        dataSearchUsedCar: dataSearchRes.data,
       },
     }
   } catch (e: any) {

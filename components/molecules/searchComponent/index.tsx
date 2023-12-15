@@ -620,7 +620,7 @@ export const SearchComponent = ({
     clearQueryFilterData()
     const url = `${carResultsUrl}?search=${search}`
     saveHistoryToLocal(url, search)
-    if (window.location.pathname === '/mobil-baru/c') {
+    if (window.location.pathname === '/mobil-baru') {
       patchFunnelQueryData({ search: search })
       router
         .push({

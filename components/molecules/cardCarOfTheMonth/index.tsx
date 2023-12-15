@@ -184,7 +184,9 @@ const CardCarOfTheMonth = ({ item, onSendOffer }: CarOfTheMonthProps) => {
                   saveDataForCountlyTrackerPageViewPDP(
                     PreviousButton.CarOfTheMonth,
                   )
-                  window.location.href = item.link
+                  window.location.href =
+                    item.link.replace('mobil-baru/', 'mobil-baru/') +
+                    `/${getCityUrl()}`
                 }}
                 data-testid={elementId.Homepage.Button.LihatRincian}
               >

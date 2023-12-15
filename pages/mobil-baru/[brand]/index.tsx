@@ -33,8 +33,8 @@ import {
   getMinMaxPrice,
   getUsedCarSearch,
 } from 'services/api'
-import { default as customAxiosGet } from 'services/api/get'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
+import { default as customAxiosGet } from 'services/api/get'
 
 const NewCarResultPage = ({
   meta,
@@ -62,7 +62,6 @@ const NewCarResultPage = ({
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
     saveDataSearchUsedCar(dataSearchUsedCar)
-
     if (id && typeof id === 'string' && id.includes('SEVA')) {
       saveLocalStorage(LocalStorageKey.referralTemanSeva, id)
     }
@@ -80,7 +79,7 @@ const NewCarResultPage = ({
   const metaTitle = `Harga OTR ${carBrand} ${todayDate.getFullYear()} - Promo Cicilan bulan ${monthId(
     todayDate.getMonth(),
   )} | SEVA `
-  const metaDesc = `Beli mobil ${carBrand} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
+  const metaDesc = `Beli mobil baru ${carBrand} ${todayDate.getFullYear()} secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
 
   return (
     <>
@@ -167,7 +166,7 @@ export const getServerSideProps: GetServerSideProps<{
   const {
     search,
     downPaymentAmount,
-    brand: brandQueryOrLastSlug,
+    brand,
     bodyType,
     priceRangeGroup,
     age,
@@ -177,10 +176,6 @@ export const getServerSideProps: GetServerSideProps<{
   } = ctx.query
   const params = new URLSearchParams()
   params.append('query', '' as string)
-
-  const brand = brandQueryOrLastSlug?.includes('SEVA')
-    ? ''
-    : brandQueryOrLastSlug
 
   try {
     const [
@@ -216,7 +211,7 @@ export const getServerSideProps: GetServerSideProps<{
     }
 
     const queryParam: any = {
-      ...(search && search !== undefined && { search: String(search) }),
+      ...(search && { search: String(search) }),
       ...(downPaymentAmount && { downPaymentType: 'amount' }),
       ...(downPaymentAmount && { downPaymentAmount }),
       ...(brand && {

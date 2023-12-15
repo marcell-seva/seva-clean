@@ -16,10 +16,15 @@ import { defaultSeoImage } from 'utils/helpers/const'
 import { LanguageCode } from 'utils/enum'
 import {
   formatPriceNumber,
+  formatPriceNumberThousand,
   formatPriceNumberThousandDivisor,
 } from 'utils/numberUtils/numberUtils'
 import { getModelPriceRange } from 'utils/carModelUtils/carModelUtils'
-import { articleDateFormat, monthId } from 'utils/handler/date'
+import {
+  articleDateFormat,
+  monthId,
+  convertStringDateToMonthYear,
+} from 'utils/handler/date'
 import { useRouter } from 'next/router'
 import { getCity, saveCity } from 'utils/hooks/useGetCity'
 import { useCar } from 'services/context/carContext'
@@ -42,6 +47,7 @@ import {
   getUsedCarSearch,
 } from 'services/api'
 import Seo from 'components/atoms/seo'
+import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 interface UsedPdpDataLocalContextType {
   // /**
   //  * this variable use "jakarta" as default payload, so that search engine could see page content.
@@ -188,6 +194,14 @@ export default function index({
         description={getMetaDescription() ?? ''}
         image={carGallery[0]?.url ?? defaultSeoImage}
       />
+      <Script
+        id="product-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLD(carModelDetailsRes)),
+        }}
+        key="product-jsonld"
+      />
       <UsedPdpDataLocalContext.Provider
         value={{
           usedCarModelDetailsRes: carModelDetailsRes,
@@ -318,19 +332,8 @@ export async function getServerSideProps(context: any) {
         // selectedVideoReview: selectedVideoReview || null,
       },
     }
-  } catch (error) {
-    console.log('qwe error', error)
-    return {
-      props: {
-        notFound: false,
-        usedCarRecommendationRes: [],
-        dataMobileMenu: [],
-        dataFooter: [],
-        dataCities: [],
-        dataDesktopMenu: [],
-        isSsrMobileLocal: getIsSsrMobile(context),
-      },
-    }
+  } catch (error: any) {
+    return serverSideManualNavigateToErrorPage(error?.response?.status)
   }
 }
 
@@ -384,150 +387,69 @@ const handlingCarLogo = (brand: string) => {
   }
 }
 
-const jsonLD = (
-  carModel: CarModelDetailsResponse | undefined,
-  carVariant: CarVariantDetails | null,
-  recommendationsDetailData?: CarRecommendation[],
-  videoReview?: MainVideoResponseType,
-) => {
-  const lowestAssetPrice = carModel?.variants[0].priceValue
-  const highestAssetPrice =
-    carModel?.variants[carModel?.variants.length - 1].priceValue
-  const highLowPrice = {
-    highestAssetPrice: highestAssetPrice || 0,
-    lowestAssetPrice: lowestAssetPrice || 0,
-  }
-  const formatLowestPrice = formatPriceNumber(
-    carModel?.variants[0].priceValue ?? 0,
-  )
-  const selectedCar = getSelectedCar(recommendationsDetailData, carVariant)
-  const filterImageBasedOnType = (
-    data: Array<string> | undefined,
-    type: string,
-  ): Array<string> | undefined => {
-    return data?.filter((item: string) => {
-      return item.toLowerCase().includes(type)
-    })
-  }
-  const priceRange =
-    carModel?.variants[carModel?.variants.length - 1].priceValue ===
-    carModel?.variants[0].priceValue
-      ? formatLowestPrice >= 1000
-        ? formatPriceNumberThousandDivisor(formatLowestPrice, LanguageCode.id)
-        : formatLowestPrice
-      : getModelPriceRange(highLowPrice, LanguageCode.id)
-
+const jsonLD = (carModel: any) => {
   return {
-    videoObject: {
-      '@type': 'VideoObject',
-      name: videoReview?.title,
-      description: videoReview?.title,
-      thumbnailUrl: videoReview?.thumbnail,
-      uploadDate: videoReview?.createdAt
-        ? articleDateFormat(new Date(videoReview?.createdAt), 'id')
-        : undefined,
-      embedUrl: videoReview?.link,
-      publisher: {
-        '@type': 'Organization',
-        name: videoReview?.accountName,
-        logo: 'https://yt3.googleusercontent.com/ytc/AOPolaSQYe9yssWU8fmq-MB-nmuifNUMpOnGYYALyEDL=s176-c-k-c0x00ffffff-no-rj',
-      },
-    },
     product: {
       '@type': 'Product',
-      name: `${carModel?.brand} ${carModel?.model}`,
-      model: `${carModel?.model}`,
-      image: carModel?.images[0],
-      url: `https://www.seva.id/mobil-baru/${carModel?.brand.toLocaleLowerCase()}/${carModel?.model
-        .replace(' ', '-')
-        .toLocaleLowerCase()}`,
-      bodyType: carVariant?.variantDetail.bodyType,
-      description: carVariant?.variantDetail?.description?.id && {
-        id: carVariant?.variantDetail?.description?.id,
-      },
+      name: `${carModel?.brandName} ${capitalizeFirstLetter(
+        carModel?.modelName,
+      )} ${carModel?.variantName} ${carModel?.nik}`,
+      model: `${carModel?.modelName}`,
+      image: carModel?.carGallery[0]?.url,
+      url: carModel?.sevaUrl,
+      bodyType: carModel?.typeName,
+      description: `Mobil Bekas ${carModel?.brandName} ${capitalizeFirstLetter(
+        carModel?.modelName,
+      )} ${carModel?.variantName} ${carModel?.nik}`,
       brand: {
         '@type': 'Brand',
-        name: carModel?.brand,
-        logo: handlingCarLogo(carModel?.brand ?? ''),
+        name: carModel?.brandName,
+        logo: handlingCarLogo(carModel?.brandName ?? ''),
       },
-      vehicleSeatingCapacity: {
+      vehicleMileage: {
         '@type': 'QuantitativeValue',
-        value: carVariant?.variantDetail.carSeats + ' Kursi',
+        name: `${formatPriceNumberThousand(carModel?.mileage)} km`,
       },
-      fuelType: {
-        '@type': 'QualitativeValue',
-        name: carVariant?.variantDetail.fuelType,
+      vehicleColor: {
+        '@type': 'ColorSpecification',
+        name: `${carModel?.color}`,
+      },
+      vehicleLocation: {
+        '@type': 'LocationSpecification',
+        name: `${carModel?.cityName}`,
+      },
+      vehicleTaxDate: {
+        '@type': 'TaxDateSpecification',
+        name: `${convertStringDateToMonthYear(carModel?.taxDate)}`,
+      },
+      vehicleManufactureYear: {
+        '@type': 'ManufactureYearSpecification',
+        name: `${carModel?.nik}`,
       },
       vehicleTransmission: {
         '@type': 'QualitativeValue',
-        name: carVariant?.variantDetail.transmission,
+        name: carModel?.carSpecifications?.find(
+          (spec: any) => spec.specCode === 'transmission',
+        ).value,
       },
-      vehicleEngine: {
-        '@type': 'EngineSpecification',
-        name: `Mesin ${carVariant?.variantDetail.engineCapacity} cc`,
+      vehicleLicensePlate: {
+        '@type': 'LicensePlateValue',
+        name: carModel?.plate,
+      },
+      fuelType: {
+        '@type': 'QualitativeValue',
+        name: carModel?.carSpecifications?.find(
+          (spec: any) => spec.specCode === 'fuel-type',
+        ).value,
       },
       manufacturer: {
         '@type': 'Organization',
-        name: carModel?.brand,
+        name: carModel?.brandName,
       },
       offers: {
-        '@type': 'Offer',
-        priceCurrency: 'IDR',
-        lowPrice: carModel?.variants[0].priceValue,
-        highPrice: carModel?.variants[carModel?.variants.length - 1].priceValue,
-        offerCicilan: carModel?.variants[0].monthlyInstallment,
-        offerDp: carModel?.variants[0].dpAmount,
-        tenor: carModel?.variants[0].tenure + ' Tahun',
+        '@type': 'AggregateOffer',
+        priceCurrency: `IDR ${carModel?.priceValue.split('.')[0]}`,
       },
-    },
-    itemList: {
-      '@type': 'ItemList',
-      name: `Variant ${carModel?.brand} ${carModel?.model}`,
-      description: `Daftar Variant ${carModel?.brand} ${carModel?.model} 2023`,
-      itemListOrder: 'https://schema.org/ItemListOrderDescending',
-      numberOfItems: carModel?.variants.length,
-      itemListElement: carModel ? getItemListElement(carModel) : [],
-    },
-    FAQPage: {
-      '@type': 'FAQPage',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: `Berapa Cicilan / Kredit Bulanan ${carModel?.brand} ${carModel?.model} Terendah?`,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: ` Cicilan / kredit bulanan terendah untuk ${
-              carModel?.brand
-            } ${carModel?.model} dimulai dari Rp ${formatShortPrice(
-              carModel?.variants[0].priceValue || 0,
-            )} juta untuk ${
-              (carModel?.variants[0].tenure ?? 0) * 12
-            } bulan dengan DP Rp ${formatShortPrice(
-              carModel?.variants[0].dpAmount ?? 0,
-            )} juta.`,
-          },
-        },
-        {
-          '@type': 'Question',
-          name: `Berapa Harga Toyota ${carModel?.model}?`,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: `Harga ${carModel?.brand} ${carModel?.model} dimulai dari kisaran harga Rp ${priceRange} juta.`,
-          },
-        },
-        {
-          '@type': 'Question',
-          name: `Berapa Panjang Mobil ${carModel?.brand} ${carModel?.model}?`,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: `Panjang dimensi Toyota ${carModel?.model} adalah ${
-              selectedCar.length
-            } mm dan lebarnya ${
-              selectedCar ? selectedCar.width : ''
-            } mm, dan tinggi ${selectedCar ? selectedCar.height : ''} mm.`,
-          },
-        },
-      ],
     },
     SiteNavigationElement: {
       '@type': 'SiteNavigationElement',
@@ -537,6 +459,11 @@ const jsonLD = (
           '@type': 'Action',
           name: 'Mobil',
           url: 'https://www.seva.id/mobil-baru',
+        },
+        {
+          '@type': 'Action',
+          name: 'Mobil',
+          url: 'https://www.seva.id/mobil-bekas/c',
         },
         {
           '@type': 'Action',
@@ -598,64 +525,11 @@ const jsonLD = (
     ImageObject: [
       {
         '@type': 'ImageObject',
-        contentUrl: (
-          filterImageBasedOnType(carModel?.images, 'eksterior') as string[]
-        )?.length
-          ? filterImageBasedOnType(carModel?.images, 'eksterior')?.[0]
-          : carModel?.images?.[0],
-        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
+        contentUrl: carModel?.carGallery[0]?.url,
+        mainEntityOfPage: `${carModel?.sevaUrl}`,
         representativeOfPage: 'https://schema.org/True',
         isFamilyFriendly: 'https://schema.org/True',
         isAccesibleForFree: 'https://schema.org/False',
-      },
-      {
-        '@type': 'ImageObject',
-        contentUrl: (
-          filterImageBasedOnType(carModel?.images, 'eksterior') as string[]
-        )?.length
-          ? filterImageBasedOnType(carModel?.images, 'interior')?.[0]
-          : carModel?.images?.[0],
-        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Interior`,
-        representativeOfPage: 'https://schema.org/True',
-        isFamilyFriendly: 'https://schema.org/True',
-        isAccesibleForFree: 'https://schema.org/False',
-      },
-    ],
-    NewsArticle: [
-      {
-        '@type': 'NewsArticle',
-        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
-        headline: 'Promo Toyota Spektakuler',
-        abstract:
-          'Dapatkan bunga spesial mulai dari 0%, bebas biaya administrasi atau bebas 2 tahun asuransi comprehensive hingga 20 juta rupiah untuk pembelian mobil baru Toyota Veloz, Avanza, Raize, dan Rush secara kredit',
-        image:
-          'https://www.seva.id/info/wp-content/uploads/2023/01/Seva_Promo-Toyota-2_SEVA-TSO-1040x336-1.png.webp',
-        datePublished: '2022-11-22',
-        publisher: {
-          '@type': '-',
-          name: 'Organization SEVA by Astra',
-          logo: {
-            '@type': 'ImageObject',
-            url: 'https://cdn.seva.id/blog/media/2022/07/Seva-LogoxAF_Seva-PrimarybyAstraFinancial3.png',
-          },
-        },
-      },
-      {
-        '@type': 'NewsArticle',
-        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
-        headline: 'Promo Potongan DP & Cashback Daihatsu',
-        abstract:
-          'Dapatkan cashback tambahan trade-in senilai 1 juta rupiah untuk pembelian mobil baru Brand Daihatsu semua tipe (LCGC dan non-LCGC)',
-        image: 'https://www.seva.id/revamp/illustration/PromoTradeIn.webp',
-        datePublished: '2022-11-24',
-        publisher: {
-          '@type': '-',
-          name: 'Organization SEVA by Astra',
-          logo: {
-            '@type': 'ImageObject',
-            url: 'https://cdn.seva.id/blog/media/2022/07/Seva-LogoxAF_Seva-PrimarybyAstraFinancial3.png',
-          },
-        },
       },
     ],
   }
