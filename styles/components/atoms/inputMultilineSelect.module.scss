@@ -165,6 +165,9 @@
   &.dropdownItemTextContainer {
     display: block;
   }
+  &.dropdownItemTextContainer:hover {
+    background: #f3f9fd;
+  }
 
   &.disabled {
     background: #{$shades-grey-5};
