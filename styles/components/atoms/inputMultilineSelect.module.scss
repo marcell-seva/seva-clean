@@ -106,6 +106,7 @@
 
 .selectedTextWithElipsis {
   @extend .selectedText;
+  margin-right: 15px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -196,7 +197,6 @@
 .dropdownItemAdditionalTextElipsis {
   @extend .dropdownItemAdditionalText;
 
-  padding-right: 25px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
