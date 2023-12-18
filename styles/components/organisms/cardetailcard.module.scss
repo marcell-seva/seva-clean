@@ -47,6 +47,13 @@
   align-items: flex-start;
 }
 
+.labelCard {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  top: 96px;
+  cursor: pointer;
+}
 .labelCardPrimary {
   position: absolute;
   z-index: 3;
