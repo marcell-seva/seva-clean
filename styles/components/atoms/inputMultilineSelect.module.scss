@@ -42,6 +42,7 @@
 .inputAreaCalculationResult {
   @extend .inputArea;
   cursor: pointer !important;
+  padding: 33px 16px !important;
   &.hasNotSelectedValue {
     padding: 34px 16px !important;
   }
@@ -74,7 +75,10 @@
     background: #{$shades-grey-5};
   }
 }
-
+.inputFieldCalculationResult {
+  @extend .inputField;
+  cursor: pointer !important;
+}
 .typedText {
   font-family: var(--open-sans);
   font-style: normal;

@@ -207,7 +207,10 @@ const forwardedInputSelect = <T extends FormControlValue>(
           value={value}
           type={inputType}
           onChange={onChangeHandler}
-          className={styles.inputField}
+          className={clsx({
+            [styles.inputField]: !isOnCalculationResult,
+            [styles.inputFieldCalculationResult]: isOnCalculationResult,
+          })}
           placeholder={placeholderText}
           onFocus={() => {
             if (!isOnCalculationResult) {
