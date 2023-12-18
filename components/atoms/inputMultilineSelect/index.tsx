@@ -274,6 +274,9 @@ const forwardedInputSelect = <T extends FormControlValue>(
                   [styles.active]:
                     highlightSelectedOption &&
                     (item.value === value || item.label === value),
+                  [styles.dropdownItemVariant]:
+                    isOnCalculationResult &&
+                    (item as OptionWithText<string>).text === value,
                 })}
                 key={item?.value?.toString() ?? index}
                 onMouseDown={

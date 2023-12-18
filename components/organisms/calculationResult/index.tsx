@@ -178,28 +178,20 @@ export const CalculationResult = ({
 
     return ''
   }
-  // const scrollToBottom = () => {
-  //   if (!window.location.pathname.includes('/kredit'))
-  //     if (isMobileSM) {
-  //       window.scrollTo({ top: 145, behavior: 'smooth' }) // scroll button cta on bottom
-  //     } else {
-  //       window.scrollTo({ top: 1470, behavior: 'smooth' })
-  //     }
-  // }
-
-  const scrollToResult = () => {
-    const element = document.getElementById(
-      'loan-calculator-cek-kualifikasi-kredit',
-    )
-    if (element) {
-      element.scrollIntoView()
-    }
+  const scrollToBottom = () => {
+    if (!window.location.pathname.includes('/kredit'))
+      if (isMobileSM) {
+        window.scrollTo({ top: 1455, behavior: 'smooth' }) // scroll button cta on bottom
+      } else {
+        window.scrollTo({ top: 1470, behavior: 'smooth' })
+      }
   }
+
   useEffect(() => {
     if (isTooltipOpen) {
       scrollToSection()
     }
-    scrollToResult()
+    scrollToBottom()
   }, [isTooltipOpen, data])
 
   const goToButton = useRef<null | HTMLDivElement>(null)
@@ -446,7 +438,6 @@ export const CalculationResult = ({
     <div
       className={styles.container}
       data-testid={elementId.LoanCalculator.Result.LoanCalculator}
-      id="loan-calculator-cek-kualifikasi-kredit"
     >
       {!isV2 ? (
         <>

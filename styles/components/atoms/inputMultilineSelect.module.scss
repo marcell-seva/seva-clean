@@ -166,9 +166,6 @@
   &.dropdownItemTextContainer {
     display: block;
   }
-  &.dropdownItemTextContainer:hover {
-    background: #f3f9fd;
-  }
 
   &.disabled {
     background: #{$shades-grey-5};
@@ -179,7 +176,10 @@
     background: #{$shades-sky-blue-5};
   }
 }
-
+.dropdownItemVariant {
+  @extend .dropdownItem;
+  background: #f3f9fd !important;
+}
 .dropdownItemImage {
   width: 67.7px;
   margin-right: 14px;
