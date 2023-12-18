@@ -52,9 +52,6 @@ export const FormCarLocation = ({
     if (isResetFilter) {
       handleClearFilter()
     }
-    // if (funnelQuery.location && !isApplied) {
-    //   setChosen(funnelQuery.location)
-    // }
   }, [isResetFilter, isApplied])
 
   return (

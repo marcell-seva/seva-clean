@@ -45,14 +45,12 @@ export const FormSelectBrandUsedCar = ({
   isResetFilter,
   isApplied,
   brand,
-  // setResetTmp,
   isButtonClick,
 }: FilterMobileProps) => {
   const { funnelQuery } = useFunnelQueryUsedCarData()
   const [isCheckedBrandQuery, setIsCheckedBrandQuery] = useState<string[]>(
     funnelQuery.brand ? funnelQuery.brand : [],
   )
-  // setIsCheckedBrand(isCheckedBrandQuery)
   const logoList = {
     Toyota: LogoToyota,
     Daihatsu: LogoDaihatsu,
@@ -117,7 +115,6 @@ export const FormSelectBrandUsedCar = ({
             (key === 'bmw' ? key.toUpperCase() : capitalizeFirstLetter(key)),
         ),
       )
-      // paramQuery.brand = isCheckedBrandQuery.filter((item) => item !== capitalizeFirstLetter(key))
     } else {
       setIsCheckedBrand(
         isCheckedBrandQuery.concat(
@@ -129,15 +126,11 @@ export const FormSelectBrandUsedCar = ({
           key === 'bmw' ? key.toUpperCase() : capitalizeFirstLetter(key),
         ),
       )
-      // paramQuery.brand = isCheckedBrandQuery.concat(key)
     }
   }
   useEffect(() => {
     if (isResetFilter) {
       setIsCheckedBrandQuery([])
-      // setResetTmp(false)
-      // setIsCheckedBrand([])
-      // paramQuery.brand = []
     }
     if (!isApplied && brand && brand.length === 0) {
       setIsCheckedBrandQuery([])

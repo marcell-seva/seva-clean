@@ -1,19 +1,11 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import styles from '/styles/components/organisms/filtermobile.module.scss'
-import {
-  IconChevronDown,
-  IconChevronUp,
-  BottomSheet,
-  Button,
-  // Overlay,
-} from 'components/atoms'
+import { BottomSheet, Button } from 'components/atoms'
 import { FormSelectBrandUsedCar } from '../../molecules/form/formSelectBrandUsedCar'
 import { FormYear } from '../../molecules/form/formYear'
 import { FormPriceUsedCar } from '../../molecules/form/formPriceUsedCar'
 import { FormMileage } from 'components/molecules/form/formMileage'
-import { FormTenure } from '../../molecules/form/formTenure'
 import { FormCarLocation } from '../../molecules/form/formCarLocation'
-import { toNumber } from 'utils/stringUtils'
 import { AxiosResponse } from 'axios'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
 import elementId from 'helpers/elementIds'
@@ -66,7 +58,6 @@ const FilterMobileUsedCar = ({
   minMaxMileage,
   isFilter,
   setIsFilter,
-  setCityListPLP,
   isResetFilter,
   setIsResetFilter,
 }: FilterMobileProps) => {
@@ -361,7 +352,6 @@ const FilterMobileUsedCar = ({
   }
   return (
     <div>
-      {/* <Overlay isShow={isButtonClick} onClick={onClickClose} zIndex={98} /> */}
       <BottomSheet
         className={`${styles.wrapper} ${styles.headerContent}`}
         open={isButtonClick || false}

@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { NavigationTabV1 } from 'components/molecules'
-// import { lowerSectionNavigationTab } from 'config/carVariantList.config'
 import styles from 'styles/pages/carVariantList.module.scss'
-import {
-  CreditUsedCarTab,
-  PriceTab,
-  SpecificationTab,
-  DescriptionTab,
-} from 'components/organisms'
-import { AnnouncementBoxDataType, VideoDataType } from 'utils/types/utils'
+import { CreditUsedCarTab, DescriptionTab } from 'components/organisms'
+import { AnnouncementBoxDataType } from 'utils/types/utils'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { useRouter } from 'next/router'
 import { trackEventCountly } from 'helpers/countly/countly'
@@ -38,16 +32,12 @@ const lowerSectionNavigationTabTemp = [
 ]
 
 type pdpUsedCarLowerSectionProps = {
-  onButtonClick: (value: boolean) => void
-  setPromoName: (value: string) => void
   showAnnouncementBox: boolean | null
   isShowAnnouncementBox?: boolean | null // for track annoucnement box every tab
-  onChangeTab: (value: any) => void
+  onChangeTab?: (value: any) => void
 }
 
 export const PdpUsedCarLowerSection = ({
-  onButtonClick,
-  setPromoName,
   showAnnouncementBox,
   isShowAnnouncementBox,
   onChangeTab,
@@ -114,14 +104,7 @@ export const PdpUsedCarLowerSection = ({
     trackClickLowerTabCountly(value)
     trackAnnouncementBoxView(value)
     setSelectedTabValue(value)
-    // const destinationElm = document.getElementById('pdp-lower-content')
-    onChangeTab(value)
-
-    // if (destinationElm) {
-    //   destinationElm.scrollIntoView()
-    //   // add more scroll because global page header is fixed position
-    //   window.scrollBy({ top: -100, left: 0 })
-    // }
+    onChangeTab && onChangeTab(value)
   }
   const getAnnouncementBox = () => {
     if (dataAnnouncementBox !== undefined) {
@@ -139,7 +122,7 @@ export const PdpUsedCarLowerSection = ({
 
   const setTabFromDirectUrl = () => {
     const slug = router.query.slug
-    const [upperTabSlug, lowerTabSlug] = Array.isArray(slug) ? slug : []
+    const [, lowerTabSlug] = Array.isArray(slug) ? slug : []
 
     if (lowerTabSlug) {
       const path = capitalizeFirstLetter(lowerTabSlug)
@@ -176,24 +159,12 @@ export const PdpUsedCarLowerSection = ({
   const renderContent = () => {
     switch (selectedTabValue) {
       case 'Deskripsi':
-        return (
-          <DescriptionTab
-            setPromoName={setPromoName}
-            onButtonClick={onButtonClick}
-            setSelectedTabValue={onSelectLowerTab}
-          />
-        )
+        return <DescriptionTab />
       case 'Kredit':
         return <CreditUsedCarTab />
 
       default:
-        return (
-          <DescriptionTab
-            setPromoName={setPromoName}
-            onButtonClick={onButtonClick}
-            setSelectedTabValue={onSelectLowerTab}
-          />
-        )
+        return <DescriptionTab />
     }
   }
 

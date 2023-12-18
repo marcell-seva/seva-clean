@@ -1,40 +1,18 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react'
-import { PdpMobile, UsedPdpMobile } from 'components/organisms'
+import { UsedPdpMobile } from 'components/organisms'
 import styles from 'styles/pages/pdpUsed.module.scss'
-import {
-  CarModelDetailsResponse,
-  CarRecommendation,
-  CarVariantDetails,
-  CityOtrOption,
-  MainVideoResponseType,
-} from 'utils/types/utils'
+import { CityOtrOption } from 'utils/types/utils'
 import { InferGetServerSidePropsType } from 'next'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
 import { useUtils } from 'services/context/utilsContext'
 import { getToken } from 'utils/handler/auth'
-import { defaultSeoImage } from 'utils/helpers/const'
-import { LanguageCode } from 'utils/enum'
-import {
-  formatPriceNumber,
-  formatPriceNumberThousand,
-  formatPriceNumberThousandDivisor,
-} from 'utils/numberUtils/numberUtils'
-import { getModelPriceRange } from 'utils/carModelUtils/carModelUtils'
-import {
-  articleDateFormat,
-  monthId,
-  convertStringDateToMonthYear,
-} from 'utils/handler/date'
+import { formatPriceNumberThousand } from 'utils/numberUtils/numberUtils'
+import { convertStringDateToMonthYear, monthId } from 'utils/handler/date'
 import { useRouter } from 'next/router'
 import { getCity, saveCity } from 'utils/hooks/useGetCity'
-import { useCar } from 'services/context/carContext'
 import { capitalizeFirstLetter } from 'utils/stringUtils'
 import { lowerSectionNavigationTab } from 'config/carVariantList.config'
-import Script from 'next/script'
-import { mergeModelDetailsWithLoanRecommendations } from 'utils/handler/carRecommendation'
-import { formatShortPrice } from 'components/organisms/tabContent/lower/summary'
-
-import {} from 'services/api'
+import { defaultSeoImage } from 'utils/helpers/const'
 import {
   getMobileHeaderMenu,
   getMobileFooterMenu,
@@ -47,7 +25,11 @@ import {
   getUsedCarSearch,
 } from 'services/api'
 import Seo from 'components/atoms/seo'
+import Script from 'next/script'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
+/**
+ * used to pass props without drilling through components
+ */
 interface UsedPdpDataLocalContextType {
   // /**
   //  * this variable use "jakarta" as default payload, so that search engine could see page content.
@@ -99,11 +81,10 @@ export default function index({
     saveDataSearchUsedCar,
   } = useUtils()
   const router = useRouter()
-  const { brand, slug } = router.query
+  const { slug } = router.query
   const [upperTabSlug, lowerTabSlug, citySlug] = slug?.length
     ? (slug as Array<string>)
     : []
-  // const { carModelDetails, recommendation, detail } = usedCar()
 
   const path = lowerTabSlug ? capitalizeFirstLetter(lowerTabSlug) : ''
   const [selectedTabValue, setSelectedTabValue] = useState(
@@ -169,13 +150,6 @@ export default function index({
     }
   }
 
-  // const modelDetailData =
-  //   detail || carModelDetailsRes
-  // const recommendationsDetailData =
-  //   recommendation.length !== 0
-  //     ? recommendation
-  //     : carRecommendationsRes?.carRecommendations
-
   useEffect(() => {
     setTabFromDirectUrl()
   }, [])
@@ -220,22 +194,13 @@ export async function getServerSideProps(context: any) {
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
   try {
-    // if (context.query.slug?.length > 3) {
-    //   return {
-    //     notFound: true,
-    //   }
-    // }
     const params = new URLSearchParams()
     params.append('query', '' as string)
-
     let id = context.query.slug[0]
     const parts = id.split('/')
     const combined = parts[parts.length - 1].split('-').slice(-5)
     const uuid = combined.join('-')
     const [
-      // carRecommendationsRes,
-      // metaTagDataRes,
-      // carVideoReviewRes,
       menuMobileRes,
       footerRes,
       cityRes,
@@ -243,9 +208,6 @@ export async function getServerSideProps(context: any) {
       carDetailRes,
       dataSearchRes,
     ]: any = await Promise.all([
-      // api.getRecommendation('?city=jakarta&cityId=118'),
-      // api.getMetaTagData(context.query.model.replaceAll('-', '')),
-      // api.getCarVideoReview(),
       getMobileHeaderMenu(),
       getMobileFooterMenu(),
       getCities(),
@@ -253,54 +215,6 @@ export async function getServerSideProps(context: any) {
       getUsedCarBySKU(uuid, ''),
       getUsedCarSearch('', { params }),
     ])
-
-    const selectedCity = getCity()
-
-    // const carList = carRecommendationsRes.carRecommendations
-    // const currentCar = carList.filter(
-    //   (value: CarRecommendation) =>
-    //     value.model.replace(/ +/g, '-').toLowerCase() === context.query.model,
-    // )
-    // if (currentCar.length > 0) {
-    //   id = currentCar[0].id
-    // } else {
-    //   return {
-    //     notFound: true,
-    //   }
-    // }
-    // const carModelDetailsRes: any = await api.getCarModelDetails(
-    //   id,
-    //   '?city=jakarta&cityId=118',
-    // )
-    // const sortedVariantsOfCurrentModel = carModelDetailsRes.variants
-    //   .map((item: any) => item)
-    //   .sort((a: any, b: any) => a.priceValue - b.priceValue)
-    // const carVariantDetailsRes: any = await api.getCarVariantDetails(
-    //   sortedVariantsOfCurrentModel[0].id,
-    //   '?city=jakarta&cityId=118',
-    // )
-
-    // const [carArticleReviewRes] = await Promise.all([
-    //   fetch('https://www.seva.id/wp-json/seva/latest-posts/972').then((res) =>
-    //     res.json(),
-    //   ),
-    // ])
-
-    // const dataCombinationOfCarRecomAndModelDetail =
-    //   mergeModelDetailsWithLoanRecommendations(
-    //     carRecommendationsRes.carRecommendations,
-    //     carModelDetailsRes,
-    //   )
-
-    // const selectedVideoReview = carVideoReviewRes.data.find(
-    //   (video: MainVideoResponseType) => {
-    //     return video.modelId === carModelDetailsRes?.id
-    //   },
-    // )
-
-    // const params = new URLSearchParams()
-
-    // params.append('bodyType', carDetailRes.data[0].typeName)
 
     const [carRecommendationsRes, newCarRecommendationsRes]: any =
       await Promise.all([
@@ -312,13 +226,6 @@ export async function getServerSideProps(context: any) {
 
     return {
       props: {
-        // carRecommendationsRes,
-        // carModelDetailsRes,
-        // dataCombinationOfCarRecomAndModelDetail,
-        // carVariantDetailsRes,
-        // metaTagDataRes,
-        // carVideoReviewRes,
-        // carArticleReviewRes,
         usedCarRecommendationRes: carRecommendationsRes.carData,
         newCarRecommendationRes: newCarRecommendationsRes.carData,
         carModelDetailsRes: carDetailRes.data[0],
@@ -328,46 +235,11 @@ export async function getServerSideProps(context: any) {
         dataCities: cityRes,
         dataDesktopMenu: menuDesktopRes.data,
         dataSearchUsedCar: dataSearchRes.data,
-
-        // selectedVideoReview: selectedVideoReview || null,
       },
     }
   } catch (error: any) {
     return serverSideManualNavigateToErrorPage(error?.response?.status)
   }
-}
-
-const getItemListElement = (carModel: CarModelDetailsResponse) => {
-  const resultList = carModel?.variants.map((variant, index) => {
-    return {
-      '@type': 'ListItem',
-      position: index + 1,
-      item: {
-        '@type': 'Product',
-        name: `${carModel?.brand} ${carModel?.model} ${variant.name}`,
-        description: `Variant ${carModel?.brand} ${carModel?.model} ${variant.name}`,
-        vehicleTransmission: variant.transmission,
-        fuelType: variant.fuelType,
-        offers: {
-          '@type': 'Offer',
-          priceCurrency: 'IDR',
-          price: variant.priceValue,
-        },
-      },
-    }
-  })
-  return resultList || []
-}
-
-const getSelectedCar = (
-  recommendationsDetailData: CarRecommendation[] | undefined,
-  carVariant: CarVariantDetails | null,
-) => {
-  if (!recommendationsDetailData || !carVariant) return ''
-  const selected = recommendationsDetailData.find(
-    (item: CarRecommendation) => item.id === carVariant.modelDetail.id,
-  )
-  return selected || ''
 }
 
 const handlingCarLogo = (brand: string) => {
@@ -463,7 +335,7 @@ const jsonLD = (carModel: any) => {
         {
           '@type': 'Action',
           name: 'Mobil',
-          url: 'https://www.seva.id/mobil-bekas/c',
+          url: 'https://www.seva.id/mobil-bekas',
         },
         {
           '@type': 'Action',

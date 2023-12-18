@@ -62,6 +62,8 @@ import {
   getMinMaxPriceUsedCar,
   getMinMaxPrice,
 } from 'services/api'
+import { default as customAxiosPost } from 'services/api/post'
+import { isCurrentCitySameWithSSR } from 'utils/hooks/useGetCity'
 
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
@@ -97,7 +99,6 @@ export const PLPUsedCar = ({
     saveTotalItems,
     cityList,
   } = usedCar()
-  const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>([])
   const {
     search,
     bodyType,
@@ -120,11 +121,6 @@ export const PLPUsedCar = ({
   const [minMaxYear, setMinMaxYear] = useState<MinMaxYear>(minmaxYear)
   const [minMaxMileage, setMinMaxMileage] =
     useState<MinMaxMileage>(minmaxMileage)
-
-  const [cityOtr] = useLocalStorage<Location | null>(
-    LocalStorageKey.CityOtr,
-    null,
-  )
   const [resultMinMaxPrice, setResultMinMaxPrice] = useState({
     resultMinPrice: 0,
     resultMaxPrice: 0,
@@ -152,10 +148,8 @@ export const PLPUsedCar = ({
   const [isFilterCredit, setIsFilterCredit] = useState(false)
   const [isFilterFinancial, setIsFilterFinancial] =
     useState(showFilterFinancial)
-  const [openLabelPromo, setOpenLabelPromo] = useState(false)
   const [openLabelResultMudah, setOpenLabelResultMudah] = useState(false)
   const [openLabelResultSulit, setOpenLabelResultSulit] = useState(false)
-  const [openLabelResultInfo, setOpenLabelResultInfo] = useState(false)
   const [openSorting, setOpenSorting] = useState(false)
   const [openInterestingModal, setOpenInterestingModal] = useState(false)
   const [startScroll, setStartScroll] = useState(false)
@@ -166,7 +160,6 @@ export const PLPUsedCar = ({
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
   const [tempQuery, setTempQuery] = useState<any>()
   const [page, setPage] = useState<any>(1)
-  // const [totalItems, setTotalItems] = useState(0)
   const [sampleArray, setSampleArray] = useState({
     items: recommendation,
   })
@@ -174,16 +167,12 @@ export const PLPUsedCar = ({
   const { cities, dataAnnouncementBox } = useUtils()
   const { showAnnouncementBox, saveShowAnnouncementBox } =
     useAnnouncementBoxContext()
-  const [interactive, setInteractive] = useState(false)
-  const [isLogin] = useState(!!getToken())
   const [dataCarForPromo, setDataCarForPromo] = useState({
     brand: '',
     model: '',
     carOrder: 0,
     loanRank: 'Null',
   })
-  const user: string | null = getLocalStorage(LocalStorageKey.sevaCust)
-  const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
   const [cityListPLP, setCityListPLP] = useState(cityList)
   funnelQuery.search = search !== '' ? search : ''
   funnelQuery.brand = brand?.split(',').map((item) => getCarBrand(item)) || []
@@ -233,7 +222,7 @@ export const PLPUsedCar = ({
   }, [])
 
   const cleanEffect = () => {
-    if (!isCurrentCitySameWithSSR) {
+    if (!isCurrentCitySameWithSSR()) {
       saveRecommendation([])
     }
     setPage(1)
@@ -283,13 +272,6 @@ export const PLPUsedCar = ({
     setTrackEventMoEngage(MoengageEventName.view_car_search, properties)
   }
 
-  const showLeadsForm = () => {
-    setIsModalOpened(true)
-    trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_BUTTON_CLICK, {
-      PAGE_ORIGINATION: 'PLP',
-    })
-  }
-
   const closeLeadsForm = () => {
     setIsModalOpened(false)
   }
@@ -326,67 +308,6 @@ export const PLPUsedCar = ({
     }
   }
 
-  const temanSevaStatus = async () => {
-    const tsLink = brand && typeof brand === 'string' && brand.includes('SEVA')
-    if (tsLink) return 'Yes'
-    if (user) {
-      const decryptUser = JSON.parse(decryptValue(user))
-      if (decryptUser.temanSevaTrxCode) {
-        return 'Yes'
-      }
-
-      try {
-        const temanSeva = await axios.post(temanSevaUrlPath.isTemanSeva, {
-          phoneNumber: decryptUser.phoneNumber,
-        })
-        if (temanSeva.data.isTemanSeva) return 'Yes'
-        return 'No'
-      } catch (e) {
-        return 'No'
-      }
-    }
-  }
-
-  const trackPLPView = async (creditBadge = 'Null') => {
-    const prevPage = getSessionStorage(SessionStorageKey.PreviousPage) as any
-    const filterUsage =
-      brand || bodyType || (priceStart && priceEnd) ? 'Yes' : 'No'
-    const fincapUsage = downPaymentAmount && age && monthlyIncome ? 'Yes' : 'No'
-    const initialPage = valueForInitialPageProperty()
-    const track = {
-      CAR_FILTER_USAGE: filterUsage,
-      FINCAP_FILTER_USAGE: fincapUsage,
-      PELUANG_KREDIT_BADGE: fincapUsage === 'No' ? 'Null' : creditBadge,
-      INITIAL_PAGE: initialPage,
-      TEMAN_SEVA_STATUS: await temanSevaStatus(),
-      USER_TYPE: valueForUserTypeProperty(),
-      PAGE_REFERRER: prevPage?.refer || 'Null',
-      PREVIOUS_SOURCE_BUTTON: prevPage?.source || 'Null',
-    }
-
-    trackEventCountly(CountlyEventNames.WEB_PLP_VIEW, track)
-    sessionStorage.removeItem(SessionStorageKey.PreviousPage)
-  }
-
-  const checkFincapBadge = (carRecommendations: CarRecommendation[]) => {
-    const checkMudah = carRecommendations.some(
-      (x) => x.loanRank === LoanRank.Green,
-    )
-    const checkSulit = carRecommendations.some(
-      (x) => x.loanRank === LoanRank.Red,
-    )
-
-    if (checkMudah && checkSulit) {
-      trackPLPView('Both')
-    } else if (checkMudah) {
-      trackPLPView('Mudah disetujui')
-    } else if (checkSulit) {
-      trackPLPView('Sulit disetujui')
-    } else {
-      trackPLPView()
-    }
-  }
-
   useAfterInteractive(() => {
     getAnnouncementBox()
   }, [dataAnnouncementBox])
@@ -407,6 +328,7 @@ export const PLPUsedCar = ({
     if (
       (funnelQuery.search !== '' && funnelQuery.search !== undefined) ||
       (funnelQuery.brand && funnelQuery.brand.length > 0) ||
+      (funnelQuery.modelName && funnelQuery.modelName.length > 0) ||
       (funnelQuery.bodyType && funnelQuery.bodyType.length > 0) ||
       (funnelQuery.transmission && funnelQuery.transmission.length > 0) ||
       (funnelQuery.cityId && funnelQuery.cityId.length > 0) ||
@@ -450,16 +372,6 @@ export const PLPUsedCar = ({
   useEffect(() => {
     setPage(1)
   }, [sampleArray])
-
-  const onCloseResultInfo = () => {
-    setOpenLabelResultInfo(false)
-    saveLocalStorage(LocalStorageKey.flagResultFilterInfoPLP, 'true')
-    trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BANNER_DESC_OK_CLICK)
-  }
-  const onCloseResultInfoClose = () => {
-    setOpenLabelResultInfo(false)
-    trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BANNER_DESC_EXIT_CLICK)
-  }
 
   const stickyFilter = () => {
     if (sticky && !isActive)
@@ -540,6 +452,23 @@ export const PLPUsedCar = ({
       PAGE_ORIGINATION: 'PLP',
     })
   }
+
+  const trackCountlyOnClickBadge = (
+    item: any,
+    rank: 'Mudah disetujui' | 'Sulit disetujui',
+  ) => {
+    // use timeout in case Countly is loading after interactive
+    setTimeout(() => {
+      trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK, {
+        PELUANG_KREDIT_BADGE: rank,
+        CAR_BRAND: item.brand,
+        CAR_MODEL: item.model,
+        PAGE_ORIGINATION: 'PLP',
+        SOURCE_BUTTON: 'Product Card Badge (PLP)',
+      })
+    }, 1000)
+  }
+
   return (
     <>
       <div
@@ -560,7 +489,7 @@ export const PLPUsedCar = ({
           pageOrigination={'PLP'}
           isOTO={isOTO}
         />
-
+        <PLPHeaderTitle />
         {sampleArray?.items?.length === 0 ? (
           <>
             <NavigationFilterMobileUsedCar
@@ -577,11 +506,7 @@ export const PLPUsedCar = ({
               isUsed={true}
             />
             {stickyFilter()}
-            {/* <PLPEmpty
-              alternativeCars={alternativeCars}
-              onClickLabel={() => setOpenLabelPromo(true)}
-            /> */}
-            <PLPEmptyUsedCar onClickLabel={() => setOpenLabelPromo(true)} />
+            <PLPEmptyUsedCar />
           </>
         ) : (
           <>
@@ -625,7 +550,6 @@ export const PLPUsedCar = ({
                       isFilter={isFilterCredit}
                       setOpenInterestingModal={setOpenInterestingModal}
                       onClickLabel={() => {
-                        setOpenLabelPromo(true)
                         trackCountlyPromoBadgeClick(i, index)
                         if (index) {
                           setDataCarForPromo({
@@ -638,25 +562,11 @@ export const PLPUsedCar = ({
                       }}
                       onClickResultMudah={() => {
                         setOpenLabelResultMudah(true)
-                        trackEventCountly(
-                          CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
-                          {
-                            PELUANG_KREDIT_BADGE: 'Mudah disetujui',
-                            CAR_BRAND: i.brand,
-                            CAR_MODEL: i.model,
-                          },
-                        )
+                        trackCountlyOnClickBadge(i, 'Mudah disetujui')
                       }}
                       onClickResultSulit={() => {
                         setOpenLabelResultSulit(true)
-                        trackEventCountly(
-                          CountlyEventNames.WEB_PLP_FINCAP_BADGE_CLICK,
-                          {
-                            PELUANG_KREDIT_BADGE: 'Sulit disetujui',
-                            CAR_BRAND: i.brand,
-                            CAR_MODEL: i.model,
-                          },
-                        )
+                        trackCountlyOnClickBadge(i, 'Sulit disetujui')
                       }}
                       isFilterTrayOpened={isButtonClick} // fix background click on ios
                     />
@@ -667,10 +577,6 @@ export const PLPUsedCar = ({
           </>
         )}
         <FooterMobile pageOrigination="PLP" />
-        <CSAButton
-          onClick={showLeadsForm}
-          data-testid={elementId.PLP.Button.LeadsFormIcon}
-        />
         {isModalOpenend && (
           <LeadsFormPrimary onCancel={closeLeadsForm} onPage="LP" />
         )}
@@ -711,5 +617,16 @@ export const PLPUsedCar = ({
         )}
       </div>
     </>
+  )
+}
+
+const PLPHeaderTitle = () => {
+  return (
+    <div className={styles.titleHeaderWrapper}>
+      <h1 className={styles.title}>Rekomendasi Mobil Bekas di SEVA</h1>
+      <h2 className={styles.subtitle}>
+        Menampilkan beragam pilihan mobil bekas sesuai kebutuhanmu.
+      </h2>
+    </div>
   )
 }

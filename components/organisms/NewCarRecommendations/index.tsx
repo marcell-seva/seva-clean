@@ -6,12 +6,7 @@ import {
   loanCalculatorWithCityBrandModelUrl,
   variantListUrl,
 } from 'utils/helpers/routes'
-import {
-  CarRecommendation,
-  UsedNewCarRecommendation,
-  trackDataCarType,
-} from 'utils/types/utils'
-import { getLowestInstallment } from 'utils/carModelUtils/carModelUtils'
+import { UsedNewCarRecommendation, trackDataCarType } from 'utils/types/utils'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { Button } from 'components/atoms'
 import { LabelMudah } from 'components/molecules'
@@ -84,10 +79,6 @@ export default function NewCarRecommendations({
   }
 
   const handleCalculateAbility = (item: UsedNewCarRecommendation) => {
-    const formatLowestInstallment = replacePriceSeparatorByLocalization(
-      item.startInstallment,
-      LanguageCode.id,
-    )
     const dataCarTemp = {
       ...dataCar,
       PELUANG_KREDIT_BADGE: 'Mudah disetujui',
@@ -124,11 +115,6 @@ export default function NewCarRecommendations({
     url: string,
     item: UsedNewCarRecommendation,
   ) => {
-    const formatLowestInstallment = replacePriceSeparatorByLocalization(
-      item.startInstallment,
-      LanguageCode.id,
-    )
-
     const path = variantListUrl
       .replace(
         ':brand/:model/:tab?',

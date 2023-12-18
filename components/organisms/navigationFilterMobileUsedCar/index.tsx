@@ -58,7 +58,6 @@ export const NavigationFilterMobileUsedCar = ({
 }: NavFilterMobileUsedCarProps) => {
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryUsedCarData()
   const { sortBy } = funnelQuery
-  const router = useRouter()
 
   const filterSortOption = sortOptionsUsedCar.filter(
     (x) => x.value === sortBy,
@@ -209,15 +208,13 @@ export const NavigationFilterMobileUsedCar = ({
         yearEnd: filter.yearEnd,
         mileageStart: filter.mileageStart,
         mileageEnd: filter.mileageEnd,
-        // cityId: filter.cityId,
+        modelName: filter.modelName.length > 0 ? String(filter.modelName) : '',
         transmission:
           filter.transmission.length > 0
             ? String(filter.transmission).replace(' ', ',')
             : '',
-        // sortBy: sortBy,
         brand:
           filter.brand.length > 0 ? String(filter.brand).replace(' ', ',') : '',
-        // sortBy: funnelQuery.sortBy && String(funnelQuery.sortBy),
       }
 
       isOTO
@@ -445,25 +442,6 @@ export const NavigationFilterMobileUsedCar = ({
           </>
         )}
       </div>
-      {isFilterFinancial && !sticky && (
-        <>
-          {/*<div className={styles.filterResultPadding}>*/}
-          {/*  <div className={styles.filterResultWrapper}>*/}
-          {/*    <div className={styles.filterResultFrame}>*/}
-          {/*      <IconBrand width={24} height={24} color="#B4231E" />*/}
-          {/*      <p className={styles.filterResultText}>*/}
-          {/*        Berdasarkan filter finansialmu, kisaran harga mobil yang ideal*/}
-          {/*        untukmu adalah <br />*/}
-          {/*        <p className={styles.filterResultPrice}>*/}
-          {/*          Rp{Currency(resultMinMaxPrice.resultMinPrice)} - Rp*/}
-          {/*          {Currency(resultMinMaxPrice.resultMaxPrice)}*/}
-          {/*        </p>*/}
-          {/*      </p>*/}
-          {/*    </div>*/}
-          {/*  </div>*/}
-          {/*</div>*/}
-        </>
-      )}
     </>
   )
 }

@@ -56,7 +56,6 @@ const UsedCarResultPage = ({
   dataMobileMenu,
   dataFooter,
   dataCities,
-  isSsrMobileLocal,
   cityList,
   brandList,
   brandSlug,
@@ -128,11 +127,8 @@ const UsedCarResultPage = ({
       )?.toLowerCase()}`
     }
   }
-
-  const [isMobile, setIsMobile] = useState(isSsrMobileLocal)
   const isClientMobile = useMediaQuery({ query: '(max-width: 1024px)' })
   const {
-    saveDesktopWebTopMenu,
     saveMobileWebTopMenus,
     saveMobileWebFooterMenus,
     saveCities,
@@ -158,10 +154,6 @@ const UsedCarResultPage = ({
     saveDataSearchUsedCar(dataSearchUsedCar)
     getAnnouncementBox()
   }, [])
-
-  useEffect(() => {
-    setIsMobile(isClientMobile)
-  }, [isClientMobile])
   return (
     <>
       <h1 style={{ display: 'none' }}>

@@ -13,11 +13,7 @@ import { getCities } from 'services/api'
 
 const PLPEmptyImage = '/revamp/illustration/plp-empty.webp'
 
-type PLPEmptyUsedCarProps = {
-  onClickLabel: () => void
-}
-
-export const PLPEmptyUsedCar = ({ onClickLabel }: PLPEmptyUsedCarProps) => {
+export const PLPEmptyUsedCar = () => {
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
   const [cityListApi, setCityListApi] = useState<Array<Location>>([])
 

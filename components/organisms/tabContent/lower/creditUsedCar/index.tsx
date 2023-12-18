@@ -1,8 +1,4 @@
-import {
-  formatNumberByLocalization,
-  replacePriceSeparatorByLocalization,
-  rupiah,
-} from 'utils/handler/rupiah'
+import { rupiah } from 'utils/handler/rupiah'
 import {
   Article,
   CityOtrOption,
@@ -11,8 +7,6 @@ import {
   LoanCalculatorIncludePromoPayloadType,
   LoanCalculatorInsuranceAndPromoType,
   SelectedCalculateLoanUsedCar,
-  SpecialRateListWithPromoType,
-  UsedCarRecommendation,
   trackDataCarType,
 } from 'utils/types/utils'
 import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
@@ -23,59 +17,29 @@ import {
   TrackerFlag,
 } from 'utils/types/models'
 import React, { useEffect, useMemo, useState, useContext, useRef } from 'react'
-import {
-  EducationalContentPopupUsedCar,
-  LeadsFormSecondary,
-  UsedCarRecommendations,
-} from 'components/organisms'
+import { UsedCarRecommendations } from 'components/organisms'
 import styles from 'styles/components/organisms/creditUsedCarTab.module.scss'
-import { Button, Gap, IconCalculator, IconLoading } from 'components/atoms'
-import {
-  FormPromoCode,
-  FormSelectCarVariant,
-  FormSelectCity,
-  FormSelectModelCar,
-  Info,
-} from 'components/molecules'
+import { Button, IconLoading } from 'components/atoms'
 import { availableList, availableListColors } from 'config/AvailableListColors'
 import { getMinimumMonthlyInstallment } from 'utils/carModelUtils/carModelUtils'
 import { client, hundred, million } from 'utils/helpers/const'
-import {
-  defaultCity,
-  saveCity,
-} from 'utils/hooks/useCurrentCityOtr/useCurrentCityOtr'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
-import IncomeForm from 'components/molecules/credit/income'
 import DpUsedCarForm from 'components/molecules/credit/dpUsedCar'
-import { CicilOptionForm } from 'components/molecules/credit/cicil'
 import { FormAsuransiCredit } from 'components/molecules/credit/asuransi'
 import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
-import {
-  CarRecommendation,
-  SimpleCarVariantDetail,
-  SpecialRateListType,
-} from 'utils/types/utils'
+import { CarRecommendation, SimpleCarVariantDetail } from 'utils/types/utils'
 import { variantEmptyValue } from 'components/molecules/form/formSelectCarVariant'
-import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
-import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
+import { getLocalStorage } from 'utils/handler/localStorage'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import { CarModel } from 'utils/types/carModel'
 import { ModelVariant } from 'utils/types/carVariant'
-import { TrackVariantList } from 'utils/types/tracker'
 import { useCar } from 'services/context/carContext'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
-import { ageOptions, assuranceOptions } from 'utils/config/funnel.config'
+import { assuranceOptions } from 'utils/config/funnel.config'
 import { formatPriceNumberThousandDivisor } from 'utils/numberUtils/numberUtils'
 import { getToken } from 'utils/handler/auth'
-import {
-  generateAllBestPromoList,
-  getInstallmentAffectedByPromo,
-  getInterestRateAffectedByPromo,
-  getTdpAffectedByPromo,
-} from 'utils/loanCalculatorUtils'
-import { removeFirstWordFromString } from 'utils/stringUtils'
 import {
   getSessionStorage,
   removeSessionStorage,
@@ -89,18 +53,10 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
 import dynamic from 'next/dynamic'
-import {
-  getCarCreditsSk,
-  getLoanCalculatorInsurance,
-  getRecommendation,
-  getUsedCarRecommendations,
-  postCheckPromoGiias,
-  postLoanPermutationIncludePromo,
-} from 'services/api'
+import { getCarCreditsSk } from 'services/api'
 import { getCarModelDetailsById } from 'utils/handler/carRecommendation'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
-import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 import { IconMoney } from 'components/atoms/icon'
 import { UsedPdpDataLocalContext } from 'pages/mobil-bekas/p/[[...slug]]'
 import { LeadsFormUsedCar } from 'components/organisms'
@@ -112,12 +68,6 @@ const CalculationUsedCarResult = dynamic(() =>
 )
 const NewCarRecommendations = dynamic(
   () => import('components/organisms/NewCarRecommendations'),
-)
-const CreditCualificationBenefit = dynamic(
-  () => import('components/organisms/CreditCualificationBenefit'),
-)
-const Articles = dynamic(() =>
-  import('components/organisms').then((mod) => mod.Articles),
 )
 const AssuranceCreditModal = dynamic(() =>
   import('components/molecules/assuranceCreditModal').then(
@@ -185,13 +135,6 @@ export const CreditUsedCarTab = () => {
   const [disableBtnCalculate, setDisableBtnCalculate] = useState(false)
   const [isValidatingEmptyField, setIsValidatingEmptyField] = useState(false)
   const [isLoadingCalculation, setIsLoadingCalculation] = useState(false)
-  const [isOpenEducationalDpPopup, setIsOpenEducationalDpPopup] =
-    useState(false)
-  const [, setPromoCodeSessionStorage] =
-    useSessionStorageWithEncryption<string>(
-      SessionStorageKey.PromoCodeGiiass,
-      '',
-    )
   const [isDataSubmitted, setIsDataSubmitted] = useState(false)
   const [allModelCarList, setAllModalCarList] = useState<CarModel[]>([])
   const [carVariantList, setCarVariantList] = useState<ModelVariant[]>([])
@@ -202,8 +145,6 @@ export const CreditUsedCarTab = () => {
   const [mappedDpPercentage, setMappedDpPercentage] = useState<number>(20)
   const [isDpTooLow, setIsDpTooLow] = useState<boolean>(false)
   const [isDpExceedLimit, setIsDpExceedLimit] = useState<boolean>(false)
-  const [installmentType, setInstallmentType] =
-    useState<InstallmentTypeOptions>(InstallmentTypeOptions.ADDB)
   const [calculationResult, setCalculationResult] = useState([])
   const [defaultCalculcationResult, setDefaultCalculationResult] = useState([])
   const [isTooltipOpen, setIsTooltipOpen] = useState(false)
@@ -223,7 +164,6 @@ export const CreditUsedCarTab = () => {
   >([])
 
   const { showAnnouncementBox } = useAnnouncementBoxContext()
-  const [hidden, setHidden] = useState(false)
   const [selectedLoan, setSelectedLoan] =
     useState<SelectedCalculateLoanUsedCar | null>(null)
   const [storedFilter] = useLocalStorage<null>(
@@ -234,11 +174,6 @@ export const CreditUsedCarTab = () => {
   const [flagMoengage, setFlagMoengage] = useState<TrackerFlag>(
     TrackerFlag.Init,
   )
-  const [, setSimpleCarVariantDetails] =
-    useLocalStorage<SimpleCarVariantDetail | null>(
-      LocalStorageKey.SimpleCarVariantDetails,
-      null,
-    )
   const [insuranceAndPromoForAllTenure, setInsuranceAndPromoForAllTenure] =
     useState<LoanCalculatorInsuranceAndPromoType[]>([])
   const [isLoadingInsuranceAndPromo, setIsLoadingInsuranceAndPromo] =
@@ -992,34 +927,8 @@ export const CreditUsedCarTab = () => {
   const handleClickButtonQualification = () => {
     setIsAssuranceModalOpen(true)
   }
-
-  const isTooltipExpired = (): boolean => {
-    const currentDate = new Date().getTime()
-    const nextDisplayDate = new Date(tooltipNextDisplay!).getTime()
-    return currentDate > nextDisplayDate
-  }
-
-  const calculateNextDisplayDate = (): Date => {
-    const nextDisplayDate = new Date()
-    nextDisplayDate.setDate(nextDisplayDate.getDate() + 30) // Add 30 days
-    return nextDisplayDate
-  }
-
   const handleTooltipClose = () => {
     setIsTooltipOpen(false)
-  }
-
-  const fetchCarRecommendations = async () => {
-    const response = await getNewFunnelRecommendations({
-      ...funnelQuery,
-      sortBy: 'highToLow',
-      age: forms?.age,
-      monthlyIncome: forms?.monthlyIncome,
-    })
-    const filteredCarRecommendations = response.carRecommendations.filter(
-      (car: any) => car.loanRank === LoanRank.Green,
-    )
-    setCarRecommendations(filteredCarRecommendations.slice(0, 10))
   }
 
   const resetVariant = () => {
@@ -1033,10 +942,6 @@ export const CreditUsedCarTab = () => {
 
   const onCloseQualificationPopUp = () => {
     setIsAssuranceModalOpen(false)
-  }
-
-  const formatCurrency = (value: number): string => {
-    return `Rp${value.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`
   }
 
   const dataForCountlyTrackerOnClick = () => {
@@ -1078,16 +983,6 @@ export const CreditUsedCarTab = () => {
     trackEventCountly(
       CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_AGE_CLICK,
       dataForCountlyTrackerOnClick(),
-    )
-  }
-
-  const trackCountlyOnShowTooltip = () => {
-    trackEventCountly(
-      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_KUALIFIKASI_KREDIT_COACHMARK_VIEW,
-      {
-        ...dataForCountlyTrackerOnClick(),
-        CAR_VARIANT: forms.variant?.variantName ?? 'Null',
-      },
     )
   }
 
