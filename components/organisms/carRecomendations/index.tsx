@@ -35,6 +35,7 @@ import { capitalizeWords } from 'utils/stringUtils'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Swiper as SwiperType } from 'swiper'
 import { IconThumbsUp } from 'components/atoms/icon'
+import stylesLabel from 'styles/components/molecules/labelCard/sedang/sedang.module.scss'
 
 type CarRecommendationsPropss = {
   title: string
@@ -220,6 +221,7 @@ export default function CarRecommendations({
                       </div>
                     )}
                     labelText="Rekomendasi"
+                    additionalClassname={stylesLabel.labelResult}
                     onClick={() => onClick(item)}
                   />
                 }
