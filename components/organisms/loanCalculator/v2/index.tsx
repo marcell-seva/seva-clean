@@ -1183,7 +1183,7 @@ export function LoanCalculatorPageV2() {
       [name]: value,
     })
     const finalDpRange = await getFinalDpRangeValidation(
-      forms.variant?.variantId,
+      value.variantId,
       forms.city.cityCode,
     )
     let minDp =

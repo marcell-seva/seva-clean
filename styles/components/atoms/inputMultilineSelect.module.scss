@@ -133,7 +133,7 @@
 
 .dropdown {
   position: absolute;
-  z-index: 80;
+  z-index: 4;
   background: #{$primary-white};
   margin: 8px 0 0;
   padding: 0;
@@ -184,6 +184,17 @@
   font-size: 12px;
   line-height: 18px;
   color: #{$shades-grey-75};
+}
+
+.dropdownItemAdditionalTextElipsis {
+  @extend .dropdownItemAdditionalText;
+
+  padding-right: 25px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .dropdownItemText {

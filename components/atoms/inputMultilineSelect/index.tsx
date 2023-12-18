@@ -280,7 +280,14 @@ const forwardedInputSelect = <T extends FormControlValue>(
                 }
               >
                 {(item as OptionWithText<string>).text && (
-                  <p className={styles.dropdownItemAdditionalText}>
+                  <p
+                    className={clsx({
+                      [styles.dropdownItemAdditionalText]:
+                        !isOnCalculationResult,
+                      [styles.dropdownItemAdditionalTextElipsis]:
+                        isOnCalculationResult,
+                    })}
+                  >
                     {(item as OptionWithText<string>).text}
                   </p>
                 )}
