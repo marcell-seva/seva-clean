@@ -190,8 +190,6 @@ export const NavigationFilterMobileUsedCar = ({
     const resultFilter = cityList?.filter((item: any) => {
       return funnelQuery.cityId?.includes(item.cityId)
     })
-    console.log(funnelQuery)
-    console.log(isFilter)
     setLocation(resultFilter)
   }, [funnelQuery.cityId])
   const newFunnel = async (filter: any) => {
@@ -283,6 +281,20 @@ export const NavigationFilterMobileUsedCar = ({
                 </div>
               </div>
             )}
+            {funnelQuery.modelFullName &&
+              funnelQuery.modelFullName.map((item: string) => (
+                <div key={item} className={styles.navOuter}>
+                  <div
+                    className={styles.navFrame}
+                    onClick={() => removeFilter('modelFullName', item)}
+                  >
+                    <span className={styles.text}>{item}</span>{' '}
+                    <div className={styles.onClick}>
+                      <IconRemove width={16} height={16} color="#878D98" />
+                    </div>
+                  </div>
+                </div>
+              ))}
             {funnelQuery.brand &&
               funnelQuery.brand.map((item: string) => (
                 <div key={item} className={styles.navOuter}>
