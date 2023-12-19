@@ -170,7 +170,7 @@ export const FormSelectCarVariantV2: React.FC<FormSelectCarVariantProps> = ({
                 style={{
                   cursor: 'pointer',
                   rotate: '180deg',
-                  marginBottom: '8px',
+                  marginBottom: '4px',
                 }}
               >
                 <IconChevronDown
@@ -183,7 +183,7 @@ export const FormSelectCarVariantV2: React.FC<FormSelectCarVariantProps> = ({
             )
           } else {
             return (
-              <div style={{ cursor: 'pointer' }}>
+              <div style={{ cursor: 'pointer', marginTop: '6px' }}>
                 <IconChevronDown
                   width={24}
                   height={24}
