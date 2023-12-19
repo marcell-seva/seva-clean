@@ -85,11 +85,9 @@
 }
 
 .container {
-  height: 394px;
   display: flex;
   flex-direction: column;
   overflow: auto;
-
   padding-bottom: 20px;
   padding-top: 8px;
 }
@@ -101,7 +99,6 @@
 
 .bottomSheetSmall [data-rsbs-overlay] {
   @include centeredWithMaxWidth;
-  height: 394px;
 }
 
 .bottomSheetSmall [data-rsbs-scroll] {

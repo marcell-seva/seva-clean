@@ -46,15 +46,15 @@ const EducationalContentPopupUsedCar = ({
             <br />
             <br />
           </p>
-          <div className={styles.wrapperButton}>
-            <Button
-              version={ButtonVersion.PrimaryDarkBlue}
-              onClick={onClickClose}
-              size={ButtonSize.Big}
-            >
-              Oke, Saya Mengerti
-            </Button>
-          </div>
+        </div>
+        <div className={styles.wrapperButton}>
+          <Button
+            version={ButtonVersion.PrimaryDarkBlue}
+            onClick={onClickClose}
+            size={ButtonSize.Big}
+          >
+            Oke, Saya Mengerti
+          </Button>
         </div>
       </div>
     </div>
@@ -66,7 +66,6 @@ const EducationalContentPopupUsedCar = ({
         open={isOpenBottomSheet || false}
         onDismiss={() => onClickClose()}
         className={styles.bottomSheetSmall}
-        // scrollLocking={!isIphone}
       >
         <EducationalDP />
       </BottomSheet>
