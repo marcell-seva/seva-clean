@@ -60,10 +60,6 @@ export const UsedCarOverlayGallery: React.FC<PropsGallery> = ({
     }
   }, [])
 
-  useEffect(() => {
-    console.log(isLandscape)
-  }, [isLandscape])
-
   const MainImage: React.FC<PropsGalleryMainImage> = ({ url }): JSX.Element => (
     <Image
       width={274}

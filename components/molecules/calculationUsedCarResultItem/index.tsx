@@ -31,7 +31,6 @@ export const CalculationUsedCarResultItem = ({
   onClickBottomSection,
 }: Props) => {
   const { currentLanguage } = useUtils()
-  console.log(data)
 
   const renderLoanRankIcon = () => {
     if (data.loanRank === LoanRank.Green) {
