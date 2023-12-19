@@ -1194,7 +1194,12 @@ export function LoanCalculatorPageV2() {
       minDp = finalDpRange?.minAmount
       maxDp = finalDpRange?.maxAmount
     }
-
+    if (
+      Number(forms.downPaymentAmount) < minDp ||
+      Number(forms.downPaymentAmount) > maxDp
+    ) {
+      setIsChangedMaxDp(true)
+    }
     const updatedDPValue =
       Number(forms.downPaymentAmount) > maxDp
         ? maxDp
