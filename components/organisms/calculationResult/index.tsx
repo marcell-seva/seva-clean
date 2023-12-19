@@ -179,19 +179,23 @@ export const CalculationResult = ({
     return ''
   }
   const scrollToBottom = () => {
-    if (!window.location.pathname.includes('/kredit'))
+    if (!window.location.pathname.includes('/kredit')) {
       if (isMobileSM) {
         window.scrollTo({ top: 1455, behavior: 'smooth' }) // scroll button cta on bottom
       } else {
-        window.scrollTo({ top: 1470, behavior: 'smooth' })
+        scrollToSectionResult()
       }
+    } else {
+      scrollToSectionResult()
+    }
   }
 
   useEffect(() => {
     if (isTooltipOpen) {
       scrollToSection()
+    } else {
+      scrollToBottom()
     }
-    scrollToBottom()
   }, [isTooltipOpen, data])
 
   const goToButton = useRef<null | HTMLDivElement>(null)
@@ -371,6 +375,7 @@ export const CalculationResult = ({
               </Button>
             )}
 
+            <div ref={resultRef}></div>
             {isTooltipOpen && (
               <>
                 <Overlay
@@ -449,21 +454,19 @@ export const CalculationResult = ({
           </span>
         </>
       ) : (
-        <div ref={resultRef}>
-          <CardVariantOptions
-            selectedModel={formData?.model?.modelName || ''}
-            handleChange={handleScrollAfterChangeVariant}
-            name="variant"
-            carVariantList={carVariantList || []}
-            value={formData.variant}
-            modelError={false}
-            onShowDropdown={onShowDropdown && onShowDropdown}
-            isError={false}
-            carModelImage={formData.model?.modelImage}
-            cityName={formData.city.cityName}
-            onChangeInformation={onChangeInformation && onChangeInformation}
-          />
-        </div>
+        <CardVariantOptions
+          selectedModel={formData?.model?.modelName || ''}
+          handleChange={handleScrollAfterChangeVariant}
+          name="variant"
+          carVariantList={carVariantList || []}
+          value={formData.variant}
+          modelError={false}
+          onShowDropdown={onShowDropdown && onShowDropdown}
+          isError={false}
+          carModelImage={formData.model?.modelImage}
+          cityName={formData.city.cityName}
+          onChangeInformation={onChangeInformation && onChangeInformation}
+        />
       )}
       <div className={styles.dataHeaderWrapper}>
         <span className={`${styles.dataHeaderText} ${styles.tenorHeader}`}>

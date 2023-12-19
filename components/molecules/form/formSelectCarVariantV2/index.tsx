@@ -195,6 +195,7 @@ export const FormSelectCarVariantV2: React.FC<FormSelectCarVariantProps> = ({
         isError={isError}
         isAnimateShakeOnError={true}
         isOnCalculationResult={true}
+        isSearchable={false}
       />
     </>
   )
