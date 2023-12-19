@@ -166,7 +166,13 @@ export const FormSelectCarVariantV2: React.FC<FormSelectCarVariantProps> = ({
         rightIcon={(state) => {
           if (state.isOpen) {
             return (
-              <div style={{ cursor: 'pointer', rotate: '180deg' }}>
+              <div
+                style={{
+                  cursor: 'pointer',
+                  rotate: '180deg',
+                  marginBottom: '8px',
+                }}
+              >
                 <IconChevronDown
                   width={24}
                   height={24}
