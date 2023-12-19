@@ -1234,6 +1234,7 @@ export function LoanCalculatorPageV2() {
 
         setCalculationResult(filteredResult)
         setKKForm({ ...kkForm, downPaymentAmount: updatedDPValue })
+
         generateSelectedInsuranceAndPromo(filteredResult, true)
 
         // select loan with the longest tenure as default
@@ -1314,7 +1315,6 @@ export function LoanCalculatorPageV2() {
             : kkForm?.downPaymentAmount
             ? parseInt(kkForm?.downPaymentAmount)
             : 0
-
         let minDp = 0
         let maxDp = 0
         if (finalDpRange?.minAmount !== 0 && finalDpRange?.maxAmount !== 0) {
