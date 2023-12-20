@@ -54,9 +54,9 @@ const MenuItem: React.FC<MenuItemProps> = ({
           }
         }}
       >
-        <h3 className={`${styles.menu} ${state ? styles.isActive : ''}`}>
+        <p className={`${styles.menu} ${state ? styles.isActive : ''}`}>
           {item?.menuName}
-        </h3>
+        </p>
         <IconChevronDown
           height={25}
           width={25}

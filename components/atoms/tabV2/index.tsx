@@ -17,9 +17,9 @@ export const TabV2 = ({
       onClick={() => onClickHandler && onClickHandler(value)}
       data-testid={dataTestId}
     >
-      <h3 className={`${styles.text} ${isActive && styles.textActive}`}>
+      <p className={`${styles.text} ${isActive && styles.textActive}`}>
         {label}
-      </h3>
+      </p>
     </div>
   ) : (
     <div
@@ -30,9 +30,9 @@ export const TabV2 = ({
       onClick={() => onClickHandler && onClickHandler(value)}
       data-testid={dataTestId}
     >
-      <h3 className={`${styles.text} ${isActive && styles.textActive}`}>
+      <p className={`${styles.text} ${isActive && styles.textActive}`}>
         {label}
-      </h3>
+      </p>
     </div>
   )
 }

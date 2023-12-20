@@ -14,8 +14,8 @@ const LoginPage = () => {
   return (
     <>
       <Seo
-        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
-        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
+        title="Masuk Akun - SEVA"
+        description="Yuk, masuk dengan nomor HP kamu dan hitung simulasi kredit dengan loan calculator serta dapatkan promo cicilan menarik dari lainnya. SEVA member of ASTRA"
         image={defaultSeoImage}
       />
 

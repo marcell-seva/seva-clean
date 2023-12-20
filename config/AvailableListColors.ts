@@ -495,7 +495,6 @@ export const availableList = [
   '/mobil-baru/toyota/all-new-bz4x',
   '/mobil-baru/toyota/all-new-kijang-innova-zenix',
   '/mobil-baru/toyota/all-new-agya',
-  '/mobil-baru/toyota/all-new-yaris-cross',
 
   // daihatsu cars
   '/mobil-baru/daihatsu/new-ayla', //ayla
@@ -534,16 +533,6 @@ export const availableList = [
   '/mobil-baru/peugeot/5008',
   '/mobil-baru/peugeot/3008',
   '/mobil-baru/peugeot/2008',
-
-  //hyundai cars
-  '/mobil-baru/hyundai/ioniq-5',
-  '/mobil-baru/hyundai/ioniq-6',
-  '/mobil-baru/hyundai/palisade',
-  '/mobil-baru/hyundai/staria',
-  '/mobil-baru/hyundai/santa-fe',
-  '/mobil-baru/hyundai/stargazer',
-  '/mobil-baru/hyundai/stargazer-x',
-  '/mobil-baru/hyundai/creta',
 ]
 
 export const availableListVideoReview = [

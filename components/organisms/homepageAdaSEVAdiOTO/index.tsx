@@ -219,11 +219,13 @@ const HomepageAdaSEVAdiOTO = ({ dataReccomendation }: any) => {
     getAnnouncementBox()
   }, [])
 
+  const currentYear = new Date().getFullYear()
+
   return (
     <>
       <Seo
-        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
-        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
+        title={`Temukan mobil baru Astra ${currentYear} jaminan kualitas dari SEVA | SEVA x OTO`}
+        description={`Beli mobil Toyota, Daihatsu, Isuzu, BMW, dan Peugeot secara kredit dengan Instant Approval* dari SEVA proses mudah, aman dan nyaman`}
         image={defaultSeoImage}
       />
 

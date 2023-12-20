@@ -26,6 +26,7 @@ import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useRouter } from 'next/router'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
 
 const Modal = dynamic(() => import('antd/lib/modal'), { ssr: false })
 
@@ -50,7 +51,7 @@ export const PriceTab = ({
     dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
     carRecommendationsResDefaultCity,
-  } = useContext(PdpDataLocalContext)
+  } = useContext(isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext)
   const modelDetailWithDefaultFromServer =
     carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const variantDetailWithDefaultFromServer =

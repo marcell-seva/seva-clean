@@ -59,7 +59,14 @@ const LpCarRecommendations = ({
   const [selectedBrand, setSelectedBrand] = useState('')
   const [load, setLoad] = useState(false)
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
-
+  const [cityOtr] = useLocalStorage<Location | null>(
+    LocalStorageKey.CityOtr,
+    null,
+  )
+  const getCityUrl = () => {
+    if (cityOtr) return `/${cityOtr.cityName.toLowerCase().replace(' ', '-')}`
+    else return '/'
+  }
   const handleCalculateAbility = (item: CarRecommendation, index: number) => {
     trackEventCountly(CountlyEventNames.WEB_HOMEPAGE_LOAN_CALCULATOR_CLICK, {
       SOURCE_SECTION: 'Car Recommendation',
@@ -103,7 +110,8 @@ const LpCarRecommendations = ({
         item.brand.replace(/ +/g, '-') +
           '/' +
           item.model.replace(/ +/g, '-') +
-          '/',
+          '/' +
+          getCityUrl(),
       )
       .toLocaleLowerCase()
 
