@@ -1,34 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styles from 'styles/components/molecules/form/formSelectAssurance.module.scss'
 import { IconInfo } from '../../../atoms'
 import clsx from 'clsx'
-import { getLocalStorage } from 'utils/handler/localStorage'
-import { getToken } from 'utils/handler/auth'
-import {
-  getInstallmentAffectedByPromo,
-  getInterestRateAffectedByPromo,
-  getTdpAffectedByPromo,
-} from 'utils/loanCalculatorUtils'
 import {
   CreditCarCalculation,
   InsuranceDataUsedCar,
-  LoanCalculatorIncludePromoPayloadType,
-  LoanCalculatorInsuranceAndPromoType,
-  PromoItemType,
   SelectedCalculateLoanUsedCar,
-  SpecialRateListWithPromoType,
 } from 'utils/types/utils'
-import { LocalStorageKey } from 'utils/enum'
 import { IconRadioButtonActive } from 'components/atoms/icon/RadioButtonActive'
 import { IconRadioButtonInactive } from 'components/atoms/icon/RadioButtonInactive'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
-import { getCustomerInfoSeva } from 'utils/handler/customer'
-import {
-  getCarCreditsSk,
-  postLoanPermutationAsuransiKombinasi,
-  postLoanPermutationIncludePromo,
-} from 'services/api'
+import { getCarCreditsSk } from 'services/api'
 
 interface Props {
   selectedTenure: number
@@ -41,11 +24,11 @@ interface Props {
   onOpenInsuranceTooltip: () => void
   pageOrigination?: string
   setTempFinal: any
+  setChosenAssurance: any
 }
 
 const FormSelectAssuranceUsedCar = ({
   selectedTenure,
-  onChooseInsuranceItem,
   calculationApiPayload,
   isLoadingApiPromoList,
   setIsLoadingApiPromoList,
@@ -54,6 +37,7 @@ const FormSelectAssuranceUsedCar = ({
   onOpenInsuranceTooltip,
   pageOrigination,
   setTempFinal,
+  setChosenAssurance,
 }: Props) => {
   const indexForSelectedTenure = promoInsuranceTemp.findIndex(
     (obj: InsuranceDataUsedCar) => {
@@ -99,6 +83,7 @@ const FormSelectAssuranceUsedCar = ({
       const tenureTLOtemp = item.tenureTLO
       tempData.tenureAR = tenureARtemp
       tempData.tenureTLO = tenureTLOtemp
+      setChosenAssurance({ tenureAR: tenureARtemp, tenureTLO: tenureTLOtemp })
 
       const queryParam = new URLSearchParams()
       queryParam.append('nik', calculationApiPayload.nik.toString())
@@ -123,8 +108,6 @@ const FormSelectAssuranceUsedCar = ({
           setIsLoadingApiPromoList(false)
         })
     }
-
-    // onChooseInsuranceItem()
   }
 
   const renderInsuranceItem = (item: any, index: number) => {
@@ -144,13 +127,6 @@ const FormSelectAssuranceUsedCar = ({
           })}
         >
           {item.label}{' '}
-          {/* {item.value === 'FC' && !isCarDontHavePromo ? (
-            <span className={styles.textBestAssurance}>
-              Tersedia Promo Terbaik!
-            </span>
-          ) : (
-            <></>
-          )} */}
         </span>
         <div>
           {promoInsuranceTemp[indexForSelectedTenure].selectedInsurance
@@ -181,17 +157,6 @@ const FormSelectAssuranceUsedCar = ({
       {
         TENOR_OPTION: `${selectedTenure} tahun`,
         PAGE_ORIGINATION: pageOrigination,
-      },
-    )
-  }
-
-  const trackCountlyOptionClick = (item: any) => {
-    trackEventCountly(
-      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_PROMO_BOTTOMSHEET_INSURANCE_OPTION_CLICK,
-      {
-        TENOR_OPTION: `${selectedTenure} tahun`,
-        PAGE_ORIGINATION: pageOrigination,
-        INSURANCE: item.label,
       },
     )
   }

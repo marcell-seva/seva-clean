@@ -46,9 +46,13 @@ import {
   getUsedCarSearch,
 } from 'services/api'
 import CarDetailCardMultiCredit from 'components/organisms/carDetailCardMultiCredit'
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import { useUtils } from 'services/context/utilsContext'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 const discountedDp = undefined // for current promo, it will not affect DP
 
@@ -100,16 +104,12 @@ const sortLowToHighList = (recommendationTmp: MultKKCarRecommendation[]) => {
   return [...easyChance, ...difficultChance]
 }
 
-<<<<<<< HEAD
-const MultiKKResult = () => {
-=======
 const MultiKKResult = ({
   dataMobileMenu,
   dataFooter,
   dataCities,
   dataSearchUsedCar,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
->>>>>>> bc263846 (move to SSR for search used car recommendation)
   useProtectPage()
   const router = useRouter()
   const [offsetPage, setOffsetPage] = useState(1)
@@ -133,28 +133,8 @@ const MultiKKResult = ({
     useState<MultKKCarRecommendation>()
   const [dataPromoPopup, setDataPromoPopup] =
     useState<PopupPromoDataItemType[]>()
-<<<<<<< HEAD
-  const [showAnnouncementBox, setIsShowAnnouncementBox] = useState<
-    boolean | null
-  >(
-    getSessionStorage(
-      getToken()
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ) ?? true,
-  )
-
-  const getTrxCode = () => {
-    if (!!getToken()) {
-      getCustomerInfoSeva().then((response) => {
-        if (response[0].temanSevaTrxCode) {
-          setTrxCode(response[0].temanSevaTrxCode)
-        }
-      })
-    }
-  }
-=======
-  const { showAnnouncementBox } = useAnnouncementBoxContext()
+  const { showAnnouncementBox, saveShowAnnouncementBox } =
+    useAnnouncementBoxContext()
   const {
     saveDataAnnouncementBox,
     saveMobileWebTopMenus,
@@ -162,7 +142,6 @@ const MultiKKResult = ({
     saveCities,
     saveDataSearchUsedCar,
   } = useUtils()
->>>>>>> bc263846 (move to SSR for search used car recommendation)
 
   const [sortFilter, setSortFilter] = useState('Harga Tertinggi')
   const checkQuery = () => {
@@ -199,7 +178,7 @@ const MultiKKResult = ({
       },
     }).then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
       if (res.data === undefined) {
-        setIsShowAnnouncementBox(false)
+        saveShowAnnouncementBox(false)
       }
     })
   }
@@ -224,19 +203,6 @@ const MultiKKResult = ({
   }
 
   useEffect(() => {
-<<<<<<< HEAD
-    if (!checkQuery()) router.replace(multiCreditQualificationPageUrl)
-    checkCitiesData()
-    getAnnouncementBox()
-    onShowToolTip()
-    getTrxCode()
-
-    const timeout = setTimeout(() => {
-      setShowLoading(false)
-    }, 500)
-
-    return () => clearTimeout(timeout)
-=======
     if (!checkQuery()) {
       router.replace(multiCreditQualificationPageUrl)
     } else {
@@ -249,7 +215,6 @@ const MultiKKResult = ({
       saveCities(dataCities)
       saveDataSearchUsedCar(dataSearchUsedCar)
     }
->>>>>>> bc263846 (move to SSR for search used car recommendation)
   }, [])
 
   const onDismissPopup = () => {
@@ -269,7 +234,31 @@ const MultiKKResult = ({
       }
     }
   }
+  const removeLocalStorage = () => {
+    localStorage.removeItem('MultiKKFormData')
+  }
 
+  const trackMultiKKResult = () => {
+    const resultMudah = multiUnitQuery.multikkResponse.carRecommendations.some(
+      (x) => x.creditQualificationStatus.toLowerCase() === 'mudah',
+    )
+    const resultSedang = multiUnitQuery.multikkResponse.carRecommendations.some(
+      (x) => x.creditQualificationStatus.toLowerCase() === 'sedang',
+    )
+    const resultSulit = multiUnitQuery.multikkResponse.carRecommendations.some(
+      (x) => x.creditQualificationStatus.toLowerCase() === 'sulit',
+    )
+    const resultStatus = []
+    if (resultMudah) resultStatus.push('Mudah')
+    if (resultSedang) resultStatus.push('Sedang')
+    if (resultSulit) resultStatus.push('Sulit')
+    const track = {
+      KUALIFIKASI_KREDIT_RESULT: resultStatus.join(', '),
+      TOTAL_CAR: multiUnitQuery.multikkResponse.totalItems,
+    }
+
+    trackEventCountly(CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_VIEW, track)
+  }
   const onCancelPopupPromo = () => {
     setIsOpenPopupPromo(false)
   }
@@ -405,7 +394,7 @@ const MultiKKResult = ({
         isActive={isActive}
         setIsActive={setIsActive}
         emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
-        setShowAnnouncementBox={setIsShowAnnouncementBox}
+        setShowAnnouncementBox={saveShowAnnouncementBox}
         isShowAnnouncementBox={showAnnouncementBox}
       />
       {showLoading ? (

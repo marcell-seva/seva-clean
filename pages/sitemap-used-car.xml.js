@@ -23,7 +23,7 @@ export const monthId = (month) => {
   }[month]
 }
 
-function escapeCdata(data) {
+export function escapeCdata(data) {
   return `<![CDATA[ ${data} ]]>`
 }
 

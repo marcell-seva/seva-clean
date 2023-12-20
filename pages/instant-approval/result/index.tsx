@@ -62,7 +62,7 @@ const CreditQualificationPageRejected = ({
   return (
     <>
       <div className={styles.container}>
-        <CreditQualificationRejected />
+        <CreditQualificationRejected onPage="IA-rejected" />
       </div>
     </>
   )

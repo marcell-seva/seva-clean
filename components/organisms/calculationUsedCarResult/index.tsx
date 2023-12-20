@@ -2,24 +2,18 @@ import React, { useEffect, useRef, useState } from 'react'
 import styles from 'styles/components/organisms/calculationResult.module.scss'
 import {
   CreditCarCalculation,
-  FinalLoan,
   FormLCState,
   InsuranceDataUsedCar,
-  LoanCalculatorIncludePromoPayloadType,
   LoanCalculatorInsuranceAndPromoType,
   SelectedCalculateLoanUsedCar,
   SpecialRateListWithPromoType,
   trackDataCarType,
 } from 'utils/types/utils'
 import { CalculationUsedCarResultItem } from 'components/molecules'
-import { Button, IconWhatsapp, Overlay } from 'components/atoms'
-import { ButtonSize, ButtonVersion } from 'components/atoms/button'
+import { Button } from 'components/atoms'
 import { InstallmentTypeOptions, LoanRank } from 'utils/types/models'
-import Tooltip from 'antd/lib/tooltip'
-import TooltipContentQualifacation from 'components/molecules/tooltipContent'
-import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import elementId from 'helpers/elementIds'
-import { SessionStorageKey } from 'utils/enum'
+import { ButtonSize, ButtonVersion, SessionStorageKey } from 'utils/enum'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { removeCarBrand } from 'utils/handler/removeCarBrand'
@@ -33,7 +27,6 @@ import { InsuranceTooltip } from '../insuranceTooltip'
 import { assuranceOptionsUsedCar } from 'utils/config/funnel.config'
 
 const LogoAcc = '/revamp/icon/logo-acc.webp'
-const LogoTaf = '/revamp/icon/logo-taf.webp'
 
 interface Props {
   data: SelectedCalculateLoanUsedCar[]
@@ -54,23 +47,20 @@ interface Props {
   pageOrigination?: string
   scrollToLeads: any
   setCalculationResult: any
+  setChosenAssurance: any
 }
 
 export const CalculationUsedCarResult = ({
   data,
   selectedLoan,
   setSelectedLoan,
-  angsuranType,
   isTooltipOpen = false,
-  closeTooltip,
-  handleClickButtonQualification,
   formData,
-  insuranceAndPromoForAllTenure,
-  setInsuranceAndPromoForAllTenure,
   calculationApiPayload,
   pageOrigination,
   scrollToLeads,
   setCalculationResult,
+  setChosenAssurance,
 }: Props) => {
   const [state, setState] = useState<InsuranceDataUsedCar[]>(
     assuranceOptionsUsedCar,
@@ -79,8 +69,6 @@ export const CalculationUsedCarResult = ({
   const [tenureForPopUp, setTenureForPopUp] = useState(data[0].tenor)
   const [openPromo, setOpenPromo] = useState(false)
   const [openTooltipInsurance, setOpenTooltipInsurance] = useState(false)
-  const [selectedCalculatePromo, setSelectedCalculatePromo] =
-    useState<LoanCalculatorInsuranceAndPromoType | null>()
 
   const trackCountlyClickResultItem = (
     selectedTenureData: SpecialRateListWithPromoType,
@@ -96,24 +84,6 @@ export const CalculationUsedCarResult = ({
           ? 'Mudah disetujui'
           : 'Sulit disetujui',
     })
-  }
-
-  const trackCountlyOpenPromoPopup = (
-    selectedTenure: SpecialRateListWithPromoType,
-    selectedTenurePromoData: LoanCalculatorInsuranceAndPromoType,
-  ) => {
-    trackEventCountly(
-      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_TENURE_PROMO_CLICK,
-      {
-        PAGE_ORIGINATION: pageOrigination,
-        TENOR_OPTION: `${selectedTenure.tenure} Tahun`,
-        TENOR_RESULT:
-          selectedTenure.loanRank === LoanRank.Green
-            ? 'Mudah disetujui'
-            : 'Sulit disetujui',
-        TOTAL_APPLIED_PROMO: `${selectedTenurePromoData?.selectedPromo?.length} Promo`,
-      },
-    )
   }
 
   const saveDataCarForLoginPageView = (
@@ -166,29 +136,9 @@ export const CalculationUsedCarResult = ({
     )
   }
 
-  const handleUnderstandTooltip = () => {
-    if (selectedLoan) trackCountlyOnClickUnderstandTooltip()
-    closeTooltip()
-  }
-
-  const handleCloseTooltip = () => {
-    closeTooltip()
-  }
-
   const handleOpenPopup = (selectedData: SelectedCalculateLoanUsedCar) => {
     setTenureForPopUp(selectedData.tenor)
     setOpenPromo(true)
-    // const selectPromo = state.filter((x) => x.tenor === selectedData.tenor)
-    // trackCountlyOpenPromoPopup(selectedData, selectPromo[0])
-    // setSelectedCalculatePromo(selectPromo[0])
-    // setFinalLoan({
-    //   nik: nik,
-    //   DP: selectPromo[0].totalDP,
-    //   presentaseDP: presentaseDP,
-    //   priceValue: 0,
-    //   tenureAR: 0,
-    //   tenureTLO: 0,
-    // })
   }
 
   const renderLogoFinco = () => {
@@ -287,6 +237,7 @@ export const CalculationUsedCarResult = ({
           }}
           pageOrigination={pageOrigination}
           setCalculationResult={setCalculationResult}
+          setChosenAssurance={setChosenAssurance}
         />
       )}
       <InsuranceTooltip

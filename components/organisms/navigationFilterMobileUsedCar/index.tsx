@@ -11,7 +11,11 @@ import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarCo
 import clsx from 'clsx'
 import urls from 'utils/helpers/url'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
-import { addSeparator, filterNonDigitCharacters } from 'utils/stringUtils'
+import {
+  addSeparator,
+  capitalizeWords,
+  filterNonDigitCharacters,
+} from 'utils/stringUtils'
 import elementId from 'helpers/elementIds'
 import { LanguageCode } from 'utils/enum'
 import { sortOptionsUsedCar } from 'utils/config/funnel.config'
@@ -137,6 +141,26 @@ export const NavigationFilterMobileUsedCar = ({
           funnelQuery.brand.filter((item: any) => item !== key),
       }
       newFunnel(filter)
+    } else if (type === 'modelFullName') {
+      const updatedModelName = funnelQuery.modelName?.filter(
+        (item: string) => !key.toUpperCase().includes(item.toUpperCase()),
+      )
+
+      patchFunnelQuery({
+        modelName: updatedModelName,
+        modelFullName:
+          funnelQuery.modelFullName &&
+          funnelQuery.modelFullName.filter((item: any) => item !== key),
+      })
+
+      const filter = {
+        ...funnelQuery,
+        modelFullName:
+          funnelQuery.modelFullName &&
+          funnelQuery.modelFullName.filter((item: any) => item !== key),
+        modelName: updatedModelName,
+      }
+      newFunnel(filter)
     } else if (type === 'city') {
       patchFunnelQuery({
         cityId:
@@ -202,8 +226,8 @@ export const NavigationFilterMobileUsedCar = ({
       setRecommendations(response.carData)
       const paramUrl = {
         search: (filter.search && String(filter.search)) || '',
-        priceStart: filter.priceStart,
-        priceEnd: filter.priceEnd,
+        priceStart: (filter.priceStart && String(filter.priceStart)) || '',
+        priceEnd: (filter.priceEnd && String(filter.priceEnd)) || '',
         yearStart: filter.yearStart,
         yearEnd: filter.yearEnd,
         mileageStart: filter.mileageStart,

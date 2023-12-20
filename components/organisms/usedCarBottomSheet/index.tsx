@@ -1,32 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BottomSheetProps } from 'react-spring-bottom-sheet'
 import clsx from 'clsx'
 import {
   CreditCarCalculation,
-  FinalLoan,
   InsuranceDataUsedCar,
-  LoanCalculatorIncludePromoPayloadType,
-  LoanCalculatorInsuranceAndPromoType,
   SelectedCalculateLoanUsedCar,
-  SimpleCarVariantDetail,
 } from 'utils/types/utils'
-import { useContextCalculator } from 'services/context/calculatorContext'
 import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
 import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { BottomSheet, IconInfo } from 'components/atoms'
-import FormSelectAssurance from 'components/molecules/form/formSelectAssurance'
-import { UsedCarBottomList } from '../usedCarBottomList'
-import PromoBottomCalculation from '../promoBottomCalculation'
 import styles from 'styles/components/organisms/promoBottomSheet.module.scss'
-import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { saveLocalStorage } from 'utils/handler/localStorage'
-import { trackEventCountly } from 'helpers/countly/countly'
-import { CountlyEventNames } from 'helpers/countly/eventNames'
 import FormSelectAssuranceUsedCar from 'components/molecules/form/formSelectAssuranceUsedCar'
-import { assuranceOptionsUsedCar } from 'utils/config/funnel.config'
 import UsedCarBottomCalculation from '../usedCarBottomCalculation'
 
 interface PromoProps extends Omit<BottomSheetProps, 'children'> {
@@ -40,6 +28,7 @@ interface PromoProps extends Omit<BottomSheetProps, 'children'> {
   isPartnership?: boolean
   data: SelectedCalculateLoanUsedCar[]
   setCalculationResult: any
+  setChosenAssurance: any
 }
 
 const UsedCarBottomSheet = ({
@@ -53,6 +42,7 @@ const UsedCarBottomSheet = ({
   setCalculationResult,
   promoInsuranceReal,
   setPromoInsuranceReal,
+  setChosenAssurance,
   ...props
 }: PromoProps) => {
   const [promoInsuranceTemp, setPromoInsuranceTemp] =
@@ -68,11 +58,6 @@ const UsedCarBottomSheet = ({
   const [isOpenToast, setIsOpenToast] = useState(false)
   const [isLoadingApiPromoList, setIsLoadingApiPromoList] = useState(false)
   const isCarDontHavePromo = 0
-  const [simpleCarVariantDetails, setSimpleCarVariantDetails] =
-    useLocalStorage<SimpleCarVariantDetail | null>(
-      LocalStorageKey.SimpleCarVariantDetails,
-      null,
-    )
 
   const onChooseInsuranceItem = () => {
     const hasOpenedInsuranceToast: string =
@@ -128,6 +113,7 @@ const UsedCarBottomSheet = ({
         onOpenInsuranceTooltip={onOpenInsuranceTooltip}
         pageOrigination={pageOrigination}
         setTempFinal={setTempFinal}
+        setChosenAssurance={setChosenAssurance}
       />
       <div className={styles.lineDividerWhenCarDontHavePromoUsedCar} />
       <UsedCarBottomCalculation
@@ -142,6 +128,7 @@ const UsedCarBottomSheet = ({
         finalInstallment={tempFinal.totalInstallment}
         isLoadingApiPromoList={isLoadingApiPromoList}
         setCalculationResult={setCalculationResult}
+        setChosenAssurance={setChosenAssurance}
         data={data}
         tempFinal={tempFinal}
       />

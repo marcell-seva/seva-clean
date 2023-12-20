@@ -281,3 +281,17 @@ export enum TemanSeva {
 export enum CookieKey {
   PhoneNumber = 'phoneNumber',
 }
+
+export enum ButtonVersion {
+  Secondary = 'Secondary',
+  SecondaryDark = 'SecondaryDark',
+  PrimaryDarkBlue = 'PrimaryDarkBlue',
+  Outline = 'Outline',
+  Disable = 'Disable',
+  Default = 'Default',
+}
+
+export enum ButtonSize {
+  Big = 'Big',
+  Small = 'Small',
+}

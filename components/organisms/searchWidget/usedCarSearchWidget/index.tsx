@@ -60,7 +60,8 @@ const UsedCarSearchWidget = () => {
   const { dataMinMaxYearUsedCar, dataModelUsedCar } = useContext(
     HomePageDataLocalContext,
   )
-  const { patchFunnelQuery }: any = useFunnelQueryUsedCarData()
+  const { patchFunnelQuery, clearQueryFilter }: any =
+    useFunnelQueryUsedCarData()
   const { funnelWidget, saveFunnelWidget } = useContext(
     SearchUsedCarWidgetContext,
   ) as SearchUsedCarWidgetContextType
@@ -143,6 +144,7 @@ const UsedCarSearchWidget = () => {
 
     patchFunnelQuery({
       modelName: model,
+      modelFullName: tempArray,
       brand: brand,
       yearStart: minYear,
       yearEnd: maxYear,

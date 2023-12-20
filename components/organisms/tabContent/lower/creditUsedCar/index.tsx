@@ -1,12 +1,10 @@
-import { rupiah } from 'utils/handler/rupiah'
 import {
-  Article,
   CityOtrOption,
   CreditCarCalculation,
-  FinalLoan,
-  LoanCalculatorIncludePromoPayloadType,
   LoanCalculatorInsuranceAndPromoType,
   SelectedCalculateLoanUsedCar,
+  UsedCarRecommendation,
+  UsedNewCarRecommendation,
   trackDataCarType,
 } from 'utils/types/utils'
 import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
@@ -17,27 +15,20 @@ import {
   TrackerFlag,
 } from 'utils/types/models'
 import React, { useEffect, useMemo, useState, useContext, useRef } from 'react'
-import { UsedCarRecommendations } from 'components/organisms'
+import { EducationalContentPopupUsedCar } from 'components/organisms'
 import styles from 'styles/components/organisms/creditUsedCarTab.module.scss'
 import { Button, IconLoading } from 'components/atoms'
-import { availableList, availableListColors } from 'config/AvailableListColors'
-import { getMinimumMonthlyInstallment } from 'utils/carModelUtils/carModelUtils'
-import { client, hundred, million } from 'utils/helpers/const'
+import { client } from 'utils/helpers/const'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import DpUsedCarForm from 'components/molecules/credit/dpUsedCar'
-import { FormAsuransiCredit } from 'components/molecules/credit/asuransi'
-import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
-import { CarRecommendation, SimpleCarVariantDetail } from 'utils/types/utils'
 import { variantEmptyValue } from 'components/molecules/form/formSelectCarVariant'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
-import { CarModel } from 'utils/types/carModel'
 import { ModelVariant } from 'utils/types/carVariant'
 import { useCar } from 'services/context/carContext'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
-import { assuranceOptions } from 'utils/config/funnel.config'
 import { formatPriceNumberThousandDivisor } from 'utils/numberUtils/numberUtils'
 import { getToken } from 'utils/handler/auth'
 import {
@@ -56,18 +47,20 @@ import dynamic from 'next/dynamic'
 import { getCarCreditsSk } from 'services/api'
 import { getCarModelDetailsById } from 'utils/handler/carRecommendation'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
-import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { IconMoney } from 'components/atoms/icon'
-import { UsedPdpDataLocalContext } from 'pages/mobil-bekas/p/[[...slug]]'
 import { LeadsFormUsedCar } from 'components/organisms'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
-import EducationalContentPopup from 'components/organisms/educationalContentPopup'
+import { UsedPdpDataLocalContext } from 'pages/mobil-bekas/p/[[...slug]]'
 
 const CalculationUsedCarResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationUsedCarResult),
 )
 const NewCarRecommendations = dynamic(
   () => import('components/organisms/NewCarRecommendations'),
+)
+
+const UsedCarRecommendations = dynamic(
+  () => import('components/organisms/UsedCarRecommendations'),
 )
 const AssuranceCreditModal = dynamic(() =>
   import('components/molecules/assuranceCreditModal').then(
@@ -86,6 +79,7 @@ interface FormState {
         modelName: string
         modelImage: string
         brandName: string
+        loanRank: string
       }
     | undefined
   variant:
@@ -106,7 +100,7 @@ interface FormState {
 
 interface ChoosenAssurance {
   label: string
-  name: string
+  value: string
   tenureAR: number
   tenureTLO: number
 }
@@ -125,44 +119,34 @@ export const CreditUsedCarTab = () => {
     null,
   )
 
-  const [usedCarRecommendationList, setUsedCarRecommendationList] = useState([])
+  const [usedCarRecommendationList, setUsedCarRecommendationList] = useState<
+    UsedCarRecommendation[]
+  >([])
   const [usedCarNewRecommendationList, setUsedCarNewRecommendationList] =
-    useState([])
+    useState<UsedNewCarRecommendation[]>([])
 
-  const [info, setInfo] = useState<any>({})
-  const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
+  const { funnelQuery } = useFunnelQueryData()
   const [isDisableCtaCalculate, setIsDisableCtaCalculate] = useState(true)
   const [disableBtnCalculate, setDisableBtnCalculate] = useState(false)
   const [isValidatingEmptyField, setIsValidatingEmptyField] = useState(false)
   const [isLoadingCalculation, setIsLoadingCalculation] = useState(false)
   const [isDataSubmitted, setIsDataSubmitted] = useState(false)
-  const [allModelCarList, setAllModalCarList] = useState<CarModel[]>([])
   const [carVariantList, setCarVariantList] = useState<ModelVariant[]>([])
-  const [modelError, setModelError] = useState<boolean>(false)
-  const [isIncomeTooLow, setIsIncomeTooLow] = useState(false)
   const [dpValue, setDpValue] = useState<number>(0)
   const [dpPercentage, setDpPercentage] = useState<number>(20)
-  const [mappedDpPercentage, setMappedDpPercentage] = useState<number>(20)
   const [isDpTooLow, setIsDpTooLow] = useState<boolean>(false)
   const [isDpExceedLimit, setIsDpExceedLimit] = useState<boolean>(false)
   const [calculationResult, setCalculationResult] = useState([])
   const [defaultCalculcationResult, setDefaultCalculationResult] = useState([])
   const [isTooltipOpen, setIsTooltipOpen] = useState(false)
-  const [tooltipNextDisplay, setTooltipNextDisplay] = useState<string | null>(
-    null,
-  )
   const [isAssuranceModalOpen, setIsAssuranceModalOpen] = useState(false)
   const [chosenAssurance, setChosenAssurance] = useState<ChoosenAssurance>({
     label: '',
-    name: '',
+    value: '',
     tenureAR: 0,
-    tenureTLO: 0,
+    tenureTLO: 60,
   })
-
-  const [carRecommendations, setCarRecommendations] = useState<
-    CarRecommendation[]
-  >([])
-
+  const [hidden, setHidden] = useState(false)
   const { showAnnouncementBox } = useAnnouncementBoxContext()
   const [selectedLoan, setSelectedLoan] =
     useState<SelectedCalculateLoanUsedCar | null>(null)
@@ -176,25 +160,12 @@ export const CreditUsedCarTab = () => {
   )
   const [insuranceAndPromoForAllTenure, setInsuranceAndPromoForAllTenure] =
     useState<LoanCalculatorInsuranceAndPromoType[]>([])
-  const [isLoadingInsuranceAndPromo, setIsLoadingInsuranceAndPromo] =
-    useState(false)
   const [isSelectPassengerCar, setIsSelectPassengerCar] = useState(false)
   const [calculationApiPayload, setCalculationApiPayload] =
     useState<CreditCarCalculation>()
-
-  const referralCodeLocalStorage = getLocalStorage<string>(
-    LocalStorageKey.referralTemanSeva,
-  )
-  const [isUserHasReffcode, setIsUserHasReffcode] = useState(false)
+  const [isOpenEducationalDpPopup, setIsOpenEducationalDpPopup] =
+    useState(false)
   const [isOpenToast, setIsOpenToast] = useState(false)
-  // const [finalLoan, setFinalLoan] = useState<CreditCarCalculation>({
-  //   priceValue: 0,
-  // presentaseDP: 0,
-  // DP: 0,
-  // tenureAR: 0,
-  // tenureTLO: 0,
-  // nik: 0,
-  // })
   const [toastMessage, setToastMessage] = useState(
     'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
   )
@@ -231,6 +202,7 @@ export const CreditUsedCarTab = () => {
       modelName: '',
       modelId: '',
       modelImage: CarSillhouete,
+      loanRank: '',
     },
     variant: {
       variantId: '',
@@ -258,6 +230,7 @@ export const CreditUsedCarTab = () => {
         modelName: '',
         modelId: '',
         modelImage: '',
+        loanRank: '',
       },
       variant: {
         ...variantEmptyValue,
@@ -365,17 +338,6 @@ export const CreditUsedCarTab = () => {
       return
     }
   }
-  const checkReffcode = () => {
-    if (referralCodeLocalStorage) {
-      setIsUserHasReffcode(true)
-    } else if (!!getToken()) {
-      getCustomerInfoSeva().then((response: any) => {
-        if (response[0].temanSevaTrxCode) {
-          setIsUserHasReffcode(true)
-        }
-      })
-    }
-  }
 
   const getCreditBadgeForCountlyTracker = () => {
     let creditBadge = 'Null'
@@ -433,11 +395,6 @@ export const CreditUsedCarTab = () => {
       }
     }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
 
-    const nextDisplay = localStorage.getItem('tooltipNextDisplay')
-    if (nextDisplay) {
-      setTooltipNextDisplay(nextDisplay)
-    }
-
     return () => clearTimeout(timeoutCountlyTracker)
   }, [])
 
@@ -468,7 +425,6 @@ export const CreditUsedCarTab = () => {
       recommendation !== undefined
     ) {
       trackEventMoengage()
-      getSummaryInfo()
       autofillCarModelAndVariantData()
     }
   }, [carModelDetails, carVariantDetails, recommendation])
@@ -478,12 +434,6 @@ export const CreditUsedCarTab = () => {
       fetchCarVariant()
     }
   }, [forms.model?.modelId, forms.city])
-
-  useEffect(() => {
-    if (modelError) {
-      resetVariant()
-    }
-  }, [modelError])
 
   React.useEffect(() => {
     if (!forms?.city?.cityCode) {
@@ -495,6 +445,7 @@ export const CreditUsedCarTab = () => {
           modelName: '',
           modelId: '',
           modelImage: '',
+          loanRank: '',
         },
       }
 
@@ -540,7 +491,6 @@ export const CreditUsedCarTab = () => {
 
   useEffect(() => {
     updateSelectedVariantData()
-    checkReffcode()
   }, [carVariantList])
 
   const passedVariantData = useMemo(() => {
@@ -593,105 +543,6 @@ export const CreditUsedCarTab = () => {
     setFlagMoengage(TrackerFlag.Sent)
   }
 
-  const getDimenssion = (payload: any) => {
-    return payload.filter((car: any) => car.id === carModelDetails?.id)[0]
-  }
-
-  const getTransmissionType = (payload: any) => {
-    if (payload) {
-      const type: Array<string> = payload
-        .map((item: any) => item.transmission)
-        .filter(
-          (value: any, index: number, self: any) =>
-            self.indexOf(value) === index,
-        )
-
-      return type
-    }
-  }
-  const getPriceRange = (payload: any) => {
-    if (payload) {
-      const variantLength = payload.length
-      if (variantLength === 1) {
-        const price: string = rupiah(payload[0].priceValue)
-        return `yang tersedia dalam kisaran harga mulai dari ${price}`
-      } else {
-        const upperPrice = rupiah(payload[0].priceValue)
-        const lowerPrice = rupiah(payload[variantLength - 1].priceValue)
-
-        return `yang tersedia dalam kisaran harga ${lowerPrice} - ${upperPrice} juta`
-      }
-    }
-  }
-
-  const getColorVariant = () => {
-    const currentUrlPathName = window.location.pathname
-    const splitedPath = currentUrlPathName.split('/')
-    const carBrandModelUrl = `/${splitedPath[1]}/${splitedPath[2]}/${splitedPath[3]}`
-    if (availableList.includes(carBrandModelUrl)) {
-      const colorsTmp = availableListColors.filter(
-        (url) => url.url === carBrandModelUrl,
-      )[0].colors
-
-      return colorsTmp.length
-    }
-  }
-
-  const getCreditPrice = (payload: any) => {
-    return getMinimumMonthlyInstallment(
-      payload,
-      LanguageCode.en,
-      million,
-      hundred,
-    )
-  }
-
-  const getSummaryInfo = () => {
-    const brand = carModelDetails?.brand || ''
-    const model = carModelDetails?.model || ''
-    const type = carVariantDetails?.variantDetail.bodyType
-    const seats = carVariantDetails?.variantDetail.carSeats
-    const priceRange = getPriceRange(carModelDetails?.variants)
-    const totalType = carModelDetails?.variants.length
-    const color = getColorVariant()
-    const dimenssion = getDimenssion(recommendation)
-    const credit = getCreditPrice(carModelDetails?.variants)
-    const month = carModelDetails && carModelDetails!.variants[0].tenure * 12
-    const transmissionType = getTransmissionType(
-      carModelDetails?.variants,
-    )?.length
-    const transmissionDetail = getTransmissionType(
-      carModelDetails?.variants,
-    )?.join(' dan ')
-    const CarVariants = carModelDetails?.variants
-    const dpAmount = carModelDetails?.variants.sort(
-      (a: any, b: any) => a.priceValue - b.priceValue,
-    )[0].dpAmount
-
-    const info = {
-      brand,
-      model,
-      type,
-      seats,
-      priceRange,
-      totalType,
-      color,
-      width: dimenssion?.width,
-      height: dimenssion?.height,
-      length: dimenssion?.length,
-      credit,
-      month,
-      transmissionType,
-      transmissionDetail,
-      carVariants: CarVariants,
-      carModelId: dimenssion?.id,
-      lowestAssetPrice: dimenssion?.lowestAssetPrice,
-      highestAssetPrice: dimenssion?.highestAssetPrice,
-      dpAmount: dpAmount,
-    }
-    setInfo(info)
-  }
-
   const fetchCarVariant = async () => {
     const response = await getCarModelDetailsById(forms.model?.modelId ?? '')
     setCarVariantList(response.variants)
@@ -721,20 +572,6 @@ export const CreditUsedCarTab = () => {
           variant: variantEmptyValue,
           downPaymentAmount: '0',
         })
-      } else {
-        const isModelFound = allModelCarList.find(
-          (model) => model.id === forms.model?.modelId,
-        )
-
-        if (!isModelFound) {
-          setForms({
-            ...forms,
-            [name]: value,
-            variant: variantEmptyValue,
-          })
-          // after set value & reset variant, no need to set value again
-          return
-        }
       }
     }
 
@@ -748,24 +585,11 @@ export const CreditUsedCarTab = () => {
       return
     }
 
-    if (name === 'monthlyIncome') {
-      setIsIncomeTooLow(false)
-    }
-
     if (name === 'paymentOption') {
       trackEventCountly(
         CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_ANGSURAN_TYPE_CLICK,
         { ...dataForCountlyTrackerOnClick(), ANGSURAN_TYPE: value },
       )
-    }
-
-    if (name === 'assurance') {
-      const result = assuranceOptions.find(
-        (opt: ChoosenAssurance) => opt.label === value,
-      )
-      if (result) {
-        setChosenAssurance(result)
-      }
     }
 
     setForms({
@@ -774,32 +598,14 @@ export const CreditUsedCarTab = () => {
     })
   }
 
-  const renderErrorMessageEmpty = () => {
-    return (
-      <div className={`${styles.errorMessageWrapper} shake-animation-X`}>
-        <span className={styles.errorMessage}>Wajib diisi</span>
-      </div>
-    )
-  }
-
-  const handleDpChange = (
-    value: number,
-    percentage: number,
-    mappedPercentage: number,
-  ) => {
+  const handleDpChange = (value: number, percentage: number) => {
     setDpValue(value)
     setDpPercentage(percentage)
-    setMappedDpPercentage(mappedPercentage)
   }
 
-  const handleDpPercentageChange = (
-    value: number,
-    percentage: number,
-    mappedPercentage: number,
-  ) => {
+  const handleDpPercentageChange = (value: number, percentage: number) => {
     setDpValue(value)
     setDpPercentage(percentage)
-    setMappedDpPercentage(mappedPercentage)
   }
 
   const getCarOtrNumber = () => {
@@ -931,15 +737,6 @@ export const CreditUsedCarTab = () => {
     setIsTooltipOpen(false)
   }
 
-  const resetVariant = () => {
-    // when using this func, make sure to not exec "setForms" again
-    // because there will be discrepancy (set state is async)
-    setForms({
-      ...forms,
-      variant: variantEmptyValue,
-    })
-  }
-
   const onCloseQualificationPopUp = () => {
     setIsAssuranceModalOpen(false)
   }
@@ -962,26 +759,6 @@ export const CreditUsedCarTab = () => {
   const onFocusDpPercentageField = () => {
     trackEventCountly(
       CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_DP_PERCENTAGE_CLICK,
-      dataForCountlyTrackerOnClick(),
-    )
-  }
-
-  const onAfterChangeDpSlider = () => {
-    const hasTrackedDpSliderLC = getSessionStorage(
-      SessionStorageKey.HasTrackedDpSliderLC,
-    )
-    if (!hasTrackedDpSliderLC) {
-      trackEventCountly(
-        CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_DP_SLIDER_CLICK,
-        dataForCountlyTrackerOnClick(),
-      )
-      saveSessionStorage(SessionStorageKey.HasTrackedDpSliderLC, 'true')
-    }
-  }
-
-  const onShowDropdownAgeField = () => {
-    trackEventCountly(
-      CountlyEventNames.WEB_LOAN_CALCULATOR_PAGE_AGE_CLICK,
       dataForCountlyTrackerOnClick(),
     )
   }
@@ -1026,30 +803,9 @@ export const CreditUsedCarTab = () => {
               setIsDpExceedLimit={setIsDpExceedLimit}
               emitOnFocusDpAmountField={onFocusDpAmountField}
               emitOnFocusDpPercentageField={onFocusDpPercentageField}
-              emitOnAfterChangeDpSlider={onAfterChangeDpSlider}
               setIsOpenEducationalPopup={setIsOpenEducationalDpPopup}
             />
           </div>
-          {/* <div
-            id="loan-calculator-form-age"
-            className={styles.loanCalculatorFormAge}
-          >
-            <FormAsuransiCredit
-              ageList={assuranceOptions}
-              name="assurance"
-              handleChange={handleChange}
-              disabled={isDpTooLow || isDpExceedLimit}
-              defaultValue={
-                chosenAssurance.label !== '' ? chosenAssurance.label : ''
-              }
-              onShowDropdown={onShowDropdownAgeField}
-              isError={isValidatingEmptyField && !chosenAssurance}
-              setIsAssuranceModal={setIsAssuranceModalOpen}
-            />
-            {isValidatingEmptyField && chosenAssurance?.label === ''
-              ? renderErrorMessageEmpty()
-              : null}
-          </div> */}
           <Button
             version={ButtonVersion.PrimaryDarkBlue}
             size={ButtonSize.Big}
@@ -1058,7 +814,7 @@ export const CreditUsedCarTab = () => {
             disabled={disableBtnCalculate}
             data-testid={elementId.PDP.Button.HitungKemampuan}
           >
-            {isLoadingCalculation || isLoadingInsuranceAndPromo ? (
+            {isLoadingCalculation ? (
               <div className={`${styles.iconWrapper} rotateAnimation`}>
                 <IconLoading width={14} height={14} color="#FFFFFF" />
               </div>
@@ -1075,7 +831,6 @@ export const CreditUsedCarTab = () => {
 
       {calculationResult.length > 0 &&
       !isLoadingCalculation &&
-      !isLoadingInsuranceAndPromo &&
       isDataSubmitted ? (
         <>
           <div className={styles.formCardCalculationResult}>
@@ -1097,6 +852,7 @@ export const CreditUsedCarTab = () => {
               pageOrigination={'PDP Credit Tab'}
               scrollToLeads={scrollToLeads}
               setCalculationResult={setCalculationResult}
+              setChosenAssurance={setChosenAssurance}
             />
           </div>
           <div
@@ -1133,6 +889,7 @@ export const CreditUsedCarTab = () => {
               pageOrigination={'PDP Credit Tab'}
               scrollToLeads={scrollToLeads}
               setCalculationResult={setCalculationResult}
+              setChosenAssurance={setChosenAssurance}
             />
           </div>
           <div
@@ -1180,7 +937,6 @@ export const CreditUsedCarTab = () => {
         onClickCloseButton={onCloseQualificationPopUp}
         formData={forms}
       />
-
       <Toast
         width={339}
         open={isOpenToast}
