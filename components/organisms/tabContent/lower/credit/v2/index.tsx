@@ -7,16 +7,12 @@ import {
   Article,
   CityOtrOption,
   FinalLoan,
+  FormLCState,
   LoanCalculatorIncludePromoPayloadType,
   LoanCalculatorInsuranceAndPromoType,
   SpecialRateListWithPromoType,
   trackDataCarType,
 } from 'utils/types/utils'
-import {
-  trackVariantListPageCodeFailed,
-  trackVariantListPageCodeSuccess,
-  trackWebPDPCreditTab,
-} from 'helpers/amplitude/seva20Tracking'
 import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import {
@@ -24,7 +20,14 @@ import {
   LoanRank,
   TrackerFlag,
 } from 'utils/types/models'
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, {
+  MutableRefObject,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { LeadsFormSecondary } from 'components/organisms'
 import styles from 'styles/components/organisms/creditTab.module.scss'
 import { Button, Gap, IconCalculator, IconLoading } from 'components/atoms'
@@ -47,7 +50,10 @@ import IncomeForm from 'components/molecules/credit/income'
 import DpForm from 'components/molecules/credit/dp'
 import { CicilOptionForm } from 'components/molecules/credit/cicil'
 import { FormAgeCredit } from 'components/molecules/credit/age'
-import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
+import {
+  useSessionStorage,
+  useSessionStorageWithEncryption,
+} from 'utils/hooks/useSessionStorage/useSessionStorage'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import {
   CarRecommendation,
@@ -100,8 +106,12 @@ import {
   postLoanPermutationIncludePromo,
 } from 'services/api'
 import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
+import { IncomeAgeSection } from 'components/molecules/incomAgeSection'
+import EducationalContentPopupDp from 'components/organisms/educationalContentPopupDp'
+import EducationalContentPopupType from 'components/organisms/educationalContentPopupType'
+import { useUtils } from 'services/context/utilsContext'
+import { CalculationResultSkeleton } from 'components/organisms/calculationResultSkeleton'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
-import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -137,6 +147,7 @@ interface FormState {
         modelName: string
         modelImage: string
         brandName: string
+        loanRank: string
       }
     | undefined
   variant:
@@ -155,8 +166,9 @@ interface FormState {
   paymentOption: InstallmentTypeOptions
 }
 
-export const CreditTab = () => {
+export const CreditTabV2 = () => {
   const router = useRouter()
+  const { v } = router.query
   const { carModelDetails, carVariantDetails, recommendation } = useCar()
   const {
     dataCombinationOfCarRecomAndModelDetailDefaultCity,
@@ -173,6 +185,11 @@ export const CreditTab = () => {
       : carRecommendationsResDefaultCity?.carRecommendations
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
+    defaultCity,
+  )
+  const { city } = useUtils()
+  const [kkForm, setKKForm] = useLocalStorage<FormLCState | null>(
+    LocalStorageKey.KalkulatorKreditForm,
     null,
   )
   const { funnelQuery, patchFunnelQuery } = useFunnelQueryData()
@@ -238,6 +255,7 @@ export const CreditTab = () => {
     LocalStorageKey.referralTemanSeva,
   )
   const [isUserHasReffcode, setIsUserHasReffcode] = useState(false)
+  const [identifyInitDp, setIdentifiyInitDp] = useState(false)
   const [isOpenToast, setIsOpenToast] = useState(false)
   const [finalLoan, setFinalLoan] = useState<FinalLoan>({
     selectedInsurance: {},
@@ -268,6 +286,20 @@ export const CreditTab = () => {
   const [finalMinInputDp, setFinalMinInputDp] = useState(0)
   const [finalMaxInputDp, setFinalMaxInputDp] = useState(0)
   const [isOpenPopupRecommended, setIsOpenPopupRecommended] = useState(false)
+  const endRef = useRef() as MutableRefObject<HTMLDivElement>
+  const [shakeIncomeAge, setShakeIncomeAge] = useState(false)
+  const [isUserChooseVariantDropdown, setIsUserChooseVariantDropdown] =
+    useState(false)
+  const [isOpenEducationalDpPopup, setIsOpenEducationalDpPopup] =
+    useState(false)
+  const [
+    isOpenEducationalPaymentTypePopup,
+    setIsOpenEducationalPaymentTypePopup,
+  ] = useState(false)
+
+  const [isChangedMaxDp, setIsChangedMaxDp] = useState(false)
+  const [isLoadingAfterChangeVariant, setIsLoadingAfterChangeVariant] =
+    useState(false)
 
   const isUsingFilterFinancial =
     !!filterStorage?.age &&
@@ -292,6 +324,7 @@ export const CreditTab = () => {
       modelName: '',
       modelId: '',
       modelImage: CarSillhouete,
+      loanRank: '',
     },
     variant: {
       variantId: '',
@@ -319,6 +352,7 @@ export const CreditTab = () => {
         modelName: '',
         modelId: '',
         modelImage: '',
+        loanRank: '',
       },
       variant: {
         ...variantEmptyValue,
@@ -332,15 +366,32 @@ export const CreditTab = () => {
       tempData.model.modelImage = carModelDetails.images[0]
     }
 
-    if (carModelDetails && router.query?.selectedVariantId) {
-      if (passedVariantData.length > 0 && forms?.city?.cityCode) {
-        tempData.variant.variantId = passedVariantData[0].id
-        tempData.variant.variantName = passedVariantData[0].name
+    if (carModelDetails) {
+      if (router.query?.selectedVariantId) {
+        if (passedVariantData.length > 0 && forms?.city?.cityCode) {
+          tempData.variant.variantId = passedVariantData[0].id
+          tempData.variant.variantName = passedVariantData[0].name
+          tempData.variant.otr = `Rp${formatPriceNumberThousandDivisor(
+            passedVariantData[0].priceValue,
+            LanguageCode.id,
+          )}`
+          tempData.variant.discount = passedVariantData[0].discount
+        }
+      } else if (
+        kkForm &&
+        carModelDetails.id === kkForm.model?.modelId &&
+        kkForm?.variant.variantId
+      ) {
+        const findVariant = carModelDetails.variants.filter(
+          (item) => item.id === kkForm.variant.variantId,
+        )
+        tempData.variant.variantId = findVariant[0].id
+        tempData.variant.variantName = findVariant[0].name
         tempData.variant.otr = `Rp${formatPriceNumberThousandDivisor(
-          passedVariantData[0].priceValue,
+          findVariant[0].priceValue,
           LanguageCode.id,
         )}`
-        tempData.variant.discount = passedVariantData[0].discount
+        tempData.variant.discount = findVariant[0].discount
       }
     }
 
@@ -351,29 +402,27 @@ export const CreditTab = () => {
   }
 
   const updateSelectedVariantData = () => {
-    if (!!forms.variant?.variantId) {
-      const currentVariantWithUpdatedData = carVariantList.filter(
-        (item) => item.id === forms.variant?.variantId,
-      )
+    const currentVariantWithUpdatedData = !!forms.variant?.variantId
+      ? carVariantList.filter((item) => item.id === forms.variant?.variantId)
+      : carVariantList.sort((a, b) => a.priceValue - b.priceValue)
 
-      if (currentVariantWithUpdatedData.length !== 0) {
-        setForms({
-          ...forms,
-          variant: {
-            variantId: currentVariantWithUpdatedData[0].id,
-            variantName: currentVariantWithUpdatedData[0].name,
-            otr: `Rp${formatPriceNumberThousandDivisor(
-              currentVariantWithUpdatedData[0].priceValue,
-              LanguageCode.id,
-            )}`,
-            discount: currentVariantWithUpdatedData[0].discount,
-          },
-        })
-      }
-
-      // no need to setForms again when update currently selected variant
-      return
+    if (currentVariantWithUpdatedData.length !== 0) {
+      setForms({
+        ...forms,
+        variant: {
+          variantId: currentVariantWithUpdatedData[0].id,
+          variantName: currentVariantWithUpdatedData[0].name,
+          otr: `Rp${formatPriceNumberThousandDivisor(
+            currentVariantWithUpdatedData[0].priceValue,
+            LanguageCode.id,
+          )}`,
+          discount: currentVariantWithUpdatedData[0].discount,
+        },
+      })
     }
+
+    // no need to setForms again when update currently selected variant
+    return
   }
   const checkReffcode = () => {
     if (referralCodeLocalStorage) {
@@ -439,22 +488,74 @@ export const CreditTab = () => {
   useEffect(() => {
     fetchAllCarModels()
     fetchArticles()
-
-    const nextDisplay = localStorage.getItem('tooltipNextDisplay')
-    if (nextDisplay) {
-      setTooltipNextDisplay(nextDisplay)
-    }
-  }, [])
-
-  useAfterInteractive(() => {
     const timeoutCountlyTracker = setTimeout(() => {
       if (!isSentCountlyPageView) {
         trackCountlyViewCreditTab()
       }
     }, 1000) // use timeout because countly tracker cant process multiple event triggered at the same time
 
+    const nextDisplay = localStorage.getItem('tooltipNextDisplay')
+    if (nextDisplay) {
+      setTooltipNextDisplay(nextDisplay)
+    }
+
     return () => clearTimeout(timeoutCountlyTracker)
   }, [])
+
+  useEffect(() => {
+    const fetch = async () => {
+      if (forms.variant?.variantId) {
+        const finalDpRange = await getFinalDpRangeValidation(
+          forms.variant?.variantId,
+          forms.city.cityCode,
+        )
+        const dpValueKKForm =
+          v !== '1' && storedFilter?.downPaymentAmount
+            ? Number(storedFilter.downPaymentAmount)
+            : kkForm?.downPaymentAmount
+            ? parseInt(kkForm?.downPaymentAmount)
+            : 0
+
+        let minDp = 0
+        let maxDp = 0
+        if (finalDpRange?.minAmount !== 0 && finalDpRange?.maxAmount !== 0) {
+          minDp = finalDpRange?.minAmount
+          maxDp = finalDpRange?.maxAmount
+        } else {
+          const minDp20Percent = getCarOtrNumber() * 0.2
+          const maxDp90Percent = getCarOtrNumber() * 0.9
+
+          minDp = minDp20Percent
+          maxDp = maxDp90Percent
+        }
+        if (
+          (dpValueKKForm < minDp || dpValueKKForm > maxDp) &&
+          calculationResult.length > 0 &&
+          !isLoadingCalculation &&
+          !isLoadingInsuranceAndPromo &&
+          isDataSubmitted
+        ) {
+          setIsChangedMaxDp(true)
+        }
+        setFinalMinInputDp(minDp)
+        setFinalMaxInputDp(maxDp)
+      } else {
+        setFinalMinInputDp(0)
+        setFinalMaxInputDp(0)
+      }
+    }
+
+    fetch()
+  }, [forms.variant?.variantId, city])
+
+  useEffect(() => {
+    if (!forms.age || !forms.monthlyIncome) {
+      endRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
+      setTimeout(() => {
+        setShakeIncomeAge(true)
+      }, 800)
+    }
+  }, [forms, dpValue])
 
   React.useEffect(() => {
     setForms({
@@ -479,7 +580,12 @@ export const CreditTab = () => {
     if (forms.model?.modelId && forms.city) {
       fetchCarVariant()
     }
-  }, [forms.model?.modelId, forms.city])
+    if (isChangedMaxDp) {
+      setTimeout(() => {
+        setIsChangedMaxDp(false)
+      }, 3000)
+    }
+  }, [forms.model?.modelId, forms.city, calculationResult])
 
   useEffect(() => {
     if (modelError) {
@@ -497,6 +603,7 @@ export const CreditTab = () => {
           modelName: '',
           modelId: '',
           modelImage: '',
+          loanRank: '',
         },
       }
 
@@ -567,50 +674,20 @@ export const CreditTab = () => {
     )
   }, [carModelDetails])
 
-  useAfterInteractive(() => {
-    const timeoutAfterInteractive = setTimeout(() => {
-      if (carModelDetails && flag === TrackerFlag.Init) {
-        sendAmplitude()
-        setFlag(TrackerFlag.Sent)
-      }
-    }, 500)
-
-    return () => clearTimeout(timeoutAfterInteractive)
+  useEffect(() => {
+    if (carModelDetails && flag === TrackerFlag.Init) {
+      setFlag(TrackerFlag.Sent)
+    }
   }, [carModelDetails])
 
-  const sendAmplitude = (): void => {
-    if (!carModelDetails) return
-
-    const data: TrackVariantList = {
-      Car_Brand: carModelDetails?.brand || '',
-      Car_Model: carModelDetails?.model || '',
-      Car_Variant:
-        passedVariantData.length > 0 ? passedVariantData[0].name : '',
-      DP: `Rp${formatNumberByLocalization(
-        sortedCarModelVariant[0].dpAmount,
-        LanguageCode.id,
-        1000000,
-        10,
-      )} Juta`,
-      Monthly_Installment: `Rp${formatNumberByLocalization(
-        sortedCarModelVariant[0].monthlyInstallment,
-        LanguageCode.id,
-        1000000,
-        10,
-      )} jt/bln`,
-      Income:
-        storedFilter && storedFilter?.monthlyIncome?.length > 0
-          ? storedFilter?.monthlyIncome.toString()
-          : '',
-      Age:
-        storedFilter && storedFilter?.age?.length > 0
-          ? storedFilter?.age.toString()
-          : '',
-      Tenure: `${sortedCarModelVariant[0].tenure} Tahun`,
-      City: cityOtr?.cityName || '',
+  useEffect(() => {
+    if (kkForm?.paymentOption) {
+      setForms((prev) => ({
+        ...prev,
+        paymentOption: kkForm.paymentOption,
+      }))
     }
-    trackWebPDPCreditTab(data)
-  }
+  }, [kkForm?.paymentOption])
 
   const trackEventMoengage = () => {
     if (
@@ -788,6 +865,7 @@ export const CreditTab = () => {
     setIsDataSubmitted(false)
     if (name === 'variant') {
       saveDataCarForLoginPageView(value.variantName)
+      setIsUserChooseVariantDropdown(true)
     }
     if (name === 'city') {
       if (!value) {
@@ -907,12 +985,20 @@ export const CreditTab = () => {
     setMappedDpPercentage(mappedPercentage)
   }
 
-  const getCarOtrNumber = () => {
-    return Number(forms.variant?.otr.replace('Rp', '').replaceAll('.', ''))
+  const getCarOtrNumber = (otrValue?: string) => {
+    if (!otrValue) {
+      return Number(forms.variant?.otr.replace('Rp', '').replaceAll('.', ''))
+    } else {
+      return Number(otrValue.replace('Rp', '').replaceAll('.', ''))
+    }
   }
 
-  const getCarDiscountNumber = () => {
-    return Number(forms.variant?.discount ?? 0)
+  const getCarDiscountNumber = (carDiscountValue?: string) => {
+    if (!carDiscountValue) {
+      return Number(forms.variant?.discount ?? 0)
+    } else {
+      return Number(carDiscountValue ?? 0)
+    }
   }
 
   const handleInstallmentTypeChange = (
@@ -953,7 +1039,6 @@ export const CreditTab = () => {
       setIsLoadingPromoCode(false)
 
       if (result.message === 'valid promo code') {
-        trackVariantListPageCodeSuccess(forms.promoCode)
         if (result.citySelector) {
           const citygias = {
             id: result.citySelector.id,
@@ -969,14 +1054,12 @@ export const CreditTab = () => {
         handlePromoCodeValidResult(true)
         return true
       }
-      trackVariantListPageCodeFailed(forms.promoCode)
       setIsErrorPromoCode(true)
       setisSuccessPromoCode(false)
       handlePromoCodeValidResult(false)
       return false
     } catch (err: any) {
       setIsLoadingPromoCode(false)
-      trackVariantListPageCodeFailed(forms.promoCode)
       setIsErrorPromoCode(true)
       setisSuccessPromoCode(false)
       handlePromoCodeValidResult(false)
@@ -992,10 +1075,13 @@ export const CreditTab = () => {
 
   const generateSelectedInsuranceAndPromo = async (
     calculationResultValue: SpecialRateListWithPromoType[],
+    v2: boolean,
   ) => {
     const allTenure = calculationResultValue.map((item) => item.tenure)
     const tempArr: LoanCalculatorInsuranceAndPromoType[] = []
-
+    if (v2) {
+      setIsLoadingAfterChangeVariant(true)
+    }
     setIsLoadingInsuranceAndPromo(true)
     for (let i = 0; i < allTenure.length; i++) {
       const currentTenurePermutation = calculationResultValue.filter(
@@ -1073,6 +1159,7 @@ export const CreditTab = () => {
       }
     }
     setIsLoadingInsuranceAndPromo(false)
+    setIsLoadingAfterChangeVariant(false)
     scrollToResult()
     setTimeout(() => {
       trackCountlyResultView()
@@ -1247,9 +1334,9 @@ export const CreditTab = () => {
         const result = response.data.reverse()
         const filteredResult = getFilteredCalculationResults(result)
         setCalculationResult(filteredResult)
-        generateSelectedInsuranceAndPromo(filteredResult)
+        generateSelectedInsuranceAndPromo(filteredResult, false)
         trackCountlyResult(filteredResult)
-
+        setKKForm(forms)
         // select loan with the longest tenure as default
         const selectedLoanInitialValue =
           filteredResult.sort(
@@ -1281,7 +1368,94 @@ export const CreditTab = () => {
         setIsLoadingCalculation(false)
       })
   }
+  const handleChangeVariantOnCalculationResult = async (
+    name: string,
+    value: any,
+  ) => {
+    setIsLoadingAfterChangeVariant(true)
+    setForms({
+      ...forms,
+      [name]: value,
+    })
+    const finalDpRange = await getFinalDpRangeValidation(
+      value.variantId,
+      forms.city.cityCode,
+    )
+    let minDp =
+      (getCarOtrNumber(value.otr) - getCarDiscountNumber(value.discount)) * 0.2
+    let maxDp =
+      (getCarOtrNumber(value.otr) - getCarDiscountNumber(value.discount)) * 0.9
+    if (finalDpRange?.minAmount !== 0 && finalDpRange?.maxAmount !== 0) {
+      minDp = finalDpRange?.minAmount
+      maxDp = finalDpRange?.maxAmount
+    }
+    if (
+      Number(forms.downPaymentAmount) < minDp ||
+      Number(forms.downPaymentAmount) > maxDp
+    ) {
+      setIsChangedMaxDp(true)
+    }
 
+    const updatedDPValue =
+      Number(forms.downPaymentAmount) > maxDp
+        ? maxDp
+        : Number(forms.downPaymentAmount) < minDp
+        ? minDp
+        : forms.downPaymentAmount
+
+    const dataFinancial = {
+      ...financialQuery,
+      downPaymentAmount: updatedDPValue,
+    }
+
+    patchFinancialQuery(dataFinancial)
+    const payload: LoanCalculatorIncludePromoPayloadType = {
+      brand: forms.model?.brandName ?? '',
+      model: removeFirstWordFromString(forms.model?.modelName ?? ''),
+      age: forms.age,
+      angsuranType: forms.paymentOption,
+      city: forms.city.cityCode,
+      discount: getCarDiscountNumber(value.discount),
+      dp: mappedDpPercentage,
+      dpAmount: Number(updatedDPValue),
+      monthlyIncome: forms.monthlyIncome,
+      otr: getCarOtrNumber(value.otr) - getCarDiscountNumber(value.discount),
+      variantId: value.variantId,
+    }
+
+    postLoanPermutationIncludePromo(payload)
+      .then((response) => {
+        const result = response.data.reverse()
+        const filteredResult = getFilteredCalculationResults(result)
+
+        setCalculationResult(filteredResult)
+        setKKForm({ ...kkForm, downPaymentAmount: updatedDPValue })
+        generateSelectedInsuranceAndPromo(filteredResult, true)
+
+        // select loan with the longest tenure as default
+        const selectedLoanInitialValue =
+          filteredResult.sort(
+            (
+              a: SpecialRateListWithPromoType,
+              b: SpecialRateListWithPromoType,
+            ) => b.tenure - a.tenure,
+          )[0] ?? null
+        setSelectedLoan(selectedLoanInitialValue)
+
+        setIsDataSubmitted(true)
+        setCalculationApiPayload(payload)
+      })
+      .catch((error: any) => {
+        if (error?.response?.data?.message) {
+          setToastMessage(`${error?.response?.data?.message}`)
+        } else {
+          setToastMessage(
+            'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+          )
+        }
+        setIsOpenToast(true)
+      })
+  }
   const validateFormFields = () => {
     setIsValidatingEmptyField(true)
     if (!forms.city) {
@@ -1301,6 +1475,9 @@ export const CreditTab = () => {
     }
   }
 
+  const onChangeInformation = () => {
+    window.scrollTo({ top: 810, behavior: 'smooth' })
+  }
   const scrollToElement = (elementId: string) => {
     const target = document.getElementById(elementId)
     if (target) {
@@ -1315,7 +1492,7 @@ export const CreditTab = () => {
     if (element) {
       element.scrollIntoView()
       // add more scroll because global page header is fixed position
-      window.scrollBy({ top: -100, left: 0 })
+      window.scrollBy({ top: -15, left: 0 })
     }
     if (!tooltipNextDisplay || isTooltipExpired()) {
       setIsTooltipOpen(true)
@@ -1932,26 +2109,11 @@ export const CreditTab = () => {
               ? renderErrorMessageEmpty()
               : null}
           </div>
-          <div id="loan-calculator-form-income">
-            <IncomeForm
-              name="monthlyIncome"
-              title="Pendapatan bulanan"
-              value={Number(forms.monthlyIncome)}
-              defaultValue={Number(forms.monthlyIncome)}
-              handleChange={handleChange}
-              isError={
-                isIncomeTooLow ||
-                (isValidatingEmptyField && !forms.monthlyIncome)
-              }
-              emitOnBlurInput={onBlurIncomeInput}
-              onFocus={onFocusIncomeField}
-            />
-            {renderIncomeErrorMessage()}
-          </div>
+
           {/* TODO : Implement carPrice by Car Variant Price */}
           <div id="loan-calculator-form-dp">
             <DpForm
-              label="Kemampuan DP"
+              label="Down Payment (DP)"
               value={dpValue}
               percentage={dpPercentage}
               onChange={handleDpChange}
@@ -1967,6 +2129,9 @@ export const CreditTab = () => {
               isErrorEmptyField={
                 isValidatingEmptyField && !forms.downPaymentAmount
               }
+              isAutofillValueFromCreditQualificationData={
+                !isUserChooseVariantDropdown
+              }
               isDpTooLow={isDpTooLow}
               setIsDpTooLow={setIsDpTooLow}
               isDpExceedLimit={isDpExceedLimit}
@@ -1976,6 +2141,15 @@ export const CreditTab = () => {
               emitOnAfterChangeDpSlider={onAfterChangeDpSlider}
               finalMinInputDp={finalMinInputDp}
               finalMaxInputDp={finalMaxInputDp}
+              labelWithCta="Pelajari Lebih Lanjut"
+              setIsOpenEducationalPopup={setIsOpenEducationalDpPopup}
+              onCalculationResult={
+                calculationResult.length > 0 &&
+                !isLoadingCalculation &&
+                !isLoadingInsuranceAndPromo &&
+                isDataSubmitted
+              }
+              setIsChangedMaxDp={setIsChangedMaxDp}
             />
           </div>
           <div id="loan-calculator-form-installment-type">
@@ -1987,27 +2161,14 @@ export const CreditTab = () => {
               }
               handleChange={handleChange}
               value={forms.paymentOption}
+              labelWithCta="Pelajari Lebih Lanjut"
+              setIsOpenEducationalPopup={setIsOpenEducationalPaymentTypePopup}
             />
             {isValidatingEmptyField && !forms.paymentOption
               ? renderErrorMessageEmpty()
               : null}
           </div>
-          <div
-            id="loan-calculator-form-age"
-            className={styles.loanCalculatorFormAge}
-          >
-            <FormAgeCredit
-              ageList={ageOptions}
-              name="age"
-              handleChange={handleChange}
-              defaultValue={forms.age}
-              onShowDropdown={onShowDropdownAgeField}
-              isError={isValidatingEmptyField && !forms.age}
-            />
-            {isValidatingEmptyField && !forms.age
-              ? renderErrorMessageEmpty()
-              : null}
-          </div>
+
           {false && (
             <div id="loan-calculator-form-promo-code">
               <FormPromoCode
@@ -2023,6 +2184,42 @@ export const CreditTab = () => {
               />
             </div>
           )}
+          <IncomeAgeSection shake={shakeIncomeAge}>
+            <>
+              <div id="loan-calculator-form-income">
+                <IncomeForm
+                  name="monthlyIncome"
+                  title="Pendapatan bulanan"
+                  value={Number(forms.monthlyIncome)}
+                  defaultValue={Number(forms.monthlyIncome)}
+                  handleChange={handleChange}
+                  isError={
+                    isIncomeTooLow ||
+                    (isValidatingEmptyField && !forms.monthlyIncome)
+                  }
+                  emitOnBlurInput={onBlurIncomeInput}
+                  onFocus={onFocusIncomeField}
+                />
+                {renderIncomeErrorMessage()}
+              </div>
+              <div
+                id="loan-calculator-form-age"
+                className={styles.loanCalculatorFormAge}
+              >
+                <FormAgeCredit
+                  ageList={ageOptions}
+                  name="age"
+                  handleChange={handleChange}
+                  defaultValue={forms.age}
+                  onShowDropdown={onShowDropdownAgeField}
+                  isError={isValidatingEmptyField && !forms.age}
+                />
+                {isValidatingEmptyField && !forms.age
+                  ? renderErrorMessageEmpty()
+                  : null}
+              </div>
+            </>
+          </IncomeAgeSection>
 
           <Button
             // not using "disabled" attrib because some func need to be run
@@ -2030,7 +2227,6 @@ export const CreditTab = () => {
             version={ButtonVersion.PrimaryDarkBlue}
             size={ButtonSize.Big}
             onClick={onClickCalculate}
-            style={{ marginTop: 32 }}
             data-testid={elementId.PDP.Button.HitungKemampuan}
           >
             {isLoadingCalculation || isLoadingInsuranceAndPromo ? (
@@ -2041,6 +2237,7 @@ export const CreditTab = () => {
               'Hitung Kemampuan'
             )}
           </Button>
+          <div ref={endRef}></div>
         </div>
       </div>
 
@@ -2075,6 +2272,10 @@ export const CreditTab = () => {
               onClickResultItemUpperInfoSection={() =>
                 onClickResultItemUpperInfoSection()
               }
+              carVariantList={carVariantList}
+              handleChangeVariants={handleChangeVariantOnCalculationResult}
+              onChangeInformation={onChangeInformation}
+              isV2={true}
             />
           </div>
           {carRecommendations.length > 0 && (
@@ -2101,6 +2302,8 @@ export const CreditTab = () => {
             selectedLoanRank={selectedLoan?.loanRank}
           />
         </>
+      ) : isLoadingAfterChangeVariant ? (
+        <CalculationResultSkeleton />
       ) : (
         <></>
       )}
@@ -2125,7 +2328,15 @@ export const CreditTab = () => {
         selectedLoan={selectedLoan}
         onClickCta={onClickCtaQualificationModal}
       />
+      <EducationalContentPopupDp
+        isOpenBottomSheet={isOpenEducationalDpPopup}
+        onButtonClick={() => setIsOpenEducationalDpPopup(false)}
+      />
 
+      <EducationalContentPopupType
+        isOpenBottomSheet={isOpenEducationalPaymentTypePopup}
+        onButtonClick={() => setIsOpenEducationalPaymentTypePopup(false)}
+      />
       <Toast
         width={339}
         open={isOpenToast}
@@ -2134,7 +2345,11 @@ export const CreditTab = () => {
         onCancel={() => setIsOpenToast(false)}
         closeOnToastClick
       />
-
+      <Toast
+        width={343}
+        text={'DP telah disesuaikan dengan varian mobil pilihan kamu.'}
+        open={isChangedMaxDp}
+      />
       <PopupResultRecommended
         open={isOpenPopupRecommended}
         onCancel={() => {

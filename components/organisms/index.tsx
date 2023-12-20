@@ -32,7 +32,8 @@ import { CreditUsedCarTab } from './tabContent/lower/creditUsedCar'
 import { SpecificationTab } from './tabContent/lower/spesification'
 import { VideoTab } from './tabContent/upper/video'
 import { CarOverview } from './tabContent/upper/carOverview'
-import { CreditTab } from './tabContent/lower/credit'
+import { CreditTabV1 } from './tabContent/lower/credit/v1'
+import { CreditTabV2 } from './tabContent/lower/credit/v2'
 import { PriceTab } from './tabContent/lower/price'
 import { LeadsFormSecondary } from './leadsForm/secondary'
 import PromoSection from './promoSection/index'
@@ -72,10 +73,10 @@ import { AlternativeUsedCarRecomendationCard } from './alternativeUsedCarRecomen
 import { PopupResultRecommended } from './popupResultFilter/resultRecommended'
 import { CarGallery } from './tabContent/upper/CarGallery'
 import PdpUsedCarUpperSection from './PdpUsedCarUpperSection'
-import { InternalServerErrorPageContent } from './internalServerErrorPageContent'
-import { NotFoundErrorPageContent } from './notFoundErrorPageContent'
 import { RefinancingLandingPageContent } from './refinancingLandingPageContent'
 import { TemanSevaPageHeader } from './temanSevaPageHeader'
+import { InternalServerErrorPageContent } from './internalServerErrorPageContent'
+import { NotFoundErrorPageContent } from './notFoundErrorPageContent'
 
 const Exterior360ViewerTab = dynamic(
   () => import('./tabContent/upper/exterior360Viewer'),
@@ -115,7 +116,8 @@ export {
   SpecificationTab,
   VideoTab,
   CarOverview,
-  CreditTab,
+  CreditTabV1,
+  CreditTabV2,
   PriceTab,
   LeadsFormSecondary,
   PromoSection,
@@ -138,8 +140,6 @@ export {
   HomepageAdaSEVAdiOTO,
   LeadsFormAdaOTOdiSEVA,
   AdaOTOdiSEVALeadsForm,
-  InternalServerErrorPageContent,
-  NotFoundErrorPageContent,
   UsedCarDetailCard,
   InformationSection,
   Login,
@@ -160,4 +160,6 @@ export {
   CalculationUsedCarResult,
   RefinancingLandingPageContent,
   TemanSevaPageHeader,
+  InternalServerErrorPageContent,
+  NotFoundErrorPageContent,
 }
