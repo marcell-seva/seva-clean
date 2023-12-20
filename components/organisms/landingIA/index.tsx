@@ -219,7 +219,6 @@ export const LandingIA = ({
         JSON.stringify({ refer: window.location.pathname }),
       )
       router.push(creditQualificationResultUrl)
-      onClose()
     } catch (e: any) {
       if (e?.response?.data?.message) {
         setToastMessage(`${e?.response?.data?.message}`)
