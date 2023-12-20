@@ -4,7 +4,11 @@ import { getLocalStorage } from 'utils/handler/localStorage'
 import { clientInteractionNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 import { UTMTagsData } from 'utils/types/utils'
 
-const get = (path: string, config?: AxiosRequestConfig) => {
+const get = (
+  path: string,
+  config?: AxiosRequestConfig,
+  ignoreErrorHandlerNavigation?: boolean,
+) => {
   const promise: Promise<any> = new Promise((resolve, reject) => {
     const utmTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
     axios
@@ -18,7 +22,9 @@ const get = (path: string, config?: AxiosRequestConfig) => {
         },
         (error: AxiosError) => {
           reject(error)
-          clientInteractionNavigateToErrorPage(error?.response?.status)
+          if (!ignoreErrorHandlerNavigation) {
+            clientInteractionNavigateToErrorPage(error?.response?.status)
+          }
         },
       )
   })

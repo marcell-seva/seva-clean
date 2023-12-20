@@ -154,10 +154,9 @@ export default function AlasanHapusAkun({
     trackDeleteAccountPopupCTAYesClick({
       Reason: reason,
     })
-    if (!!getToken() && !!getToken()?.phoneNumber) {
+    if (!!getToken()) {
       deleteAccount({
-        phoneNumber: getToken()?.phoneNumber ?? '',
-        reason: reason,
+        createdBy: reason,
       })
         .then(() => {
           removeInformationWhenLogout()

@@ -61,17 +61,8 @@ export const checkRegisteredCustomer = (
   )
 }
 
-export const registerCustomerSeva = ({
-  phoneNumber,
-  fullName,
-  dob,
-  gender,
-  email,
-  promoSubscription,
-  marital,
-  referralCode,
-}: CustomerRegister) => {
-  return post(collections.auth.createCustomer, {
+export const registerCustomerSeva = (
+  {
     phoneNumber,
     fullName,
     dob,
@@ -80,7 +71,27 @@ export const registerCustomerSeva = ({
     promoSubscription,
     marital,
     referralCode,
-  })
+  }: CustomerRegister,
+  isUsingTempToken?: boolean,
+) => {
+  return post(
+    collections.auth.createCustomer,
+    {
+      phoneNumber,
+      fullName,
+      dob,
+      gender,
+      email,
+      promoSubscription,
+      marital,
+      referralCode,
+    },
+    {
+      headers: {
+        Authorization: getToken(isUsingTempToken)?.idToken,
+      },
+    },
+  )
 }
 
 export const getPAAIAInfo = (orderId: string) => {

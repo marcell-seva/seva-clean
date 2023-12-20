@@ -436,7 +436,6 @@ export const SummaryTab = ({
             <div className={styles.gap} />
           </>
         ) : null}
-        <Gap height={24} />
         <Faq
           isWithIcon
           headingText={`Pertanyaan yang Sering Diajukan`}

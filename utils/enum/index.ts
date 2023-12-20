@@ -105,6 +105,7 @@ export enum LocalStorageKey {
   LastTimeUpdateUtm = 'lastTimeUpdateUtm',
   flagPopUpRecomendation = 'flagPopUpRecomendation',
   prevLoginPath = 'prevLoginPath',
+  TempToken = 'tempToken', // used for check registered customer
 }
 
 export enum SessionStorageKey {
@@ -280,4 +281,8 @@ export enum ZIndex {
 
 export enum TemanSeva {
   PTBC = 'SEVAPTBC',
+}
+
+export enum CookieKey {
+  PhoneNumber = 'phoneNumber',
 }

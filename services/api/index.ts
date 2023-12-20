@@ -73,8 +73,10 @@ import put from './put'
 //   },
 // )
 
-const getConfigToken = () => {
-  const dataToken = localStorage.getItem('token')
+const getConfigToken = (isUsingTempToken?: boolean) => {
+  const dataToken = localStorage.getItem(
+    isUsingTempToken ? LocalStorageKey.TempToken : LocalStorageKey.Token,
+  )
   const userToken = dataToken !== null ? JSON.parse(dataToken).idToken : null
   const config = {
     headers: { Authorization: userToken },
@@ -109,7 +111,13 @@ const getCarVariantDetails = (
   id: string,
   params: string,
   config?: AxiosRequestConfig,
-) => get(collections.product.variantDetails.replace(':id', id) + params, config)
+  ignoreErrorHandlerNavigation?: boolean,
+) =>
+  get(
+    collections.product.variantDetails.replace(':id', id) + params,
+    config,
+    ignoreErrorHandlerNavigation,
+  )
 const getVariantCar = (params?: string, config?: AxiosRequestConfig) =>
   get(collections.product.variant + params, config)
 const getTypeCar = (params: string, config?: AxiosRequestConfig) =>
@@ -120,7 +128,8 @@ const getCarofTheMonth = (params: string) =>
 const getCarVideoReview = () => get(collections.product.carVideoReview)
 const getAnnouncementBox = (config: AxiosRequestConfig) =>
   get(collections.utils.announcementBox, config)
-const getUserInfo = () => get(collections.auth.user, getConfigToken())
+const getUserInfo = (isUsingTempToken?: boolean) =>
+  get(collections.auth.user, getConfigToken(isUsingTempToken))
 const getSupportedBrowsers = () => get(collections.utils.supportedBrowser)
 const getMobileFooterMenu = () => get(collections.utils.mobileFooterMenu)
 const getMobileHeaderMenu = () => get(collections.utils.mobileHeaderMenu)

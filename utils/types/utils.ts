@@ -1063,9 +1063,7 @@ export interface GetCustomerKtpSeva {
 }
 
 export type DeleteAccountRequestType = {
-  phoneNumber: string
-  createdBy?: string
-  reason?: string
+  createdBy: string // reason of deletion
 }
 
 export interface UpdateProfileType {
