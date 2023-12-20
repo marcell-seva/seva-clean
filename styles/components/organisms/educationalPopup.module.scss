@@ -1,0 +1,166 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.bottomSheetContainer {
+  [data-rsbs-header] {
+    padding-top: 27px;
+  }
+}
+.popupSubHeader {
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 24px;
+  height: 28px;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  justify-content: space-between;
+}
+.kanyonMedium {
+  font-family: var(--kanyon);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  color: #13131b;
+}
+
+.kanyonSemiBold {
+  font-family: var(--kanyon-medium);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #000000;
+}
+.openSans {
+  font-family: var(--open-sans);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #878d98;
+  span {
+    font-family: var(--open-sans-semi-bold);
+    font-weight: 600;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #{$shades-grey-25};
+    border-radius: 20px;
+    right: -20px;
+  }
+}
+.containerDP {
+  @extend .container;
+  overflow: auto !important;
+}
+.contentPromo {
+  display: flex;
+  flex-direction: column;
+}
+
+.bottomSheetSmall [data-rsbs-overlay] {
+  @include centeredWithMaxWidth;
+  height: auto;
+}
+
+.bottomSheetSmall [data-rsbs-backdrop] {
+  @include centeredWithMaxWidth;
+}
+.bottomSheet [data-rsbs-overlay] {
+  @include centeredWithMaxWidth;
+  height: auto;
+  top: 137px;
+}
+
+.bottomSheet [data-rsbs-backdrop] {
+  @include centeredWithMaxWidth;
+  height: 197px;
+}
+
+.bottomSheetStart [data-rsbs-overlay] {
+  @include centeredWithMaxWidth;
+  height: auto;
+  top: 137px;
+}
+
+.bottomSheetStart [data-rsbs-backdrop] {
+  @include centeredWithMaxWidth;
+}
+.bottomSheetDismiss [data-rsbs-overlay] {
+  @include centeredWithMaxWidth;
+  height: auto;
+  top: 137px;
+}
+
+.bottomSheetDismiss [data-rsbs-backdrop] {
+  @include centeredWithMaxWidth;
+}
+
+.informationWrapper {
+  border-radius: 8px;
+  background: var(--shades-sky-blue-sky-blue-10, #eef6fb);
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.informationTitleText {
+  font-family: var(--open-sans-bold);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 18px;
+  color: #246ed4;
+}
+
+.informationTitleDesciption {
+  font-family: var(--open-sans);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  color: #246ed4;
+}
+.line {
+  height: 4px;
+  background: #f5f6f6;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+.wrapper {
+  padding: 0px 16px;
+}
+.content {
+  margin-top: 25px;
+}
+.wrapperText {
+  padding: 10px 0px;
+}
+.spacingText {
+  margin-bottom: 32px;
+}
+.wrapperButtonCta {
+  margin: 32px 24px 24px 24px;
+}
+.buttonCta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.iconWrapper {
+  width: 40px;
+  height: 40px;
+}

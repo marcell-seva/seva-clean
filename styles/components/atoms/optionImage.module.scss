@@ -1,0 +1,27 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  position: relative;
+  width: 102px;
+  height: 72px;
+  background: #{$primary-white};
+  border-radius: 4px;
+  border: 1px solid #{$primaryLightGrey};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.containerSelected {
+  border: 1px solid #{$primary-dark-blue};
+}
+
+.styledImage {
+  opacity: 1;
+}
+
+.styledImageDisabled {
+  opacity: 0.3;
+}

@@ -28,7 +28,12 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { LeadsFormSecondary } from 'components/organisms'
+import {
+  CalculationResultSkeleton,
+  EducationalContentPopupDp,
+  EducationalContentPopupType,
+  LeadsFormSecondary,
+} from 'components/organisms'
 import styles from 'styles/components/organisms/creditTab.module.scss'
 import { Button, Gap, IconCalculator, IconLoading } from 'components/atoms'
 import {
@@ -106,12 +111,9 @@ import {
   postLoanPermutationIncludePromo,
 } from 'services/api'
 import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
-import { IncomeAgeSection } from 'components/molecules/incomAgeSection'
-import EducationalContentPopupDp from 'components/organisms/educationalContentPopupDp'
-import EducationalContentPopupType from 'components/organisms/educationalContentPopupType'
-import { useUtils } from 'services/context/utilsContext'
-import { CalculationResultSkeleton } from 'components/organisms/calculationResultSkeleton'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { IncomeAgeSection } from 'components/molecules/incomAgeSection'
+import { useUtils } from 'services/context/utilsContext'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -2141,15 +2143,14 @@ export const CreditTabV2 = () => {
               emitOnAfterChangeDpSlider={onAfterChangeDpSlider}
               finalMinInputDp={finalMinInputDp}
               finalMaxInputDp={finalMaxInputDp}
-              labelWithCta="Pelajari Lebih Lanjut"
-              setIsOpenEducationalPopup={setIsOpenEducationalDpPopup}
-              onCalculationResult={
-                calculationResult.length > 0 &&
-                !isLoadingCalculation &&
-                !isLoadingInsuranceAndPromo &&
-                isDataSubmitted
-              }
-              setIsChangedMaxDp={setIsChangedMaxDp}
+              // setIsOpenEducationalPopup={setIsOpenEducationalDpPopup}
+              // onCalculationResult={
+              //   calculationResult.length > 0 &&
+              //   !isLoadingCalculation &&
+              //   !isLoadingInsuranceAndPromo &&
+              //   isDataSubmitted
+              // }
+              // setIsChangedMaxDp={setIsChangedMaxDp}
             />
           </div>
           <div id="loan-calculator-form-installment-type">
@@ -2161,8 +2162,8 @@ export const CreditTabV2 = () => {
               }
               handleChange={handleChange}
               value={forms.paymentOption}
-              labelWithCta="Pelajari Lebih Lanjut"
-              setIsOpenEducationalPopup={setIsOpenEducationalPaymentTypePopup}
+              // labelWithCta="Pelajari Lebih Lanjut"
+              // setIsOpenEducationalPopup={setIsOpenEducationalPaymentTypePopup}
             />
             {isValidatingEmptyField && !forms.paymentOption
               ? renderErrorMessageEmpty()
@@ -2272,10 +2273,10 @@ export const CreditTabV2 = () => {
               onClickResultItemUpperInfoSection={() =>
                 onClickResultItemUpperInfoSection()
               }
-              carVariantList={carVariantList}
-              handleChangeVariants={handleChangeVariantOnCalculationResult}
-              onChangeInformation={onChangeInformation}
-              isV2={true}
+              // carVariantList={carVariantList}
+              // handleChangeVariants={handleChangeVariantOnCalculationResult}
+              // onChangeInformation={onChangeInformation}
+              // isV2={true}
             />
           </div>
           {carRecommendations.length > 0 && (

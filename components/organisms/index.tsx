@@ -78,6 +78,9 @@ import { TemanSevaPageHeader } from './temanSevaPageHeader'
 import { InternalServerErrorPageContent } from './internalServerErrorPageContent'
 import { NotFoundErrorPageContent } from './notFoundErrorPageContent'
 import EducationalContentPopupUsedCar from './educationalContentPopup/usedCar'
+import EducationalContentPopupDp from './educationalContentPopupDp'
+import { CalculationResultSkeleton } from './calculationResultSkeleton'
+import EducationalContentPopupType from './educationalContentPopupType'
 
 const Exterior360ViewerTab = dynamic(
   () => import('./tabContent/upper/exterior360Viewer'),
@@ -164,4 +167,7 @@ export {
   InternalServerErrorPageContent,
   NotFoundErrorPageContent,
   EducationalContentPopupUsedCar,
+  EducationalContentPopupDp,
+  EducationalContentPopupType,
+  CalculationResultSkeleton,
 }

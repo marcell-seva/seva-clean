@@ -1,0 +1,48 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  border-radius: 8px;
+  border: 2px solid #{$shades-green-10};
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 32px 0;
+}
+
+.uppperSection {
+  border-radius: 8px 8px 0px 0px;
+  background: #{$shades-green-5};
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+
+  .titleSection {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .title {
+      color: #{$primary-black};
+      font-family: $font-openSans-bold;
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    .titleDesc {
+      color: #{$primary-black};
+      font-family: $font-openSans;
+      font-size: 12px;
+      line-height: 18px;
+
+      .titleDescSemiBold {
+        font-family: $font-openSans-semiBold;
+      }
+    }
+  }
+}
+
+.formSection {
+  padding: 0 16px 24px;
+}

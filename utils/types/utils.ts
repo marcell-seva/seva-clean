@@ -482,6 +482,7 @@ export interface FormLCState {
         modelName: string
         modelImage: string
         brandName: string
+        loanRank: string
       }
     | undefined
   variant:

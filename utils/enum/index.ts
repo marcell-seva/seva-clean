@@ -106,6 +106,7 @@ export enum LocalStorageKey {
   LastTimeUpdateUtm = 'lastTimeUpdateUtm',
   flagPopUpRecomendation = 'flagPopUpRecomendation',
   TempToken = 'tempToken', // used for check registered customer
+  KalkulatorKreditForm = 'KalkulatorKreditForm',
 }
 
 export enum SessionStorageKey {
