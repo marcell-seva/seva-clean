@@ -25,7 +25,6 @@ export const WarnaTab = ({ isShowAnnouncementBox, isOTO = false }: any) => {
     const carBrandModelWithPUrl = `/${
       splitedPath[isOTO ? 2 : 1]
     }/p/${brand}/${model}`
-    console.log('asdf 123', carBrandModelUrl)
     if (availableList.includes(carBrandModelUrl)) {
       const colorsTmp = availableListColors.filter(
         (url) => url.url === carBrandModelUrl,

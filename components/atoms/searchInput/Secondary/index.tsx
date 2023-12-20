@@ -1,10 +1,5 @@
 import React, { ChangeEvent, InputHTMLAttributes, useRef } from 'react'
-import {
-  IconSearch,
-  IconClose,
-  IconLocationLine,
-  IconRemove,
-} from 'components/atoms/icon'
+import { IconSearch, IconLocationLine, IconRemove } from 'components/atoms/icon'
 import { Input } from './input'
 interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   onSearchInputChange?: (value: string) => void
@@ -14,7 +9,6 @@ interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   height?: number
   enablePrefixIcon?: boolean
   searchIconSuffix?: boolean
-  overrideHeightMobile?: boolean
   citySelectorMobile?: boolean
   handleCloseModal: () => void
 }
@@ -27,7 +21,6 @@ export const SearchInputSecondary = ({
   height = 50,
   enablePrefixIcon = true,
   searchIconSuffix = false,
-  overrideHeightMobile = false,
   citySelectorMobile = false,
   handleCloseModal,
   ...restProps
@@ -91,9 +84,6 @@ export const SearchInputSecondary = ({
       ref={inputRef}
       type={'text'}
       height={height}
-      prefixMarginRight={citySelectorMobile ? 9 : 6}
-      citySelectorMobile={citySelectorMobile}
-      overrideHeightMobile={overrideHeightMobile}
       {...restProps}
     />
   )

@@ -251,18 +251,21 @@ export const SearchComponent = ({
         variantListUrl.replace(
           ':brand/:model/:tab?',
           item.url.split('/p/')[1].replaceAll(' ', '-'),
-        ) + `/${getCityUrl()}`
+        ) + `${getCityUrl()}`
     } else {
       urlDestination = carResultsUrl + item.url.split('/c')[1]
     }
 
     // simpan pencarian ke dalam local storage
     saveHistoryToLocal(
-      item.url.split('/p/')[1].replaceAll(' ', '-'),
+      variantListUrl.replace(
+        ':brand/:model/:tab?',
+        item.url.split('/p/')[1].replaceAll(' ', '-'),
+      ),
       item.carName,
     )
 
-    window.location.href = urlDestination
+    router.push(urlDestination)
   }
 
   const onClickRecommendationList = (item: any) => {
@@ -274,7 +277,7 @@ export const SearchComponent = ({
     // simpan pencarian ke dalam local storage
     saveHistoryToLocal(urlDestination, item.name)
 
-    window.location.href = urlDestination + `/${getCityUrl()}`
+    router.push(urlDestination + `/${getCityUrl()}`)
   }
 
   const clickList = (item: SearchUsedCar) => {
@@ -293,7 +296,7 @@ export const SearchComponent = ({
     // simpan pencarian ke dalam local storage
     saveHistoryToLocal(item.sevaUrl, item.carName)
 
-    window.location.href = urlDestination
+    router.push(urlDestination)
   }
 
   if (isError) return null
@@ -303,23 +306,15 @@ export const SearchComponent = ({
     const checkNewCar = data.value.includes('mobil-baru/')
     let urlDestination = ''
     if (checkNewCar) {
-      const checkPDP = data.value.includes('/p')
-      if (checkPDP) {
+      const checkSearch = data.value.includes('search')
+      if (checkSearch) {
+        urlDestination = data.value
+      } else {
         urlDestination =
           variantListUrl.replace(
             ':brand/:model/:tab?',
-            data.value.split('/p/')[1],
-          ) + `/${getCityUrl()}`
-      } else {
-        const checkSearch = data.value.includes('search')
-        if (checkSearch) {
-          urlDestination = data.value
-        } else {
-          urlDestination = carResultsUrl.replace(
-            ':brand/:model/:tab?',
-            data.value.split('/c/')[1],
-          )
-        }
+            data.value.split('/mobil-baru/')[1],
+          ) + `${getCityUrl()}`
       }
     } else {
       const checkPDPUsedCar = data.value.includes('/p')
@@ -339,7 +334,7 @@ export const SearchComponent = ({
     }
     clearQueryFilterData()
     clearQueryFilterUsedCarData()
-    window.location.href = urlDestination
+    router.push(urlDestination)
   }
 
   type RenderedLabels = {
@@ -385,74 +380,6 @@ export const SearchComponent = ({
           }
           return null
         })}
-      </ul>
-    )
-  }
-
-  const renderRecommendation = () => {
-    return (
-      <div>
-        <Swiper
-          slidesPerView="auto"
-          spaceBetween={16}
-          className={styles.listNewCar}
-        >
-          {carData.map((car) => (
-            <>
-              <SwiperSlide className={styles.containerNewCar} key={car.name}>
-                <div onClick={() => onClickRecommendationList(car)}>
-                  <div className={styles.linkCar}>
-                    <Image
-                      src={car.image}
-                      alt={car.name}
-                      style={{
-                        objectFit: 'cover',
-                        objectPosition: 'center',
-                      }}
-                      width={'64'}
-                      height={'48'}
-                      className={styles.styledCarImage}
-                    />
-                    <div className={styles.styledCarName}>{car.name}</div>
-                  </div>
-                </div>
-              </SwiperSlide>
-            </>
-          ))}
-        </Swiper>
-        <div>
-          <Link href={carResultsUrl} className={styles.linkAllCar}>
-            <p className={styles.linkAllCar}>Lihat semua mobil baru</p>
-            <IconChevronRight width={20} height={20} color="#246ED4" />
-          </Link>
-        </div>
-      </div>
-    )
-  }
-
-  const renderRecommendationUsedCar = () => {
-    return (
-      <ul>
-        {usedCarData?.map((car: SearchUsedCar) => (
-          <>
-            <div className={styles.styledCarContentName} key={car.carName}>
-              <div
-                className={styles.styledCarName}
-                onClick={() => clickList(car)}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  <div className={styles.styledUsedCarName}>{car.carName}</div>
-                </div>
-              </div>
-            </div>
-            <Line width={'100%'} height={'1px'} background="#EBECEE" />
-          </>
-        ))}
       </ul>
     )
   }
@@ -596,14 +523,66 @@ export const SearchComponent = ({
           }
         >
           <Panel header="Cari Mobil Baru" key="1" className={styles.panelStyle}>
-            {renderRecommendation()}
+            <Swiper
+              slidesPerView="auto"
+              spaceBetween={16}
+              className={styles.listNewCar}
+            >
+              {carData.map((car) => (
+                <SwiperSlide className={styles.containerNewCar} key={car.name}>
+                  <div onClick={() => onClickRecommendationList(car)}>
+                    <div className={styles.linkCar}>
+                      <Image
+                        src={car.image}
+                        alt={car.name}
+                        style={{
+                          objectFit: 'cover',
+                          objectPosition: 'center',
+                        }}
+                        width={'64'}
+                        height={'48'}
+                        className={styles.styledCarImage}
+                      />
+                      <div className={styles.styledCarName}>{car.name}</div>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            <div>
+              <Link href={carResultsUrl} className={styles.linkAllCar}>
+                <p className={styles.linkAllCar}>Lihat semua mobil baru</p>
+                <IconChevronRight width={20} height={20} color="#246ED4" />
+              </Link>
+            </div>
           </Panel>
           <Panel
             header="Cari Mobil Bekas"
             key="2"
             className={styles.panelStyle}
           >
-            <div>{renderRecommendationUsedCar()}</div>
+            {usedCarData?.map((car: SearchUsedCar, idx: number) => (
+              <div key={idx}>
+                <div className={styles.styledCarContentName} key={car.carName}>
+                  <div
+                    className={styles.styledCarName}
+                    onClick={() => clickList(car)}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <div className={styles.styledUsedCarName}>
+                        {car.carName}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <Line width={'100%'} height={'1px'} background="#EBECEE" />
+              </div>
+            ))}
             <div className={styles.ctaUsedCar}>
               <Link href={usedCarResultUrl} className={styles.linkAllCar}>
                 <p className={styles.linkAllCar}>Lihat semua mobil bekas</p>
@@ -620,7 +599,7 @@ export const SearchComponent = ({
     clearQueryFilterData()
     const url = `${carResultsUrl}?search=${search}`
     saveHistoryToLocal(url, search)
-    if (window.location.pathname === '/mobil-baru') {
+    if (window.location.pathname === '/mobil-baru/c') {
       patchFunnelQueryData({ search: search })
       router
         .push({

@@ -18,13 +18,10 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   inputTheme?: InputTheme
   suffixIcon?: () => JSX.Element
   prefixComponent?: () => JSX.Element
-  prefixMarginRight?: number
   bottomComponent?: () => JSX.Element
   height?: number
   ref?: ForwardedRef<HTMLInputElement>
   overrideRedBorder?: boolean
-  overrideHeightMobile?: boolean
-  citySelectorMobile?: boolean
   dataTestId?: string
   name?: string
 }
