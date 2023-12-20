@@ -32,6 +32,7 @@ type pdpLowerSectionProps = {
   variantFuelRatio: string | undefined
   isOTO?: boolean
   isShowAnnouncementBox?: boolean | null // for track annoucnement box every tab
+  onChangeTab: (value: any) => void
 }
 
 export const PdpLowerSection = ({
@@ -43,15 +44,10 @@ export const PdpLowerSection = ({
   variantFuelRatio,
   isOTO = false,
   isShowAnnouncementBox,
+  onChangeTab,
 }: pdpLowerSectionProps) => {
   const router = useRouter()
-  const lowerTab = router.query.slug as string
-  const path = lowerTab ? capitalizeFirstLetter(lowerTab[0]) : ''
-  const [selectedTabValue, setSelectedTabValue] = useState(
-    path ||
-      lowerSectionNavigationTab.filter((item) => item.label !== 'Kredit')[0]
-        .value,
-  )
+  const { slug } = router.query || []
   const { carModelDetails } = useCar()
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
   const [announcement, setAnnouncement] = useState<AnnouncementBoxDataType>()
@@ -64,6 +60,27 @@ export const PdpLowerSection = ({
     !!filterStorage?.tenure
   const loanRankcr = router.query.loanRankCVL ?? ''
   const upperTab = router.query.tab as string
+
+  const validateSlug = (slug: Array<string>) => {
+    if (slug) {
+      var data = lowerSectionNavigationTab.filter((item) => {
+        var data = slug.filter((items: any) => items === item.value)
+        return data.length > 0
+      })
+      return {
+        isValid: data.length !== 0,
+        data: data[0] ?? lowerSectionNavigationTab[0],
+      }
+    } else
+      return {
+        isValid: false,
+        data: lowerSectionNavigationTab[0],
+      }
+  }
+
+  const [selectedTabValue, setSelectedTabValue] = useState(
+    validateSlug(slug as Array<string>).data?.value,
+  )
 
   const trackAnnouncementBoxView = (value: string) => {
     if (isShowAnnouncementBox && announcement) {
@@ -101,28 +118,7 @@ export const PdpLowerSection = ({
     trackAnnouncementBoxView(value)
     setSelectedTabValue(value)
     const destinationElm = document.getElementById('pdp-lower-content')
-    const urlWithoutSlug = window.location.href
-      .replace('/ringkasan', '')
-      .replace('/spesifikasi', '')
-      .replace('/harga', '')
-      .replace('/kredit', '')
-    const lastIndexUrl = window.location.href.slice(-1)
-
-    if (lastIndexUrl === '/') {
-      window.history.pushState(
-        null,
-        '',
-        urlWithoutSlug + value.toLocaleLowerCase(),
-      )
-    } else {
-      window.history.pushState(
-        null,
-        '',
-        urlWithoutSlug +
-          '/' +
-          (value !== 'Ringkasan' ? value.toLocaleLowerCase() : ''),
-      )
-    }
+    onChangeTab(value)
 
     if (destinationElm) {
       destinationElm.scrollIntoView()
@@ -135,26 +131,14 @@ export const PdpLowerSection = ({
       setAnnouncement(dataAnnouncementBox)
     }
   }
-  useEffect(() => {
-    setTabFromDirectUrl()
-  }, [])
 
   useEffect(() => {
     getAnnouncementBox()
   }, [dataAnnouncementBox, isShowAnnouncementBox])
 
-  const setTabFromDirectUrl = () => {
-    const slug = router.query.slug
-
-    if (slug) {
-      const path = capitalizeFirstLetter(slug[0])
-      setSelectedTabValue(path)
-    }
-  }
-
   const renderContent = () => {
     switch (selectedTabValue) {
-      case 'Ringkasan':
+      case 'ringkasan':
         return (
           <SummaryTab
             setPromoName={setPromoName}
@@ -166,10 +150,10 @@ export const PdpLowerSection = ({
             isOTO={isOTO}
           />
         )
-      case 'Spesifikasi':
+      case 'spesifikasi':
         return <SpecificationTab isOTO={isOTO} />
 
-      case 'Harga':
+      case 'harga':
         return (
           <PriceTab
             setSelectedTabValue={onSelectLowerTab}
@@ -178,7 +162,7 @@ export const PdpLowerSection = ({
             isOTO={isOTO}
           />
         )
-      case 'Kredit':
+      case 'kredit':
         return <CreditTab />
 
       default:

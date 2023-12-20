@@ -1,5 +1,5 @@
 import { PLP } from 'components/organisms'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { CarRecommendationResponse, MinMaxPrice } from 'utils/types/context'
@@ -15,45 +15,67 @@ import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { useUtils } from 'services/context/utilsContext'
 import { MobileWebFooterMenuType } from 'utils/types/props'
-import styles from 'styles/pages/plp.module.scss'
 import { CarProvider } from 'services/context'
-import { generateBlurRecommendations } from 'utils/generateBlur'
 import { monthId } from 'utils/handler/date'
+import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
+import { useRouter } from 'next/router'
 import { getCity } from 'utils/hooks/useGetCity'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
+import { getToken } from 'utils/handler/auth'
 import {
+  getMenu,
   getMobileHeaderMenu,
   getMobileFooterMenu,
   getCities,
   getMinMaxPrice,
+  getAnnouncementBox as gab,
 } from 'services/api'
-import { default as customAxiosGet } from 'services/api/get'
-import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 const NewCarResultPage = ({
   meta,
-  dataHeader,
+  dataMobileMenu,
   dataFooter,
   dataCities,
+  dataDesktopMenu,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { saveMobileWebTopMenus, saveMobileWebFooterMenus, saveCities } =
-    useUtils()
+  const router = useRouter()
+  const todayDate = new Date()
+  const brand = router.query.brand
+
+  const metaTitle = `Beli Mobil Baru ${todayDate.getFullYear()} - Harga OTR dengan Promo Cicilan Bulan ${monthId(
+    todayDate.getMonth(),
+  )} | SEVA`
+  const metaDesc = `Beli mobil  ${todayDate.getFullYear()} di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
+  const {
+    saveDesktopWebTopMenu,
+    saveMobileWebTopMenus,
+    saveMobileWebFooterMenus,
+    saveCities,
+    saveDataAnnouncementBox,
+  } = useUtils()
+
+  const getAnnouncementBox = async () => {
+    try {
+      const res: any = await gab({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
+      })
+      saveDataAnnouncementBox(res.data)
+    } catch (error) {}
+  }
 
   useEffect(() => {
-    saveMobileWebTopMenus(dataHeader)
+    saveDesktopWebTopMenu(dataDesktopMenu)
+    saveMobileWebTopMenus(dataMobileMenu)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
+    getAnnouncementBox()
   }, [])
-
-  const todayDate = new Date()
-
-  const metaTitle = `Beli mobil terbaru ${todayDate.getFullYear()} dengan promo cicilan menarik dari SEVA | SEVA x OTO`
-  const metaDesc = `Temukan beragam mobil Astra dari SEVA. Mulai dari Toyota, Daihatsu, Isuzu, BMW, hingga Peugeot. Beli mobil secara kredit dengan Instant Approval*`
 
   return (
     <>
       <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
-
       <CarProvider
         car={null}
         carOfTheMonth={[]}
@@ -64,7 +86,7 @@ const NewCarResultPage = ({
         recommendation={meta.carRecommendations.carRecommendations}
         recommendationToyota={[]}
       >
-        <PLP minmaxPrice={meta.MinMaxPrice} isOTO={true} />
+        <PLP minmaxPrice={meta.MinMaxPrice} />
       </CarProvider>
     </>
   )
@@ -94,17 +116,17 @@ const getBrand = (brand: string | string[] | undefined) => {
 
 export const getServerSideProps: GetServerSideProps<{
   meta: PLPProps
-  dataHeader: MobileWebTopMenuType[]
+  dataDesktopMenu: NavbarItemResponse[]
+  dataMobileMenu: MobileWebTopMenuType[]
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
+  isSsrMobileLocal: boolean
 }> = async (ctx) => {
   ctx.res.setHeader(
     'Cache-Control',
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
   const metabrand = getBrand(ctx.query.brand)
-  const metaTagBaseApi =
-    'https://api.sslpots.com/api/meta-seos/?filters[location_page3][$eq]=CarSearchResult'
   const footerTagBaseApi =
     'https://api.sslpots.com/api/footer-seos/?filters[location_page2][$eq]=CarSearchResult'
   const meta = {
@@ -143,17 +165,21 @@ export const getServerSideProps: GetServerSideProps<{
   } = ctx.query
 
   try {
-    const [fetchMeta, fetchFooter, menuRes, footerRes, cityRes]: any =
-      await Promise.all([
-        customAxiosGet(metaTagBaseApi + metabrand),
-        customAxiosGet(footerTagBaseApi + metabrand),
-        getMobileHeaderMenu(),
-        getMobileFooterMenu(),
-        getCities(),
-      ])
+    const [
+      fetchFooter,
+      menuDesktopRes,
+      menuMobileRes,
+      footerRes,
+      cityRes,
+    ]: any = await Promise.all([
+      axios.get(footerTagBaseApi + metabrand),
+      getMenu(),
+      getMobileHeaderMenu(),
+      getMobileFooterMenu(),
+      getCities(),
+    ])
 
-    const metaData = fetchMeta.data
-    const footerData = fetchFooter.data
+    const footerData = fetchFooter.data.data
 
     if (!priceRangeGroup) {
       const params = new URLSearchParams()
@@ -170,7 +196,11 @@ export const getServerSideProps: GetServerSideProps<{
     const queryParam: any = {
       ...(downPaymentAmount && { downPaymentType: 'amount' }),
       ...(downPaymentAmount && { downPaymentAmount }),
-      ...(brand && { brand: String(brand)?.split(',') }),
+      ...(brand && {
+        brand: String(brand)
+          ?.split(',')
+          .map((item) => getCarBrand(item)),
+      }),
       ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
       ...(priceRangeGroup
         ? { priceRangeGroup }
@@ -187,21 +217,7 @@ export const getServerSideProps: GetServerSideProps<{
       getNewFunnelRecommendations({ ...queryParam }),
     ])
 
-    const generateRecommendation = await generateBlurRecommendations(
-      funnel.carRecommendations,
-    )
-    const recommendation = {
-      carRecommendations: generateRecommendation
-        ? [...generateRecommendation]
-        : funnel.carRecommendations,
-      lowestCarPrice: funnel.lowestCarPrice,
-      highestCarPrice: funnel.highestCarPrice,
-    }
-
-    if (metaData && metaData.length > 0) {
-      meta.title = metaData[0].attributes.meta_title
-      meta.description = metaData[0].attributes.meta_description
-    }
+    const recommendation = funnel
 
     if (footerData && footerData.length > 0) {
       meta.footer = footerData[0].attributes
@@ -214,12 +230,25 @@ export const getServerSideProps: GetServerSideProps<{
     return {
       props: {
         meta,
-        dataHeader: menuRes.data,
+        dataDesktopMenu: menuDesktopRes.data,
+        dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        isSsrMobile: getIsSsrMobile(ctx),
+        isSsrMobileLocal: getIsSsrMobile(ctx),
       },
     }
-  } catch (e: any) {
-    return serverSideManualNavigateToErrorPage(e?.response?.status)
+  } catch (e) {
+    return {
+      props: {
+        meta,
+        dataDesktopMenu: [],
+        dataMobileMenu: [],
+        dataFooter: [],
+        dataCities: [],
+        isSsrMobile: getIsSsrMobile(ctx),
+        isSsrMobileLocal: getIsSsrMobile(ctx),
+      },
+    }
   }
 }

@@ -42,6 +42,7 @@ import { removeCarBrand } from 'utils/handler/removeCarBrand'
 import { removeCarModel } from 'utils/handler/removeCarModel'
 import { getCity } from 'utils/hooks/useGetCity'
 import { getCarofTheMonth, getSearchDataQuery } from 'services/api'
+import { filterSpecialChar } from 'utils/stringUtils'
 
 interface HeaderVariantProps {
   overrideDisplay?: string
@@ -129,10 +130,12 @@ export default function HeaderVariant({
 
   const onSearchInputChange = (searchInputValueParam: string) => {
     setSearchInputValue(
-      searchInputValueParam
-        .split(' ')
-        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-        .join(' '),
+      filterSpecialChar(
+        searchInputValueParam
+          .split(' ')
+          .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+          .join(' '),
+      ),
     )
     debounceFn(searchInputValueParam)
     setIsNotFoundClicked(false)
@@ -307,9 +310,9 @@ export default function HeaderVariant({
             <div className={styles.styledCarContentName} key={car.name}>
               <a
                 className={styles.styledCarName}
-                href={`${
-                  isOTO ? `/adaSEVAdiOTO` : ``
-                }/mobil-baru${car.link.toLowerCase()}`}
+                href={`${isOTO ? `/adaSEVAdiOTO` : ``}/mobil-baru${
+                  isOTO ? '' : '/p'
+                }${car.link.toLowerCase()}`}
                 onClick={() => onClickRecommedationList(car)}
               >
                 <div
@@ -363,35 +366,26 @@ export default function HeaderVariant({
       const funnelQueryTemp = {
         brand: data.label,
       }
-      {
-        isOTO
-          ? navigateToPLP(
-              PreviousButton.SearchBar,
-              {
-                search: convertObjectQuery(funnelQueryTemp),
-              },
-              true,
-              false,
-              OTONewCarUrl,
-            )
-          : navigateToPLP(
-              PreviousButton.SearchBar,
-              {
-                search: convertObjectQuery(funnelQueryTemp),
-              },
-              true,
-              false,
-              undefined,
-              pageOrigination === 'PLP' ? true : false,
-            )
-      }
+
+      isOTO
+        ? navigateToPLP(
+            PreviousButton.SearchBar,
+            {
+              search: convertObjectQuery(funnelQueryTemp),
+            },
+            true,
+            false,
+            OTONewCarUrl,
+          )
+        : (window.location.href = carResultsUrl + `?brand=${data.label}`)
     } else {
       saveDataForCountlyTrackerPageViewPDP(
         PreviousButton.SearchIcon,
         isInLoanCalcKK ? 'Loan Calculator - Kualifikasi Kredit' : undefined,
       )
       // use window location to reload page
-      window.location.href = (isOTO ? OTONewCarUrl : carResultsUrl) + data.value
+      window.location.href =
+        (isOTO ? OTONewCarUrl : carResultsUrl.replace('c', 'p')) + data.value
     }
     // use location reload so that content re-fetched
     // window.location.reload()

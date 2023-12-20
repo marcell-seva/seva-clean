@@ -7,7 +7,9 @@ export const filterNonLetterOrSpaceCharacters = (input: string) => {
   const notLetterOrSpace = new RegExp(/[^a-zA-Z ]+/g)
   return input.replace(notLetterOrSpace, '')
 }
-
+export const filterSpecialChar = (input: string) => {
+  return input.replace(/[*()\\?+[\]]+/g, '')
+}
 export const filterNonDigitCharacters = (input: string) => {
   const nonDigits = new RegExp(/[^\d]+/g)
   return input.replace(nonDigits, '')

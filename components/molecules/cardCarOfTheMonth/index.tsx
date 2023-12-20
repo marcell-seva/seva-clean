@@ -23,6 +23,7 @@ import {
   PreviousButton,
   saveDataForCountlyTrackerPageViewPDP,
 } from 'utils/navigate'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 
 type carOfTheMonthData = {
   name: string
@@ -96,6 +97,16 @@ const CardCarOfTheMonth = ({ item, onSendOffer }: CarOfTheMonthProps) => {
     }
   }
   const price = item.priceValue ?? item.priceValueJkt ?? 0
+
+  const [cityOtr] = useLocalStorage<Location | null>(
+    LocalStorageKey.CityOtr,
+    null,
+  )
+  const getCityUrl = () => {
+    if (cityOtr) return `/${cityOtr.cityName.toLowerCase().replace(' ', '-')}`
+    else return '/'
+  }
+
   return (
     <div className={styles.cardContainer}>
       <Image
@@ -173,7 +184,9 @@ const CardCarOfTheMonth = ({ item, onSendOffer }: CarOfTheMonthProps) => {
                   saveDataForCountlyTrackerPageViewPDP(
                     PreviousButton.CarOfTheMonth,
                   )
-                  window.location.href = item.link
+                  window.location.href =
+                    item.link.replace('mobil-baru/', 'mobil-baru/p/') +
+                    `/${getCityUrl()}`
                 }}
                 data-testid={elementId.Homepage.Button.LihatRincian}
               >

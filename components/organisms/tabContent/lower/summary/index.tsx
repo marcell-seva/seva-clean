@@ -26,7 +26,7 @@ import { setTrackEventMoEngage } from 'helpers/moengage'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import PromoSection from 'components/organisms/promoSection/index'
 import elementId from 'helpers/elementIds'
-import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { PdpDataLocalContext } from 'pages/mobil-baru/p/[brand]/[model]/[[...slug]]'
 import { useRouter } from 'next/router'
 import { useCar } from 'services/context/carContext'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
@@ -35,6 +35,7 @@ import dynamic from 'next/dynamic'
 import { getNewFunnelLoanSpecialRate } from 'utils/handler/funnel'
 import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
 
 const Modal = dynamic(() => import('antd/lib/modal'), { ssr: false })
 
@@ -71,7 +72,7 @@ export const SummaryTab = ({
     dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
     carRecommendationsResDefaultCity,
-  } = useContext(PdpDataLocalContext)
+  } = useContext(isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext)
 
   const router = useRouter()
 

@@ -1,11 +1,13 @@
 export const rootUrl = '/'
 export const rootOTOUrl = '/adaSEVAdiOTO'
-export const carResultsUrl = '/mobil-baru'
+export const carResultsUrl = '/mobil-baru/c'
+export const usedCarResultUrl = '/mobil-bekas/c'
+export const usedCarDetailUrl = '/mobil-bekas/p/:id'
 export const OTONewCarUrl = '/adaSEVAdiOTO/mobil-baru'
 export const OTOCarResultsUrl = '/adaSEVAdiOTO/mobil-baru/:brand/:model'
 export const loanCalculatorWithCityBrandModelVariantUrl =
   '/kalkulator-kredit/:cityName/:brand/:model/:variant'
-export const variantListUrl = '/mobil-baru/:brand/:model/:tab?'
+export const variantListUrl = '/mobil-baru/p/:brand/:model/:tab?'
 export const OTOVariantListUrl = '/adaSEVAdiOTO/mobil-baru/:brand/:model/:tab?'
 export const loanCalculatorDefaultUrl = '/kalkulator-kredit'
 export const loanCalculatorWithCityBrandModelUrl =

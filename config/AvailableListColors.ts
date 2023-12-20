@@ -12,15 +12,15 @@ export const availableListColors = [
       '#acb8c0',
       '#d92121',
     ],
-    url: '/mobil-baru/daihatsu/all-new-xenia', //xenia
+    url: '/mobil-baru/p/daihatsu/all-new-xenia', //xenia
   },
   {
     colors: ['#000000', '#808080', '#c0c0c0', '#ffffff', '#800040', '#800000'],
-    url: '/mobil-baru/daihatsu/all-new-terios', //terios
+    url: '/mobil-baru/p/daihatsu/all-new-terios', //terios
   },
   {
     colors: ['#000000', '#ffffff', '#c0c0c0', '#525252'],
-    url: '/mobil-baru/daihatsu/granmax-mb', //grandmax mb
+    url: '/mobil-baru/p/daihatsu/granmax-mb', //grandmax mb
   },
   {
     colors: [
@@ -33,7 +33,7 @@ export const availableListColors = [
       '#e0115f',
       '#d92121',
     ],
-    url: '/mobil-baru/daihatsu/new-ayla', //ayla
+    url: '/mobil-baru/p/daihatsu/new-ayla', //ayla
   },
   {
     colors: [
@@ -45,27 +45,27 @@ export const availableListColors = [
       '#800000',
       '#ff8000',
     ],
-    url: '/mobil-baru/daihatsu/sigra', //sigra
+    url: '/mobil-baru/p/daihatsu/sigra', //sigra
   },
   {
     colors: ['#000000', '#ffffff', '#c4c4c4', '#474747'],
-    url: '/mobil-baru/daihatsu/granmax-pu', //grandmax pu
+    url: '/mobil-baru/p/daihatsu/granmax-pu', //grandmax pu
   },
   {
     colors: ['#747474', '#b9010a', '#ffffff', '#3a3a3a'],
-    url: '/mobil-baru/daihatsu/rocky', //rocky
+    url: '/mobil-baru/p/daihatsu/rocky', //rocky
   },
   {
     colors: ['#000000', '#ffffff', '#c0c0c0', '#525252'],
-    url: '/mobil-baru/daihatsu/granmax-bv', //grandmax bv
+    url: '/mobil-baru/p/daihatsu/granmax-bv', //grandmax bv
   },
   {
     colors: ['#000000', '#c0c0c0', '#ffffff', '#ff0000', '#0000ff'],
-    url: '/mobil-baru/daihatsu/new-sirion', //sirion
+    url: '/mobil-baru/p/daihatsu/new-sirion', //sirion
   },
   {
     colors: ['#000000', '#ffffff', '#c0c0c0', '#2c2c2c'],
-    url: '/mobil-baru/daihatsu/luxio', //luxio
+    url: '/mobil-baru/p/daihatsu/luxio', //luxio
   },
   {
     colors: [
@@ -78,13 +78,13 @@ export const availableListColors = [
       '#e0115f',
       '#d92121',
     ],
-    url: '/mobil-baru/daihatsu/all-new-ayla', // all new alya
+    url: '/mobil-baru/p/daihatsu/all-new-ayla', // all new alya
   },
 
   // === toyota cars ===
   {
     colors: ['#000000', '#6e696d', '#454547', '#a8abae', '#ffffff'],
-    url: '/mobil-baru/toyota/grand-new-avanza', //grand new avanza
+    url: '/mobil-baru/p/toyota/grand-new-avanza', //grand new avanza
   },
   {
     colors: [
@@ -96,7 +96,7 @@ export const availableListColors = [
       '#c4c4c4',
       '#9e9e9e',
     ],
-    url: '/mobil-baru/toyota/new-agya', //agya
+    url: '/mobil-baru/p/toyota/new-agya', //agya
   },
   {
     colors: [
@@ -106,11 +106,11 @@ export const availableListColors = [
       '#d6d6d6',
       '#696969',
     ],
-    url: '/mobil-baru/toyota/new-fortuner', //fortuner
+    url: '/mobil-baru/p/toyota/new-fortuner', //fortuner
   },
   {
     colors: ['#000000', '#e15d3f', '#9ea7ae', '#626768', '#ffffff'],
-    url: '/mobil-baru/toyota/new-sienta', //sienta
+    url: '/mobil-baru/p/toyota/new-sienta', //sienta
   },
   {
     colors: [
@@ -122,27 +122,27 @@ export const availableListColors = [
       '#ba4933',
       '#b72b33',
     ],
-    url: '/mobil-baru/toyota/new-calya', //calya
+    url: '/mobil-baru/p/toyota/new-calya', //calya
   },
   {
     colors: ['#000000', '#9c9c9c', '#846d3c', '#ffffff', '#9e0000', '#6b0000'],
-    url: '/mobil-baru/toyota/all-new-rush', //rush
+    url: '/mobil-baru/p/toyota/all-new-rush', //rush
   },
   {
     colors: ['#000000', '#a8abae', '#dcdbdb'],
-    url: '/mobil-baru/toyota/all-new-veloz', //veloz
+    url: '/mobil-baru/p/toyota/all-new-veloz', //veloz
   },
   {
     colors: ['#000000', '#737373', '#949494', '#ffffff', '#462f26'],
-    url: '/mobil-baru/toyota/new-kijang-innova', //innova
+    url: '/mobil-baru/p/toyota/new-kijang-innova', //innova
   },
   {
     colors: ['#000000', '#737373', '#b1b6c3', '#c82841', '#9e8273', '#08225d'],
-    url: '/mobil-baru/toyota/all-new-vios', //vios
+    url: '/mobil-baru/p/toyota/all-new-vios', //vios
   },
   {
     colors: ['#000000', '#ffffff'],
-    url: '/mobil-baru/toyota/all-new-voxy', //all-new-voxy
+    url: '/mobil-baru/p/toyota/all-new-voxy', //all-new-voxy
   },
   {
     colors: [
@@ -159,11 +159,11 @@ export const availableListColors = [
       '#ffff00',
       ['#000000', '#ffff00'],
     ],
-    url: '/mobil-baru/toyota/raize', //raize
+    url: '/mobil-baru/p/toyota/raize', //raize
   },
   {
     colors: ['#000000', '#696969', '#9c9c9c', '#ffffff', '#5b2f24', '#c60101'],
-    url: '/mobil-baru/toyota/new-venturer', //venturer
+    url: '/mobil-baru/p/toyota/new-venturer', //venturer
   },
   {
     colors: [
@@ -175,27 +175,27 @@ export const availableListColors = [
       '#4f4d4d',
       '#111146',
     ],
-    url: '/mobil-baru/toyota/gr-86', // gr 86
+    url: '/mobil-baru/p/toyota/gr-86', // gr 86
   },
   {
     colors: ['#000000', '#ffffff', '#e4dbdf'],
-    url: '/mobil-baru/toyota/all-new-c-hr', // ch-r
+    url: '/mobil-baru/p/toyota/all-new-c-hr', // ch-r
   },
   {
     colors: ['#000000', '#ffffff', '#e7e8e7', '#a5aaae', '#505c68', '#d14b4b'],
-    url: '/mobil-baru/toyota/all-new-corolla-altis', // corolla altis
+    url: '/mobil-baru/p/toyota/all-new-corolla-altis', // corolla altis
   },
   {
     colors: ['#000000', '#ffffff', '#949494', '#737373', '#ed0e3a'],
-    url: '/mobil-baru/toyota/all-new-hilux', // hilux
+    url: '/mobil-baru/p/toyota/all-new-hilux', // hilux
   },
   {
     colors: ['#000000', '#ffffff', '#4b4038', '#d1d1d3'],
-    url: '/mobil-baru/toyota/all-new-camry', // camry
+    url: '/mobil-baru/p/toyota/all-new-camry', // camry
   },
   {
     colors: ['#000000', '#ffffff'],
-    url: '/mobil-baru/toyota/new-alphard', // alphard
+    url: '/mobil-baru/p/toyota/new-alphard', // alphard
   },
   {
     colors: [
@@ -207,15 +207,15 @@ export const availableListColors = [
       '#c7c7c7',
       '#b30000',
     ],
-    url: '/mobil-baru/toyota/all-new-corolla-cross', // corolla cross
+    url: '/mobil-baru/p/toyota/all-new-corolla-cross', // corolla cross
   },
   {
     colors: ['#ffffff', '#c2282e'],
-    url: '/mobil-baru/toyota/dyna', // dyna
+    url: '/mobil-baru/p/toyota/dyna', // dyna
   },
   {
     colors: ['#ffffff', '#b4b4b6', '#e1d4cd'],
-    url: '/mobil-baru/toyota/hiace', // hiace
+    url: '/mobil-baru/p/toyota/hiace', // hiace
   },
   {
     colors: [
@@ -227,27 +227,27 @@ export const availableListColors = [
       '#f8960d',
       '#e3f02d',
     ],
-    url: '/mobil-baru/toyota/new-yaris', // yaris
+    url: '/mobil-baru/p/toyota/new-yaris', // yaris
   },
   {
     colors: ['#000000', '#ffffff', '#a8abae', '#454547', '#6e696d'],
-    url: '/mobil-baru/toyota/all-new-avanza',
+    url: '/mobil-baru/p/toyota/all-new-avanza',
   },
   {
     colors: ['#000000', '#cfd5d6', '#525052', '#741e21'],
-    url: '/mobil-baru/toyota/land-cruiser',
+    url: '/mobil-baru/p/toyota/land-cruiser',
   },
   {
     colors: ['#000000', '#ffffff'],
-    url: '/mobil-baru/toyota/vellfire',
+    url: '/mobil-baru/p/toyota/vellfire',
   },
   {
     colors: ['#000000', '#a8abae', '#dcdbdb'],
-    url: '/mobil-baru/toyota/grand-new-veloz',
+    url: '/mobil-baru/p/toyota/grand-new-veloz',
   },
   {
     colors: ['#ffffff', '#b4b4b6', '#e1d4cd'],
-    url: '/mobil-baru/toyota/the-all-new-hiace-premio',
+    url: '/mobil-baru/p/toyota/the-all-new-hiace-premio',
   },
   {
     colors: [
@@ -260,15 +260,15 @@ export const availableListColors = [
       '#061b5c',
       '#3c4556',
     ],
-    url: '/mobil-baru/toyota/supra',
+    url: '/mobil-baru/p/toyota/supra',
   },
   {
     colors: ['#000000', '#ffffff', '#c1c4c7', '#3c4148'],
-    url: '/mobil-baru/toyota/all-new-bz4x',
+    url: '/mobil-baru/p/toyota/all-new-bz4x',
   },
   {
     colors: ['#000000', '#ffffff', '#949494', '#737373', '#808080'],
-    url: '/mobil-baru/toyota/all-new-kijang-innova-zenix',
+    url: '/mobil-baru/p/toyota/all-new-kijang-innova-zenix',
   },
   {
     colors: ['#000000', '#ffffff', '#9e0000', '#20392c', '#a7a8ad'],
@@ -278,27 +278,27 @@ export const availableListColors = [
   // === bmw cars ===
   {
     colors: ['#000000', '#ffffff', '#7e1818', '#3c4f86', '#787d7f', '#bec3c6'],
-    url: '/mobil-baru/bmw/3-series-320i-sport',
+    url: '/mobil-baru/p/bmw/3-series-320i-sport',
   },
   {
     colors: ['#060606', '#c4c4c4', '#9e2328', '#445c9a', '#585f61', '#505455'],
-    url: '/mobil-baru/bmw/3-series-330i-m-sport',
+    url: '/mobil-baru/p/bmw/3-series-330i-m-sport',
   },
   {
     colors: ['#060606', '#c4c4c4', '#2f2f2f', '#0f2646', '#585f61', '#585f61'],
-    url: '/mobil-baru/bmw/x3-xdrive30i-m-sport',
+    url: '/mobil-baru/p/bmw/x3-xdrive30i-m-sport',
   },
   {
     colors: ['#1d1b17', '#d3d3d3', '#22293d', '#6d644f', '#585f61', '#505455'],
-    url: '/mobil-baru/bmw/x7-xdrive40i-opulence',
+    url: '/mobil-baru/p/bmw/x7-xdrive40i-opulence',
   },
   {
     colors: ['#000000', '#ffffff', '#7e1818', '#3c4f86', '#787d7f', '#bec3c6'],
-    url: '/mobil-baru/bmw/3-series-320i-m-sport',
+    url: '/mobil-baru/p/bmw/3-series-320i-m-sport',
   },
   {
     colors: ['#000000', '#ffffff', '#7e1818', '#3c4f86', '#787d7f', '#bec3c6'],
-    url: '/mobil-baru/bmw/3-series-330i-m-sport-pro',
+    url: '/mobil-baru/p/bmw/3-series-330i-m-sport-pro',
   },
   {
     colors: [
@@ -312,7 +312,7 @@ export const availableListColors = [
       '#a2a19b',
       '#524e4f',
     ],
-    url: '/mobil-baru/bmw/5-series-530i-opulence',
+    url: '/mobil-baru/p/bmw/5-series-530i-opulence',
   },
   {
     colors: [
@@ -326,15 +326,15 @@ export const availableListColors = [
       '#ec5a37',
       '#918b7d',
     ],
-    url: '/mobil-baru/bmw/x1-sdrive18i-sport',
+    url: '/mobil-baru/p/bmw/x1-sdrive18i-sport',
   },
   {
     colors: ['#000000', '#ffffff', '#57595a', '#eaeaea', '#5c5a48', '#405b79'],
-    url: '/mobil-baru/bmw/x3-sdrive20i',
+    url: '/mobil-baru/p/bmw/x3-sdrive20i',
   },
   {
     colors: ['#181818', '#c4c4c4', '#787d7e', '#1f2633', '#33291f'],
-    url: '/mobil-baru/bmw/x5-xdrive40i-x-line',
+    url: '/mobil-baru/p/bmw/x5-xdrive40i-x-line',
   },
   {
     colors: [
@@ -347,11 +347,11 @@ export const availableListColors = [
       '#2f3858',
       '#a2a19b',
     ],
-    url: '/mobil-baru/bmw/7-series-730li-m-sport',
+    url: '/mobil-baru/p/bmw/7-series-730li-m-sport',
   },
   {
     colors: ['#060606', '#2f2f2f', '#c4c4c4', '#6a6358', '#0f2646', '#a2a19b'],
-    url: '/mobil-baru/bmw/7-series-740li-opulence',
+    url: '/mobil-baru/p/bmw/7-series-740li-opulence',
   },
   {
     colors: [
@@ -364,7 +364,7 @@ export const availableListColors = [
       '#918b7d',
       '#777e86',
     ],
-    url: '/mobil-baru/bmw/x1-sdrive18i-xline',
+    url: '/mobil-baru/p/bmw/x1-sdrive18i-xline',
   },
   {
     colors: [
@@ -378,35 +378,35 @@ export const availableListColors = [
       '#a2a19b',
       '#524e4f',
     ],
-    url: '/mobil-baru/bmw/5-series-520i-m-sport',
+    url: '/mobil-baru/p/bmw/5-series-520i-m-sport',
   },
 
   // === isuzu cars ===
   {
     colors: ['#ffffff', '#000000', '#ac412c'],
-    url: '/mobil-baru/isuzu/d-max',
+    url: '/mobil-baru/p/isuzu/d-max',
   },
   {
     colors: ['#ffffff', '#000000'],
-    url: '/mobil-baru/isuzu/mu-x',
+    url: '/mobil-baru/p/isuzu/mu-x',
   },
 
   // === peugeot cars ===
   {
     colors: ['#0d0d0d', '#c0c1bb', '#20517a'],
-    url: '/mobil-baru/peugeot/5008',
+    url: '/mobil-baru/p/peugeot/5008',
   },
   {
     colors: ['#0d0d0d', '#c0c1bb'],
-    url: '/mobil-baru/peugeot/3008',
+    url: '/mobil-baru/p/peugeot/3008',
   },
   {
     colors: ['#0d0d0d', '#54554d', '#c0c1bb', '#de6e2b'],
-    url: '/mobil-baru/peugeot/2008',
+    url: '/mobil-baru/p/peugeot/2008',
   },
   {
     colors: ['#000000', '#ffffff', '#c2282e', '#737373', '#a7a8ad', '#d3ca50'],
-    url: '/mobil-baru/toyota/all-new-agya',
+    url: '/mobil-baru/p/toyota/all-new-agya',
   },
 
   // === hyundai cars ===
@@ -464,86 +464,75 @@ export const availableListColors = [
 
 export const availableList = [
   // toyota cars
-  '/mobil-baru/toyota/new-calya', //calya
-  '/mobil-baru/toyota/all-new-veloz', //veloz
-  '/mobil-baru/toyota/all-new-vios', //vios
-  '/mobil-baru/toyota/new-sienta', //sienta
-  '/mobil-baru/toyota/new-kijang-innova', //innova
-  '/mobil-baru/toyota/new-agya', //agya
-  '/mobil-baru/toyota/raize', //raize
-  '/mobil-baru/toyota/all-new-rush', //rush
-  '/mobil-baru/toyota/new-venturer', //venturer
-  '/mobil-baru/toyota/new-fortuner', //fortuner
-  '/mobil-baru/toyota/all-new-voxy', //all-new-voxy
-  '/mobil-baru/toyota/grand-new-avanza', // grand-new-avanza
-  '/mobil-baru/toyota/gr-86',
-  '/mobil-baru/toyota/all-new-c-hr',
-  '/mobil-baru/toyota/all-new-corolla-altis',
-  '/mobil-baru/toyota/all-new-hilux',
-  '/mobil-baru/toyota/all-new-camry',
-  '/mobil-baru/toyota/new-alphard',
-  '/mobil-baru/toyota/all-new-corolla-cross',
-  '/mobil-baru/toyota/dyna',
-  '/mobil-baru/toyota/hiace',
-  '/mobil-baru/toyota/new-yaris',
-  '/mobil-baru/toyota/all-new-avanza',
-  '/mobil-baru/toyota/land-cruiser',
-  '/mobil-baru/toyota/vellfire',
-  '/mobil-baru/toyota/grand-new-veloz',
-  '/mobil-baru/toyota/the-all-new-hiace-premio',
-  '/mobil-baru/toyota/supra',
-  '/mobil-baru/toyota/all-new-bz4x',
-  '/mobil-baru/toyota/all-new-kijang-innova-zenix',
-  '/mobil-baru/toyota/all-new-agya',
-  '/mobil-baru/toyota/all-new-yaris-cross',
+  '/mobil-baru/p/toyota/new-calya', //calya
+  '/mobil-baru/p/toyota/all-new-veloz', //veloz
+  '/mobil-baru/p/toyota/all-new-vios', //vios
+  '/mobil-baru/p/toyota/new-sienta', //sienta
+  '/mobil-baru/p/toyota/new-kijang-innova', //innova
+  '/mobil-baru/p/toyota/new-agya', //agya
+  '/mobil-baru/p/toyota/raize', //raize
+  '/mobil-baru/p/toyota/all-new-rush', //rush
+  '/mobil-baru/p/toyota/new-venturer', //venturer
+  '/mobil-baru/p/toyota/new-fortuner', //fortuner
+  '/mobil-baru/p/toyota/all-new-voxy', //all-new-voxy
+  '/mobil-baru/p/toyota/grand-new-avanza', // grand-new-avanza
+  '/mobil-baru/p/toyota/gr-86',
+  '/mobil-baru/p/toyota/all-new-c-hr',
+  '/mobil-baru/p/toyota/all-new-corolla-altis',
+  '/mobil-baru/p/toyota/all-new-hilux',
+  '/mobil-baru/p/toyota/all-new-camry',
+  '/mobil-baru/p/toyota/new-alphard',
+  '/mobil-baru/p/toyota/all-new-corolla-cross',
+  '/mobil-baru/p/toyota/dyna',
+  '/mobil-baru/p/toyota/hiace',
+  '/mobil-baru/p/toyota/new-yaris',
+  '/mobil-baru/p/toyota/all-new-avanza',
+  '/mobil-baru/p/toyota/land-cruiser',
+  '/mobil-baru/p/toyota/vellfire',
+  '/mobil-baru/p/toyota/grand-new-veloz',
+  '/mobil-baru/p/toyota/the-all-new-hiace-premio',
+  '/mobil-baru/p/toyota/supra',
+  '/mobil-baru/p/toyota/all-new-bz4x',
+  '/mobil-baru/p/toyota/all-new-kijang-innova-zenix',
+  '/mobil-baru/p/toyota/all-new-agya',
 
   // daihatsu cars
-  '/mobil-baru/daihatsu/new-ayla', //ayla
-  '/mobil-baru/daihatsu/sigra', //sigra
-  '/mobil-baru/daihatsu/granmax-pu',
-  '/mobil-baru/daihatsu/all-new-terios', //terios
-  '/mobil-baru/daihatsu/new-sirion', //sirion
-  '/mobil-baru/daihatsu/all-new-xenia', //xenia
-  '/mobil-baru/daihatsu/rocky', //rocky
-  '/mobil-baru/daihatsu/granmax-mb', //grandmax
-  '/mobil-baru/daihatsu/granmax-bv', //grandmax bv
-  '/mobil-baru/daihatsu/luxio',
-  '/mobil-baru/daihatsu/all-new-ayla',
+  '/mobil-baru/p/daihatsu/new-ayla', //ayla
+  '/mobil-baru/p/daihatsu/sigra', //sigra
+  '/mobil-baru/p/daihatsu/granmax-pu',
+  '/mobil-baru/p/daihatsu/all-new-terios', //terios
+  '/mobil-baru/p/daihatsu/new-sirion', //sirion
+  '/mobil-baru/p/daihatsu/all-new-xenia', //xenia
+  '/mobil-baru/p/daihatsu/rocky', //rocky
+  '/mobil-baru/p/daihatsu/granmax-mb', //grandmax
+  '/mobil-baru/p/daihatsu/granmax-bv', //grandmax bv
+  '/mobil-baru/p/daihatsu/luxio',
+  '/mobil-baru/p/daihatsu/all-new-ayla',
 
   // bmw cars
-  '/mobil-baru/bmw/3-series-320i-sport', // 320i
-  '/mobil-baru/bmw/3-series-330i-m-sport', // 330i
-  '/mobil-baru/bmw/x3-xdrive30i-m-sport',
-  '/mobil-baru/bmw/x7-xdrive40i-opulence',
-  '/mobil-baru/bmw/3-series-320i-m-sport',
-  '/mobil-baru/bmw/3-series-330i-m-sport-pro',
-  '/mobil-baru/bmw/5-series-530i-opulence',
-  '/mobil-baru/bmw/x1-sdrive18i-sport',
-  '/mobil-baru/bmw/x3-sdrive20i',
-  '/mobil-baru/bmw/x5-xdrive40i-x-line',
-  '/mobil-baru/bmw/7-series-730li-m-sport',
-  '/mobil-baru/bmw/7-series-740li-opulence',
-  '/mobil-baru/bmw/x1-sdrive18i-xline',
-  '/mobil-baru/bmw/5-series-520i-m-sport',
+  '/mobil-baru/p/bmw/3-series-320i-sport', // 320i
+  '/mobil-baru/p/bmw/3-series-330i-m-sport', // 330i
+  '/mobil-baru/p/bmw/x3-xdrive30i-m-sport',
+  '/mobil-baru/p/bmw/x7-xdrive40i-opulence',
+  '/mobil-baru/p/bmw/3-series-320i-m-sport',
+  '/mobil-baru/p/bmw/3-series-330i-m-sport-pro',
+  '/mobil-baru/p/bmw/5-series-530i-opulence',
+  '/mobil-baru/p/bmw/x1-sdrive18i-sport',
+  '/mobil-baru/p/bmw/x3-sdrive20i',
+  '/mobil-baru/p/bmw/x5-xdrive40i-x-line',
+  '/mobil-baru/p/bmw/7-series-730li-m-sport',
+  '/mobil-baru/p/bmw/7-series-740li-opulence',
+  '/mobil-baru/p/bmw/x1-sdrive18i-xline',
+  '/mobil-baru/p/bmw/5-series-520i-m-sport',
 
   // isuzu cars
-  '/mobil-baru/isuzu/d-max',
-  '/mobil-baru/isuzu/mu-x',
+  '/mobil-baru/p/isuzu/d-max',
+  '/mobil-baru/p/isuzu/mu-x',
 
   // peugeot cars
-  '/mobil-baru/peugeot/5008',
-  '/mobil-baru/peugeot/3008',
-  '/mobil-baru/peugeot/2008',
-
-  //hyundai cars
-  '/mobil-baru/hyundai/ioniq-5',
-  '/mobil-baru/hyundai/ioniq-6',
-  '/mobil-baru/hyundai/palisade',
-  '/mobil-baru/hyundai/staria',
-  '/mobil-baru/hyundai/santa-fe',
-  '/mobil-baru/hyundai/stargazer',
-  '/mobil-baru/hyundai/stargazer-x',
-  '/mobil-baru/hyundai/creta',
+  '/mobil-baru/p/peugeot/5008',
+  '/mobil-baru/p/peugeot/3008',
+  '/mobil-baru/p/peugeot/2008',
 ]
 
 export const availableListVideoReview = [

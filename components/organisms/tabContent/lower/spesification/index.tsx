@@ -18,9 +18,10 @@ import { useCar } from 'services/context/carContext'
 import { LocalStorageKey, LanguageCode } from 'utils/enum'
 import { TrackerFlag } from 'utils/types/models'
 import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
-import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
+import { PdpDataLocalContext } from 'pages/mobil-baru/p/[brand]/[model]/[[...slug]]'
 import { useRouter } from 'next/router'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
 
 interface SpecificationTabProps {
   isOTO?: boolean
@@ -32,7 +33,7 @@ export const SpecificationTab = ({ isOTO = false }: SpecificationTabProps) => {
     dataCombinationOfCarRecomAndModelDetailDefaultCity,
     carVariantDetailsResDefaultCity,
     carRecommendationsResDefaultCity,
-  } = useContext(PdpDataLocalContext)
+  } = useContext(isOTO ? PdpDataOTOLocalContext : PdpDataLocalContext)
   const modelDetailWithDefaultFromServer =
     carModelDetails || dataCombinationOfCarRecomAndModelDetailDefaultCity
   const variantDetailWithDefaultFromServer =

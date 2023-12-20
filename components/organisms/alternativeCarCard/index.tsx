@@ -69,11 +69,19 @@ export const AlternativeCarCard = ({
   )
   const brand = router.query.brand as string
   const model = router.query.model as string
-
+  const getCityUrl = () => {
+    if (cityOtr) return `/${cityOtr.cityName.toLowerCase().replace(' ', '-')}`
+    else return '/'
+  }
   const detailCarRoute = (isOTO ? OTOVariantListUrl : variantListUrl)
     .replace(
       ':brand/:model',
-      (recommendation.brand + '/' + recommendation.model.replace(/ +/g, '-'))
+      (
+        recommendation.brand +
+        '/' +
+        recommendation.model.replace(/ +/g, '-') +
+        getCityUrl()
+      )
         .replace(/ +/g, '')
         .toLowerCase(),
     )

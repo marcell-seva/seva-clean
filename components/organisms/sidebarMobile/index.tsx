@@ -142,10 +142,10 @@ const sidebarMobile = ({
             <Avatar title={nameIcon} />
 
             <div className={styles.profileContent}>
-              <h2 className={styles.profileName}>{customerDetail?.fullName}</h2>
-              <h2 className={styles.profileNumber}>
+              <p className={styles.profileName}>{customerDetail?.fullName}</p>
+              <p className={styles.profileNumber}>
                 {phoneNumber?.code} | {phoneNumber?.number}
-              </h2>
+              </p>
             </div>
           </div>
 

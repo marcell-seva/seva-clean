@@ -51,6 +51,7 @@ interface Props {
   sourceButton?: string
   modelName?: string
   brandName?: string
+  onPage?: string
 }
 
 const Modal = dynamic(() => import('antd').then((mod) => mod.Modal), {
@@ -65,6 +66,7 @@ const CitySelectorModal = ({
   sourceButton,
   modelName,
   brandName,
+  onPage,
 }: Props) => {
   const { showCity, onCloseCity } = useCityFirst()
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
@@ -170,6 +172,37 @@ const CitySelectorModal = ({
       CountlyEventNames.WEB_CITY_SELECTOR_BANNER_FIND_CAR_CLICK,
       { CITY_LOCATION: temp.cityName },
     )
+    if (onPage === 'PDP') {
+      const selectedCity = temp.cityName
+        .toLocaleLowerCase()
+        .split(' ')
+        .join('-')
+      const separateUrl = window.location.href.split('?')[0]
+      const queryParam = window.location.href.split('?')[1]
+      const getCitybyUrl = separateUrl.split('/').at(-1)
+      if (getCitybyUrl !== undefined) {
+        const checkCityUrl = cityListFromApi.filter(
+          (item: any) =>
+            item.cityName.replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase() ===
+            getCitybyUrl.replace(/[^a-zA-Z]+/g, '').toLocaleLowerCase(),
+        )
+        if (checkCityUrl.length !== 0) {
+          const url = queryParam
+            ? window.location.href.replace(getCitybyUrl, selectedCity)
+            : window.location.href.replace(getCitybyUrl, selectedCity)
+          window.history.pushState(null, '', `${url}`)
+        } else {
+          const url =
+            separateUrl
+              .split('/')
+              .splice(0, separateUrl.length - 1)
+              .join('/') +
+            '/' +
+            selectedCity
+          window.history.pushState(null, '', `${url}`)
+        }
+      }
+    }
     location.reload()
   }
 

@@ -75,6 +75,7 @@ import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 import { getMinMaxPrice, postCheckTemanSeva } from 'services/api'
 import { isCurrentCitySameWithSSR } from 'utils/hooks/useGetCity'
+import { isBodyType, isBrand } from 'pages/mobil-baru/c/[brand]'
 
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
@@ -112,8 +113,9 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   const { recommendation, saveRecommendation } = useCar()
   const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>([])
   const {
-    bodyType,
-    brand: brandQueryOrLastSlug,
+    search,
+    bodyType: bodyTypeTemp,
+    brand: param,
     downPaymentAmount,
     monthlyIncome,
     tenure,
@@ -121,9 +123,12 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     age,
     sortBy,
   } = router.query as FilterParam
-  const brand = brandQueryOrLastSlug?.includes('SEVA')
-    ? ''
-    : brandQueryOrLastSlug
+  const brand = isBrand(param) ? param : undefined
+  const bodyType = bodyTypeTemp
+    ? bodyTypeTemp
+    : isBodyType(param)
+    ? param?.toUpperCase()
+    : undefined
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
 
   const [cityOtr] = useLocalStorage<Location | null>(
@@ -148,6 +153,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       ? true
       : false
 
+  funnelQuery.brand = brand?.split(',').map((item) => getCarBrand(item)) || []
   const showFilterFinancial =
     age || downPaymentAmount || monthlyIncome ? true : false
   const [isFilter, setIsFilter] = useState(showFilter)
@@ -499,10 +505,10 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       funnelQuery.age
     ) {
       setIsFilterFinancial(true)
-      patchFunnelQuery({ filterFincap: true })
+      patchFunnelQuery({ ...funnelQuery, filterFincap: true })
     } else {
       setIsFilterFinancial(false)
-      patchFunnelQuery({ filterFincap: false })
+      patchFunnelQuery({ ...funnelQuery, filterFincap: false })
     }
   }, [
     funnelQuery.downPaymentAmount,

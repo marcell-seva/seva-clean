@@ -14,6 +14,7 @@ interface Props {
   onSelectTab?: (value: string) => void
   isShowAnnouncementBox: boolean | null
   onPage: string
+  initialTab?: string
   className?: string
   autoScroll?: boolean
 }
@@ -24,13 +25,12 @@ const NavigationTabV2 = ({
   isShowAnnouncementBox,
   onPage,
   className,
+  initialTab,
   autoScroll = true,
 }: Props) => {
   const router = useRouter()
 
-  const [selectedTabValue, setSelectedTabValue] = useState(
-    router.query.tab || itemList[0].value,
-  )
+  const [selectedTabValue, setSelectedTabValue] = useState(initialTab)
   const [selectedTabIndex, setSelectedTabIndex] = useState(0)
   const containerRef = useRef() as React.MutableRefObject<HTMLDivElement>
 
@@ -67,6 +67,12 @@ const NavigationTabV2 = ({
     }
   }, [selectedTabValue])
 
+  useEffect(() => {
+    if (initialTab) {
+      setSelectedTabValue(initialTab)
+    }
+  }, [initialTab])
+
   const scrollOTO = (scrollOffset: number) => {
     if (containerRef && containerRef.current) {
       containerRef.current.scrollTo({
@@ -87,6 +93,10 @@ const NavigationTabV2 = ({
         positionValue = 250
       } else if (selectedTabIndex >= 4) {
         positionValue = 350
+        // if (containerRef.current.scrollLeft >= 160) {
+        // } else {
+        //   positionValue = 90
+        // }
       }
     } else if (selectedTabIndex < 1) {
       positionValue = -200
@@ -133,6 +143,10 @@ const NavigationTabV2 = ({
         positionValue = 290
       } else if (selectedTabIndex >= 4) {
         positionValue = 450
+        // if (containerRef.current.scrollLeft >= 160) {
+        // } else {
+        //   positionValue = 90
+        // }
       }
     } else if (selectedTabIndex < 1) {
       positionValue = -200
