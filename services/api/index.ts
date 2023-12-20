@@ -4,6 +4,7 @@ import {
   CustomerKtpSeva,
   DeleteAccountRequestType,
   SendInstantApproval,
+  UTMTagsData,
   UpdateProfileType,
   updateKtpCityPayloadType,
   updateLeadFormCM,

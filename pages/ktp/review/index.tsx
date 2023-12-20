@@ -252,7 +252,7 @@ export default function KtpReview() {
       const responsePersonalKtp = await fetchCustomerKtp() // when fetch failed, will return null
       const responseSpouseKtp = await fetchCustomerSpouseKtp() // when fetch failed, will return null
       const customerPersonalKtpData: GetCustomerKtpSeva[] | null =
-        responsePersonalKtp
+        responsePersonalKtp.data
       const customerSpouseKtpData: GetCustomerKtpSeva[] | null =
         responseSpouseKtp
       if (
@@ -529,9 +529,11 @@ export default function KtpReview() {
   }
 
   const onClickNextButton = () => {
+    setLoadingNav(true)
     const formValidationResult = validateForm()
 
     if (!formValidationResult) {
+      setLoadingNav(false)
       return
     }
 
@@ -862,6 +864,7 @@ export default function KtpReview() {
                 size={ButtonSize.Big}
                 onClick={onClickNextButton}
                 loading={loadingNav}
+                disabled={loadingNav}
               >
                 Selanjutnya
               </Button>

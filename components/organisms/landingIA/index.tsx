@@ -219,8 +219,8 @@ export const LandingIA = ({
         SessionStorageKey.PreviousPage,
         JSON.stringify({ refer: window.location.pathname }),
       )
-      onClose()
       router.push(creditQualificationResultUrl)
+      onClose()
     } catch (e: any) {
       if (e?.response?.data?.message) {
         setToastMessage(`${e?.response?.data?.message}`)

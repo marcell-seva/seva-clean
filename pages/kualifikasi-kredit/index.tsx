@@ -383,8 +383,6 @@ const CreditQualificationPage = () => {
       JSON.stringify(dataCarValue),
     )
 
-    setIsLoading(true)
-
     const refcode =
       kkFlowType && kkFlowType === 'ptbc'
         ? TemanSeva.PTBC
@@ -394,8 +392,6 @@ const CreditQualificationPage = () => {
     if (!isInPtbcFlow) {
       refCodeValidity = await checkRefCode(referralCodeInput)
     }
-
-    setIsLoading(false)
 
     if (refCodeValidity) {
       const qualificationData = {

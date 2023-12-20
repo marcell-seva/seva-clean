@@ -312,7 +312,7 @@ const LeasingCompanyOptionPage = () => {
             <div className={styles.backButton} onClick={() => router.back()}>
               <IconChevronLeft width={24} height={24} color="#13131B" />
             </div>
-            <Image src={LogoPrimary} alt="back" width={24} height={24} />
+            <Image src={LogoPrimary} alt="back" width={58} height={35} />
           </div>
           <ProgressBar percentage={87} colorPrecentage="#51A8DB" />
         </div>

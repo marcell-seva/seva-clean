@@ -23,7 +23,6 @@ const Ktp = () => {
     setIsLoadingCustomer(true)
     try {
       const response = await fetchCustomerKtp()
-      console.log('qwe RESPONSE', response)
       const customerDetails: GetCustomerKtpSeva = response.data[0]
       setCustomerDetail({
         name: customerDetails.name,
