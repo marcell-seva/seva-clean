@@ -27,6 +27,7 @@ const EducationalContentPopupDp = ({
         open={isOpenBottomSheet || false}
         onDismiss={() => onClickClose()}
         className={clsx({
+          [styles.bottomSheetContainer]: true,
           [styles.bottomSheetSmall]: true,
         })}
         // scrollLocking={!isIphone}

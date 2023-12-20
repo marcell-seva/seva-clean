@@ -42,6 +42,7 @@ const EducationalContentPopupType = ({
           }, 50)
         }}
         className={clsx({
+          [styles.bottomSheetContainer]: true,
           [styles.bottomSheetStart]: isOpenBottomSheet && isShowOverlay,
           [styles.bottomSheet]: isOpenBottomSheet && !isShowOverlay,
           [styles.bottomSheetDismiss]: isCloseBottomSheet,
