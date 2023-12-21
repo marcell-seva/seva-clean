@@ -8,7 +8,8 @@ type SkeletonProps = {
   width?: any
   height?: number
   className?: string
-  isHeader: boolean
+  isHeader?: boolean
+  children?: any
 } & Pick<HTMLAttributes<HTMLImageElement>, 'style'>
 
 const SkeletonLC = ({
