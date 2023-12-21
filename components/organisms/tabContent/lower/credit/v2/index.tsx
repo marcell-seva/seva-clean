@@ -114,6 +114,7 @@ import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
 import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { IncomeAgeSection } from 'components/molecules/incomAgeSection'
 import { useUtils } from 'services/context/utilsContext'
+import CardVariantOptions from 'components/organisms/cardVariantOptions'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -2301,7 +2302,23 @@ export const CreditTabV2 = () => {
           />
         </>
       ) : isLoadingAfterChangeVariant ? (
-        <CalculationResultSkeleton />
+        <>
+          <div className={styles.wrapperVariantOptions}>
+            <CardVariantOptions
+              selectedModel={forms?.model?.modelName || ''}
+              handleChange={handleChangeVariantOnCalculationResult}
+              name="variant"
+              carVariantList={carVariantList || []}
+              value={forms.variant}
+              modelError={false}
+              isError={false}
+              carModelImage={forms.model?.modelImage}
+              cityName={forms.city.cityName}
+              onChangeInformation={onChangeInformation}
+            />
+          </div>
+          <CalculationResultSkeleton />
+        </>
       ) : (
         <></>
       )}
