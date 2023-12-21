@@ -637,7 +637,7 @@ export function LoanCalculatorPageV2() {
         setIsChangedMaxDp(false)
       }, 3000)
     }
-  }, [forms.model?.modelId, forms.city, calculationResult])
+  }, [forms.model?.modelId, forms.city, calculationResult, isChangedMaxDp])
 
   useEffect(() => {
     autofillCarVariantData()
@@ -1197,14 +1197,6 @@ export function LoanCalculatorPageV2() {
       minDp = finalDpRange?.minAmount
       maxDp = finalDpRange?.maxAmount
     }
-    if (
-      Number(forms.downPaymentAmount) < minDp ||
-      Number(forms.downPaymentAmount) > maxDp
-    ) {
-      setTimeout(() => {
-        setIsChangedMaxDp(true)
-      }, 500)
-    }
     const updatedDPValue =
       Number(forms.downPaymentAmount) > maxDp
         ? maxDp
@@ -1241,7 +1233,14 @@ export function LoanCalculatorPageV2() {
         setKKForm({ ...kkForm, downPaymentAmount: updatedDPValue })
 
         generateSelectedInsuranceAndPromo(filteredResult, true)
-
+        if (
+          Number(forms.downPaymentAmount) < minDp ||
+          Number(forms.downPaymentAmount) > maxDp
+        ) {
+          setTimeout(() => {
+            setIsChangedMaxDp(true)
+          }, 500)
+        }
         // select loan with the longest tenure as default
         const selectedLoanInitialValue =
           filteredResult.sort(
@@ -1331,15 +1330,6 @@ export function LoanCalculatorPageV2() {
 
           minDp = minDp20Percent
           maxDp = maxDp90Percent
-        }
-        if (
-          (dpValueKKForm < minDp || dpValueKKForm > maxDp) &&
-          calculationResult.length > 0 &&
-          !isLoadingCalculation &&
-          !isLoadingInsuranceAndPromo &&
-          isDataSubmitted
-        ) {
-          setIsChangedMaxDp(true)
         }
         setFinalMinInputDp(minDp)
         setFinalMaxInputDp(maxDp)

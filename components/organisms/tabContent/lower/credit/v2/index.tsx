@@ -588,7 +588,7 @@ export const CreditTabV2 = () => {
         setIsChangedMaxDp(false)
       }, 3000)
     }
-  }, [forms.model?.modelId, forms.city, calculationResult])
+  }, [forms.model?.modelId, forms.city, calculationResult, isChangedMaxDp])
 
   useEffect(() => {
     if (modelError) {
@@ -1392,15 +1392,6 @@ export const CreditTabV2 = () => {
       minDp = finalDpRange?.minAmount
       maxDp = finalDpRange?.maxAmount
     }
-    if (
-      (Number(forms.downPaymentAmount) < minDp ||
-        Number(forms.downPaymentAmount) > maxDp) &&
-      isLoadingAfterChangeVariant
-    ) {
-      setTimeout(() => {
-        setIsChangedMaxDp(true)
-      }, 500)
-    }
 
     const updatedDPValue =
       Number(forms.downPaymentAmount) > maxDp
@@ -1437,7 +1428,14 @@ export const CreditTabV2 = () => {
         setCalculationResult(filteredResult)
         setKKForm({ ...kkForm, downPaymentAmount: updatedDPValue })
         generateSelectedInsuranceAndPromo(filteredResult, true)
-
+        if (
+          Number(forms.downPaymentAmount) < minDp ||
+          Number(forms.downPaymentAmount) > maxDp
+        ) {
+          setTimeout(() => {
+            setIsChangedMaxDp(true)
+          }, 500)
+        }
         // select loan with the longest tenure as default
         const selectedLoanInitialValue =
           filteredResult.sort(
