@@ -66,13 +66,12 @@ $slide-content-height: 20px;
 
 .menu {
   font-size: 14px;
-  font-family: var(--open-sans-semi-bold);
+  font-family: var(--open-sans);
   color: #{$primary-black};
   direction: ltr;
-  font-weight: bold;
 
   &.isActive {
-    font-family: var(--open-sans-bold);
+    font-family: var(--open-sans-semi-bold);
   }
 }
 
