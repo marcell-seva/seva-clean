@@ -22,6 +22,7 @@ import ErrorImg from '/public/revamp/images/refinancing/Alert-info.svg'
 import Image from 'next/image'
 import { default as customAxiosGet } from 'services/api/get'
 import { trackMoengageSubmitLeads } from 'utils/handler/lead'
+import { replaceIndex0 } from 'utils/stringUtils'
 
 interface Props {
   onButtonClick?: boolean
@@ -322,10 +323,26 @@ export const DiscussionRefiForm = ({ onButtonClick }: Props) => {
       event.target.value.length <= 14 &&
       event.target.value.substring(0) !== 'init'
     ) {
-      setFormField({ ...formField, phoneNumber: event.target.value })
-      event.target.value.length
+      if (event.target.value.length < formField.phoneNumber.length) {
+        if (event.target.value.length === 1) {
+          setFormField({
+            ...formField,
+            phoneNumber: replaceIndex0(event.target.value, ''),
+          })
+        }
+        setFormField({
+          ...formField,
+          phoneNumber: event.target.value,
+        })
+      } else {
+        setFormField({
+          ...formField,
+          phoneNumber: replaceIndex0(event.target.value, '8'),
+        })
+        event.target.value.length
+      }
     }
-    if (event.target.value.length > 3 && event.target.value.length < 14) {
+    if (event.target.value.length > 8 && event.target.value.length < 14) {
       setErrorEmptyPhoneNumber('init')
     }
   }

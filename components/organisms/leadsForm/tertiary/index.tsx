@@ -36,6 +36,7 @@ import {
   trackMoengageSubmitLeads,
 } from 'utils/handler/lead'
 import { capitalizeWords } from 'utils/stringUtils'
+import { replaceIndex0 } from 'utils/stringUtils'
 
 interface PropsLeadsForm {
   otpStatus?: any
@@ -97,8 +98,17 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({
       checkInputValue(name, phoneNumberTemp)
     } else if (payload !== '0' && payload !== '6') {
       const phoneNumberTemp = filterNonDigitCharacters(temp)
-      setPhone(phoneNumberTemp)
-      checkInputValue(name, phoneNumberTemp)
+      if (payload.length < phone.length) {
+        if (payload.length === 1) {
+          setPhone(replaceIndex0(phoneNumberTemp, ''))
+          checkInputValue(name, replaceIndex0(phoneNumberTemp, ''))
+        }
+        setPhone(phoneNumberTemp)
+        checkInputValue(name, phoneNumberTemp)
+      } else {
+        setPhone(replaceIndex0(phoneNumberTemp, '8'))
+        checkInputValue(name, replaceIndex0(phoneNumberTemp, '8'))
+      }
     }
   }
 
@@ -358,7 +368,7 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({
                   : elementId.PDP.LeadsForm.phone
               }
               disabled={isUserLoggedIn}
-              placeholder="Masukkan nomor HP"
+              placeholder="Contoh: 812345678"
               title="Nomor Handphone"
               value={phone}
               onChange={(e: any) => handleInputPhone(e.target.value)}

@@ -161,3 +161,7 @@ export const removeFirstWordFromString = (value: string) => {
 export const containsSpecialChars = (str: string) => {
   return RegExLongAlphabetAndSpaces.test(str)
 }
+
+export const replaceIndex0 = (payload: string, newChar: string) => {
+  return newChar + payload.slice(1)
+}
