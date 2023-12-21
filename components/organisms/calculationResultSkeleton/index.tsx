@@ -1,9 +1,10 @@
 import React from 'react'
 import styles from '../../../styles/components/organisms/calculationResultSkeleton.module.scss'
-import { Button, IconWhatsapp, Skeleton } from 'components/atoms'
+import { Button, IconWhatsapp } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import Image from 'next/image'
 import { LogoAcc, LogoTaf } from '../calculationResult'
+import SkeletonLC from 'components/atoms/skeletonLC'
 
 const Shimmer = '/revamp/illustration/placeholder.gif'
 
@@ -49,91 +50,141 @@ export const CalculationResultSkeleton = () => {
         <span className={`${styles.dataHeaderText} ${styles.tenorHeader}`}>
           Tenor
         </span>
-        <span className={styles.dataHeaderText}>Total DP*</span>
-        <span className={styles.dataHeaderText}>Cicilan per bulan**</span>
+        <span className={styles.dataHeaderText} style={{ marginRight: '14%' }}>
+          Total DP<span className={styles.dataHeaderTextSmall}>*</span>
+        </span>
+        <span className={styles.dataHeaderText} style={{ marginRight: '7%' }}>
+          Cicilan per bulan
+          <span className={styles.dataHeaderTextSmall}>**</span>
+        </span>
       </div>
       <div className={styles.skeletonCard}>
-        <div
-          className={styles.skeletonHead}
-          style={{ backgroundImage: `url(${Shimmer})` }}
-        >
+        <SkeletonLC isHeader={true}>
           <div className={styles.wrapperInside} />
-        </div>
+        </SkeletonLC>
         <div className={styles.wrapperContent}>
           <div className={styles.wrapperSkeleton}>
-            <Skeleton width={52} height={20} />
-            <Skeleton width={77} height={12} />
+            <SkeletonLC width={52} height={12} />
+            <SkeletonLC width={60} height={9} />
           </div>
           <div className={styles.wrapperSkeleton}>
-            <Skeleton width={81} height={20} />
-            <Skeleton width={47} height={12} />
+            <SkeletonLC width={93} height={12} />
+            <SkeletonLC width={60} height={9} />
           </div>
           <div className={styles.wrapperSkeleton}>
-            <Skeleton width={81} height={20} />
-            <Skeleton width={47} height={12} />
+            <SkeletonLC width={93} height={12} />
+            <SkeletonLC width={60} height={9} />
           </div>
         </div>
 
         <div className={styles.wrapperBottom}>
           <div className={styles.wrapperSkeleton}>
-            <Skeleton width={127} height={15} />
+            <SkeletonLC width={127} height={9} />
           </div>
         </div>
       </div>
       <div className={styles.wrapperContentUnselect}>
         <div className={styles.wrapperSkeleton}>
-          <Skeleton width={62} height={20} />
-          <Skeleton width={87} height={15} />
+          <SkeletonLC
+            width={48}
+            height={12}
+            style={{ background: '#EBECEE' }}
+          />
+          <SkeletonLC width={60} height={9} style={{ background: '#EBECEE' }} />
         </div>
         <div className={styles.wrapperSkeleton}>
-          <Skeleton width={101} height={20} />
-          <Skeleton width={67} height={15} />
+          <SkeletonLC
+            width={93}
+            height={12}
+            style={{ background: '#EBECEE' }}
+          />
+          <SkeletonLC width={60} height={9} style={{ background: '#EBECEE' }} />
         </div>
         <div className={styles.wrapperSkeleton}>
-          <Skeleton width={101} height={20} />
-          <Skeleton width={67} height={15} />
-        </div>
-      </div>
-      <div className={styles.wrapperContentUnselect}>
-        <div className={styles.wrapperSkeleton}>
-          <Skeleton width={62} height={20} />
-          <Skeleton width={87} height={15} />
-        </div>
-        <div className={styles.wrapperSkeleton}>
-          <Skeleton width={101} height={20} />
-          <Skeleton width={67} height={15} />
-        </div>
-        <div className={styles.wrapperSkeleton}>
-          <Skeleton width={101} height={20} />
-          <Skeleton width={67} height={15} />
+          <SkeletonLC
+            width={93}
+            height={12}
+            style={{ background: '#EBECEE' }}
+          />
+          <SkeletonLC width={60} height={9} style={{ background: '#EBECEE' }} />
         </div>
       </div>
       <div className={styles.wrapperContentUnselect}>
         <div className={styles.wrapperSkeleton}>
-          <Skeleton width={62} height={20} />
-          <Skeleton width={87} height={15} />
+          <SkeletonLC
+            width={48}
+            height={12}
+            style={{ background: '#EBECEE' }}
+          />
+          <SkeletonLC width={60} height={9} style={{ background: '#EBECEE' }} />
         </div>
         <div className={styles.wrapperSkeleton}>
-          <Skeleton width={101} height={20} />
-          <Skeleton width={67} height={15} />
+          <SkeletonLC
+            width={93}
+            height={12}
+            style={{ background: '#EBECEE' }}
+          />
+          <SkeletonLC width={60} height={9} style={{ background: '#EBECEE' }} />
         </div>
         <div className={styles.wrapperSkeleton}>
-          <Skeleton width={101} height={20} />
-          <Skeleton width={67} height={15} />
+          <SkeletonLC
+            width={93}
+            height={12}
+            style={{ background: '#EBECEE' }}
+          />
+          <SkeletonLC width={60} height={9} style={{ background: '#EBECEE' }} />
         </div>
       </div>
       <div className={styles.wrapperContentUnselect}>
         <div className={styles.wrapperSkeleton}>
-          <Skeleton width={62} height={20} />
-          <Skeleton width={87} height={15} />
+          <SkeletonLC
+            width={48}
+            height={12}
+            style={{ background: '#EBECEE' }}
+          />
+          <SkeletonLC width={60} height={9} style={{ background: '#EBECEE' }} />
         </div>
         <div className={styles.wrapperSkeleton}>
-          <Skeleton width={101} height={20} />
-          <Skeleton width={67} height={15} />
+          <SkeletonLC
+            width={93}
+            height={12}
+            style={{ background: '#EBECEE' }}
+          />
+          <SkeletonLC width={60} height={9} style={{ background: '#EBECEE' }} />
         </div>
         <div className={styles.wrapperSkeleton}>
-          <Skeleton width={101} height={20} />
-          <Skeleton width={67} height={15} />
+          <SkeletonLC
+            width={93}
+            height={12}
+            style={{ background: '#EBECEE' }}
+          />
+          <SkeletonLC width={60} height={9} style={{ background: '#EBECEE' }} />
+        </div>
+      </div>
+      <div className={styles.wrapperContentUnselect}>
+        <div className={styles.wrapperSkeleton}>
+          <SkeletonLC
+            width={48}
+            height={12}
+            style={{ background: '#EBECEE' }}
+          />
+          <SkeletonLC width={60} height={9} style={{ background: '#EBECEE' }} />
+        </div>
+        <div className={styles.wrapperSkeleton}>
+          <SkeletonLC
+            width={93}
+            height={12}
+            style={{ background: '#EBECEE' }}
+          />
+          <SkeletonLC width={60} height={9} style={{ background: '#EBECEE' }} />
+        </div>
+        <div className={styles.wrapperSkeleton}>
+          <SkeletonLC
+            width={93}
+            height={12}
+            style={{ background: '#EBECEE' }}
+          />
+          <SkeletonLC width={60} height={9} style={{ background: '#EBECEE' }} />
         </div>
       </div>
       <div className={styles.wrapperButton}>

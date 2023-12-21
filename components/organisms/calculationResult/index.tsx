@@ -334,17 +334,19 @@ export const CalculationResult = ({
       <div className={styles.disclaimerWrapper}>
         {angsuranType === InstallmentTypeOptions.ADDM ? (
           <span className={styles.disclaimerText}>
-            *Total DP: DP + Administrasi + Cicilan Pertama + Polis + TJH
+            *Total DP: DP + Administrasi + Cicilan Pertama + Polis.
             <br />
-            **Cicilan per bulan: Sudah termasuk cicilan dan premi asuransi mobil
+            **Cicilan per bulan: Sudah termasuk cicilan dan premi asuransi
+            mobil.
             <br />
             Perhitungan kredit ini disediakan oleh ACC dan TAF.
           </span>
         ) : (
           <span className={styles.disclaimerText}>
-            *Total DP: DP + Administrasi + Polis + TJH
+            *Total DP: DP + Administrasi + Polis.
             <br />
-            **Cicilan per bulan: Sudah termasuk cicilan dan premi asuransi mobil
+            **Cicilan per bulan: Sudah termasuk cicilan dan premi asuransi
+            mobil.
             <br />
             Perhitungan kredit ini disediakan oleh ACC dan TAF.
           </span>
@@ -467,8 +469,13 @@ export const CalculationResult = ({
         <span className={`${styles.dataHeaderText} ${styles.tenorHeader}`}>
           Tenor
         </span>
-        <span className={styles.dataHeaderText}>Total DP*</span>
-        <span className={styles.dataHeaderText}>Cicilan per bulan**</span>
+        <span className={styles.dataHeaderText} style={{ marginRight: '10%' }}>
+          Total DP<span className={styles.dataHeaderTextSmall}>*</span>
+        </span>
+        <span className={styles.dataHeaderText}>
+          Cicilan per bulan
+          <span className={styles.dataHeaderTextSmall}>**</span>
+        </span>
       </div>
       <div className={styles.listWrapper}>
         {data.map((item, index) => {

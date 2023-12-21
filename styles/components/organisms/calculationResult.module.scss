@@ -62,6 +62,11 @@
   text-align: center;
 }
 
+.dataHeaderTextSmall {
+  @extend .dataHeaderText;
+  font-family: var(--open-sans-semi-bold) !important;
+  font-weight: 600 !important;
+}
 .tenorHeader {
   min-width: 106px;
 }

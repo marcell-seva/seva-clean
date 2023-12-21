@@ -1,0 +1,78 @@
+@import '../../abstract/colors';
+
+.shimmerBG {
+  animation-duration: 2.2s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: shimmer;
+  animation-timing-function: linear;
+  background: #cdd0d4;
+  background: linear-gradient(to right, #cdd0d4 8%, #f0f0f0 18%, #cdd0d4 33%);
+  background-size: 1200px 100%;
+}
+
+.shimmerBGUnselectedRow {
+  animation-duration: 2.2s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: shimmer;
+  animation-timing-function: linear;
+  background: #ebecee;
+  background: linear-gradient(to right, #ebecee 8%, #f0f0f0 18%, #ebecee 33%);
+  background-size: 1200px 100%;
+}
+
+@-webkit-keyframes shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1200px 0;
+  }
+  100% {
+    background-position: 1200px 0;
+  }
+}
+
+.media {
+  height: 200px;
+}
+
+.p-32 {
+  padding: 32px;
+}
+
+.titleLine {
+  height: 24px;
+  width: 100%;
+  border-radius: 12px;
+}
+
+.titleLineHeader {
+  height: 24px;
+  width: 100%;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.content-line {
+  height: 8px;
+  width: 100%;
+  border-radius: 12px;
+}
+
+.end {
+  width: 40%;
+}
+
+.m-t-24 {
+  margin-top: 24px;
+}
