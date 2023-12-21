@@ -1392,8 +1392,9 @@ export const CreditTabV2 = () => {
       maxDp = finalDpRange?.maxAmount
     }
     if (
-      Number(forms.downPaymentAmount) < minDp ||
-      Number(forms.downPaymentAmount) > maxDp
+      (Number(forms.downPaymentAmount) < minDp ||
+        Number(forms.downPaymentAmount) > maxDp) &&
+      isLoadingAfterChangeVariant
     ) {
       setTimeout(() => {
         setIsChangedMaxDp(true)

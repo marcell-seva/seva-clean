@@ -107,6 +107,7 @@ import { IncomeAgeSection } from 'components/molecules/incomAgeSection'
 import EducationalContentPopupDp from 'components/organisms/educationalContentPopupDp'
 import EducationalContentPopupType from 'components/organisms/educationalContentPopupType'
 import { CalculationResultSkeleton } from 'components/organisms/calculationResultSkeleton'
+import CardVariantOptions from 'components/organisms/cardVariantOptions'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -988,7 +989,9 @@ export function LoanCalculatorPageV2() {
     }
     setIsLoadingInsuranceAndPromo(false)
     setIsLoadingAfterChangeVariant(false)
-    scrollToResult()
+    if (!v2) {
+      scrollToResult()
+    }
     setInsuranceAndPromoForAllTenure(tempArr)
     setTimeout(() => {
       trackCountlyResultView()
@@ -2165,7 +2168,23 @@ Kemampuan Finansialmu"
               />
             </>
           ) : isLoadingAfterChangeVariant ? (
-            <CalculationResultSkeleton />
+            <>
+              <div className={styles.wrapperVariantOptions}>
+                <CardVariantOptions
+                  selectedModel={forms?.model?.modelName || ''}
+                  handleChange={handleChangeVariantOnCalculationResult}
+                  name="variant"
+                  carVariantList={carVariantList || []}
+                  value={forms.variant}
+                  modelError={false}
+                  isError={false}
+                  carModelImage={forms.model?.modelImage}
+                  cityName={forms.city.cityName}
+                  onChangeInformation={onChangeInformation}
+                />
+              </div>
+              <CalculationResultSkeleton />
+            </>
           ) : (
             <CalculationResultEmpty />
           )}

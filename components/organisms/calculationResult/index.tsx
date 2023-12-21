@@ -469,7 +469,7 @@ export const CalculationResult = ({
         <span className={`${styles.dataHeaderText} ${styles.tenorHeader}`}>
           Tenor
         </span>
-        <span className={styles.dataHeaderText} style={{ marginRight: '10%' }}>
+        <span className={styles.dataHeaderText}>
           Total DP<span className={styles.dataHeaderTextSmall}>*</span>
         </span>
         <span className={styles.dataHeaderText}>

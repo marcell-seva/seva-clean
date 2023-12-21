@@ -50,10 +50,10 @@ export const CalculationResultSkeleton = () => {
         <span className={`${styles.dataHeaderText} ${styles.tenorHeader}`}>
           Tenor
         </span>
-        <span className={styles.dataHeaderText} style={{ marginRight: '14%' }}>
+        <span className={styles.dataHeaderText}>
           Total DP<span className={styles.dataHeaderTextSmall}>*</span>
         </span>
-        <span className={styles.dataHeaderText} style={{ marginRight: '7%' }}>
+        <span className={styles.dataHeaderText}>
           Cicilan per bulan
           <span className={styles.dataHeaderTextSmall}>**</span>
         </span>

@@ -2,6 +2,7 @@
 
 .dataHeaderWrapper {
   margin-top: 32px;
+  margin-bottom: 10px;
   padding: 0 12px;
   display: flex;
   align-items: center;
@@ -32,7 +33,7 @@
   border-radius: 12px;
 }
 .skeletonCard {
-  height: 124px;
+  height: 132px;
 }
 .wrapperContent {
   border: 2px solid #cdd0d4;
@@ -45,16 +46,22 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
+
+  @media (min-width: 570px) {
+    justify-content: space-around;
+  }
 }
 .wrapperContentUnselect {
   @extend .wrapperContent;
   border: 1px solid #ebecee !important;
   background: transparent !important;
-  margin-top: 15px;
+  margin-top: 16px;
   border-radius: 8px;
   height: 61px !important;
-  justify-content: unset !important;
-  padding: 0px 49px;
+  justify-content: center;
+  @media (min-width: 570px) {
+    justify-content: space-around;
+  }
 }
 .wrapperSkeleton {
   display: flex;
