@@ -81,7 +81,7 @@ const EducationalContentPopupType = ({
                     <p className={styles.informationTitleText}>Tahukah Kamu?</p>
                     <p className={styles.informationTitleDesciption}>
                       Cicilan untuk Bayar di Muka (ADDM){' '}
-                      <span>lebih rendah</span> , lho!
+                      <span>lebih rendah</span>, lho!
                     </p>
                   </div>
                 </div>
