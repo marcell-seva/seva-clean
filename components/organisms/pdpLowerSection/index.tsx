@@ -3,7 +3,8 @@ import { NavigationTabV1 } from 'components/molecules'
 import { lowerSectionNavigationTab } from 'config/carVariantList.config'
 import styles from 'styles/pages/carVariantList.module.scss'
 import {
-  CreditTab,
+  CreditTabV1,
+  CreditTabV2,
   PriceTab,
   SpecificationTab,
   SummaryTab,
@@ -47,7 +48,7 @@ export const PdpLowerSection = ({
   onChangeTab,
 }: pdpLowerSectionProps) => {
   const router = useRouter()
-  const { slug } = router.query || []
+  const { slug, v } = router.query || []
   const { carModelDetails } = useCar()
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
   const [announcement, setAnnouncement] = useState<AnnouncementBoxDataType>()
@@ -163,7 +164,7 @@ export const PdpLowerSection = ({
           />
         )
       case 'kredit':
-        return <CreditTab />
+        return <CreditTabV1 />
 
       default:
         return (

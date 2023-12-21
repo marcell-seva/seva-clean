@@ -9,6 +9,10 @@ import {
 
 export type FormControlValue = string | number | readonly string[] | undefined
 
+export interface updateKtpCityPayloadType {
+  nik: string
+  city: string
+}
 export interface CreateProbeTrackRequest {
   utmCampaign: string
   campaignId?: number
@@ -250,6 +254,30 @@ export type CarRecommendation = {
   base64?: string
 }
 
+export type UsedCarRecommendation = {
+  id: string
+  modelName: string
+  typeName: string
+  variantTitle: string
+  cityId: number
+  cityName: string
+  nik: number
+  sevaUrl: string
+  priceValue: string
+  skuCode: string
+  urlMedia: string
+}
+export type UsedNewCarRecommendation = {
+  id: string
+  modelName: string
+  makeName: string
+  variantTitle: string
+  url: string
+  priceValue: number
+  mainImageUrl: string
+  startInstallment: number
+}
+
 export interface CarRecommendationResponse {
   carRecommendations: CarRecommendation[]
   lowestCarPrice: number
@@ -369,6 +397,13 @@ export interface CityOtrOption {
   id?: string
 }
 
+export interface BrandList {
+  makeId: number | null
+  makeCode: string
+  makeName: string
+  logoUrl: string | null
+}
+
 export interface CarModelBasicInfo {
   id: string
   brand: string
@@ -447,6 +482,7 @@ export interface FormLCState {
         modelName: string
         modelImage: string
         brandName: string
+        loanRank: string
       }
     | undefined
   variant:
@@ -865,6 +901,30 @@ export interface SpecialRateListWithPromoType {
   dpDiscount: number
 }
 
+export interface SelectedCalculateLoanUsedCar {
+  tenor: number
+  totalDP: string
+  totalInstallment: string
+}
+
+export interface InsuranceOptionUsedCar {
+  value: string
+  label: string
+  tenureAR: number
+  tenureTLO: number
+}
+
+export interface InsuranceDataUsedCar {
+  tenor: number
+  allInsurenceList: InsuranceOptionUsedCar[]
+  selectedInsurance: {
+    value: string
+    label: string
+    tenureAR: number
+    tenureTLO: number
+  }
+}
+
 export interface LoanCalculatorInsuranceAndPromoType {
   tenure: number
   allInsuranceList: Option<string>[]
@@ -899,6 +959,15 @@ export interface LoanCalculatorIncludePromoPayloadType {
   otr: number
   variantId?: string
   calculateIncludeSubsidi?: boolean // if undefined, BE will assume its "true"
+}
+
+export interface CreditCarCalculation {
+  priceValue: number
+  presentaseDP: number
+  DP: number
+  tenureAR: number
+  tenureTLO: number
+  nik: number
 }
 
 export interface LoanCalculatorInsuranceParams {
@@ -1118,4 +1187,27 @@ export interface SalesAgent {
   id: number
   salesCodeNpk: string
   salesName: string
+}
+
+export type RefinancingSecondLeadsData = {
+  carBrandText: string
+  carModelText: string
+  carYear: string
+  cityId: number
+  contactId: number | string
+  loanAmount: number
+  loanTenure: string
+  leasing: string
+  temanSevaTrxCode: string
+}
+
+export type SearchNewCar = {
+  carName: string
+  image: string
+  url: string
+}
+
+export type SearchUsedCar = {
+  carName: string
+  sevaUrl: string
 }

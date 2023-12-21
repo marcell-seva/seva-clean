@@ -15,6 +15,8 @@ import { MultiUnitQueryContextProvider } from './multiUnitQueryContext'
 import { GalleryContextProvider } from './galleryContext'
 import { AnnouncementBoxProvider } from './announcementBoxContext'
 import { ContactFormProvider } from './contactFormContext'
+import { SearchUsedCarWidgetProvider } from './searchUsedCarWidgetContext'
+import { FunnelQueryUsedCarContextProvider } from './funnelQueryUsedCarContext'
 
 const providers: Array<
   React.JSXElementConstructor<React.PropsWithChildren<any>>
@@ -26,6 +28,7 @@ const providers: Array<
   AuthProvider,
   CarProvider,
   FunnelQueryContextProvider,
+  FunnelQueryUsedCarContextProvider,
   AuthProvider,
   CalculatorProvider,
   FormContextProvider,
@@ -36,6 +39,7 @@ const providers: Array<
   GalleryContextProvider,
   AnnouncementBoxProvider,
   ContactFormProvider,
+  SearchUsedCarWidgetProvider,
 ]
 
 export const GlobalContextProvider = (props: HTMLAttributes<HTMLElement>) => {

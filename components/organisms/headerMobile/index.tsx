@@ -39,6 +39,11 @@ const Overlay = dynamic(() =>
 const SearchModal = dynamic(() =>
   import('components/molecules/searchModal').then((mod) => mod.SearchModal),
 )
+const SearchComponent = dynamic(() =>
+  import('components/molecules/searchComponent').then(
+    (mod) => mod.SearchComponent,
+  ),
+)
 const WebAnnouncementBox = dynamic(() =>
   import('components/organisms').then((mod) => mod.WebAnnouncementBox),
 )
@@ -288,11 +293,18 @@ export const HeaderMobile = ({
             </div>
           )}
         </div>
-        <SearchModal
+        {/* <SearchModal
           isOpen={isOpenSearchModal}
           handleCloseModal={() => setIsOpenSearchModal(false)}
           isOTO={adaSeva === 'adaSEVAdiOTO' ? true : false}
           pageOrigination={pageOrigination}
+        /> */}
+        <SearchComponent
+          isOpen={isOpenSearchModal}
+          handleCloseModal={() => setIsOpenSearchModal(false)}
+          isOTO={adaSeva === 'adaSEVAdiOTO' ? true : false}
+          pageOrigination={pageOrigination}
+          isShowbox={isShowAnnouncementBox}
         />
       </header>
       <Overlay

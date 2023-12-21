@@ -1,9 +1,10 @@
+import {} from 'services/api'
 import { AxiosResponse } from 'axios'
 import { defaultCSANumber } from 'utils/helpers/const'
 import urls from 'helpers/urls'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { UTMTagsData } from 'utils/types/utils'
-import { ContactType, LocalStorageKey } from 'utils/enum'
+import { ContactType, LeadsUsedCar, LocalStorageKey } from 'utils/enum'
 import {
   CountryCodePlusSign,
   defaultContactFormValue,
@@ -16,6 +17,7 @@ import {
 import {
   postCustomerAssistantDetails,
   postUnverifiedLeadsNew,
+  postUnverifiedLeadsNewUsedCar,
 } from 'services/api'
 
 export enum UnverifiedLeadSubCategory {
@@ -63,6 +65,39 @@ export interface CreateUnverifiedLeadRequestNew {
   cityId?: number
   platform?: string
 }
+export interface CreateUnverifiedLeadRequestNewUsedCar {
+  origination: LeadsUsedCar
+  customerName?: string
+  phoneNumber: string
+  selectedTenure?: number
+  selectedTdp?: string
+  selectedInstallment?: string
+  priceFormatedNumber?: string
+  carId?: string
+  makeName?: string
+  modelName?: string
+  variantName?: string
+  skuCode?: string
+  colourName?: string
+  engineCapacity?: string
+  priceValue?: string
+  seat?: string
+  variantTitle?: string
+  transmission?: string
+  fuelType?: string
+  productCat?: string
+  nik?: number
+  cityName?: string
+  plate?: string
+  mileage?: number
+  taxDate?: string
+  partnerName?: string
+  partnerId?: number
+  sevaUrl?: string
+  cityId?: number
+  tenureAR?: number
+  tenureTLO?: number
+}
 
 const getCustomerAssistantDetails = (phoneNumber: string) => {
   return postCustomerAssistantDetails(phoneNumber)
@@ -81,6 +116,21 @@ export const createUnverifiedLeadNew = (
     utmContent: null, // temporary
     utmTerm: UTMTags?.utm_term,
     adSet: UTMTags?.adset,
+  })
+}
+
+export const createUnverifiedLeadNewUsedCar = (
+  requestBody: CreateUnverifiedLeadRequestNewUsedCar,
+) => {
+  const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
+  return postUnverifiedLeadsNewUsedCar({
+    ...requestBody,
+    utmSource: UTMTags?.utm_source ?? null,
+    utmMedium: UTMTags?.utm_medium ?? null,
+    utmCampaign: UTMTags?.utm_campaign ?? null,
+    utmContent: null, // temporary
+    utmTerm: UTMTags?.utm_term ?? null,
+    utmAdset: UTMTags?.adset ?? null,
   })
 }
 

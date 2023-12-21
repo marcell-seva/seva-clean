@@ -1,0 +1,9 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.mobile {
+  max-width: 570px;
+  margin-top: 54px;
+  margin: 0% auto;
+  position: relative;
+}

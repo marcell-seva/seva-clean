@@ -1,0 +1,23 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  width: 100%;
+  padding: 28px 16px 33px;
+}
+
+.styledText {
+  font-family: var(--open-sans-semi-bold);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: #{$tertiaryGrey};
+}
+
+.whatsappSection {
+  margin-top: 13px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

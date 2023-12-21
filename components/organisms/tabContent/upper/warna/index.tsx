@@ -4,7 +4,7 @@ import { ColorSelector } from 'components/atoms/colorSelector'
 import { availableList, availableListColors } from 'config/AvailableListColors'
 import elementId from 'helpers/elementIds'
 import { PDPCarOverviewSkeleton } from 'components/organisms'
-import { PdpDataLocalContext } from 'pages/mobil-baru/p/[brand]/[model]/[[...slug]]'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
@@ -24,8 +24,7 @@ export const WarnaTab = ({ isShowAnnouncementBox, isOTO = false }: any) => {
     const carBrandModelUrl = `/${splitedPath[isOTO ? 2 : 1]}/${brand}/${model}`
     const carBrandModelWithPUrl = `/${
       splitedPath[isOTO ? 2 : 1]
-    }/p/${brand}/${model}`
-    console.log('asdf 123', carBrandModelUrl)
+    }/${brand}/${model}`
     if (availableList.includes(carBrandModelUrl)) {
       const colorsTmp = availableListColors.filter(
         (url) => url.url === carBrandModelUrl,

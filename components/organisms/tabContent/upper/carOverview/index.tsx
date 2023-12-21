@@ -14,7 +14,7 @@ import elementId from 'helpers/elementIds'
 import { variantListUrl } from 'utils/helpers/routes'
 import { CityOtrOption, VariantDetail } from 'utils/types/utils'
 import { useRouter } from 'next/router'
-import { PdpDataLocalContext } from 'pages/mobil-baru/p/[brand]/[model]/[[...slug]]'
+import { PdpDataLocalContext } from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useCar } from 'services/context/carContext'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
@@ -155,7 +155,7 @@ export const CarOverview = ({
       sortedCarModelVariant[0].monthlyInstallment,
       LanguageCode.id,
       1000000,
-      10,
+      100,
     )
   }
 

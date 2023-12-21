@@ -428,3 +428,131 @@ button {
 .qualification-custom-modal .ant-modal-content {
   @include centeredWithMaxWidth(343.33px);
 }
+
+.ant-divider-horizontal {
+  display: none !important;
+}
+
+.ant-select-focused.ant-select:not(.ant-select-disabled):not(
+    .ant-select-customize-input
+  ):not(.ant-pagination-size-changer)
+  .ant-select-selector {
+  border-color: #246ed4 !important;
+}
+
+.ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(
+    .ant-pagination-size-changer
+  ):hover
+  .ant-select-selector {
+  border-color: #246ed4 !important;
+}
+
+.ant-select-dropdown {
+  padding: 0px !important;
+}
+
+.ant-select-dropdown
+  .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+  background-color: transparent;
+}
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  .ant-select-item-option-state {
+    color: white !important;
+    padding: 2px;
+    border: 1px solid #05256e;
+    border-radius: 4px;
+    height: 24px;
+    width: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #05256e;
+    // background-color: white;
+  }
+
+  .ant-select-item-option-content {
+    font-family: var(--open-sans) !important;
+    font-size: 14px !important;
+    font-style: normal !important;
+    font-weight: 600 !important;
+  }
+  background: var(--shades-sky-blue-sky-blue-10, #eef6fb) !important;
+}
+
+.ant-select-item.ant-select-item-option {
+  border-bottom: 1px solid #{$shades-grey-10};
+  border-radius: 0;
+  &:after {
+    content: ' ';
+    border: 1px solid #afb3ba;
+    height: 24px;
+    width: 24px;
+    border-radius: 4px;
+    padding: 2px;
+    position: absolute;
+    right: 16px;
+  }
+}
+
+span.ant-select-selection-item {
+  background-color: #{$shades-grey-5} !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  font-size: 12px;
+  color: #{$shades-grey-75} !important;
+  padding: 4px 8px !important;
+  border: 0 !important;
+  margin: 8px 0px 8px 8px !important;
+  display: flex;
+  align-items: center;
+}
+
+span.ant-select-selection-placeholder {
+  font-size: 14px !important;
+}
+
+.csa-button-plp {
+  &.ant-float-btn {
+    left: calc(50% + 142px);
+    transform: translateX(-50%);
+    inset-block-end: 32px !important;
+  }
+}
+
+.refinancing-custom-form-modal .ant-modal-content {
+  padding: 0;
+}
+
+div.ant-collapse-content-box {
+  padding: 16px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+div.collapse-header {
+  padding: 24px 16px;
+  padding-inline-start: 0;
+}
+
+div.ant-collapse-header {
+  background-color: #f5f6f6 !important;
+}
+
+div.ant-collapse {
+  border: 0;
+}
+
+div.ant-collapse-content.ant-collapse-content-active {
+  border: 0 !important;
+}
+div.ant-collapse-item.ant-collapse-item-active {
+  border: 0 !important;
+}
+
+.ant-collapse-header-text {
+  font-family: var(--open-sans-semi-bold) !important;
+}
+
+.ant-collapse {
+  border-radius: 0;
+}

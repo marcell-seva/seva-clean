@@ -1,5 +1,6 @@
 import Capsule from './capsule'
 import {
+  IconLockFill,
   IconChevronLeft,
   IconChevronRight,
   IconChevronUp,
@@ -67,6 +68,13 @@ import {
   DownOutlined,
   CloseOutlined2,
   InfoCircleOutlined,
+  IconBookInformation,
+  IconColor,
+  IconNumberField,
+  IconDocumentSigned,
+  DoneTickToast,
+  ArrowLeftSmall,
+  ArrowLeftOutlined,
 } from './icon'
 import Brand from './brand'
 import Logo from './logo'
@@ -100,7 +108,16 @@ import { Separator } from './separator'
 import CustomModal from './modal/custom'
 import BottomSheet from './bottomSheet'
 import { SearchInput } from './searchInput'
+import { SearchInputSecondary } from './searchInput/Secondary'
+import DatePickerCM from './inputDate/datepickerCM'
+import { DatePicker } from './inputDate'
+import { NewInput } from './input/newInput'
+import { ToastSevaRefi } from './toastSevaRefi'
+import { OptionImage } from './optionImage'
+import { InputMultilineSelectV2 } from './inputMultilineSelectV2'
 export {
+  DatePickerCM,
+  IconLockFill,
   Button,
   Capsule,
   IconBackButton,
@@ -202,4 +219,17 @@ export {
   CustomModal,
   BottomSheet,
   SearchInput,
+  IconBookInformation,
+  IconColor,
+  IconNumberField,
+  IconDocumentSigned,
+  DatePicker,
+  DoneTickToast,
+  NewInput,
+  ArrowLeftSmall,
+  ToastSevaRefi,
+  ArrowLeftOutlined,
+  OptionImage,
+  InputMultilineSelectV2,
+  SearchInputSecondary,
 }

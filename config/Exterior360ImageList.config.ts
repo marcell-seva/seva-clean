@@ -365,67 +365,67 @@ interface ExteriorImagesListNewType {
 export const exteriorImagesListNew: ExteriorImagesListNewType[] = [
   // === TOYOTA ===
   {
-    url: '/mobil-baru/p/toyota/new-calya',
+    url: '/mobil-baru/toyota/new-calya',
     source: calyaExterior(),
   },
   {
-    url: '/mobil-baru/p/toyota/all-new-avanza',
+    url: '/mobil-baru/toyota/all-new-avanza',
     source: avanzaExterior(),
   },
   {
-    url: '/mobil-baru/p/toyota/all-new-veloz',
+    url: '/mobil-baru/toyota/all-new-veloz',
     source: velozExterior(),
   },
   {
-    url: '/mobil-baru/p/toyota/all-new-vios',
+    url: '/mobil-baru/toyota/all-new-vios',
     source: viosExterior(),
   },
   {
-    url: '/mobil-baru/p/toyota/new-sienta',
+    url: '/mobil-baru/toyota/new-sienta',
     source: sientaExterior(),
   },
   {
-    url: '/mobil-baru/p/toyota/new-kijang-innova',
+    url: '/mobil-baru/toyota/new-kijang-innova',
     source: innovaExterior(),
   },
   {
-    url: '/mobil-baru/p/toyota/new-agya',
+    url: '/mobil-baru/toyota/new-agya',
     source: agyaExterior(),
   },
   {
-    url: '/mobil-baru/p/toyota/raize',
+    url: '/mobil-baru/toyota/raize',
     source: raizeExterior(),
   },
   {
-    url: '/mobil-baru/p/toyota/all-new-rush',
+    url: '/mobil-baru/toyota/all-new-rush',
     source: rushExterior(),
   },
   {
-    url: '/mobil-baru/p/toyota/new-yaris',
+    url: '/mobil-baru/toyota/new-yaris',
     source: yarisExterior(),
   },
   {
-    url: '/mobil-baru/p/toyota/new-venturer',
+    url: '/mobil-baru/toyota/new-venturer',
     source: venturerExterior(),
   },
   {
-    url: '/mobil-baru/p/toyota/all-new-corolla-cross',
+    url: '/mobil-baru/toyota/all-new-corolla-cross',
     source: corollaCrossExterior(),
   },
   {
-    url: '/mobil-baru/p/toyota/new-fortuner',
+    url: '/mobil-baru/toyota/new-fortuner',
     source: fortunerExterior(),
   },
   {
-    url: '/mobil-baru/p/toyota/all-new-c-hr',
+    url: '/mobil-baru/toyota/all-new-c-hr',
     source: chrExterior(),
   },
   {
-    url: '/mobil-baru/p/toyota/all-new-corolla-altis',
+    url: '/mobil-baru/toyota/all-new-corolla-altis',
     source: altisExterior(),
   },
   {
-    url: '/mobil-baru/p/toyota/all-new-voxy',
+    url: '/mobil-baru/toyota/all-new-voxy',
     source: voxyExterior(),
   },
   {
@@ -435,35 +435,35 @@ export const exteriorImagesListNew: ExteriorImagesListNewType[] = [
 
   // === DAIHATSU ===
   {
-    url: '/mobil-baru/p/daihatsu/new-ayla',
+    url: '/mobil-baru/daihatsu/new-ayla',
     source: aylaExterior(),
   },
   {
-    url: '/mobil-baru/p/daihatsu/sigra',
+    url: '/mobil-baru/daihatsu/sigra',
     source: sigraExterior(),
   },
   {
-    url: '/mobil-baru/p/daihatsu/luxio',
+    url: '/mobil-baru/daihatsu/luxio',
     source: luxioExterior(),
   },
   {
-    url: '/mobil-baru/p/daihatsu/all-new-terios',
+    url: '/mobil-baru/daihatsu/all-new-terios',
     source: TeriosExterior(),
   },
   {
-    url: '/mobil-baru/p/daihatsu/new-sirion',
+    url: '/mobil-baru/daihatsu/new-sirion',
     source: sirionExterior(),
   },
   {
-    url: '/mobil-baru/p/daihatsu/all-new-xenia',
+    url: '/mobil-baru/daihatsu/all-new-xenia',
     source: xeniaExterior,
   },
   {
-    url: '/mobil-baru/p/daihatsu/rocky',
+    url: '/mobil-baru/daihatsu/rocky',
     source: rockyExterior,
   },
   {
-    url: '/mobil-baru/p/daihatsu/granmax-mb',
+    url: '/mobil-baru/daihatsu/granmax-mb',
     source: grandmaxExterior(),
   },
 ]

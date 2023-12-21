@@ -27,6 +27,8 @@ interface Props {
   isFocus?: boolean
   fieldLabel?: string
   placeholderText?: string
+  additionalContainerStyle?: string
+  className?: string
 }
 
 export const FormReferralCode = ({
@@ -47,6 +49,8 @@ export const FormReferralCode = ({
   isFocus,
   fieldLabel = 'Kode Referral (opsional)',
   placeholderText = 'Masukkan kode referral',
+  additionalContainerStyle,
+  className,
 }: Props) => {
   const inputWithIconRef = useRef<HTMLInputElement | null>(null)
 
@@ -109,7 +113,9 @@ export const FormReferralCode = ({
   }
 
   return (
-    <div className={styles.container}>
+    <div
+      className={`${styles.container} ${additionalContainerStyle} ${className}`}
+    >
       <span className={styles.fieldLabel}>{fieldLabel}</span>
       <InputWithIcon
         onFocus={onFocus}

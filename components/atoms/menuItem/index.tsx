@@ -8,6 +8,7 @@ import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { navigateToPLP, PreviousButton } from 'utils/navigate'
 import { OTONewCarUrl } from 'utils/helpers/routes'
+import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
 
 type MenuItemProps = {
   item?: MobileWebTopMenuType
@@ -21,7 +22,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
   pageOrigination,
 }): JSX.Element => {
   const [state, setState] = React.useState(false)
-
+  const { clearQueryFilter } = useFunnelQueryUsedCarData()
   const handleClickMenu = (menuUrl: string, menuName: string) => {
     if (menuName === 'Mobil Baru') {
       return navigateToPLP(
@@ -78,6 +79,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
                   ? item?.subMenu[0].menuUrl
                   : window.location.hostname + item?.subMenu[0].menuUrl,
               })
+              clearQueryFilter()
               handleClickMenu(child.menuUrl as string, child.menuName)
             }}
             className={styles.submenu}

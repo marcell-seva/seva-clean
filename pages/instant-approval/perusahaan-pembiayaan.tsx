@@ -15,7 +15,6 @@ import { defaultSeoImage } from 'utils/helpers/const'
 import { ProgressBar } from 'components/atoms/progressBar'
 import { Button } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
-
 import { InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
 import Image from 'next/image'

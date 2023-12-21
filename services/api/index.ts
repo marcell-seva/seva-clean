@@ -1,10 +1,14 @@
 import {
   CheckTemanSeva,
   CreateProbeTrackRequest,
+  CreditCarCalculation,
   CustomerKtpSeva,
   DeleteAccountRequestType,
+  RefinancingSecondLeadsData,
   SendInstantApproval,
+  UTMTagsData,
   UpdateProfileType,
+  updateKtpCityPayloadType,
   updateLeadFormCM,
   updateLeadFormOTO,
 } from './../../utils/types/utils'
@@ -21,8 +25,10 @@ import {
   SpecialRateRequest,
 } from 'utils/types/utils'
 import environments from 'helpers/environments'
-import { AES } from 'crypto-js'
+import AES from 'crypto-js/aes'
+import { getLocalStorage } from 'utils/handler/localStorage'
 import { LocalStorageKey } from 'utils/enum'
+import put from './put'
 // import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 // import { getLocalStorage } from 'utils/handler/localStorage'
 // import { UTMTagsData } from 'utils/types/props'
@@ -153,9 +159,59 @@ const getFinalDpRangeValidation = (variantId: string, cityCode: string) =>
       .replace(':variantId', variantId)
       .replace(':cityCode', cityCode),
   )
+const getRefinancingCarsBrand = () => {
+  return get(collections.refinancing.refinancingCarsBrand)
+}
+const getRefinancingCarsModel = (model?: string) => {
+  return get(
+    collections.refinancing.refinancingCarsModel.replace(
+      ':model',
+      String(model),
+    ),
+  )
+}
+const getRefinancingCarsYear = () => {
+  return get(collections.refinancing.refinancingCarsYear)
+}
+const getCarCollection = (cityId: string) => {
+  return get(collections.product.carCollection + `?cityId=${cityId}`)
+}
+
+const getPromoBanner = () => {
+  return get(collections.utils.promoBanner)
+}
 
 // post request
 const postUnverifiedLeadsNew = (body: any) => {
+  const config = {
+    headers: {
+      'torq-api-key': environments.unverifiedLeadApiKey,
+      'Content-Type': 'text/plain',
+    },
+  }
+
+  const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
+
+  const payload = {
+    ...body,
+    utmSource: UTMTags?.utm_source,
+    utmMedium: UTMTags?.utm_medium,
+    utmCampaign: UTMTags?.utm_campaign,
+    utmId: UTMTags?.utm_id,
+    utmContent: null, // temporary
+    utmTerm: UTMTags?.utm_term,
+    adSet: UTMTags?.adset,
+  }
+
+  const encryptedPayload = AES.encrypt(
+    JSON.stringify(payload),
+    process.env.NEXT_PUBLIC_LEAD_PAYLOAD_ENCRYPTION_KEY ?? '',
+  ).toString()
+
+  return post(collections.leads.unverifiedLeadNew, encryptedPayload, config)
+}
+
+const postUnverifiedLeadsNewUsedCar = (body: any) => {
   const config = {
     headers: {
       'torq-api-key': environments.unverifiedLeadApiKey,
@@ -168,7 +224,7 @@ const postUnverifiedLeadsNew = (body: any) => {
     process.env.NEXT_PUBLIC_LEAD_PAYLOAD_ENCRYPTION_KEY ?? '',
   ).toString()
 
-  return post(collections.leads.unverifiedLeadNew, encryptedPayload, config)
+  return post(collections.usedCar.usedCarsLeads, encryptedPayload, config)
 }
 const postRefreshToken = (body: any, config?: AxiosRequestConfig) =>
   post(collections.auth.refresh, body, config)
@@ -233,6 +289,10 @@ const postSaveKtpSpouse = (
   },
   config: AxiosRequestConfig,
 ) => post(collections.ktp.saveKtpSpouse, body, config)
+const putUpdateKtpCity = (
+  body: updateKtpCityPayloadType,
+  config?: AxiosRequestConfig,
+) => put(collections.ktp.updateKtpCity, body, config)
 const postDeleteAccount = (
   body: DeleteAccountRequestType,
   config?: AxiosRequestConfig,
@@ -254,9 +314,100 @@ const postUpdateLeadsCM = (
   body: updateLeadFormCM,
   config: AxiosRequestConfig,
 ) => post(collections.omnicom.updateLeadsCM, body, config)
-
 const postCheckTemanSeva = (body: CheckTemanSeva) =>
   post(collections.temanSeva.checkTemanSeva, body)
+const postSendRefinancingSecondLeadsForm = (
+  data: RefinancingSecondLeadsData,
+) => {
+  const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
+  const payload = {
+    ...data,
+    utmSource: UTMTags?.utm_source,
+    utmMedium: UTMTags?.utm_medium,
+    utmCampaign: UTMTags?.utm_campaign,
+    utmId: UTMTags?.utm_id,
+    utmContent: null, // temporary
+    utmTerm: UTMTags?.utm_term,
+    adSet: UTMTags?.adset,
+  }
+  const encryptedPayload = AES.encrypt(
+    JSON.stringify(payload),
+    process.env.NEXT_PUBLIC_LEAD_PAYLOAD_ENCRYPTION_KEY ?? '',
+  ).toString()
+
+  const config = {
+    headers: {
+      'torq-api-key': environments.unverifiedLeadApiKey,
+      'Content-Type': 'text/plain',
+    },
+  }
+  return post(
+    collections.refinancing.refinancingSecondLeadsForm,
+    encryptedPayload,
+    config,
+  )
+}
+
+const getUsedCars = (params?: string, config?: AxiosRequestConfig) =>
+  get(collections.usedCar.usedCars + params, config)
+
+const getUsedCarCityList = (config?: AxiosRequestConfig) =>
+  get(collections.usedCar.cityList, config)
+
+const getMinMaxPriceUsedCar = (params: string, config?: AxiosRequestConfig) =>
+  get(collections.usedCar.pricing + params, config)
+
+const getMinMaxYearsUsedCar = (params: string, config?: AxiosRequestConfig) =>
+  get(collections.usedCar.years + params, config)
+
+const getMinMaxMileageUsedCar = (params: string, config?: AxiosRequestConfig) =>
+  get(collections.usedCar.mileage + params, config)
+
+const getBrandList = (params: string, config?: AxiosRequestConfig) =>
+  get(collections.usedCar.brandList + params, config)
+
+const getModelUsedCar = (params: string, config?: AxiosRequestConfig) =>
+  get(collections.usedCar.modelUsedCar + params, config)
+
+const getUsedCarBySKU = (
+  id: string,
+  params: string,
+  config?: AxiosRequestConfig,
+) => get(collections.usedCar.uuid.replace(':uuid', id) + params, config)
+
+const getUsedCarRecommendations = (
+  params?: string,
+  config?: AxiosRequestConfig,
+) => get(collections.usedCar.usedRecommendations + params, config)
+const getUsedNewCarRecommendations = (
+  params?: string,
+  config?: AxiosRequestConfig,
+) => get(collections.usedCar.usedNewCarRecommendations + params, config)
+const getCarCreditsSk = (params?: string, config?: AxiosRequestConfig) =>
+  get(collections.usedCar.getCarCreditsSk + params, config)
+
+const getNewCarSearch = (params?: string, config?: AxiosRequestConfig) =>
+  get(collections.search.newCar + params, config)
+
+const getUsedCarSearch = (params?: string, config?: AxiosRequestConfig) =>
+  get(collections.search.usedCar + params, config)
+
+const getPreApprovalResultByCustomId = (id: string) => {
+  return get(
+    collections.creditQualification.instantApprovalResult.replace(':id', id),
+    getConfigToken(),
+  )
+}
+
+const getPreApprovalResultByCustomIdNew = (leadId: string) => {
+  return get(
+    collections.creditQualification.instantApprovalResultNew.replace(
+      ':leadId',
+      leadId,
+    ),
+    getConfigToken(),
+  )
+}
 
 export {
   getMenu,
@@ -288,9 +439,28 @@ export {
   getCustomerSpouseKtpSeva,
   getAvailableNIK,
   getLeadsDetail,
+  getUsedCars,
+  getUsedCarCityList,
+  getMinMaxPriceUsedCar,
+  getMinMaxYearsUsedCar,
+  getMinMaxMileageUsedCar,
+  getUsedCarBySKU,
+  getBrandList,
+  getModelUsedCar,
+  getUsedCarRecommendations,
+  getUsedNewCarRecommendations,
   getFinalDpRangeValidation,
+  getCarCreditsSk,
+  getRefinancingCarsBrand,
+  getRefinancingCarsModel,
+  getRefinancingCarsYear,
+  getCarCollection,
+  getPreApprovalResultByCustomId,
+  getPreApprovalResultByCustomIdNew,
+  getPromoBanner,
   postUpdateLeadsOTO,
   postUnverifiedLeadsNew,
+  postUnverifiedLeadsNewUsedCar,
   postRefreshToken,
   postSendSMSGeneration,
   postVerifyOTPGeneration,
@@ -314,4 +484,8 @@ export {
   postUpdateProfile,
   postUpdateLeadsCM,
   postCheckTemanSeva,
+  postSendRefinancingSecondLeadsForm,
+  putUpdateKtpCity,
+  getNewCarSearch,
+  getUsedCarSearch,
 }

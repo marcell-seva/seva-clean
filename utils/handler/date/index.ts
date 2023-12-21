@@ -173,3 +173,12 @@ export const formatDate = (date: Date) => {
     month < 10 ? '0' + month : month
   }/${year}`
 }
+
+export const convertStringDateToMonthYear = (data: string) => {
+  const date = new Date(data)
+  const monthNumb = date.toLocaleString('default', { month: 'numeric' })
+  const month = monthId(parseInt(monthNumb) - 1)
+  const year = date.getFullYear()
+  const result = `${month} ${year}`
+  return result
+}

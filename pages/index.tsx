@@ -30,8 +30,10 @@ import {
   getMenu,
   getAnnouncementBox as gab,
   getMobileFooterMenu,
+  getMinMaxYearsUsedCar,
+  getModelUsedCar,
+  getUsedCarSearch,
 } from 'services/api'
-import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 interface HomePageDataLocalContextType {
   dataBanner: any
@@ -46,6 +48,8 @@ interface HomePageDataLocalContextType {
   dataTypeCar: any
   dataCarofTheMonth: any
   dataFooterMenu: any
+  dataMinMaxYearUsedCar: any
+  dataModelUsedCar: any
 }
 /**
  * used to pass props without drilling through components
@@ -64,6 +68,8 @@ export const HomePageDataLocalContext =
     dataTypeCar: null,
     dataCarofTheMonth: null,
     dataFooterMenu: [],
+    dataMinMaxYearUsedCar: null,
+    dataModelUsedCar: [],
   })
 
 export default function WithTracker({
@@ -79,9 +85,12 @@ export default function WithTracker({
   dataMainArticle,
   dataTypeCar,
   dataCarofTheMonth,
+  dataMinMaxYearUsedCar,
+  dataModelUsedCar,
+  ssr,
   dataFooterMenu,
+  dataSearchUsedCar,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [isMobile, setIsMobile] = useState(useIsMobileSSr())
   const { saveTypeCar, saveCarOfTheMonth, saveRecommendationToyota } = useCar()
   const {
     saveArticles,
@@ -89,6 +98,7 @@ export default function WithTracker({
     saveMobileWebTopMenus,
     saveDataAnnouncementBox,
     saveMobileWebFooterMenus,
+    saveDataSearchUsedCar,
   } = useUtils()
 
   const getAnnouncementBox = async () => {
@@ -111,6 +121,7 @@ export default function WithTracker({
     saveRecommendationToyota(dataRecToyota)
     getAnnouncementBox()
     saveMobileWebFooterMenus(dataFooterMenu)
+    saveDataSearchUsedCar(dataSearchUsedCar)
   }, [])
 
   return (
@@ -128,6 +139,8 @@ export default function WithTracker({
         dataTypeCar,
         dataCarofTheMonth,
         dataFooterMenu,
+        dataMinMaxYearUsedCar,
+        dataModelUsedCar,
       }}
     >
       <Script
@@ -140,7 +153,7 @@ export default function WithTracker({
         }}
         key="product-jsonld"
       />
-      <HomepageMobile dataReccomendation={dataReccomendation} />
+      <HomepageMobile dataReccomendation={dataReccomendation} ssr={ssr} />
     </HomePageDataLocalContext.Provider>
   )
 }
@@ -150,7 +163,9 @@ export async function getServerSideProps(context: any) {
     'Cache-Control',
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
-  const params = `?city=${getCity().cityCode}&cityId=${getCity().id}`
+  const params = `?city=jakarta&cityId=118`
+  const paramsUsedCar = new URLSearchParams()
+  paramsUsedCar.append('query', '' as string)
   try {
     const [
       recommendationRes,
@@ -166,6 +181,9 @@ export async function getServerSideProps(context: any) {
       carofTheMonthRes,
       menuDesktopRes,
       footerMenuRes,
+      minmaxYearRes,
+      modelUsedCarRes,
+      dataSearchRes,
     ]: any = await Promise.all([
       getRecommendation(params),
       getBanner(),
@@ -180,7 +198,11 @@ export async function getServerSideProps(context: any) {
       getCarofTheMonth('?city=' + getCity().cityCode),
       getMenu(),
       getMobileFooterMenu(),
+      getMinMaxYearsUsedCar(''),
+      getModelUsedCar(''),
+      getUsedCarSearch('', { params: paramsUsedCar }),
     ])
+
     const [
       dataReccomendation,
       dataBanner,
@@ -195,6 +217,9 @@ export async function getServerSideProps(context: any) {
       dataCarofTheMonth,
       dataDesktopMenu,
       dataFooterMenu,
+      dataMinMaxYearUsedCar,
+      dataModelUsedCar,
+      dataSearchUsedCar,
     ] = await Promise.all([
       recommendationRes.carRecommendations,
       bannerRes.data,
@@ -209,6 +234,9 @@ export async function getServerSideProps(context: any) {
       carofTheMonthRes.data,
       menuDesktopRes.data,
       footerMenuRes.data,
+      minmaxYearRes.data,
+      modelUsedCarRes.data,
+      dataSearchRes.data,
     ])
     return {
       props: {
@@ -223,13 +251,34 @@ export async function getServerSideProps(context: any) {
         dataMainArticle,
         dataTypeCar,
         dataCarofTheMonth,
+        dataMinMaxYearUsedCar,
+        dataModelUsedCar,
         isSsrMobile: getIsSsrMobile(context),
         dataDesktopMenu,
+        ssr: 'success',
         dataFooterMenu,
+        dataSearchUsedCar,
       },
     }
-  } catch (error: any) {
-    return serverSideManualNavigateToErrorPage(error?.response?.status)
+  } catch (error) {
+    return {
+      props: {
+        dataBanner: null,
+        dataDesktopMenu: [],
+        dataMobileMenu: [],
+        dataCities: null,
+        dataTestimony: null,
+        dataRecToyota: null,
+        dataRecMVP: null,
+        dataUsage: null,
+        dataMainArticle: null,
+        dataTypeCar: null,
+        dataCarofTheMonth: null,
+        dataMinMaxYearUsedCar: null,
+        dataModelUsedCar: [],
+        ssr: 'failed',
+      },
+    }
   }
 }
 

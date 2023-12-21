@@ -11,7 +11,7 @@ import { getToken } from 'utils/handler/auth'
 import { SessionStorageKey } from 'utils/enum'
 import { CityOtrOption } from 'utils/types'
 
-import { MobileWebTopMenuType } from 'utils/types/utils'
+import { MobileWebTopMenuType, SearchUsedCar } from 'utils/types/utils'
 import { rootUrl } from 'utils/helpers/routes'
 import { HeaderMobile } from 'components/organisms'
 import { Button } from 'components/atoms'
@@ -28,6 +28,7 @@ import {
   getMobileFooterMenu,
   getCities,
   getAnnouncementBox as gab,
+  getUsedCarSearch,
 } from 'services/api'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
@@ -42,6 +43,7 @@ export default function SuccessHapusAkun({
   dataMobileMenu,
   dataFooter,
   dataCities,
+  dataSearchUsedCar,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter()
 
@@ -54,6 +56,7 @@ export default function SuccessHapusAkun({
     saveMobileWebTopMenus,
     saveMobileWebFooterMenus,
     saveCities,
+    saveDataSearchUsedCar,
   } = useUtils()
   const { showAnnouncementBox, saveShowAnnouncementBox } =
     useAnnouncementBoxContext()
@@ -92,6 +95,7 @@ export default function SuccessHapusAkun({
     saveMobileWebTopMenus(dataMobileMenu)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
+    saveDataSearchUsedCar(dataSearchUsedCar)
     getAnnouncementBox()
 
     const timer = setTimeout(() => {
@@ -193,24 +197,30 @@ export const getServerSideProps: GetServerSideProps<{
   dataMobileMenu: MobileWebTopMenuType[]
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
+  dataSearchUsedCar: SearchUsedCar[]
 }> = async (ctx) => {
   ctx.res.setHeader(
     'Cache-Control',
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
+  const params = new URLSearchParams()
+  params.append('query', '' as string)
 
   try {
-    const [menuMobileRes, footerRes, cityRes]: any = await Promise.all([
-      getMobileHeaderMenu(),
-      getMobileFooterMenu(),
-      getCities(),
-    ])
+    const [menuMobileRes, footerRes, cityRes, dataSearchRes]: any =
+      await Promise.all([
+        getMobileHeaderMenu(),
+        getMobileFooterMenu(),
+        getCities(),
+        getUsedCarSearch('', { params }),
+      ])
 
     return {
       props: {
         dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        dataSearchUsedCar: dataSearchRes.data,
       },
     }
   } catch (e: any) {

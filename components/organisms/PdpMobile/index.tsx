@@ -33,7 +33,7 @@ import { useRouter } from 'next/router'
 import {
   PdpDataLocalContext,
   checkCitySlug,
-} from 'pages/mobil-baru/p/[brand]/[model]/[[...slug]]'
+} from 'pages/mobil-baru/[brand]/[model]/[[...slug]]'
 import { PdpDataOTOLocalContext } from 'pages/adaSEVAdiOTO/mobil-baru/[brand]/[model]/[[...slug]]'
 import { useQuery } from 'utils/hooks/useQuery'
 import { useCar } from 'services/context/carContext'
@@ -50,7 +50,11 @@ import {
 import { client } from 'utils/helpers/const'
 import { defineRouteName } from 'utils/navigate'
 import { useUtils } from 'services/context/utilsContext'
-import { defaultCity, getCity } from 'utils/hooks/useGetCity'
+import {
+  defaultCity,
+  getCity,
+  isCurrentCitySameWithSSR,
+} from 'utils/hooks/useGetCity'
 import dynamic from 'next/dynamic'
 import { Currency } from 'utils/handler/calculation'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
@@ -147,7 +151,6 @@ export default function NewCarVariantList({
   const model = router.query.model as string
   const slug = router.query.slug
   const [upperTabSlug, lowerTabSlug, citySlug] = Array.isArray(slug) ? slug : []
-
   const [selectedLowerTab, setSelectedLowerTab] = useState<string>(lowerTabSlug)
   const [selectedUpperTab, setSelectedUpperTab] = useState<string>(upperTabSlug)
 
@@ -222,8 +225,11 @@ export default function NewCarVariantList({
     useAnnouncementBoxContext()
   const [variantIdFuel, setVariantIdFuelRatio] = useState<string | undefined>()
   const [variantFuelRatio, setVariantFuelRatio] = useState<string | undefined>()
-  // for disable promo popup after change route
-  const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
+  const isCarUnavailableWithDefaultCity =
+    !carRecommendationsResDefaultCity ||
+    !carModelDetailsResDefaultCity ||
+    !dataCombinationOfCarRecomAndModelDetailDefaultCity ||
+    !carVariantDetailsResDefaultCity
   const dataCar: trackDataCarType | null = getSessionStorage(
     SessionStorageKey.PreviousCarDataBeforeLogin,
   )
@@ -413,11 +419,12 @@ export default function NewCarVariantList({
   }
 
   const handleAutoscrollOnRender = () => {
+    const currentSlug = slug?.length === 1 ? upperTabSlug : lowerTabSlug
     if (
-      lowerTabSlug?.toLowerCase() === 'ringkasan' ||
-      lowerTabSlug?.toLowerCase() === 'spesifikasi' ||
-      lowerTabSlug?.toLowerCase() === 'harga' ||
-      lowerTabSlug?.toLowerCase() === 'kredit'
+      currentSlug?.toLowerCase() === 'ringkasan' ||
+      currentSlug?.toLowerCase() === 'spesifikasi' ||
+      currentSlug?.toLowerCase() === 'harga' ||
+      currentSlug?.toLowerCase() === 'kredit'
     ) {
       const destinationElm = document.getElementById('pdp-lower-content')
       if (destinationElm) {
@@ -535,7 +542,11 @@ export default function NewCarVariantList({
     saveDataCarForLoginPageView()
     saveLocalStorage(LocalStorageKey.Model, model)
 
-    if (!isCurrentCitySameWithSSR) {
+    if (
+      !isCurrentCitySameWithSSR() ||
+      isCarUnavailableWithDefaultCity ||
+      (source && source.toLowerCase() === 'plp') // refetch data to get the same number with PLP when using filter
+    ) {
       getNewFunnelRecommendations(getQueryParamForApiRecommendation()).then(
         (result: any) => {
           let id = ''
@@ -558,6 +569,11 @@ export default function NewCarVariantList({
             getCarModelDetailsById(id),
           ])
             .then((response) => {
+              if (response[1]?.variants?.length === 0) {
+                setStatus('empty')
+                return
+              }
+
               const runRecommendation =
                 handleRecommendationsAndCarModelDetailsUpdate(
                   saveRecommendation,
@@ -610,12 +626,35 @@ export default function NewCarVariantList({
       handleAutoscrollOnRender()
     }
   }, [status, carModelDetails])
+
+  useEffect(() => {
+    if (router.query.selectedVariantId) {
+      handleAutoscrollOnRender()
+    }
+  }, [])
+
   useEffect(() => {
     setIsButtonClick(false)
     if (variantIdFuel) {
       getFuelRatio()
     }
   }, [router, variantIdFuel])
+
+  // useEffect(() => {
+  //   const upperTabUrl = selectedUpperTab
+  //     ? selectedUpperTab.toLocaleLowerCase()
+  //     : 'warna'
+  //   const lowerTabUrl = selectedLowerTab
+  //     ? selectedLowerTab.toLocaleLowerCase()
+  //     : 'ringkasan'
+  //   const urlOTO = isOTO ? '/adaSEVAdiOTO' : ''
+  //   const cityUrl = citySlug ? `/${citySlug}` : ''
+  //   window.history.pushState(
+  //     null,
+  //     '',
+  //     `${window.location.origin}${urlOTO}/mobil-baru/${brand}/${model}/${upperTabUrl}/${lowerTabUrl}${cityUrl}`,
+  //   )
+  // }, [selectedLowerTab, selectedUpperTab])
 
   const isUpperTab = (payload: string) => {
     const result = upperSectionNavigationTab.filter(
@@ -634,7 +673,8 @@ export default function NewCarVariantList({
   const isCitySelected = (payload: string) => {
     const result = cities.filter(
       (item) =>
-        item.cityName.toLowerCase().replace(' ', '-') === payload.toLowerCase(),
+        item.cityName.toLowerCase().replace(' ', '-') ===
+        payload.toLowerCase().replace(' ', '-'),
     )
     return result.length > 0
   }
@@ -643,8 +683,8 @@ export default function NewCarVariantList({
     const splitQuery = window.location.href.split('?')
     const slugParam = splitQuery[0]
     const queryParam = splitQuery[1] ? `?${splitQuery[1]}` : ''
-    const slugState = slugParam.split('/').splice(7, 10)
-    const currentURL = isOTO ? '/adaSEVAdiOTO/mobil-baru' : '/mobil-baru/p'
+    const slugState = slugParam.split('/').splice(6, 9)
+    const currentURL = isOTO ? '/adaSEVAdiOTO/mobil-baru' : '/mobil-baru'
     var url = ''
     if (slugState?.length === 1) {
       const checkIsUpperTab = isUpperTab(slugState[0])
@@ -677,9 +717,9 @@ export default function NewCarVariantList({
     const splitQuery = window.location.href.split('?')
     const slugParam = splitQuery[0]
     const queryParam = splitQuery[1] ? `?${splitQuery[1]}` : ''
-    const slugState = slugParam.split('/').splice(7, 10)
+    const slugState = slugParam.split('/').splice(6, 9)
 
-    const currentURL = isOTO ? '/adaSEVAdiOTO/mobil-baru' : '/mobil-baru/p'
+    const currentURL = isOTO ? '/adaSEVAdiOTO/mobil-baru' : '/mobil-baru'
     var url = ''
     if (slugState?.length === 1) {
       const checkIsLowerTab = isLowerTab(slugState[0])

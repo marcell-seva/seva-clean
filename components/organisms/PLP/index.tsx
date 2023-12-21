@@ -1,30 +1,6 @@
-import { Spin } from 'antd'
-import axios from 'axios'
 import clsx from 'clsx'
 import { CSAButton } from 'components/atoms'
-import {
-  AdaOTOdiSEVALeadsForm,
-  CarDetailCard,
-  FooterMobile,
-  HeaderMobile,
-  NavigationFilterMobile,
-  PLPEmpty,
-} from 'components/organisms'
-import { TrackingEventName } from 'helpers/amplitude/eventTypes'
-import {
-  LeadsActionParam,
-  PageOriginationName,
-  trackCarSearchPageView,
-  trackCekPeluangPopUpCloseClick,
-  trackCekPeluangPopUpCtaClick,
-  trackLeadsFormAction,
-  trackPeluangMudahBadgeClick,
-  trackPeluangMudahPopUpCloseClick,
-  trackPeluangSulitBadgeClick,
-  trackPeluangSulitPopUpCloseClick,
-  trackPLPFilterShow,
-  trackPLPSortShow,
-} from 'helpers/amplitude/seva20Tracking'
+import { CarDetailCard, FooterMobile, HeaderMobile } from 'components/organisms'
 import elementId from 'helpers/elementIds'
 import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
 import { useRouter } from 'next/router'
@@ -32,17 +8,14 @@ import React, { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useCar } from 'services/context/carContext'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
-import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { getConvertFilterIncome } from 'utils/filterUtils'
 import { getToken } from 'utils/handler/auth'
 import { Currency } from 'utils/handler/calculation'
 import { delayedExec } from 'utils/handler/delayed'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
-import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
-import { hundred, million } from 'utils/helpers/const'
 import { OTONewCarUrl, carResultsUrl } from 'utils/helpers/routes'
-import { useAmplitudePageView } from 'utils/hooks/useAmplitudePageView'
 import {
   defaultCity,
   getCity,
@@ -55,8 +28,8 @@ import {
   MinMaxPrice,
 } from 'utils/types/context'
 import { MoengageViewCarSearch } from 'utils/types/moengage'
-import { trackDataCarType } from 'utils/types/utils'
-import styles from '../../../styles/pages/mobil-baru.module.scss'
+import { AnnouncementBoxDataType, trackDataCarType } from 'utils/types/utils'
+import styles from 'styles/pages/mobil-baru.module.scss'
 import {
   trackEventCountly,
   valueForInitialPageProperty,
@@ -69,16 +42,21 @@ import { decryptValue } from 'utils/encryptionUtils'
 import { getCarBrand } from 'utils/carModelUtils/carModelUtils'
 import { useUtils } from 'services/context/utilsContext'
 import dynamic from 'next/dynamic'
-import { temanSevaUrlPath } from 'utils/types/props'
+import { LeadsActionParam, PageOriginationName } from 'utils/types/props'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 import { getMinMaxPrice, postCheckTemanSeva } from 'services/api'
-import { isCurrentCitySameWithSSR } from 'utils/hooks/useGetCity'
-import { isBodyType, isBrand } from 'pages/mobil-baru/c/[brand]'
 
+const Spin = dynamic(() => import('antd/lib/spin'), { ssr: false })
 const LeadsFormPrimary = dynamic(() =>
   import('components/organisms').then((mod) => mod.LeadsFormPrimary),
+)
+const NavigationFilterMobile = dynamic(() =>
+  import('components/organisms').then((mod) => mod.NavigationFilterMobile),
+)
+const PLPEmpty = dynamic(() =>
+  import('components/organisms').then((mod) => mod.PLPEmpty),
 )
 const FilterMobile = dynamic(() =>
   import('components/organisms').then((mod) => mod.FilterMobile),
@@ -101,6 +79,9 @@ const PopupResultRecommended = dynamic(() =>
 const CitySelectorModal = dynamic(() =>
   import('components/molecules').then((mod) => mod.CitySelectorModal),
 )
+const AdaOTOdiSEVALeadsForm = dynamic(() =>
+  import('components/organisms').then((mod) => mod.AdaOTOdiSEVALeadsForm),
+)
 
 interface PLPProps {
   minmaxPrice: MinMaxPrice
@@ -108,14 +89,13 @@ interface PLPProps {
 }
 
 export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
-  useAmplitudePageView(trackCarSearchPageView)
   const router = useRouter()
   const { recommendation, saveRecommendation } = useCar()
   const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>([])
   const {
     search,
-    bodyType: bodyTypeTemp,
-    brand: param,
+    bodyType,
+    brand,
     downPaymentAmount,
     monthlyIncome,
     tenure,
@@ -123,12 +103,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     age,
     sortBy,
   } = router.query as FilterParam
-  const brand = isBrand(param) ? param : undefined
-  const bodyType = bodyTypeTemp
-    ? bodyTypeTemp
-    : isBodyType(param)
-    ? param?.toUpperCase()
-    : undefined
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
 
   const [cityOtr] = useLocalStorage<Location | null>(
@@ -143,6 +117,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   const [isButtonClick, setIsButtonClick] = useState(false)
   const [isResetFilter, setIsResetFilter] = useState(false)
   const showFilter =
+    search ||
     bodyType ||
     brand ||
     priceRangeGroup ||
@@ -152,7 +127,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     monthlyIncome
       ? true
       : false
-
+  funnelQuery.search = search
   funnelQuery.brand = brand?.split(',').map((item) => getCarBrand(item)) || []
   const showFilterFinancial =
     age || downPaymentAmount || monthlyIncome ? true : false
@@ -189,12 +164,16 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     loanRank: 'Null',
   })
   const user: string | null = getLocalStorage(LocalStorageKey.sevaCust)
+  const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
   const isUsingFilterFinancial =
     !!filterStorage?.age &&
     !!filterStorage?.downPaymentAmount &&
     !!filterStorage?.monthlyIncome &&
     !!filterStorage?.tenure
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
 
   const IsShowBadgeCreditOpportunity = getSessionStorage(
     SessionStorageKey.IsShowBadgeCreditOpportunity,
@@ -224,7 +203,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   }
 
   const cleanEffect = () => {
-    if (!isCurrentCitySameWithSSR()) {
+    if (!isCurrentCitySameWithSSR) {
       saveRecommendation([])
     }
     setPage(1)
@@ -337,7 +316,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
 
   const handleShowFilter = () => {
     setIsButtonClick(true)
-    trackPLPFilterShow(true)
     trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_FILTER_CLICK, {
       CURRENT_FILTER_STATUS: isFilter ? 'On' : 'Off',
     })
@@ -345,7 +323,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
 
   const handleShowSort = (open: boolean) => () => {
     setOpenSorting(open)
-    trackPLPSortShow(open)
     trackEventCountly(CountlyEventNames.WEB_PLP_OPEN_SORT_CLICK)
   }
   const getAnnouncementBox = () => {
@@ -487,6 +464,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
         funnelQuery.priceRangeGroup !== '' &&
         funnelQuery.priceRangeGroup !== undefined) ||
       // funnelQuery.downPaymentAmount ||
+      funnelQuery.search ||
       funnelQuery.monthlyIncome ||
       funnelQuery.age ||
       funnelQuery.tenure !== 5 ||
@@ -550,7 +528,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       })
     }
 
-    if (!isCurrentCitySameWithSSR() || recommendation.length === 0) {
+    if (!isCurrentCitySameWithSSR || recommendation.length === 0) {
       const params = new URLSearchParams()
       getCity().cityCode && params.append('city', getCity().cityCode as string)
 
@@ -575,13 +553,11 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
             const queryParam: any = {
               downPaymentType: 'amount',
               downPaymentAmount: downPaymentAmount || '',
-              brand:
-                !brand || brand?.includes('SEVA')
-                  ? undefined
-                  : brand?.split(',')?.map((item) => getCarBrand(item)) || '',
+              brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
               bodyType: bodyType?.split(',') || '',
               priceRangeGroup: priceRangeGroup ? minTemp + '-' + maxTemp : '',
               age: age || '',
+              search: search || '',
               tenure: Number(tenure) || 5,
               monthlyIncome: monthlyIncome || '',
               sortBy: sortBy || 'lowToHigh',
@@ -622,14 +598,13 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     } else {
       saveRecommendation(recommendation)
       const queryParam: any = {
+        downPaymentType: 'amount',
         downPaymentAmount: downPaymentAmount || '',
-        brand:
-          !brand || brand?.includes('SEVA')
-            ? undefined
-            : brand?.split(',')?.map((item) => getCarBrand(item)) || '',
+        brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
         bodyType: bodyType?.split(',') || '',
         priceRangeGroup: priceRangeGroup,
         age: age || '',
+        search: search || '',
         tenure: Number(tenure) || 5,
         monthlyIncome: monthlyIncome || '',
         sortBy: sortBy || 'lowToHigh',
@@ -647,7 +622,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   const onCloseResultInfo = () => {
     setOpenLabelResultInfo(false)
     saveLocalStorage(LocalStorageKey.flagResultFilterInfoPLP, 'true')
-    trackCekPeluangPopUpCtaClick(getDataForAmplitude())
     trackEventCountly(CountlyEventNames.WEB_PLP_FINCAP_BANNER_DESC_OK_CLICK)
   }
   const onCloseResultInfoClose = () => {
@@ -701,6 +675,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       router.replace({
         pathname: isOTO ? OTONewCarUrl : carResultsUrl,
         query: {
+          ...(search && { search }),
           ...(age && { age }),
           ...(downPaymentAmount && { downPaymentAmount }),
           ...(monthlyIncome && { monthlyIncome }),
@@ -714,45 +689,14 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     })
   }
 
-  const getDataForAmplitude = () => {
-    return {
-      ...(funnelQuery.monthlyIncome && {
-        Income: `Rp${formatNumberByLocalization(
-          parseInt(monthlyIncome),
-          LanguageCode.id,
-          million,
-          hundred,
-        )} Juta`,
-      }),
-      Age: funnelQuery.age,
-      ...(cityOtr && {
-        City: cityOtr?.cityName,
-      }),
-      ...(funnelQuery.downPaymentAmount && {
-        DP: `Rp${formatNumberByLocalization(
-          parseInt(downPaymentAmount),
-          LanguageCode.en,
-          million,
-          hundred,
-        )} Juta`,
-      }),
-      Tenure: `${funnelQuery.tenure || 5}`,
-    }
-  }
   const trackCountlyPromoBadgeClick = (car: CarRecommendation, index: any) => {
     trackEventCountly(CountlyEventNames.WEB_PROMO_CLICK, {
       CAR_BRAND: car.brand,
       CAR_MODEL: car.model,
       CAR_ORDER: parseInt(index) + 1,
       PELUANG_KREDIT_BADGE:
-        isUsingFilterFinancial &&
-        IsShowBadgeCreditOpportunity &&
-        car.loanRank === 'Green'
-          ? 'Mudah disetujui'
-          : isUsingFilterFinancial &&
-            IsShowBadgeCreditOpportunity &&
-            car.loanRank === 'Red'
-          ? 'Sulit disetujui'
+        isUsingFilterFinancial && IsShowBadgeCreditOpportunity
+          ? dataCar?.PELUANG_KREDIT_BADGE
           : 'Null',
       PAGE_ORIGINATION: 'PLP',
     })
@@ -925,14 +869,12 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
           open={openLabelResultSulit}
           onCancel={() => {
             setOpenLabelResultSulit(false)
-            trackPeluangSulitPopUpCloseClick(getDataForAmplitude())
           }}
         />
         {/* <PopupResultMudah
           open={openLabelResultMudah}
           onCancel={() => {
             setOpenLabelResultMudah(false)
-            trackPeluangMudahPopUpCloseClick(getDataForAmplitude())
           }}
         /> */}
         <PopupResultRecommended

@@ -54,6 +54,7 @@ export enum LocalStorageKey {
   CityOtr = 'cityOtr',
   SelectedLoanPermutation = 'SelectedLoanPermutation',
   CarFilter = 'filter',
+  UsedCarFilter = 'usedCarFilter',
   FinancialData = 'financialData',
   PageBeforeLogin = 'pageBeforeLogin',
   PageBeforeLoginExternal = 'pageBeforeLoginExternal',
@@ -105,6 +106,7 @@ export enum LocalStorageKey {
   LastTimeUpdateUtm = 'lastTimeUpdateUtm',
   flagPopUpRecomendation = 'flagPopUpRecomendation',
   TempToken = 'tempToken', // used for check registered customer
+  KalkulatorKreditForm = 'KalkulatorKreditForm',
 }
 
 export enum SessionStorageKey {
@@ -278,4 +280,18 @@ export enum TemanSeva {
 
 export enum CookieKey {
   PhoneNumber = 'phoneNumber',
+}
+
+export enum ButtonVersion {
+  Secondary = 'Secondary',
+  SecondaryDark = 'SecondaryDark',
+  PrimaryDarkBlue = 'PrimaryDarkBlue',
+  Outline = 'Outline',
+  Disable = 'Disable',
+  Default = 'Default',
+}
+
+export enum ButtonSize {
+  Big = 'Big',
+  Small = 'Small',
 }

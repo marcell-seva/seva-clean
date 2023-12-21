@@ -1,0 +1,14 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 29px;
+  margin-top: 23px;
+  padding-left: 16px;
+}
+
+.styledImg {
+  width: 328px;
+}

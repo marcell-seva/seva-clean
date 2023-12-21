@@ -159,6 +159,7 @@ export interface MobileWebTopMenuType extends MobileWebTopMenuItemType {
 }
 
 export interface FunnelQuery {
+  search?: string
   paymentType?: FormControlValue | string
   downPaymentType?: FormControlValue
   monthlyInstallment?: FormControlValue
@@ -577,6 +578,14 @@ export interface FunnelWidget {
   tenure: string
   age: string
   monthlyIncome: string
+}
+
+export interface UsedCarFunnelWidget {
+  model: string[]
+  brand: string[]
+  minYear: string
+  maxYear: string
+  transmission: string[]
 }
 
 export interface FinancialFunnelWidgetError {

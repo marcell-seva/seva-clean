@@ -7,7 +7,7 @@ const nextConfig = {
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },
-  experimental: { scrollRestoration: true },
+  experimental: { scrollRestoration: false },
   compiler: {
     styledComponents: true,
   },
@@ -32,6 +32,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'www.mobbi.id',
+      },
+      {
+        protocol: 'https',
         hostname: 'storage.googleapis.com',
       },
       {
@@ -45,6 +49,18 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'drive.google.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.setirkanan.co.id',
+      },
+      {
+        protocol: 'https',
+        hostname: 'setirkanan.oss-ap-southeast-5.aliyuncs.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'setirkanantesting.oss-ap-southeast-5.aliyuncs.com',
       },
     ],
   },
@@ -77,3 +93,4 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
+// module.exports = withBundleAnalyzer({})

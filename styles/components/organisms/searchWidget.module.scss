@@ -8,10 +8,9 @@
 }
 
 .cardContainer {
-  padding: 24px;
   display: flex;
   flex-direction: column;
-  max-height: 344px;
+  max-height: 314px;
   overflow: hidden;
   transition: max-height 1s ease;
 }
@@ -85,10 +84,9 @@
   width: 50%;
   left: 0;
   right: 0;
-  bottom: -22px;
+  bottom: -38px;
   margin-left: auto;
   margin-right: auto;
-
   display: flex;
   justify-content: center;
 }

@@ -11,6 +11,11 @@ import {
   SearchWidgetProvider,
 } from './searchWidgetContext'
 import {
+  SearchUsedCarWidgetContext,
+  SearchUsedCarWidgetContextType,
+  SearchUsedCarWidgetProvider,
+} from './searchUsedCarWidgetContext'
+import {
   UtilsContext,
   UtilsContextProvider,
   UtilsContextType,
@@ -20,6 +25,12 @@ import {
   FunnelQueryContextProvider,
   FunnelQueryContextType,
 } from './funnelQueryContext'
+import {
+  FunnelQueryUsedCarContext,
+  FunnelQueryUsedCarContextProvider,
+  FunnelQueryUsedCarContextType,
+} from './funnelQueryUsedCarContext'
+
 import {
   FinancialQueryContext,
   FinancialQueryContextProvider,
@@ -31,19 +42,27 @@ import {
   AnnouncementBoxProvider,
 } from './announcementBoxContext'
 
+import { UsedCarContext, UsedCarProvider } from './usedCarContext'
+
 export {
   AuthContext,
   AuthProvider,
   CarContext,
   CarProvider,
+  UsedCarContext,
+  UsedCarProvider,
   ConfigContext,
   ConfigProvider,
   SearchWidgetContext,
   SearchWidgetProvider,
+  SearchUsedCarWidgetContext,
+  SearchUsedCarWidgetProvider,
   UtilsContext,
   UtilsContextProvider,
   FunnelQueryContext,
   FunnelQueryContextProvider,
+  FunnelQueryUsedCarContext,
+  FunnelQueryUsedCarContextProvider,
   FinancialQueryContext,
   FinancialQueryContextProvider,
   GlobalContextProvider,
@@ -55,8 +74,10 @@ export type {
   CarContextType,
   ConfigContextType,
   SearchWidgetContextType,
+  SearchUsedCarWidgetContextType,
   UtilsContextType,
   FunnelQueryContextType,
+  FunnelQueryUsedCarContextType,
   FinancialQueryContextType,
   AnnouncementBoxContextType,
 }

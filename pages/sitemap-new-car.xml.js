@@ -4,7 +4,7 @@ import { monthId, escapeCdata } from './sitemap-used-car.xml'
 const rootPath = getCurrentEnvironment.rootPath
 const apiBaseUrl = getCurrentEnvironment.apiBaseUrl
 
-const PDP_DATA_URL = `${rootPath}/mobil-baru/p`
+const PDP_DATA_URL = `${rootPath}/mobil-baru`
 
 const currentDate = new Date()
 const currentMonth = monthId(currentDate.getMonth())

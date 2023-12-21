@@ -18,12 +18,29 @@
   margin-top: 24px;
   width: 100%;
 }
+.labelContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
 
 .titleText {
   font-size: 12px;
   color: #{$shades-grey-75};
   padding-bottom: 8px;
   margin-top: 8px;
+}
+
+.tooltip {
+  font-size: 11px;
+  color: #{$secondary-blue};
+  padding-bottom: 8px;
+  margin-top: 8px;
+  font-weight: 400;
+  line-height: 16px;
+  font-family: var(--open-sans);
+  cursor: pointer;
 }
 
 .input {

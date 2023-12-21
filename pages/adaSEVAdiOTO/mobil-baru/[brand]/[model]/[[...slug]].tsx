@@ -10,10 +10,6 @@ import { defaultSeoImage } from 'utils/helpers/const'
 import { useUtils } from 'services/context/utilsContext'
 import { getToken } from 'utils/handler/auth'
 import { mergeModelDetailsWithLoanRecommendations } from 'utils/handler/carRecommendation'
-import { useRouter } from 'next/router'
-import { monthId } from 'utils/handler/date'
-import { lowerSectionNavigationTab } from 'config/carVariantList.config'
-import { capitalizeFirstLetter } from 'utils/stringUtils'
 import {
   getRecommendation,
   getMetaTagData,
@@ -24,6 +20,7 @@ import {
   getCarModelDetails,
   getCarVariantDetails,
   getAnnouncementBox as gab,
+  getUsedCarSearch,
 } from 'services/api'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 import { useRouter } from 'next/router'
@@ -77,6 +74,7 @@ export default function index({
   dataHeader,
   dataFooter,
   dataCities,
+  dataSearchUsedCar,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter()
   const { model, brand, slug } = router.query
@@ -95,12 +93,14 @@ export default function index({
     saveMobileWebTopMenus,
     saveMobileWebFooterMenus,
     saveCities,
+    saveDataSearchUsedCar,
   } = useUtils()
 
   useEffect(() => {
     saveMobileWebTopMenus(dataHeader)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
+    saveDataSearchUsedCar(dataSearchUsedCar)
     getAnnouncementBox()
   }, [])
 
@@ -189,12 +189,15 @@ export async function getServerSideProps(context: any) {
     'Cache-Control',
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
+
   try {
     if (context.query.slug?.length > 3) {
       return {
         notFound: true,
       }
     }
+    const params = new URLSearchParams()
+    params.append('query', '' as string)
     const [
       carRecommendationsRes,
       metaTagDataRes,
@@ -202,6 +205,7 @@ export async function getServerSideProps(context: any) {
       menuRes,
       footerRes,
       cityRes,
+      dataSearchRes,
     ]: any = await Promise.all([
       getRecommendation('?city=jakarta&cityId=118'),
       getMetaTagData(context.query.model.replaceAll('-', '')),
@@ -209,6 +213,7 @@ export async function getServerSideProps(context: any) {
       getMobileHeaderMenu(),
       getMobileFooterMenu(),
       getCities(),
+      getUsedCarSearch('', { params }),
     ])
     let id = ''
     const carList = carRecommendationsRes.carRecommendations
@@ -260,6 +265,7 @@ export async function getServerSideProps(context: any) {
         dataHeader: menuRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        dataSearchUsedCar: dataSearchRes.data,
       },
     }
   } catch (error: any) {

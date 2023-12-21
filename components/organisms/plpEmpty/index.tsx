@@ -7,6 +7,7 @@ import { CarRecommendation } from 'utils/types/context'
 import { Location } from 'utils/types'
 import { AlternativeCarCard } from '../alternativeCarCard'
 import Image from 'next/image'
+
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Swiper as SwiperType } from 'swiper'
 import { getCities } from 'services/api'

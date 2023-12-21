@@ -3,7 +3,7 @@ import { monthId } from './sitemap-used-car.xml'
 
 const rootPath = getCurrentEnvironment.rootPath
 
-const PLP_DATA_URL = `${rootPath}/mobil-baru/c`
+const PLP_DATA_URL = `${rootPath}/mobil-baru`
 
 const currentDate = new Date()
 const currentMonth = monthId(currentDate.getMonth())

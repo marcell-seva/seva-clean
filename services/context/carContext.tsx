@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from 'react'
 import { CarDetail, CarModelResponse, CarVariantDetails } from 'utils/types'
 import { BodyTypes } from 'utils/types/carModel'
+import { UsedCarRecommendation } from 'utils/types/context'
 import { COMData } from 'utils/types/models'
 import { CarModelDetailsResponse, CarRecommendation } from 'utils/types/props'
 

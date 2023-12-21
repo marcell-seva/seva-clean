@@ -1,0 +1,36 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.styledToast {
+  position: fixed;
+  top: 30px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: 92%;
+  height: 59px;
+  border-radius: 8px;
+  background-color: #26c649;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  z-index: 50;
+
+  @media (max-width: 1024px) {
+    position: absolute;
+    top: unset;
+    bottom: 25px;
+    gap: 10px;
+    padding: 11px 14px;
+  }
+
+  @media (max-width: 480px) {
+    position: absolute;
+    top: unset;
+    bottom: 105px;
+    gap: 10px;
+    padding: 11px 14px;
+  }
+}

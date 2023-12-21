@@ -21,6 +21,20 @@
     outline: none;
   }
 }
+.searchInputNew {
+  padding: 0 6px;
+  gap: 8px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: '#F5F5F5';
+  border: 1px solid #{$secondary-blue};
+  border-radius: 8px;
+  &:focus {
+    outline: none;
+  }
+}
 
 .input {
   font-family: var(--kanyon);
@@ -37,4 +51,8 @@
   &::placeholder {
     color: #{$shades-grey-50};
   }
+}
+
+.suffixIcon {
+  padding-right: 10px;
 }

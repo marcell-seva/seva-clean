@@ -1,0 +1,131 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+%buttonNavigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  z-index: 3;
+  bottom: 50%;
+  top: 45%;
+  background: rgba(19, 19, 27, 0.5);
+  width: 23px;
+  height: 23px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+%buttonNavigationPreview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  z-index: 3;
+  background: rgba(19, 19, 27, 0.5);
+  width: 100%;
+  height: 16px;
+  cursor: pointer;
+}
+
+.wrapper {
+  padding: 16px;
+  position: relative;
+  height: 100%;
+}
+
+.wrapperMain {
+  width: 100%;
+  position: relative;
+  height: 100%;
+  margin-bottom: 5px;
+}
+
+.wrapperPagination {
+  width: 100%;
+  height: 46px;
+  position: relative;
+}
+
+.thumbsSwiper {
+  height: auto;
+  max-height: 208px !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.mainImage {
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 8px;
+  height: 100%;
+  cursor: pointer;
+}
+
+.subImageWrapper {
+  width: 61px;
+  height: 46px;
+  position: relative;
+  border-radius: 8px;
+  box-shadow: 0px 6px 14px 1px rgba(76, 82, 95, 0.08);
+}
+
+.coverSubImage {
+  width: 61px;
+  position: absolute;
+  height: 46px;
+  background-color: #000000;
+  opacity: 0.4;
+  border-radius: 8px;
+}
+
+.previewSubImageWrapper {
+  width: auto !important;
+}
+
+.subImage {
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.active {
+  border: 1px solid #{$secondary-blue};
+}
+
+.buttonPrevMain {
+  @extend %buttonNavigation;
+  margin-left: 8px;
+}
+
+.buttonNextMain {
+  @extend %buttonNavigation;
+  right: 0;
+  margin-right: 8px;
+}
+
+.buttonPrevPagination {
+  @extend %buttonNavigation;
+  margin-left: 8px;
+}
+
+.buttonNextPagination {
+  @extend %buttonNavigation;
+  right: 0;
+  margin-right: 8px;
+}
+
+.expandButton {
+  position: absolute;
+  z-index: 3;
+  bottom: 0;
+  right: 0;
+  cursor: pointer;
+  margin: 8px;
+  background: rgba(19, 19, 27, 0.5);
+  width: 23px;
+  height: 23px;
+  border-radius: 4px;
+  cursor: pointer;
+}

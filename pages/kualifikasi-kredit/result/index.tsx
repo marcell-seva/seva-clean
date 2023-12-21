@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import styles from 'styles/pages/credit-qualification-result.module.scss'
-
 import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
-import { AxiosResponse } from 'axios'
 import clsx from 'clsx'
-import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
-import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { useRouter } from 'next/router'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { CityOtrOption, NewFunnelCarVariantDetails } from 'utils/types'
 import { getToken } from 'utils/handler/auth'
-
 import {
-  AnnouncementBoxDataType,
+  LoanCalculatorInsuranceAndPromoType,
   MobileWebTopMenuType,
+  SearchUsedCar,
+  trackDataCarType,
 } from 'utils/types/utils'
 import { Triangle } from 'components/atoms/icon/Triangle'
 import { Star } from 'components/atoms/icon/Star'
@@ -24,15 +22,16 @@ import { Firework } from 'components/atoms/icon/Firework'
 import {
   cameraKtpUrl,
   ktpReviewUrl,
+  loanCalculatorDefaultUrl,
   loanCalculatorWithCityBrandModelVariantUrl,
 } from 'utils/helpers/routes'
-import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import { HeaderMobile } from 'components/organisms'
 import {
   Button,
   IconChevronDown,
   IconLoading,
   IconWhatsapp,
+  Toast,
 } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { FooterStakeholder } from 'components/molecules/footerStakeholder'
@@ -42,6 +41,7 @@ import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import {
   PreviousButton,
+  RouteName,
   saveDataForCountlyTrackerPageViewLC,
 } from 'utils/navigate'
 import Image from 'next/image'
@@ -51,11 +51,21 @@ import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 import {
   getCities,
   getAnnouncementBox as gab,
-  getMobileHeaderMenu,
   getMobileFooterMenu,
+  getMobileHeaderMenu,
+  getUsedCarSearch,
 } from 'services/api'
-import { GetServerSideProps } from 'next'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
+import { Currency } from 'utils/handler/calculation'
+import { useBadgePromo } from 'utils/hooks/usebadgePromo'
+import { useUtils } from 'services/context/utilsContext'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { MobileWebFooterMenuType } from 'utils/types/props'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
 const MainImageGreenMale = '/revamp/illustration/credit-result-green-male.webp'
@@ -69,9 +79,18 @@ const MainImageRedBackground =
   '/revamp/illustration/credit-result-red-background.webp'
 const MainImageMagnifier = '/revamp/illustration/credit-result-magnifier.webp'
 
-export default function CreditQualificationResultPage() {
+export default function CreditQualificationResultPage({
+  dataMobileMenu,
+  dataFooter,
+  dataCities,
+  dataSearchUsedCar,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   useProtectPage()
   const router = useRouter()
+  const selectablePromo = getLocalStorage<LoanCalculatorInsuranceAndPromoType>(
+    LocalStorageKey.SelectablePromo,
+  )
+  const { financialQuery } = useFinancialQueryData()
   const creditQualificationResultStorage: any =
     getLocalStorage(LocalStorageKey.CreditQualificationResult) ?? null
   const creditQualificationStatus =
@@ -79,20 +98,20 @@ export default function CreditQualificationResultPage() {
   const creditOccupationStatus =
     creditQualificationResultStorage?.occupation ?? ''
   const isOccupationPass = creditOccupationStatus.toLowerCase() === 'pass'
-  const dataReview: any = getLocalStorage(LocalStorageKey.QualifcationCredit)
-
+  const [dataReview] = useLocalStorage('qualification_credit', null)
   const [isActive, setIsActive] = useState(false)
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
-  const [cityListApi, setCityListApi] = useState<Array<CityOtrOption>>([])
-  const [showAnnouncementBox, setShowAnnouncementBox] = useState<
-    boolean | null
-  >(
-    getSessionStorage(
-      getToken()
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ) ?? true,
-  )
+  const {
+    cities,
+    saveCities,
+    dataAnnouncementBox,
+    saveDataAnnouncementBox,
+    saveMobileWebTopMenus,
+    saveMobileWebFooterMenus,
+    saveDataSearchUsedCar,
+  } = useUtils()
+  const { showAnnouncementBox, saveShowAnnouncementBox } =
+    useAnnouncementBoxContext()
   const [isOpenPopup, setIsOpenPopup] = useState(false)
   const [isLoadingContinueApproval, setIsLoadingContinueApproval] =
     useState(false)
@@ -101,12 +120,32 @@ export default function CreditQualificationResultPage() {
     null,
   )
   const [customerGender, setCustomerGender] = useState('male')
+  const [isOpenToast, setIsOpenToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState(
+    'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+  )
+  const { selectedPromoList } = useBadgePromo()
+
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
+
+  const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
+
+  const isUsingFilterFinancial =
+    !!filterStorage?.age &&
+    !!filterStorage?.downPaymentAmount &&
+    !!filterStorage?.monthlyIncome &&
+    !!filterStorage?.tenure
+  const kkFlowType = getSessionStorage(SessionStorageKey.KKIAFlowType)
+  const isInPtbcFlow = kkFlowType && kkFlowType === 'ptbc'
+  const IsShowBadgeCreditOpportunity = getSessionStorage(
+    SessionStorageKey.IsShowBadgeCreditOpportunity,
+  )
 
   const checkCitiesData = () => {
-    if (cityListApi.length === 0) {
-      getCities().then((res) => {
-        setCityListApi(res)
-      })
+    if (cities.length === 0) {
+      saveCities(dataCities)
     }
   }
 
@@ -115,10 +154,8 @@ export default function CreditQualificationResultPage() {
       headers: {
         'is-login': getToken() ? 'true' : 'false',
       },
-    }).then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-      if (res.data === undefined) {
-        setShowAnnouncementBox(false)
-      }
+    }).then((res: any) => {
+      saveDataAnnouncementBox(res.data)
     })
   }
 
@@ -145,12 +182,103 @@ export default function CreditQualificationResultPage() {
       })
   }
 
+  const generalTrack = () => {
+    return {
+      CAR_BRAND: carData?.modelDetail.brand,
+      CAR_VARIANT: carData?.variantDetail.name,
+      CAR_MODEL: carData?.modelDetail.model,
+      INCOME_CHANGE:
+        Number(financialQuery.monthlyIncome) ===
+        Number(dataReview?.monthlyIncome)
+          ? 'No'
+          : 'Yes',
+      INCOME_KUALIFIKASI_KREDIT: `Rp${Currency(
+        Number(dataReview?.monthlyIncome),
+      )}`,
+      INCOME_LOAN_CALCULATOR: `Rp${Currency(
+        Number(financialQuery.monthlyIncome),
+      )}`,
+      OCCUPATION: dataReview
+        ? dataReview.occupations.toString().replace('&', 'and')
+        : 'Null',
+      KUALIFIKASI_KREDIT_RESULT: creditQualificationStatus,
+    }
+  }
+
+  const trackCreditQualificationResult = () => {
+    const track = {
+      ...generalTrack(),
+      INSURANCE_TYPE: selectablePromo?.selectedInsurance.label || 'Null',
+      PROMO_AMOUNT: selectedPromoList ? selectedPromoList.length : 'Null',
+    }
+
+    if (isInPtbcFlow) {
+      trackEventCountly(
+        CountlyEventNames.WEB_PTBC_CREDIT_QUALIFICATION_RESULT_PAGE_VIEW,
+      )
+    } else {
+      trackEventCountly(
+        CountlyEventNames.WEB_CREDIT_QUALIFICATION_RESULT_PAGE_VIEW,
+        track,
+      )
+    }
+  }
+
+  const trackCreditQualificationResultContinueIA = () => {
+    const track = {
+      ...generalTrack(),
+      SOURCE_SECTION: isOpenPopup ? 'Pop Up Learn More' : 'Finish Page',
+    }
+    trackEventCountly(
+      CountlyEventNames.WEB_CREDIT_QUALIFICATION_RESULT_PAGE_CONTINUE_INSTANT_APPROVAL_CLICK,
+      track,
+    )
+  }
+
+  const trackCreditQualificationResultFincapChange = () => {
+    const track = {
+      ...generalTrack(),
+    }
+    trackEventCountly(
+      CountlyEventNames.WEB_CREDIT_QUALIFICATION_RESULT_PAGE_POPUP_CHANGE_FINCAP_CLICK,
+      track,
+    )
+  }
+
   useEffect(() => {
-    checkCitiesData()
-    getAnnouncementBox()
-    getCarDetails()
-    getCurrentUserInfo()
+    if (!creditQualificationResultStorage || !dataReview) {
+      router.replace(loanCalculatorDefaultUrl)
+    } else {
+      saveMobileWebTopMenus(dataMobileMenu)
+      saveMobileWebFooterMenus(dataFooter)
+      saveDataSearchUsedCar(dataSearchUsedCar)
+      checkCitiesData()
+      getAnnouncementBox()
+      getCarDetails()
+      getCurrentUserInfo()
+      const timeout = setTimeout(() => {
+        trackCreditQualificationResult()
+      }, 500)
+      return () => clearTimeout(timeout)
+    }
   }, [])
+
+  useEffect(() => {
+    if (dataAnnouncementBox) {
+      const isShowAnnouncement = getSessionStorage(
+        getToken()
+          ? SessionStorageKey.ShowWebAnnouncementLogin
+          : SessionStorageKey.ShowWebAnnouncementNonLogin,
+      )
+      if (typeof isShowAnnouncement !== 'undefined') {
+        saveShowAnnouncementBox(isShowAnnouncement as boolean)
+      } else {
+        saveShowAnnouncementBox(true)
+      }
+    } else {
+      saveShowAnnouncementBox(false)
+    }
+  }, [dataAnnouncementBox])
 
   const getChipText = () => {
     if (
@@ -385,6 +513,10 @@ export default function CreditQualificationResultPage() {
 
   const onClickLearnMore = () => {
     setIsOpenPopup(true)
+    trackEventCountly(
+      CountlyEventNames.WEB_CREDIT_QUALIFICATION_RESULT_PAGE_LEARN_MORE_CLICK,
+      { KUALIFIKASI_KREDIT_RESULT: creditQualificationStatus },
+    )
   }
 
   const onClickContinueApproval = async () => {
@@ -397,11 +529,16 @@ export default function CreditQualificationResultPage() {
       SessionStorageKey.PreviousPage,
       JSON.stringify({ refer: window.location.pathname }),
     )
+    trackCreditQualificationResultContinueIA()
     try {
       const dataKTPUser = await getCustomerKtpSeva()
       saveSessionStorage(SessionStorageKey.OCRKTP, 'kualifikasi-kredit')
       if (dataKTPUser.data.length > 0) {
         saveSessionStorage(SessionStorageKey.KTPUploaded, 'uploaded')
+        saveSessionStorage(
+          SessionStorageKey.LastVisitedPageKKIAFlow,
+          window.location.pathname,
+        )
         router.push(ktpReviewUrl)
       } else {
         saveSessionStorage(
@@ -414,38 +551,109 @@ export default function CreditQualificationResultPage() {
     } catch (e: any) {
       if (e?.response?.data?.code === 'NO_NIK_REGISTERED') {
         saveSessionStorage(SessionStorageKey.KTPUploaded, 'not upload')
+        saveSessionStorage(
+          SessionStorageKey.LastVisitedPageKKIAFlow,
+          window.location.pathname,
+        )
         router.push(cameraKtpUrl)
       } else if (e?.response?.data?.message) {
+        setToastMessage(`${e?.response?.data?.message}`)
+        setIsOpenToast(true)
         setIsLoadingContinueApproval(false)
       } else {
+        setToastMessage(
+          'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+        )
+        setIsOpenToast(true)
         setIsLoadingContinueApproval(false)
       }
     }
   }
 
+  const trackCountly = async () => {
+    const referralCodeFromUrl: string | null = getLocalStorage(
+      LocalStorageKey.referralTemanSeva,
+    )
+    let temanSevaStatus = 'No'
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
+    if (dataCar) {
+      trackEventCountly(CountlyEventNames.WEB_WA_DIRECT_CLICK, {
+        PAGE_ORIGINATION: 'Kualifikasi Kredit Result',
+        SOURCE_BUTTON: 'CTA button Hubungi Agen SEVA',
+        CAR_BRAND: carData?.modelDetail.brand,
+        CAR_MODEL: carData?.modelDetail.model,
+        CAR_VARIANT: carData?.variantDetail.name,
+        PELUANG_KREDIT_BADGE: !dataCar?.IA_FLOW.toLowerCase().includes('multi')
+          ? isUsingFilterFinancial && IsShowBadgeCreditOpportunity
+            ? dataCar?.PELUANG_KREDIT_BADGE
+            : isUsingFilterFinancial && IsShowBadgeCreditOpportunity
+            ? dataCar?.PELUANG_KREDIT_BADGE
+            : 'Null'
+          : 'Null',
+
+        TENOR_OPTION: dataReview?.loanTenure + ' Tahun',
+        TENOR_RESULT: !dataCar?.IA_FLOW.toLowerCase().includes('multi')
+          ? dataReview?.loanRank === 'Green'
+            ? 'Mudah disetujui'
+            : dataReview?.loanRank === 'Red'
+            ? 'Sulit disetujui'
+            : 'Null'
+          : 'Null',
+        IA_RESULT: 'Null',
+        TEMAN_SEVA_STATUS: temanSevaStatus,
+        INCOME_LOAN_CALCULATOR:
+          !dataCar?.IA_FLOW.toLowerCase().includes('multi') &&
+          dataCar?.INCOME_LC
+            ? `Rp${Currency(dataCar?.INCOME_LC)}`
+            : 'Null',
+        INCOME_KUALIFIKASI_KREDIT:
+          !dataCar?.IA_FLOW.toLowerCase().includes('multi') &&
+          dataCar?.INCOME_KK
+            ? `Rp${Currency(dataCar?.INCOME_KK)}`
+            : !dataCar?.IA_FLOW.toLowerCase().includes('multi')
+            ? `Rp${Currency(dataCar.INCOME_LC)}`
+            : 'Null', // if there is no changes
+        INCOME_CHANGE: !dataCar?.IA_FLOW.toLowerCase().includes('multi')
+          ? dataCar?.INCOME_KK && dataCar?.INCOME_KK != dataCar?.INCOME_LC
+            ? 'Yes'
+            : 'No'
+          : 'Null',
+        OCCUPATION: dataReview?.occupations.includes('&')
+          ? dataReview?.occupations.replace('&', 'and')
+          : dataReview?.occupations,
+        KK_RESULT: creditQualificationStatus,
+      })
+    }
+  }
   const onClickWhatsapp = async () => {
+    trackCountly()
     const carName = `${carData?.modelDetail?.brand} ${carData?.modelDetail?.model} ${carData?.variantDetail?.name}`
-    const dpAmount =
-      formatNumberByLocalization(
-        dataReview?.loanDownPayment,
-        LanguageCode.en,
-        1000000,
-        10,
-      ) ?? '-'
-    const installment =
-      formatNumberByLocalization(
-        dataReview?.loanMonthlyInstallment,
-        LanguageCode.en,
-        1000000,
-        10,
-      ) ?? '-'
-    let message = `Halo, saya tertarik melakukan kualifikasi kredit untuk mobil ${carName} di kota ${
-      dataReview?.citySelector ?? '-'
-    } dengan DP sebesar Rp ${dpAmount} jt, cicilan per bulan Rp ${installment} jt, dan tenor ${
+    const dpAmount = Currency(dataReview.loanDownPayment) ?? '-'
+    const installment = Currency(dataReview.loanMonthlyInstallment) ?? '-'
+    let message = `Halo saya tertarik melakukan kualifikasi kredit untuk ${carName} dengan DP sebesar Rp${dpAmount}, cicilan per bulannya Rp${installment}, dan tenor ${
       dataReview?.loanTenure ?? '-'
     } tahun.`
 
-    if (!!dataReview?.promoCode && !!dataReview?.temanSevaTrxCode) {
+    if (
+      !!selectablePromo?.selectedPromo &&
+      selectablePromo?.selectedPromo.length > 0 &&
+      !!selectablePromo?.dpDiscount
+    ) {
+      message =
+        message +
+        ` Saya juga ingin menggunakan promo ${selectablePromo.selectedPromo
+          .map((x) => x.promo)
+          .join(', ')}, dan diskon unit sebesar Rp${Currency(
+          selectablePromo.dpDiscount,
+        )}.`
+    } else if (!!dataReview?.promoCode && !!dataReview?.temanSevaTrxCode) {
       message =
         message +
         ` Serta menggunakan promo ${dataReview?.promoCode} dan kode referral ${dataReview?.temanSevaTrxCode}.`
@@ -516,10 +724,10 @@ export default function CreditQualificationResultPage() {
           setIsActive={setIsActive}
           style={{ withBoxShadow: true, position: 'fixed' }}
           emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
-          setShowAnnouncementBox={setShowAnnouncementBox}
+          setShowAnnouncementBox={saveShowAnnouncementBox}
           isShowAnnouncementBox={showAnnouncementBox}
+          pageOrigination={RouteName.KKResult}
         />
-
         <div
           className={clsx({
             [styles.content]: true,
@@ -599,7 +807,8 @@ export default function CreditQualificationResultPage() {
       <CitySelectorModal
         isOpen={isOpenCitySelectorModal}
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
-        cityListFromApi={cityListApi}
+        cityListFromApi={cities}
+        pageOrigination={RouteName.KKResult}
       />
       <PopupCreditQualificationResult
         isOpen={isOpenPopup}
@@ -609,8 +818,17 @@ export default function CreditQualificationResultPage() {
         loanCalculatorDestinationUrl={getLoanCalculatorDestinationUrl()}
         onClickContinueApproval={onClickContinueApproval}
         onClickChangeCreditPlan={() => {
+          trackCreditQualificationResultFincapChange()
           saveDataForCountlyTrackerPageViewLC(PreviousButton.PopUpUbahData)
         }}
+      />
+      <Toast
+        width={339}
+        open={isOpenToast}
+        text={toastMessage}
+        typeToast={'error'}
+        onCancel={() => setIsOpenToast(false)}
+        closeOnToastClick
       />
     </>
   )
@@ -620,24 +838,30 @@ export const getServerSideProps: GetServerSideProps<{
   dataMobileMenu: MobileWebTopMenuType[]
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
+  dataSearchUsedCar: SearchUsedCar[]
 }> = async (ctx) => {
   ctx.res.setHeader(
     'Cache-Control',
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
+  const params = new URLSearchParams()
+  params.append('query', '' as string)
 
   try {
-    const [menuMobileRes, footerRes, cityRes]: any = await Promise.all([
-      getMobileHeaderMenu(),
-      getMobileFooterMenu(),
-      getCities(),
-    ])
+    const [menuMobileRes, footerRes, cityRes, dataSearchRes]: any =
+      await Promise.all([
+        getMobileHeaderMenu(),
+        getMobileFooterMenu(),
+        getCities(),
+        getUsedCarSearch('', { params }),
+      ])
 
     return {
       props: {
         dataMobileMenu: menuMobileRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        dataSearchUsedCar: dataSearchRes.data,
       },
     }
   } catch (e: any) {

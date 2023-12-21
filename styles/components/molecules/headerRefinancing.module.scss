@@ -1,0 +1,98 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  position: relative;
+  background-color: #{$secondary-blue};
+  height: 214px;
+  width: 100%;
+  margin-bottom: 42px;
+  border-radius: 0px 0px 16px 16px;
+}
+
+.circleBg {
+  position: absolute;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  border-radius: 0px 0px 16px 16px;
+  background-image: url('/revamp/images/refinancing/circle.webp');
+}
+
+.modelBg {
+  width: 100%;
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+}
+
+.modelImage {
+  right: 0;
+  width: 61.5%;
+  max-width: 266px;
+  margin-left: 38%;
+  object-fit: contain;
+}
+
+.wrapper {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+}
+
+.contentWrapper {
+  padding: 24px 16px 18px;
+  width: 223px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.title {
+  font-family: var(--kanyon-bold);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  padding-top: 29px;
+  color: #{$primary-white};
+}
+
+.desc {
+  font-family: var(--open-sans);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  display: flex;
+  max-width: 131px;
+  align-items: center;
+  color: #{$primary-white};
+  margin-bottom: 36px;
+}
+
+.styledButton {
+  width: initial;
+  height: 50px;
+  position: absolute;
+  left: 4.44%;
+  right: 4.44%;
+  top: 87%;
+  font-size: 12px;
+  line-height: 18px;
+  margin: 0;
+  border-radius: 8px;
+  min-width: calc(100% - 32px);
+}
+
+.buttonText {
+  font-family: var(--kanyon-bold);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 24px;
+  color: #{$primary-white};
+}

@@ -27,7 +27,7 @@
     "@types/react-gtm-module": "^2.0.1",
     "@types/styled-components": "^5.1.9",
     "amplitude-js": "^8.21.4",
-    "antd": "^5.6.3",
+    "antd": "^5.10.0",
     "antd-mobile": "^5.32.0",
     "axios": "0.21.1",
     "axios-auth-refresh": "3.1.0",

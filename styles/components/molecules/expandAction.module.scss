@@ -1,0 +1,39 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+
+  label {
+    font-family: var(--kanyon-bold);
+    font-size: 12px;
+    line-height: 16px;
+    color: #{$secondary-blue};
+  }
+
+  @media (min-width: 1025px) {
+    gap: 18px;
+    margin-top: 30px;
+    flex: 1;
+    align-items: flex-start;
+    justify-content: flex-end;
+
+    label {
+      font-size: 14px;
+      cursor: pointer;
+    }
+  }
+}
+
+.iconWrapper {
+  transition: transform 150ms ease;
+  cursor: pointer;
+  padding-bottom: 2px;
+  height: 18px;
+}
+
+.iconWrapperOpened {
+  transform: rotate(180deg);
+}

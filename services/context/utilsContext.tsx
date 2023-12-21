@@ -14,6 +14,7 @@ import {
   CarRecommendation,
   NavbarItemResponse,
   SalesAgent,
+  SearchUsedCar,
 } from 'utils/types/utils'
 
 export type UtilsContextType = {
@@ -21,8 +22,6 @@ export type UtilsContextType = {
   saveDataAnnouncementBox: (data: AnnouncementBoxDataType | undefined) => void
   cities: CityOtrOption[]
   saveCities: (data: CityOtrOption[]) => void
-  city: CityOtrOption | undefined
-  saveCity: (data: CityOtrOption) => void
   agent: SalesAgent[]
   saveAgent: (data: SalesAgent[]) => void
   articles: ArticleData[]
@@ -42,13 +41,17 @@ export type UtilsContextType = {
   saveDataLeads: (data: CarRecommendation) => void
   dataVariantLeads: string | undefined
   saveDataVariantLeads: (data: string) => void
+  dataSearchUsedCar: SearchUsedCar[] | []
+  saveDataSearchUsedCar: (data: SearchUsedCar[] | []) => void
 }
 
 export const UtilsContext = createContext<UtilsContextType | []>([])
 
 export const UtilsContextProvider = ({ children }: any) => {
   const [cities, setCities] = useState<CityOtrOption[] | []>([])
-  const [city, setCity] = useState<CityOtrOption | undefined>()
+  const [dataSearchUsedCar, setDataSearchUsedCar] = useState<
+    SearchUsedCar[] | []
+  >([])
   const [agent, setAgent] = useState<SalesAgent[] | []>([])
   const [articles, setArticles] = useState<ArticleData[] | []>([])
   const [dataLeads, setDataLeads] = useState<CarRecommendation | undefined>()
@@ -79,8 +82,8 @@ export const UtilsContextProvider = ({ children }: any) => {
   )
 
   const saveCities = (citiesData: CityOtrOption[] | []) => setCities(citiesData)
-
-  const saveCity = (cityData: CityOtrOption | undefined) => setCity(cityData)
+  const saveDataSearchUsedCar = (searchData: SearchUsedCar[] | []) =>
+    setDataSearchUsedCar(searchData)
 
   const saveDataLeads = (leadsData: CarRecommendation | undefined) =>
     setDataLeads(leadsData)
@@ -122,8 +125,6 @@ export const UtilsContextProvider = ({ children }: any) => {
         saveDataAnnouncementBox,
         cities,
         saveCities,
-        city,
-        saveCity,
         agent,
         saveAgent,
         articles,
@@ -143,6 +144,8 @@ export const UtilsContextProvider = ({ children }: any) => {
         saveDataLeads,
         dataVariantLeads,
         saveDataVariantLeads,
+        dataSearchUsedCar,
+        saveDataSearchUsedCar,
       }}
     >
       {children}

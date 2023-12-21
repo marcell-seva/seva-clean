@@ -523,7 +523,7 @@ const SearchWidget = () => {
 
   return (
     <div className={styles.container}>
-      <CardShadow
+      <div
         className={clsx({
           [styles.cardContainer]: true,
           [styles.expandCard]: expandFinancial,
@@ -654,7 +654,7 @@ const SearchWidget = () => {
           datatestid={elementId.Homepage.Dropdown.KategoriUmur}
           optionDatatestId={elementId.Field.Age}
         />
-      </CardShadow>
+      </div>
       <div className={styles.buttonWrapper}>
         <Button
           version={ButtonVersion.PrimaryDarkBlue}

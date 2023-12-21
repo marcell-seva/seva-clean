@@ -14,7 +14,7 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useUtils } from 'services/context/utilsContext'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
-import { postVerifyOTPGeneration, postSendSMSGeneration } from 'services/api'
+import { postSendSMSGeneration, postVerifyOTPGeneration } from 'services/api'
 
 export const OTP = ({
   phoneNumber,

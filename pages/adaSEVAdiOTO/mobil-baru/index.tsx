@@ -8,9 +8,9 @@ import {
   FooterSEOAttributes,
   MobileWebTopMenuType,
   NavbarItemResponse,
+  SearchUsedCar,
 } from 'utils/types/utils'
 import { getIsSsrMobile } from 'utils/getIsSsrMobile'
-
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { useUtils } from 'services/context/utilsContext'
@@ -26,6 +26,7 @@ import {
   getMobileFooterMenu,
   getCities,
   getMinMaxPrice,
+  getUsedCarSearch,
 } from 'services/api'
 import { default as customAxiosGet } from 'services/api/get'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
@@ -35,14 +36,20 @@ const NewCarResultPage = ({
   dataHeader,
   dataFooter,
   dataCities,
+  dataSearchUsedCar,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { saveMobileWebTopMenus, saveMobileWebFooterMenus, saveCities } =
-    useUtils()
+  const {
+    saveMobileWebTopMenus,
+    saveMobileWebFooterMenus,
+    saveCities,
+    saveDataSearchUsedCar,
+  } = useUtils()
 
   useEffect(() => {
     saveMobileWebTopMenus(dataHeader)
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
+    saveDataSearchUsedCar(dataSearchUsedCar)
   }, [])
 
   const todayDate = new Date()
@@ -97,6 +104,7 @@ export const getServerSideProps: GetServerSideProps<{
   dataHeader: MobileWebTopMenuType[]
   dataFooter: MobileWebFooterMenuType[]
   dataCities: CityOtrOption[]
+  dataSearchUsedCar: SearchUsedCar[]
 }> = async (ctx) => {
   ctx.res.setHeader(
     'Cache-Control',
@@ -142,15 +150,25 @@ export const getServerSideProps: GetServerSideProps<{
     sortBy,
   } = ctx.query
 
+  const params = new URLSearchParams()
+  params.append('query', '' as string)
+
   try {
-    const [fetchMeta, fetchFooter, menuRes, footerRes, cityRes]: any =
-      await Promise.all([
-        customAxiosGet(metaTagBaseApi + metabrand),
-        customAxiosGet(footerTagBaseApi + metabrand),
-        getMobileHeaderMenu(),
-        getMobileFooterMenu(),
-        getCities(),
-      ])
+    const [
+      fetchMeta,
+      fetchFooter,
+      menuRes,
+      footerRes,
+      cityRes,
+      dataSearchRes,
+    ]: any = await Promise.all([
+      customAxiosGet(metaTagBaseApi + metabrand),
+      customAxiosGet(footerTagBaseApi + metabrand),
+      getMobileHeaderMenu(),
+      getMobileFooterMenu(),
+      getCities(),
+      getUsedCarSearch('', { params }),
+    ])
 
     const metaData = fetchMeta.data
     const footerData = fetchFooter.data
@@ -217,6 +235,7 @@ export const getServerSideProps: GetServerSideProps<{
         dataHeader: menuRes.data,
         dataFooter: footerRes.data,
         dataCities: cityRes,
+        dataSearchUsedCar: dataSearchRes.data,
       },
     }
   } catch (e: any) {

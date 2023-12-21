@@ -1,6 +1,5 @@
 import { AxiosResponse } from 'axios'
 import { ChangeEvent, useEffect, useState } from 'react'
-
 import { Currency } from 'utils/handler/calculation'
 import { filterNonDigitCharacters } from 'utils/stringUtils'
 import { MinMaxPrice } from 'utils/types/props'

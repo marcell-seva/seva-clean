@@ -185,7 +185,7 @@ const CardCarOfTheMonth = ({ item, onSendOffer }: CarOfTheMonthProps) => {
                     PreviousButton.CarOfTheMonth,
                   )
                   window.location.href =
-                    item.link.replace('mobil-baru/', 'mobil-baru/p/') +
+                    item.link.replace('mobil-baru/', 'mobil-baru/') +
                     `/${getCityUrl()}`
                 }}
                 data-testid={elementId.Homepage.Button.LihatRincian}

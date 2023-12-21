@@ -51,7 +51,6 @@ import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { navigateToKK } from 'utils/navigate'
 import Image from 'next/image'
-
 import {
   getCustomerInfoSeva,
   getCustomerKtpSeva,
