@@ -264,7 +264,7 @@ export const SearchComponent = ({
       ),
       item.carName,
     )
-
+    handleCloseModal()
     router.push(urlDestination)
   }
 
@@ -276,7 +276,7 @@ export const SearchComponent = ({
 
     // simpan pencarian ke dalam local storage
     saveHistoryToLocal(urlDestination, item.name)
-
+    handleCloseModal()
     router.push(urlDestination + `/${getCityUrl()}`)
   }
 
@@ -295,7 +295,7 @@ export const SearchComponent = ({
 
     // simpan pencarian ke dalam local storage
     saveHistoryToLocal(item.sevaUrl, item.carName)
-
+    handleCloseModal()
     router.push(urlDestination)
   }
 
@@ -334,6 +334,7 @@ export const SearchComponent = ({
     }
     clearQueryFilterData()
     clearQueryFilterUsedCarData()
+    handleCloseModal()
     router.push(urlDestination)
   }
 
@@ -782,6 +783,7 @@ export const SearchComponent = ({
                         href={usedCarResultUrl}
                         className={styles.linkAllCar}
                         onClick={() => {
+                          handleCloseModal()
                           router.push(urls.internalUrls.usedCarResultsUrl)
                         }}
                       >
