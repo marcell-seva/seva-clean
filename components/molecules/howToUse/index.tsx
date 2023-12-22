@@ -44,7 +44,7 @@ const HowToUse = () => {
     trackLPHowToUseSevaClick({
       Page_Direction_URL: 'https://' + window.location.host + carResultsUrl,
     })
-    navigateToPLP(PreviousButton.SevaSteps, history)
+    navigateToPLP(PreviousButton.SevaSteps, {}, true, false, undefined, true)
   }
 
   const onClickCalculate = () => {

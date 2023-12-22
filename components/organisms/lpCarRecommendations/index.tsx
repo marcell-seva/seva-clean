@@ -174,7 +174,14 @@ const LpCarRecommendations = ({
     if (!selectedBrand) {
       return isOTO
         ? router.push(urls.internalUrls.duplicatedCarResultsUrl)
-        : navigateToPLP(PreviousButton.undefined)
+        : navigateToPLP(
+            PreviousButton.undefined,
+            {},
+            true,
+            false,
+            undefined,
+            selectedBrand ? false : true,
+          )
     }
 
     const path = router.asPath.split('/')[1]
