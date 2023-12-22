@@ -337,8 +337,7 @@ export const SearchComponent = ({
     }
     clearQueryFilterData()
     clearQueryFilterUsedCarData()
-    handleCloseModal()
-    router.push(urlDestination)
+    window.location.href = urlDestination
   }
 
   type RenderedLabels = {

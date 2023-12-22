@@ -232,7 +232,8 @@ export const NavigationFilterMobileUsedCar = ({
         yearEnd: filter.yearEnd,
         mileageStart: filter.mileageStart,
         mileageEnd: filter.mileageEnd,
-        modelName: filter.modelName.length > 0 ? String(filter.modelName) : '',
+        modelName:
+          filter?.modelName?.length > 0 ? String(filter.modelName) : '',
         transmission:
           filter.transmission.length > 0
             ? String(filter.transmission).replace(' ', ',')

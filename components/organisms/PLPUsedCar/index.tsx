@@ -357,7 +357,7 @@ export const PLPUsedCar = ({
     } else {
       setIsFilter(false)
     }
-  }, [funnelQuery, brand])
+  }, [funnelQuery, brand, search])
 
   useEffect(() => {
     setPage(1)
