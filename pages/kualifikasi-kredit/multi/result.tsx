@@ -231,364 +231,376 @@ const MultiKKResult = ({
     const whatsAppUrl = await getCustomerAssistantWhatsAppNumber()
     window.open(`${whatsAppUrl}?text=${encodeURIComponent(message)}`, '_blank')
 
+    useEffect(() => {
+      if (!checkQuery()) {
+        router.replace(multiCreditQualificationPageUrl)
+      } else {
+        getAnnouncementBox()
+        onShowToolTip()
+        removeLocalStorage()
+        trackMultiKKResult()
+        saveMobileWebTopMenus(dataMobileMenu)
+        saveMobileWebFooterMenus(dataFooter)
+        saveCities(dataCities)
+        saveDataSearchUsedCar(dataSearchUsedCar)
+      }
+    }, [])
 
-  useEffect(() => {
-    if (!checkQuery()) {
-      router.replace(multiCreditQualificationPageUrl)
-    } else {
-      getAnnouncementBox()
-      onShowToolTip()
-      removeLocalStorage()
-      trackMultiKKResult()
-      saveMobileWebTopMenus(dataMobileMenu)
-      saveMobileWebFooterMenus(dataFooter)
-      saveCities(dataCities)
-      saveDataSearchUsedCar(dataSearchUsedCar)
+    const onDismissPopup = () => {
+      setIsPopUpOpened(false)
     }
-  }, [])
 
-  const onDismissPopup = () => {
-    setIsPopUpOpened(false)
-  }
+    const onClickClosePopup = () => {
+      setIsPopUpOpened(false)
+    }
 
-  const onClickClosePopup = () => {
-    setIsPopUpOpened(false)
-  }
-
-  const onClickLabelPromo = (selectedDataPromo: PromoItemType | null) => {
-    if (selectedDataPromo) {
-      const temp = generateDataPromoPopup(selectedDataPromo)
-      setDataPromoPopup(temp)
-      if (temp) {
-        setIsOpenPopupPromo(true)
+    const onClickLabelPromo = (selectedDataPromo: PromoItemType | null) => {
+      if (selectedDataPromo) {
+        const temp = generateDataPromoPopup(selectedDataPromo)
+        setDataPromoPopup(temp)
+        if (temp) {
+          setIsOpenPopupPromo(true)
+          trackEventCountly(
+            CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_PROMO_BADGE_CLICK,
+            { PROMO_AMOUNT: 1 },
+          )
+        }
         trackEventCountly(
-          CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_PROMO_BADGE_CLICK,
-          { PROMO_AMOUNT: 1 },
+          CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_PROMO_POPUP_VIEW,
+          { PROMO_TITLE: selectedDataPromo.promoTitle },
         )
       }
-      trackEventCountly(
-        CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_PROMO_POPUP_VIEW,
-        { PROMO_TITLE: selectedDataPromo.promoTitle },
+    }
+    const removeLocalStorage = () => {
+      localStorage.removeItem('MultiKKFormData')
+    }
+
+    const trackMultiKKResult = () => {
+      const resultMudah =
+        multiUnitQuery.multikkResponse.carRecommendations.some(
+          (x) => x.creditQualificationStatus.toLowerCase() === 'mudah',
+        )
+      const resultSedang =
+        multiUnitQuery.multikkResponse.carRecommendations.some(
+          (x) => x.creditQualificationStatus.toLowerCase() === 'sedang',
+        )
+      const resultSulit =
+        multiUnitQuery.multikkResponse.carRecommendations.some(
+          (x) => x.creditQualificationStatus.toLowerCase() === 'sulit',
+        )
+      const resultStatus = []
+      if (resultMudah) resultStatus.push('Mudah')
+      if (resultSedang) resultStatus.push('Sedang')
+      if (resultSulit) resultStatus.push('Sulit')
+      const track = {
+        KUALIFIKASI_KREDIT_RESULT: resultStatus.join(', '),
+        TOTAL_CAR: multiUnitQuery.multikkResponse.totalItems,
+      }
+
+      trackEventCountly(CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_VIEW, track)
+    }
+    const onCancelPopupPromo = () => {
+      setIsOpenPopupPromo(false)
+    }
+
+    const onCancelPopupCarDetail = () => {
+      setIsOpenPopupCarDetail(false)
+    }
+
+    const onClickSeeDetail = (data: any) => {
+      setSelectedCarInfo(data)
+      setIsOpenPopupCarDetail(true)
+    }
+
+    const handleShowSort = (open: boolean) => () => {
+      setOpenSorting(open)
+    }
+
+    const onFilterSort = (value: any) => {
+      setOpenSorting(false)
+      if (value === 'lowToHigh') {
+        setSortFilter('Harga Terendah')
+        setRecommendation(
+          sortLowToHighList(multiUnitQuery.filteredCarList).slice(0, 12),
+        )
+      } else {
+        setSortFilter('Harga Tertinggi')
+        setRecommendation(
+          sortHighToLowList(multiUnitQuery.filteredCarList).slice(0, 12),
+        )
+      }
+      setOffsetPage(1)
+      setHasMore(true)
+    }
+    const onClickShowSort = () => {
+      setOpenSorting(true)
+      trackEventCountly(CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_SORT_CLICK)
+    }
+
+    const calculateNextDisplayDate = (): Date => {
+      const nextDisplayDate = new Date()
+      nextDisplayDate.setDate(nextDisplayDate.getDate() + 7) // Add 7 days
+      return nextDisplayDate
+    }
+
+    const isTooltipExpired = (): boolean => {
+      const currentDate = new Date().getTime()
+      const nextDisplayTmp = localStorage.getItem(
+        'tooltipNextDisplayMultiKKResult',
       )
-    }
-  }
-  const removeLocalStorage = () => {
-    localStorage.removeItem('MultiKKFormData')
-  }
+      let nextDisplayDate
+      if (nextDisplayTmp) {
+        nextDisplayDate = new Date(nextDisplayTmp!).getTime()
 
-  const trackMultiKKResult = () => {
-    const resultMudah = multiUnitQuery.multikkResponse.carRecommendations.some(
-      (x) => x.creditQualificationStatus.toLowerCase() === 'mudah',
-    )
-    const resultSedang = multiUnitQuery.multikkResponse.carRecommendations.some(
-      (x) => x.creditQualificationStatus.toLowerCase() === 'sedang',
-    )
-    const resultSulit = multiUnitQuery.multikkResponse.carRecommendations.some(
-      (x) => x.creditQualificationStatus.toLowerCase() === 'sulit',
-    )
-    const resultStatus = []
-    if (resultMudah) resultStatus.push('Mudah')
-    if (resultSedang) resultStatus.push('Sedang')
-    if (resultSulit) resultStatus.push('Sulit')
-    const track = {
-      KUALIFIKASI_KREDIT_RESULT: resultStatus.join(', '),
-      TOTAL_CAR: multiUnitQuery.multikkResponse.totalItems,
+        return currentDate > nextDisplayDate
+      } else {
+        return true
+      }
+    }
+    const onShowToolTip = () => {
+      if (isTooltipExpired()) {
+        setIsTooltipOpenDisclaimer(true)
+        const nextDisplay = calculateNextDisplayDate().toString()
+
+        localStorage.setItem('tooltipNextDisplayMultiKKResult', nextDisplay)
+        trackEventCountly(
+          CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_COACHMARK_VIEW,
+        )
+      } else {
+        setIsTooltipOpenDisclaimer(false)
+      }
     }
 
-    trackEventCountly(CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_VIEW, track)
-  }
-  const onCancelPopupPromo = () => {
-    setIsOpenPopupPromo(false)
-  }
-
-  const onCancelPopupCarDetail = () => {
-    setIsOpenPopupCarDetail(false)
-  }
-
-  const onClickSeeDetail = (data: any) => {
-    setSelectedCarInfo(data)
-    setIsOpenPopupCarDetail(true)
-  }
-
-  const handleShowSort = (open: boolean) => () => {
-    setOpenSorting(open)
-  }
-
-  const onFilterSort = (value: any) => {
-    setOpenSorting(false)
-    if (value === 'lowToHigh') {
-      setSortFilter('Harga Terendah')
-      setRecommendation(
-        sortLowToHighList(multiUnitQuery.filteredCarList).slice(0, 12),
-      )
-    } else {
-      setSortFilter('Harga Tertinggi')
-      setRecommendation(
-        sortHighToLowList(multiUnitQuery.filteredCarList).slice(0, 12),
-      )
-    }
-    setOffsetPage(1)
-    setHasMore(true)
-  }
-  const onClickShowSort = () => {
-    setOpenSorting(true)
-    trackEventCountly(CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_SORT_CLICK)
-  }
-
-  const calculateNextDisplayDate = (): Date => {
-    const nextDisplayDate = new Date()
-    nextDisplayDate.setDate(nextDisplayDate.getDate() + 7) // Add 7 days
-    return nextDisplayDate
-  }
-
-  const isTooltipExpired = (): boolean => {
-    const currentDate = new Date().getTime()
-    const nextDisplayTmp = localStorage.getItem(
-      'tooltipNextDisplayMultiKKResult',
-    )
-    let nextDisplayDate
-    if (nextDisplayTmp) {
-      nextDisplayDate = new Date(nextDisplayTmp!).getTime()
-
-      return currentDate > nextDisplayDate
-    } else {
-      return true
-    }
-  }
-  const onShowToolTip = () => {
-    if (isTooltipExpired()) {
-      setIsTooltipOpenDisclaimer(true)
-      const nextDisplay = calculateNextDisplayDate().toString()
-
-      localStorage.setItem('tooltipNextDisplayMultiKKResult', nextDisplay)
-      trackEventCountly(
-        CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_COACHMARK_VIEW,
-      )
-    } else {
-      setIsTooltipOpenDisclaimer(false)
-    }
-  }
-
-  const currentSortList = (recommendationTmp: MultKKCarRecommendation[]) => {
-    if (sortFilter === 'Harga Tertinggi')
-      return sortHighToLowList(recommendationTmp)
-    return sortLowToHighList(recommendationTmp)
-  }
-
-  const fetchMoreData = () => {
-    if (recommendation.length >= multiUnitQuery.filteredCarList.length) {
-      return setHasMore(false)
+    const currentSortList = (recommendationTmp: MultKKCarRecommendation[]) => {
+      if (sortFilter === 'Harga Tertinggi')
+        return sortHighToLowList(recommendationTmp)
+      return sortLowToHighList(recommendationTmp)
     }
 
-    if (recommendation.length >= 12 * offsetPage) {
-      const filterList = currentSortList(multiUnitQuery.filteredCarList)
-      const timeout = setTimeout(() => {
-        const pagePlus = offsetPage + 1
-        const newList = filterList.slice(12 * offsetPage, 12 * offsetPage + 12)
-        const addList = [...recommendation, ...newList]
-        setOffsetPage(pagePlus)
-        setRecommendation([...currentSortList(addList)])
-        clearTimeout(timeout)
-      }, 1500)
+    const fetchMoreData = () => {
+      if (recommendation.length >= multiUnitQuery.filteredCarList.length) {
+        return setHasMore(false)
+      }
+
+      if (recommendation.length >= 12 * offsetPage) {
+        const filterList = currentSortList(multiUnitQuery.filteredCarList)
+        const timeout = setTimeout(() => {
+          const pagePlus = offsetPage + 1
+          const newList = filterList.slice(
+            12 * offsetPage,
+            12 * offsetPage + 12,
+          )
+          const addList = [...recommendation, ...newList]
+          setOffsetPage(pagePlus)
+          setRecommendation([...currentSortList(addList)])
+          clearTimeout(timeout)
+        }, 1500)
+      }
     }
-  }
 
-  const generateDataPromoPopup = (selectedDataPromo: PromoItemType) => {
-    if (selectedDataPromo) {
-      const temp: PopupPromoDataItemType[] = [
-        {
-          title: selectedDataPromo.promoTitle,
-          body: [
-            {
-              title: '',
-              body: selectedDataPromo.promoDesc,
-            },
-          ],
-          snk: 'https://www.seva.id/info/promo/toyota-spektakuler/',
-        },
-      ]
+    const generateDataPromoPopup = (selectedDataPromo: PromoItemType) => {
+      if (selectedDataPromo) {
+        const temp: PopupPromoDataItemType[] = [
+          {
+            title: selectedDataPromo.promoTitle,
+            body: [
+              {
+                title: '',
+                body: selectedDataPromo.promoDesc,
+              },
+            ],
+            snk: 'https://www.seva.id/info/promo/toyota-spektakuler/',
+          },
+        ]
 
-      return temp
-    } else {
-      return undefined
+        return temp
+      } else {
+        return undefined
+      }
     }
-  }
 
-  const getInstallmentFeePopupDetail = () => {
-    if (!!selectedCarInfo?.variants[0]?.monthlyInstallmentSpekta) {
-      return (
-        selectedCarInfo?.variants[0]?.monthlyInstallmentSpekta?.toString() ??
-        '0'
-      )
-    } else {
-      return selectedCarInfo?.variants[0]?.monthlyInstallment?.toString() ?? '0'
+    const getInstallmentFeePopupDetail = () => {
+      if (!!selectedCarInfo?.variants[0]?.monthlyInstallmentSpekta) {
+        return (
+          selectedCarInfo?.variants[0]?.monthlyInstallmentSpekta?.toString() ??
+          '0'
+        )
+      } else {
+        return (
+          selectedCarInfo?.variants[0]?.monthlyInstallment?.toString() ?? '0'
+        )
+      }
     }
-  }
 
-  return (
-    <>
-      <PageLayout
-        pageOrigination={RouteName.MultiUnitResult}
-        sourceButton="Location Icon (Navbar)"
-        shadowBox={false}
-      >
-        {() => (
-          <>
-            <div
-              className={clsx({
-                [styles.mobileView]: true,
-                [styles.container]: !showAnnouncementBox,
-                [styles.contentWithSpace]: showAnnouncementBox,
-                [styles.announcementboxpadding]: showAnnouncementBox,
-                [styles.announcementboxpadding]: false,
-              })}
-            >
-              <div className={styles.titleWrapper}>
-                <h1 className={styles.title}>
-                  Rekomendasi Mobil Sesuai Budgetmu
-                </h1>
-                <span className={styles.info}>
-                  Berikut rekomendasi mobil sesuai hasil kualifikasi kreditmu.{' '}
-                  <span
-                    onClick={() => {
-                      setIsPopUpOpened(true)
-                      trackEventCountly(
-                        CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_LEARN_MORE_CLICK,
-                      )
-                    }}
-                  >
-                    Pelajari Lebih Lanjut
+    return (
+      <>
+        <PageLayout
+          pageOrigination={RouteName.MultiUnitResult}
+          sourceButton="Location Icon (Navbar)"
+          shadowBox={false}
+        >
+          {() => (
+            <>
+              <div
+                className={clsx({
+                  [styles.mobileView]: true,
+                  [styles.container]: !showAnnouncementBox,
+                  [styles.contentWithSpace]: showAnnouncementBox,
+                  [styles.announcementboxpadding]: showAnnouncementBox,
+                  [styles.announcementboxpadding]: false,
+                })}
+              >
+                <div className={styles.titleWrapper}>
+                  <h1 className={styles.title}>
+                    Rekomendasi Mobil Sesuai Budgetmu
+                  </h1>
+                  <span className={styles.info}>
+                    Berikut rekomendasi mobil sesuai hasil kualifikasi kreditmu.{' '}
+                    <span
+                      onClick={() => {
+                        setIsPopUpOpened(true)
+                        trackEventCountly(
+                          CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_LEARN_MORE_CLICK,
+                        )
+                      }}
+                    >
+                      Pelajari Lebih Lanjut
+                    </span>
                   </span>
-                </span>
-              </div>
-
-              <div className={styles.separator}></div>
-
-              <div className={styles.sortAndCounterSection}>
-                <div className={styles.sortWrapper} onClick={onClickShowSort}>
-                  <IconStrawberry width={16} height={16} />
-                  Urutkan: <p>{sortFilter}</p>
-                  <IconChevronDown width={16} height={16} color="#13131B" />
                 </div>
-                <span className={styles.counterText}>
-                  {multiUnitQuery.multikkResponse.totalItems} Mobil Baru
-                </span>
-              </div>
 
-              <div className={styles.carListWrapper}>
-                <InfiniteScroll
-                  dataLength={recommendation.length}
-                  next={fetchMoreData}
-                  hasMore={hasMore}
-                  loader={
-                    <div className={styles.spin}>
-                      <Spin />
-                    </div>
-                  }
-                >
-                  {recommendation.map(
-                    (item: MultKKCarRecommendation, index: number) => {
-                      return (
-                        <CarDetailCardMultiCredit
-                          key={index}
-                          order={index}
-                          showToolTip={index === 0}
-                          recommendation={item}
-                          onClickLabelPromo={onClickLabelPromo}
-                          onClickSeeDetail={(data) => {
-                            onClickSeeDetail(data)
-                            const track = {
-                              CAR_BRAND: item.brand,
-                              CAR_MODEL: item.model,
-                              CAR_ORDER: index + 1,
-                              KUALIFIKASI_KREDIT_RESULT:
-                                item.creditQualificationStatus,
-                              PROMO_AMOUNT: item.promo ? '1' : '0',
+                <div className={styles.separator}></div>
+
+                <div className={styles.sortAndCounterSection}>
+                  <div className={styles.sortWrapper} onClick={onClickShowSort}>
+                    <IconStrawberry width={16} height={16} />
+                    Urutkan: <p>{sortFilter}</p>
+                    <IconChevronDown width={16} height={16} color="#13131B" />
+                  </div>
+                  <span className={styles.counterText}>
+                    {multiUnitQuery.multikkResponse.totalItems} Mobil Baru
+                  </span>
+                </div>
+
+                <div className={styles.carListWrapper}>
+                  <InfiniteScroll
+                    dataLength={recommendation.length}
+                    next={fetchMoreData}
+                    hasMore={hasMore}
+                    loader={
+                      <div className={styles.spin}>
+                        <Spin />
+                      </div>
+                    }
+                  >
+                    {recommendation.map(
+                      (item: MultKKCarRecommendation, index: number) => {
+                        return (
+                          <CarDetailCardMultiCredit
+                            key={index}
+                            order={index}
+                            showToolTip={index === 0}
+                            recommendation={item}
+                            onClickLabelPromo={onClickLabelPromo}
+                            onClickSeeDetail={(data) => {
+                              onClickSeeDetail(data)
+                              const track = {
+                                CAR_BRAND: item.brand,
+                                CAR_MODEL: item.model,
+                                CAR_ORDER: index + 1,
+                                KUALIFIKASI_KREDIT_RESULT:
+                                  item.creditQualificationStatus,
+                                PROMO_AMOUNT: item.promo ? '1' : '0',
+                              }
+
+                              trackEventCountly(
+                                CountlyEventNames.WEB_MULTI_KK_PAGE_CAR_DETAIL_CLICK,
+                                track,
+                              )
+                            }}
+                            setShowTooltipDisclaimer={
+                              setIsTooltipOpenDisclaimer
                             }
-
-                            trackEventCountly(
-                              CountlyEventNames.WEB_MULTI_KK_PAGE_CAR_DETAIL_CLICK,
-                              track,
-                            )
-                          }}
-                          setShowTooltipDisclaimer={setIsTooltipOpenDisclaimer}
-                          showToolTipDisclaimer={isTooltipOpenDisclaimer}
-                          trxCode={multiUnitQuery.trxCode}
-                          selectedCityName={multiUnitQuery.cityName}
-                          selectedDp={multiUnitQuery.downPaymentAmount}
-                          selectedTenure={multiUnitQuery.tenure}
-                        />
-                      )
-                    },
-                  )}
-                </InfiniteScroll>
+                            showToolTipDisclaimer={isTooltipOpenDisclaimer}
+                            trxCode={multiUnitQuery.trxCode}
+                            selectedCityName={multiUnitQuery.cityName}
+                            selectedDp={multiUnitQuery.downPaymentAmount}
+                            selectedTenure={multiUnitQuery.tenure}
+                          />
+                        )
+                      },
+                    )}
+                  </InfiniteScroll>
+                </div>
               </div>
-            </div>
-            <WhatsappButton
-              onClick={sendToWhatsapp}
-              additionalStyle={'csa-button-plp'}
-            />
-          </>
-        )}
-      </PageLayout>
-      <PopupMultiCreditQualificationResult
-        isOpen={isPopUpOpened}
-        onDismissPopup={onDismissPopup}
-        onClickClosePopup={onClickClosePopup}
-      />
-      <PopupPromo
-        open={isOpenPopupPromo}
-        onCancel={onCancelPopupPromo}
-        data={dataPromoPopup}
-        additionalContainerClassname={
-          dataPromoPopup?.length === 1 ? styles.popupPromoAutoHeight : undefined
-        }
-        onClickSNK={(promo) =>
-          trackEventCountly(
-            CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_PROMO_SNK_CLICK,
-            { PROMO_TITLE: promo.title },
-          )
-        }
-      />
-      <PopupCarDetail
-        isOpen={isOpenPopupCarDetail}
-        dpLabelText={'Minimum DP'}
-        dp={multiUnitQuery.downPaymentAmount} // use DP from form page
-        dpBeforeDiscount={discountedDp}
-        installmentFeeLabelText={'Cicilan mulai dari'}
-        installmentFee={getInstallmentFeePopupDetail()}
-        installmentFeeBeforeDiscount={
-          !!selectedCarInfo?.variants[0]?.monthlyInstallmentSpekta
-            ? selectedCarInfo?.variants[0]?.monthlyInstallment.toString()
-            : undefined
-        }
-        price={selectedCarInfo?.variants[0]?.priceValue ?? 0}
-        tenure={parseInt(multiUnitQuery.tenure)} // use tenure from form page
-        onCancel={onCancelPopupCarDetail}
-        carSeats={selectedCarInfo?.variants[0]?.seat}
-        engineCapacity={selectedCarInfo?.variants[0]?.engineCapacity}
-        fuelType={selectedCarInfo?.variants[0]?.fuelType}
-        transmission={selectedCarInfo?.variants[0]?.transmission}
-        rasioBahanBakar={selectedCarInfo?.rasioBahanBakar}
-        dimenssion={`${selectedCarInfo?.length} x ${selectedCarInfo?.width} x ${selectedCarInfo?.height} mm`}
-      />
-      <SortingMobile
-        open={openSorting}
-        onClose={handleShowSort(false)}
-        onPickClose={(value, label) => {
-          onFilterSort(value)
-          trackEventCountly(
-            CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_SORT_OPTION_CLICK,
-            { SORT_OPTION: label },
-          )
-        }}
-        sortOptionMultiKK={true}
-        selectedSortMultiKK={
-          sortFilter === 'Harga Tertinggi' ? 'highToLow' : 'lowToHigh'
-        }
-      />
-    </>
-  )
+              <WhatsappButton
+                onClick={sendToWhatsapp}
+                additionalStyle={'csa-button-plp'}
+              />
+            </>
+          )}
+        </PageLayout>
+        <PopupMultiCreditQualificationResult
+          isOpen={isPopUpOpened}
+          onDismissPopup={onDismissPopup}
+          onClickClosePopup={onClickClosePopup}
+        />
+        <PopupPromo
+          open={isOpenPopupPromo}
+          onCancel={onCancelPopupPromo}
+          data={dataPromoPopup}
+          additionalContainerClassname={
+            dataPromoPopup?.length === 1
+              ? styles.popupPromoAutoHeight
+              : undefined
+          }
+          onClickSNK={(promo) =>
+            trackEventCountly(
+              CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_PROMO_SNK_CLICK,
+              { PROMO_TITLE: promo.title },
+            )
+          }
+        />
+        <PopupCarDetail
+          isOpen={isOpenPopupCarDetail}
+          dpLabelText={'Minimum DP'}
+          dp={multiUnitQuery.downPaymentAmount} // use DP from form page
+          dpBeforeDiscount={discountedDp}
+          installmentFeeLabelText={'Cicilan mulai dari'}
+          installmentFee={getInstallmentFeePopupDetail()}
+          installmentFeeBeforeDiscount={
+            !!selectedCarInfo?.variants[0]?.monthlyInstallmentSpekta
+              ? selectedCarInfo?.variants[0]?.monthlyInstallment.toString()
+              : undefined
+          }
+          price={selectedCarInfo?.variants[0]?.priceValue ?? 0}
+          tenure={parseInt(multiUnitQuery.tenure)} // use tenure from form page
+          onCancel={onCancelPopupCarDetail}
+          carSeats={selectedCarInfo?.variants[0]?.seat}
+          engineCapacity={selectedCarInfo?.variants[0]?.engineCapacity}
+          fuelType={selectedCarInfo?.variants[0]?.fuelType}
+          transmission={selectedCarInfo?.variants[0]?.transmission}
+          rasioBahanBakar={selectedCarInfo?.rasioBahanBakar}
+          dimenssion={`${selectedCarInfo?.length} x ${selectedCarInfo?.width} x ${selectedCarInfo?.height} mm`}
+        />
+        <SortingMobile
+          open={openSorting}
+          onClose={handleShowSort(false)}
+          onPickClose={(value, label) => {
+            onFilterSort(value)
+            trackEventCountly(
+              CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_SORT_OPTION_CLICK,
+              { SORT_OPTION: label },
+            )
+          }}
+          sortOptionMultiKK={true}
+          selectedSortMultiKK={
+            sortFilter === 'Harga Tertinggi' ? 'highToLow' : 'lowToHigh'
+          }
+        />
+      </>
+    )
+  }
 }
 
 export default MultiKKResult
