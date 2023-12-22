@@ -310,7 +310,7 @@ export const getServerSideProps: GetServerSideProps<{
       getCities(),
       getUsedCarCityList(),
       getBrandList(''),
-      getUsedCarSearch(),
+      getUsedCarSearch(''),
     ])
 
     const cityList = usedCarCityList.data

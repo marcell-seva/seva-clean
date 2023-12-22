@@ -248,7 +248,7 @@ export const getServerSideProps: GetServerSideProps<{
       getMobileHeaderMenu(),
       getMobileFooterMenu(),
       getCities(),
-      getUsedCarSearch(),
+      getUsedCarSearch(''),
     ])
 
     const metaData = fetchMeta.data

@@ -213,7 +213,7 @@ export async function getServerSideProps(context: any) {
       getCities(),
       getMenu(),
       getUsedCarBySKU(uuid, ''),
-      getUsedCarSearch(),
+      getUsedCarSearch(''),
     ])
 
     const [carRecommendationsRes, newCarRecommendationsRes]: any =

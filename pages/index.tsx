@@ -206,7 +206,7 @@ export async function getServerSideProps(context: any) {
       getMobileFooterMenu(),
       getMinMaxYearsUsedCar(''),
       getModelUsedCar(''),
-      getUsedCarSearch(),
+      getUsedCarSearch(''),
       getPromoBanner(),
     ])
 

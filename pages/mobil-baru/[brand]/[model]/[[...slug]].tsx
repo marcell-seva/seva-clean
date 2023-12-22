@@ -373,7 +373,7 @@ export async function getServerSideProps(context: any) {
       getMobileFooterMenu(),
       getCities(),
       getMenu(),
-      getUsedCarSearch(),
+      getUsedCarSearch(''),
     ])
     let id = ''
     const carList = carRecommendationsRes.carRecommendations

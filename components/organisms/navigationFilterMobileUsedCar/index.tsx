@@ -252,22 +252,28 @@ export const NavigationFilterMobileUsedCar = ({
         ? navigateToPLP(
             PreviousButton.SmartSearch,
             {
-              search: searchParam,
+              search: new URLSearchParams(
+                Object.entries(paramUrl).filter(([, v]) => v !== ''),
+              )
+                .toString()
+                .replace('%2C', ','),
             },
             true,
             false,
             urls.internalUrls.duplicatedCarResultsUrl,
-            searchParam ? false : true,
           )
         : navigateToPLP(
             PreviousButton.SmartSearch,
             {
-              search: searchParam,
+              search: new URLSearchParams(
+                Object.entries(paramUrl).filter(([, v]) => v !== ''),
+              )
+                .toString()
+                .replace('%2C', ','),
             },
             true,
             false,
             urls.internalUrls.usedCarResultsUrl,
-            searchParam ? false : true,
           )
     })
   }

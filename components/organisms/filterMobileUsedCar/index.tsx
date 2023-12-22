@@ -324,23 +324,8 @@ const FilterMobileUsedCar = ({
 
   const paramQuery = funnelQuery
 
-  const resultRef = useRef<null | HTMLDivElement>(null)
-  const scrollToSection = () => {
-    resultRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
   const priceRef = useRef<null | HTMLDivElement>(null)
   const yearRef = useRef<null | HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (isButtonClick) {
-      setTimeout(() => scrollToTopDiv(), 200)
-    }
-  }, [isButtonClick])
-
-  const topDiv = useRef<null | HTMLDivElement>(null)
-  const scrollToTopDiv = () => {
-    topDiv.current?.scrollIntoView({ behavior: 'smooth', inline: 'start' })
-  }
 
   const resetFilter = () => {
     setResetTmp(true)
@@ -363,7 +348,6 @@ const FilterMobileUsedCar = ({
         closeDatatestid={elementId.PLP.Close.Button.FilterPopup}
       >
         <>
-          <div ref={topDiv} />
           <div className={styles.enhanceMargin}>
             <div className={styles.labelForm}>Merek Mobil</div>
             <FormSelectBrandUsedCar
