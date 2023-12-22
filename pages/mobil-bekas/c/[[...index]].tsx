@@ -190,9 +190,9 @@ const UsedCarResultPage = ({
       >
         <div className={styles.mobile}>
           <PLPUsedCar
-            minmaxPrice={meta.MinMaxPrice}
-            minmaxMileage={meta.MinMaxMileage}
-            minmaxYear={meta.MinMaxYear}
+            minmaxPrice={meta?.MinMaxPrice}
+            minmaxMileage={meta?.MinMaxMileage}
+            minmaxYear={meta?.MinMaxYear}
           />
         </div>
       </UsedCarProvider>
@@ -430,7 +430,7 @@ export const getServerSideProps: GetServerSideProps<{
       ...(yearStart && { yearStart: yearStart }),
       ...(yearEnd && { yearEnd: yearEnd }),
       ...(transmission && { transmission: String(transmission).split(',') }),
-      ...{ sortBy: 'lowToHigh' },
+      ...{ sortBy: 'newest' },
       ...{ page: '1' },
       ...{ perPage: '10' },
     }
@@ -443,7 +443,7 @@ export const getServerSideProps: GetServerSideProps<{
           .map((item) => getCarBrand(item)),
       }),
       ...(locSlug && { cityId: locSlug.map((city: any) => city.cityId) }),
-      ...{ sortBy: 'lowToHigh' },
+      ...{ sortBy: 'newest' },
       ...{ page: '1' },
       ...{ perPage: '10' },
     }

@@ -241,7 +241,7 @@ const FilterMobileUsedCar = ({
         !resetTmp && transmissionFilter.length > 0 ? transmissionFilter : [],
       plate: !resetTmp && plateFilter.length > 0 ? plateFilter : [],
       search: funnelQuery.search || '',
-      sortBy: funnelQuery.sortBy || 'lowToHigh',
+      sortBy: funnelQuery.sortBy || 'newest',
       modelName: [],
       priceStart: '',
       priceEnd: '',

@@ -198,7 +198,7 @@ export const PLPUsedCar = ({
           mileageStart: mileageStart ? mileageStart : '',
           transmission: transmission ? transmission?.split(',') : [],
           modelName: modelName ? modelName?.split('%2C') : [],
-          sortBy: sortBy || 'lowToHigh',
+          sortBy: sortBy || 'newest',
           page: pagePlus || '1',
           perPage: '10',
         }
@@ -357,7 +357,7 @@ export const PLPUsedCar = ({
     } else {
       setIsFilter(false)
     }
-  }, [funnelQuery, brand])
+  }, [funnelQuery, brand, search])
 
   useEffect(() => {
     setPage(1)
@@ -400,7 +400,7 @@ export const PLPUsedCar = ({
     setOpenSorting(false)
     const queryParam = {
       ...funnelQuery,
-      sortBy: val || 'lowToHigh',
+      sortBy: val || 'newest',
       page: page || '1',
       perPage: '10',
     }

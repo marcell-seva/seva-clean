@@ -204,9 +204,10 @@ export const SearchComponent = ({
     const data = comDataNew?.slice(0, 5).map((item) => ({
       name: `${item.brand} ${item.model?.carModel.model ?? ''}`,
       image: (item.model && item.model.carModel.imageUrls.main_color[0]) || '',
-      link: `/${item.brand}/${item.model?.carModel.model
-        .replace(/\s+/g, '-')
-        .toLowerCase()}`,
+      link: `/${item.brand}/${item.model?.carModel.model.replace(
+        /\s+/g,
+        '-',
+      )}`.toLowerCase(),
     }))
 
     return data ?? []
@@ -264,7 +265,8 @@ export const SearchComponent = ({
       ),
       item.carName,
     )
-
+    setValueSearch('')
+    handleCloseModal()
     router.push(urlDestination)
   }
 
@@ -276,7 +278,7 @@ export const SearchComponent = ({
 
     // simpan pencarian ke dalam local storage
     saveHistoryToLocal(urlDestination, item.name)
-
+    handleCloseModal()
     router.push(urlDestination + `/${getCityUrl()}`)
   }
 
@@ -295,7 +297,8 @@ export const SearchComponent = ({
 
     // simpan pencarian ke dalam local storage
     saveHistoryToLocal(item.sevaUrl, item.carName)
-
+    handleCloseModal()
+    setValueSearch('')
     router.push(urlDestination)
   }
 
@@ -334,7 +337,7 @@ export const SearchComponent = ({
     }
     clearQueryFilterData()
     clearQueryFilterUsedCarData()
-    router.push(urlDestination)
+    window.location.href = urlDestination
   }
 
   type RenderedLabels = {
@@ -584,7 +587,14 @@ export const SearchComponent = ({
               </div>
             ))}
             <div className={styles.ctaUsedCar}>
-              <Link href={usedCarResultUrl} className={styles.linkAllCar}>
+              <Link
+                href={usedCarResultUrl}
+                onClick={() => {
+                  handleCloseModal()
+                  router.push(urls.internalUrls.usedCarResultsUrl)
+                }}
+                className={styles.linkAllCar}
+              >
                 <p className={styles.linkAllCar}>Lihat semua mobil bekas</p>
                 <IconChevronRight width={20} height={20} color="#246ED4" />
               </Link>
@@ -782,6 +792,7 @@ export const SearchComponent = ({
                         href={usedCarResultUrl}
                         className={styles.linkAllCar}
                         onClick={() => {
+                          handleCloseModal()
                           router.push(urls.internalUrls.usedCarResultsUrl)
                         }}
                       >
