@@ -415,7 +415,7 @@ export const SummaryTab = ({
           </Modal>
         )}
 
-        {videoData.videoId.length > 0 ? (
+        {videoData?.videoId?.length > 0 ? (
           <>
             <div className={styles.videoSectionCard}>
               <div className={styles.videoSectionHeader}>
