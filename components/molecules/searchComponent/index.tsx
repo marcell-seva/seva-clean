@@ -156,7 +156,7 @@ export const SearchComponent = ({
     try {
       const [dataNew, dataUsed]: any = await Promise.all([
         getNewCarSearch('', { params }),
-        getUsedCarSearch('', { params: paramsUsed }),
+        getUsedCarSearch(),
       ])
 
       if (dataNew.data.length === 0 && dataUsed.data.length === 0) {

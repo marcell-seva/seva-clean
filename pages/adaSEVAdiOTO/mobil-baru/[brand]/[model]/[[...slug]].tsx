@@ -213,7 +213,7 @@ export async function getServerSideProps(context: any) {
       getMobileHeaderMenu(),
       getMobileFooterMenu(),
       getCities(),
-      getUsedCarSearch('', { params }),
+      getUsedCarSearch(),
     ])
     let id = ''
     const carList = carRecommendationsRes.carRecommendations

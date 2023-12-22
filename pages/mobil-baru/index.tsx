@@ -172,8 +172,6 @@ export const getServerSideProps: GetServerSideProps<{
     monthlyIncome,
     sortBy,
   } = ctx.query
-  const params = new URLSearchParams()
-  params.append('query', '' as string)
 
   const brand = brandQueryOrLastSlug?.includes('SEVA')
     ? ''
@@ -193,16 +191,13 @@ export const getServerSideProps: GetServerSideProps<{
       getMobileHeaderMenu(),
       getMobileFooterMenu(),
       getCities(),
-      getUsedCarSearch('', { params }),
+      getUsedCarSearch(),
     ])
 
     const footerData = fetchFooter.data
 
     if (!priceRangeGroup) {
-      const params = new URLSearchParams()
-      getCity().cityCode && params.append('city', getCity().cityCode as string)
-
-      const minmax = await getMinMaxPrice('', { params })
+      const minmax = await getMinMaxPrice('?city=jakarta')
       const minmaxPriceData = minmax
       meta.MinMaxPrice = {
         minPriceValue: minmaxPriceData.minPriceValue,
