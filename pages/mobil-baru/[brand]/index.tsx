@@ -46,6 +46,7 @@ const NewCarResultPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const id = router.query.brand
+  const isSevaUrl = typeof id === 'string' && id.includes('SEVA')
   const {
     saveDesktopWebTopMenu,
     saveMobileWebTopMenus,
@@ -62,7 +63,7 @@ const NewCarResultPage = ({
     saveMobileWebFooterMenus(dataFooter)
     saveCities(dataCities)
     saveDataSearchUsedCar(dataSearchUsedCar)
-    if (id && typeof id === 'string' && id.includes('SEVA')) {
+    if (id && isSevaUrl) {
       saveLocalStorage(LocalStorageKey.referralTemanSeva, id)
     }
   }, [])
@@ -76,10 +77,22 @@ const NewCarResultPage = ({
   const getUrlBrand = router.query.brand?.toString() ?? ''
   const carBrand = getUrlBrand.charAt(0).toUpperCase() + getUrlBrand.slice(1)
 
-  const metaTitle = `Harga OTR ${carBrand} ${todayDate.getFullYear()} - Promo Cicilan bulan ${monthId(
-    todayDate.getMonth(),
-  )} | SEVA `
-  const metaDesc = `Beli mobil baru ${carBrand} ${todayDate.getFullYear()} secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
+  const metaTitle = isSevaUrl
+    ? `Beli Mobil Baru ${todayDate.getFullYear()} - Harga OTR dengan Promo Cicilan Bulan ${monthId(
+        todayDate.getMonth(),
+      )} | SEVA`
+    : isBodyType(carBrand)
+    ? `Daftar Mobil Baru ${carBrand.toUpperCase()} ${todayDate.getFullYear()} - Promo Cicilan Bulan ${monthId(
+        todayDate.getMonth(),
+      )} | SEVA`
+    : `Harga OTR ${carBrand} ${todayDate.getFullYear()} - Promo Cicilan bulan ${monthId(
+        todayDate.getMonth(),
+      )} | SEVA `
+  const metaDesc = isSevaUrl
+    ? `Beli mobil  ${todayDate.getFullYear()} di SEVA. Beli mobil secara kredit dengan Instant Approval*.`
+    : isBodyType(carBrand)
+    ? `Beli mobil ${carBrand.toUpperCase()} ${todayDate.getFullYear()} terbaru secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
+    : `Beli mobil baru ${carBrand} ${todayDate.getFullYear()} secara kredit dengan Instant Approval*. Cari tau spesifikasi, harga, promo, dan kredit di SEVA`
 
   return (
     <>
@@ -110,16 +123,54 @@ type PLPProps = {
   carRecommendations: CarRecommendationResponse
 }
 
-const getBrand = (brand: string | string[] | undefined) => {
-  if (String(brand).toLowerCase() === 'toyota') {
-    return 'Toyota'
-  } else if (String(brand).toLowerCase() === 'daihatsu') {
-    return 'Daihatsu'
-  } else if (String(brand).toLowerCase() === 'bmw') {
-    return 'Bmw'
-  } else {
-    return ''
+export const isBrand = (brand: string | string[] | undefined) => {
+  if (Array.isArray(brand)) {
+    return brand.every(
+      (item) =>
+        item.toLowerCase() === 'toyota' ||
+        item.toLowerCase() === 'isuzu' ||
+        item.toLowerCase() === 'daihatsu' ||
+        item.toLowerCase() === 'peugeot' ||
+        item.toLowerCase() === 'bmw' ||
+        item.toLowerCase() === 'hyundai',
+    )
+  } else if (brand) {
+    const arrSplit = brand?.split(',')
+    return arrSplit.every(
+      (item) =>
+        item.toLowerCase() === 'toyota' ||
+        item.toLowerCase() === 'isuzu' ||
+        item.toLowerCase() === 'daihatsu' ||
+        item.toLowerCase() === 'peugeot' ||
+        item.toLowerCase() === 'bmw' ||
+        item.toLowerCase() === 'hyundai',
+    )
   }
+  return false
+}
+
+export const isBodyType = (bodyType: string | string[] | undefined) => {
+  if (Array.isArray(bodyType)) {
+    return bodyType.every(
+      (item) =>
+        item.toLowerCase() === 'mpv' ||
+        item.toLowerCase() === 'suv' ||
+        item.toLowerCase() === 'sedan' ||
+        item.toLowerCase() === 'hatchback' ||
+        item.toLowerCase() === 'sport',
+    )
+  } else if (bodyType) {
+    const arrType = bodyType?.split(',')
+    return arrType.every(
+      (item) =>
+        item.toLowerCase() === 'mpv' ||
+        item.toLowerCase() === 'suv' ||
+        item.toLowerCase() === 'sedan' ||
+        item.toLowerCase() === 'hatchback' ||
+        item.toLowerCase() === 'sport',
+    )
+  }
+  return false
 }
 
 export const getServerSideProps: GetServerSideProps<{
@@ -134,7 +185,7 @@ export const getServerSideProps: GetServerSideProps<{
     'Cache-Control',
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
-  const metabrand = getBrand(ctx.query.brand)
+  const metabrand = getCarBrand(ctx.query.brand)
   const metaTagBaseApi =
     'https://api.sslpots.com/api/meta-seos/?filters[location_page3][$eq]=CarSearchResult'
   const footerTagBaseApi =
@@ -214,12 +265,18 @@ export const getServerSideProps: GetServerSideProps<{
       ...(search && { search: String(search) }),
       ...(downPaymentAmount && { downPaymentType: 'amount' }),
       ...(downPaymentAmount && { downPaymentAmount }),
-      ...(brand && {
-        brand: String(brand)
-          ?.split(',')
-          .map((item) => getCarBrand(item)),
-      }),
-      ...(bodyType && { bodyType: String(bodyType)?.split(',') }),
+      ...(!isBodyType(brand) && brand !== ''
+        ? {
+            brand: String(brand)
+              ?.split(',')
+              .map((item) => getCarBrand(item)),
+          }
+        : {}),
+      ...(bodyType
+        ? { bodyType: String(bodyType)?.split(',') }
+        : isBodyType(brand) && brand !== ''
+        ? { bodyType: String(brand)?.toUpperCase()?.split(',') }
+        : {}),
       ...(priceRangeGroup
         ? { priceRangeGroup }
         : {
