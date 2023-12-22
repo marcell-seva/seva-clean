@@ -55,3 +55,10 @@
   line-height: 16px;
   color: #{$primary-white};
 }
+
+.labelResult {
+  position: absolute;
+  z-index: 2;
+  left: 125px;
+  top: 96px;
+}
