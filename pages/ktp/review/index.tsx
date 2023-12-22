@@ -54,7 +54,6 @@ import {
   trackEventCountly,
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
-import { useTranslation } from 'react-i18next'
 import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import { useValidateUserFlowKKIA } from 'utils/hooks/useValidateUserFlowKKIA'
 import { defineRouteName } from 'utils/navigate'
