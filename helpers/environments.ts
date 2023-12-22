@@ -49,7 +49,8 @@ const environments = {
       appId: '1:349467238591:web:757b788dc92fbb83e5a60a',
     },
     bankLinkingUrl: 'https://cdn.onebrick.io/sandbox-widget/v1/',
-    apiBaseUrl: 'https://api.seva.id',
+    apiBaseUrl:
+      process.env.NEXT_PUBLIC_SERVER_BASE_URL || 'https://api.sevaio.xyz',
     featureToggles: featureToggles[Environment.Localhost],
     isShowMobileConsole: true,
     deeplink: 'seva://',
