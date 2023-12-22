@@ -47,6 +47,8 @@ import { getNewFunnelRecommendations } from 'utils/handler/funnel'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 import { getMinMaxPrice, postCheckTemanSeva } from 'services/api'
+import { isCurrentCitySameWithSSR } from 'utils/hooks/useGetCity'
+import { isBodyType, isBrand } from 'pages/mobil-baru/[brand]'
 
 const Spin = dynamic(() => import('antd/lib/spin'), { ssr: false })
 const LeadsFormPrimary = dynamic(() =>
@@ -94,8 +96,8 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>([])
   const {
     search,
-    bodyType,
-    brand,
+    bodyType: bodyTypeTemp,
+    brand: param,
     downPaymentAmount,
     monthlyIncome,
     tenure,
@@ -103,6 +105,12 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     age,
     sortBy,
   } = router.query as FilterParam
+  const brand = isBrand(param) ? param : undefined
+  const bodyType = bodyTypeTemp
+    ? bodyTypeTemp
+    : isBodyType(param)
+    ? param?.toUpperCase()
+    : undefined
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
 
   const [cityOtr] = useLocalStorage<Location | null>(
@@ -129,6 +137,11 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       : false
   funnelQuery.search = search
   funnelQuery.brand = brand?.split(',').map((item) => getCarBrand(item)) || []
+  if (isBodyType(param) && !bodyTypeTemp) {
+    funnelQuery.bodyType = bodyType
+      ?.split(',')
+      ?.map((item) => item?.toUpperCase())
+  }
   const showFilterFinancial =
     age || downPaymentAmount || monthlyIncome ? true : false
   const [isFilter, setIsFilter] = useState(showFilter)
@@ -164,7 +177,6 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     loanRank: 'Null',
   })
   const user: string | null = getLocalStorage(LocalStorageKey.sevaCust)
-  const isCurrentCitySameWithSSR = getCity().cityCode === defaultCity.cityCode
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
   const isUsingFilterFinancial =
     !!filterStorage?.age &&
@@ -203,7 +215,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   }
 
   const cleanEffect = () => {
-    if (!isCurrentCitySameWithSSR) {
+    if (!isCurrentCitySameWithSSR()) {
       saveRecommendation([])
     }
     setPage(1)
@@ -528,7 +540,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       })
     }
 
-    if (!isCurrentCitySameWithSSR || recommendation.length === 0) {
+    if (!isCurrentCitySameWithSSR() || recommendation.length === 0) {
       const params = new URLSearchParams()
       getCity().cityCode && params.append('city', getCity().cityCode as string)
 
@@ -553,7 +565,10 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
             const queryParam: any = {
               downPaymentType: 'amount',
               downPaymentAmount: downPaymentAmount || '',
-              brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
+              brand:
+                !brand || brand?.includes('SEVA')
+                  ? undefined
+                  : brand?.split(',')?.map((item) => getCarBrand(item)) || '',
               bodyType: bodyType?.split(',') || '',
               priceRangeGroup: priceRangeGroup ? minTemp + '-' + maxTemp : '',
               age: age || '',
@@ -600,7 +615,10 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       const queryParam: any = {
         downPaymentType: 'amount',
         downPaymentAmount: downPaymentAmount || '',
-        brand: brand?.split(',')?.map((item) => getCarBrand(item)) || '',
+        brand:
+          !brand || brand?.includes('SEVA')
+            ? undefined
+            : brand?.split(',')?.map((item) => getCarBrand(item)) || '',
         bodyType: bodyType?.split(',') || '',
         priceRangeGroup: priceRangeGroup,
         age: age || '',
@@ -791,7 +809,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
                   (i: any, index: React.Key | null | undefined) => (
                     <CarDetailCard
                       order={Number(index)}
-                      key={index}
+                      key={i.id}
                       recommendation={i}
                       isOTO={isOTO}
                       isFilter={isFilterCredit}

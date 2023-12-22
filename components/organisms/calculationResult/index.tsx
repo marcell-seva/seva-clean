@@ -32,9 +32,12 @@ import {
 } from 'utils/handler/sessionStorage'
 import Image from 'next/image'
 import clsx from 'clsx'
+import CardVariantOptions from '../cardVariantOptions'
+import { ModelVariant } from 'utils/types/carVariant'
+import { useMediaQuery } from 'react-responsive'
 
-const LogoAcc = '/revamp/icon/logo-acc.webp'
-const LogoTaf = '/revamp/icon/logo-taf.webp'
+export const LogoAcc = '/revamp/icon/logo-acc.webp'
+export const LogoTaf = '/revamp/icon/logo-taf.webp'
 
 interface Props {
   data: SpecialRateListWithPromoType[]
@@ -57,6 +60,11 @@ interface Props {
   pageOrigination?: string
   isPartnership?: boolean
   onClickResultItemUpperInfoSection?: () => void
+  isV2?: boolean
+  handleChangeVariants?: (name: string, value: any) => void
+  carVariantList?: ModelVariant[]
+  onShowDropdown?: () => void
+  onChangeInformation?: () => void
 }
 
 export const CalculationResult = ({
@@ -76,6 +84,11 @@ export const CalculationResult = ({
   pageOrigination,
   isPartnership = false,
   onClickResultItemUpperInfoSection,
+  handleChangeVariants,
+  isV2 = false,
+  carVariantList,
+  onShowDropdown,
+  onChangeInformation,
 }: Props) => {
   const [state, setState] = useState<LoanCalculatorInsuranceAndPromoType[]>(
     insuranceAndPromoForAllTenure,
@@ -85,6 +98,7 @@ export const CalculationResult = ({
   const [openTooltipInsurance, setOpenTooltipInsurance] = useState(false)
   const [selectedCalculatePromo, setSelectedCalculatePromo] =
     useState<LoanCalculatorInsuranceAndPromoType | null>()
+  const isMobileSM = useMediaQuery({ query: '(max-height: 400px)' })
 
   const trackCountlyClickResultItem = (
     selectedTenureData: SpecialRateListWithPromoType,
@@ -164,16 +178,38 @@ export const CalculationResult = ({
 
     return ''
   }
+  const scrollToBottom = () => {
+    if (!window.location.pathname.includes('/kredit')) {
+      if (isMobileSM) {
+        window.scrollTo({ top: 1455, behavior: 'smooth' }) // scroll button cta on bottom
+      } else {
+        scrollToSectionResult()
+      }
+    } else {
+      scrollToSectionResult()
+    }
+  }
 
   useEffect(() => {
     if (isTooltipOpen) {
       scrollToSection()
+    } else {
+      scrollToBottom()
     }
-  }, [isTooltipOpen])
+  }, [isTooltipOpen, data])
 
   const goToButton = useRef<null | HTMLDivElement>(null)
   const scrollToSection = () => {
     goToButton.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end',
+      inline: 'end',
+    })
+  }
+
+  const resultRef = useRef<null | HTMLDivElement>(null)
+  const scrollToSectionResult = () => {
+    resultRef.current?.scrollIntoView({
       behavior: 'smooth',
       block: 'end',
       inline: 'end',
@@ -272,7 +308,10 @@ export const CalculationResult = ({
       tdpBeforePromo: selectPromo[0].tdpBeforePromo,
     })
   }
-
+  const handleScrollAfterChangeVariant = (name: any, value: any) => {
+    handleChangeVariants && handleChangeVariants(name, value)
+    scrollToSectionResult()
+  }
   const renderLogoFinco = () => {
     return (
       <div className={styles.logoFincoWrapper}>
@@ -299,17 +338,19 @@ export const CalculationResult = ({
       <div className={styles.disclaimerWrapper}>
         {angsuranType === InstallmentTypeOptions.ADDM ? (
           <span className={styles.disclaimerText}>
-            *Total DP: DP + Administrasi + Cicilan Pertama + Polis + TJH
+            *Total DP: DP + Administrasi + Cicilan Pertama + Polis.
             <br />
-            **Cicilan per bulan: Sudah termasuk cicilan dan premi asuransi mobil
+            **Cicilan per bulan: Sudah termasuk cicilan dan premi asuransi
+            mobil.
             <br />
             Perhitungan kredit ini disediakan oleh ACC dan TAF.
           </span>
         ) : (
           <span className={styles.disclaimerText}>
-            *Total DP: DP + Administrasi + Polis + TJH
+            *Total DP: DP + Administrasi + Polis.
             <br />
-            **Cicilan per bulan: Sudah termasuk cicilan dan premi asuransi mobil
+            **Cicilan per bulan: Sudah termasuk cicilan dan premi asuransi
+            mobil.
             <br />
             Perhitungan kredit ini disediakan oleh ACC dan TAF.
           </span>
@@ -334,6 +375,7 @@ export const CalculationResult = ({
               </Button>
             )}
 
+            <div ref={resultRef}></div>
             {isTooltipOpen && (
               <>
                 <Overlay
@@ -404,16 +446,39 @@ export const CalculationResult = ({
       className={styles.container}
       data-testid={elementId.LoanCalculator.Result.LoanCalculator}
     >
-      <h3 className={styles.title}>Kemampuan Finansialmu</h3>
-      <span className={styles.subtitle}>
-        Perhitungan final akan diberikan oleh partner SEVA.
-      </span>
-      <div className={styles.dataHeaderWrapperUsedCar}>
+      {!isV2 ? (
+        <>
+          <h3 className={styles.title}>Kemampuan Finansialmu</h3>
+          <span className={styles.subtitle}>
+            Perhitungan final akan diberikan oleh partner SEVA.
+          </span>
+        </>
+      ) : (
+        <CardVariantOptions
+          selectedModel={formData?.model?.modelName || ''}
+          handleChange={handleScrollAfterChangeVariant}
+          name="variant"
+          carVariantList={carVariantList || []}
+          value={formData.variant}
+          modelError={false}
+          onShowDropdown={onShowDropdown && onShowDropdown}
+          isError={false}
+          carModelImage={formData.model?.modelImage}
+          cityName={formData.city.cityName}
+          onChangeInformation={onChangeInformation && onChangeInformation}
+        />
+      )}
+      <div className={styles.dataHeaderWrapper}>
         <span className={`${styles.dataHeaderText} ${styles.tenorHeader}`}>
           Tenor
         </span>
-        <span className={styles.dataHeaderText}>Total DP*</span>
-        <span className={styles.dataHeaderText}>Cicilan per bulan**</span>
+        <span className={styles.dataHeaderText}>
+          Total DP<span className={styles.dataHeaderTextSmall}>*</span>
+        </span>
+        <span className={styles.dataHeaderText}>
+          Cicilan per bulan
+          <span className={styles.dataHeaderTextSmall}>**</span>
+        </span>
       </div>
       <div className={styles.listWrapper}>
         {data.map((item, index) => {

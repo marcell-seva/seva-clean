@@ -39,6 +39,7 @@ interface Props<T extends FormControlValue> {
   datatestid?: string
   onShowDropdown?: () => void
   isAnimateShakeOnError?: boolean
+  isOnCalculationResult?: boolean
 }
 
 const forwardedInputSelect = <T extends FormControlValue>(
@@ -68,6 +69,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
     datatestid,
     onShowDropdown,
     isAnimateShakeOnError = false,
+    isOnCalculationResult = false,
   }: Props<T>,
   ref?: ForwardedRef<HTMLInputElement>,
 ) => {
@@ -130,6 +132,43 @@ const forwardedInputSelect = <T extends FormControlValue>(
       }
     }
   }
+  const renderValueOnCalculationResult = () => {
+    const selectedOption = options.find((option) => option?.text === value)
+
+    if (isFocused && !isOnCalculationResult) {
+      return (
+        <div>
+          <p className={styles.selectedText}>{selectedOption?.text}</p>
+          <p className={styles.selectedLabel}>{selectedOption?.label}</p>
+        </div>
+      )
+    } else {
+      if (!selectedOption) {
+        return <p className={styles.placeholder}>{placeholderText}</p>
+      } else {
+        return (
+          <div>
+            <p
+              className={clsx({
+                [styles.selectedText]: !isOnCalculationResult,
+                [styles.selectedTextWithElipsis]: isOnCalculationResult,
+              })}
+            >
+              {selectedOption?.text}
+            </p>
+            <p
+              className={clsx({
+                [styles.selectedLabel]: !isOnCalculationResult,
+                [styles.selectedLabelCalculationResult]: isOnCalculationResult,
+              })}
+            >
+              {selectedOption?.label}
+            </p>
+          </div>
+        )
+      }
+    }
+  }
 
   const handleClickNoOption = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -138,28 +177,47 @@ const forwardedInputSelect = <T extends FormControlValue>(
   }
 
   return (
-    <div className={styles.container}>
+    <div
+      className={clsx({
+        [styles.container]: !isOnCalculationResult,
+        [styles.containerCalculationResult]: isOnCalculationResult,
+      })}
+    >
       <div
         className={clsx({
-          [styles.inputArea]: true,
+          [styles.inputArea]: !isOnCalculationResult,
+          [styles.inputAreaCalculationResult]: isOnCalculationResult,
           [styles.hasNotSelectedValue]: isFocused || !value,
           [styles.disabled]: disabled,
           [styles.error]: !isFocused && isError,
           ['shake-animation-X']: isError && isAnimateShakeOnError,
         })}
+        onClick={() => {
+          if (isOnCalculationResult) {
+            setIsFocused(!isFocused)
+            openDropdown().onOpen(!isOpenDropdown)
+          }
+        }}
       >
-        {renderValue()}
+        {!isOnCalculationResult
+          ? renderValue()
+          : renderValueOnCalculationResult()}
         <input
           ref={ref}
           value={value}
           type={inputType}
           onChange={onChangeHandler}
-          className={styles.inputField}
+          className={clsx({
+            [styles.inputField]: !isOnCalculationResult,
+            [styles.inputFieldCalculationResult]: isOnCalculationResult,
+          })}
           placeholder={placeholderText}
           onFocus={() => {
-            setIsFocused(true)
-            openDropdown().onOpen(true)
-            onShowDropdown && onShowDropdown()
+            if (!isOnCalculationResult) {
+              setIsFocused(true)
+              openDropdown().onOpen(true)
+              onShowDropdown && onShowDropdown()
+            }
           }}
           onBlur={onBlurHandler}
           autoFocus={isAutoFocus}
@@ -216,8 +274,11 @@ const forwardedInputSelect = <T extends FormControlValue>(
                   [styles.active]:
                     highlightSelectedOption &&
                     (item.value === value || item.label === value),
+                  [styles.dropdownItemVariant]:
+                    isOnCalculationResult &&
+                    (item as OptionWithText<string>).text === value,
                 })}
-                key={index}
+                key={item?.value?.toString() ?? index}
                 onMouseDown={
                   (item as OptionWithImage<string>).disabled
                     ? (e) => onFocus(e)
@@ -225,7 +286,14 @@ const forwardedInputSelect = <T extends FormControlValue>(
                 }
               >
                 {(item as OptionWithText<string>).text && (
-                  <p className={styles.dropdownItemAdditionalText}>
+                  <p
+                    className={clsx({
+                      [styles.dropdownItemAdditionalText]:
+                        !isOnCalculationResult,
+                      [styles.dropdownItemAdditionalTextElipsis]:
+                        isOnCalculationResult,
+                    })}
+                  >
                     {(item as OptionWithText<string>).text}
                   </p>
                 )}

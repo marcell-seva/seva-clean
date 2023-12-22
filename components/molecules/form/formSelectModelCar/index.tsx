@@ -240,7 +240,12 @@ export const FormSelectModelCar = ({
 
   useEffect(() => {
     if (inputValue === '') {
-      setSuggestionsLists(modelCarListOptionsFull)
+      const sortedCars = sortedModelCarList()
+      setSuggestionsLists(sortedCars)
+      return
+    } else {
+      const sorted = getFuseSearchResult(inputValue)
+      setSuggestionsLists([sorted[0]])
     }
   }, [modelCarListOptionsFull])
 

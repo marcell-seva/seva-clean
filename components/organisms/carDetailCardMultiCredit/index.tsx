@@ -1,21 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styles from 'styles/components/organisms/cardetailcardMultiCredit.module.scss'
-
 import elementId from 'helpers/elementIds'
-import { useDetectClickOutside } from 'react-detect-click-outside'
-import { Tooltip } from 'antd'
-
-import { LandingIA } from '../landingIA'
+import Tooltip from 'antd/lib/tooltip'
 import {
   dpRateCollectionNewCalculatorTmp,
+  FormLCState,
   MultKKCarRecommendation,
   PromoItemType,
   SendKualifikasiKreditRequest,
   SimpleCarVariantDetail,
+  trackDataCarType,
 } from 'utils/types/utils'
 import { useMultiUnitQueryContext } from 'services/context/multiUnitQueryContext'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import { LanguageCode, LocalStorageKey } from 'utils/enum'
+import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import {
   formatNumberByLocalization,
   replacePriceSeparatorByLocalization,
@@ -29,18 +27,36 @@ import { getCity } from 'utils/hooks/useGetCity'
 import { InstallmentTypeOptions } from 'utils/types/models'
 import { getOptionValue } from 'utils/handler/optionLabel'
 import { occupations } from 'utils/occupations'
-import { Button, CardShadow, IconInfo, Overlay } from 'components/atoms'
+import { Button, CardShadow, Overlay } from 'components/atoms'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import TooltipContentMultiKK from 'components/molecules/tooltipMultiKKContent'
-import { LabelMudah, LabelPromo } from 'components/molecules'
+import { LabelMudah, LabelPromo, LabelSulit } from 'components/molecules'
 import LabelSedang from 'components/molecules/labelCard/sedang'
 import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
-import { getPageName } from 'utils/pageName'
-import Image from 'next/image'
+import dynamic from 'next/dynamic'
+import clsx from 'clsx'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { saveLocalStorage } from 'utils/handler/localStorage'
+import {
+  getSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
+import { RouteName } from 'utils/navigate'
 import { postLoanPermutationIncludePromo } from 'services/api'
+import Image from 'next/image'
+
+const Toast = dynamic(
+  () => import('components/atoms/toast').then((mod) => mod.Toast),
+  { ssr: false },
+)
+
+const LandingIA = dynamic(() =>
+  import('../landingIA').then((mod) => mod.LandingIA),
+)
 
 type CarDetailCardProps = {
+  order: number
   recommendation: MultKKCarRecommendation
   trxCode: string
   onClickLabelPromo: (promoData: PromoItemType | null) => void
@@ -57,6 +73,7 @@ const discountedCarPrice = undefined // for current promo, it will not affect OT
 const discountedDp = undefined // for current promo, it will not affect DP
 
 const CarDetailCardMultiCredit = ({
+  order = 0,
   recommendation,
   trxCode,
   onClickLabelPromo,
@@ -74,18 +91,18 @@ const CarDetailCardMultiCredit = ({
       LocalStorageKey.SimpleCarVariantDetails,
       null,
     )
+  const { filterFincap } = useFunnelQueryData()
   const [datatoCaasDaas, setDatatoCaasDaas] =
     useState<SendKualifikasiKreditRequest | null>()
   const [loadSubmit, setLoadSubmit] = useState(false)
-  const [isShowTooltip, setIsShowTooltip] = useState(false)
   const [openLandingIA, setOpenLandingIA] = useState(false)
-  const tooltipRef = useDetectClickOutside({
-    onTriggered: () => {
-      if (isShowTooltip) {
-        setIsShowTooltip(false)
-      }
-    },
-  })
+  const [isOpenToast, setIsOpenToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState(
+    'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+  )
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
 
   const regularCarPrice = replacePriceSeparatorByLocalization(
     recommendation.variants[0].priceValue,
@@ -136,27 +153,44 @@ const CarDetailCardMultiCredit = ({
     return 20 //default
   }
 
-  const cityName =
-    recommendation.brand === 'Daihatsu'
-      ? 'Jakarta Pusat'
-      : selectedCityName || 'Jakarta Pusat'
+  const cityName = selectedCityName || 'Jakarta Pusat'
 
-  const onClickToolTipIcon = () => {
-    setIsShowTooltip(true)
-    trackEventCountly(CountlyEventNames.WEB_CITY_SELECTOR_TOOLTIP_CLICK, {
-      PAGE_ORIGINATION: getPageName(),
-    })
+  const kkForm = (): FormLCState => ({
+    city: getCity(),
+    model: {
+      modelId: recommendation.id,
+      modelName: recommendation.model,
+      modelImage: recommendation.images[0],
+      brandName: recommendation.brand,
+      loanRank: '',
+    },
+    variant: {
+      variantId: recommendation.variants[0].id,
+      variantName: recommendation.variants[0].name,
+      otr: String(recommendation.variants[0].priceValue),
+      discount: 0,
+    },
+    promoCode: '',
+    isValidPromoCode: false,
+    age: '',
+    monthlyIncome: multiUnitQuery.monthlyIncome,
+    downPaymentAmount: multiUnitQuery.downPaymentAmount,
+    paymentOption: InstallmentTypeOptions.ADDM,
+  })
+  const resetValueForTrackWaDirect = () => {
+    const dataCarTemp = {
+      ...dataCar,
+      INCOME_CHANGE: 'No',
+      INCOME_KK: 'Null',
+    }
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarTemp),
+    )
   }
-
-  const closeTooltip = () => {
-    // need to use timeout, if not it wont work
-    setTimeout(() => {
-      setIsShowTooltip(false)
-    }, 100)
-  }
-
   const navigateToInstantApproval = () => {
     setLoadSubmit(true)
+    resetValueForTrackWaDirect()
     postLoanPermutationIncludePromo({
       brand: recommendation.brand,
       model: recommendation.model,
@@ -211,11 +245,14 @@ const CarDetailCardMultiCredit = ({
             ? { selectablePromo: [String(recommendation.promo?.promoId)] }
             : { selectablePromo: [] }),
           ...(toyotaSpekta && {
-            loanMonthlyInstallmentVanilla:
+            loanMonthlyInstallmentOriginal:
               recommendation.variants[0].monthlyInstallment,
           }),
         }
-
+        saveLocalStorage(
+          LocalStorageKey.SelectedAngsuranType,
+          InstallmentTypeOptions.ADDM,
+        )
         setDatatoCaasDaas(dataToCaasDaasTemp)
         setSimpleCarVariantDetails({
           modelId: dataToCaasDaasTemp.modelId,
@@ -227,6 +264,10 @@ const CarDetailCardMultiCredit = ({
           totalFirstPayment: dataToCaasDaasTemp.totalFirstPayment,
           flatRate: dataToCaasDaasTemp.flatRate,
         })
+        saveLocalStorage(
+          LocalStorageKey.KalkulatorKreditForm,
+          JSON.stringify(kkForm()),
+        )
         localStorage.setItem(
           'qualification_credit',
           JSON.stringify({
@@ -263,16 +304,53 @@ const CarDetailCardMultiCredit = ({
               ],
             }),
             ...(toyotaSpekta && {
-              loanMonthlyInstallmentVanilla:
+              loanMonthlyInstallmentOriginal:
                 recommendation.variants[0].monthlyInstallment,
             }),
             ...(toyotaSpekta && {
-              totalFirstPaymentVanilla: resultByTenure[0].totalFirstPayment,
+              totalFirstPaymentOriginal: resultByTenure[0].totalFirstPayment,
             }),
+            fromMultiKK: true,
           }),
         )
+        const track = {
+          CAR_BRAND: recommendation.brand,
+          CAR_MODEL: recommendation.model,
+          CAR_ORDER: order + 1,
+          KUALIFIKASI_KREDIT_RESULT: recommendation.creditQualificationStatus,
+          PROMO_AMOUNT: toyotaSpekta ? '1' : '0',
+        }
+
+        trackEventCountly(
+          CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_IA_CLICK,
+          track,
+        )
+      })
+      .catch((error: any) => {
+        if (error?.response?.data?.message) {
+          setToastMessage(`${error?.response?.data?.message}`)
+        } else {
+          setToastMessage(
+            'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+          )
+        }
+        setIsOpenToast(true)
+      })
+      .catch((error: any) => {
+        if (error?.response?.data?.message) {
+          setToastMessage(`${error?.response?.data?.message}`)
+        } else {
+          setToastMessage(
+            'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+          )
+        }
+        setIsOpenToast(true)
       })
       .finally(() => {
+        saveSessionStorage(
+          SessionStorageKey.PageReferrerIA,
+          'Multi Unit Kualifikasi Kredit Result',
+        )
         setLoadSubmit(false)
         setOpenLandingIA(true)
       })
@@ -280,6 +358,9 @@ const CarDetailCardMultiCredit = ({
 
   const handleUnderstandTooltip = () => {
     setShowTooltipDisclaimer(false)
+    trackEventCountly(
+      CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_COACHMARK_CLICK,
+    )
   }
 
   const handleCloseTooltip = () => {
@@ -298,6 +379,33 @@ const CarDetailCardMultiCredit = ({
       inline: 'end',
     })
   }
+
+  const dataTrackLandingIA = () => {
+    const dataCarTemp = {
+      ...dataCar,
+      IA_FLOW: 'Instant Approval (Multi)',
+    }
+    saveSessionStorage(
+      SessionStorageKey.PreviousCarDataBeforeLogin,
+      JSON.stringify(dataCarTemp),
+    )
+    const toyotaSpekta = recommendation.promo?.promoId === 'TS01'
+    return {
+      CAR_BRAND: recommendation.brand || 'Null',
+      CAR_VARIANT: recommendation.variants[0].name || 'Null',
+      CAR_MODEL: recommendation.model || 'Null',
+      PAGE_REFERRER: RouteName.MultiUnitResult,
+      TENOR_OPTION: selectedTenure + ' tahun',
+      TENOR_RESULT: 'Null',
+      INCOME_CHANGE: 'No',
+      INSURANCE_TYPE: 'Full comprehensive',
+      PROMO_AMOUNT: toyotaSpekta ? '1' : '0',
+      TEMAN_SEVA_STATUS: datatoCaasDaas?.temanSevaTrxCode ? 'Yes' : 'No',
+      FINCAP_FILTER_USAGE: filterFincap ? 'Yes' : 'No',
+      PELUANG_KREDIT_BADGE: 'Null',
+    }
+  }
+
   useEffect(() => {
     if (showToolTipDisclaimer) {
       scrollToSection()
@@ -314,6 +422,7 @@ const CarDetailCardMultiCredit = ({
               size={ButtonSize.Big}
               onClick={navigateToInstantApproval}
               loading={loadSubmit}
+              disabled={loadSubmit}
               // data-testid={elementId.PLP.Button.HitungKemampuan}
             >
               Lanjut Instant Approval
@@ -367,34 +476,59 @@ const CarDetailCardMultiCredit = ({
             className={styles.heroImg}
             alt={`${recommendation.brand} ${recommendation.model}`}
             data-testid={elementId.CarImage}
+            width={279}
+            height={209}
           />
-          <LabelPromo
-            className={styles.labelCard}
-            onClick={() => onClickLabelPromo(recommendation.promo)}
-            regulerText={recommendation.promo ? '1 ' : 'Tersedia '}
-            boldText={recommendation.promo ? 'promo diterapkan' : 'promo'}
-            data-testid={elementId.PLP.Button.Promo}
-          />
+          {recommendation.brand !== 'Hyundai' && (
+            <LabelPromo
+              className={styles.labelCard}
+              onClick={() => onClickLabelPromo(recommendation.promo)}
+              regulerText={recommendation.promo ? '1 ' : 'Tersedia '}
+              boldText={recommendation.promo ? 'promo diterapkan' : 'promo'}
+              data-testid={elementId.PLP.Button.Promo}
+            />
+          )}
           {recommendation.creditQualificationStatus.toLowerCase() ===
             'sedang' && (
             <LabelSedang
-              additionalClassname={
-                recommendation.promo
-                  ? styles.loanRankLabelAdditionalStyle
-                  : styles.loanRankLabelAdditionalStyle2
-              }
+              additionalClassname={clsx({
+                [styles.loanRankLabelAdditionalHyundaiStyle]:
+                  recommendation.brand === 'Hyundai',
+                [styles.loanRankLabelAdditionalStyle]:
+                  recommendation.promo && recommendation.brand !== 'Hyundai',
+                [styles.loanRankLabelAdditionalStyle2]:
+                  !recommendation.promo && recommendation.brand !== 'Hyundai',
+              })}
               prefixComponent={() => <></>}
             />
           )}
           {recommendation.creditQualificationStatus.toLowerCase() ===
             'mudah' && (
             <LabelMudah
-              additionalClassname={
-                recommendation.promo
-                  ? styles.loanRankLabelAdditionalStyle
-                  : styles.loanRankLabelAdditionalStyle2
-              }
+              additionalClassname={clsx({
+                [styles.loanRankLabelAdditionalHyundaiStyle]:
+                  recommendation.brand === 'Hyundai',
+                [styles.loanRankLabelAdditionalStyle]:
+                  recommendation.promo && recommendation.brand !== 'Hyundai',
+                [styles.loanRankLabelAdditionalStyle2]:
+                  !recommendation.promo && recommendation.brand !== 'Hyundai',
+              })}
               labelText="Kualifikasi Kredit Mudah"
+              prefixComponent={() => <></>}
+            />
+          )}
+          {recommendation.creditQualificationStatus.toLowerCase() ===
+            'sulit' && (
+            <LabelSulit
+              additionalClassname={clsx({
+                [styles.loanRankLabelAdditionalHyundaiStyle]:
+                  recommendation.brand === 'Hyundai',
+                [styles.loanRankLabelAdditionalStyle]:
+                  recommendation.promo && recommendation.brand !== 'Hyundai',
+                [styles.loanRankLabelAdditionalStyle2]:
+                  !recommendation.promo && recommendation.brand !== 'Hyundai',
+              })}
+              labelText="Kualifikasi Kredit Sulit"
               prefixComponent={() => <></>}
             />
           )}
@@ -414,37 +548,6 @@ const CarDetailCardMultiCredit = ({
             >
               <span className={styles.smallRegular}>Harga OTR</span>
               <span className={styles.smallSemibold}>{cityName}</span>
-              {recommendation.brand === 'Daihatsu' ? (
-                <div
-                  className={styles.tooltipWrapper}
-                  ref={tooltipRef}
-                  onClick={onClickToolTipIcon}
-                  data-testid={elementId.PDP.CarOverview.CityToolTip}
-                >
-                  <div className={styles.tooltipIcon}>
-                    <IconInfo width={12} height={12} color="#878D98" />
-                  </div>
-                  {isShowTooltip ? (
-                    <div className={styles.tooltipCard}>
-                      <IconInfo width={24} height={24} color="#FFFFFF" />
-                      <div className={styles.tooltipContent}>
-                        <span className={styles.tooltipDesc}>
-                          Harga OTR Daihatsu menggunakan harga OTR{' '}
-                          <span className={styles.tooltipDescBold}>
-                            Jakarta Pusat
-                          </span>
-                        </span>
-                        <button
-                          className={styles.tooltipCloseButton}
-                          onClick={closeTooltip}
-                        >
-                          OK, Saya Mengerti
-                        </button>
-                      </div>
-                    </div>
-                  ) : null}
-                </div>
-              ) : null}
             </div>
             <div className={styles.carPriceWrapper}>
               <span
@@ -525,8 +628,17 @@ const CarDetailCardMultiCredit = ({
           onClose={() => setOpenLandingIA(false)}
           dataToCaasDaas={datatoCaasDaas}
           open={openLandingIA}
+          dataTrack={dataTrackLandingIA}
         />
       )}
+      <Toast
+        width={339}
+        open={isOpenToast}
+        text={toastMessage}
+        typeToast={'error'}
+        onCancel={() => setIsOpenToast(false)}
+        closeOnToastClick
+      />
     </>
   )
 }

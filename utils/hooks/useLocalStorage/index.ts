@@ -4,12 +4,13 @@ import {
   encryptValue,
   encryptedPrefix,
 } from 'utils/handler/encryption'
+import { client } from 'utils/helpers/const'
 
 export const useLocalStorage = <T>(key: string, initialValue: T) => {
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {
     try {
-      const item = localStorage.getItem(key)
+      const item = client ? localStorage.getItem(key) : null
       return item ? JSON.parse(item) : initialValue
     } catch (error) {
       return initialValue
@@ -22,7 +23,7 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
       const valueToStore =
         value instanceof Function ? value(storedValue) : value
       setStoredValue(valueToStore)
-      window.localStorage.setItem(key, JSON.stringify(valueToStore))
+      client && window.localStorage.setItem(key, JSON.stringify(valueToStore))
     } catch (error) {
       console.log(error)
     }
@@ -30,7 +31,7 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
 
   const removeValue = () => {
     setStoredValue(null)
-    window.localStorage.removeItem(key)
+    client && window.localStorage.removeItem(key)
   }
 
   return [storedValue, setValue, removeValue]
@@ -43,7 +44,7 @@ export const useLocalStorageWithEncryption = <T>(
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {
     try {
-      let item = localStorage.getItem(key)
+      let item = client ? localStorage.getItem(key) : null
       if (item?.includes(encryptedPrefix)) {
         item = decryptValue(item)
       }
@@ -65,10 +66,11 @@ export const useLocalStorageWithEncryption = <T>(
       const valueToStore =
         value instanceof Function ? value(storedValue) : value
       setStoredValue(valueToStore)
-      window.localStorage.setItem(
-        key,
-        encryptValue(JSON.stringify(valueToStore)),
-      )
+      client &&
+        window.localStorage.setItem(
+          key,
+          encryptValue(JSON.stringify(valueToStore)),
+        )
     } catch (error) {
       console.log(error)
     }
@@ -76,7 +78,7 @@ export const useLocalStorageWithEncryption = <T>(
 
   const removeValue = () => {
     setStoredValue(null)
-    window.localStorage.removeItem(key)
+    client && window.localStorage.removeItem(key)
   }
 
   return [storedValue, setValue, removeValue]

@@ -11,6 +11,8 @@ interface CicilOptionFormProps {
   name: string
   handleChange: (name: string, value: any) => void
   value?: string
+  labelWithCta?: string
+  setIsOpenEducationalPopup?: (value: boolean) => void
 }
 
 export function CicilOptionForm({
@@ -18,10 +20,26 @@ export function CicilOptionForm({
   name,
   handleChange,
   value,
+  labelWithCta,
+  setIsOpenEducationalPopup,
 }: CicilOptionFormProps) {
   return (
     <div style={{ marginTop: '24px' }}>
-      <p className={styles.titleText}>Pembayaran cicilan pertama</p>
+      {labelWithCta && labelWithCta.length ? (
+        <div className={styles.wrapperTextWithCta}>
+          <p className={styles.titleText}>Pembayaran cicilan pertama</p>
+          <p
+            className={styles.textWithCta}
+            onClick={() =>
+              setIsOpenEducationalPopup && setIsOpenEducationalPopup(true)
+            }
+          >
+            {labelWithCta}
+          </p>
+        </div>
+      ) : (
+        <p className={styles.titleText}>Pembayaran cicilan pertama</p>
+      )}
       <div className={styles.cicilOptionForm}>
         <Row>
           <Button
@@ -39,7 +57,7 @@ export function CicilOptionForm({
             }}
             data-testid={elementId.Field.ADDM}
           >
-            <p className={styles.buttonOptionText}>Bayar di Muka</p>
+            <p className={styles.buttonOptionText}>Bayar di Muka (ADDM)</p>
             <p className={styles.titleTextDP}>Dibayar bersama dengan DP</p>
           </Button>
         </Row>
@@ -59,7 +77,7 @@ export function CicilOptionForm({
             }}
             data-testid={elementId.Field.ADDB}
           >
-            <p className={styles.buttonOptionText}>Bayar di Belakang</p>
+            <p className={styles.buttonOptionText}>Bayar di Belakang (ADDB)</p>
             <p className={styles.titleTextDP}>Dibayar sebulan setelah DP</p>
           </Button>
         </Row>

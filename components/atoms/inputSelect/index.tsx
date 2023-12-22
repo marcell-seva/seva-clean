@@ -242,15 +242,16 @@ const forwardedInputSelect = <T extends FormControlValue>(
                   [styles.dropdownItem]: true,
                   [styles.dropdownItemTextContainer]: !!(
                     item as OptionWithText<string>
-                  ).text,
-                  [styles.disabled]: (item as OptionWithImage<string>).disabled,
+                  )?.text,
+                  [styles.disabled]: (item as OptionWithImage<string>)
+                    ?.disabled,
                   [styles.active]:
                     highlightSelectedOption &&
                     (item.value === value || item.label === value),
                 })}
-                key={index}
+                key={item?.value?.toString() ?? index}
                 onMouseDown={
-                  (item as OptionWithImage<string>).disabled
+                  (item as OptionWithImage<string>)?.disabled
                     ? (e) => onFocus(e)
                     : () => onChooseItem(item)
                 }
@@ -258,16 +259,16 @@ const forwardedInputSelect = <T extends FormControlValue>(
                   optionTestid ? optionTestid + item.value : undefined
                 }
               >
-                {(item as OptionWithText<string>).text && (
+                {(item as OptionWithText<string>)?.text && (
                   <p className={styles.dropdownItemAdditionalText}>
-                    {(item as OptionWithText<string>).text}
+                    {(item as OptionWithText<string>)?.text}
                   </p>
                 )}
 
                 {showDropdownImage && (
                   <Image
                     src={(item as OptionWithImage<string>)?.image || ''}
-                    alt={item.label}
+                    alt={item?.label}
                     className={styles.dropdownItemImage}
                     width="67"
                     height="48"
@@ -278,17 +279,17 @@ const forwardedInputSelect = <T extends FormControlValue>(
                   className={clsx({
                     [styles.dropdownItemText]: true,
                     [styles.disabled]: (item as OptionWithImage<string>)
-                      .disabled,
+                      ?.disabled,
                   })}
                 >
-                  {item.label}
-                  {(item as OptionWithImage<string>).disabled && (
+                  {item?.label}
+                  {(item as OptionWithImage<string>)?.disabled && (
                     <p
                       className={clsx({
                         [styles.dropdownItemText]: true,
                         [styles.disableDropdownText]: true,
                         [styles.disabled]: (item as OptionWithImage<string>)
-                          .disabled,
+                          ?.disabled,
                       })}
                     >
                       {disableDropdownText}

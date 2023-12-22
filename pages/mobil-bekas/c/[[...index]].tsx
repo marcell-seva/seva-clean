@@ -181,10 +181,10 @@ const UsedCarResultPage = ({
         carModel={null}
         carModelDetails={null}
         carVariantDetails={null}
-        recommendation={meta.carRecommendations.carRecommendations}
+        recommendation={meta?.carRecommendations?.carRecommendations}
         recommendationToyota={[]}
         detail={null}
-        totalItems={meta.carRecommendations.totalItems}
+        totalItems={meta?.carRecommendations?.totalItems}
         cityList={cityList}
         brandList={brandList}
       >

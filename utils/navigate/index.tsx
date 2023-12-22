@@ -1,4 +1,3 @@
-import Router from 'next/router'
 import { SessionStorageKey } from 'utils/enum'
 import { saveSessionStorage } from 'utils/handler/sessionStorage'
 import { creditQualificationUrl } from 'utils/helpers/routes'
@@ -228,7 +227,11 @@ export const navigateToKK = (
   if (navigateWithWindowLocation) {
     return (window.location.href = creditQualificationUrl)
   } else {
-    return Router.push({ pathname: creditQualificationUrl, ...option })
+    import('next/router')
+      .then((mod) => mod.default)
+      .then((Router) =>
+        Router.push({ pathname: creditQualificationUrl, ...option }),
+      )
   }
 }
 

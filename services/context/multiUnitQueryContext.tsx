@@ -15,6 +15,7 @@ export const initEmptyData = {
   dob: '',
   multikkResponse: {} as SendMultiKualifikasiKreditResponse,
   filteredCarList: [] as MultKKCarRecommendation[],
+  trxCode: '',
 }
 
 export type MultiUnitQueryContextType = {

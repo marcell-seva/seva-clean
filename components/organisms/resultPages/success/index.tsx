@@ -1,26 +1,19 @@
 /* eslint-disable react/no-children-prop */
 import React, { useEffect, useState } from 'react'
-// import { useHistory } from 'react-router-dom'
-
 import { getSessionStorage } from 'utils/handler/sessionStorage'
 import styles from 'styles/components/organisms/success.module.scss'
 import urls from 'helpers/urls'
 import clsx from 'clsx'
 import {
   CreditQualificationReviewParam,
-  trackKualifikasiKreditDownloadAndroidClick,
-  trackKualifikasiKreditDownloadIosClick,
   trackKualifikasiKreditSuccessResultPageView,
-  trackKualifikasiKreditWaDirectClick,
 } from 'helpers/amplitude/seva20Tracking'
 import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
 import dayjs from 'dayjs'
-import endpoints from 'helpers/endpoints'
-import { AxiosResponse } from 'axios'
-import { CityOtrOption } from 'utils/types'
 import {
-  AnnouncementBoxDataType,
   CustomerPreApprovalResponse,
+  SimpleCarVariantDetail,
+  trackDataCarType,
 } from 'utils/types/utils'
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { getLocalStorage } from 'utils/handler/localStorage'
@@ -38,6 +31,11 @@ import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import dynamic from 'next/dynamic'
 import { getCities, getAnnouncementBox as gab } from 'services/api'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import { useUtils } from 'services/context/utilsContext'
 
 const ApprovalImageAcc = '/revamp/illustration/approve-acc.webp'
 const ApprovalImageTaf = '/revamp/illustration/approve-taf.webp'
@@ -46,11 +44,8 @@ const LogoAppStore = '/revamp/icon/app-store.webp'
 
 export const CreditQualificationSuccess = () => {
   const titleText = 'Instant Approval Kamu Disetujui'
-  const preApprovalResultData: any = getLocalStorage(
-    LocalStorageKey.PreApprovalResult,
-  )
-  const dateText = preApprovalResultData?.fincoResultAt
-
+  const [preApprovalResult] = useLocalStorage('preApprovalResult', '')
+  const dateText = preApprovalResult?.fincoResultAt
   const dateIAResult =
     Number(
       dayjs(dateText).add(7, 'days').format('DD MMMM YYYY').substring(0, 2),
@@ -64,40 +59,35 @@ export const CreditQualificationSuccess = () => {
     ` tanpa adanya perubahan data apapun. Agen SEVA akan segera membantu proses pembelian mobilmu.`
   const [isActive, setIsActive] = useState(false)
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
-  const [cityListApi, setCityListApi] = useState<Array<CityOtrOption>>([])
   const [resultPreApproval, setResultPreApproval]: any =
     useState<CustomerPreApprovalResponse>()
-  // const history = useHistory()
-  const [showAnnouncementBox, setShowAnnouncementBox] = useState<
-    boolean | null
-  >(
-    getSessionStorage(
-      getToken()
-        ? SessionStorageKey.ShowWebAnnouncementLogin
-        : SessionStorageKey.ShowWebAnnouncementNonLogin,
-    ) ?? true,
-  )
+  const { dataAnnouncementBox, cities } = useUtils()
+  const { showAnnouncementBox, saveShowAnnouncementBox } =
+    useAnnouncementBoxContext()
   const [flag, setFlag] = useState<TrackerFlag>(TrackerFlag.Init)
   const [customerYearBorn, setCustomerYearBorn] = useState('')
-
-  const checkCitiesData = (): void => {
-    if (cityListApi.length === 0) {
-      getCities().then((res) => {
-        setCityListApi(res)
-      })
-    }
-  }
+  const dataCar: trackDataCarType | null = getSessionStorage(
+    SessionStorageKey.PreviousCarDataBeforeLogin,
+  )
+  const referralCodeFromUrl: string | null = getLocalStorage(
+    LocalStorageKey.referralTemanSeva,
+  )
 
   const getAnnouncementBox = () => {
-    gab({
-      headers: {
-        'is-login': getToken() ? 'true' : 'false',
-      },
-    }).then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-      if (res.data === undefined) {
-        setShowAnnouncementBox(false)
+    if (dataAnnouncementBox) {
+      const isShowAnnouncement = getSessionStorage(
+        getToken()
+          ? SessionStorageKey.ShowWebAnnouncementLogin
+          : SessionStorageKey.ShowWebAnnouncementNonLogin,
+      )
+      if (typeof isShowAnnouncement !== 'undefined') {
+        saveShowAnnouncementBox(isShowAnnouncement as boolean)
+      } else {
+        saveShowAnnouncementBox(true)
       }
-    })
+    } else {
+      saveShowAnnouncementBox(false)
+    }
   }
 
   const checkDataResultPreApproval = () => {
@@ -105,11 +95,53 @@ export const CreditQualificationSuccess = () => {
       LocalStorageKey.resultPreApproval,
     )
     if (response !== null) setResultPreApproval(response)
-    // else history.push('/kalkulator-kredit')
   }
-
+  const trackCountly = async () => {
+    let temanSevaStatus = 'No'
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
+    trackEventCountly(CountlyEventNames.WEB_WA_DIRECT_CLICK, {
+      PAGE_ORIGINATION: resultPreApproval?.leadOrigination
+        ?.toLowerCase()
+        .includes('multi')
+        ? 'Instant Approval (Multi)'
+        : 'Instant Approval (Reg)',
+      SOURCE_BUTTON: 'CTA button Hubungi Agen SEVA',
+      CAR_BRAND: resultPreApproval?.modelDetail.brand,
+      CAR_MODEL: resultPreApproval?.modelDetail.model,
+      CAR_VARIANT: resultPreApproval?.variantDetail.name,
+      PELUANG_KREDIT_BADGE:
+        dataCar?.PELUANG_KREDIT_BADGE &&
+        dataCar?.PELUANG_KREDIT_BADGE === 'Green'
+          ? 'Mudah disetujui'
+          : dataCar?.PELUANG_KREDIT_BADGE &&
+            dataCar?.PELUANG_KREDIT_BADGE === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      TENOR_OPTION: resultPreApproval?.loanTenure + ' Tahun',
+      TENOR_RESULT:
+        dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Green'
+          ? 'Mudah disetujui'
+          : dataCar?.TENOR_RESULT && dataCar?.TENOR_RESULT === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      KK_RESULT: 'Null',
+      IA_RESULT: 'Approved',
+      TEMAN_SEVA_STATUS: temanSevaStatus,
+      INCOME_LOAN_CALCULATOR: 'Null',
+      INCOME_KUALIFIKASI_KREDIT: 'Null',
+      INCOME_CHANGE: 'Null',
+      OCCUPATION: 'Null',
+    })
+  }
   const redirectWhatsapp = async () => {
-    trackKualifikasiKreditWaDirectClick(getDataForTracker())
+    trackCountly()
     const loanTenure = resultPreApproval?.loanTenure
     const promoCode: string | undefined = resultPreApproval?.promoCode
     const brandModel = `${resultPreApproval?.modelDetail?.brand} ${resultPreApproval?.modelDetail?.model} ${resultPreApproval?.variantDetail?.name}`
@@ -137,12 +169,43 @@ export const CreditQualificationSuccess = () => {
     window.open(`${whatsAppUrl}?text=${encodeURI(finalMessage)}`, '_blank')
   }
 
+  const [simpleCarVariantDetails] =
+    useLocalStorage<SimpleCarVariantDetail | null>(
+      LocalStorageKey.SimpleCarVariantDetails,
+      null,
+    )
+
   const onClickPlayStore = () => {
-    trackKualifikasiKreditDownloadAndroidClick(getDataForTracker())
+    sendDataTrackerClickDownloadApps('Android')
+    window.open(urls.googlePlayHref, '_blank')
   }
 
   const onClickAppStore = () => {
-    trackKualifikasiKreditDownloadIosClick(getDataForTracker())
+    sendDataTrackerClickDownloadApps('IOS')
+    window.open(urls.appStoreHerf, '_blank')
+  }
+
+  const sendDataTrackerClickDownloadApps = (platform: string) => {
+    const dataJourney =
+      sessionStorage.getItem(SessionStorageKey.PageReferrerIA) || ''
+    const origination =
+      dataJourney === 'Multi Unit Kualifikasi Kredit Result'
+        ? 'Multi IA Finish Page'
+        : 'Instant Approval Finish Page'
+    const data = {
+      PAGE_ORIGINATION: origination,
+      CAR_BRAND: resultPreApproval?.modelDetail.brand ?? '',
+      CAR_MODEL: resultPreApproval?.modelDetail.model ?? '',
+      CAR_VARIANT: resultPreApproval?.variantDetail.name ?? '',
+      TENOR_OPTION: `${simpleCarVariantDetails?.loanTenure ?? 0} Tahun`,
+      PLATFORM: platform,
+      PAGE_REFERRER:
+        sessionStorage.getItem(SessionStorageKey.PageReferrerIA) || '',
+    }
+    trackEventCountly(
+      CountlyEventNames.WEB_INSTANT_APPROVAL_DOWNLOAD_APP_CLICK,
+      data,
+    )
   }
 
   const DownloadApp: React.FC = (): JSX.Element => (
@@ -158,6 +221,8 @@ export const CreditQualificationSuccess = () => {
           src={LogoGooglePlay}
           alt="google-play"
           className={styles.logoGooglePlay}
+          width={152}
+          height={46}
         />
       </a>
       <a
@@ -171,6 +236,8 @@ export const CreditQualificationSuccess = () => {
           src={LogoAppStore}
           alt="app-store"
           className={styles.logoAppStore}
+          width={152}
+          height={46}
         />
       </a>
     </div>
@@ -265,11 +332,22 @@ export const CreditQualificationSuccess = () => {
       })
   }
 
+  const sendDataTracker = () => {
+    const data = {
+      CAR_BRAND: resultPreApproval?.modelDetail.brand ?? '',
+      CAR_MODEL: resultPreApproval?.modelDetail.model ?? '',
+      CAR_VARIANT: resultPreApproval?.variantDetail.name ?? '',
+      INSTANT_APPROVAL_RESULT: resultPreApproval?.status,
+      FINANCING_COMPANY: resultPreApproval?.finco,
+    }
+    trackEventCountly(
+      CountlyEventNames.WEB_INSTANT_APPROVAL_PAGE_RESULT_VIEW,
+      data,
+    )
+  }
+
   useEffect(() => {
-    // checkDataResultPreApproval()
     checkDataResultPreApproval()
-    checkCitiesData()
-    getAnnouncementBox()
     if (!!getToken()) {
       getCurrentUserInfo()
     }
@@ -288,10 +366,16 @@ export const CreditQualificationSuccess = () => {
       !!customerYearBorn &&
       flag === TrackerFlag.Init
     ) {
+      sendDataTracker()
       trackAmplitudeAndMoengagePageView()
       setFlag(TrackerFlag.Sent)
     }
   }, [resultPreApproval, customerYearBorn])
+
+  useEffect(() => {
+    getAnnouncementBox()
+  }, [dataAnnouncementBox])
+
   return (
     <div className={styles.bundle}>
       <HeaderMobile
@@ -301,8 +385,9 @@ export const CreditQualificationSuccess = () => {
           position: 'fixed',
         }}
         emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
-        setShowAnnouncementBox={setShowAnnouncementBox}
+        setShowAnnouncementBox={saveShowAnnouncementBox}
         isShowAnnouncementBox={showAnnouncementBox}
+        pageOrigination="Instant Approval - Approved"
       />
       <div
         className={clsx({
@@ -316,12 +401,15 @@ export const CreditQualificationSuccess = () => {
           <div className={styles.bundleImage}>
             <Image
               src={
-                preApprovalResultData?.finco.toLowerCase() === 'acc'
+                preApprovalResult?.finco &&
+                preApprovalResult?.finco.toLowerCase() === 'acc'
                   ? ApprovalImageAcc
                   : ApprovalImageTaf
               }
               alt="approval-image"
               className={styles.approvalImage}
+              width={200}
+              height={134}
             />
           </div>
           <h2 className={styles.titleText}>
@@ -348,12 +436,14 @@ export const CreditQualificationSuccess = () => {
             />
           </div>
         </div>
+        <FooterMobile pageOrigination="Instant Approval - Approved" />
       </div>
-      <FooterMobile />
       <CitySelectorModal
         isOpen={isOpenCitySelectorModal}
         onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
-        cityListFromApi={cityListApi}
+        cityListFromApi={cities}
+        pageOrigination="Instant Approval - Approved"
+        sourceButton="Location Icon (Navbar)"
       />
     </div>
   )

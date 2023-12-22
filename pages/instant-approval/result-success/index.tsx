@@ -2,10 +2,9 @@
 import Seo from 'components/atoms/seo'
 import { CreditQualificationSuccess } from 'components/organisms/resultPages/success'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import {
   getCities,
-  getMetaTagData,
   getMobileFooterMenu,
   getMobileHeaderMenu,
   getAnnouncementBox as gab,
@@ -63,6 +62,11 @@ const CreditQualificationPageSuccess = ({
 
   return (
     <>
+      <Seo
+        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
+        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
+        image={defaultSeoImage}
+      />
       <div className={styles.container}>
         <CreditQualificationSuccess />
       </div>

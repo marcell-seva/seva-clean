@@ -7,13 +7,15 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  @include mobileView;
 }
 
 .content {
-  margin-top: 54px; // page header height is 54px
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 480px;
+  @include mobileView;
+  @include sm {
+    margin: 54px auto 0; // page header height is 54px
+  }
+  margin-top: 54px;
   padding: 28px 16px 23px;
   display: flex;
   flex-direction: column;
@@ -52,13 +54,13 @@
 }
 
 .yellowChip {
-  background: #FFF5C0;
-  color: #D88E00;
+  background: #fff5c0;
+  color: #d88e00;
 }
 
 .redChip {
-  background: #FDF0E4;
-  color: #D77400;
+  background: #fdf0e4;
+  color: #d77400;
 }
 
 .headerIconLeft {
@@ -151,7 +153,8 @@
   margin-top: 16px;
 }
 
-.mainImageIllustration {}
+.mainImageIllustration {
+}
 
 .carImage {
   position: absolute;

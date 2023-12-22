@@ -4,7 +4,7 @@ import {
   trackPromoBannerSeeAllClick,
   trackSeeAllPromoClick,
 } from 'helpers/amplitude/seva20Tracking'
-import React from 'react'
+import React, { useMemo } from 'react'
 import styles from 'styles/components/organisms/summary.module.scss'
 
 const promoBannerTSO = '/revamp/illustration/PromoTSO.webp'
@@ -20,12 +20,16 @@ import {
   IconTransmission,
   IconCar,
 } from 'components/atoms'
-import { CarVariantRecommendation, trackDataCarType } from 'utils/types/utils'
 import {
   OTOCarResultsUrl,
   OTOVariantListUrl,
   variantListUrl,
 } from 'utils/helpers/routes'
+import {
+  CarVariantRecommendation,
+  WordpressPromoData,
+  trackDataCarType,
+} from 'utils/types/utils'
 import elementId from 'helpers/elementIds'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
@@ -46,6 +50,7 @@ type PromoSectionProps = {
   onPage?: string
   setSelectedTabValue?: (value: string) => void
   isOTO?: boolean
+  dataFromApi?: WordpressPromoData[]
 }
 
 const PromoSection = ({
@@ -57,6 +62,7 @@ const PromoSection = ({
   onPage,
   setSelectedTabValue,
   isOTO = false,
+  dataFromApi,
 }: PromoSectionProps) => {
   const router = useRouter()
   const brand = router.query.brand as string
@@ -126,6 +132,191 @@ const PromoSection = ({
       PAGE_ORIGINATION: 'PDP',
     })
   }
+
+  const publishedPromo = useMemo(() => {
+    if (dataFromApi && dataFromApi.length > 0) {
+      return dataFromApi.filter(
+        (item) =>
+          item.publish_status === 'publish' &&
+          !!item.image_url &&
+          !!item.permalink,
+      )
+    } else {
+      return []
+    }
+  }, [dataFromApi])
+
+  const renderListForHomepage = () => {
+    return (
+      <>
+        {publishedPromo.map((item, index) => {
+          return (
+            <div
+              className={styles.bannerPromo}
+              onClick={() => {
+                trackCountlyClicPromo(item.permalink, index + 1)
+                window.open(item.permalink, '_blank')
+              }}
+              data-testid={elementId.Homepage.Promo.DetailPromo}
+              key={index}
+            >
+              <Image
+                src={item.image_url}
+                className={styles.promoBannerSmall}
+                height={156}
+                width={208}
+                alt={item.title ?? 'Promo Illustration'}
+                loading="lazy"
+              />
+
+              <div
+                style={{
+                  backgroundImage: `linear-gradient(to bottom, rgba(255,0,0,0), black)`,
+                }}
+              >
+                <p className={styles.textPromoBanner}>
+                  Lihat detail
+                  <span className={styles.spacingChevronIcon}>
+                    <IconChevronRight width={16} height={16} color="#FFFFFF" />
+                  </span>
+                </p>
+              </div>
+            </div>
+          )
+        })}
+      </>
+    )
+  }
+
+  const renderListWithHardcodedData = () => {
+    return (
+      <>
+        {enablePromoCumaDiSeva ? (
+          <div
+            className={styles.bannerPromo}
+            onClick={() => {
+              if (onPage === 'VariantListPage') {
+                onButtonClick && onButtonClick(true)
+                setPromoName && setPromoName('promo1')
+                trackCountlePromoCLick('Promo Cuma di SEVA', 1)
+              } else {
+                const Page_Direction_URL =
+                  'https://www.seva.id/info/promo/cuma-di-seva/'
+                window.open(Page_Direction_URL, '_blank')
+              }
+            }}
+            data-testid={
+              onPage === 'VariantListPage'
+                ? elementId.PDP.CTA.LihatDetail
+                : elementId.Homepage.Promo.DetailPromo
+            }
+          >
+            <Image
+              src={promoBannerCumaDiSEVA}
+              className={styles.promoBannerSmall}
+              height={156}
+              width={208}
+              alt="Promo Cuma di SEVA dapat Asuransi Comprehensive dan Cashback"
+              loading="lazy"
+            />
+            <div>
+              <p className={styles.textPromoBanner}>
+                Lihat detail{' '}
+                <span className={styles.spacingChevronIcon}>
+                  <IconChevronRight width={16} height={16} color="#FFFFFF" />
+                </span>
+              </p>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+        <div
+          className={styles.bannerPromo}
+          onClick={() => {
+            if (onPage === 'VariantListPage') {
+              onButtonClick && onButtonClick(true)
+              setPromoName && setPromoName('promo2')
+              trackCountlePromoCLick(
+                'Toyota Spektakuler',
+                enablePromoCumaDiSeva ? 2 : 1,
+              )
+            } else {
+              const Page_Direction_URL =
+                'https://www.seva.id/info/promo/toyota-spektakuler/'
+              trackCountlyClicPromo(Page_Direction_URL, 1)
+              window.open(Page_Direction_URL, '_blank')
+            }
+          }}
+          data-testid={elementId.Homepage.Promo.DetailPromo}
+        >
+          <Image
+            src={promoBannerTSO}
+            className={styles.promoBannerSmall}
+            height={156}
+            width={208}
+            alt="Promo Toyota Spektakuler Hemat Puluhan Juta"
+            loading="lazy"
+          />
+
+          <div
+            style={{
+              backgroundImage: `linear-gradient(to bottom, rgba(255,0,0,0), black)`,
+            }}
+          >
+            <p className={styles.textPromoBanner}>
+              Lihat detail
+              <span className={styles.spacingChevronIcon}>
+                <IconChevronRight width={16} height={16} color="#FFFFFF" />
+              </span>
+            </p>
+          </div>
+        </div>
+        <div
+          className={styles.bannerPromo}
+          onClick={() => {
+            if (onPage === 'VariantListPage') {
+              onButtonClick && onButtonClick(true)
+              setPromoName && setPromoName('promo3')
+              trackCountlePromoCLick(
+                'Promo Trade-In Daihatsu',
+                enablePromoCumaDiSeva ? 3 : 2,
+              )
+            } else {
+              const Page_Direction_URL =
+                'https://www.seva.id/info/promo/promo-trade-in-daihatsu/'
+              trackCountlyClicPromo(Page_Direction_URL, 1)
+              window.open(Page_Direction_URL, '_blank')
+            }
+          }}
+          data-testid={elementId.Homepage.Promo.DetailPromo}
+        >
+          <Image
+            src={promoTradeIn}
+            className={styles.promoBannerSmall}
+            height={156}
+            width={208}
+            alt="Promo Daihatsu Tukar Mobil Kamu Dengan Mobil Daihatsu Baru"
+            loading="lazy"
+          />
+
+          <div
+            style={{
+              backgroundImage: `linear-gradient(to bottom, rgba(255,0,0,0), black)`,
+            }}
+          >
+            <p className={styles.textPromoBanner}>
+              Lihat detail
+              <span className={styles.spacingChevronIcon}>
+                <IconChevronRight width={16} height={16} color="#FFFFFF" />
+              </span>
+            </p>
+          </div>
+        </div>
+      </>
+    )
+  }
+
   return (
     <div>
       {onPage === 'VariantListPage' && (
@@ -257,138 +448,9 @@ const PromoSection = ({
             )}
           </div>
           <div className={styles.rowScrollHorizontal}>
-            {enablePromoCumaDiSeva ? (
-              <div
-                className={styles.bannerPromo}
-                onClick={() => {
-                  if (onPage === 'VariantListPage') {
-                    onButtonClick && onButtonClick(true)
-                    setPromoName && setPromoName('promo1')
-                    trackCarVariantBannerPromoClick(dataForAmplitude)
-                    trackCountlePromoCLick('Promo Cuma di SEVA', 1)
-                  } else {
-                    const Page_Direction_URL =
-                      'https://www.seva.id/info/promo/cuma-di-seva/'
-                    trackPromoBannerClick({ Page_Direction_URL })
-                    window.open(Page_Direction_URL, '_blank')
-                  }
-                }}
-                data-testid={
-                  onPage === 'VariantListPage'
-                    ? elementId.PDP.CTA.LihatDetail
-                    : elementId.Homepage.Promo.DetailPromo
-                }
-              >
-                <Image
-                  src={promoBannerCumaDiSEVA}
-                  className={styles.promoBannerSmall}
-                  height={156}
-                  width={208}
-                  alt="Promo Cuma di SEVA dapat Asuransi Comprehensive dan Cashback"
-                  loading="lazy"
-                />
-                <div>
-                  <p className={styles.textPromoBanner}>
-                    Lihat detail{' '}
-                    <span className={styles.spacingChevronIcon}>
-                      <IconChevronRight
-                        width={16}
-                        height={16}
-                        color="#FFFFFF"
-                      />
-                    </span>
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <></>
-            )}
-            <div
-              className={styles.bannerPromo}
-              onClick={() => {
-                if (onPage === 'VariantListPage') {
-                  onButtonClick && onButtonClick(true)
-                  setPromoName && setPromoName('promo2')
-                  trackCountlePromoCLick(
-                    'Toyota Spektakuler',
-                    enablePromoCumaDiSeva ? 2 : 1,
-                  )
-                  trackCarVariantBannerPromoClick(dataForAmplitude)
-                } else {
-                  const Page_Direction_URL =
-                    'https://www.seva.id/info/promo/toyota-spektakuler/'
-                  trackPromoBannerClick({ Page_Direction_URL })
-                  trackCountlyClicPromo(Page_Direction_URL, 1)
-                  window.open(Page_Direction_URL, '_blank')
-                }
-              }}
-              data-testid={elementId.Homepage.Promo.DetailPromo}
-            >
-              <Image
-                src={promoBannerTSO}
-                className={styles.promoBannerSmall}
-                height={156}
-                width={208}
-                alt="Promo Toyota Spektakuler Hemat Puluhan Juta"
-                loading="lazy"
-              />
-
-              <div
-                style={{
-                  backgroundImage: `linear-gradient(to bottom, rgba(255,0,0,0), black)`,
-                }}
-              >
-                <p className={styles.textPromoBanner}>
-                  Lihat detail
-                  <span className={styles.spacingChevronIcon}>
-                    <IconChevronRight width={16} height={16} color="#FFFFFF" />
-                  </span>
-                </p>
-              </div>
-            </div>
-            <div
-              className={styles.bannerPromo}
-              onClick={() => {
-                if (onPage === 'VariantListPage') {
-                  onButtonClick && onButtonClick(true)
-                  setPromoName && setPromoName('promo3')
-                  trackCountlePromoCLick(
-                    'Promo Trade-In Daihatsu',
-                    enablePromoCumaDiSeva ? 3 : 2,
-                  )
-                  trackCarVariantBannerPromoClick(dataForAmplitude)
-                } else {
-                  const Page_Direction_URL =
-                    'https://www.seva.id/info/promo/promo-trade-in-daihatsu/'
-                  trackPromoBannerClick({ Page_Direction_URL })
-                  trackCountlyClicPromo(Page_Direction_URL, 1)
-                  window.open(Page_Direction_URL, '_blank')
-                }
-              }}
-              data-testid={elementId.Homepage.Promo.DetailPromo}
-            >
-              <Image
-                src={promoTradeIn}
-                className={styles.promoBannerSmall}
-                height={156}
-                width={208}
-                alt="Promo Daihatsu Tukar Mobil Kamu Dengan Mobil Daihatsu Baru"
-                loading="lazy"
-              />
-
-              <div
-                style={{
-                  backgroundImage: `linear-gradient(to bottom, rgba(255,0,0,0), black)`,
-                }}
-              >
-                <p className={styles.textPromoBanner}>
-                  Lihat detail
-                  <span className={styles.spacingChevronIcon}>
-                    <IconChevronRight width={16} height={16} color="#FFFFFF" />
-                  </span>
-                </p>
-              </div>
-            </div>
+            {onPage === 'Homepage'
+              ? renderListForHomepage()
+              : renderListWithHardcodedData()}
           </div>
         </div>
       )}

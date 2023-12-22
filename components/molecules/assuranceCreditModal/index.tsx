@@ -9,13 +9,14 @@ import { savePageBeforeLogin } from 'utils/loginUtils'
 import { IconClose } from 'components/atoms'
 import { FormLCState, SpecialRateList } from 'utils/types/utils'
 import elementId from 'helpers/elementIds'
-import { SessionStorageKey } from 'utils/enum'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { LoanRank } from 'utils/types/models'
 import { saveSessionStorage } from 'utils/handler/sessionStorage'
 import { navigateToKK } from 'utils/navigate'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { Divider } from 'antd'
+import { saveLocalStorage } from 'utils/handler/localStorage'
 const Modal = dynamic(() => import('antd/lib/modal'), { ssr: false })
 
 const MainImage = '/revamp/illustration/loan-calculator.webp'
@@ -57,8 +58,8 @@ export const AssuranceCreditModal: React.FC<AssuranceCreditModalProps> = ({
   }
 
   const handleClickCredit = () => {
-    saveSessionStorage(
-      SessionStorageKey.KalkulatorKreditForm,
+    saveLocalStorage(
+      LocalStorageKey.KalkulatorKreditForm,
       JSON.stringify(formData),
     )
     saveSessionStorage(SessionStorageKey.PreviousSourceSectionLogin, 'Null')

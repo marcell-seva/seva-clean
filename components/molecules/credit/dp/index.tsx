@@ -8,11 +8,16 @@ import {
 } from 'utils/types/utils'
 import clsx from 'clsx'
 import elementId from 'helpers/elementIds'
-import { SessionStorageKey } from 'utils/enum'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { getLocalStorage } from 'utils/handler/localStorage'
+import { FinancialQuery } from 'utils/types/props'
+import { useRouter } from 'next/router'
 
 interface DpFormProps {
   label: string
+  labelWithCta?: string
   value: number
   percentage?: number
   onChange: (
@@ -40,10 +45,14 @@ interface DpFormProps {
   emitOnAfterChangeDpSlider?: () => void
   finalMinInputDp: number
   finalMaxInputDp: number
+  setIsOpenEducationalPopup?: (value: boolean) => void
+  onCalculationResult?: boolean
+  setIsChangedMaxDp?: (value: boolean) => void
 }
 
 const DpForm: React.FC<DpFormProps> = ({
   label,
+  labelWithCta,
   value,
   onChange,
   carPriceMinusDiscount,
@@ -59,7 +68,12 @@ const DpForm: React.FC<DpFormProps> = ({
   emitOnFocusDpAmountField,
   finalMinInputDp,
   finalMaxInputDp,
+  setIsOpenEducationalPopup,
+  onCalculationResult = false,
+  setIsChangedMaxDp,
 }) => {
+  const router = useRouter()
+  const { v } = router.query
   const formatCurrency = (value: number): string => {
     return `Rp${value.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}`
   }
@@ -68,17 +82,29 @@ const DpForm: React.FC<DpFormProps> = ({
     formatCurrency(value),
   )
 
-  const kkForm: FormLCState | null = getSessionStorage(
-    SessionStorageKey.KalkulatorKreditForm,
+  const kkForm: FormLCState | null = getLocalStorage(
+    LocalStorageKey.KalkulatorKreditForm,
+  )
+  const financialData: FinancialQuery | null = getLocalStorage(
+    LocalStorageKey.FinancialData,
   )
 
   useEffect(() => {
     setIsDpTooLow(false)
     setIsDpExceedLimit(false)
     if (isAutofillValueFromCreditQualificationData) {
-      const initialDpValue = kkForm?.downPaymentAmount
-        ? parseInt(kkForm?.downPaymentAmount)
-        : 0
+      const dpValue =
+        v !== '1' && financialData?.downPaymentAmount
+          ? Number(financialData.downPaymentAmount)
+          : kkForm?.downPaymentAmount
+          ? parseInt(kkForm?.downPaymentAmount)
+          : 0
+      const initialDpValue =
+        finalMinInputDp > 0 && finalMinInputDp > dpValue
+          ? finalMinInputDp
+          : finalMaxInputDp < dpValue
+          ? finalMaxInputDp
+          : dpValue
       const carOtrFromStorage = parseInt(
         kkForm?.variant?.otr.replaceAll('Rp', '').replaceAll('.', '') ?? '0',
       )
@@ -93,16 +119,49 @@ const DpForm: React.FC<DpFormProps> = ({
       )
       handleChange(name, initialDpValue)
     } else {
-      const initialDpValue = carPriceMinusDiscount * 0.2
-      setFormattedValue(formatCurrency(initialDpValue))
-      onChange(
-        initialDpValue,
-        calculatePercentage(initialDpValue, carPriceMinusDiscount),
-        getDpPercentageByMapping(initialDpValue),
-      )
-      handleChange(name, initialDpValue)
+      const dpValueKKForm =
+        v !== '1' && financialData?.downPaymentAmount
+          ? Number(financialData.downPaymentAmount)
+          : kkForm?.downPaymentAmount
+          ? parseInt(kkForm?.downPaymentAmount)
+          : 0
+      if (onCalculationResult) {
+        const initialDpValue =
+          dpValueKKForm > finalMaxInputDp
+            ? finalMaxInputDp
+            : dpValueKKForm < finalMinInputDp
+            ? finalMinInputDp
+            : dpValueKKForm
+        const maksDp = finalMaxInputDp
+        if (dpValueKKForm > maksDp) {
+          setIsChangedMaxDp && setIsChangedMaxDp(true)
+        } else if (dpValueKKForm < initialDpValue) {
+          setIsChangedMaxDp && setIsChangedMaxDp(true)
+        }
+        setFormattedValue(formatCurrency(initialDpValue))
+        onChange(
+          initialDpValue,
+          calculatePercentage(initialDpValue, carPriceMinusDiscount),
+          getDpPercentageByMapping(initialDpValue),
+        )
+        handleChange(name, initialDpValue)
+      } else {
+        const initialDpValue =
+          dpValueKKForm > finalMaxInputDp
+            ? finalMaxInputDp
+            : dpValueKKForm < finalMinInputDp
+            ? finalMinInputDp
+            : dpValueKKForm
+        setFormattedValue(formatCurrency(initialDpValue))
+        onChange(
+          initialDpValue,
+          calculatePercentage(initialDpValue, carPriceMinusDiscount),
+          getDpPercentageByMapping(initialDpValue),
+        )
+        handleChange(name, initialDpValue)
+      }
     }
-  }, [carPriceMinusDiscount])
+  }, [carPriceMinusDiscount, finalMaxInputDp, finalMinInputDp])
 
   const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputtedValue = event.target.value
@@ -157,7 +216,21 @@ const DpForm: React.FC<DpFormProps> = ({
 
   return (
     <div className={styles.wrapper}>
-      <label className={styles.titleText}>{label}</label>
+      {labelWithCta && labelWithCta.length !== 0 ? (
+        <>
+          <label className={styles.titleText}>{label}</label>
+          <label
+            className={styles.titleWithCtaText}
+            onClick={() =>
+              setIsOpenEducationalPopup && setIsOpenEducationalPopup(true)
+            }
+          >
+            {labelWithCta}
+          </label>
+        </>
+      ) : (
+        <label className={styles.titleText}>{label}</label>
+      )}
       <Input
         type="tel"
         className={clsx({

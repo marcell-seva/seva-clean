@@ -1,11 +1,10 @@
 /* eslint-disable react/no-children-prop */
 import Seo from 'components/atoms/seo'
 import { CreditQualificationSuccess } from 'components/organisms/resultPages/success'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
 import styles from 'styles/pages/kualifikasi-kredit-result.module.scss'
-import { getMetaTagData } from 'services/api'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import {
   getCities,
@@ -63,6 +62,11 @@ const CreditQualificationPageSuccess = ({
 
   return (
     <>
+      <Seo
+        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
+        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
+        image={defaultSeoImage}
+      />
       <div className={styles.container}>
         <CreditQualificationSuccess />
       </div>

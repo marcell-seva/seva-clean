@@ -11,7 +11,6 @@
   align-items: center;
   padding: 0px;
   gap: 24px;
-  height: 28px;
   flex: none;
   order: 0;
   align-self: stretch;
@@ -82,12 +81,12 @@
 .bottomSheet [data-rsbs-overlay] {
   @include centeredWithMaxWidth;
   height: auto;
-  top: 137px;
+  top: 130px;
 }
 
 .bottomSheet [data-rsbs-backdrop] {
   @include centeredWithMaxWidth;
-  height: 197px;
+  height: 207px;
 }
 
 .bottomSheetStart [data-rsbs-overlay] {

@@ -199,8 +199,8 @@ export default function LoanCalculatorPage() {
     useState<LoanCalculatorInsuranceAndPromoType[]>([])
   const [isLoadingInsuranceAndPromo, setIsLoadingInsuranceAndPromo] =
     useState(false)
-  const kkForm: FormLCState | null = getSessionStorage(
-    SessionStorageKey.KalkulatorKreditForm,
+  const kkForm: FormLCState | null = getLocalStorage(
+    LocalStorageKey.KalkulatorKreditForm,
   )
   const [isUserChooseVariantDropdown, setIsUserChooseVariantDropdown] =
     useState(false)

@@ -5,6 +5,10 @@
   width: 100%;
   position: relative;
 }
+.containerCalculationResult {
+  @extend .container;
+  height: 66px !important;
+}
 
 .inputArea {
   position: relative;
@@ -35,6 +39,16 @@
   }
 }
 
+.inputAreaCalculationResult {
+  @extend .inputArea;
+  cursor: pointer !important;
+  padding: 33px 16px !important;
+  &.hasNotSelectedValue {
+    padding: 33px 16px !important;
+  }
+  // width: 237px !important;
+}
+
 .inputField {
   width: 100%;
   height: 100%;
@@ -61,7 +75,10 @@
     background: #{$shades-grey-5};
   }
 }
-
+.inputFieldCalculationResult {
+  @extend .inputField;
+  cursor: pointer !important;
+}
 .typedText {
   font-family: var(--open-sans);
   font-style: normal;
@@ -87,6 +104,17 @@
   color: #{$shades-grey-75};
 }
 
+.selectedTextWithElipsis {
+  @extend .selectedText;
+  font-size: 11px !important;
+  margin-right: 26px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
 .selectedLabel {
   font-family: var(--open-sans);
   font-weight: 400;
@@ -96,6 +124,10 @@
   margin-top: 4px;
 }
 
+.selectedLabelCalculationResult {
+  @extend .selectedLabel;
+  margin-top: 2px !important;
+}
 .iconWrapper {
   position: absolute;
   right: 16px;
@@ -107,7 +139,7 @@
 
 .dropdown {
   position: absolute;
-  z-index: 80;
+  z-index: 4;
   background: #{$primary-white};
   margin: 8px 0 0;
   padding: 0;
@@ -145,7 +177,10 @@
     background: #{$shades-sky-blue-5};
   }
 }
-
+.dropdownItemVariant {
+  @extend .dropdownItem;
+  background: #f3f9fd !important;
+}
 .dropdownItemImage {
   width: 67.7px;
   margin-right: 14px;
@@ -158,6 +193,17 @@
   font-size: 12px;
   line-height: 18px;
   color: #{$shades-grey-75};
+}
+
+.dropdownItemAdditionalTextElipsis {
+  @extend .dropdownItemAdditionalText;
+
+  font-size: 11px !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .dropdownItemText {

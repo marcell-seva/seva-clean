@@ -1,0 +1,74 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+}
+.cardContent {
+  display: flex;
+  padding: 16px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.08);
+  img {
+    width: 60px;
+    height: 45.37px;
+  }
+}
+.title {
+  font-family: var(--kanyon);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  color: #404040;
+  margin-bottom: 16px;
+}
+.wrapperCard {
+  width: 100%;
+}
+.wrapperOptions {
+  margin-top: 8px;
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  align-items: center;
+}
+.wrapperText {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+.textCarModel {
+  font-family: var(--open-sans-bold);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16px;
+  color: #878d98;
+}
+.textCityName {
+  font-family: var(--open-sans);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  color: #878d98;
+}
+.wrapper {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+.textChangeDP {
+  font-family: var(--open-sans);
+  color: #246ed4;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}

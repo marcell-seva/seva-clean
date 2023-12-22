@@ -4,7 +4,6 @@
   font-size: 12px;
   color: #{$shades-grey-75};
   padding-bottom: 8px;
-  margin-top: 8px;
 }
 
 .buttonSmallText {
@@ -55,6 +54,21 @@
 }
 
 .selectedStyle {
-  background: rgba(243, 249, 253, 0.50) !important;
+  background: rgba(243, 249, 253, 0.5) !important;
   border: 1.5px solid #{$secondary-sky-blue} !important;
+}
+.textWithCta {
+  font-family: var(--open-sans);
+  color: #246ed4;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  float: right;
+  cursor: pointer;
+}
+.wrapperTextWithCta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

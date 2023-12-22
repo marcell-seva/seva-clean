@@ -1,6 +1,6 @@
 import Fuse from 'fuse.js'
 import elementId from 'helpers/elementIds'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { formatPriceNumberThousandDivisor } from 'utils/numberUtils/numberUtils'
 import { IconChevronDown, IconRemove, Label } from 'components/atoms'
 import { InputMultilineSelect } from 'components/atoms/inputMultilineSelect'
@@ -16,17 +16,19 @@ const searchOption = {
   threshold: 0.1,
 }
 
-type FormSelectCarVariantProps = {
+export type FormSelectCarVariantProps = {
   selectedModel: string
   handleChange: (name: string, value: any) => void
   name: string
   carVariantList: ModelVariant[]
-  value: {
-    variantId: string
-    variantName: string
-    otr: string
-    discount: number
-  }
+  value:
+    | {
+        variantId: string
+        variantName: string
+        otr: string
+        discount: number
+      }
+    | undefined
   modelError: boolean
   onShowDropdown?: () => void
   isError?: boolean
@@ -60,6 +62,7 @@ export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
   >([])
   const [suggestionsLists, setSuggestionsLists] = useState<any>([])
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>
+  const [disableInput, setDisableInput] = useState(false)
 
   useEffect(() => {
     setInputValue(value)
@@ -84,14 +87,16 @@ export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
   }
 
   const onChangeInputHandler = (value: string) => {
-    setInputValue({
-      ...inputValue,
-      variantName: value
-        .toLowerCase()
-        .split(' ')
-        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-        .join(' '),
-    })
+    if (value && inputValue) {
+      setInputValue({
+        ...inputValue,
+        variantName: value
+          .toLowerCase()
+          .split(' ')
+          .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+          .join(' '),
+      })
+    }
   }
 
   const onBlurHandler = () => {
@@ -135,26 +140,35 @@ export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
   }, [carVariantList])
 
   useEffect(() => {
-    if (inputValue?.variantName === '' || lastChoosenValue.variantName) {
+    if (
+      (inputValue && inputValue?.variantName === '') ||
+      (lastChoosenValue && lastChoosenValue.variantName)
+    ) {
       const sortedCars = sortedVariantCarList()
       setSuggestionsLists(sortedCars)
       return
     }
-    const fuse = new Fuse(carVariantListOptionsFull, searchOption)
-    const suggestion = fuse.search(inputValue.variantName)
-    const result = suggestion.map((obj) => obj.item)
-    // sort alphabetically
-    // result.sort((a: any, b: any) => a.label.localeCompare(b.label))
-    // sort based on input
-    const sorted = result.sort((a: any, b: any) => {
-      if (a.label.startsWith(inputValue) && b.label.startsWith(inputValue))
+    if (inputValue) {
+      const fuse = new Fuse(carVariantListOptionsFull, searchOption)
+      const suggestion = fuse.search(inputValue.variantName)
+      const result = suggestion.map((obj) => obj.item)
+      // sort alphabetically
+      // result.sort((a: any, b: any) => a.label.localeCompare(b.label))
+      // sort based on input
+      const sorted = result.sort((a: any, b: any) => {
+        if (a.label.startsWith(inputValue) && b.label.startsWith(inputValue))
+          return a.label.localeCompare(b.label)
+        else if (a.label.startsWith(inputValue)) return -1
+        else if (b.label.startsWith(inputValue)) return 1
         return a.label.localeCompare(b.label)
-      else if (a.label.startsWith(inputValue)) return -1
-      else if (b.label.startsWith(inputValue)) return 1
-      return a.label.localeCompare(b.label)
-    })
-    setSuggestionsLists(sorted)
+      })
+      setSuggestionsLists(sorted)
+    }
   }, [inputValue])
+
+  useEffect(() => {
+    setDisableInput(!selectedModel || modelError)
+  }, [selectedModel, modelError])
 
   return (
     <>
@@ -163,10 +177,10 @@ export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
       </div>
       <InputMultilineSelect
         ref={inputRef}
-        value={inputValue.variantName}
+        value={inputValue ? inputValue.variantName : ''}
         options={suggestionsLists}
         onChange={onChangeInputHandler}
-        placeholderText="Pilih varian"
+        placeholderText={inputValue ? inputValue.variantName : ''}
         noOptionsText="Varian tidak ditemukan"
         onBlurInput={onBlurHandler}
         onChoose={onChooseHandler}
@@ -199,7 +213,7 @@ export const FormSelectCarVariant: React.FC<FormSelectCarVariantProps> = ({
             )
           }
         }}
-        disabled={!selectedModel || modelError}
+        disabled={disableInput}
         maxHeightDropdown="365px"
         datatestid={elementId.PDP.Drowpdown.CarVariant}
         onShowDropdown={onShowDropdown}

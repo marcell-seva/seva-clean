@@ -302,7 +302,7 @@ export const CarDetailCard = ({
 
         {recommendation.brand !== 'Hyundai' && (
           <LabelPromo
-            className={styles.labelCard}
+            className={styles.labelCardPrimary}
             onClick={onClickLabel}
             data-testid={elementId.PLP.Button.Promo}
           />
@@ -323,6 +323,11 @@ export const CarDetailCard = ({
         )} */}
         {isFilter && recommendation.loanRank === 'Green' && (
           <LabelMudah
+            additionalClassname={
+              recommendation.brand === 'Hyundai'
+                ? styles.labelCardPrimary
+                : styles.labelCardSecondary
+            }
             onClick={onClickResultMudah}
             prefixComponent={IconThumbs}
           />

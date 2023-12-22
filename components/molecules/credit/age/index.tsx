@@ -74,7 +74,7 @@ export const FormAgeCredit: React.FC<Props> = ({
               <div
                 onMouseDown={onClickArrowHandler}
                 onClick={onClickArrowHandler}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', paddingTop: 7 }}
               >
                 <IconChevronDown
                   width={25}

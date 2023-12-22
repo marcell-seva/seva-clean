@@ -80,95 +80,97 @@ const Ktp = () => {
   return (
     <>
       <PageLayout footer={false}>
-        <main className={styles.wrapper}>
-          {isLoadingCustomer ? (
-            <section className={styles.preview__wrapper__form}>
-              <section className={styles.info}>
-                <h2 className={`medium ${styles.info} ${styles.titleText}`}>
-                  Data dari KTP-mu
-                </h2>
-              </section>
-              <section className={styles.info}>
+        {() => (
+          <main className={styles.wrapper}>
+            {isLoadingCustomer ? (
+              <section className={styles.preview__wrapper__form}>
+                <section className={styles.info}>
+                  <h2 className={`medium ${styles.info} ${styles.titleText}`}>
+                    Data dari KTP-mu
+                  </h2>
+                </section>
+                <section className={styles.info}>
+                  <Skeleton height={40} width={200} />
+                </section>
+                <Skeleton height={40} width={200} />
+                <Skeleton height={40} width={200} />
+                <Skeleton height={40} width={200} />
+                <Skeleton height={40} width={200} />
+                <Skeleton height={40} width={200} />
+                <Skeleton height={40} width={200} />
                 <Skeleton height={40} width={200} />
               </section>
-              <Skeleton height={40} width={200} />
-              <Skeleton height={40} width={200} />
-              <Skeleton height={40} width={200} />
-              <Skeleton height={40} width={200} />
-              <Skeleton height={40} width={200} />
-              <Skeleton height={40} width={200} />
-              <Skeleton height={40} width={200} />
-            </section>
-          ) : (
-            <section className={styles.preview__wrapper__form}>
-              <div className={styles.ktp__page__title}>
-                <h2 className={`medium ${styles.info} ${styles.titleText}`}>
-                  Data dari KTP-mu
-                </h2>
-                <h5 className={styles.light__text}>
-                  Ditambahkan pada {formatDate(customerDetail?.created)} WIB
-                </h5>
-              </div>
-              <table>
-                <tr>
-                  <td className={styles.row_table_text}>NIK</td>
-                  <td className={styles.row_table_text}>
-                    {customerDetail?.nik}
-                  </td>
-                </tr>
-                <tr>
-                  <td className={styles.row_table_text}>Nama</td>
-                  <td className={styles.row_table_text}>
-                    {customerDetail?.name}
-                  </td>
-                </tr>
-                <tr>
-                  <td className={styles.row_table_text}>Alamat</td>
-                  <td className={styles.row_table_text}>
-                    {customerDetail?.address}
-                  </td>
-                </tr>
-                <tr>
-                  <td className={styles.row_table_text_end}>RT/RW</td>
-                  <td className={styles.row_table_text}>
-                    {customerDetail?.rtrw ?? '-'}
-                  </td>
-                </tr>
-                <tr>
-                  <td className={styles.row_table_text_end}>Kel/Desa</td>
-                  <td className={styles.row_table_text}>
-                    {customerDetail?.keldesa ?? '-'}
-                  </td>
-                </tr>
-                <tr>
-                  <td className={styles.row_table_text_end}>Kecamatan</td>
-                  <td className={styles.row_table_text}>
-                    {customerDetail?.kecamatan ?? '-'}
-                  </td>
-                </tr>
-                <tr>
-                  <td className={styles.row_table_text}>Status Perkawinan</td>
-                  <td className={styles.row_table_text}>
-                    {customerDetail?.marriage}
-                  </td>
-                </tr>
-              </table>
-              <div className={styles.sticky__button}>
-                <Button
-                  onClick={() => {
-                    navigateToCamera()
-                    localStorage.setItem('change_ktp', 'true')
-                  }}
-                  version={ButtonVersion.PrimaryDarkBlue}
-                  size={ButtonSize.Big}
-                  data-testid={elementId.Profil.Button.GantiKTP}
-                >
-                  Ganti KTP
-                </Button>
-              </div>
-            </section>
-          )}
-        </main>
+            ) : (
+              <section className={styles.preview__wrapper__form}>
+                <div className={styles.ktp__page__title}>
+                  <h2 className={`medium ${styles.info} ${styles.titleText}`}>
+                    Data dari KTP-mu
+                  </h2>
+                  <h5 className={styles.light__text}>
+                    Ditambahkan pada {formatDate(customerDetail?.created)} WIB
+                  </h5>
+                </div>
+                <table>
+                  <tr>
+                    <td className={styles.row_table_text}>NIK</td>
+                    <td className={styles.row_table_text}>
+                      {customerDetail?.nik}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className={styles.row_table_text}>Nama</td>
+                    <td className={styles.row_table_text}>
+                      {customerDetail?.name}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className={styles.row_table_text}>Alamat</td>
+                    <td className={styles.row_table_text}>
+                      {customerDetail?.address}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className={styles.row_table_text_end}>RT/RW</td>
+                    <td className={styles.row_table_text}>
+                      {customerDetail?.rtrw ?? '-'}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className={styles.row_table_text_end}>Kel/Desa</td>
+                    <td className={styles.row_table_text}>
+                      {customerDetail?.keldesa ?? '-'}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className={styles.row_table_text_end}>Kecamatan</td>
+                    <td className={styles.row_table_text}>
+                      {customerDetail?.kecamatan ?? '-'}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className={styles.row_table_text}>Status Perkawinan</td>
+                    <td className={styles.row_table_text}>
+                      {customerDetail?.marriage}
+                    </td>
+                  </tr>
+                </table>
+                <div className={styles.sticky__button}>
+                  <Button
+                    onClick={() => {
+                      navigateToCamera()
+                      localStorage.setItem('change_ktp', 'true')
+                    }}
+                    version={ButtonVersion.PrimaryDarkBlue}
+                    size={ButtonSize.Big}
+                    data-testid={elementId.Profil.Button.GantiKTP}
+                  >
+                    Ganti KTP
+                  </Button>
+                </div>
+              </section>
+            )}
+          </main>
+        )}
       </PageLayout>
       {toast ? (
         <Toast

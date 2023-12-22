@@ -1,30 +1,20 @@
-import { Spin } from 'antd'
-import { AxiosResponse } from 'axios'
+import Spin from 'antd/lib/spin'
 import clsx from 'clsx'
-import { CSAButton, IconChevronDown, IconStrawberry } from 'components/atoms'
-import { CitySelectorModal } from 'components/molecules'
 import {
-  FooterMobile,
-  HeaderMobile,
-  PopupPromo,
-  SortingMobile,
-} from 'components/organisms'
-import { MultiUnitSkeleton } from 'components/organisms/plpSkeleton/multiunitSkeleton'
-import PopupCarDetail from 'components/organisms/popupCarDetail'
-import { PopupMultiCreditQualificationResult } from 'components/organisms/popUpMultiKKResult'
+  IconChevronDown,
+  IconStrawberry,
+  WhatsappButton,
+} from 'components/atoms'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
-
 import { useMultiUnitQueryContext } from 'services/context/multiUnitQueryContext'
-import { SessionStorageKey } from 'utils/enum'
+import { LocalStorageKey } from 'utils/enum'
 import { getToken } from 'utils/handler/auth'
 import { Currency } from 'utils/handler/calculation'
-import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { multiCreditQualificationPageUrl } from 'utils/helpers/routes'
 import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
 import {
-  AnnouncementBoxDataType,
   CityOtrOption,
   MobileWebTopMenuType,
   MultKKCarRecommendation,
@@ -33,8 +23,6 @@ import {
   SearchUsedCar,
 } from 'utils/types/utils'
 import styles from 'styles/pages/multi-kk-result.module.scss'
-import Seo from 'components/atoms/seo'
-import { defaultSeoImage } from 'utils/helpers/const'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { getCustomerAssistantWhatsAppNumber } from 'utils/handler/lead'
 import dynamic from 'next/dynamic'
@@ -45,16 +33,42 @@ import {
   getMobileHeaderMenu,
   getUsedCarSearch,
 } from 'services/api'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { getLocalStorage } from 'utils/handler/localStorage'
+import { RouteName } from 'utils/navigate'
+import { useUtils } from 'services/context/utilsContext'
+import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
+import { PageLayout } from 'components/templates'
 import CarDetailCardMultiCredit from 'components/organisms/carDetailCardMultiCredit'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { MobileWebFooterMenuType } from 'utils/types/props'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
-import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
-import { useUtils } from 'services/context/utilsContext'
-import { trackEventCountly } from 'helpers/countly/countly'
-import { CountlyEventNames } from 'helpers/countly/eventNames'
 
 const discountedDp = undefined // for current promo, it will not affect DP
+
+const SortingMobile = dynamic(
+  () => import('components/organisms/sortingMobile'),
+  { ssr: false },
+)
+
+const PopupPromo = dynamic(
+  () => import('components/organisms/popupPromo').then((mod) => mod.PopupPromo),
+  { ssr: false },
+)
+
+const PopupCarDetail = dynamic(
+  () => import('components/organisms/popupCarDetail'),
+  { ssr: false },
+)
+
+const PopupMultiCreditQualificationResult = dynamic(
+  () =>
+    import('components/organisms/popUpMultiKKResult').then(
+      (mod) => mod.PopupMultiCreditQualificationResult,
+    ),
+  { ssr: false },
+)
 
 const sortHighToLowList = (recommendationTmp: MultKKCarRecommendation[]) => {
   if (!recommendationTmp) {
@@ -119,11 +133,6 @@ const MultiKKResult = ({
     multiUnitQuery.filteredCarList,
   ).slice(0, 12)
   const [recommendation, setRecommendation] = useState(sortedRecommendation)
-  const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
-  const [cityListApi, setCityListApi] = useState<Array<CityOtrOption>>([])
-  const [showLoading, setShowLoading] = useState(true)
-  const [isActive, setIsActive] = useState(false) // trying separation of concern
-  const [trxCode, setTrxCode] = useState('')
   const [isPopUpOpened, setIsPopUpOpened] = useState(false)
   const [isOpenPopupPromo, setIsOpenPopupPromo] = useState(false)
   const [isOpenPopupCarDetail, setIsOpenPopupCarDetail] = useState(false)
@@ -156,6 +165,7 @@ const MultiKKResult = ({
       multiUnitQuery.dob &&
       multiUnitQuery.multikkResponse &&
       multiUnitQuery.filteredCarList.length > 0
+      // no need to validate temanSevaTrxCode
     ) {
       return true
     }
@@ -163,27 +173,47 @@ const MultiKKResult = ({
     return false
   }
 
-  const checkCitiesData = () => {
-    if (cityListApi.length === 0) {
-      getCities().then((res) => {
-        setCityListApi(res)
+  const getAnnouncementBox = async () => {
+    try {
+      const res: any = await gab({
+        headers: {
+          'is-login': getToken() ? 'true' : 'false',
+        },
       })
-    }
+      saveDataAnnouncementBox(res.data)
+    } catch (error) {}
   }
-
-  const getAnnouncementBox = () => {
-    gab({
-      headers: {
-        'is-login': getToken() ? 'true' : 'false',
-      },
-    }).then((res: AxiosResponse<{ data: AnnouncementBoxDataType }>) => {
-      if (res.data === undefined) {
-        saveShowAnnouncementBox(false)
-      }
-    })
-  }
-
   const sendToWhatsapp = async () => {
+    let temanSevaStatus = 'No'
+
+    const referralCodeFromUrl: string | null = getLocalStorage(
+      LocalStorageKey.referralTemanSeva,
+    )
+    if (referralCodeFromUrl) {
+      temanSevaStatus = 'Yes'
+    } else if (!!getToken()) {
+      const response = await getCustomerInfoSeva()
+      if (response[0].temanSevaTrxCode) {
+        temanSevaStatus = 'Yes'
+      }
+    }
+    trackEventCountly(CountlyEventNames.WEB_WA_DIRECT_CLICK, {
+      PAGE_ORIGINATION: 'Multi-Unit Kualifikasi Kredit Result',
+      SOURCE_BUTTON: 'Floating Button',
+      CAR_BRAND: 'Null',
+      CAR_MODEL: 'Null',
+      CAR_VARIANT: 'Null',
+      PELUANG_KREDIT_BADGE: 'Null',
+      TENOR_OPTION: multiUnitQuery.tenure,
+      TENOR_RESULT: 'Null',
+      KK_RESULT: 'Null',
+      IA_RESULT: 'Null',
+      TEMAN_SEVA_STATUS: temanSevaStatus,
+      INCOME_LOAN_CALCULATOR: 'Null',
+      INCOME_KUALIFIKASI_KREDIT: 'Null',
+      INCOME_CHANGE: 'Null',
+      OCCUPATION: multiUnitQuery.occupation?.toString().replace('&', 'and'),
+    })
     const transmissionText =
       multiUnitQuery.transmission.length === 1
         ? multiUnitQuery.transmission[0].toLowerCase()
@@ -231,7 +261,15 @@ const MultiKKResult = ({
       setDataPromoPopup(temp)
       if (temp) {
         setIsOpenPopupPromo(true)
+        trackEventCountly(
+          CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_PROMO_BADGE_CLICK,
+          { PROMO_AMOUNT: 1 },
+        )
       }
+      trackEventCountly(
+        CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_PROMO_POPUP_VIEW,
+        { PROMO_TITLE: selectedDataPromo.promoTitle },
+      )
     }
   }
   const removeLocalStorage = () => {
@@ -294,6 +332,7 @@ const MultiKKResult = ({
   }
   const onClickShowSort = () => {
     setOpenSorting(true)
+    trackEventCountly(CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_SORT_CLICK)
   }
 
   const calculateNextDisplayDate = (): Date => {
@@ -322,6 +361,9 @@ const MultiKKResult = ({
       const nextDisplay = calculateNextDisplayDate().toString()
 
       localStorage.setItem('tooltipNextDisplayMultiKKResult', nextDisplay)
+      trackEventCountly(
+        CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_COACHMARK_VIEW,
+      )
     } else {
       setIsTooltipOpenDisclaimer(false)
     }
@@ -385,98 +427,114 @@ const MultiKKResult = ({
 
   return (
     <>
-      <Seo
-        title="SEVA - Beli Mobil Terbaru Dengan Cicilan Kredit Terbaik"
-        description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
-        image={defaultSeoImage}
-      />
-      <HeaderMobile
-        isActive={isActive}
-        setIsActive={setIsActive}
-        emitClickCityIcon={() => setIsOpenCitySelectorModal(true)}
-        setShowAnnouncementBox={saveShowAnnouncementBox}
-        isShowAnnouncementBox={showAnnouncementBox}
-      />
-      {showLoading ? (
-        <MultiUnitSkeleton />
-      ) : (
-        <div
-          className={clsx({
-            [styles.container]: !showAnnouncementBox,
-            [styles.contentWithSpace]: showAnnouncementBox,
-            [styles.announcementboxpadding]: showAnnouncementBox,
-            [styles.announcementboxpadding]: false,
-          })}
-        >
-          <div className={styles.titleWrapper}>
-            <h1 className={styles.title}>Rekomendasi Mobil Sesuai Budgetmu</h1>
-            <span className={styles.info}>
-              Berikut rekomendasi mobil sesuai hasil kualifikasi kreditmu.{' '}
-              <span onClick={() => setIsPopUpOpened(true)}>
-                Pelajari Lebih Lanjut
-              </span>
-            </span>
-          </div>
-
-          <div className={styles.separator}></div>
-
-          <div className={styles.sortAndCounterSection}>
-            <div className={styles.sortWrapper} onClick={onClickShowSort}>
-              <IconStrawberry width={16} height={16} />
-              Urutkan: <p>{sortFilter}</p>
-              <IconChevronDown width={16} height={16} color="#13131B" />
-            </div>
-            <span className={styles.counterText}>
-              {multiUnitQuery.multikkResponse.totalItems} Mobil Baru
-            </span>
-          </div>
-
-          <div className={styles.carListWrapper}>
-            <InfiniteScroll
-              dataLength={recommendation.length}
-              next={fetchMoreData}
-              hasMore={hasMore}
-              loader={
-                <div className={styles.spin}>
-                  <Spin />
-                </div>
-              }
+      <PageLayout
+        pageOrigination={RouteName.MultiUnitResult}
+        sourceButton="Location Icon (Navbar)"
+        shadowBox={false}
+      >
+        {() => (
+          <>
+            <div
+              className={clsx({
+                [styles.mobileView]: true,
+                [styles.container]: !showAnnouncementBox,
+                [styles.contentWithSpace]: showAnnouncementBox,
+                [styles.announcementboxpadding]: showAnnouncementBox,
+                [styles.announcementboxpadding]: false,
+              })}
             >
-              {recommendation.map(
-                (item: MultKKCarRecommendation, index: number) => {
-                  return (
-                    <CarDetailCardMultiCredit
-                      key={index}
-                      showToolTip={index === 0}
-                      recommendation={item}
-                      onClickLabelPromo={onClickLabelPromo}
-                      onClickSeeDetail={onClickSeeDetail}
-                      setShowTooltipDisclaimer={setIsTooltipOpenDisclaimer}
-                      showToolTipDisclaimer={isTooltipOpenDisclaimer}
-                      trxCode={trxCode}
-                      selectedCityName={multiUnitQuery.cityName}
-                      selectedDp={multiUnitQuery.downPaymentAmount}
-                      selectedTenure={multiUnitQuery.tenure}
-                    />
-                  )
-                },
-              )}
-            </InfiniteScroll>
-          </div>
-        </div>
-      )}
+              <div className={styles.titleWrapper}>
+                <h1 className={styles.title}>
+                  Rekomendasi Mobil Sesuai Budgetmu
+                </h1>
+                <span className={styles.info}>
+                  Berikut rekomendasi mobil sesuai hasil kualifikasi kreditmu.{' '}
+                  <span
+                    onClick={() => {
+                      setIsPopUpOpened(true)
+                      trackEventCountly(
+                        CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_LEARN_MORE_CLICK,
+                      )
+                    }}
+                  >
+                    Pelajari Lebih Lanjut
+                  </span>
+                </span>
+              </div>
 
-      <CSAButton onClick={sendToWhatsapp} additionalstyle={'csa-button-plp'} />
+              <div className={styles.separator}></div>
+
+              <div className={styles.sortAndCounterSection}>
+                <div className={styles.sortWrapper} onClick={onClickShowSort}>
+                  <IconStrawberry width={16} height={16} />
+                  Urutkan: <p>{sortFilter}</p>
+                  <IconChevronDown width={16} height={16} color="#13131B" />
+                </div>
+                <span className={styles.counterText}>
+                  {multiUnitQuery.multikkResponse.totalItems} Mobil Baru
+                </span>
+              </div>
+
+              <div className={styles.carListWrapper}>
+                <InfiniteScroll
+                  dataLength={recommendation.length}
+                  next={fetchMoreData}
+                  hasMore={hasMore}
+                  loader={
+                    <div className={styles.spin}>
+                      <Spin />
+                    </div>
+                  }
+                >
+                  {recommendation.map(
+                    (item: MultKKCarRecommendation, index: number) => {
+                      return (
+                        <CarDetailCardMultiCredit
+                          key={index}
+                          order={index}
+                          showToolTip={index === 0}
+                          recommendation={item}
+                          onClickLabelPromo={onClickLabelPromo}
+                          onClickSeeDetail={(data) => {
+                            onClickSeeDetail(data)
+                            const track = {
+                              CAR_BRAND: item.brand,
+                              CAR_MODEL: item.model,
+                              CAR_ORDER: index + 1,
+                              KUALIFIKASI_KREDIT_RESULT:
+                                item.creditQualificationStatus,
+                              PROMO_AMOUNT: item.promo ? '1' : '0',
+                            }
+
+                            trackEventCountly(
+                              CountlyEventNames.WEB_MULTI_KK_PAGE_CAR_DETAIL_CLICK,
+                              track,
+                            )
+                          }}
+                          setShowTooltipDisclaimer={setIsTooltipOpenDisclaimer}
+                          showToolTipDisclaimer={isTooltipOpenDisclaimer}
+                          trxCode={multiUnitQuery.trxCode}
+                          selectedCityName={multiUnitQuery.cityName}
+                          selectedDp={multiUnitQuery.downPaymentAmount}
+                          selectedTenure={multiUnitQuery.tenure}
+                        />
+                      )
+                    },
+                  )}
+                </InfiniteScroll>
+              </div>
+            </div>
+            <WhatsappButton
+              onClick={sendToWhatsapp}
+              additionalStyle={'csa-button-plp'}
+            />
+          </>
+        )}
+      </PageLayout>
       <PopupMultiCreditQualificationResult
         isOpen={isPopUpOpened}
         onDismissPopup={onDismissPopup}
         onClickClosePopup={onClickClosePopup}
-      />
-      <FooterMobile />
-      <CitySelectorModal
-        isOpen={isOpenCitySelectorModal}
-        onClickCloseButton={() => setIsOpenCitySelectorModal(false)}
-        cityListFromApi={cityListApi}
       />
       <PopupPromo
         open={isOpenPopupPromo}
@@ -484,6 +542,12 @@ const MultiKKResult = ({
         data={dataPromoPopup}
         additionalContainerClassname={
           dataPromoPopup?.length === 1 ? styles.popupPromoAutoHeight : undefined
+        }
+        onClickSNK={(promo) =>
+          trackEventCountly(
+            CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_PROMO_SNK_CLICK,
+            { PROMO_TITLE: promo.title },
+          )
         }
       />
       <PopupCarDetail
@@ -508,11 +572,16 @@ const MultiKKResult = ({
         rasioBahanBakar={selectedCarInfo?.rasioBahanBakar}
         dimenssion={`${selectedCarInfo?.length} x ${selectedCarInfo?.width} x ${selectedCarInfo?.height} mm`}
       />
-
       <SortingMobile
         open={openSorting}
         onClose={handleShowSort(false)}
-        onPickClose={(value) => onFilterSort(value)}
+        onPickClose={(value, label) => {
+          onFilterSort(value)
+          trackEventCountly(
+            CountlyEventNames.WEB_MULTI_KK_PAGE_RESULT_SORT_OPTION_CLICK,
+            { SORT_OPTION: label },
+          )
+        }}
         sortOptionMultiKK={true}
         selectedSortMultiKK={
           sortFilter === 'Harga Tertinggi' ? 'highToLow' : 'lowToHigh'

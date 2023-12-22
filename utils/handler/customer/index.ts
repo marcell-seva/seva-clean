@@ -9,6 +9,7 @@ import {
   postUpdateProfile,
   getCustomerKtpSeva as gcks,
   getCustomerSpouseKtpSeva as gcsks,
+  putUpdateKtpCity,
 } from 'services/api'
 import { encryptValue } from 'utils/encryptionUtils'
 import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
@@ -20,6 +21,7 @@ import {
   CustomerKtpSeva,
   DeleteAccountRequestType,
   UpdateProfileType,
+  updateKtpCityPayloadType,
 } from 'utils/types/utils'
 import { setAmplitudeUserId } from 'services/amplitude'
 
@@ -109,6 +111,13 @@ export const saveKtpSpouse = (
     { spouseKtpObj: { ...data }, isSpouse: true },
     { ...config, headers: { Authorization: getToken()?.idToken } },
   )
+}
+
+export const updateKtpCity = (
+  data: updateKtpCityPayloadType,
+  config?: AxiosRequestConfig,
+) => {
+  return putUpdateKtpCity({ ...data }, { ...config })
 }
 
 export const deleteAccount = (

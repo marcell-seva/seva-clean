@@ -27,13 +27,6 @@
   height: 32px;
 }
 
-.labelResult {
-  position: absolute;
-  z-index: 2;
-  left: 125px;
-  top: 96px;
-}
-
 .containerSulit {
   background: #{$secondary-brick-red};
   box-shadow: 0px 12px 44px rgba(0, 0, 0, 0.05);
@@ -61,4 +54,11 @@
   font-size: 11px;
   line-height: 16px;
   color: #{$primary-white};
+}
+
+.labelResult {
+  position: absolute;
+  z-index: 2;
+  left: 125px;
+  top: 96px;
 }

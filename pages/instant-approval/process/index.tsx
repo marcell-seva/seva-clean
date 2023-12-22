@@ -20,6 +20,7 @@ import { NewFunnelCarVariantDetails } from 'utils/types'
 import {
   CityOtrOption,
   CustomerInfoSeva,
+  FormLCState,
   SimpleCarVariantDetail,
 } from 'utils/types/utils'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
@@ -27,7 +28,6 @@ import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/u
 import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { TrackerFlag } from 'utils/types/models'
 import { isIsoDateFormat } from 'utils/handler/regex'
-import { carResultsUrl } from 'utils/helpers/routes'
 import { formatNumberByLocalization } from 'utils/handler/rupiah'
 import { getToken } from 'utils/handler/auth'
 import { FooterMobile, HeaderMobile } from 'components/organisms'
@@ -37,13 +37,16 @@ import { CitySelectorModal } from 'components/molecules'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import Seo from 'components/atoms/seo'
 import { defaultSeoImage } from 'utils/helpers/const'
-import { PreviousButton, navigateToPLP } from 'utils/navigate'
+import { PreviousButton, RouteName, navigateToPLP } from 'utils/navigate'
 import Image from 'next/image'
 
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
 import { getCities } from 'services/api'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 
 const KualifikasiKreditImage = '/revamp/illustration/kualifikasi-kredit.webp'
 const PlayStoreImage = '/revamp/images/profile/google-play.webp'
@@ -52,7 +55,7 @@ const AppStoreImage = '/revamp/images/profile/app-store.webp'
 const CreditQualificationProcess = () => {
   useProtectPage()
   const router = useRouter()
-  const { financialQuery } = useFinancialQueryData()
+  const { financialQuery, fincap } = useFinancialQueryData()
   const dataReview: any =
     getLocalStorage(LocalStorageKey.QualifcationCredit) || []
   const [dataCar, setDataCar] = useState<NewFunnelCarVariantDetails>()
@@ -101,8 +104,42 @@ const CreditQualificationProcess = () => {
     }
   }
 
+  const sendDataTrackerClickFindCar = () => {
+    let peluangKreditBadge = 'Null'
+    const pageReferrer =
+      sessionStorage.getItem(SessionStorageKey.PageReferrerIA) || ''
+    const badge =
+      simpleCarVariantDetails.loanRank === 'Red'
+        ? 'Sulit disetujui'
+        : 'Mudah disetujui'
+
+    if (fincap) {
+      peluangKreditBadge = badge
+      if (pageReferrer === 'Multi Unit Kualifikasi Kredit Result')
+        peluangKreditBadge = 'Null'
+    } else {
+      peluangKreditBadge = 'Null'
+    }
+
+    const data = {
+      PAGE_REFERRER: pageReferrer,
+      PELUANG_KREDIT_BADGE: peluangKreditBadge,
+      CAR_BRAND: dataCar?.modelDetail?.brand ?? '',
+      CAR_MODEL: dataCar?.modelDetail?.model ?? '',
+      CAR_VARIANT: dataCar?.variantDetail?.name ?? '',
+      KUALIFIKASI_KREDIT_RESULT:
+        creditQualificationResultStorage.creditQualificationStatus +
+        ' disetujui',
+    }
+    trackEventCountly(
+      CountlyEventNames.WEB_INSTANT_APPROVAL_PAGE_FINISH_OTHER_CAR_CLICK,
+      data,
+    )
+  }
+
   const gotoPLP = () => {
     setLoading(true)
+    sendDataTrackerClickFindCar()
     const urlParam = new URLSearchParams({
       ...(age && { age: String(age) }),
       ...(monthlyIncome && { monthlyIncome: String(monthlyIncome) }),
@@ -236,15 +273,99 @@ const CreditQualificationProcess = () => {
     })
   }
 
+  const sendDataTrackerClickDownloadApps = (platform: string) => {
+    const dataJourney =
+      sessionStorage.getItem(SessionStorageKey.PageReferrerIA) || ''
+    const origination =
+      dataJourney === 'Multi Unit Kualifikasi Kredit Result'
+        ? 'Multi IA Finish Page'
+        : 'Instant Approval Finish Page'
+    const data = {
+      PAGE_ORIGINATION: origination,
+      CAR_BRAND: dataCar?.modelDetail?.brand ?? '',
+      CAR_MODEL: dataCar?.modelDetail?.model ?? '',
+      CAR_VARIANT: dataCar?.variantDetail?.name ?? '',
+      TENOR_OPTION: `${simpleCarVariantDetails?.loanTenure ?? 0} Tahun`,
+      PLATFORM: platform,
+      PAGE_REFERRER:
+        sessionStorage.getItem(SessionStorageKey.PageReferrerIA) || '',
+    }
+    trackEventCountly(
+      CountlyEventNames.WEB_INSTANT_APPROVAL_DOWNLOAD_APP_CLICK,
+      data,
+    )
+  }
+
   const onClickPlayStore = () => {
-    trackKualifikasiKreditDownloadAndroidClick(getDataForTracker())
+    sendDataTrackerClickDownloadApps('Android')
     window.open(urls.googlePlayHref, '_blank')
   }
 
   const onClickAppStore = () => {
-    trackKualifikasiKreditDownloadIosClick(getDataForTracker())
+    sendDataTrackerClickDownloadApps('IOS')
     window.open(urls.appStoreHerf, '_blank')
   }
+
+  const kkForm: FormLCState | null = getLocalStorage(
+    LocalStorageKey.KalkulatorKreditForm,
+  )
+
+  const creditQualificationResultStorage: any =
+    getSessionStorage(SessionStorageKey.TempCreditQualificationResult) ?? null
+
+  const sendDataTracker = () => {
+    const dataQualificationCredit = JSON.parse(
+      localStorage.getItem('qualification_credit')!,
+    )
+    let peluangKreditBadge = 'Null'
+    const oocupation = dataQualificationCredit.occupations?.replace('&', 'and')
+    const pageReferrer =
+      sessionStorage.getItem(SessionStorageKey.PageReferrerIA) || ''
+    const badge =
+      simpleCarVariantDetails.loanRank === 'Red'
+        ? 'Sulit disetujui'
+        : 'Mudah disetujui'
+
+    if (fincap) {
+      peluangKreditBadge = badge
+      if (pageReferrer === 'Multi Unit Kualifikasi Kredit Result')
+        peluangKreditBadge = 'Null'
+    } else {
+      peluangKreditBadge = 'Null'
+    }
+    const financingCompany =
+      kkForm?.leasingOption === ''
+        ? 'No preference'
+        : kkForm?.leasingOption?.toUpperCase()
+
+    const data = {
+      PAGE_REFERRER: pageReferrer,
+      PELUANG_KREDIT_BADGE: peluangKreditBadge,
+      CAR_BRAND: dataCar?.modelDetail?.brand ?? '',
+      CAR_MODEL: dataCar?.modelDetail?.model ?? '',
+      CAR_VARIANT: dataCar?.variantDetail?.name ?? '',
+      OCCUPATION: oocupation,
+      FINANCING_COMPANY: financingCompany,
+      KUALIFIKASI_KREDIT_RESULT:
+        creditQualificationResultStorage.creditQualificationStatus +
+        ' disetujui',
+    }
+
+    if (isInPtbcFlow) {
+      trackEventCountly(
+        CountlyEventNames.WEB_PTBC_INSTANT_APPROVAL_PAGE_FINISH_VIEW,
+      )
+    } else {
+      trackEventCountly(
+        CountlyEventNames.WEB_INSTANT_APPROVAL_PAGE_FINISH_VIEW,
+        data,
+      )
+    }
+  }
+
+  useAfterInteractive(() => {
+    if (dataCar) sendDataTracker()
+  }, [dataCar])
 
   useEffect(() => {
     if (!!getToken()) {
@@ -317,45 +438,7 @@ const CreditQualificationProcess = () => {
           >
             Cari Mobil Lain
           </Button>
-          {/*<Button*/}
-          {/*  version={ButtonVersion.PrimaryDarkBlue}*/}
-          {/*  size={ButtonSize.Big}*/}
-          {/*  secondaryClassName={styles.cariMobil}*/}
-          {/*  onClick={gotoRp}*/}
-          {/*>*/}
-          {/*  Riwayat Pengajuan*/}
-          {/*</Button>*/}
         </div>
-        {/*<CardShadow*/}
-        {/*  className={styles.ctaWrapper}*/}
-        {/*  onClick={() => {*/}
-        {/*    trackKualifikasiKreditUploadKTP(getDataForTracker())*/}
-        {/*    router.push(landingKtpUrl)*/}
-        {/*  }}*/}
-        {/*>*/}
-        {/*  <div className={styles.main}>*/}
-        {/*    <img*/}
-        {/*      src={PromoBanner}*/}
-        {/*      alt="promo banner"*/}
-        {/*      width={107}*/}
-        {/*      height={81}*/}
-        {/*      className={styles.promoBanner}*/}
-        {/*    />*/}
-        {/*    <div className={styles.infoWrapper}>*/}
-        {/*      <span className={styles.title}>*/}
-        {/*        {customerDetail?.nik*/}
-        {/*          ? 'Kamu memenuhi syarat untuk promo'*/}
-        {/*          : 'Dapatkan Cashback Cicilan Hingga Rp4 juta!'}*/}
-        {/*      </span>*/}
-        {/*      <span className={styles.sub}>*/}
-        {/*        {customerDetail?.nik*/}
-        {/*          ? ' Dapatkan Cashback Cicilan Hingga 4 juta!'*/}
-        {/*          : ' Kirim foto KTP kamu dan dapatkan promo sekarang.'}*/}
-        {/*      </span>*/}
-        {/*    </div>*/}
-        {/*  </div>*/}
-        {/*  <IconChevronRight height={24} width={24} />*/}
-        {/*</CardShadow>*/}
         <div className={styles.directAppsContainer}>
           <div className={styles.title}>Download Aplikasi SEVA</div>
           <div className={styles.directAppsWrapper}>
@@ -377,6 +460,7 @@ const CreditQualificationProcess = () => {
         isOpen={openCitySelectorModal}
         onClickCloseButton={() => setOpenCitySelectorModal(false)}
         cityListFromApi={cityListApi}
+        pageOrigination={RouteName.IAWaitingForResult}
       />
     </>
   )

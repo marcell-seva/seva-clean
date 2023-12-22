@@ -130,11 +130,9 @@ export const FormSelectBrandCar = ({
     if (isCheckedBrandQuery.includes(key)) {
       setIsCheckedBrand(isCheckedBrandQuery.filter((item) => item !== key))
       setIsCheckedBrandQuery(isCheckedBrandQuery.filter((item) => item !== key))
-      paramQuery.brand = isCheckedBrandQuery.filter((item) => item !== key)
     } else {
       setIsCheckedBrand(isCheckedBrandQuery.concat(key))
       setIsCheckedBrandQuery(isCheckedBrandQuery.concat(key))
-      paramQuery.brand = isCheckedBrandQuery.concat(key)
     }
   }
   useEffect(() => {
@@ -142,13 +140,11 @@ export const FormSelectBrandCar = ({
       setIsCheckedBrandQuery([])
       // setResetTmp(false)
       // setIsCheckedBrand([])
-      // paramQuery.brand = []
     }
     if (!isApplied && brand && brand.length === 0) {
       setIsCheckedBrandQuery([])
     } else if (funnelQuery.brand && !isResetFilter && isApplied) {
       setIsCheckedBrand(funnelQuery.brand)
-      paramQuery.brand = funnelQuery.brand
     }
     if (
       isButtonClick &&
@@ -172,7 +168,6 @@ export const FormSelectBrandCar = ({
       setIsCheckedBrandQuery([])
     }
   }, [isResetFilter, isApplied, isButtonClick])
-  const paramQuery = funnelQuery
 
   return (
     <div className={styles.container}>

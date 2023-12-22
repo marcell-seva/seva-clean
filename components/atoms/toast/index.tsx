@@ -28,11 +28,15 @@ export const Toast: React.FC<PropsToast> = ({
         onClick={(e) => closeOnToastClick && onCancel && onCancel(e)}
         className={styles.content}
       >
-        {typeToast === 'error' ? (
+        {typeToast === 'error' || typeToast === 'warning' ? (
           <IconWarningCircle
             width={32}
             height={32}
-            color={colors.secondaryBrickRed}
+            color={
+              typeToast === 'warning'
+                ? colors.primaryDarkBlue
+                : colors.secondaryBrickRed
+            }
           />
         ) : (
           <div className={styles.icon}>

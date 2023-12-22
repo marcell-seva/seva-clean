@@ -64,6 +64,9 @@ $card-height: 445px;
   top: 96px;
 }
 
+.loanRankLabelAdditionalHyundaiStyle {
+  left: 0px;
+}
 .loanRankLabelAdditionalStyle {
   left: 146px;
 }
@@ -73,7 +76,7 @@ $card-height: 445px;
 }
 
 .labelSulit {
-  background-color: #{$secondary-orange};
+  background-color: #{$secondary-orange} !important;
 }
 
 .hargaOtrWrapper {

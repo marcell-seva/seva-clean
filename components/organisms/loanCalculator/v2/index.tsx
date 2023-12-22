@@ -107,6 +107,7 @@ import { IncomeAgeSection } from 'components/molecules/incomAgeSection'
 import EducationalContentPopupDp from 'components/organisms/educationalContentPopupDp'
 import EducationalContentPopupType from 'components/organisms/educationalContentPopupType'
 import { CalculationResultSkeleton } from 'components/organisms/calculationResultSkeleton'
+import CardVariantOptions from 'components/organisms/cardVariantOptions'
 
 const CalculationResult = dynamic(() =>
   import('components/organisms').then((mod) => mod.CalculationResult),
@@ -242,7 +243,7 @@ export function LoanCalculatorPageV2() {
   const dataCar: trackDataCarType | null = getSessionStorage(
     SessionStorageKey.PreviousCarDataBeforeLogin,
   )
-  const { dataAnnouncementBox, cities } = useUtils()
+  const { dataAnnouncementBox, cities, city } = useUtils()
   const [finalMinInputDp, setFinalMinInputDp] = useState(0)
   const [finalMaxInputDp, setFinalMaxInputDp] = useState(0)
   const [isOpenPopupRecommended, setIsOpenPopupRecommended] = useState(false)
@@ -636,7 +637,7 @@ export function LoanCalculatorPageV2() {
         setIsChangedMaxDp(false)
       }, 3000)
     }
-  }, [forms.model?.modelId, forms.city, calculationResult])
+  }, [forms.model?.modelId, forms.city, calculationResult, isChangedMaxDp])
 
   useEffect(() => {
     autofillCarVariantData()
@@ -988,7 +989,9 @@ export function LoanCalculatorPageV2() {
     }
     setIsLoadingInsuranceAndPromo(false)
     setIsLoadingAfterChangeVariant(false)
-    scrollToResult()
+    if (!v2) {
+      scrollToResult()
+    }
     setInsuranceAndPromoForAllTenure(tempArr)
     setTimeout(() => {
       trackCountlyResultView()
@@ -1194,12 +1197,6 @@ export function LoanCalculatorPageV2() {
       minDp = finalDpRange?.minAmount
       maxDp = finalDpRange?.maxAmount
     }
-    if (
-      Number(forms.downPaymentAmount) < minDp ||
-      Number(forms.downPaymentAmount) > maxDp
-    ) {
-      setIsChangedMaxDp(true)
-    }
     const updatedDPValue =
       Number(forms.downPaymentAmount) > maxDp
         ? maxDp
@@ -1236,7 +1233,14 @@ export function LoanCalculatorPageV2() {
         setKKForm({ ...kkForm, downPaymentAmount: updatedDPValue })
 
         generateSelectedInsuranceAndPromo(filteredResult, true)
-
+        if (
+          Number(forms.downPaymentAmount) < minDp ||
+          Number(forms.downPaymentAmount) > maxDp
+        ) {
+          setTimeout(() => {
+            setIsChangedMaxDp(true)
+          }, 500)
+        }
         // select loan with the longest tenure as default
         const selectedLoanInitialValue =
           filteredResult.sort(
@@ -1327,15 +1331,6 @@ export function LoanCalculatorPageV2() {
           minDp = minDp20Percent
           maxDp = maxDp90Percent
         }
-        if (
-          (dpValueKKForm < minDp || dpValueKKForm > maxDp) &&
-          calculationResult.length > 0 &&
-          !isLoadingCalculation &&
-          !isLoadingInsuranceAndPromo &&
-          isDataSubmitted
-        ) {
-          setIsChangedMaxDp(true)
-        }
         setFinalMinInputDp(minDp)
         setFinalMaxInputDp(maxDp)
       } else {
@@ -1345,7 +1340,7 @@ export function LoanCalculatorPageV2() {
     }
 
     fetch()
-  }, [forms.variant?.variantId, cities])
+  }, [forms.variant?.variantId, city])
 
   useEffect(() => {
     if (isHasCarParameter && !shakeIncomeAge) {
@@ -1979,7 +1974,7 @@ export function LoanCalculatorPageV2() {
             <div id="loan-calculator-form-dp">
               <DpForm
                 label="Down Payment (DP)"
-                // labelWithCta="Pelajari Lebih Lanjut"
+                labelWithCta="Pelajari Lebih Lanjut"
                 value={dpValue}
                 percentage={dpPercentage}
                 onChange={handleDpChange}
@@ -2009,14 +2004,14 @@ export function LoanCalculatorPageV2() {
                 emitOnAfterChangeDpSlider={onAfterChangeDpSlider}
                 finalMinInputDp={finalMinInputDp}
                 finalMaxInputDp={finalMaxInputDp}
-                // setIsOpenEducationalPopup={setIsOpenEducationalDpPopup}
-                // onCalculationResult={
-                //   calculationResult.length > 0 &&
-                //   !isLoadingCalculation &&
-                //   !isLoadingInsuranceAndPromo &&
-                //   isDataSubmitted
-                // }
-                // setIsChangedMaxDp={setIsChangedMaxDp}
+                setIsOpenEducationalPopup={setIsOpenEducationalDpPopup}
+                onCalculationResult={
+                  calculationResult.length > 0 &&
+                  !isLoadingCalculation &&
+                  !isLoadingInsuranceAndPromo &&
+                  isDataSubmitted
+                }
+                setIsChangedMaxDp={setIsChangedMaxDp}
               />
             </div>
             <div id="loan-calculator-form-installment-type">
@@ -2031,8 +2026,8 @@ export function LoanCalculatorPageV2() {
                 }
                 handleChange={handleChange}
                 value={forms.paymentOption}
-                // labelWithCta="Pelajari Lebih Lanjut"
-                // setIsOpenEducationalPopup={setIsOpenEducationalPaymentTypePopup}
+                labelWithCta="Pelajari Lebih Lanjut"
+                setIsOpenEducationalPopup={setIsOpenEducationalPaymentTypePopup}
               />
               {isValidatingEmptyField && !forms.paymentOption
                 ? renderErrorMessageEmpty()
@@ -2140,10 +2135,10 @@ export function LoanCalculatorPageV2() {
                 onClickResultItemUpperInfoSection={() =>
                   onClickResultItemUpperInfoSection()
                 }
-                // carVariantList={carVariantList}
-                // handleChangeVariants={handleChangeVariantOnCalculationResult}
-                // onChangeInformation={onChangeInformation}
-                // isV2={true}
+                carVariantList={carVariantList}
+                handleChangeVariants={handleChangeVariantOnCalculationResult}
+                onChangeInformation={onChangeInformation}
+                isV2={true}
               />
               {carRecommendations.length > 0 && (
                 <CarRecommendations
@@ -2163,7 +2158,23 @@ Kemampuan Finansialmu"
               />
             </>
           ) : isLoadingAfterChangeVariant ? (
-            <CalculationResultSkeleton />
+            <>
+              <div className={styles.wrapperVariantOptions}>
+                <CardVariantOptions
+                  selectedModel={forms?.model?.modelName || ''}
+                  handleChange={handleChangeVariantOnCalculationResult}
+                  name="variant"
+                  carVariantList={carVariantList || []}
+                  value={forms.variant}
+                  modelError={false}
+                  isError={false}
+                  carModelImage={forms.model?.modelImage}
+                  cityName={forms.city.cityName}
+                  onChangeInformation={onChangeInformation}
+                />
+              </div>
+              <CalculationResultSkeleton />
+            </>
           ) : (
             <CalculationResultEmpty />
           )}

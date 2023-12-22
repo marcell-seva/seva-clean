@@ -164,7 +164,7 @@ export const PdpLowerSection = ({
           />
         )
       case 'kredit':
-        return <CreditTabV1 />
+        return v === '1' ? <CreditTabV1 /> : <CreditTabV2 />
 
       default:
         return (

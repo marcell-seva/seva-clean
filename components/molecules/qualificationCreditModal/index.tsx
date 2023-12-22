@@ -1,4 +1,3 @@
-import { Modal } from 'antd'
 import React, { useEffect } from 'react'
 import styles from 'styles/components/molecules/qualifacationModal.module.scss'
 import { Button } from 'components/atoms'
@@ -13,11 +12,17 @@ import { LanguageCode } from 'utils/enum'
 import { FormLCState, SpecialRateList } from 'utils/types/utils'
 import { trackLCKualifikasiKreditPopUpCtaClick } from 'helpers/amplitude/seva20Tracking'
 import elementId from 'helpers/elementIds'
-import { SessionStorageKey } from 'utils/enum'
-import { LoanRank } from 'utils/types/models'
-import { saveSessionStorage } from 'utils/handler/sessionStorage'
+import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import {
+  removeSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
 import { navigateToKK } from 'utils/navigate'
 import Image from 'next/image'
+import dynamic from 'next/dynamic'
+import { saveLocalStorage } from 'utils/handler/localStorage'
+import { LoanRank } from 'utils/types/models'
+const Modal = dynamic(() => import('antd/lib/modal'), { ssr: false })
 
 const MainImage = '/revamp/illustration/loan-calculator.webp'
 
@@ -73,8 +78,8 @@ export const QualificationCreditModal: React.FC<
 
   const handleClickCredit = () => {
     trackLCKualifikasiKreditPopUpCtaClick(getDataForAmplitude())
-    saveSessionStorage(
-      SessionStorageKey.KalkulatorKreditForm,
+    saveLocalStorage(
+      LocalStorageKey.KalkulatorKreditForm,
       JSON.stringify(formData),
     )
     saveSessionStorage(SessionStorageKey.PreviousSourceSectionLogin, 'Null')

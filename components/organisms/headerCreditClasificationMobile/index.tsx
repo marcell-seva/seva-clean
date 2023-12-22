@@ -11,7 +11,7 @@ const HeaderCreditClasificationMobile = (): JSX.Element => {
   const router = useRouter()
 
   return (
-    <>
+    <div className={styles.box}>
       <div className={styles.container}>
         <div onClick={() => router.back()} className={styles.chevronLeft}>
           <IconChevronLeft height={24} width={24} />
@@ -20,7 +20,7 @@ const HeaderCreditClasificationMobile = (): JSX.Element => {
           <Image src={LogoPrimary} width={58} height={35} alt="seva" />
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

@@ -560,7 +560,15 @@ export default function CreditQualificationResultPage({
         setToastMessage(`${e?.response?.data?.message}`)
         setIsOpenToast(true)
         setIsLoadingContinueApproval(false)
+        setToastMessage(`${e?.response?.data?.message}`)
+        setIsOpenToast(true)
+        setIsLoadingContinueApproval(false)
       } else {
+        setToastMessage(
+          'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+        )
+        setIsOpenToast(true)
+        setIsLoadingContinueApproval(false)
         setToastMessage(
           'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
         )

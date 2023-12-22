@@ -105,6 +105,7 @@ export enum LocalStorageKey {
   carModelLoanRank = 'carModelLoanRank', // loan rank on plp
   LastTimeUpdateUtm = 'lastTimeUpdateUtm',
   flagPopUpRecomendation = 'flagPopUpRecomendation',
+  prevLoginPath = 'prevLoginPath',
   TempToken = 'tempToken', // used for check registered customer
   KalkulatorKreditForm = 'KalkulatorKreditForm',
 }
@@ -138,7 +139,6 @@ export enum SessionStorageKey {
   ExternalPreApprovalData = 'externalPreApprovalData',
   PAAmbassadorUrlId = 'PAAmbassadorUrlId',
   LoanRankFromPLP = 'LoanRankFromPLP',
-  KalkulatorKreditForm = 'KalkulatorKreditForm',
   DataUploadKTP = 'DataUploadKTP',
   DataUploadKTPSpouse = 'DataUploadKTPSpouse',
   MainKtpDomicileOptionData = 'mainKtpDomicileOptionData',
@@ -170,6 +170,12 @@ export enum SessionStorageKey {
   PageReferrerIA = 'PageReferrerIA',
   LastVisitedPageKKIAFlow = 'LastVisitedPageKKIAFlow',
   PtbcLeadId = 'PtbcLeadId',
+  TempCreditQualificationResult = 'tempCreditQualificationResult',
+  CarCollectionPtbc = 'carCollectionPtbc',
+  PtbcFormData = 'ptbcFormData',
+  CityOtrListPtbc = 'cityOtrListPtbc',
+  SelectedLoanPtbc = 'SelectedLoanPtbc',
+  ApproveTNCPTBC = 'approveTncPtbc',
 }
 
 export enum HTTPResponseStatusCode {

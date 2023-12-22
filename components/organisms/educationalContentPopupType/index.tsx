@@ -42,6 +42,7 @@ const EducationalContentPopupType = ({
           }, 50)
         }}
         className={clsx({
+          [styles.bottomSheetContainer]: true,
           [styles.bottomSheetStart]: isOpenBottomSheet && isShowOverlay,
           [styles.bottomSheet]: isOpenBottomSheet && !isShowOverlay,
           [styles.bottomSheetDismiss]: isCloseBottomSheet,
@@ -80,7 +81,7 @@ const EducationalContentPopupType = ({
                     <p className={styles.informationTitleText}>Tahukah Kamu?</p>
                     <p className={styles.informationTitleDesciption}>
                       Cicilan untuk Bayar di Muka (ADDM){' '}
-                      <span>lebih rendah</span> , lho!
+                      <span>lebih rendah</span>, lho!
                     </p>
                   </div>
                 </div>
