@@ -499,6 +499,7 @@ export interface FormLCState {
   monthlyIncome: string
   downPaymentAmount: string
   paymentOption: InstallmentTypeOptions
+  leasingOption?: string
 }
 
 export interface CarModelBasicDetailsResponse extends CarModelBasicInfo {
@@ -999,6 +1000,9 @@ export interface CustomerPreApprovalResponse {
   city?: string
   occupation?: string
   temanSevaTrxCode?: string
+  leadOrigination?: string
+  dpDiscount: number
+  selectedPromo?: string
 }
 
 export interface SendKualifikasiKreditRequest {
@@ -1027,6 +1031,7 @@ export interface SendKualifikasiKreditRequest {
   loanRank: string
   platform: 'web'
   selectablePromo?: string[]
+  dob?: string
 }
 
 export interface SendMultiKualifikasiKredit {
@@ -1044,6 +1049,7 @@ export interface SendMultiKualifikasiKredit {
   transmission?: string
   limit?: number
   offset?: number
+  tsTrxCode?: string
 }
 
 export type MultKKCarVariant = CarVariantLoan & {
@@ -1104,6 +1110,10 @@ export interface CustomerKtpSeva {
   marriage: string
 }
 
+export interface updateKtpCityPayloadType {
+  nik: string
+  city: string
+}
 export interface GetCustomerKtpSeva {
   province: string
   city: string

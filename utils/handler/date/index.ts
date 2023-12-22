@@ -182,3 +182,13 @@ export const convertStringDateToMonthYear = (data: string) => {
   const result = `${month} ${year}`
   return result
 }
+
+export const formatKTPDate = (date: Date) => {
+  const day = date.getDate()
+  const month = date.getMonth() + 1
+  const year = date.getFullYear()
+
+  return `${year}-${day < 10 ? '0' + day : day}-${
+    month < 10 ? '0' + month : month
+  }`
+}

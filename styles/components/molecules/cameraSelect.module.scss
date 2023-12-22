@@ -1,0 +1,11 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.selectWrapper {
+  width: 100%;
+  height: 56px;
+  @media (max-width: 480px) {
+    height: 40px;
+  }
+  padding-bottom: 24px;
+}

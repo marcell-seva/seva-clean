@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styles from 'styles/pages/kualifikasi-kredit-review.module.scss'
-import { Modal, Progress, Tooltip } from 'antd'
-import { Button, IconInfo } from '../../../components/atoms'
-import { ButtonSize, ButtonVersion } from '../../../components/atoms/button'
+import Progress from 'antd/lib/progress'
+import { Button } from 'components/atoms'
+import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { useProtectPage } from 'utils/hooks/useProtectPage/useProtectPage'
 import { useRouter } from 'next/router'
-import { getLocalStorage } from 'utils/handler/localStorage'
+import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import {
   CityOtrOption,
   LoanCalculatorInsuranceAndPromoType,
@@ -13,8 +13,16 @@ import {
   SendKualifikasiKreditRequest,
   SimpleCarVariantDetail,
 } from 'utils/types/utils'
-import { LanguageCode, LocalStorageKey, SessionStorageKey } from 'utils/enum'
-import { getSessionStorage } from 'utils/handler/sessionStorage'
+import {
+  LanguageCode,
+  LocalStorageKey,
+  SessionStorageKey,
+  TemanSeva,
+} from 'utils/enum'
+import {
+  getSessionStorage,
+  saveSessionStorage,
+} from 'utils/handler/sessionStorage'
 import { InstallmentTypeOptions, TrackerFlag } from 'utils/types/models'
 import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
 import { useSessionStorageWithEncryption } from 'utils/hooks/useSessionStorage/useSessionStorage'
@@ -40,47 +48,62 @@ import {
 import HeaderCreditClasificationMobile from 'components/organisms/headerCreditClasificationMobile'
 import { getOptionLabel } from 'utils/handler/optionLabel'
 import { occupations } from 'utils/occupations'
-import TooltipDaihatsu from 'components/molecules/tooltipDaihatsu'
 import { Currency } from 'utils/handler/calculation'
-import PopupCarDetail from 'components/organisms/popupCarDetail'
-import PopupCreditDetail from 'components/organisms/popupCreditDetail'
-import { LandingIA } from 'components/organisms/landingIA'
 import { useBadgePromo } from 'utils/hooks/usebadgePromo'
 import { FormLCState } from 'pages/kalkulator-kredit/[[...slug]]'
 import { isIsoDateFormat } from 'utils/handler/regex'
 import Seo from 'components/atoms/seo'
-import { defaultSeoImage } from 'utils/helpers/const'
-import { navigateToKK } from 'utils/navigate'
+import { client, defaultSeoImage } from 'utils/helpers/const'
+import { RouteName, navigateToKK } from 'utils/navigate'
 import Image from 'next/image'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { getCarVariantDetailsById } from 'utils/handler/carRecommendation'
 import { getNewFunnelRecommendations } from 'utils/handler/funnel'
+import dynamic from 'next/dynamic'
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { useFunnelQueryData } from 'services/context/funnelQueryContext'
+import { useCar } from 'services/context/carContext'
+import { postCreditQualification } from 'services/api'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+
+const PopupCarDetail = dynamic(
+  () => import('components/organisms/popupCarDetail'),
+)
+
+const LandingIA = dynamic(() =>
+  import('components/organisms/landingIA').then((mod) => mod.LandingIA),
+)
+
+const Toast = dynamic(() => import('components/atoms').then((mod) => mod.Toast))
 
 const CreditQualificationReviewPage = () => {
   useProtectPage()
   const router = useRouter()
-  const dataReview: any = getLocalStorage(LocalStorageKey.QualifcationCredit)
-
+  const dataReview =
+    client && JSON.parse(localStorage.getItem('qualification_credit')!)
   const selectablePromo = getLocalStorage<LoanCalculatorInsuranceAndPromoType>(
     LocalStorageKey.SelectablePromo,
   )
+  const kkFlowType = getSessionStorage(SessionStorageKey.KKIAFlowType)
+  const ptbc = kkFlowType && kkFlowType === 'ptbc'
+  const ptbcLeadId = getSessionStorage(SessionStorageKey.PtbcLeadId)
   const { selectedPromoList, BadgeList, promoList } = useBadgePromo()
-
+  const { recommendation, saveRecommendation } = useCar()
   const kkForm: FormLCState | null = getSessionStorage(
     SessionStorageKey.KalkulatorKreditForm,
   )
   const optionADDM: InstallmentTypeOptions | null = getLocalStorage(
     LocalStorageKey.SelectedAngsuranType,
   )
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false)
-  const { financialQuery } = useFinancialQueryData()
+  const { financialQuery, fincap } = useFinancialQueryData()
+  const { filterFincap } = useFunnelQueryData()
   const [dataCar, setDataCar] = useState<NewFunnelCarVariantDetails>()
   const [promoCode] = useSessionStorageWithEncryption<string>(
     SessionStorageKey.PromoCodeGiiass,
     '',
   )
   const [carDimenssion, setCarDimenssion] = useState('')
-  const [openModal, setOpenModal] = useState(false)
   const [isShowDetailCar, setIsShowDetailCar] = useState(false)
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
@@ -94,8 +117,11 @@ const CreditQualificationReviewPage = () => {
   const [flag, setFlag] = useState<TrackerFlag>(TrackerFlag.Init)
   const [customerYearBorn, setCustomerYearBorn] = useState('')
   const [openIA, setOpenIA] = useState(false)
-
-  const totalIncome = Number(dataReview?.monthlyIncome) || 0
+  const [isLoading, setIsLoading] = useState(false)
+  const [isOpenToast, setIsOpenToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState(
+    'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+  )
 
   const formattedIncome = (income: string) => {
     return `Rp${formatNumberByLocalization(
@@ -123,23 +149,28 @@ const CreditQualificationReviewPage = () => {
     loanMonthlyInstallment: Number(dataReview?.loanMonthlyInstallment),
     occupation: dataReview?.occupations,
     insuranceType: selectablePromo?.selectedInsurance.value || 'FC',
-    temanSevaTrxCode: dataReview?.temanSevaTrxCode,
+    temanSevaTrxCode: ptbc ? TemanSeva.PTBC : dataReview?.temanSevaTrxCode,
     loanRank: dataReview?.loanRank,
     platform: 'web',
+    dob: dataReview?.dob ?? null,
+    ...(selectablePromo?.dpDiscount && {
+      loanDownPaymentDiscount: selectablePromo.dpDiscount,
+    }),
+    ...(!!ptbcLeadId && !!ptbc && { leadId: String(ptbcLeadId) }),
     ...(selectablePromo &&
       typeof selectablePromo.installmentAfterPromo !== 'undefined' &&
       selectablePromo.installmentAfterPromo > 0 && {
-        loanMonthlyInstallmentVanilla: selectablePromo?.installmentBeforePromo,
+        loanMonthlyInstallmentOriginal: selectablePromo?.installmentBeforePromo,
       }),
     ...(selectablePromo &&
       typeof selectablePromo.interestRateAfterPromo !== 'undefined' &&
       selectablePromo.interestRateAfterPromo > 0 && {
-        flatRateVanilla: selectablePromo.interestRateBeforePromo,
+        flatRateOriginal: selectablePromo.interestRateBeforePromo,
       }),
     ...(selectablePromo &&
       selectablePromo.tdpAfterPromo > 0 && {
-        loanDownPaymentVanilla: selectablePromo.tdpBeforePromo,
-        totalFirstPaymentVanilla: selectablePromo.tdpBeforePromo,
+        loanDownPaymentOriginal: selectablePromo.tdpBeforePromo,
+        totalFirstPaymentOriginal: selectablePromo.tdpBeforePromo,
       }),
     ...(selectedPromoList && selectedPromoList.length > 0
       ? {
@@ -149,17 +180,46 @@ const CreditQualificationReviewPage = () => {
   }
 
   const onClickCtaNext = async () => {
-    //after success response
-    trackKualifikasiKreditReviewPageCtaClick({
-      ...getDataForTracker(),
-      Total_Income: formattedIncome(String(totalIncome)),
-    })
+    try {
+      setIsLoading(true)
+      const sendKK = await postCreditQualification(datatoCaasDaas, {
+        headers: { Authorization: getToken()?.idToken },
+      })
+      saveLocalStorage(
+        LocalStorageKey.CreditQualificationResult,
+        JSON.stringify(sendKK.data),
+      )
+      saveLocalStorage(
+        LocalStorageKey.CreditQualificationLeadPayload,
+        JSON.stringify(datatoCaasDaas),
+      )
+      setOpenIA(true)
+      setIsLoading(false)
+    } catch (e: any) {
+      setIsLoading(false)
 
-    setOpenIA(true)
+      if (e?.response?.data?.message) {
+        setToastMessage(`${e?.response?.data?.message}`)
+      } else {
+        setToastMessage(
+          'Mohon maaf, terjadi kendala jaringan silahkan coba kembali lagi',
+        )
+      }
+      setIsOpenToast(true)
+    }
+    saveSessionStorage(
+      SessionStorageKey.PageReferrerIA,
+      'Kualifikasi Kredit Review',
+    )
   }
 
   const fetchNewFunnelRecommendation = async () => {
-    const response = await getNewFunnelRecommendations({})
+    const response = await getNewFunnelRecommendations({
+      age: String(financialQuery.age),
+      tenure: Number(financialQuery.tenure),
+      monthlyIncome: String(financialQuery.monthlyIncome),
+    })
+    if (response) saveRecommendation(response.carRecommendations)
     const choosenModel = response.carRecommendations.find(
       (car: any) => car.id === dataCar?.modelDetail.id,
     )
@@ -171,24 +231,99 @@ const CreditQualificationReviewPage = () => {
     }
   }
 
-  const getCreditCualficationDataTracker = () => ({
-    ...getDataForTracker(),
-    Income: undefined,
-    Total_Income: `Rp${formatNumberByLocalization(
-      Number(dataReview?.monthlyIncome),
-      LanguageCode.id,
-      1000000,
-      10,
-    )} Juta`,
-    Page_Origination: window.location.href,
+  const dataTrackCar = () => ({
+    CAR_BRAND: dataCar?.modelDetail.brand || 'Null',
+    CAR_VARIANT: dataCar?.variantDetail.name || 'Null',
+    CAR_MODEL: dataCar?.modelDetail.model || 'Null',
   })
 
+  const dataTrackLandingIA = () => {
+    const infoCarRecommendation = recommendation.filter(
+      (x) => x.id === dataCar?.modelDetail.id,
+    )[0]
+    return {
+      ...dataTrackCar(),
+      PAGE_REFERRER: RouteName.KKReview,
+      TENOR_OPTION: simpleCarVariantDetails?.loanTenure + ' tahun',
+      TENOR_RESULT:
+        simpleCarVariantDetails?.loanRank === 'Green'
+          ? 'Mudah disetujui'
+          : simpleCarVariantDetails?.loanRank === 'Red'
+          ? 'Sulit disetujui'
+          : 'Null',
+      INCOME_CHANGE:
+        Number(financialQuery.monthlyIncome) ===
+        Number(dataReview?.monthlyIncome)
+          ? 'No'
+          : 'Yes',
+      INSURANCE_TYPE: selectablePromo?.selectedInsurance.label || 'Null',
+      PROMO_AMOUNT: selectedPromoList
+        ? String(selectedPromoList.length)
+        : 'Null',
+      TEMAN_SEVA_STATUS: dataReview?.temanSevaTrxCode ? 'Yes' : 'No',
+      PELUANG_KREDIT_BADGE: fincap
+        ? infoCarRecommendation
+          ? infoCarRecommendation.loanRank === 'Green'
+            ? 'Mudah disetujui'
+            : 'Sulit disetujui'
+          : 'Null'
+        : 'Null',
+      FINCAP_FILTER_USAGE: filterFincap ? 'Yes' : 'No',
+    }
+  }
+
+  const trackCreditQualificationReviewDetailClick = () => {
+    const track = {
+      ...dataTrackCar(),
+      PAGE_ORIGINATION: RouteName.KKReview,
+      PAGE_ORIGINATION_URL: window.location.href,
+    }
+
+    trackEventCountly(
+      CountlyEventNames.WEB_CREDIT_QUALIFICATION_FORM_PAGE_CAR_DETAIL_CLICK,
+      track,
+    )
+  }
+
+  const trackCreditQualificationReview = ({ ctaClick = false }) => {
+    const track = {
+      ...dataTrackCar(),
+      INCOME_CHANGE:
+        Number(financialQuery.monthlyIncome) ===
+        Number(dataReview?.monthlyIncome)
+          ? 'No'
+          : 'Yes',
+      INCOME_KUALIFIKASI_KREDIT: `Rp${Currency(
+        Number(dataReview?.monthlyIncome),
+      )}`,
+      INCOME_LOAN_CALCULATOR: `Rp${Currency(
+        Number(financialQuery.monthlyIncome),
+      )}`,
+    }
+
+    if (ctaClick)
+      return trackEventCountly(
+        CountlyEventNames.WEB_CREDIT_QUALIFICATION_PAGE_REVIEW_CTA_CLICK,
+        track,
+      )
+
+    if (ptbc) {
+      return trackEventCountly(
+        CountlyEventNames.WEB_PTBC_CREDIT_QUALIFICATION_REVIEW_PAGE_VIEW,
+      )
+    } else {
+      return trackEventCountly(
+        CountlyEventNames.WEB_CREDIT_QUALIFICATION_REVIEW_PAGE_VIEW,
+        track,
+      )
+    }
+  }
+
   const handleOpenDetail = () => {
-    trackKualifikasiKreditCarDetailClick(getCreditCualficationDataTracker())
     setIsShowDetailCar(true)
+    trackCreditQualificationReviewDetailClick()
   }
   const handleCloseDetail = () => {
-    trackKualifikasiKreditCarDetailClose(getCreditCualficationDataTracker())
     setIsShowDetailCar(false)
   }
 
@@ -235,49 +370,40 @@ const CreditQualificationReviewPage = () => {
   }
 
   const getCurrentUserInfo = () => {
-    getCustomerInfoSeva()
-      .then((response) => {
-        // setLoadShimmer2(false)
-        if (!!response[0].dob && isIsoDateFormat(response[0].dob)) {
-          setCustomerYearBorn(response[0].dob.slice(0, 4))
-        }
-      })
-      .catch((err) => {
-        console.error(err)
-        // setLoadShimmer2(false)
-        // showToast()
-      })
+    getCustomerInfoSeva().then((response) => {
+      // setLoadShimmer2(false)
+      if (!!response[0].dob && isIsoDateFormat(response[0].dob)) {
+        setCustomerYearBorn(response[0].dob.slice(0, 4))
+      }
+    })
   }
 
   useEffect(() => {
     if (!!getToken()) {
       if (!simpleCarVariantDetails && !dataReview) {
         router.push(loanCalculatorDefaultUrl)
-        return
-      }
-      if (!simpleCarVariantDetails || !simpleCarVariantDetails?.variantId) {
+      } else if (
+        !simpleCarVariantDetails ||
+        !simpleCarVariantDetails?.variantId ||
+        !optionADDM
+      ) {
         router.push(loanCalculatorDefaultUrl)
-        return
-      }
-      if (simpleCarVariantDetails && !dataReview) {
+      } else if (simpleCarVariantDetails && !dataReview) {
+        // no need to change sessionStorage "KKIAFlowType" because user will be in the same flow type
         navigateToKK()
-        return
-      }
-      if (simpleCarVariantDetails) {
+      } else if (simpleCarVariantDetails) {
         getCarVariantDetailsById(
-          simpleCarVariantDetails.variantId, // get cheapest variant
+          simpleCarVariantDetails?.variantId, // get cheapest variant
         )
           .then((response) => {
             if (response) {
               setDataCar(response)
             } else {
               router.push(loanCalculatorDefaultUrl)
-              return
             }
           })
           .catch(() => {
             router.push(loanCalculatorDefaultUrl)
-            return
           })
 
         getCurrentUserInfo()
@@ -303,6 +429,12 @@ const CreditQualificationReviewPage = () => {
       setFlag(TrackerFlag.Sent)
     }
   }, [dataCar, customerYearBorn])
+
+  useAfterInteractive(() => {
+    if (dataCar) trackCreditQualificationReview({ ctaClick: false })
+  }, [dataCar])
+
+  const cityName = getCity()?.cityName || 'Jakarta Pusat'
 
   return (
     <>
@@ -344,24 +476,12 @@ const CreditQualificationReviewPage = () => {
             )}
           </p>
         </div>
-        {/*{dataReview?.spouseIncome !== null && (*/}
-        {/*  <div className={styles.paddingFormIncome}>*/}
-        {/*    <p className={styles.titleTextForm}>*/}
-        {/*      Pendapatan Bulanan Pasanganmu*/}
-        {/*    </p>*/}
-        {/*    <p className={styles.textIncome}>*/}
-        {/*      Rp*/}
-        {/*      {replacePriceSeparatorByLocalization(*/}
-        {/*        Number(dataReview?.spouseIncome),*/}
-        {/*        LanguageCode.id,*/}
-        {/*      )}*/}
-        {/*    </p>*/}
-        {/*  </div>*/}
-        {/*)}*/}
-        {dataReview?.temanSevaTrxCode && (
+        {(ptbc || dataReview?.temanSevaTrxCode) && (
           <div className={styles.paddingFormIncome}>
             <p className={styles.titleTextForm}>Kode Referral Teman SEVA</p>
-            <p className={styles.textIncome}>{dataReview?.temanSevaTrxCode}</p>
+            <p className={styles.textIncome}>
+              {ptbc ? TemanSeva.PTBC : dataReview?.temanSevaTrxCode}
+            </p>
           </div>
         )}
         <div
@@ -371,7 +491,9 @@ const CreditQualificationReviewPage = () => {
           <Image
             src={dataCar?.variantDetail?.images[0] || ''}
             alt="car-images"
-            width="188.39"
+            width={188.39}
+            height={141.28}
+            style={{ height: 'auto' }}
           />
         </div>
         <div className={styles.wrapperWithBorderBottom}>
@@ -388,32 +510,7 @@ const CreditQualificationReviewPage = () => {
             )}
           </div>
           <div className={styles.textCity}>
-            <span className={styles.margin}>
-              Harga OTR {cityOtr ? cityOtr?.cityName : 'Jakarta Pusat'}{' '}
-            </span>
-            <div
-              className={`${styles.overlay} ${
-                isTooltipOpen ? styles.showOverlay : ''
-              }`}
-              onClick={() => setIsTooltipOpen(false)}
-            />
-            {dataCar?.modelDetail.brand.includes('Daihatsu') && (
-              <Tooltip
-                title={<TooltipDaihatsu />}
-                color="#246ED4"
-                placement="top"
-                trigger="click"
-                // visible={isTooltipOpen}
-              >
-                <IconInfo
-                  // onClick={() => setIsTooltipOpen(true)}
-                  className={styles.margin}
-                  width={18}
-                  height={18}
-                  color="#878D98"
-                />
-              </Tooltip>
-            )}
+            <span className={styles.margin}>Harga OTR {cityName} </span>
           </div>
           <div className={styles.rowWithSpaceBottom}>
             <div className={styles.column}>
@@ -517,6 +614,8 @@ const CreditQualificationReviewPage = () => {
             version={ButtonVersion.PrimaryDarkBlue}
             size={ButtonSize.Big}
             onClick={onClickCtaNext}
+            disabled={isLoading}
+            loading={isLoading}
           >
             Cek Kualifikasi Kredit
           </Button>
@@ -526,11 +625,23 @@ const CreditQualificationReviewPage = () => {
         open={openIA}
         onClose={() => setOpenIA(false)}
         dataToCaasDaas={datatoCaasDaas}
+        isSendLeadsOnClickButton={false}
+        dataTrack={dataTrackLandingIA}
       />
       <PopupCarDetail
         isOpen={isShowDetailCar}
+        dpBeforeDiscount={
+          selectablePromo?.tdpAfterPromo
+            ? String(selectablePromo?.tdpBeforePromo)
+            : ''
+        }
         dp={dataReview?.totalFirstPayment}
         installmentFee={dataReview?.loanMonthlyInstallment}
+        installmentFeeBeforeDiscount={
+          selectablePromo?.installmentAfterPromo
+            ? String(selectablePromo?.installmentBeforePromo)
+            : ''
+        }
         price={dataCar?.variantDetail.priceValue || 0}
         tenure={dataReview?.loanTenure}
         onCancel={handleCloseDetail}
@@ -542,24 +653,14 @@ const CreditQualificationReviewPage = () => {
         dimenssion={carDimenssion}
       />
 
-      <Modal
-        open={openModal}
-        onCancel={() => setOpenModal(false)}
-        title=""
-        footer={null}
-        className="custom-modal-credit"
-        width={343}
-        style={{ borderRadius: '8px' }}
-      >
-        <PopupCreditDetail
-          carVariant={dataCar}
-          dataFinancial={financialQuery}
-          city={cityOtr ? cityOtr?.cityName : 'Jakarta Pusat'}
-          promoCode={promoCode}
-          simpleCarVariantDetails={simpleCarVariantDetails}
-          optionADDM={optionADDM}
-        />
-      </Modal>
+      <Toast
+        width={339}
+        open={isOpenToast}
+        text={toastMessage}
+        typeToast={'error'}
+        onCancel={() => setIsOpenToast(false)}
+        closeOnToastClick
+      />
     </>
   )
 }

@@ -1,22 +1,13 @@
 import React, { useState } from 'react'
 
 import styles from 'styles/components/organisms/popupCreditDetail.module.scss'
-
-import { IconInfo } from '../../atoms'
-import TooltipDaihatsu from '../../molecules/tooltipDaihatsu'
-import { Tooltip } from 'antd'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { LoanCalculatorInsuranceAndPromoType } from 'utils/types/utils'
 import { LanguageCode, LocalStorageKey } from 'utils/enum'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { Currency } from 'utils/handler/calculation'
 import { useBadgePromo } from 'utils/hooks/usebadgePromo'
-import {
-  trackEventCountly,
-  valueMenuTabCategory,
-} from 'helpers/countly/countly'
-import { CountlyEventNames } from 'helpers/countly/eventNames'
-import { getPageName } from 'utils/pageName'
+
 import Image from 'next/image'
 
 type VariantsProps = {
@@ -34,8 +25,6 @@ const PopupCreditDetail = ({
   simpleCarVariantDetails,
   optionADDM,
 }: VariantsProps) => {
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false)
-
   const selectablePromo = getLocalStorage<LoanCalculatorInsuranceAndPromoType>(
     LocalStorageKey.SelectablePromo,
   )
@@ -49,6 +38,7 @@ const PopupCreditDetail = ({
           width="188"
           height="141"
           alt="car-image"
+          style={{ height: 'auto' }}
         />
       </div>
       <div className={styles.wrapperWithBorderBottom}>
@@ -65,45 +55,7 @@ const PopupCreditDetail = ({
           )}
         </div>
         <div className={styles.textCity}>
-          <span className={styles.margin}>
-            Harga OTR{' '}
-            {carVariant?.modelDetail.brand.includes('Daihatsu')
-              ? 'Jakarta Pusat'
-              : city}
-          </span>
-          <div
-            className={`${styles.overlay} ${
-              isTooltipOpen ? styles.showOverlay : ''
-            }`}
-            onClick={() => setIsTooltipOpen(false)}
-          />
-          {carVariant?.modelDetail.brand.includes('Daihatsu') && (
-            <Tooltip
-              title={
-                <TooltipDaihatsu onClick={() => setIsTooltipOpen(false)} />
-              }
-              color="#246ED4"
-              placement="top"
-              trigger="click"
-              visible={isTooltipOpen}
-            >
-              <IconInfo
-                onClick={() => {
-                  setIsTooltipOpen(true)
-                  trackEventCountly(
-                    CountlyEventNames.WEB_CITY_SELECTOR_TOOLTIP_CLICK,
-                    {
-                      PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
-                    },
-                  )
-                }}
-                className={styles.margin}
-                width={18}
-                height={18}
-                color="#878D98"
-              />
-            </Tooltip>
-          )}
+          <span className={styles.margin}>Harga OTR {city}</span>
         </div>
         <div className={styles.rowWithSpaceBottom}>
           <div className={styles.column}>

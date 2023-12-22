@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, MutableRefObject, useRef } from 'react'
 import styles from 'styles/pages/ktp-edit.module.scss'
 import inputDateStyles from 'styles/components/atoms/inputDate.module.scss'
 import elementId from 'helpers/elementIds'
@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 import Fuse from 'fuse.js'
 import { useRouter } from 'next/router'
 import { useQuery } from 'utils/hooks/useQuery'
-import { CustomerKtpSeva } from 'utils/types/utils'
+import { CustomerKtpSeva, FormLCState } from 'utils/types/utils'
 import { useGalleryContext } from 'services/context/galleryContext'
 import { object, string, InferType } from 'yup'
 import { useFormik } from 'formik'
@@ -15,11 +15,13 @@ import {
   getSessionStorage,
   saveSessionStorage,
 } from 'utils/handler/sessionStorage'
-import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
+import { SessionStorageKey } from 'utils/enum'
 import {
   cameraKtpUrl,
+  formKtpUrl,
   ktpReviewUrl,
   uploadKtpSpouseQueryParam,
+  verifyKtpUrl,
 } from 'utils/helpers/routes'
 import {
   Button,
@@ -31,7 +33,6 @@ import {
   Skeleton,
 } from 'components/atoms'
 import { ProgressBar } from 'components/atoms/progressBar'
-import InputPrefix from 'components/atoms/input/inputPrefix'
 import { DatePicker } from 'components/atoms/inputDate'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { ToastV2 } from 'components/atoms/toastV2'
@@ -46,8 +47,22 @@ import Image from 'next/image'
 import { checkNIKAvailable } from 'utils/handler/customer'
 import dynamic from 'next/dynamic'
 import { getCities } from 'services/api'
-const PopupError = dynamic(() => import('components/organisms/popupError'))
-const Toast = dynamic(() => import('components/atoms').then((mod) => mod.Toast))
+import { trackEventCountly } from 'helpers/countly/countly'
+import { CountlyEventNames } from 'helpers/countly/eventNames'
+import { useFinancialQueryData } from 'services/context/finnancialQueryContext'
+import { useValidateUserFlowKKIA } from 'utils/hooks/useValidateUserFlowKKIA'
+import { defineRouteName } from 'utils/navigate'
+import { formatKTPDate } from 'utils/handler/date'
+import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
+import { useBeforePopState } from 'utils/hooks/useBeforePopState'
+
+const PopupError = dynamic(() => import('components/organisms/popupError'), {
+  ssr: false,
+})
+const Toast = dynamic(
+  () => import('components/atoms').then((mod) => mod.Toast),
+  { ssr: false },
+)
 
 const LogoPrimary = '/revamp/icon/logo-primary.webp'
 
@@ -57,6 +72,13 @@ const lostConnectionMessage =
 const checkFirstCharacter = /^(?! |.* {2})[a-zA-Z ]*$/
 const checkRtRwCharacter = /^[0-9]{1,3}\/[0-9]{1,3}$/
 
+const errorMessageText = {
+  required: 'Wajib diisi',
+  nik: 'NIK harus terdiri atas 16 digit angka',
+  optionMarriage: 'Harap pilih opsi yang tersedia',
+  cityNotFound: 'Kota tidak terdaftar di SEVA',
+}
+
 const searchOption = {
   keys: ['label'],
   isCaseSensitive: false,
@@ -65,15 +87,21 @@ const searchOption = {
 }
 
 const KtpForm = () => {
+  useValidateUserFlowKKIA([verifyKtpUrl, ktpReviewUrl])
+  useBeforePopState()
   const router = useRouter()
   const { ktpType }: { ktpType: string } = useQuery(['ktpType'])
   const isSpouse = ktpType && ktpType.toLowerCase() === 'spouse'
   const [toast, setToast] = useState('')
+  const [toastType, setToastType] = useState<'success' | 'error' | 'warning'>(
+    'success',
+  )
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [cityListFromApi, setCityListFromApi] = useState<any>([])
+  const [cityListFromApi, setCityListFromApi] = useState<any[]>([])
   const [cityList, setCityList] = useState<any>([])
+  const [correctWarning, setCorrectWarning] = useState(true)
   const [customerKtp, setCustomerKtp] = useState<CustomerKtpSeva>({
     nik: '',
     name: '',
@@ -90,27 +118,40 @@ const KtpForm = () => {
   const [isLoadingCustomer] = useState(false)
   const { galleryFile } = useGalleryContext()
 
+  const kkForm: FormLCState | null = getSessionStorage(
+    SessionStorageKey.KalkulatorKreditForm,
+  )
+  const { fincap } = useFinancialQueryData()
+  const kkFlowType = getSessionStorage(SessionStorageKey.KKIAFlowType)
+  const isInPtbcFlow = kkFlowType && kkFlowType === 'ptbc'
+
+  const fieldRef = {
+    nik: useRef() as MutableRefObject<HTMLInputElement>,
+    name: useRef() as MutableRefObject<HTMLInputElement>,
+    city: useRef() as MutableRefObject<HTMLInputElement>,
+    marriage: useRef() as MutableRefObject<HTMLInputElement>,
+    birthdate: useRef() as MutableRefObject<HTMLDivElement>,
+  }
+
   const userSchema = object().shape({
     nik: string()
       .matches(/^\d{16}$/, {
-        message: 'NIK harus terdiri atas 16 digit.',
+        message: errorMessageText.nik,
       })
-      .required('Wajib diisi.'),
-    name: string().required('Wajib diisi.'),
-    address: string().required('Wajib diisi.'),
-    rtrw: string()
-      .matches(/^.{7,}$/, { message: 'RT/RW harus terdiri atas 6 digit.' })
-      .required('Wajib diisi.'),
-    kel: string().required('Wajib diisi.'),
-    kec: string().required('Wajib diisi.'),
+      .required(errorMessageText.required),
+    name: string().required(errorMessageText.required),
+    address: string(),
+    rtrw: string(),
+    kel: string(),
+    kec: string(),
     marriage: string()
-      .required('Wajib diisi.')
+      .required(errorMessageText.required)
       .oneOf(
         ['Belum Kawin', 'Kawin', 'Cerai Hidup', 'Cerai Mati'],
-        'Harap pilih opsi yang tersedia.',
+        errorMessageText.optionMarriage,
       ),
-    birthdate: string().required('Wajib diisi.'),
-    city: string().required('Wajib diisi.'),
+    birthdate: string().required(errorMessageText.required),
+    city: string().required(errorMessageText.required),
   })
 
   type UserForm = InferType<typeof userSchema>
@@ -118,12 +159,13 @@ const KtpForm = () => {
   const {
     values,
     errors,
-    setFieldError,
+    setErrors,
     handleBlur,
     touched,
+    // setTouched,
     setFieldValue,
-    dirty,
-    isValid,
+    // dirty,
+    // isValid,
     handleSubmit,
   } = useFormik<UserForm>({
     initialValues: {
@@ -132,24 +174,42 @@ const KtpForm = () => {
       address: checkFirstCharacter.test(customerKtp?.address)
         ? customerKtp.address
         : '',
-      rtrw: checkRtRwCharacter.test(customerKtp?.rtrw) ? customerKtp.rtrw : '',
-      kel: checkFirstCharacter.test(customerKtp?.kel) ? customerKtp.kel : '',
-      kec: checkFirstCharacter.test(customerKtp?.kec) ? customerKtp.kec : '',
+      rtrw: checkRtRwCharacter.test(customerKtp?.rtrw) ? customerKtp.rtrw : '-',
+      kel: checkFirstCharacter.test(customerKtp?.kel) ? customerKtp.kel : '-',
+      kec: checkFirstCharacter.test(customerKtp?.kec) ? customerKtp.kec : '-',
       marriage: customerKtp?.marriage || '',
       birthdate: !isNaN(new Date(customerKtp.birthdate).getTime())
-        ? customerKtp.birthdate
+        ? formatKTPDate(new Date(customerKtp.birthdate))
         : '',
       city: customerKtp?.city || '',
     },
     onSubmit: async (value) => {
+      if (!checkCityOCR(cityListFromApi, value.city)) {
+        setErrors({ ...errors, city: errorMessageText.cityNotFound })
+        return
+      }
+      if (correctWarning) {
+        setToastType('warning')
+        setToast('Pastikan data KTP-mu sudah sesuai')
+        return setTimeout(() => {
+          setCorrectWarning(false)
+          setToast('')
+        }, 3000)
+      }
+
       setIsLoadingSubmit(true)
       const marriagePayload = value.marriage
         ? { marriage: value.marriage }
         : ({} as { marriage: string })
       try {
-        const data = await checkNIKAvailable(value.nik)
+        const checkNik = await checkNIKAvailable(value.nik)
+        const data = checkNik
         if (data.code === 'KTP has been used') {
+          setIsLoadingSubmit(false)
           setIsModalOpen(true)
+          trackEventCountly(
+            CountlyEventNames.WEB_KTP_PAGE_NIK_DOUBLED_POPUP_VIEW,
+          )
         } else {
           if (isSpouse) {
             const dataPersonal = getSessionStorage(
@@ -158,6 +218,9 @@ const KtpForm = () => {
             if (dataPersonal) {
               if (value.nik === dataPersonal.nik) {
                 setIsLoadingSubmit(false)
+                trackEventCountly(
+                  CountlyEventNames.WEB_KTP_PAGE_NIK_DOUBLED_POPUP_VIEW,
+                )
                 return setIsModalOpen(true)
               }
             }
@@ -178,21 +241,18 @@ const KtpForm = () => {
 
           sessionStorage.setItem('isKtpSaved', 'true')
           localStorage.setItem('formKtp', JSON.stringify(value))
+          saveSessionStorage(
+            SessionStorageKey.LastVisitedPageKKIAFlow,
+            window.location.pathname,
+          )
+          trackEventCountly(CountlyEventNames.WEB_KTP_EDIT_PAGE_CTA_CLICK, {
+            CITY: value.city,
+            MARITAL_STATUS: value.marriage,
+          })
           router.push(ktpReviewUrl)
-          // const ocrktpJourney = getSessionStorage(SessionStorageKey.OCRKTP)
-          // if (localStorage.getItem('change_ktp') === 'true') {
-          //   localStorage.removeItem('change_ktp')
-          //   router.push(successChangeKtpUrl)
-          // } else {
-          //   if (ocrktpJourney === 'profile') {
-          //     sessionStorage.removeItem(SessionStorageKey.OCRKTP)
-          //     router.push(successKtpUrl)
-          //   } else {
-
-          //   }
-          // }
         }
       } catch (e: any) {
+        setToastType('error')
         if (e?.response?.data?.message) {
           setToast(`${e?.response?.data?.message}`)
         } else {
@@ -204,25 +264,35 @@ const KtpForm = () => {
       }
     },
     validateOnBlur: true,
+    validateOnChange: false,
     validationSchema: userSchema,
     enableReinitialize: true,
   })
 
-  const isNeedComplete = (obj: CustomerKtpSeva | UserForm | undefined) => {
-    return (
-      !obj?.nik ||
-      !obj?.name ||
-      !obj?.address ||
-      !obj?.kec ||
-      !obj?.kel ||
-      !obj?.rtrw ||
-      !obj?.marriage ||
-      !obj?.birthdate ||
-      !obj?.city
-    )
+  const scrollErrorTo = (
+    field: 'nik' | 'name' | 'city' | 'birthdate' | 'marriage',
+  ) => {
+    fieldRef[field].current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    })
   }
 
-  const checkCitiesData = (city: string) => {
+  const checkScrollError = () => {
+    if (errors.nik) return scrollErrorTo('nik')
+    if (errors.name) return scrollErrorTo('name')
+    if (errors.city) return scrollErrorTo('city')
+    if (errors.marriage) return scrollErrorTo('marriage')
+    if (errors.birthdate) return scrollErrorTo('birthdate')
+  }
+
+  // const isNeedComplete = (obj: CustomerKtpSeva | UserForm | undefined) => {
+  //   return (
+  //     !obj?.nik || !obj?.name || !obj?.marriage || !obj?.birthdate || !obj?.city
+  //   )
+  // }
+
+  const checkCitiesData = () => {
     if (cityListFromApi.length === 0) {
       getCities().then((res) => {
         if (res) {
@@ -232,7 +302,6 @@ const KtpForm = () => {
           }))
           setCityListFromApi(cityOptions)
           setCityList(cityOptions)
-          checkCityOCR(cityOptions, city)
         }
       })
     }
@@ -286,7 +355,7 @@ const KtpForm = () => {
 
   const getPopupErrorSubtitle = () => {
     if (
-      getLocalStorage(LocalStorageKey.ChangeKtp) !== 'true' &&
+      getLocalStorage('change_ktp') !== 'true' &&
       getSessionStorage(SessionStorageKey.OCRKTP) !== 'profile'
     ) {
       return 'Kamu tidak dapat menggunakan KTP yang sama.'
@@ -316,23 +385,60 @@ const KtpForm = () => {
       city.toLowerCase().includes(x.value.toLowerCase()),
     )
     if (city && !checkcity) {
-      setFieldError('city', 'Kota tidak terdaftar di SEVA.')
       return false
     }
 
+    if (checkcity) {
+      const filterCity = cityList.filter((x) =>
+        city.toLowerCase().includes(x.value.toLowerCase()),
+      )
+      setFieldValue('city', filterCity[0].value)
+    }
     return true
+  }
+
+  const trackKTPEdit = ({ ocrStatus = 'Yes' }) => {
+    const prevPage = getSessionStorage(SessionStorageKey.PreviousPage) as any
+    const brand = kkForm?.model?.brandName || 'Null'
+    const model = kkForm?.model
+      ? kkForm?.model?.modelName.replace(brand, '')
+      : 'Null'
+    const track = {
+      KTP_PROFILE: ktpType ? 'Spouse' : 'Main',
+      PAGE_REFERRER:
+        prevPage && prevPage.refer ? defineRouteName(prevPage.refer) : 'Null',
+      PELUANG_KREDIT_BADGE: fincap
+        ? kkForm && kkForm.model?.loanRank
+          ? kkForm.model.loanRank === 'Green'
+            ? 'Mudah disetujui'
+            : 'Sulit disetujui'
+          : 'Null'
+        : 'Null',
+      CAR_BRAND: brand,
+      CAR_MODEL: model,
+      OCR_SUCCESS_STATUS: ocrStatus,
+    }
+
+    if (isInPtbcFlow) {
+      trackEventCountly(CountlyEventNames.WEB_PTBC_KTP_EDIT_PAGE_VIEW, {
+        KTP_PROFILE: ktpType ? 'Spouse' : 'Main',
+      })
+    } else {
+      trackEventCountly(CountlyEventNames.WEB_KTP_EDIT_PAGE_VIEW, track)
+    }
   }
 
   useEffect(() => {
     if (sessionStorage.getItem('isProfileUpdated') === 'true') {
+      setToastType('success')
       setToast('Perubahan akun berhasil disimpan.')
       setTimeout(() => {
         setToast('')
-      }, 3000)
+      }, 2000)
       sessionStorage.removeItem('isProfileUpdated')
     }
-    if (getLocalStorage(LocalStorageKey.FormKtp)) {
-      const data: any = getLocalStorage(LocalStorageKey.FormKtp) || {}
+    if (localStorage.getItem('formKtp')) {
+      const data = JSON.parse(localStorage.getItem('formKtp') || '{}')
       setCustomerKtp({
         nik: data.nik,
         name: data.name,
@@ -346,13 +452,44 @@ const KtpForm = () => {
         city: data.city,
         gender: data.gender,
       })
-      checkCitiesData(data.city)
-    }
-
-    if (!galleryFile) {
-      router.push(cameraKtpUrl)
+      checkCitiesData()
+    } else {
+      checkCitiesData()
+      setToastType('warning')
+      setToast('KTP tidak terbaca. Silakan isi datamu dengan benar.')
+      setTimeout(() => {
+        setToast('')
+      }, 2000)
     }
   }, [])
+
+  useAfterInteractive(() => {
+    if (localStorage.getItem('formKtp')) {
+      trackKTPEdit({ ocrStatus: 'yes' })
+    } else {
+      trackKTPEdit({ ocrStatus: 'No' })
+      setTimeout(() => {
+        trackEventCountly(
+          CountlyEventNames.WEB_KTP_PAGE_OCR_FAILED_READ_TOAST_MESSAGE_VIEW,
+        )
+      }, 1000)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (cityListFromApi.length > 0) {
+      setErrors({
+        ...errors,
+        ...(customerKtp.nik &&
+          isNaN(parseInt(customerKtp.nik)) && {
+            nik: errorMessageText.nik,
+          }),
+        ...(!checkCityOCR(cityListFromApi, customerKtp.city) && {
+          city: errorMessageText.cityNotFound,
+        }),
+      })
+    }
+  }, [cityListFromApi])
 
   return (
     <>
@@ -362,11 +499,20 @@ const KtpForm = () => {
         image={defaultSeoImage}
       />
       <div className={styles.form_header}>
-        <div className={styles.back__button} onClick={() => router.back()}>
+        <div
+          className={styles.back__button}
+          onClick={() => {
+            saveSessionStorage(
+              SessionStorageKey.LastVisitedPageKKIAFlow,
+              window.location.pathname,
+            )
+            router.back()
+          }}
+        >
           <IconChevronLeft width={24} height={24} color="#13131B" />
         </div>
         <div className={styles.logo}>
-          <Image src={LogoPrimary} alt="back" />
+          <Image src={LogoPrimary} alt="back" width={24} height={24} />
         </div>
         <ProgressBar percentage={85} colorPrecentage="#51A8DB" />
         <main className={styles.wrapper}>
@@ -391,28 +537,39 @@ const KtpForm = () => {
               <Image
                 src={galleryFile || ''}
                 alt="KTP Image"
+                width={570}
+                height={200}
                 className={styles.ktp__preview__image}
               />
               <Input
+                ref={fieldRef.nik}
                 title="NIK"
                 value={values.nik}
-                placeholder="Masukkan NIK"
+                placeholder="1234 5678 9012 3456"
                 name="nik"
                 id="nik"
+                type="tel"
+                onFocus={() => {
+                  trackEventCountly(
+                    CountlyEventNames.WEB_KTP_EDIT_PAGE_NIK_CLICK,
+                  )
+                }}
                 onChange={(e) => {
                   const enteredValue = e.target.value
                   let formattedValue = enteredValue.replace(/\D/g, '')
-                  if (formattedValue.length > 16) {
+                  if (formattedValue.length >= 16) {
                     formattedValue = formattedValue.slice(0, 16)
                   }
                   setFieldValue('nik', formattedValue)
+                  setErrors({ ...errors, nik: '' })
                 }}
                 onBlur={handleBlur}
-                isError={!!errors.nik && touched.nik}
+                isError={!!errors.nik}
                 message={errors.nik}
                 dataTestId={elementId.Input.NIK}
               />
               <Input
+                ref={fieldRef.name}
                 title="Nama"
                 value={values.name}
                 placeholder="Masukkan Nama"
@@ -424,108 +581,43 @@ const KtpForm = () => {
                     setFieldValue('name', e.target.value)
                   }
                 }}
+                onFocus={() => {
+                  trackEventCountly(
+                    CountlyEventNames.WEB_KTP_EDIT_PAGE_NAME_CLICK,
+                  )
+                }}
                 onBlur={handleBlur}
                 isError={!!errors.name && touched.name}
                 message={errors.name}
                 dataTestId={elementId.Input.Name}
               />
               <div className={styles.addressWraper}>
-                <Input
-                  title="Alamat"
-                  value={values.address}
-                  placeholder="Masukkan Alamat"
-                  name="address"
-                  id="address"
-                  onChange={(e) => {
-                    const re = /^(?! |.* {2}).*$/
-                    if (
-                      (e.target.value === '' || re.test(e.target.value)) &&
-                      checkFirstCharacter.test(e.target.value[0])
-                    ) {
-                      setFieldValue('address', e.target.value)
-                    }
-                  }}
-                  onBlur={handleBlur}
-                  isError={!!errors.address && touched.address}
-                  message={errors.address}
-                  dataTestId={elementId.Input.Address}
-                />
-                <InputPrefix
-                  title="RT/RW"
-                  value={values.rtrw}
-                  placeholder="Masukkan RT/RW"
-                  id="rtrw"
-                  isError={!!errors.rtrw && touched.rtrw}
-                  message={errors.rtrw}
-                  onBlur={handleBlur('rtrw')}
-                  onChange={(e) => {
-                    const enteredValue = e.target.value
-                    let formattedValue = enteredValue.replace(/\D/g, '')
-
-                    if (formattedValue.length > 3) {
-                      formattedValue =
-                        formattedValue.slice(0, 3) +
-                        '/' +
-                        formattedValue.substring(3, 6)
-                    }
-
-                    setFieldValue('rtrw', formattedValue)
-                  }}
-                  dataTestId={elementId.Input.RTRW}
-                />
-                <InputPrefix
-                  title="Kel/Desa"
-                  value={values.kel}
-                  id="kel"
-                  placeholder="Masukkan Kelurahan/Desa"
-                  isError={!!errors.kel && touched.kel}
-                  onBlur={handleBlur('kel')}
-                  message={errors.kel}
-                  onChange={(e) => {
-                    const re = /^(?! |.* {2}).*$/
-                    if (
-                      (e.target.value === '' || re.test(e.target.value)) &&
-                      checkFirstCharacter.test(e.target.value[0])
-                    ) {
-                      setFieldValue('kel', e.target.value)
-                    }
-                  }}
-                  dataTestId={elementId.Input.KelurahanDesa}
-                />
-
-                <InputPrefix
-                  title="Kecamatan"
-                  value={values.kec}
-                  placeholder="Masukkan Kecamatan"
-                  id="kec"
-                  isError={!!errors.kec && touched.kec}
-                  message={errors.kec}
-                  onBlur={handleBlur('kec')}
-                  onChange={(e) => {
-                    const re = /^(?! |.* {2}).*$/
-                    if (
-                      (e.target.value === '' || re.test(e.target.value)) &&
-                      checkFirstCharacter.test(e.target.value[0])
-                    ) {
-                      setFieldValue('kec', e.target.value)
-                    }
-                  }}
-                  dataTestId={elementId.Input.Kecamatan}
-                />
+                <label className={inputDateStyles.titleText}>Kota</label>
                 <InputSelect
+                  ref={fieldRef.city}
                   id="city"
                   name="city"
                   prefix="Kota"
                   value={values.city || ''}
                   options={cityList}
+                  placeholderText="Pilih Kota"
+                  onFocusInput={() => {
+                    trackEventCountly(
+                      CountlyEventNames.WEB_KTP_EDIT_PAGE_CITY_CLICK,
+                    )
+                  }}
                   onChange={(value) => {
                     setFieldValue('city', value)
+                    setErrors({ ...errors, city: '' })
                     const listSuggestion = value
                       ? generateSuggestion(value)
                       : cityListWithTopCity()
                     setCityList(listSuggestion)
                   }}
-                  onChoose={(value) => setFieldValue('city', value.value)}
+                  onChoose={(value) => {
+                    setFieldValue('city', value.value)
+                    setErrors({ ...errors, city: '' })
+                  }}
                   onBlurInput={() => {
                     if (cityList.length === 0) {
                       setFieldValue('city', '')
@@ -541,19 +633,27 @@ const KtpForm = () => {
                   isError={!!errors.city}
                 />
                 {!!errors.city ? (
-                  <p className={inputDateStyles.errorText}>{errors.city}</p>
+                  <span className={inputDateStyles.errorText}>
+                    {errors.city}
+                  </span>
                 ) : null}
               </div>
-              <div>
+              <div className={inputDateStyles.fieldWrapper}>
                 <label className={inputDateStyles.titleText}>
                   Status Perkawinan
                 </label>
                 <InputSelect
+                  ref={fieldRef.marriage}
                   id="marriage"
                   name="marriage"
                   value={values.marriage || ''}
                   onChange={(value) => {
                     setFieldValue('marriage', value)
+                  }}
+                  onFocusInput={() => {
+                    trackEventCountly(
+                      CountlyEventNames.WEB_KTP_EDIT_PAGE_MARITAL_STATUS_CLICK,
+                    )
                   }}
                   options={[
                     { value: 'Belum Kawin', label: 'Belum Kawin' },
@@ -599,10 +699,15 @@ const KtpForm = () => {
                   datatestid={elementId.Profil.Dropdown.StatusPerkawinan}
                 />
                 {!!errors.marriage && touched.marriage ? (
-                  <p className={inputDateStyles.errorText}>{errors.marriage}</p>
+                  <span className={inputDateStyles.errorText}>
+                    {errors.marriage}
+                  </span>
                 ) : null}
               </div>
-              <div>
+              <div
+                className={inputDateStyles.fieldWrapper}
+                ref={fieldRef.birthdate}
+              >
                 <DatePicker
                   title="Tanggal Lahir"
                   placeholder="DD/MM/YYYY"
@@ -613,6 +718,13 @@ const KtpForm = () => {
                   data-testid={elementId.DatePicker.DOB}
                   onConfirm={(val: Date) => {
                     setFieldValue('birthdate', dayjs(val).format('YYYY-MM-DD'))
+                    setErrors({ ...errors, birthdate: '' })
+                  }}
+                  onOpenDate={(open) => {
+                    if (open)
+                      trackEventCountly(
+                        CountlyEventNames.WEB_KTP_EDIT_PAGE_DOB_CLICK,
+                      )
                   }}
                   isError={!!errors.birthdate && touched.birthdate}
                   errorMessage={errors.birthdate}
@@ -622,6 +734,7 @@ const KtpForm = () => {
               <Button
                 onClick={() => {
                   handleSubmit()
+                  checkScrollError()
                   setErrorMessage(null)
                   if (!navigator.onLine) {
                     setErrorMessage(lostConnectionMessage)
@@ -631,15 +744,9 @@ const KtpForm = () => {
                 }}
                 version={ButtonVersion.PrimaryDarkBlue}
                 size={ButtonSize.Big}
-                disabled={
-                  isNeedComplete(values) ||
-                  !dirty ||
-                  !isValid ||
-                  isLoadingSubmit ||
-                  !checkCityOCR(cityListFromApi, values.city)
-                }
                 data-testid={elementId.Profil.Button.Konfirmasi}
                 loading={isLoadingSubmit}
+                disabled={isLoadingSubmit || isLoadingCustomer}
               >
                 Konfirmasi
               </Button>
@@ -647,16 +754,16 @@ const KtpForm = () => {
           )}
         </main>
       </div>
-      {toast ? (
-        <Toast
-          text={toast}
-          maskClosable
-          closeOnToastClick
-          onCancel={() => {
-            setToast('')
-          }}
-        />
-      ) : null}
+      <Toast
+        text={toast}
+        typeToast={toastType}
+        maskClosable
+        closeOnToastClick
+        open={Boolean(toast)}
+        onCancel={() => {
+          setToast('')
+        }}
+      />
       {errorMessage ? (
         <ToastV2
           visible={errorMessage !== null}
@@ -673,6 +780,13 @@ const KtpForm = () => {
         }}
         onCancelText={() => {
           setIsModalOpen(false)
+          saveSessionStorage(
+            SessionStorageKey.LastVisitedPageKKIAFlow,
+            window.location.pathname,
+          )
+          trackEventCountly(
+            CountlyEventNames.WEB_KTP_PAGE_NIK_DOUBLED_POPUP_CTA_CLICK,
+          )
           router.push(
             cameraKtpUrl + `${isSpouse ? uploadKtpSpouseQueryParam : ''}`,
           )

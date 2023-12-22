@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { LocalStorageKey } from 'utils/enum'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { FinancialQuery } from 'utils/types/props'
@@ -38,6 +38,7 @@ const initData = {
 
 export type FinancialQueryContextType = {
   financialQuery: FinancialQuery
+  fincap: boolean
   setFinancialQueryValue: (data: FinancialQuery) => void
   patchFinancialQuery: (data: FinancialQuery) => void
   clearQueryFilter: (data: FinancialQuery) => void
@@ -54,6 +55,17 @@ export const FinancialQueryContextProvider = ({ children }: any) => {
     initData,
   )
   const [financialQuery, setFinancialQuery] = useState<FinancialQuery>(initData)
+
+  const fincap = useMemo(() => {
+    if (
+      financialQuery.age &&
+      financialQuery.monthlyIncome &&
+      financialQuery.tenure &&
+      financialQuery.downPaymentAmount
+    )
+      return true
+    return false
+  }, [financialQuery])
 
   const setFinancialQueryValue = (value: FinancialQuery) => {
     setFinancialQuery({ ...financialQuery, ...value })
@@ -137,6 +149,7 @@ export const FinancialQueryContextProvider = ({ children }: any) => {
     <FinancialQueryContext.Provider
       value={{
         financialQuery,
+        fincap,
         setFinancialQueryValue,
         patchFinancialQuery,
         clearQueryFilter,

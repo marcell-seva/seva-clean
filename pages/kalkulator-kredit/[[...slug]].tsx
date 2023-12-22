@@ -115,7 +115,7 @@ export default function LoanCalculatorPage({
         description="Beli mobil terbaru dari Toyota, Daihatsu, BMW dengan Instant Approval*. Proses Aman & Mudah✅ Terintegrasi dengan ACC & TAF✅ SEVA member of ASTRA"
         image={defaultSeoImage}
       />
-      <LoanCalculatorPageV1 />
+      {v === '1' ? <LoanCalculatorPageV1 /> : <LoanCalculatorPageV2 />}
     </>
   )
 }

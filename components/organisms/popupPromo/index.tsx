@@ -60,10 +60,17 @@ const initPromoList: PopupPromoDataItemType[] = [
 type PopupPromo = Omit<ModalProps, 'children'> & {
   data?: PopupPromoDataItemType[]
   additionalContainerClassname?: string
+  onClickSNK?: (promo: PopupPromoDataItemType) => void
   carData?: any
 }
 
-export const PopupPromo = (props: PopupPromo) => {
+export const PopupPromo = ({
+  data,
+  onClickSNK,
+  additionalContainerClassname,
+  carData,
+  ...props
+}: PopupPromo) => {
   const [promoList, setPromoList] = useState(initPromoList)
   const filterStorage: any = getLocalStorage(LocalStorageKey.CarFilter)
 
@@ -81,29 +88,29 @@ export const PopupPromo = (props: PopupPromo) => {
 
   const trackClickPromoSK = (promoDetail: string, promoOrder: number) => {
     trackEventCountly(CountlyEventNames.WEB_PROMO_SK_CLICK, {
-      CAR_BRAND: getBrandAndModelValue(props.carData.brand),
-      CAR_MODEL: getBrandAndModelValue(props.carData.model),
-      CAR_ORDER: props.carData.carOrder,
+      CAR_BRAND: getBrandAndModelValue(carData.brand),
+      CAR_MODEL: getBrandAndModelValue(carData.model),
+      CAR_ORDER: carData.carOrder,
       PROMO_DETAILS: promoDetail,
       PROMO_ORDER: promoOrder + 1,
       PELUANG_KREDIT_BADGE:
         isUsingFilterFinancial &&
         IsShowBadgeCreditOpportunity &&
-        props.carData.loanRank === 'Green'
+        carData.loanRank === 'Green'
           ? 'Mudah disetujui'
           : isUsingFilterFinancial &&
             IsShowBadgeCreditOpportunity &&
-            props.carData.loanRank === 'Red'
+            carData.loanRank === 'Red'
           ? 'Sulit disetujui'
           : 'Null',
       PAGE_ORIGINATION: 'PLP',
     })
   }
   useEffect(() => {
-    if (props.data) {
-      setPromoList(props.data)
+    if (data) {
+      setPromoList(data)
     }
-  }, [props.data])
+  }, [data])
 
   const lastIndex = useMemo(() => {
     return promoList.length - 1
@@ -128,9 +135,7 @@ export const PopupPromo = (props: PopupPromo) => {
       centered
       {...props}
     >
-      <div
-        className={`${styles.container} ${props.additionalContainerClassname}`}
-      >
+      <div className={`${styles.container} ${additionalContainerClassname}`}>
         {promoList.map((item, index) => (
           <div key={index} className={styles.contentPromo}>
             <span className={styles.titlePromo}>{item.title}</span>
@@ -150,7 +155,10 @@ export const PopupPromo = (props: PopupPromo) => {
               href={item.snk}
               rel="noreferrer noopener"
               data-testid={elementId.PLP.Button.LihatSNK}
-              onClick={() => trackClickPromoSK(item.title, index)}
+              onClick={() => {
+                onClickSNK && onClickSNK(item)
+                trackClickPromoSK(item.title, index)
+              }}
             >
               Lihat S&K
             </a>

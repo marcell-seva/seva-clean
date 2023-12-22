@@ -20,9 +20,7 @@ const isPreApprovalFlowPage = (url: string): boolean =>
   paFlowUrlPrefixList.some((prefix) => url.startsWith(prefix))
 
 export const maxPageWidth =
-  client && isPreApprovalFlowPage(window.location.pathname) ? '700px' : '100%'
-export const maxPageWidthNumber = 700
-export const screenHeight = client ? document.documentElement.clientHeight : 700
-export const screenWidth = client
-  ? document.documentElement.clientWidth
-  : '700px'
+  client && isPreApprovalFlowPage(window.location.pathname) ? '570px' : '100%'
+export const maxPageWidthNumber = 570
+export const screenHeight = client ? document.documentElement.clientHeight : 570
+export const screenWidth = client ? document.documentElement.clientWidth : '570'
