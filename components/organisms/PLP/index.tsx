@@ -48,6 +48,7 @@ import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
 import { getMinMaxPrice, postCheckTemanSeva } from 'services/api'
 import { isCurrentCitySameWithSSR } from 'utils/hooks/useGetCity'
+import { isBodyType, isBrand } from 'pages/mobil-baru/[brand]'
 
 const Spin = dynamic(() => import('antd/lib/spin'), { ssr: false })
 const LeadsFormPrimary = dynamic(() =>
@@ -95,8 +96,8 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
   const [alternativeCars, setAlternativeCar] = useState<CarRecommendation[]>([])
   const {
     search,
-    bodyType,
-    brand: brandQueryOrLastSlug,
+    bodyType: bodyTypeTemp,
+    brand: param,
     downPaymentAmount,
     monthlyIncome,
     tenure,
@@ -104,9 +105,12 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     age,
     sortBy,
   } = router.query as FilterParam
-  const brand = brandQueryOrLastSlug.includes('SEVA')
-    ? ''
-    : brandQueryOrLastSlug
+  const brand = isBrand(param) ? param : undefined
+  const bodyType = bodyTypeTemp
+    ? bodyTypeTemp
+    : isBodyType(param)
+    ? param?.toUpperCase()
+    : undefined
   const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
 
   const [cityOtr] = useLocalStorage<Location | null>(
@@ -133,6 +137,11 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
       : false
   funnelQuery.search = search
   funnelQuery.brand = brand?.split(',').map((item) => getCarBrand(item)) || []
+  if (isBodyType(param) && !bodyTypeTemp) {
+    funnelQuery.bodyType = bodyType
+      ?.split(',')
+      ?.map((item) => item?.toUpperCase())
+  }
   const showFilterFinancial =
     age || downPaymentAmount || monthlyIncome ? true : false
   const [isFilter, setIsFilter] = useState(showFilter)
@@ -800,7 +809,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
                   (i: any, index: React.Key | null | undefined) => (
                     <CarDetailCard
                       order={Number(index)}
-                      key={index}
+                      key={i.id}
                       recommendation={i}
                       isOTO={isOTO}
                       isFilter={isFilterCredit}
