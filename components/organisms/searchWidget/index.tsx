@@ -346,8 +346,14 @@ const SearchWidget = () => {
     })
 
     trackCountlyClickCta()
-
-    navigateToPLP(PreviousButton.SmartSearch, { search: urlParam })
+    navigateToPLP(
+      PreviousButton.SmartSearch,
+      { search: urlParam },
+      true,
+      false,
+      undefined,
+      urlParam ? false : true,
+    )
   }
 
   useEffect(() => {

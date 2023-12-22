@@ -861,7 +861,7 @@ export const getServerSideProps: GetServerSideProps<{
         getMobileHeaderMenu(),
         getMobileFooterMenu(),
         getCities(),
-        getUsedCarSearch('', { params }),
+        getUsedCarSearch(),
       ])
 
     return {

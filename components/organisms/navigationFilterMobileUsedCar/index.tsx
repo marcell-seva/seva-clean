@@ -242,32 +242,32 @@ export const NavigationFilterMobileUsedCar = ({
           filter.brand.length > 0 ? String(filter.brand).replace(' ', ',') : '',
       }
 
+      const searchParam = new URLSearchParams(
+        Object.entries(paramUrl).filter(([, v]) => v !== ''),
+      )
+        .toString()
+        .replace('%2C', ',')
+
       isOTO
         ? navigateToPLP(
             PreviousButton.SmartSearch,
             {
-              search: new URLSearchParams(
-                Object.entries(paramUrl).filter(([, v]) => v !== ''),
-              )
-                .toString()
-                .replace('%2C', ','),
+              search: searchParam,
             },
             true,
             false,
             urls.internalUrls.duplicatedCarResultsUrl,
+            searchParam ? false : true,
           )
         : navigateToPLP(
             PreviousButton.SmartSearch,
             {
-              search: new URLSearchParams(
-                Object.entries(paramUrl).filter(([, v]) => v !== ''),
-              )
-                .toString()
-                .replace('%2C', ','),
+              search: searchParam,
             },
             true,
             false,
             urls.internalUrls.usedCarResultsUrl,
+            searchParam ? false : true,
           )
     })
   }

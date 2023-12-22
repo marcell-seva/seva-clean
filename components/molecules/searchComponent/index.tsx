@@ -111,8 +111,6 @@ export const SearchComponent = ({
   const router = useRouter()
   const [isShowLoading, setShowLoading] = useState(true)
   const [comDataNew, setComDataNew] = useState<COMData[]>([])
-  const [usedCarRecom, setUsedCarRecom] =
-    useState<SearchUsedCar[]>(dataSearchUsedCar)
   const [isError, setIsError] = useState(false)
   const [isNotFoundClicked, setIsNotFoundClicked] = useState(false)
   const [notFound, setIsNotFound] = useState(false)
@@ -120,6 +118,9 @@ export const SearchComponent = ({
     LocalStorageKey.CityOtr,
     null,
   )
+  const [checkHistory, setCheckHistory] = useLocalStorage<
+    Array<{ label: string; value: string }>
+  >('searchHistory', [])
   const getCityUrl = () => {
     if (cityOtr) return `/${cityOtr.cityName.toLowerCase().replace(' ', '-')}`
     else return '/'
@@ -156,7 +157,7 @@ export const SearchComponent = ({
     try {
       const [dataNew, dataUsed]: any = await Promise.all([
         getNewCarSearch('', { params }),
-        getUsedCarSearch('', { params: paramsUsed }),
+        getUsedCarSearch(),
       ])
 
       if (dataNew.data.length === 0 && dataUsed.data.length === 0) {
@@ -212,12 +213,6 @@ export const SearchComponent = ({
 
     return data ?? []
   }, [comDataNew])
-
-  const usedCarData = useMemo(() => {
-    const data = usedCarRecom?.slice(0, 5)
-
-    return data ?? []
-  }, [usedCarRecom])
 
   const renderSearchOptionsItem = (textToHighlight: string) => {
     const searchWords: string[] = []
@@ -344,12 +339,8 @@ export const SearchComponent = ({
     [label: string]: boolean
   }
 
-  const checkHistory =
-    JSON.parse(localStorage.getItem('searchHistory') || '[]').length > 0
   const renderSearchHistory = () => {
-    const searchHistory = JSON.parse(
-      localStorage.getItem('searchHistory') || '[]',
-    ).slice(0, 3)
+    const searchHistory = checkHistory.slice(0, 3)
     const renderedLabels: RenderedLabels = {}
 
     return (
@@ -553,10 +544,10 @@ export const SearchComponent = ({
               ))}
             </Swiper>
             <div>
-              <Link href={carResultsUrl} className={styles.linkAllCar}>
+              <a href={carResultsUrl} className={styles.linkAllCar}>
                 <p className={styles.linkAllCar}>Lihat semua mobil baru</p>
                 <IconChevronRight width={20} height={20} color="#246ED4" />
-              </Link>
+              </a>
             </div>
           </Panel>
           <Panel
@@ -564,34 +555,40 @@ export const SearchComponent = ({
             key="2"
             className={styles.panelStyle}
           >
-            {usedCarData?.map((car: SearchUsedCar, idx: number) => (
-              <div key={idx}>
-                <div className={styles.styledCarContentName} key={car.carName}>
-                  <div
-                    className={styles.styledCarName}
-                    onClick={() => clickList(car)}
-                  >
+            {dataSearchUsedCar &&
+              dataSearchUsedCar
+                .slice(0, 5)
+                .map((car: SearchUsedCar, idx: number) => (
+                  <div key={idx}>
                     <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
+                      className={styles.styledCarContentName}
+                      key={car.carName}
                     >
-                      <div className={styles.styledUsedCarName}>
-                        {car.carName}
+                      <div
+                        className={styles.styledCarName}
+                        onClick={() => clickList(car)}
+                      >
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <div className={styles.styledUsedCarName}>
+                            {car.carName}
+                          </div>
+                        </div>
                       </div>
                     </div>
+                    <Line width={'100%'} height={'1px'} background="#EBECEE" />
                   </div>
-                </div>
-                <Line width={'100%'} height={'1px'} background="#EBECEE" />
-              </div>
-            ))}
+                ))}
             <div className={styles.ctaUsedCar}>
               <Link
                 href={usedCarResultUrl}
                 onClick={() => {
                   handleCloseModal()
-                  router.push(urls.internalUrls.usedCarResultsUrl)
+                  window.location.href = urls.internalUrls.usedCarResultsUrl
                 }}
                 className={styles.linkAllCar}
               >

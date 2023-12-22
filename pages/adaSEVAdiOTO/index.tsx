@@ -143,7 +143,7 @@ export async function getServerSideProps(context: any) {
       getMainArticle('65'),
       getTypeCar('?city=jakarta'),
       getCarofTheMonth('?city=' + getCity().cityCode),
-      getUsedCarSearch('', { params: paramsUsedCar }),
+      getUsedCarSearch(),
     ])
     const [
       dataReccomendation,

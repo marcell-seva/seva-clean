@@ -18,10 +18,9 @@ export const usePriceRange = () => {
   const [errorMaxTwoField, setErrorMaxTwoField] = useState(false)
 
   const fetchMinMaxPrice = () => {
-    const params = new URLSearchParams()
-    getCity().cityCode && params.append('city', getCity().cityCode as string)
+    const params = getCity().cityCode
 
-    getMinMaxPrice('', { params }).then((response) => {
+    getMinMaxPrice(`?city=${params}`).then((response) => {
       setLimitPrice({
         min: response.minPriceValue,
         max: response.maxPriceValue,
