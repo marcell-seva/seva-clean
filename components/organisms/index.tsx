@@ -81,6 +81,8 @@ import EducationalContentPopupUsedCar from './educationalContentPopup/usedCar'
 import EducationalContentPopupDp from './educationalContentPopupDp'
 import { CalculationResultSkeleton } from './calculationResultSkeleton'
 import EducationalContentPopupType from './educationalContentPopupType'
+import Dealer from './dealer'
+import DealerSearchWidget from './searchWidget/dealerSearchWidget'
 
 const Exterior360ViewerTab = dynamic(
   () => import('./tabContent/upper/exterior360Viewer'),
@@ -170,4 +172,6 @@ export {
   EducationalContentPopupDp,
   EducationalContentPopupType,
   CalculationResultSkeleton,
+  Dealer,
+  DealerSearchWidget,
 }
