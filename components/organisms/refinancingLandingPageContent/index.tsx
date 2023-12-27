@@ -41,6 +41,7 @@ export const RefinancingLandingPageContent = () => {
   })
 
   const scrollToLeadsForm = () => {
+    setIsButtonClick(true)
     const destinationElm = document.getElementById(
       'refinancing-page-leads-form-section',
     )
