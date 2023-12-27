@@ -15,14 +15,19 @@ export const CarGallery = ({
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' })
 
   useEffect(() => {
-    const temp = usedCarModelDetailsRes.carGallery.map((items: any) => {
-      if (items.mediaCode === 'main-image') {
-        return items
-      } else if (items.mediaCode === 'detail-images') {
-        return items
+    const mainImages: any = []
+    const detailImages: any = []
+
+    usedCarModelDetailsRes.carGallery.map((item: any) => {
+      if (item.mediaCode === 'main-image') {
+        mainImages.push(item)
+      } else if (item.mediaCode === 'detail-images') {
+        detailImages.push(item)
       }
     })
-    setEksteriorImage(temp.slice(0, 11))
+    const sortedImages = [...mainImages, ...detailImages]
+
+    setEksteriorImage(sortedImages.slice(0, 11))
   }, [usedCarModelDetailsRes])
 
   return (

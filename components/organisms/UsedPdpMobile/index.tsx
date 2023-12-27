@@ -11,7 +11,11 @@ import { SessionStorageKey } from 'utils/enum'
 import { IconLocation } from 'components/atoms'
 import elementId from 'helpers/elementIds'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
-import { addSeparator, capitalizeFirstLetter } from 'utils/stringUtils'
+import {
+  addSeparator,
+  capitalizeFirstLetter,
+  capitalizeWords,
+} from 'utils/stringUtils'
 import { getToken } from 'utils/handler/auth'
 import { valueMenuTabCategory } from 'helpers/countly/countly'
 import { useUtils } from 'services/context/utilsContext'
@@ -56,16 +60,7 @@ export default function UsedCarVariantList({
   const { usedCarModelDetailsRes } = useContext(UsedPdpDataLocalContext)
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
   const modelName =
-    usedCarModelDetailsRes &&
-    usedCarModelDetailsRes?.modelName.toLowerCase().split(' ').length > 1
-      ? `${capitalizeFirstLetter(
-          usedCarModelDetailsRes?.modelName.toLowerCase().split(' ')[0],
-        )} ${capitalizeFirstLetter(
-          usedCarModelDetailsRes?.modelName.toLowerCase().split(' ')[1],
-        )}`
-      : capitalizeFirstLetter(
-          usedCarModelDetailsRes?.modelName.toLowerCase() as string,
-        )
+    usedCarModelDetailsRes && capitalizeWords(usedCarModelDetailsRes.modelName)
 
   const { detail } = usedCar()
 
