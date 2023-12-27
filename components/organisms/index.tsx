@@ -83,6 +83,8 @@ import { CalculationResultSkeleton } from './calculationResultSkeleton'
 import EducationalContentPopupType from './educationalContentPopupType'
 import Dealer from './dealer'
 import DealerSearchWidget from './searchWidget/dealerSearchWidget'
+import { DealerBrands } from 'components/molecules/dealersBrand'
+import DealerArticleWidget from './articleWidget/dealer'
 
 const Exterior360ViewerTab = dynamic(
   () => import('./tabContent/upper/exterior360Viewer'),
@@ -174,4 +176,6 @@ export {
   CalculationResultSkeleton,
   Dealer,
   DealerSearchWidget,
+  DealerBrands,
+  DealerArticleWidget,
 }

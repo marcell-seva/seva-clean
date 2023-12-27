@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useUtils } from 'services/context/utilsContext'
 import {
+  ArticleWidget,
+  DealerArticleWidget,
+  DealerBrands,
   DealerSearchWidget,
   HeaderMobile,
   LeadsFormTertiary,
@@ -8,17 +11,74 @@ import {
 } from 'components/organisms'
 import { CitySelectorModal, FooterMobile } from 'components/molecules'
 import styles from 'styles/pages/dealer.module.scss'
-import { CardShadow } from 'components/atoms'
+import { CSAButton, CardShadow } from 'components/atoms'
 import clsx from 'clsx'
 import { getCity } from 'utils/hooks/useGetCity'
 import { getRecommendation } from 'services/api'
 import { useCar } from 'services/context/carContext'
+import { useLocalStorage } from 'utils/hooks/useLocalStorage'
+import { AlephArticleCategoryType, Article, CityOtrOption } from 'utils/types'
+import { LocalStorageKey } from 'utils/enum'
+import { getLocalStorage } from 'utils/handler/localStorage'
+import { countDaysDifference } from 'utils/handler/date'
+import { useInView } from 'react-intersection-observer'
+import { alephArticleCategoryList } from 'config/articles.config'
 
 const Dealer = ({ dataRecommendation, ssr }: any) => {
   const { saveRecommendation } = useCar()
-  const { mobileWebTopMenus, cities } = useUtils()
+  const { mobileWebTopMenus, cities, articles } = useUtils()
   const [showSidebar, setShowSidebar] = useState(false)
   const [openCitySelectorModal, setOpenCitySelectorModal] = useState(false)
+  const [articlesTabList, setArticlesTabList] = useState<Article[]>(articles)
+  const [cityOtr] = useLocalStorage<CityOtrOption | null>(
+    LocalStorageKey.CityOtr,
+    null,
+  )
+  const {
+    ref: landingPageLeadsFormSectionRef,
+    inView: isLeadsFormSectionVisible,
+  } = useInView({
+    threshold: 0.5,
+  })
+
+  const getTabList = async () => {
+    const url = alephArticleCategoryList[2].url
+    if (url) {
+      const response = await fetch(url)
+      const responseData = await response.json()
+      setArticlesTabList(responseData)
+    }
+  }
+
+  const isIn30DaysInterval = () => {
+    const lastTimeSelectCity = getLocalStorage<string>(
+      LocalStorageKey.LastTimeSelectCity,
+    )
+    if (!lastTimeSelectCity) {
+      return false
+    } else if (
+      countDaysDifference(lastTimeSelectCity, new Date().toISOString()) <= 30
+    ) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  const cityHandler = async () => {
+    if (!cityOtr && !isIn30DaysInterval()) {
+      setOpenCitySelectorModal(true)
+    }
+  }
+
+  useEffect(() => {
+    getTabList()
+    cityHandler()
+  }, [])
+
+  useEffect(() => {
+    setArticlesTabList(articles)
+  }, [articles])
 
   // const loadCarRecommendation = async () => {
   //   try {
@@ -37,6 +97,19 @@ const Dealer = ({ dataRecommendation, ssr }: any) => {
   //   }
   // }, [])
 
+  const scrollToLeadsForm = () => {
+    const destinationElm = document.getElementById(
+      'landing-page-leads-form-section',
+    )
+    if (destinationElm) {
+      destinationElm.scrollIntoView({
+        inline: 'center',
+        block: 'center',
+        behavior: 'smooth',
+      })
+    }
+  }
+
   return (
     <div className={styles.container}>
       <HeaderMobile
@@ -45,7 +118,8 @@ const Dealer = ({ dataRecommendation, ssr }: any) => {
         emitClickCityIcon={() => setOpenCitySelectorModal(true)}
       />
       <div className={styles.mainKV}></div>
-      <div className={styles.searchContainer}>
+      <DealerBrands />
+      {/* <div className={styles.searchContainer}>
         <CardShadow
           className={clsx({
             [styles.cardContainer]: true,
@@ -53,12 +127,19 @@ const Dealer = ({ dataRecommendation, ssr }: any) => {
         >
           <DealerSearchWidget />
         </CardShadow>
-      </div>
-      <LpCarRecommendations
+      </div> */}
+      {/* <LpCarRecommendations
         dataReccomendation={dataRecommendation}
         onClickOpenCityModal={() => setOpenCitySelectorModal(true)}
-      />
-      <LeadsFormTertiary />
+      /> */}
+
+      <div
+        ref={landingPageLeadsFormSectionRef}
+        id="landing-page-leads-form-section"
+      >
+        <LeadsFormTertiary />
+      </div>
+      <DealerArticleWidget articlesTabList={articlesTabList} />
       <FooterMobile />
       <CitySelectorModal
         isOpen={openCitySelectorModal}
@@ -67,6 +148,12 @@ const Dealer = ({ dataRecommendation, ssr }: any) => {
         }}
         cityListFromApi={cities}
       />
+      {!isLeadsFormSectionVisible && (
+        <CSAButton
+          onClick={scrollToLeadsForm}
+          additionalstyle={'csa-button-homepage'}
+        />
+      )}
     </div>
   )
 }

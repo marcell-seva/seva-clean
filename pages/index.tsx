@@ -46,6 +46,7 @@ interface HomePageDataLocalContextType {
   dataRecMVP: any
   dataUsage: any
   dataMainArticle: any
+  dataDealerArticle: any
   dataTypeCar: any
   dataCarofTheMonth: any
   dataFooterMenu: any
@@ -67,6 +68,7 @@ export const HomePageDataLocalContext =
     dataRecMVP: null,
     dataUsage: null,
     dataMainArticle: null,
+    dataDealerArticle: null,
     dataTypeCar: null,
     dataCarofTheMonth: null,
     dataFooterMenu: [],
@@ -86,6 +88,7 @@ export default function WithTracker({
   dataRecMVP,
   dataUsage,
   dataMainArticle,
+  dataDealerArticle,
   dataTypeCar,
   dataCarofTheMonth,
   dataMinMaxYearUsedCar,
@@ -98,6 +101,7 @@ export default function WithTracker({
   const { saveTypeCar, saveCarOfTheMonth, saveRecommendationToyota } = useCar()
   const {
     saveArticles,
+    saveDealerArticles,
     saveDesktopWebTopMenu,
     saveMobileWebTopMenus,
     saveDataAnnouncementBox,
@@ -120,6 +124,7 @@ export default function WithTracker({
     saveDesktopWebTopMenu(dataDesktopMenu)
     saveMobileWebTopMenus(dataMobileMenu)
     saveArticles(dataMainArticle)
+    saveDealerArticles(dataDealerArticle)
     saveCarOfTheMonth(dataCarofTheMonth)
     saveTypeCar(dataTypeCar)
     saveRecommendationToyota(dataRecToyota)
@@ -140,6 +145,7 @@ export default function WithTracker({
         dataRecMVP,
         dataUsage,
         dataMainArticle,
+        dataDealerArticle,
         dataTypeCar,
         dataCarofTheMonth,
         dataFooterMenu,
@@ -220,6 +226,7 @@ export async function getServerSideProps(context: any) {
       dataRecMVP,
       dataUsage,
       dataMainArticle,
+      dataDealerArticle,
       dataTypeCar,
       dataCarofTheMonth,
       dataDesktopMenu,
@@ -238,6 +245,9 @@ export async function getServerSideProps(context: any) {
       MVPRes.carRecommendations,
       usageRes.data.attributes,
       mainArticleRes,
+      mainArticleRes.filter(
+        (article: Article) => article.category === 'Review Otomotif',
+      ),
       typeCarRes,
       carofTheMonthRes.data,
       menuDesktopRes.data,
@@ -259,6 +269,7 @@ export async function getServerSideProps(context: any) {
         dataRecMVP,
         dataUsage,
         dataMainArticle,
+        dataDealerArticle,
         dataTypeCar,
         dataCarofTheMonth,
         dataMinMaxYearUsedCar,

@@ -28,6 +28,8 @@ export type UtilsContextType = {
   saveAgent: (data: SalesAgent[]) => void
   articles: ArticleData[]
   saveArticles: (data: ArticleData[]) => void
+  dealerArticles: ArticleData[]
+  saveDealerArticles: (data: ArticleData[]) => void
   mobileWebTopMenus: MobileWebTopMenuType[] | []
   mobileWebFooterMenus: MobileWebFooterMenuType[] | []
   saveMobileWebTopMenus: (data: MobileWebTopMenuType[] | []) => void
@@ -55,6 +57,7 @@ export const UtilsContextProvider = ({ children }: any) => {
     SearchUsedCar[] | []
   >([])
   const [city, setCity] = useState<CityOtrOption | undefined>()
+  const [dealerArticles, setDealerArticles] = useState<ArticleData[] | []>([])
   const [agent, setAgent] = useState<SalesAgent[] | []>([])
   const [articles, setArticles] = useState<ArticleData[] | []>([])
   const [dataLeads, setDataLeads] = useState<CarRecommendation | undefined>()
@@ -101,6 +104,9 @@ export const UtilsContextProvider = ({ children }: any) => {
   const saveArticles = (articlesData: ArticleData[] | []) =>
     setArticles(articlesData)
 
+  const saveDealerArticles = (dealerArticlesData: ArticleData[] | []) =>
+    setArticles(dealerArticlesData)
+
   const saveDataAnnouncementBox = (
     dataAnnouncementBox: AnnouncementBoxDataType | undefined,
   ) => setIsShowAnnouncementBox(dataAnnouncementBox)
@@ -136,6 +142,8 @@ export const UtilsContextProvider = ({ children }: any) => {
         saveAgent,
         articles,
         saveArticles,
+        dealerArticles,
+        saveDealerArticles,
         mobileWebTopMenus,
         saveMobileWebTopMenus,
         mobileWebFooterMenus,

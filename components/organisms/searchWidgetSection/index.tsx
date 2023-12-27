@@ -62,35 +62,7 @@ export const SearchWidgetSection = ({
     if (cityOtr) setCurrentCityOtr(cityOtr)
   }, [cityOtr])
 
-  // const getImageExterior360 = () => {
-  //   const currentUrlPathname = router.asPath
-  //   const temp = exteriorImagesListNew.filter((item) =>
-  //     currentUrlPathname.includes(item.url),
-  //   )
-  //   if (temp.length === 0) return []
-  //   return temp[0].source
-  // }
-
-  // const getImageInterior360 = () => {
-  //   const currentUrlPathname = router.asPath
-  //   const temp = interiorImagesListNew.filter((item) =>
-  //     currentUrlPathname.includes(item.url),
-  //   )
-  //   if (temp.length === 0) return ''
-  //   return temp[0].source
-  // }
-
   const { carModelDetails } = usedCar()
-
-  // const getInteriorImage = () => {
-  //   const { images: carModelImages } = { ...carModelDetails }
-  //   if (carModelImages) {
-  //     const interior = carModelImages.filter((item: string) =>
-  //       item.toLowerCase().includes('int'),
-  //     )
-  //     return [...interior]
-  //   }
-  // }
 
   const filterTabItem = () => {
     let temp = upperSearchNavigationTab
