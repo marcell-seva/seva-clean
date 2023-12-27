@@ -60,7 +60,10 @@ export default function UsedCarVariantList({
   const { usedCarModelDetailsRes } = useContext(UsedPdpDataLocalContext)
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
   const modelName =
-    usedCarModelDetailsRes && capitalizeWords(usedCarModelDetailsRes.modelName)
+    usedCarModelDetailsRes &&
+    usedCarModelDetailsRes?.modelName.toLowerCase().split(' ').length > 1
+      ? capitalizeWords(usedCarModelDetailsRes?.modelName)
+      : (usedCarModelDetailsRes?.modelName as string)
 
   const { detail } = usedCar()
 
