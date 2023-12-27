@@ -25,7 +25,7 @@ const urls = {
   strapiBaseUrl: 'https://api.sslpots.com',
   facebookTemanSeva: 'https://bit.ly/KomunitasTemanSEVA',
   linkedin: 'https://id.linkedin.com/company/seva-by-astra',
-  youtube: 'https://www.youtube.com/@Sevaidofficial',
+  youtube: 'https://www.youtube.com/@sevabyastra',
 }
 
 export default urls
