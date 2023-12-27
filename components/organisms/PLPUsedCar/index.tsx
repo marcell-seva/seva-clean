@@ -231,7 +231,7 @@ export const PLPUsedCar = ({
   }
 
   const handelSticky = (position: number) => {
-    if (position > 50) return setSticky(true)
+    if (position > 125) return setSticky(true)
     return setSticky(false)
   }
 
