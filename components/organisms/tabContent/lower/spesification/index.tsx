@@ -222,10 +222,14 @@ export const SpecificationTab = ({ isOTO = false }: SpecificationTabProps) => {
     const dataTransmission: PropsFieldDetail = {
       title: 'Mesin & Transmisi',
       data: [
-        { key: 'Bahan bakar', value: fuelType || 'Bensin' },
         {
-          key: 'Kapasitas Mesin',
-          value: `${engineCapacity} cc`,
+          key: 'Bahan bakar',
+          value: fuelType === 'Electric' ? 'Listrik' : fuelType || 'Bensin',
+        },
+        {
+          key:
+            fuelType === 'Electric' ? 'Kapasitas Baterai' : 'Kapasitas Mesin',
+          value: `${engineCapacity} ${fuelType === 'Electric' ? 'kWh' : 'cc'}`,
         },
         {
           key: 'Jenis Transmisi',
