@@ -20,12 +20,14 @@ export const usePriceRange = () => {
   const fetchMinMaxPrice = () => {
     const params = getCity().cityCode
 
-    getMinMaxPrice(`?city=${params}`).then((response) => {
-      setLimitPrice({
-        min: response.minPriceValue,
-        max: response.maxPriceValue,
-      })
-    })
+    getMinMaxPrice(`?city=${params}&cityId=${getCity().id}`).then(
+      (response) => {
+        setLimitPrice({
+          min: response.minPriceValue,
+          max: response.maxPriceValue,
+        })
+      },
+    )
   }
 
   const patchPrice = (type: 'min' | 'max', value: number) => {

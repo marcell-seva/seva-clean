@@ -197,7 +197,11 @@ export const getServerSideProps: GetServerSideProps<{
     const footerData = fetchFooter.data
 
     if (!priceRangeGroup) {
-      const minmax = await getMinMaxPrice('?city=jakarta')
+      const params = getCity().cityCode
+
+      const minmax = await getMinMaxPrice(
+        `?city=${params}&cityId=${getCity().id}`,
+      )
       const minmaxPriceData = minmax
       meta.MinMaxPrice = {
         minPriceValue: minmaxPriceData.minPriceValue,
