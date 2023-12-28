@@ -42,16 +42,7 @@ export const RefinancingLandingPageContent = () => {
 
   const scrollToLeadsForm = () => {
     setIsButtonClick(true)
-    const destinationElm = document.getElementById(
-      'refinancing-page-leads-form-section',
-    )
-    if (destinationElm) {
-      destinationElm.scrollIntoView({
-        inline: 'center',
-        block: 'center',
-      })
-      window.scrollBy({ top: 212, left: 0 })
-    }
+    scrollToFirstForm.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
   useEffect(() => {
