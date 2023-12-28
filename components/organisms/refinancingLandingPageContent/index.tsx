@@ -41,8 +41,10 @@ export const RefinancingLandingPageContent = () => {
   })
 
   const scrollToLeadsForm = () => {
-    setIsButtonClick(true)
-    scrollToFirstForm.current?.scrollIntoView({ behavior: 'smooth' })
+    setTimeout(() => {
+      setIsSubmit(true)
+      setIsButtonClick(true)
+    }, 500)
   }
 
   useEffect(() => {
