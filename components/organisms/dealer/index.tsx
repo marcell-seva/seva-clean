@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useUtils } from 'services/context/utilsContext'
 import {
   ArticleWidget,
+  BannerDealerLP,
   DealerArticleWidget,
   DealerBrands,
   DealerSearchWidget,
@@ -12,9 +13,6 @@ import {
 import { CitySelectorModal, FooterMobile } from 'components/molecules'
 import styles from 'styles/pages/dealer.module.scss'
 import { CSAButton, CardShadow } from 'components/atoms'
-import clsx from 'clsx'
-import { getCity } from 'utils/hooks/useGetCity'
-import { getRecommendation } from 'services/api'
 import { useCar } from 'services/context/carContext'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { AlephArticleCategoryType, Article, CityOtrOption } from 'utils/types'
@@ -24,7 +22,7 @@ import { countDaysDifference } from 'utils/handler/date'
 import { useInView } from 'react-intersection-observer'
 import { alephArticleCategoryList } from 'config/articles.config'
 
-const Dealer = ({ dataRecommendation, ssr }: any) => {
+const Dealer = ({ dataRecommendation }: any) => {
   const { saveRecommendation } = useCar()
   const { mobileWebTopMenus, cities, articles } = useUtils()
   const [showSidebar, setShowSidebar] = useState(false)
@@ -117,7 +115,7 @@ const Dealer = ({ dataRecommendation, ssr }: any) => {
         setIsActive={setShowSidebar}
         emitClickCityIcon={() => setOpenCitySelectorModal(true)}
       />
-      <div className={styles.mainKV}></div>
+      <BannerDealerLP />
       <DealerBrands />
       {/* <div className={styles.searchContainer}>
         <CardShadow

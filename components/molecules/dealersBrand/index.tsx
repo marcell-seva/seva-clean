@@ -107,27 +107,23 @@ export const DealerBrands = ({ isButtonClick }: DealerBrandProps) => {
   const onClick = (key: string) => {}
 
   return (
-    <>
-      <div className={styles.container}>
-        <h2 className={styles.title}>Dealer Mobil berdasarkan Merek</h2>
-        <div className={styles.wrapperContainer}>
-          {carList.map(({ key, icon, value }) => {
-            return (
-              <>
-                <div
-                  onClick={() => onClick(value)}
-                  key={key}
-                  className={styles.boxFilter}
-                >
-                  <div className={styles.content}>
-                    {icon} {key}
-                  </div>
-                </div>
-              </>
-            )
-          })}
-        </div>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Dealer Mobil berdasarkan Merek</h2>
+      <div className={styles.wrapperContainer}>
+        {carList.map(({ key, icon, value }) => {
+          return (
+            <div
+              onClick={() => onClick(value)}
+              key={key}
+              className={styles.boxFilter}
+            >
+              <div className={styles.content}>
+                {icon} {key}
+              </div>
+            </div>
+          )
+        })}
       </div>
-    </>
+    </div>
   )
 }

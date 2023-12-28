@@ -1,25 +1,32 @@
 import { Dealer } from 'components/organisms'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useEffect } from 'react'
-import { getCities, getMobileHeaderMenu, getRecommendation } from 'services/api'
+import {
+  getCities,
+  getMobileFooterMenu,
+  getMobileHeaderMenu,
+  getRecommendation,
+} from 'services/api'
 import { useUtils } from 'services/context/utilsContext'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 
-const index = ({
+const DealerLandingPage = ({
   dataMobileMenu,
   dataCities,
   dataRecommendation,
-  ssr,
+  dataFooterMenu,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { saveMobileWebTopMenus, saveCities } = useUtils()
+  const { saveMobileWebTopMenus, saveCities, saveMobileWebFooterMenus } =
+    useUtils()
   useEffect(() => {
     saveMobileWebTopMenus(dataMobileMenu)
     saveCities(dataCities)
+    saveMobileWebFooterMenus(dataFooterMenu)
   }, [])
 
   return (
     <div>
-      <Dealer dataRecommendation={dataRecommendation} ssr={ssr} />
+      <Dealer dataRecommendation={dataRecommendation} />
     </div>
   )
 }
@@ -31,24 +38,27 @@ export const getServerSideProps = async (context: any) => {
   )
   const params = `?city=jakarta&cityId=118`
   try {
-    const [recommendationRes, menuMobileRes, citiesRes]: any =
+    const [recommendationRes, menuMobileRes, citiesRes, footerMenuRes]: any =
       await Promise.all([
         getRecommendation(params),
         getMobileHeaderMenu(),
         getCities(),
+        getMobileFooterMenu(),
       ])
 
-    const [dataRecommendation, dataMobileMenu, dataCities] = await Promise.all([
-      recommendationRes.carRecommendations,
-      menuMobileRes.data,
-      citiesRes,
-    ])
+    const [dataRecommendation, dataMobileMenu, dataCities, dataFooterMenu] =
+      await Promise.all([
+        recommendationRes.carRecommendations,
+        menuMobileRes.data,
+        citiesRes,
+        footerMenuRes.data,
+      ])
     return {
       props: {
         dataRecommendation,
         dataMobileMenu,
         dataCities,
-        ssr: 'success',
+        dataFooterMenu,
       },
     }
   } catch (error: any) {
@@ -56,4 +66,4 @@ export const getServerSideProps = async (context: any) => {
   }
 }
 
-export default index
+export default DealerLandingPage
