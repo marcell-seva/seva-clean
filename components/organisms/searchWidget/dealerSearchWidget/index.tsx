@@ -187,7 +187,7 @@ const DealerSearchWidget = () => {
             />
           }
           sheetOption={({ onClose }: any) => (
-            <BrandUsedCarWidget onClose={onClose} page="dealer" />
+            <BrandUsedCarWidget onClose={onClose} />
           )}
           datatestid={elementId.FilterMerek}
           isValue={funnelWidget.brand.length > 0}
