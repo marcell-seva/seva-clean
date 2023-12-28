@@ -44,7 +44,7 @@ export default function FormSelectCity({
 }: FormSelectCityProps) {
   const [cityListApi, setCityListApi] = useState<Array<Location>>([])
   const [defaultCity, setDefaultCity] = useState<Location | null>(null)
-  const { saveCity } = useUtils()
+  const { saveCity, city } = useUtils()
   const [cityOtr, saveCityOtrToLocalStorage] = useLocalStorage<Location | null>(
     LocalStorageKey.CityOtr,
     defaultCityOtr,
@@ -71,12 +71,12 @@ export default function FormSelectCity({
   }, [])
 
   React.useEffect(() => {
-    const selectedCity = cityOtr ? cityOtr : defaultCity
+    const selectedCity = city ? city : cityOtr ? cityOtr : defaultCity
     if (selectedCity) {
       setInputValue(selectedCity?.cityName)
       setLastChoosenValue(selectedCity?.cityName)
     }
-  }, [cityOtr, isHasCarParameter, defaultCity])
+  }, [cityOtr, isHasCarParameter, defaultCity, city])
 
   React.useEffect(() => {
     if (isHasCarParameter && cityListApi.length > 0) {
