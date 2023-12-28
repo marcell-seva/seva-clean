@@ -22,7 +22,7 @@ import { countDaysDifference } from 'utils/handler/date'
 import { useInView } from 'react-intersection-observer'
 import { alephArticleCategoryList } from 'config/articles.config'
 
-const Dealer = ({ dataRecommendation }: any) => {
+const BrandDealer = ({ dataRecommendation }: any) => {
   const { saveRecommendation } = useCar()
   const { mobileWebTopMenus, cities, articles } = useUtils()
   const [showSidebar, setShowSidebar] = useState(false)
@@ -115,8 +115,7 @@ const Dealer = ({ dataRecommendation }: any) => {
         setIsActive={setShowSidebar}
         emitClickCityIcon={() => setOpenCitySelectorModal(true)}
       />
-      <BannerDealerLP onPage="dealer" />
-      <DealerBrands />
+      <BannerDealerLP onPage="brand" />
       {/* <div className={styles.searchContainer}>
         <CardShadow
           className={clsx({
@@ -156,4 +155,4 @@ const Dealer = ({ dataRecommendation }: any) => {
   )
 }
 
-export default Dealer
+export default BrandDealer

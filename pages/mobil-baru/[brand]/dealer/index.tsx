@@ -1,6 +1,7 @@
 import Seo from 'components/atoms/seo'
-import { Dealer } from 'components/organisms'
+import { BrandDealer, Dealer } from 'components/organisms'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import {
   getCities,
@@ -11,15 +12,25 @@ import {
 import { useUtils } from 'services/context/utilsContext'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 import { defaultSeoImage } from 'utils/helpers/const'
+import { capitalizeFirstLetter } from 'utils/stringUtils'
 
-const DealerLandingPage = ({
+const DealerBrand = ({
   dataMobileMenu,
   dataCities,
   dataRecommendation,
   dataFooterMenu,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const metaTitle = `Dealer Mobil Baru di Indonesia, Cari yang Terdekat di Seva.id`
+  const router = useRouter()
+  const getUrlBrand = router.query.brand?.toString() ?? ''
+  const carBrand = getUrlBrand.charAt(0).toUpperCase() + getUrlBrand.slice(1)
+
+  const metaTitle = `Dealer Mobil ${
+    carBrand.toLowerCase() === 'bmw'
+      ? carBrand.toUpperCase()
+      : capitalizeFirstLetter(carBrand)
+  } di Indonesia, Cari yang Terdekat di Seva.id`
   const metaDesc = `Cari dealer mobil baru terdekat di kota Anda di seluruh Indonesia. Hubungi dealer dan dapatkan info harga, test drive event, dan promo spesial hanya di Seva.id`
+
   const { saveMobileWebTopMenus, saveCities, saveMobileWebFooterMenus } =
     useUtils()
   useEffect(() => {
@@ -31,7 +42,7 @@ const DealerLandingPage = ({
   return (
     <div>
       <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
-      <Dealer dataRecommendation={dataRecommendation} />
+      <BrandDealer dataRecommendation={dataRecommendation} />
     </div>
   )
 }
@@ -71,4 +82,4 @@ export const getServerSideProps = async (context: any) => {
   }
 }
 
-export default DealerLandingPage
+export default DealerBrand

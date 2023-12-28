@@ -9,16 +9,48 @@ import { HeaderMobile } from '../headerMobile'
 import MainHeroImage from '/public/revamp/illustration/main-hero-raize-cencored.webp'
 import SupergraphicImage from '/public/revamp/illustration/supergraphic-secondary-large.webp'
 import DealerBanner from '/public/revamp/images/banner/dealerBanner.webp'
+import Toyota from '/public/revamp/images/banner/toyotaBanner.webp'
+import Hyundai from '/public/revamp/images/banner/hyundaiBanner.webp'
+import Peugeot from '/public/revamp/images/banner/peugeotBanner.webp'
+import Daihatsu from '/public/revamp/images/banner/daihatsuBanner.webp'
+import BMW from '/public/revamp/images/banner/bmwBanner.webp'
+import Isuzu from '/public/revamp/images/banner/isuzuBanner.webp'
 import { useUtils } from 'services/context/utilsContext'
 import clsx from 'clsx'
 import { getCities } from 'services/api'
+import { useRouter } from 'next/router'
+import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
 
-const main = '/public/revamp/images/banner/dealerBanner.webp'
+interface BannerProps {
+  onPage: string
+}
 
-const BannerDealerLP = () => {
+const main = DealerBanner
+const toyota = Toyota
+const hyundai = Hyundai
+const isuzu = Isuzu
+const peugeot = Peugeot
+const daihatsu = Daihatsu
+const bmw = BMW
+
+const BannerDealerLP = ({ onPage }: BannerProps) => {
+  const router = useRouter()
   const { cities } = useUtils()
   const [showSidebar, setShowSidebar] = useState(false)
   const [cityListApi, setCityListApi] = useState<Array<CityOtrOption>>(cities)
+  const getUrlBrand = router.query.brand?.toString() ?? ''
+  const getUrlLocation = router.query.location?.toString() ?? 'Indonesia'
+
+  const logoList = {
+    toyota: toyota,
+    daihatsu: daihatsu,
+    isuzu: isuzu,
+    bmw: bmw,
+    peugeot: peugeot,
+    hyundai: hyundai,
+  }
+
+  useEffect(() => {}, [])
 
   return (
     <>
@@ -30,26 +62,66 @@ const BannerDealerLP = () => {
               [styles.isActive]: showSidebar,
             })}
           >
-            <h1 className={`${styles.mainTitle} ${styles.bold}`}>
-              Temukan Dealer <br />
-              Rekanan SEVA
-            </h1>
+            {onPage === 'dealer' ? (
+              <>
+                <h1 className={`${styles.mainTitle} ${styles.bold}`}>
+                  Temukan Dealer <br />
+                  Rekanan SEVA
+                </h1>
 
-            <h1 className={`${styles.mainTitle} ${styles.bold}`}>
-              <span className={`${styles.mainSubtitle} ${styles.regular}`}>
-                di{' '}
-              </span>
-              Seluruh Indonesia
-            </h1>
+                <h1 className={`${styles.mainTitle} ${styles.bold}`}>
+                  <span className={`${styles.mainSubtitle} ${styles.regular}`}>
+                    di{' '}
+                  </span>
+                  Seluruh Indonesia
+                </h1>
+              </>
+            ) : (
+              <>
+                <h1 className={`${styles.mainTitle} ${styles.bold}`}>
+                  Dealer{' '}
+                  {getUrlBrand !== 'bmw'
+                    ? capitalizeFirstLetter(getUrlBrand)
+                    : getUrlBrand.toUpperCase()}
+                </h1>
+
+                <h1 className={`${styles.mainTitle} ${styles.bold}`}>
+                  <span className={`${styles.mainSubtitle} ${styles.regular}`}>
+                    di{' '}
+                  </span>
+                  {getUrlLocation === 'Indonesia'
+                    ? getUrlLocation
+                    : capitalizeWords(getUrlLocation)}
+                </h1>
+              </>
+            )}
           </div>
         </div>
-        <Image
-          className={styles.supergraphicBg}
-          src={DealerBanner}
-          alt="supergraphic"
-          priority
-          fill
-        />
+        {onPage === 'dealer' ? (
+          <>
+            <Image
+              className={styles.supergraphicBg}
+              src={main}
+              alt="supergraphic"
+              priority
+              fill
+            />
+          </>
+        ) : (
+          <>
+            <Image
+              className={styles.supergraphicBg}
+              src={logoList[getUrlBrand as keyof typeof logoList]}
+              alt={`${
+                getUrlBrand !== 'bmw'
+                  ? capitalizeFirstLetter(getUrlBrand)
+                  : getUrlBrand.toUpperCase()
+              }`}
+              priority
+              fill
+            />
+          </>
+        )}
       </div>
     </>
   )

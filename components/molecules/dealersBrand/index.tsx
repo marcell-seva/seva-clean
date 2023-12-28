@@ -4,6 +4,7 @@ import Space from 'antd/lib/space'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
 import Image from 'next/image'
+import { dealerBrandUrl } from 'utils/helpers/routes'
 
 const LogoToyota = '/revamp/icon/logo-toyota.webp'
 const LogoDaihatsu = '/revamp/icon/logo-daihatsu.webp'
@@ -104,7 +105,10 @@ export const DealerBrands = ({ isButtonClick }: DealerBrandProps) => {
     },
   ]
 
-  const onClick = (key: string) => {}
+  const onClick = (key: string) => {
+    const brandCarRoute = dealerBrandUrl.replace(':brand', key).toLowerCase()
+    window.location.href = brandCarRoute
+  }
 
   return (
     <div className={styles.container}>
