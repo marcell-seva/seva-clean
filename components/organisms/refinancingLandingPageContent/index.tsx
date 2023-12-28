@@ -50,6 +50,7 @@ export const RefinancingLandingPageContent = () => {
         inline: 'center',
         block: 'center',
       })
+      window.scrollBy({ top: 212, left: 0 })
     }
   }
 
