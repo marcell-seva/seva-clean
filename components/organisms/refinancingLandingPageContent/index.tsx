@@ -44,7 +44,7 @@ export const RefinancingLandingPageContent = () => {
     setTimeout(() => {
       setIsSubmit(true)
       setIsButtonClick(true)
-    }, 500)
+    }, 50)
   }
 
   useEffect(() => {
