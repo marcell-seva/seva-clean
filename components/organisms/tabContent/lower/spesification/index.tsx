@@ -328,10 +328,11 @@ export const SpecificationTab = ({ isOTO = false }: SpecificationTabProps) => {
         <Info isWithIcon headingText="Tentang Mobil" descText={getInfoText()} />
         <div className={styles.gap} />
         <Info
-          headingText={`Membeli Mobil ${spesification?.brand} ${spesification?.model}? Seperti Ini Cara Perawatannya!`}
+          headingText={`Harga Kredit & Cicilan Mobil Baru ${spesification.brand} ${spesification.model} Terbaru di SEVA Astra`}
           descText={getSeoFooterTextDescription(
             spesification?.brand,
             spesification?.model,
+            spesification?.type,
           )}
           isUsingSetInnerHtmlDescText={true}
         />
