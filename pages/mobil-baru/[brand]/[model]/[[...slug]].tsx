@@ -819,13 +819,17 @@ const jsonLD = (
     NewsArticle: [
       {
         '@type': 'NewsArticle',
-        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
+        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}`,
         headline: 'Promo Toyota Spektakuler',
         abstract:
           'Dapatkan bunga spesial mulai dari 0%, bebas biaya administrasi atau bebas 2 tahun asuransi comprehensive hingga 20 juta rupiah untuk pembelian mobil baru Toyota Veloz, Avanza, Raize, dan Rush secara kredit',
         image:
           'https://www.seva.id/info/wp-content/uploads/2023/01/Seva_Promo-Toyota-2_SEVA-TSO-1040x336-1.png.webp',
         datePublished: '2022-11-22',
+        author: {
+          '@type': 'Person',
+          name: 'Raka',
+        },
         publisher: {
           '@type': '-',
           name: 'Organization SEVA by Astra',
@@ -837,7 +841,7 @@ const jsonLD = (
       },
       {
         '@type': 'NewsArticle',
-        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}?tab=Eksterior`,
+        mainEntityOfPage: `https://www.seva.id/mobil-baru/${carModel?.brand}/${carModel?.model}`,
         headline: 'Promo Potongan DP & Cashback Daihatsu',
         abstract:
           'Dapatkan cashback tambahan trade-in senilai 1 juta rupiah untuk pembelian mobil baru Brand Daihatsu semua tipe (LCGC dan non-LCGC)',
