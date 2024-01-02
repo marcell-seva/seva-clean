@@ -29,22 +29,20 @@ const DealerBrandLocation = ({
   const getUrlLocation =
     router.query.location?.toString().replace('-', ' ') ?? ''
 
-  const metaTitle = `Temukan Dealer ${
+  const metaTitle = `Temukan ${dataDealerBranch.length.toString()} Dealer Mobil ${
     getUrlBrand.toLowerCase() === 'bmw'
       ? getUrlBrand.toUpperCase()
       : capitalizeFirstLetter(getUrlBrand)
-  } Terdekat di ${capitalizeWords(getUrlLocation)}`
+  } di ${capitalizeWords(getUrlLocation)} | SEVA`
   const metaDesc = `Temukan dealer ${
     getUrlBrand.toLowerCase() === 'bmw'
       ? getUrlBrand.toUpperCase()
       : capitalizeFirstLetter(getUrlBrand)
-  } terdekat di ${capitalizeWords(
+  } di ${capitalizeWords(
     getUrlLocation,
-  )}. Dapatkan promo spesial pembelian mobil baru online dari Seva.id langsung di Dealer ${
-    getUrlBrand.toLowerCase() === 'bmw'
-      ? getUrlBrand.toUpperCase()
-      : capitalizeFirstLetter(getUrlBrand)
-  } ${capitalizeWords(getUrlLocation)}`
+  )}. Dapatkan informasi mengenai harga OTR ${capitalizeWords(
+    getUrlLocation,
+  )} dan penawaran terbaik di Seva.id`
 
   const {
     saveMobileWebTopMenus,
@@ -57,6 +55,7 @@ const DealerBrandLocation = ({
     saveCities(dataCities)
     saveMobileWebFooterMenus(dataFooterMenu)
     saveDealerBrandLocation(dataDealerBranch)
+    console.log(dataDealerBranch)
   }, [])
 
   return (
