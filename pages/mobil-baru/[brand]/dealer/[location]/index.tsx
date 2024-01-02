@@ -55,7 +55,6 @@ const DealerBrandLocation = ({
     saveCities(dataCities)
     saveMobileWebFooterMenus(dataFooterMenu)
     saveDealerBrandLocation(dataDealerBranch)
-    console.log(dataDealerBranch)
   }, [])
 
   return (
