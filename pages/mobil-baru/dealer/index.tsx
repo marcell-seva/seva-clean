@@ -8,6 +8,7 @@ import {
   getMobileHeaderMenu,
   getNewCarBrand,
   getRecommendation,
+  getSubArticle,
 } from 'services/api'
 import { useUtils } from 'services/context/utilsContext'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
@@ -19,6 +20,7 @@ const DealerLandingPage = ({
   dataRecommendation,
   dataFooterMenu,
   dataBrandList,
+  dataArticles,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const metaTitle = `Temukan Dealer Mobil Baru Rekanan SEVA di Indonesia | SEVA`
   const metaDesc = `Cari dealer mobil baru terdekat di kota Anda. Dapatkan informasi mengenai harga dan penawaran menarik dari dealer rekanan SEVA hanya di Seva.id`
@@ -27,12 +29,14 @@ const DealerLandingPage = ({
     saveCities,
     saveMobileWebFooterMenus,
     saveBrand,
+    saveDealerArticles,
   } = useUtils()
   useEffect(() => {
     saveMobileWebTopMenus(dataMobileMenu)
     saveCities(dataCities)
     saveMobileWebFooterMenus(dataFooterMenu)
     saveBrand(dataBrandList)
+    saveDealerArticles(dataArticles)
   }, [])
 
   return (
@@ -56,12 +60,14 @@ export const getServerSideProps = async (context: any) => {
       citiesRes,
       footerMenuRes,
       brandList,
+      articles,
     ]: any = await Promise.all([
       getRecommendation(params),
       getMobileHeaderMenu(),
       getCities(),
       getMobileFooterMenu(),
       getNewCarBrand(),
+      getSubArticle(972),
     ])
 
     const [
@@ -70,12 +76,14 @@ export const getServerSideProps = async (context: any) => {
       dataCities,
       dataFooterMenu,
       dataBrandList,
+      dataArticles,
     ] = await Promise.all([
       recommendationRes.carRecommendations,
       menuMobileRes.data,
       citiesRes,
       footerMenuRes.data,
       brandList,
+      articles,
     ])
     return {
       props: {
@@ -84,6 +92,7 @@ export const getServerSideProps = async (context: any) => {
         dataCities,
         dataFooterMenu,
         dataBrandList,
+        dataArticles,
       },
     }
   } catch (error: any) {

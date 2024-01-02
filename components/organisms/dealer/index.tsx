@@ -47,7 +47,7 @@ const Dealer = ({ dataRecommendation, page }: any) => {
   const {
     mobileWebTopMenus,
     cities,
-    articles,
+    dealerArticles,
     dataAnnouncementBox,
     dealerBrand,
   } = useUtils()
@@ -55,7 +55,8 @@ const Dealer = ({ dataRecommendation, page }: any) => {
   const [startScroll, setStartScroll] = useState(false)
   const [showSidebar, setShowSidebar] = useState(false)
   const [openCitySelectorModal, setOpenCitySelectorModal] = useState(false)
-  const [articlesTabList, setArticlesTabList] = useState<Article[]>(articles)
+  const [articlesTabList, setArticlesTabList] =
+    useState<Article[]>(dealerArticles)
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -68,15 +69,6 @@ const Dealer = ({ dataRecommendation, page }: any) => {
   } = useInView({
     threshold: 0.5,
   })
-
-  const getTabList = async () => {
-    const url = alephArticleCategoryList[2].url
-    if (url) {
-      const response = await fetch(url)
-      const responseData = await response.json()
-      setArticlesTabList(responseData)
-    }
-  }
 
   const isIn30DaysInterval = () => {
     const lastTimeSelectCity = getLocalStorage<string>(
@@ -117,14 +109,13 @@ const Dealer = ({ dataRecommendation, page }: any) => {
   }
 
   useEffect(() => {
-    getTabList()
     cityHandler()
     getAnnouncementBox()
   }, [])
 
   useEffect(() => {
-    setArticlesTabList(articles)
-  }, [articles])
+    setArticlesTabList(dealerArticles)
+  }, [dealerArticles])
 
   // const loadCarRecommendation = async () => {
   //   try {
@@ -271,7 +262,7 @@ const Dealer = ({ dataRecommendation, page }: any) => {
       >
         <LeadsFormTertiary />
       </div>
-      <DealerArticleWidget articlesTabList={articlesTabList} />
+      <DealerArticleWidget />
       <div className={styles.infoWrapper}>
         <Info isWithIcon headingText="Tentang Mobil" descText={getInfoText()} />
         <Gap height={24} />

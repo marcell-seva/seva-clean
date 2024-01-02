@@ -91,6 +91,7 @@ const loanCalculator = {
 const article = {
   mainArticle: `https://seva.id/wp-json/foodicious/latest-posts/`,
   subArticle: `https://seva.id/wp-json/seva/latest-posts/`,
+  tagArticle: `https://seva.id/wp-json/seva-api/v1/post`,
 }
 
 const upload = {

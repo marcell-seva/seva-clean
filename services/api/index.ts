@@ -103,6 +103,12 @@ const getMainArticle = (params: string) =>
       'Content-Type': 'text/plain',
     },
   })
+const getTagArticle = (params: string) =>
+  get(collections.article.tagArticle + params, {
+    headers: {
+      'Content-Type': 'text/plain',
+    },
+  })
 const getSubArticle = (params: number) =>
   get(collections.article.subArticle + params)
 const getCarModelDetails = (
@@ -432,6 +438,7 @@ export {
   getUsage,
   getMetaTagData,
   getMainArticle,
+  getTagArticle,
   getSubArticle,
   getCarModelDetails,
   getCarVariantDetails,

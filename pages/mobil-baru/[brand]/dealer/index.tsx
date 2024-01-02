@@ -9,6 +9,7 @@ import {
   getMobileFooterMenu,
   getMobileHeaderMenu,
   getRecommendation,
+  getTagArticle,
 } from 'services/api'
 import { useUtils } from 'services/context/utilsContext'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
@@ -21,6 +22,7 @@ const DealerBrand = ({
   dataRecommendation,
   dataFooterMenu,
   dataDealerBranch,
+  dataTagArticle,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const getUrlBrand = router.query.brand?.toString() ?? ''
@@ -40,12 +42,14 @@ const DealerBrand = ({
     saveCities,
     saveMobileWebFooterMenus,
     saveDealerBrand,
+    saveDealerArticles,
   } = useUtils()
   useEffect(() => {
     saveMobileWebTopMenus(dataMobileMenu)
     saveCities(dataCities)
     saveMobileWebFooterMenus(dataFooterMenu)
     saveDealerBrand(dataDealerBranch)
+    saveDealerArticles(dataTagArticle)
   }, [])
 
   return (
@@ -72,12 +76,14 @@ export const getServerSideProps = async (context: any) => {
       citiesRes,
       footerMenuRes,
       dealerBranchRes,
+      articleRes,
     ]: any = await Promise.all([
       getRecommendation(params),
       getMobileHeaderMenu(),
       getCities(),
       getMobileFooterMenu(),
       getDealer(`?brand=${capitalizeWords(brand)}`),
+      getTagArticle(`?tag_name=${brand.toLowerCase()}`),
     ])
 
     const [
@@ -86,12 +92,14 @@ export const getServerSideProps = async (context: any) => {
       dataCities,
       dataFooterMenu,
       dataDealerBranch,
+      dataTagArticle,
     ] = await Promise.all([
       recommendationRes.carRecommendations,
       menuMobileRes.data,
       citiesRes,
       footerMenuRes.data,
       dealerBranchRes.data,
+      articleRes,
     ])
     return {
       props: {
@@ -100,6 +108,7 @@ export const getServerSideProps = async (context: any) => {
         dataCities,
         dataFooterMenu,
         dataDealerBranch,
+        dataTagArticle,
       },
     }
   } catch (error: any) {

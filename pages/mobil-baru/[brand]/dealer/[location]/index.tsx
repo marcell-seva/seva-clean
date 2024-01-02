@@ -9,6 +9,7 @@ import {
   getMobileFooterMenu,
   getMobileHeaderMenu,
   getRecommendation,
+  getTagArticle,
 } from 'services/api'
 import { useUtils } from 'services/context/utilsContext'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
@@ -23,6 +24,7 @@ const DealerBrandLocation = ({
   dataRecommendation,
   dataFooterMenu,
   dataDealerBranch,
+  dataTagArticle,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const getUrlBrand = router.query.brand?.toString() ?? ''
@@ -49,12 +51,14 @@ const DealerBrandLocation = ({
     saveCities,
     saveMobileWebFooterMenus,
     saveDealerBrandLocation,
+    saveDealerArticles,
   } = useUtils()
   useEffect(() => {
     saveMobileWebTopMenus(dataMobileMenu)
     saveCities(dataCities)
     saveMobileWebFooterMenus(dataFooterMenu)
     saveDealerBrandLocation(dataDealerBranch)
+    saveDealerArticles(dataTagArticle)
   }, [])
 
   return (
@@ -81,12 +85,14 @@ export const getServerSideProps = async (context: any) => {
       citiesRes,
       footerMenuRes,
       dealerBrandRes,
+      tagArticleRes,
     ]: any = await Promise.all([
       getRecommendation(params),
       getMobileHeaderMenu(),
       getCities(),
       getMobileFooterMenu(),
       getDealer(`?brand=${capitalizeWords(brand)}`),
+      getTagArticle(`?tag_name=${brand.toLowerCase()}`),
     ])
 
     const [
@@ -95,12 +101,14 @@ export const getServerSideProps = async (context: any) => {
       dataCities,
       dataFooterMenu,
       dataDealerBrand,
+      dataTagArticle,
     ] = await Promise.all([
       recommendationRes.carRecommendations,
       menuMobileRes.data,
       citiesRes,
       footerMenuRes.data,
       dealerBrandRes.data,
+      tagArticleRes,
     ])
 
     const checkCityByCityCode = (index: string) => {
@@ -128,6 +136,7 @@ export const getServerSideProps = async (context: any) => {
         dataCities,
         dataFooterMenu,
         dataDealerBranch,
+        dataTagArticle,
       },
     }
   } catch (error: any) {

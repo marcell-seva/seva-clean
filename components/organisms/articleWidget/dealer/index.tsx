@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from 'styles/components/organisms/articleWidget.module.scss'
 import 'swiper/css'
 import 'swiper/css/pagination'
@@ -6,12 +6,10 @@ import { Article } from 'utils/types'
 import elementId from 'utils/helpers/trackerId'
 import { alephArticleCategoryList } from 'utils/config/articles.config'
 import ArticleWidgetListCard from '../list'
+import { useUtils } from 'services/context/utilsContext'
 
-type ArticlesWidgetProps = {
-  articlesTabList: Article[]
-}
-const DealerArticleWidget = ({ articlesTabList }: ArticlesWidgetProps) => {
-  const [category, setCategory] = useState(alephArticleCategoryList[2].value)
+const DealerArticleWidget = () => {
+  const { dealerArticles } = useUtils()
   return (
     <div>
       <div className={styles.wrapperTop}>
@@ -30,13 +28,13 @@ const DealerArticleWidget = ({ articlesTabList }: ArticlesWidgetProps) => {
       <div className={styles.wrapperBottom}>
         <div>
           <div className={styles.wrapperCardList}>
-            {articlesTabList
+            {dealerArticles
               ?.map((article: Article, index: number) => {
                 return (
                   <ArticleWidgetListCard
                     article={article}
                     key={index}
-                    currentTab={category}
+                    currentTab={''}
                     articleOrder={index}
                   />
                 )
