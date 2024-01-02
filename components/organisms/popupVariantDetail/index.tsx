@@ -35,8 +35,9 @@ const PopupVariantDetail = ({
   // const getMonthlyInstallment = () => {
   //   return (carVariant.priceValue - get20PercentDp()) / 60
   // }
-  const gasCapacityWording = 'Mesin ' + carVariant.engineCapacity + ' cc'
-  const electricCapacityWording = `Baterai ${carVariant.engineCapacity} kWh`
+  const gasCapacityWording =
+    'Kapasitas mesin ' + carVariant.engineCapacity + ' cc'
+  const electricCapacityWording = `Kapasitas baterai ${carVariant.engineCapacity} kWh`
 
   const engineCapacity =
     carVariant.fuelType === 'Electric'
