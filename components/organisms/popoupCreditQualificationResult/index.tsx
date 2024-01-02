@@ -54,14 +54,14 @@ export const PopupCreditQualificationResult = ({
           <br />
           Kamu masih dapat melakukan perubahan pada paket kredit atau unit yang
           dipilih untuk meningkatkan hasil peluang kreditmu.{' '}
-          <Link
+          <a
             role="button"
             className={styles.smallButtonText}
             href={loanCalculatorDestinationUrl}
             onClick={onClickChangeCreditPlan}
           >
             Ubah Disini
-          </Link>
+          </a>
           <br />
           <br />
           Opsi lainnya, kamu juga bisa lanjut ke tahap Instant Approval untuk
