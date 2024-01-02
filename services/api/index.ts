@@ -93,6 +93,7 @@ const getAgent = () => get(collections.utils.salesAgent)
 const getTestimony = () => get(collections.utils.testimonials)
 const getRecommendation = (params?: string, config?: AxiosRequestConfig) =>
   get(collections.product.recommendation + params, config)
+const getNewCarBrand = () => get(collections.dealer.listBrandNewCar)
 const getUsage = () => get(collections.utils.usage)
 const getMetaTagData = (carModel: string) =>
   get(collections.utils.metaTag + carModel)
@@ -176,6 +177,17 @@ const getRefinancingCarsYear = () => {
 const getCarCollection = (cityId: string) => {
   return get(collections.product.carCollection + `?cityId=${cityId}`)
 }
+const getTemanSevaProfile = (config: AxiosRequestConfig) =>
+  get(collections.temanSeva.profile, config)
+
+const getTemanSevaCommission = (code: string) =>
+  get(collections.temanSeva.totalKomisi + `/${code}/sum`)
+
+const getTemanSevaTotalReferee = (code: string) =>
+  get(collections.temanSeva.totalReferee + code)
+
+const getDealer = (params: string, config?: AxiosRequestConfig) =>
+  get(collections.dealer.dealerBranch + params, config)
 
 const getPromoBanner = () => {
   return get(collections.utils.promoBanner)
@@ -415,6 +427,8 @@ export {
   getAgent,
   getTestimony,
   getRecommendation,
+  getNewCarBrand,
+  getDealer,
   getUsage,
   getMetaTagData,
   getMainArticle,

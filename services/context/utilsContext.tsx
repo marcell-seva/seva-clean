@@ -11,7 +11,11 @@ import { CityOtrOption } from 'utils/types'
 import {
   AnnouncementBoxDataType,
   ArticleData,
+  BrandList,
+  CarModelDetailsResponse,
   CarRecommendation,
+  DealerBrand,
+  DealerBrandLocation,
   NavbarItemResponse,
   SalesAgent,
   SearchUsedCar,
@@ -26,6 +30,8 @@ export type UtilsContextType = {
   saveCity: (data: CityOtrOption) => void
   agent: SalesAgent[]
   saveAgent: (data: SalesAgent[]) => void
+  brand: BrandList[]
+  saveBrand: (data: BrandList[]) => void
   articles: ArticleData[]
   saveArticles: (data: ArticleData[]) => void
   dealerArticles: ArticleData[]
@@ -47,6 +53,12 @@ export type UtilsContextType = {
   saveDataVariantLeads: (data: string) => void
   dataSearchUsedCar: SearchUsedCar[] | []
   saveDataSearchUsedCar: (data: SearchUsedCar[] | []) => void
+  combination: CarModelDetailsResponse | null
+  saveDataCombination: (data: CarModelDetailsResponse | null) => void
+  dealerBrand: DealerBrand[]
+  saveDealerBrand: (data: DealerBrand[]) => void
+  dealerBrandLocation: DealerBrandLocation[]
+  saveDealerBrandLocation: (data: DealerBrandLocation[]) => void
 }
 
 export const UtilsContext = createContext<UtilsContextType | []>([])
@@ -57,9 +69,16 @@ export const UtilsContextProvider = ({ children }: any) => {
     SearchUsedCar[] | []
   >([])
   const [city, setCity] = useState<CityOtrOption | undefined>()
+  const [articles, setArticles] = useState<ArticleData[] | []>([])
   const [dealerArticles, setDealerArticles] = useState<ArticleData[] | []>([])
   const [agent, setAgent] = useState<SalesAgent[] | []>([])
-  const [articles, setArticles] = useState<ArticleData[] | []>([])
+  const [brand, setBrand] = useState<BrandList[] | []>([])
+  const [dealerBrand, setDealerBrand] = useState<DealerBrand[] | []>([])
+  const [dealerBrandLocation, setDealerBrandLocation] = useState<
+    DealerBrandLocation[] | []
+  >([])
+  const [combination, setCombination] =
+    useState<CarModelDetailsResponse | null>(null)
   const [dataLeads, setDataLeads] = useState<CarRecommendation | undefined>()
   const [dataVariantLeads, setDataVariantLeads] = useState<string | undefined>()
   const [dataAnnouncementBox, setIsShowAnnouncementBox] = useState<
@@ -101,11 +120,24 @@ export const UtilsContextProvider = ({ children }: any) => {
 
   const saveAgent = (agentData: SalesAgent[] | []) => setAgent(agentData)
 
+  const saveBrand = (brandData: BrandList[] | []) => setBrand(brandData)
+
+  const saveDealerBrand = (dealerBrandData: DealerBrand[] | []) =>
+    setDealerBrand(dealerBrandData)
+
+  const saveDealerBrandLocation = (
+    dealerBrandLocationData: DealerBrandLocation[] | [],
+  ) => setDealerBrandLocation(dealerBrandLocationData)
+
+  const saveDataCombination = (
+    combinationData: CarModelDetailsResponse | null,
+  ) => setCombination(combinationData)
+
   const saveArticles = (articlesData: ArticleData[] | []) =>
     setArticles(articlesData)
 
   const saveDealerArticles = (dealerArticlesData: ArticleData[] | []) =>
-    setArticles(dealerArticlesData)
+    setDealerArticles(dealerArticlesData)
 
   const saveDataAnnouncementBox = (
     dataAnnouncementBox: AnnouncementBoxDataType | undefined,
@@ -140,6 +172,8 @@ export const UtilsContextProvider = ({ children }: any) => {
         saveCity,
         agent,
         saveAgent,
+        brand,
+        saveBrand,
         articles,
         saveArticles,
         dealerArticles,
@@ -161,6 +195,12 @@ export const UtilsContextProvider = ({ children }: any) => {
         saveDataVariantLeads,
         dataSearchUsedCar,
         saveDataSearchUsedCar,
+        combination,
+        saveDataCombination,
+        dealerBrand,
+        saveDealerBrand,
+        dealerBrandLocation,
+        saveDealerBrandLocation,
       }}
     >
       {children}

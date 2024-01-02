@@ -5,6 +5,9 @@ import { useFunnelQueryData } from 'services/context/funnelQueryContext'
 import elementId from 'helpers/elementIds'
 import Image from 'next/image'
 import { dealerBrandUrl } from 'utils/helpers/routes'
+import { useRouter } from 'next/router'
+import { useUtils } from 'services/context/utilsContext'
+import { BrandList } from 'utils/types/utils'
 
 const LogoToyota = '/revamp/icon/logo-toyota.webp'
 const LogoDaihatsu = '/revamp/icon/logo-daihatsu.webp'
@@ -23,91 +26,56 @@ interface BrandProps {
   value: string
 }
 
+interface CarButtonProps {
+  key: string
+  icon: JSX.Element
+  value: string
+}
+
 export const DealerBrands = ({ isButtonClick }: DealerBrandProps) => {
-  const carList: BrandProps[] = [
-    {
-      key: 'Toyota',
+  const router = useRouter()
+  const { brand } = useUtils()
+
+  const logoList = {
+    Toyota: LogoToyota,
+    Daihatsu: LogoDaihatsu,
+    Isuzu: Isuzu,
+    BMW: LogoBmw,
+    Peugeot: Peugeot,
+    Hyundai: Hyundai,
+  }
+
+  const sizeLogo = {
+    Toyota: '21,18',
+    Daihatsu: '21.6,15',
+    Isuzu: '21.6,7.2',
+    BMW: '19.2,19.2',
+    Peugeot: '17.49,19.2',
+    Hyundai: '18,18',
+  }
+
+  const carList: CarButtonProps[] = brand.map((obj: BrandList) => {
+    return {
+      key: obj.makeName,
       icon: (
         <Image
-          src={LogoToyota}
-          alt="Toyota"
-          style={{ width: 21, height: 18 }}
-          width={21}
-          height={18}
+          src={logoList[obj.makeName as keyof typeof logoList]}
+          alt={obj.makeName}
+          width={parseInt(
+            sizeLogo[obj.makeName as keyof typeof sizeLogo]?.split(',')[0],
+          )}
+          height={parseInt(
+            sizeLogo[obj.makeName as keyof typeof sizeLogo]?.split(',')[1],
+          )}
         />
       ),
-      value: 'Toyota',
-    },
-    {
-      key: 'Daihatsu',
-      icon: (
-        <Image
-          src={LogoDaihatsu}
-          alt="Daihatsu"
-          style={{ width: 21.6, height: 15 }}
-          width={21.6}
-          height={15}
-        />
-      ),
-      value: 'Daihatsu',
-    },
-    {
-      key: 'Isuzu',
-      icon: (
-        <Image
-          src={Isuzu}
-          alt="Isuzu"
-          style={{ width: 21.6, height: 7.2 }}
-          width={21.6}
-          height={7.2}
-        />
-      ),
-      value: 'Isuzu',
-    },
-    {
-      key: 'BMW',
-      icon: (
-        <Image
-          src={LogoBmw}
-          alt="BMW"
-          style={{ width: 19.2, height: 19.2 }}
-          width={19.2}
-          height={19.2}
-        />
-      ),
-      value: 'BMW',
-    },
-    {
-      key: 'Peugeot',
-      icon: (
-        <Image
-          src={Peugeot}
-          alt="Peugeot"
-          style={{ width: 17.49, height: 19.2 }}
-          width={17.49}
-          height={19.2}
-        />
-      ),
-      value: 'Peugeot',
-    },
-    {
-      key: 'Hyundai',
-      icon: (
-        <Image
-          src={Hyundai}
-          alt="Hyundai"
-          style={{ width: 24, height: 24 }}
-          width={24}
-          height={24}
-        />
-      ),
-      value: 'Hyundai',
-    },
-  ]
+      value: obj.makeCode,
+    }
+  })
 
   const onClick = (key: string) => {
     const brandCarRoute = dealerBrandUrl.replace(':brand', key).toLowerCase()
-    window.location.href = brandCarRoute
+    router.push(brandCarRoute)
   }
 
   return (

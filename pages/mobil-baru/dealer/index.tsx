@@ -6,6 +6,7 @@ import {
   getCities,
   getMobileFooterMenu,
   getMobileHeaderMenu,
+  getNewCarBrand,
   getRecommendation,
 } from 'services/api'
 import { useUtils } from 'services/context/utilsContext'
@@ -17,21 +18,27 @@ const DealerLandingPage = ({
   dataCities,
   dataRecommendation,
   dataFooterMenu,
+  dataBrandList,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const metaTitle = `Dealer Mobil Baru di Indonesia, Cari yang Terdekat di Seva.id`
-  const metaDesc = `Cari dealer mobil baru terdekat di kota Anda di seluruh Indonesia. Hubungi dealer dan dapatkan info harga, test drive event, dan promo spesial hanya di Seva.id`
-  const { saveMobileWebTopMenus, saveCities, saveMobileWebFooterMenus } =
-    useUtils()
+  const metaTitle = `Temukan Dealer Mobil Baru Rekanan SEVA di Indonesia | SEVA`
+  const metaDesc = `Cari dealer mobil baru terdekat di kota Anda. Dapatkan informasi mengenai harga dan penawaran menarik dari dealer rekanan SEVA hanya di Seva.id`
+  const {
+    saveMobileWebTopMenus,
+    saveCities,
+    saveMobileWebFooterMenus,
+    saveBrand,
+  } = useUtils()
   useEffect(() => {
     saveMobileWebTopMenus(dataMobileMenu)
     saveCities(dataCities)
     saveMobileWebFooterMenus(dataFooterMenu)
+    saveBrand(dataBrandList)
   }, [])
 
   return (
     <div>
       <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
-      <Dealer dataRecommendation={dataRecommendation} />
+      <Dealer dataRecommendation={dataRecommendation} page="main" />
     </div>
   )
 }
@@ -43,27 +50,40 @@ export const getServerSideProps = async (context: any) => {
   )
   const params = `?city=jakarta&cityId=118`
   try {
-    const [recommendationRes, menuMobileRes, citiesRes, footerMenuRes]: any =
-      await Promise.all([
-        getRecommendation(params),
-        getMobileHeaderMenu(),
-        getCities(),
-        getMobileFooterMenu(),
-      ])
+    const [
+      recommendationRes,
+      menuMobileRes,
+      citiesRes,
+      footerMenuRes,
+      brandList,
+    ]: any = await Promise.all([
+      getRecommendation(params),
+      getMobileHeaderMenu(),
+      getCities(),
+      getMobileFooterMenu(),
+      getNewCarBrand(),
+    ])
 
-    const [dataRecommendation, dataMobileMenu, dataCities, dataFooterMenu] =
-      await Promise.all([
-        recommendationRes.carRecommendations,
-        menuMobileRes.data,
-        citiesRes,
-        footerMenuRes.data,
-      ])
+    const [
+      dataRecommendation,
+      dataMobileMenu,
+      dataCities,
+      dataFooterMenu,
+      dataBrandList,
+    ] = await Promise.all([
+      recommendationRes.carRecommendations,
+      menuMobileRes.data,
+      citiesRes,
+      footerMenuRes.data,
+      brandList,
+    ])
     return {
       props: {
         dataRecommendation,
         dataMobileMenu,
         dataCities,
         dataFooterMenu,
+        dataBrandList,
       },
     }
   } catch (error: any) {

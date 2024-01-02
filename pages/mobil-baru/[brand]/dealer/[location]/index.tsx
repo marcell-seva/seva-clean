@@ -14,8 +14,10 @@ import { useUtils } from 'services/context/utilsContext'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
 import { defaultSeoImage } from 'utils/helpers/const'
 import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
+import { CityOtrOption } from 'utils/types'
+import { DealerBrand } from 'utils/types/utils'
 
-const DealerBrand = ({
+const DealerBrandLocation = ({
   dataMobileMenu,
   dataCities,
   dataRecommendation,
@@ -24,34 +26,43 @@ const DealerBrand = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const getUrlBrand = router.query.brand?.toString() ?? ''
-  const metaTitle = `Temukan  Dealer Mobil ${
+  const getUrlLocation =
+    router.query.location?.toString().replace('-', ' ') ?? ''
+
+  const metaTitle = `Temukan Dealer ${
     getUrlBrand.toLowerCase() === 'bmw'
       ? getUrlBrand.toUpperCase()
       : capitalizeFirstLetter(getUrlBrand)
-  } di Indonesia | SEVA`
+  } Terdekat di ${capitalizeWords(getUrlLocation)}`
   const metaDesc = `Temukan dealer ${
     getUrlBrand.toLowerCase() === 'bmw'
       ? getUrlBrand.toUpperCase()
       : capitalizeFirstLetter(getUrlBrand)
-  } terdekat dengan Anda. Dapatkan informasi mengenai harga dan penawaran terbaik dari dealer rekanan SEVA hanya di Seva.id`
+  } terdekat di ${capitalizeWords(
+    getUrlLocation,
+  )}. Dapatkan promo spesial pembelian mobil baru online dari Seva.id langsung di Dealer ${
+    getUrlBrand.toLowerCase() === 'bmw'
+      ? getUrlBrand.toUpperCase()
+      : capitalizeFirstLetter(getUrlBrand)
+  } ${capitalizeWords(getUrlLocation)}`
 
   const {
     saveMobileWebTopMenus,
     saveCities,
     saveMobileWebFooterMenus,
-    saveDealerBrand,
+    saveDealerBrandLocation,
   } = useUtils()
   useEffect(() => {
     saveMobileWebTopMenus(dataMobileMenu)
     saveCities(dataCities)
     saveMobileWebFooterMenus(dataFooterMenu)
-    saveDealerBrand(dataDealerBranch)
+    saveDealerBrandLocation(dataDealerBranch)
   }, [])
 
   return (
     <div>
       <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
-      <Dealer dataRecommendation={dataRecommendation} page="brand" />
+      <Dealer dataRecommendation={dataRecommendation} page="location" />
     </div>
   )
 }
@@ -62,7 +73,7 @@ export const getServerSideProps = async (context: any) => {
     'public, s-maxage=59, stale-while-revalidate=3000',
   )
 
-  const { brand } = context.query
+  const { brand, location } = context.query
 
   const params = `?city=jakarta&cityId=118`
   try {
@@ -71,7 +82,7 @@ export const getServerSideProps = async (context: any) => {
       menuMobileRes,
       citiesRes,
       footerMenuRes,
-      dealerBranchRes,
+      dealerBrandRes,
     ]: any = await Promise.all([
       getRecommendation(params),
       getMobileHeaderMenu(),
@@ -85,14 +96,33 @@ export const getServerSideProps = async (context: any) => {
       dataMobileMenu,
       dataCities,
       dataFooterMenu,
-      dataDealerBranch,
+      dataDealerBrand,
     ] = await Promise.all([
       recommendationRes.carRecommendations,
       menuMobileRes.data,
       citiesRes,
       footerMenuRes.data,
-      dealerBranchRes.data,
+      dealerBrandRes.data,
     ])
+
+    const checkCityByCityCode = (index: string) => {
+      return dataDealerBrand.find(
+        (item: DealerBrand) =>
+          item.cityName.replace(/ /g, '-').toLocaleLowerCase() ===
+          index.replace(/ /g, '-').toLocaleLowerCase(),
+      )
+    }
+
+    let finalLocation: DealerBrand = checkCityByCityCode(location)
+
+    const [DealerBranchLocationRes]: any = await Promise.all([
+      getDealer(
+        `?brand=${capitalizeWords(brand)}&city=${finalLocation.cityId}`,
+      ),
+    ])
+
+    const [dataDealerBranch] = await Promise.all([DealerBranchLocationRes.data])
+
     return {
       props: {
         dataRecommendation,
@@ -107,4 +137,4 @@ export const getServerSideProps = async (context: any) => {
   }
 }
 
-export default DealerBrand
+export default DealerBrandLocation

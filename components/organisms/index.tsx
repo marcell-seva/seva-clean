@@ -86,7 +86,6 @@ import DealerSearchWidget from './searchWidget/dealerSearchWidget'
 import { DealerBrands } from 'components/molecules/dealersBrand'
 import DealerArticleWidget from './articleWidget/dealer'
 import BannerDealerLP from './bannerDealerLP'
-import BrandDealer from './dealer/brandDealer'
 
 const Exterior360ViewerTab = dynamic(
   () => import('./tabContent/upper/exterior360Viewer'),
@@ -181,5 +180,4 @@ export {
   DealerBrands,
   DealerArticleWidget,
   BannerDealerLP,
-  BrandDealer,
 }

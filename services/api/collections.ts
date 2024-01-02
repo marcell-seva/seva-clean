@@ -54,6 +54,11 @@ const usedCar = {
   getCarCreditsSk: `${baseUrl}/used-car/get-car-credits-sk`,
 }
 
+const dealer = {
+  dealerBranch: `${baseUrl}/dealer`,
+  listBrandNewCar: `${baseUrl}/new-car/get-list-brand`,
+}
+
 const leads = {
   unverifiedLeadNew: `${baseUrl}/unverifiedLeads/new`,
   customerAssistantDetails: `${baseUrl}/unverifiedLeads/csaDetails`,
@@ -116,7 +121,11 @@ const profile = {
 }
 
 const temanSeva = {
+  register: `${baseUrlTemanSeva}/auth/registration`,
   checkTemanSeva: `${baseUrlTemanSeva}/auth/is-teman-seva`,
+  profile: `${baseUrlTemanSeva}/auth/profile`,
+  totalKomisi: `${baseUrlTemanSeva}/transaction/`,
+  totalReferee: `${baseUrlTemanSeva}/total-referee/`,
 }
 
 const refinancing = {
@@ -149,4 +158,5 @@ export const collections = {
   temanSeva,
   refinancing,
   search,
+  dealer,
 }

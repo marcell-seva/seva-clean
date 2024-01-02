@@ -1,17 +1,29 @@
 @import '../abstract/colors';
 @import '../abstract/mixins';
+
+.stickypadding {
+  padding-top: 57px;
+}
+
 .container {
   max-width: 570px;
   margin: 0% auto;
+  overflow: hidden;
 }
+
+.infoWrapper {
+  background-color: #{$shades-grey-5};
+  padding: 24px 16px;
+}
+
+.showAAnnouncementBox {
+  top: 54px !important;
+}
+
 .searchContainer {
   position: relative;
   width: 100%;
   padding: 0 16px;
-}
-
-.mainKV {
-  height: 140px;
 }
 
 .cardContainer {

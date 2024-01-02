@@ -35,11 +35,9 @@ const bmw = BMW
 
 const BannerDealerLP = ({ onPage }: BannerProps) => {
   const router = useRouter()
-  const { cities } = useUtils()
-  const [showSidebar, setShowSidebar] = useState(false)
-  const [cityListApi, setCityListApi] = useState<Array<CityOtrOption>>(cities)
   const getUrlBrand = router.query.brand?.toString() ?? ''
-  const getUrlLocation = router.query.location?.toString() ?? 'Indonesia'
+  const getUrlLocation =
+    router.query.location?.toString().replace('-', ' ') ?? 'Indonesia'
 
   const logoList = {
     toyota: toyota,
@@ -56,13 +54,8 @@ const BannerDealerLP = ({ onPage }: BannerProps) => {
     <>
       <div className={styles.supergraphic}>
         <div className={styles.mainContent}>
-          <div
-            className={clsx({
-              [styles.mainWrapper]: true,
-              [styles.isActive]: showSidebar,
-            })}
-          >
-            {onPage === 'dealer' ? (
+          <div className={styles.mainWrapper}>
+            {onPage === 'main' ? (
               <>
                 <h1 className={`${styles.mainTitle} ${styles.bold}`}>
                   Temukan Dealer <br />
@@ -97,7 +90,7 @@ const BannerDealerLP = ({ onPage }: BannerProps) => {
             )}
           </div>
         </div>
-        {onPage === 'dealer' ? (
+        {onPage === 'main' ? (
           <>
             <Image
               className={styles.supergraphicBg}
