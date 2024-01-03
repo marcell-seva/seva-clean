@@ -14,6 +14,7 @@ export const MoengageEventName = {
     'view_kualifikasi_kredit_success_result_page',
   view_kualifikasi_kredit_reject_result_page:
     'view_kualifikasi_kredit_reject_result_page',
+  view_loan_calculator_result: 'view_loan_calculator_result',
 }
 
 export const setTrackEventMoEngage = (param1: any, param2: any): void => {
