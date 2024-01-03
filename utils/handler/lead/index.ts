@@ -19,6 +19,7 @@ import {
   postUnverifiedLeadsNew,
   postUnverifiedLeadsNewUsedCar,
 } from 'services/api'
+import { MoengageEventName, setTrackEventMoEngage } from 'helpers/moengage'
 
 export enum UnverifiedLeadSubCategory {
   SEVA_NEW_CAR_LP_LEADS_FORM = 'SEVNCLFH',
@@ -174,4 +175,12 @@ export const getStoredContactFormData = () => {
   return dataInLocalstorage
     ? JSON.parse(dataInLocalstorage)
     : defaultContactFormValue
+}
+
+export const trackMoengageSubmitLeads = (name: string, phone: string) => {
+  const obj = {
+    first_name: name,
+    mobile_number: phone,
+  }
+  setTrackEventMoEngage(MoengageEventName.submit_leads_form, obj)
 }

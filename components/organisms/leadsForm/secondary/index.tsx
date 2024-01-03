@@ -49,7 +49,10 @@ import {
   saveDataForCountlyTrackerPageViewLC,
 } from 'utils/navigate'
 import Image from 'next/image'
-import { createUnverifiedLeadNew } from 'utils/handler/lead'
+import {
+  createUnverifiedLeadNew,
+  trackMoengageSubmitLeads,
+} from 'utils/handler/lead'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 
 const SupergraphicLeft = '/revamp/illustration/supergraphic-small.webp'
@@ -291,11 +294,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({
     try {
       await createUnverifiedLeadNew(isOTO ? dataOTO : data)
       setModalOpened('success-toast')
-      trackLeadsFormAction(
-        TrackingEventName.WEB_LEADS_FORM_SUCCESS,
-        trackLeads(),
-      )
-
+      trackMoengageSubmitLeads(name, phone)
       trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SUCCESS_VIEW, {
         PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
         LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',

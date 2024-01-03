@@ -20,6 +20,8 @@ import { temanSevaUrlPath } from 'utils/types/props'
 import { FormReferralCode } from '../form/formReferralCode'
 import ErrorImg from '/public/revamp/images/refinancing/Alert-info.svg'
 import Image from 'next/image'
+import { default as customAxiosGet } from 'services/api/get'
+import { trackMoengageSubmitLeads } from 'utils/handler/lead'
 
 interface Props {
   onButtonClick?: boolean
@@ -122,14 +124,18 @@ export const DiscussionRefiForm = ({ onButtonClick }: Props) => {
       'SEVA_REFINANCING_LEADS',
       getToken() !== null ? true : false,
       referralCodeInput || '',
-    ).then((result) => {
-      saveLocalStorage(
-        LocalStorageKey.IdCustomerRefi,
-        encryptValue(result?.data.id),
-      )
-    })
-    setLoading(false)
-    router.push(refinancingFormUrl)
+    )
+      .then((result) => {
+        saveLocalStorage(
+          LocalStorageKey.IdCustomerRefi,
+          encryptValue(result?.data.id),
+        )
+        trackMoengageSubmitLeads(formField?.fullName, formField?.phoneNumber)
+        router.push(refinancingFormUrl)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   const verified = () => {

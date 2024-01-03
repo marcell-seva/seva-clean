@@ -34,7 +34,10 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getToken } from 'utils/handler/auth'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
-import { createUnverifiedLeadNew } from 'utils/handler/lead'
+import {
+  createUnverifiedLeadNew,
+  trackMoengageSubmitLeads,
+} from 'utils/handler/lead'
 import { useCar } from 'services/context/carContext'
 import { useUtils } from 'services/context/utilsContext'
 
@@ -280,6 +283,7 @@ export const AdaOTOdiSEVALeadsForm: React.FC<PropsLeadsForm> = ({
         PHONE_NUMBER: '+62' + phone,
       })
       setIsLoading(false)
+      trackMoengageSubmitLeads(name, phone)
       setModalOpened('success-toast')
       setTimeout(() => {
         setModalOpened('none')

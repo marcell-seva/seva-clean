@@ -31,6 +31,7 @@ import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getToken } from 'utils/handler/auth'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { postUnverifiedLeadsNew } from 'services/api'
+import { trackMoengageSubmitLeads } from 'utils/handler/lead'
 
 interface PropsLeadsForm {
   otpStatus?: any
@@ -184,6 +185,7 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
         PHONE_NUMBER: '+62' + phone,
       })
       setModalOpened('success-toast')
+      trackMoengageSubmitLeads(name, phone)
       setIsLoading(false)
       onSubmitLeadSuccess()
       setTimeout(() => setModalOpened('none'), 5000)

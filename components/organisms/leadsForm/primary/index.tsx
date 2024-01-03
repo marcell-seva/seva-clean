@@ -32,7 +32,10 @@ import {
 } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getToken } from 'utils/handler/auth'
-import { createUnverifiedLeadNew } from 'utils/handler/lead'
+import {
+  createUnverifiedLeadNew,
+  trackMoengageSubmitLeads,
+} from 'utils/handler/lead'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 
 const SupergraphicSecondarySmall =
@@ -247,6 +250,7 @@ export const LeadsFormPrimary: React.FC<PropsLeadsForm> = ({
         PHONE_NUMBER: '+62' + phone,
       })
       setIsLoading(false)
+      trackMoengageSubmitLeads(name, phone)
       setModalOpened('success-toast')
       setTimeout(() => {
         setModalOpened('none')

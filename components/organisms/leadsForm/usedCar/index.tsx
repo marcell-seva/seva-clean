@@ -27,7 +27,10 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getToken } from 'utils/handler/auth'
 import Image from 'next/image'
-import { createUnverifiedLeadNewUsedCar } from 'utils/handler/lead'
+import {
+  createUnverifiedLeadNewUsedCar,
+  trackMoengageSubmitLeads,
+} from 'utils/handler/lead'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { SelectedCalculateLoanUsedCar } from 'utils/types/utils'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
@@ -242,6 +245,7 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
 
         try {
           await createUnverifiedLeadNewUsedCar(data)
+          trackMoengageSubmitLeads(name, phone)
           setModalOpened('success-toast')
           trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SUCCESS_VIEW, {
             PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
@@ -301,6 +305,7 @@ export const LeadsFormUsedCar: React.FC<PropsLeadsForm> = ({
 
       try {
         await createUnverifiedLeadNewUsedCar(data)
+        trackMoengageSubmitLeads(name, phone)
         setModalOpened('success-toast')
         trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SUCCESS_VIEW, {
           PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
