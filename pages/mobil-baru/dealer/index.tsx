@@ -21,6 +21,7 @@ const DealerLandingPage = ({
   dataFooterMenu,
   dataBrandList,
   dataArticles,
+  ssr,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const metaTitle = `Temukan Dealer Mobil Baru Rekanan SEVA di Indonesia | SEVA`
   const metaDesc = `Cari dealer mobil baru terdekat di kota Anda. Dapatkan informasi mengenai harga dan penawaran menarik dari dealer rekanan SEVA hanya di Seva.id`
@@ -42,7 +43,7 @@ const DealerLandingPage = ({
   return (
     <div>
       <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
-      <Dealer dataRecommendation={dataRecommendation} page="main" />
+      <Dealer dataRecommendation={dataRecommendation} ssr={ssr} page="main" />
     </div>
   )
 }
@@ -93,6 +94,7 @@ export const getServerSideProps = async (context: any) => {
         dataFooterMenu,
         dataBrandList,
         dataArticles,
+        ssr: 'success',
       },
     }
   } catch (error: any) {

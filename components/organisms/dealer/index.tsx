@@ -27,7 +27,7 @@ import { getLocalStorage } from 'utils/handler/localStorage'
 import { countDaysDifference } from 'utils/handler/date'
 import { useInView } from 'react-intersection-observer'
 import { alephArticleCategoryList } from 'config/articles.config'
-import { getAnnouncementBox as gab } from 'services/api'
+import { getAnnouncementBox as gab, getRecommendation } from 'services/api'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { getToken } from 'utils/handler/auth'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
@@ -37,8 +37,9 @@ import { Faq } from 'components/molecules/section/faq'
 import { useRouter } from 'next/router'
 import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
 import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
+import { getCity } from 'utils/hooks/useGetCity'
 
-const Dealer = ({ dataRecommendation, page }: any) => {
+const Dealer = ({ dataRecommendation, ssr, page }: any) => {
   const router = useRouter()
   const getUrlBrand = router.query.brand?.toString() ?? ''
   const getUrlLocation =
@@ -117,22 +118,22 @@ const Dealer = ({ dataRecommendation, page }: any) => {
     setArticlesTabList(dealerArticles)
   }, [dealerArticles])
 
-  // const loadCarRecommendation = async () => {
-  //   try {
-  //     const params = `?city=${getCity().cityCode}&cityId=${getCity().id}`
-  //     const recommendation: any = await getRecommendation(params)
-  //     saveRecommendation(recommendation.carRecommendations)
-  //   } catch {
-  //     saveRecommendation(dataRecomendation)
-  //   }
-  // }
-  // useEffect(() => {
-  //   if (ssr !== 'success') {
-  //     loadCarRecommendation()
-  //   } else {
-  //     saveRecommendation(dataRecomendation)
-  //   }
-  // }, [])
+  const loadCarRecommendation = async () => {
+    try {
+      const params = `?city=${getCity().cityCode}&cityId=${getCity().id}`
+      const recommendation: any = await getRecommendation(params)
+      saveRecommendation(recommendation.carRecommendations)
+    } catch {
+      saveRecommendation(dataRecommendation)
+    }
+  }
+  useEffect(() => {
+    if (ssr !== 'success') {
+      loadCarRecommendation()
+    } else {
+      saveRecommendation(dataRecommendation)
+    }
+  }, [])
 
   const scrollToLeadsForm = () => {
     const destinationElm = document.getElementById(
@@ -227,6 +228,10 @@ const Dealer = ({ dataRecommendation, page }: any) => {
       />
       <BannerDealerLP onPage={page} />
       {renderCarouselWidget()}
+      <LpCarRecommendations
+        dataReccomendation={dataRecommendation}
+        onClickOpenCityModal={() => setOpenCitySelectorModal(true)}
+      />
       <div className={styles.infoWrapper}>
         <Faq
           isWithIcon
@@ -251,10 +256,6 @@ const Dealer = ({ dataRecommendation, page }: any) => {
           <DealerSearchWidget />
         </CardShadow>
       </div> */}
-      {/* <LpCarRecommendations
-        dataReccomendation={dataRecommendation}
-        onClickOpenCityModal={() => setOpenCitySelectorModal(true)}
-      /> */}
 
       <div
         ref={landingPageLeadsFormSectionRef}
