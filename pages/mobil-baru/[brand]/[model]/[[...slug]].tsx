@@ -831,8 +831,8 @@ const jsonLD = (
           name: 'Raka',
         },
         publisher: {
-          '@type': '-',
-          name: 'Organization SEVA by Astra',
+          '@type': 'Organization',
+          name: 'SEVA by Astra',
           logo: {
             '@type': 'ImageObject',
             url: 'https://cdn.seva.id/blog/media/2022/07/Seva-LogoxAF_Seva-PrimarybyAstraFinancial3.png',
@@ -848,8 +848,8 @@ const jsonLD = (
         image: 'https://www.seva.id/revamp/illustration/PromoTradeIn.webp',
         datePublished: '2022-11-24',
         publisher: {
-          '@type': '-',
-          name: 'Organization SEVA by Astra',
+          '@type': 'Organization',
+          name: 'SEVA by Astra',
           logo: {
             '@type': 'ImageObject',
             url: 'https://cdn.seva.id/blog/media/2022/07/Seva-LogoxAF_Seva-PrimarybyAstraFinancial3.png',
