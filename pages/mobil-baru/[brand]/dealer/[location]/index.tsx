@@ -77,7 +77,7 @@ export const getServerSideProps = async (context: any) => {
 
   const { brand, location } = context.query
 
-  const params = `?city=jakarta&cityId=118`
+  const params = `?brand=${capitalizeWords(brand)}&city=jakarta&cityId=118`
   try {
     const [
       recommendationRes,

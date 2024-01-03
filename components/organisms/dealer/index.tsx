@@ -120,7 +120,14 @@ const Dealer = ({ dataRecommendation, ssr, page }: any) => {
 
   const loadCarRecommendation = async () => {
     try {
-      const params = `?city=${getCity().cityCode}&cityId=${getCity().id}`
+      const params =
+        page !== 'main'
+          ? `?brand=${
+              getUrlBrand !== 'bmw'
+                ? capitalizeFirstLetter(getUrlBrand)
+                : getUrlBrand.toUpperCase()
+            }&city=${getCity().cityCode}&cityId=${getCity().id}`
+          : `?city=${getCity().cityCode}&cityId=${getCity().id}`
       const recommendation: any = await getRecommendation(params)
       saveRecommendation(recommendation.carRecommendations)
     } catch {
@@ -230,6 +237,7 @@ const Dealer = ({ dataRecommendation, ssr, page }: any) => {
       {renderCarouselWidget()}
       <LpCarRecommendations
         dataReccomendation={dataRecommendation}
+        page={page}
         onClickOpenCityModal={() => setOpenCitySelectorModal(true)}
       />
       <div className={styles.infoWrapper}>
