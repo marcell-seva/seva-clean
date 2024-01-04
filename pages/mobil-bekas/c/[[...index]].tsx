@@ -153,6 +153,7 @@ const UsedCarResultPage = ({
     saveCities(dataCities)
     saveDataSearchUsedCar(dataSearchUsedCar)
     getAnnouncementBox()
+    console.log('flag meta', meta)
   }, [])
   return (
     <>
@@ -246,7 +247,7 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async (ctx) => {
   ctx.res.setHeader(
     'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59',
+    'public, s-maxage=59, stale-while-revalidate=3000',
   )
   const metabrand = getBrand(ctx.query.brand)
   const footerTagBaseApi =
@@ -500,7 +501,7 @@ export const getServerSideProps: GetServerSideProps<{
       },
     }
   } catch (e: any) {
-    console.log('error', e)
+    console.log('flag error', e)
     return serverSideManualNavigateToErrorPage(e?.response?.status)
   }
 }

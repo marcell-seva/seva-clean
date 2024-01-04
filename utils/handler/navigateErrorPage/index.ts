@@ -22,11 +22,13 @@ type serverSideManualNavigateToErrorPageReturnType = (statusCode?: number) => {
 
 export const serverSideManualNavigateToErrorPage: serverSideManualNavigateToErrorPageReturnType =
   (statusCode?: number) => {
+    console.log('flag error serverside', statusCode)
     if (statusCode === 404) {
       return {
         notFound: true,
       }
     } else {
+      console.log('flag error throw error', statusCode)
       // this will cover other error including "TypeError" -> code 500
       throw new Error()
     }

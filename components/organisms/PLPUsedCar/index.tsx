@@ -325,6 +325,7 @@ export const PLPUsedCar = ({
   }, [])
 
   useEffect(() => {
+    console.log('flag data props', minMaxPrice, minMaxMileage, minMaxYear)
     if (
       (funnelQuery.search !== '' && funnelQuery.search !== undefined) ||
       (funnelQuery.brand && funnelQuery.brand.length > 0) ||
@@ -339,7 +340,7 @@ export const PLPUsedCar = ({
       (funnelQuery.priceEnd !== minMaxPrice.maxPriceValue.toString() &&
         funnelQuery.priceEnd !== '' &&
         funnelQuery.priceEnd !== undefined) ||
-      (funnelQuery.yearStart !== minmaxYear.minYearValue.toString() &&
+      (funnelQuery.yearStart !== minMaxYear.minYearValue.toString() &&
         funnelQuery.yearStart !== '' &&
         funnelQuery.yearStart !== undefined) ||
       (funnelQuery.yearEnd !== minMaxYear.maxYearValue.toString() &&
