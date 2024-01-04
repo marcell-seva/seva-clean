@@ -335,7 +335,21 @@ export function LoanCalculatorPageV1() {
     setIsErrorPromoCode(false)
     setisSuccessPromoCode(false)
   }
-
+  const trackMoengageLoanCalc = (data: any) => {
+    const obj = {
+      brand: forms?.model?.brandName,
+      model: removeFirstWordFromString(forms?.model?.modelName ?? ''),
+      price: forms?.variant?.otr.split('Rp')[1].split('.').join(''),
+      variants: forms?.variant?.variantName,
+      monthly_installment: data?.installment,
+      downpayment: data?.dpAmount,
+      loan_tenure: data?.tenure,
+      est_monthly_income: forms.monthlyIncome,
+      age:
+        storedFilter && storedFilter?.age?.length > 0 ? storedFilter?.age : '',
+    }
+    setTrackEventMoEngage(MoengageEventName.view_loan_calculator_result, obj)
+  }
   const trackMoengage = () => {
     const objData = {
       brand: brand ? capitalizeFirstLetter(brand) : '',
@@ -1078,7 +1092,8 @@ export function LoanCalculatorPageV1() {
             ) => b.tenure - a.tenure,
           )[0] ?? null
         setSelectedLoan(selectedLoanInitialValue)
-
+        console.log('KEPANGGIL')
+        trackMoengageLoanCalc(selectedLoanInitialValue)
         setIsDataSubmitted(true)
         setCalculationApiPayload(payload)
         // scrollToResult()
