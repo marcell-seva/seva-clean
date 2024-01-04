@@ -15,7 +15,7 @@ import { getLowestInstallment } from 'utils/carModelUtils/carModelUtils'
 import { replacePriceSeparatorByLocalization } from 'utils/handler/rupiah'
 import { Button } from 'components/atoms'
 import { LabelMudah } from 'components/molecules'
-import styles from 'styles/components/organisms/carRecomendations.module.scss'
+import styles from 'styles/components/organisms/carRecomendationsUsedCar.module.scss'
 import { useRouter } from 'next/router'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import {

@@ -369,10 +369,6 @@ export const PLPUsedCar = ({
     }
   }, [recommendation])
 
-  useEffect(() => {
-    setPage(1)
-  }, [sampleArray])
-
   const stickyFilter = () => {
     if (sticky && !isActive)
       return (

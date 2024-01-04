@@ -331,6 +331,7 @@ export const getServerSideProps: GetServerSideProps<{
         minPriceValue: minmaxPriceData.minPrice,
         maxPriceValue: minmaxPriceData.maxPrice,
       }
+      console.log('flag1', minmaxPriceData)
     }
     if (!yearStart && !yearEnd) {
       const minmax = await getMinMaxYearsUsedCar('')
@@ -340,6 +341,7 @@ export const getServerSideProps: GetServerSideProps<{
         minYearValue: minmaxYearData.minYears,
         maxYearValue: minmaxYearData.maxYears,
       }
+      console.log('flag2', minmaxYearData)
     }
 
     if (!mileageStart && !mileageEnd) {
@@ -349,10 +351,13 @@ export const getServerSideProps: GetServerSideProps<{
         minMileageValue: minmaxMileageData.minMileages,
         maxMileageValue: minmaxMileageData.maxMileages,
       }
+      console.log('flag3', minmaxMileageData)
     }
 
     const allBrand = await getBrandList('?isAll=true')
     const allCity = await getUsedCarCityList()
+
+    console.log('flag4', allBrand, allCity)
 
     const checkData = ctx.query.index
     let brandSlug
@@ -383,14 +388,16 @@ export const getServerSideProps: GetServerSideProps<{
             )
             locSlug = jakpus
           }
+          console.log('flag5', resultCheck)
         }
+        console.log('flag6', checkData)
       } else {
         const resultCheck = allBrand.data.filter(
           (item: any) => item.makeCode === checkData[0].toLowerCase(),
         )
-
         if (resultCheck.length !== 0) {
           brandSlug = resultCheck[0].makeCode
+          console.log('flag7', brandSlug)
         } else {
           const resultCheck2 = allCity.data.filter((item: any) =>
             item.cityName
@@ -411,11 +418,15 @@ export const getServerSideProps: GetServerSideProps<{
                 )
                 locSlug = jakpus
               }
+              console.log('flag8', lastChosen)
             } else {
               locSlug = resultCheck2
+              console.log('flag9', locSlug)
             }
           }
+          console.log('flag10', resultCheck2)
         }
+        console.log('flag11', allBrand)
       }
     }
 
@@ -454,17 +465,23 @@ export const getServerSideProps: GetServerSideProps<{
         : { ...queryParam },
     )
 
+    console.log('flag12', response)
+
     const recommendation = response.carData
     const totalItems = response.totalItems
 
     if (footerData && footerData.length > 0) {
       meta.footer = footerData[0].attributes
+      console.log('flag13', meta)
     }
 
     if (recommendation) {
       meta.carRecommendations.carRecommendations = recommendation
       meta.carRecommendations.totalItems = totalItems
+      console.log('flag14', meta)
     }
+
+    console.log('flag final', meta)
 
     return {
       props: {
@@ -483,6 +500,7 @@ export const getServerSideProps: GetServerSideProps<{
       },
     }
   } catch (e: any) {
+    console.log('error', e)
     return serverSideManualNavigateToErrorPage(e?.response?.status)
   }
 }

@@ -68,7 +68,7 @@ export const getNewFunnelRecommendations = (
   return getRecommendation('', { params })
 }
 
-export const getUsedCarFunnelRecommendations = (
+export const getUsedCarFunnelRecommendations = async (
   funnelQuery: FunnelQuery,
   surveyForm = false,
   useKeySearch = true,
@@ -128,7 +128,8 @@ export const getUsedCarFunnelRecommendations = (
   // getCity().cityCode && params.append('city', getCity().cityCode as string)
   // getCity().id && params.append('cityId', getCity().id as string)
 
-  return getUsedCars('', { params })
+  console.log('flag query', params)
+  return await getUsedCars('', { params })
 }
 
 export const getNewFunnelLoanSpecialRate = (
