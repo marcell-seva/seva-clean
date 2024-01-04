@@ -213,7 +213,6 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({
         }),
       }
     }
-    console.log(data)
     try {
       let temanSevaStatus = 'No'
       if (referralCodeFromUrl) {
