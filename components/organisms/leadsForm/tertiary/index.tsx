@@ -42,12 +42,14 @@ interface PropsLeadsForm {
   onVerify?: (e: any) => void
   onFailed?: (e: any) => void
   onPage?: string
+  cityId?: number
   isDealer?: boolean
 }
 
 const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({
   onPage,
   isDealer,
+  cityId,
 }: any) => {
   const router = useRouter()
   const getUrlBrand = router.query.brand?.toString() ?? ''
@@ -169,7 +171,6 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({
         platform,
         name,
         phoneNumber: phone,
-        ...(cityOtr?.id && { cityId: cityOtr.id }),
         origination: UnverifiedLeadSubCategory.DEALER_LEADS_FORM,
       }
     } else if (onPage === 'brand' && isDealer) {
@@ -181,7 +182,6 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({
           getUrlBrand === 'bmw'
             ? getUrlBrand.toUpperCase()
             : capitalizeWords(getUrlBrand),
-        ...(cityOtr?.id && { cityId: cityOtr.id }),
         origination: UnverifiedLeadSubCategory.DEALER_LEADS_FORM,
       }
     } else if (onPage === 'location' && isDealer) {
@@ -214,7 +214,6 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({
         }),
       }
     }
-    console.log(data)
     try {
       let temanSevaStatus = 'No'
       if (referralCodeFromUrl) {

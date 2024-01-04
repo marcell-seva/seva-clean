@@ -88,7 +88,6 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
   }
 
   useEffect(() => {
-    console.log(citySelected, 'test', funnelWidget.city)
     saveFunnelWidget({ ...funnelWidget, city: citySelected })
     patchFunnelQuery({ filterFincap: false })
   }, [])
@@ -108,10 +107,11 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
           brand: brandSelected,
           city: '',
         })
+        setCitySelected('')
       })
-    }
-    if (funnelWidget.city === '') {
-      setCitySelected('')
+      if (funnelWidget.city) {
+        setCitySelected(funnelWidget.city)
+      }
     }
   }, [brandSelected])
 
