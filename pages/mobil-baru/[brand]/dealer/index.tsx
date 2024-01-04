@@ -23,10 +23,11 @@ const DealerBrand = ({
   dataFooterMenu,
   dataDealerBranch,
   dataTagArticle,
+  dataTotalBranch,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const getUrlBrand = router.query.brand?.toString() ?? ''
-  const metaTitle = `Temukan  Dealer Mobil ${
+  const metaTitle = `Temukan ${dataTotalBranch.dealerCount.toString()} Dealer Mobil ${
     getUrlBrand.toLowerCase() === 'bmw'
       ? getUrlBrand.toUpperCase()
       : capitalizeFirstLetter(getUrlBrand)
@@ -68,7 +69,9 @@ export const getServerSideProps = async (context: any) => {
 
   const { brand } = context.query
 
-  const params = `?brand=${capitalizeWords(brand)}&city=jakarta&cityId=118`
+  const params = `?brand=${
+    brand === 'bmw' ? brand.toUpperCase() : capitalizeWords(brand)
+  }&city=jakarta&cityId=118`
   try {
     const [
       recommendationRes,
@@ -82,7 +85,11 @@ export const getServerSideProps = async (context: any) => {
       getMobileHeaderMenu(),
       getCities(),
       getMobileFooterMenu(),
-      getDealer(`?brand=${capitalizeWords(brand)}`),
+      getDealer(
+        `?brand=${
+          brand === 'bmw' ? brand.toUpperCase() : capitalizeWords(brand)
+        }`,
+      ),
       getTagArticle(`?tag_name=${brand.toLowerCase()}`),
     ])
 
@@ -93,6 +100,7 @@ export const getServerSideProps = async (context: any) => {
       dataFooterMenu,
       dataDealerBranch,
       dataTagArticle,
+      dataTotalBranch,
     ] = await Promise.all([
       recommendationRes.carRecommendations,
       menuMobileRes.data,
@@ -100,6 +108,7 @@ export const getServerSideProps = async (context: any) => {
       footerMenuRes.data,
       dealerBranchRes.data,
       articleRes,
+      dealerBranchRes.meta,
     ])
     return {
       props: {
@@ -109,6 +118,7 @@ export const getServerSideProps = async (context: any) => {
         dataFooterMenu,
         dataDealerBranch,
         dataTagArticle,
+        dataTotalBranch,
       },
     }
   } catch (error: any) {

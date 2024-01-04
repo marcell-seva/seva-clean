@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useUtils } from 'services/context/utilsContext'
 import {
   ArticleWidget,
@@ -27,7 +27,11 @@ import { getLocalStorage } from 'utils/handler/localStorage'
 import { countDaysDifference } from 'utils/handler/date'
 import { useInView } from 'react-intersection-observer'
 import { alephArticleCategoryList } from 'config/articles.config'
-import { getAnnouncementBox as gab, getRecommendation } from 'services/api'
+import {
+  getAnnouncementBox as gab,
+  getDealer,
+  getRecommendation,
+} from 'services/api'
 import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { getToken } from 'utils/handler/auth'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
@@ -37,6 +41,7 @@ import { Faq } from 'components/molecules/section/faq'
 import { useRouter } from 'next/router'
 import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
 import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
+import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
 import { getCity } from 'utils/hooks/useGetCity'
 
 const Dealer = ({ dataRecommendation, ssr, page }: any) => {
@@ -52,6 +57,10 @@ const Dealer = ({ dataRecommendation, ssr, page }: any) => {
     dataAnnouncementBox,
     dealerBrand,
   } = useUtils()
+  const { funnelWidget, saveFunnelWidget } = useContext(
+    SearchWidgetContext,
+  ) as SearchWidgetContextType
+  const [dealerCityList, setDealerCityList] = useState([])
   const [showDealerBrand] = useState(page === 'main' ? true : false)
   const [startScroll, setStartScroll] = useState(false)
   const [showSidebar, setShowSidebar] = useState(false)
@@ -111,12 +120,34 @@ const Dealer = ({ dataRecommendation, ssr, page }: any) => {
 
   useEffect(() => {
     cityHandler()
+
     getAnnouncementBox()
+    if (getUrlBrand !== '') {
+      saveFunnelWidget({
+        ...funnelWidget,
+        brand: getUrlBrand.split(' '),
+        city: getUrlLocation,
+      })
+    }
   }, [])
 
   useEffect(() => {
     setArticlesTabList(dealerArticles)
   }, [dealerArticles])
+
+  useEffect(() => {
+    if (getUrlBrand !== '') {
+      getDealer(
+        `?brand=${
+          getUrlBrand === 'bmw'
+            ? getUrlBrand.toUpperCase()
+            : capitalizeWords(getUrlBrand)
+        }`,
+      ).then((res: any) => {
+        setDealerCityList(res.data)
+      })
+    }
+  }, [getUrlBrand])
 
   const loadCarRecommendation = async () => {
     try {
@@ -202,7 +233,7 @@ const Dealer = ({ dataRecommendation, ssr, page }: any) => {
       case 'brand':
         return (
           <DealerCarousel
-            items={dealerBrand}
+            items={dealerCityList}
             brand={
               getUrlBrand !== 'bmw'
                 ? capitalizeFirstLetter(getUrlBrand)
@@ -234,6 +265,17 @@ const Dealer = ({ dataRecommendation, ssr, page }: any) => {
         isShowAnnouncementBox={showAnnouncementBox}
       />
       <BannerDealerLP onPage={page} />
+      <div className={styles.searchContainer}>
+        <CardShadow
+          className={clsx({
+            [styles.cardContainer]: true,
+          })}
+          defaultChecked
+        >
+          <DealerSearchWidget cityList={dealerCityList} />
+        </CardShadow>
+      </div>
+      <Gap height={24} />
       {renderCarouselWidget()}
       <LpCarRecommendations
         dataReccomendation={dataRecommendation}
@@ -255,15 +297,6 @@ const Dealer = ({ dataRecommendation, ssr, page }: any) => {
           descText={page === 'main' ? listFaqMain : listFaqBrand}
         />
       </div>
-      {/* <div className={styles.searchContainer}>
-        <CardShadow
-          className={clsx({
-            [styles.cardContainer]: true,
-          })}
-        >
-          <DealerSearchWidget />
-        </CardShadow>
-      </div> */}
 
       <div
         ref={landingPageLeadsFormSectionRef}

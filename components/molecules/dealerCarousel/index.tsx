@@ -37,7 +37,7 @@ const DealerCarousel = ({ items, brand }: PropsCarousel) => {
     <div className={styles.cardWrapper} onClick={() => onClick(cityName)}>
       <div className={styles.cardTitle}>{cityName}</div>
       <div className={styles.cardDesc}>
-        {totalBranch} Dealer Mobil {makeName}
+        {totalBranch} Dealer Mobil {brand}
       </div>
     </div>
   )

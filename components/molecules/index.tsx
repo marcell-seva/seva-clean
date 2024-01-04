@@ -62,6 +62,7 @@ import { RefinancingFormHeader } from './refinancingFormHeader'
 import { SelectWidgetUsedCar } from './searchWidget/selectWidget/usedCar'
 import DealerCarousel from './dealerCarousel'
 import DealerLocationWidget from './dealerLocationWidget'
+import { CityOptionWidget } from './searchWidget/option/cityOptionWidget'
 
 export {
   HowToUseSection,
@@ -128,4 +129,5 @@ export {
   SelectWidgetUsedCar,
   DealerCarousel,
   DealerLocationWidget,
+  CityOptionWidget,
 }

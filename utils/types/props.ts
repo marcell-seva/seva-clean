@@ -254,6 +254,7 @@ export interface PropsIcon {
   isActive?: boolean
   datatestid?: string
   alt?: string
+  stroke?: boolean
 }
 
 export interface PropsInput extends React.ComponentProps<'input'> {
@@ -578,6 +579,7 @@ export interface FunnelWidget {
   tenure: string
   age: string
   monthlyIncome: string
+  city?: string
 }
 
 export interface UsedCarFunnelWidget {

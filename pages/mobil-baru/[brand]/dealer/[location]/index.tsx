@@ -77,7 +77,9 @@ export const getServerSideProps = async (context: any) => {
 
   const { brand, location } = context.query
 
-  const params = `?brand=${capitalizeWords(brand)}&city=jakarta&cityId=118`
+  const params = `?brand=${
+    brand === 'bmw' ? brand.toUpperCase() : capitalizeWords(brand)
+  }&city=jakarta&cityId=118`
   try {
     const [
       recommendationRes,
@@ -91,7 +93,11 @@ export const getServerSideProps = async (context: any) => {
       getMobileHeaderMenu(),
       getCities(),
       getMobileFooterMenu(),
-      getDealer(`?brand=${capitalizeWords(brand)}`),
+      getDealer(
+        `?brand=${
+          brand === 'bmw' ? brand.toUpperCase() : capitalizeWords(brand)
+        }`,
+      ),
       getTagArticle(`?tag_name=${brand.toLowerCase()}`),
     ])
 
@@ -123,7 +129,9 @@ export const getServerSideProps = async (context: any) => {
 
     const [DealerBranchLocationRes]: any = await Promise.all([
       getDealer(
-        `?brand=${capitalizeWords(brand)}&city=${finalLocation.cityId}`,
+        `?brand=${
+          brand === 'bmw' ? brand.toUpperCase() : capitalizeWords(brand)
+        }&city=${finalLocation.cityId}`,
       ),
     ])
 
