@@ -113,7 +113,9 @@ const forwardSelectWidgetUsedCar = (
     onClose,
   }
 
-  const [suggestionsLists, setSuggestionsLists] = useState<any>([dealerList])
+  const [suggestionsLists, setSuggestionsLists] = useState<any>([
+    dealerList || [],
+  ])
 
   const onChangeInputHandler = (value: string) => {
     if (isDealer) {

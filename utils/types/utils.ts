@@ -39,7 +39,6 @@ export interface Option<T extends FormControlValue> {
   label: string
   value: T
   testid?: string
-  cityName?: string
 }
 
 export interface OptionWithImage<T extends FormControlValue> {

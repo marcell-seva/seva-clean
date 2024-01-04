@@ -112,7 +112,6 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
       brand: brandSelected,
       city: '',
     })
-    console.log(citySelected)
   }, [brandSelected])
 
   useEffect(() => {

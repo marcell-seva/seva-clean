@@ -112,14 +112,14 @@ const forwardedInputSelect = <T extends FormControlValue>(
     onReset && onReset()
   }
 
-  const onChooseItem = (item: Option<T>) => {
+  const onChooseItem = (item: Option<T> | any) => {
     // onChange(item.label)
     if (showValueAsLabel) {
       setCurrentValue(item.value as string)
       onChange(item.value as string)
     } else if (isDealer) {
-      setCurrentValue(item.cityName!)
-      onChange(item.cityName!)
+      setCurrentValue(item.cityName)
+      onChange(item.cityName)
     } else {
       setCurrentValue(item.label)
       onChange(item.label)
@@ -156,7 +156,9 @@ const forwardedInputSelect = <T extends FormControlValue>(
 
   const inputValue = () => {
     if (showValueAsLabel) {
-      return options.find((item) => item.value === value)?.label || ''
+      return (
+        options.find((item: Option<T>) => item.value === value)?.label || ''
+      )
     }
     return value
   }
