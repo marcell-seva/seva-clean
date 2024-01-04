@@ -44,9 +44,7 @@ export const DescriptionTab = () => {
 
   useEffect(() => {
     const temp = usedCarNewRecommendations
-
     const result = temp.slice(0, 10)
-
     setUsedCarNewRecommendationList(result)
   }, [usedCarNewRecommendations, usedCarModelDetailsRes])
 
