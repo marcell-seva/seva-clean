@@ -116,11 +116,32 @@ export const PLPUsedCar = ({
     sortBy,
     modelName,
   } = router.query as FilterParam
-  const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>(minmaxPrice)
+  console.log('flag props data meta', minmaxPrice, minmaxMileage, minmaxYear)
 
-  const [minMaxYear, setMinMaxYear] = useState<MinMaxYear>(minmaxYear)
-  const [minMaxMileage, setMinMaxMileage] =
-    useState<MinMaxMileage>(minmaxMileage)
+  const [minMaxPrice, setMinMaxPrice] = useState<MinMaxPrice>({
+    maxPriceValue: minmaxPrice?.maxPriceValue ?? 0,
+    minPriceValue: minmaxPrice?.minPriceValue ?? 0,
+  })
+
+  const [minMaxYear, setMinMaxYear] = useState<MinMaxYear>({
+    maxYearValue: minmaxYear?.maxYearValue ?? 0,
+    minYearValue: minmaxYear?.minYearValue ?? 0,
+  })
+
+  const [minMaxMileage, setMinMaxMileage] = useState<MinMaxMileage>({
+    maxMileageValue: minmaxMileage?.maxMileageValue ?? 0,
+    minMileageValue: minmaxMileage?.minMileageValue ?? 0,
+  })
+
+  useEffect(() => {
+    if (minmaxPrice && minmaxYear && minmaxMileage) {
+      setMinMaxPrice(minmaxPrice)
+      setMinMaxYear(minmaxYear)
+      setMinMaxMileage(minmaxMileage)
+      console.log('flag data set', minmaxPrice, minmaxMileage, minmaxYear)
+    }
+  }, [minmaxPrice, minmaxYear, minmaxMileage])
+
   const [resultMinMaxPrice, setResultMinMaxPrice] = useState({
     resultMinPrice: 0,
     resultMaxPrice: 0,
@@ -334,10 +355,10 @@ export const PLPUsedCar = ({
       (funnelQuery.transmission && funnelQuery.transmission.length > 0) ||
       (funnelQuery.cityId && funnelQuery.cityId.length > 0) ||
       (funnelQuery.plate && funnelQuery.plate.length > 0) ||
-      (funnelQuery.priceStart !== minMaxPrice.minPriceValue.toString() &&
+      (funnelQuery.priceStart !== minmaxPrice.minPriceValue.toString() &&
         funnelQuery.priceStart !== '' &&
         funnelQuery.priceStart !== undefined) ||
-      (funnelQuery.priceEnd !== minMaxPrice.maxPriceValue.toString() &&
+      (funnelQuery.priceEnd !== minmaxPrice.maxPriceValue.toString() &&
         funnelQuery.priceEnd !== '' &&
         funnelQuery.priceEnd !== undefined) ||
       (funnelQuery.yearStart !== minMaxYear.minYearValue.toString() &&
