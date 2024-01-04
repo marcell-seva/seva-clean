@@ -23,6 +23,7 @@ import Image from 'next/image'
 import { default as customAxiosGet } from 'services/api/get'
 import { trackMoengageSubmitLeads } from 'utils/handler/lead'
 import { replaceIndex0 } from 'utils/stringUtils'
+import { filterNonDigitCharacters } from 'utils/handler/stringManipulation'
 
 interface Props {
   onButtonClick?: boolean
@@ -319,6 +320,7 @@ export const DiscussionRefiForm = ({ onButtonClick }: Props) => {
     }
   }
   const onChangePhoneNumber = (event: ChangeEvent<HTMLInputElement>) => {
+    const temp = filterNonDigitCharacters(event.target.value)
     if (
       event.target.value.length <= 14 &&
       event.target.value.substring(0) !== 'init'
@@ -327,17 +329,17 @@ export const DiscussionRefiForm = ({ onButtonClick }: Props) => {
         if (event.target.value.length === 1) {
           setFormField({
             ...formField,
-            phoneNumber: replaceIndex0(event.target.value, ''),
+            phoneNumber: replaceIndex0(temp, ''),
           })
         }
         setFormField({
           ...formField,
-          phoneNumber: event.target.value,
+          phoneNumber: temp,
         })
       } else {
         setFormField({
           ...formField,
-          phoneNumber: replaceIndex0(event.target.value, '8'),
+          phoneNumber: replaceIndex0(temp, '8'),
         })
         event.target.value.length
       }
