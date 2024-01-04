@@ -153,7 +153,7 @@ export function LoanCalculatorPageV2() {
     CarRecommendation[]
   >([])
   const [isOpenCitySelectorModal, setIsOpenCitySelectorModal] = useState(false)
-  const [cityOtr] = useLocalStorage<CityOtrOption | null>(
+  const [cityOtr, setCityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     defaultCity,
   )
@@ -243,7 +243,7 @@ export function LoanCalculatorPageV2() {
   const dataCar: trackDataCarType | null = getSessionStorage(
     SessionStorageKey.PreviousCarDataBeforeLogin,
   )
-  const { dataAnnouncementBox, cities, city } = useUtils()
+  const { dataAnnouncementBox, cities, city, saveCity } = useUtils()
   const [finalMinInputDp, setFinalMinInputDp] = useState(0)
   const [finalMaxInputDp, setFinalMaxInputDp] = useState(0)
   const [isOpenPopupRecommended, setIsOpenPopupRecommended] = useState(false)
@@ -318,6 +318,14 @@ export function LoanCalculatorPageV2() {
     )
     const responseData = await response.json()
     setArticles(responseData)
+  }
+
+  const checkCityParam = () => {
+    const filterCity = cities.filter(
+      (x) => x.cityName.toLowerCase() === cityName.toLowerCase(),
+    )
+    saveCity(filterCity[0])
+    setCityOtr(filterCity[0])
   }
 
   const checkPromoCode = async () => {
@@ -583,6 +591,10 @@ export function LoanCalculatorPageV2() {
       router.replace(loanCalculatorDefaultUrl)
     }
   }, [])
+
+  useEffect(() => {
+    if (cityName && cities.length > 0) checkCityParam()
+  }, [cityName, cities])
 
   useEffect(() => {
     if (kkForm?.paymentOption) {

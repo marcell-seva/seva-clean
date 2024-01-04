@@ -389,8 +389,8 @@ const getCarCreditsSk = (params?: string, config?: AxiosRequestConfig) =>
 const getNewCarSearch = (params?: string, config?: AxiosRequestConfig) =>
   get(collections.search.newCar + params, config)
 
-const getUsedCarSearch = (config?: AxiosRequestConfig) =>
-  get(collections.search.usedCar, config)
+const getUsedCarSearch = (params?: string, config?: AxiosRequestConfig) =>
+  get(collections.search.usedCar + params, config)
 
 const getPreApprovalResultByCustomId = (id: string) => {
   return get(

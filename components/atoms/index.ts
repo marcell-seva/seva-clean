@@ -115,6 +115,8 @@ import { NewInput } from './input/newInput'
 import { ToastSevaRefi } from './toastSevaRefi'
 import { OptionImage } from './optionImage'
 import { InputMultilineSelectV2 } from './inputMultilineSelectV2'
+import { IconBattery } from './icon/Battery'
+import { IconElectric } from './icon/Electric'
 export {
   DatePickerCM,
   IconLockFill,
@@ -232,4 +234,6 @@ export {
   OptionImage,
   InputMultilineSelectV2,
   SearchInputSecondary,
+  IconBattery,
+  IconElectric,
 }

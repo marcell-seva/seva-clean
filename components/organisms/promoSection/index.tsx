@@ -19,6 +19,8 @@ import {
   IconSeat,
   IconTransmission,
   IconCar,
+  IconBattery,
+  IconElectric,
 } from 'components/atoms'
 import {
   OTOCarResultsUrl,
@@ -83,6 +85,15 @@ const PromoSection = ({
     !!filterStorage?.tenure
 
   const loanRankcr = router.query.loanRankCVL ?? ''
+
+  const gasCapacityWording =
+    'Mesin ' + cheapestVariantData?.engineCapacity + ' cc'
+  const electricCapacityWording = `Baterai ${cheapestVariantData?.engineCapacity} kWh`
+
+  const engineCapacity =
+    cheapestVariantData?.fuelType === 'Electric'
+      ? electricCapacityWording
+      : gasCapacityWording
 
   const getCreditBadgeForCountly = () => {
     let creditBadge = 'Null'
@@ -368,25 +379,46 @@ const PromoSection = ({
           </div>
           <div className={styles.row}>
             <div className={styles.rowWithGap}>
-              <IconEngine
-                width={24}
-                height={24}
-                color={'#246ED4'}
-                alt="SEVA Engine Icon"
-              />
+              {cheapestVariantData?.fuelType === 'Electric' ? (
+                <IconBattery
+                  width={24}
+                  height={24}
+                  color={'#246ED4'}
+                  alt="SEVA Engine Icon"
+                />
+              ) : (
+                <IconEngine
+                  width={24}
+                  height={24}
+                  color={'#246ED4'}
+                  alt="SEVA Engine Icon"
+                />
+              )}
               <p className={styles.openSans} style={{ color: '#13131B' }}>
-                {'Mesin ' + cheapestVariantData?.engineCapacity + ' cc'}
+                {engineCapacity}
               </p>
             </div>
             <div className={styles.rowWithGap}>
-              <IconFuel
-                width={24}
-                height={24}
-                color={'#246ED4'}
-                alt="SEVA Gas Station icon"
-              />
+              {cheapestVariantData?.fuelType === 'Electric' ? (
+                <IconElectric
+                  width={24}
+                  height={24}
+                  color={'#246ED4'}
+                  alt="SEVA Gas Station icon"
+                />
+              ) : (
+                <IconFuel
+                  width={24}
+                  height={24}
+                  color={'#246ED4'}
+                  alt="SEVA Gas Station icon"
+                />
+              )}
+
               <p className={styles.openSans} style={{ color: '#13131B' }}>
-                {cheapestVariantData?.fuelType}
+                {cheapestVariantData?.fuelType === 'Electric'
+                  ? 'Listrik'
+                  : cheapestVariantData?.fuelType}
               </p>
             </div>
           </div>

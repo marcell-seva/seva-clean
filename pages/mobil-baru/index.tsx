@@ -191,7 +191,7 @@ export const getServerSideProps: GetServerSideProps<{
       getMobileHeaderMenu(),
       getMobileFooterMenu(),
       getCities(),
-      getUsedCarSearch(),
+      getUsedCarSearch(''),
     ])
 
     const footerData = fetchFooter.data

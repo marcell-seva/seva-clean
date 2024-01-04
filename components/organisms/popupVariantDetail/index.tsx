@@ -3,6 +3,8 @@ import { LanguageCode } from 'utils/enum'
 import React from 'react'
 import { CarVariantRecommendation } from 'utils/types/utils'
 import {
+  IconBattery,
+  IconElectric,
   IconEngine,
   IconFuel,
   IconSeat,
@@ -33,6 +35,14 @@ const PopupVariantDetail = ({
   // const getMonthlyInstallment = () => {
   //   return (carVariant.priceValue - get20PercentDp()) / 60
   // }
+  const gasCapacityWording =
+    'Kapasitas mesin ' + carVariant.engineCapacity + ' cc'
+  const electricCapacityWording = `Kapasitas baterai ${carVariant.engineCapacity} kWh`
+
+  const engineCapacity =
+    carVariant.fuelType === 'Electric'
+      ? electricCapacityWording
+      : gasCapacityWording
   return (
     <div className={styles.container}>
       <div className={styles.wrapperWithBorderBottom}>
@@ -102,15 +112,27 @@ const PopupVariantDetail = ({
         </div>
       )}
       <div className={styles.rowWithSmallGap}>
-        <IconFuel width={24} height={24} color={'#246ED4'} />
+        {carVariant.fuelType === 'Electric' ? (
+          <IconElectric width={24} height={24} color={'#246ED4'} />
+        ) : (
+          <IconFuel width={24} height={24} color={'#246ED4'} />
+        )}
         <p className={styles.openSans} style={{ color: '#13131B' }}>
-          {'Bahan bakar ' + carVariant.fuelType.toLowerCase()}
+          {`Bahan bakar ${
+            carVariant.fuelType === 'Electric'
+              ? 'listrik'
+              : carVariant.fuelType.toLowerCase()
+          }`}
         </p>
       </div>
       <div className={styles.rowWithSmallGap}>
-        <IconEngine width={24} height={24} color={'#246ED4'} />
+        {carVariant.fuelType === 'Electric' ? (
+          <IconBattery width={24} height={24} color={'#246ED4'} />
+        ) : (
+          <IconEngine width={24} height={24} color={'#246ED4'} />
+        )}
         <p className={styles.openSans} style={{ color: '#13131B' }}>
-          {'Kapasitas Mesin ' + carVariant.engineCapacity + ' cc'}
+          {engineCapacity}
         </p>
       </div>{' '}
       <div className={styles.rowWithSmallGap}>

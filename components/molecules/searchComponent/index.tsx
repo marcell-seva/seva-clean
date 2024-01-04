@@ -157,7 +157,7 @@ export const SearchComponent = ({
     try {
       const [dataNew, dataUsed]: any = await Promise.all([
         getNewCarSearch('', { params }),
-        getUsedCarSearch(),
+        getUsedCarSearch(`?query=${inputValue}`),
       ])
 
       if (dataNew.data.length === 0 && dataUsed.data.length === 0) {
@@ -603,6 +603,7 @@ export const SearchComponent = ({
   }
 
   const navigateToPLPNewCar = (search: string) => {
+    handleCloseModal()
     clearQueryFilterData()
     const url = `${carResultsUrl}?search=${search}`
     saveHistoryToLocal(url, search)
@@ -625,6 +626,7 @@ export const SearchComponent = ({
   }
 
   const navigateToPLPUsedCar = (search: string) => {
+    handleCloseModal()
     const url = `${usedCarResultUrl}?search=${search}`
     saveHistoryToLocal(url, search)
     if (window.location.pathname === '/mobil-bekas/c') {

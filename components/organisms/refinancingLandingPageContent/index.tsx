@@ -22,6 +22,8 @@ import { getToken } from 'utils/handler/auth'
 import { SessionStorageKey } from 'utils/enum'
 import { TemanSevaPageHeader } from '../temanSevaPageHeader'
 import { RefinancingUsp } from 'components/molecules/refinancingUsp'
+import { CSAButton } from 'components/atoms'
+import { useInView } from 'react-intersection-observer'
 
 export const RefinancingLandingPageContent = () => {
   const [showSidebar, setShowSidebar] = useState(false)
@@ -31,6 +33,19 @@ export const RefinancingLandingPageContent = () => {
   const { showAnnouncementBox, saveShowAnnouncementBox } =
     useAnnouncementBoxContext()
   const { cities, dataAnnouncementBox } = useUtils()
+  const {
+    ref: landingPageLeadsFormSectionRef,
+    inView: isLeadsFormSectionVisible,
+  } = useInView({
+    threshold: 0.5,
+  })
+
+  const scrollToLeadsForm = () => {
+    setTimeout(() => {
+      setIsSubmit(true)
+      setIsButtonClick(true)
+    }, 50)
+  }
 
   useEffect(() => {
     if (isSubmit) {
@@ -83,7 +98,12 @@ export const RefinancingLandingPageContent = () => {
           <RefinancingTutorial />
           <DocumentRefinancing />
           <div ref={scrollToFirstForm}></div>
-          <DiscussionRefiForm onButtonClick={isButtonClick} />
+          <div
+            ref={landingPageLeadsFormSectionRef}
+            id="refinancing-page-leads-form-section"
+          >
+            <DiscussionRefiForm onButtonClick={isButtonClick} />
+          </div>
           <div className={styles.backgroundFaq}>
             <h3
               className={styles.titleFaq}
@@ -105,6 +125,13 @@ export const RefinancingLandingPageContent = () => {
           <RefinancingLocationWidget />
           <FooterMobile pageOrigination="Fasilitas Dana - Landing" />
         </div>
+
+        {!isLeadsFormSectionVisible && (
+          <CSAButton
+            onClick={scrollToLeadsForm}
+            additionalstyle={'csa-button-homepage'}
+          />
+        )}
       </div>
     </>
   )

@@ -486,7 +486,7 @@ export const PLP = ({ minmaxPrice, isOTO = false }: PLPProps) => {
     } else {
       setIsFilter(false)
     }
-  }, [funnelQuery, brand])
+  }, [funnelQuery, brand, search])
 
   useEffect(() => {
     if (

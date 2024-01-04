@@ -5,7 +5,7 @@ import {
   CarVariantRecommendation,
   trackDataCarType,
 } from 'utils/types/utils'
-import { IconFuel, IconTransmission } from 'components/atoms'
+import { IconElectric, IconFuel, IconTransmission } from 'components/atoms'
 
 import {
   IconChevronDown,
@@ -635,17 +635,29 @@ const TabContentLowerVariant = ({
                             </p>
                           </div>
                           <div className={styles.rowCenterContentWithGap}>
-                            <IconFuel
-                              color={'#246ED4'}
-                              height={24}
-                              width={24}
-                              alt="SEVA Gas Station Icon"
-                            />
+                            {carVariant.fuelType === 'Electric' ? (
+                              <IconElectric
+                                color={'#246ED4'}
+                                height={24}
+                                width={24}
+                                alt="SEVA Gas Station Icon"
+                              />
+                            ) : (
+                              <IconFuel
+                                color={'#246ED4'}
+                                height={24}
+                                width={24}
+                                alt="SEVA Gas Station Icon"
+                              />
+                            )}
+
                             <p
                               className={styles.openSans}
                               style={{ color: '#13131B' }}
                             >
-                              {carVariant.fuelType}
+                              {carVariant.fuelType === 'Electric'
+                                ? 'Listrik'
+                                : carVariant.fuelType}
                             </p>
                           </div>
                         </div>
