@@ -355,10 +355,10 @@ export const PLPUsedCar = ({
       (funnelQuery.transmission && funnelQuery.transmission.length > 0) ||
       (funnelQuery.cityId && funnelQuery.cityId.length > 0) ||
       (funnelQuery.plate && funnelQuery.plate.length > 0) ||
-      (funnelQuery.priceStart !== minmaxPrice.minPriceValue.toString() &&
+      (funnelQuery.priceStart !== minMaxPrice.minPriceValue.toString() &&
         funnelQuery.priceStart !== '' &&
         funnelQuery.priceStart !== undefined) ||
-      (funnelQuery.priceEnd !== minmaxPrice.maxPriceValue.toString() &&
+      (funnelQuery.priceEnd !== minMaxPrice.maxPriceValue.toString() &&
         funnelQuery.priceEnd !== '' &&
         funnelQuery.priceEnd !== undefined) ||
       (funnelQuery.yearStart !== minMaxYear.minYearValue.toString() &&
