@@ -16,6 +16,7 @@ import {
 } from 'utils/encryptionUtils'
 import {
   postCustomerAssistantDetails,
+  postUnverifiedLeadsDealer,
   postUnverifiedLeadsNew,
   postUnverifiedLeadsNewUsedCar,
 } from 'services/api'
@@ -64,6 +65,15 @@ export interface CreateUnverifiedLeadRequestNew {
   carVariantText?: string
   cityId?: number
   platform?: string
+}
+
+export interface CreateUnverifiedLeadRequestDealer {
+  origination: UnverifiedLeadSubCategory
+  name?: string
+  phoneNumber: string
+  cityId?: number
+  carBrand?: string
+  dealerName?: string
 }
 export interface CreateUnverifiedLeadRequestNewUsedCar {
   origination: LeadsUsedCar
@@ -116,6 +126,21 @@ export const createUnverifiedLeadNew = (
     utmContent: null, // temporary
     utmTerm: UTMTags?.utm_term,
     adSet: UTMTags?.adset,
+  })
+}
+
+export const createUnverifiedLeadDealer = (
+  requestBody: CreateUnverifiedLeadRequestDealer,
+) => {
+  const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
+  return postUnverifiedLeadsDealer({
+    ...requestBody,
+    utmSource: UTMTags?.utm_source ?? null,
+    utmMedium: UTMTags?.utm_medium ?? null,
+    utmCampaign: UTMTags?.utm_campaign ?? null,
+    utmContent: null, // temporary
+    utmTerm: UTMTags?.utm_term ?? null,
+    utmAdset: UTMTags?.adset ?? null,
   })
 }
 

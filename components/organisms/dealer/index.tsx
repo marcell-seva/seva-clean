@@ -122,7 +122,7 @@ const Dealer = ({ dataRecommendation, ssr, page }: any) => {
     cityHandler()
 
     getAnnouncementBox()
-    if (getUrlBrand !== '') {
+    if (getUrlBrand !== '' && getUrlLocation) {
       saveFunnelWidget({
         ...funnelWidget,
         brand: getUrlBrand.split(' '),
@@ -302,7 +302,7 @@ const Dealer = ({ dataRecommendation, ssr, page }: any) => {
         ref={landingPageLeadsFormSectionRef}
         id="landing-page-leads-form-section"
       >
-        <LeadsFormTertiary />
+        <LeadsFormTertiary isDealer={true} onPage={page} />
       </div>
       <DealerArticleWidget />
       <div className={styles.infoWrapper}>

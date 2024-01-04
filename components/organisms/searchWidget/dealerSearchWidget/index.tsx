@@ -66,10 +66,10 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
   const submit = () => {
     const { brand, city } = funnelWidget
 
-    if (brand && city) {
+    if (brand && city !== ('' || 'Indonesia')) {
       const brandCityDealerRoute = dealerBrandLocationUrl
         .replace(':brand', brand[0])
-        .replace(':location', city.replace(/ /g, '-').toLowerCase())
+        .replace(':location', city!.replace(/ /g, '-').toLowerCase())
         .toLowerCase()
       router.push(brandCityDealerRoute)
     } else if (brand.length > 0) {
@@ -88,7 +88,8 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
   }
 
   useEffect(() => {
-    saveFunnelWidget({ ...funnelWidget })
+    console.log(citySelected, 'test', funnelWidget.city)
+    saveFunnelWidget({ ...funnelWidget, city: citySelected })
     patchFunnelQuery({ filterFincap: false })
   }, [])
 
@@ -102,16 +103,16 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
         }`,
       ).then((res: any) => {
         setDealerCityList(res.data)
+        saveFunnelWidget({
+          ...funnelWidget,
+          brand: brandSelected,
+          city: '',
+        })
       })
     }
-    if (citySelected) {
+    if (funnelWidget.city === '') {
       setCitySelected('')
     }
-    saveFunnelWidget({
-      ...funnelWidget,
-      brand: brandSelected,
-      city: '',
-    })
   }, [brandSelected])
 
   useEffect(() => {

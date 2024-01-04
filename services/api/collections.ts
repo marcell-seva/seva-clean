@@ -61,6 +61,7 @@ const dealer = {
 
 const leads = {
   unverifiedLeadNew: `${baseUrl}/unverifiedLeads/new`,
+  unverifiedLeadDealer: `${baseUrl}/unverifiedLeads/dealer-pages`,
   customerAssistantDetails: `${baseUrl}/unverifiedLeads/csaDetails`,
   paIaInfo: `${baseUrl}${urls.internalUrls.paaIAInfo}`,
 }
