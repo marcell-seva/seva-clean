@@ -132,15 +132,8 @@ export const createUnverifiedLeadNew = (
 export const createUnverifiedLeadDealer = (
   requestBody: CreateUnverifiedLeadRequestDealer,
 ) => {
-  const UTMTags = getLocalStorage<UTMTagsData>(LocalStorageKey.UtmTags)
   return postUnverifiedLeadsDealer({
     ...requestBody,
-    utmSource: UTMTags?.utm_source ?? null,
-    utmMedium: UTMTags?.utm_medium ?? null,
-    utmCampaign: UTMTags?.utm_campaign ?? null,
-    utmContent: null, // temporary
-    utmTerm: UTMTags?.utm_term ?? null,
-    utmAdset: UTMTags?.adset ?? null,
   })
 }
 

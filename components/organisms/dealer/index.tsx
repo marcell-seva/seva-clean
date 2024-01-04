@@ -43,6 +43,7 @@ import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
 import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
 import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
 import { getCity } from 'utils/hooks/useGetCity'
+import { DealerBrand } from 'utils/types/utils'
 
 const Dealer = ({ dataRecommendation, ssr, page }: any) => {
   const router = useRouter()
@@ -61,10 +62,10 @@ const Dealer = ({ dataRecommendation, ssr, page }: any) => {
     SearchWidgetContext,
   ) as SearchWidgetContextType
   const [dealerCityList, setDealerCityList] = useState([])
-  const [showDealerBrand] = useState(page === 'main' ? true : false)
   const [startScroll, setStartScroll] = useState(false)
   const [showSidebar, setShowSidebar] = useState(false)
   const [openCitySelectorModal, setOpenCitySelectorModal] = useState(false)
+  const [selectedCityId, setSelectedCityId] = useState<number>()
   const [articlesTabList, setArticlesTabList] =
     useState<Article[]>(dealerArticles)
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
@@ -117,6 +118,25 @@ const Dealer = ({ dataRecommendation, ssr, page }: any) => {
       saveShowAnnouncementBox(false)
     }
   }
+
+  useEffect(() => {
+    if (getUrlLocation !== '' || 'Indonesia') {
+      getDealer(
+        `?brand=${
+          getUrlBrand === 'bmw'
+            ? getUrlBrand.toUpperCase()
+            : capitalizeWords(getUrlBrand)
+        }`,
+      ).then((res: any) => {
+        const temp = res.data.find(
+          (item: DealerBrand) =>
+            item.cityName.replace(/ /g, '-').toLocaleLowerCase() ===
+            getUrlLocation.replace(/ /g, '-').toLocaleLowerCase(),
+        )
+        setSelectedCityId(temp?.cityId)
+      })
+    }
+  }, [getUrlLocation])
 
   useEffect(() => {
     cityHandler()
@@ -302,7 +322,11 @@ const Dealer = ({ dataRecommendation, ssr, page }: any) => {
         ref={landingPageLeadsFormSectionRef}
         id="landing-page-leads-form-section"
       >
-        <LeadsFormTertiary isDealer={true} onPage={page} />
+        <LeadsFormTertiary
+          isDealer={true}
+          onPage={page}
+          cityId={selectedCityId}
+        />
       </div>
       <DealerArticleWidget />
       <div className={styles.infoWrapper}>

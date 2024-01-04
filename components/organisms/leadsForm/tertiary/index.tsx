@@ -193,8 +193,7 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({
           getUrlBrand === 'bmw'
             ? getUrlBrand.toUpperCase()
             : capitalizeWords(getUrlBrand),
-        dealerName: capitalizeWords(getUrlLocation),
-        ...(cityOtr?.id && { cityId: cityOtr.id }),
+        cityId: cityId,
         origination: UnverifiedLeadSubCategory.DEALER_LEADS_FORM,
       }
     } else {
@@ -214,6 +213,7 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({
         }),
       }
     }
+    console.log(data)
     try {
       let temanSevaStatus = 'No'
       if (referralCodeFromUrl) {

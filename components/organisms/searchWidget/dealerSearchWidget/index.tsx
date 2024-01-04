@@ -66,7 +66,9 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
   const submit = () => {
     const { brand, city } = funnelWidget
 
-    if (brand && city !== ('' || 'Indonesia')) {
+    console.log(brand, city)
+
+    if (brand.length > 0 && city !== ('' || 'Indonesia')) {
       const brandCityDealerRoute = dealerBrandLocationUrl
         .replace(':brand', brand[0])
         .replace(':location', city!.replace(/ /g, '-').toLowerCase())
