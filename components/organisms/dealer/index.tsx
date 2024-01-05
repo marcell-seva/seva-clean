@@ -554,8 +554,6 @@ const Dealer = ({ dataRecommendation, ssr, page, dealerCount }: any) => {
       </div>
       <DealerArticleWidget />
       <div className={styles.infoWrapper}>
-        <Info isWithIcon headingText="Tentang Mobil" descText={getInfoText()} />
-        <Gap height={24} />
         <Info
           isWithIcon
           headingText={getInfoTitle()}
