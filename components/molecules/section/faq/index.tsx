@@ -107,7 +107,7 @@ export const Faq: React.FC<PropsInfo> = ({
               <div
                 className={styles.BoxFQ}
                 style={{
-                  maxHeight: collIndex.includes(index) ? '340px' : '70px',
+                  maxHeight: collIndex.includes(index) ? '340px' : 'auto',
                   transition: collIndex.includes(index)
                     ? '500ms ease-in-out'
                     : '500ms ease-out',
@@ -147,7 +147,7 @@ export const Faq: React.FC<PropsInfo> = ({
               <div
                 className={styles.BoxFQ}
                 style={{
-                  maxHeight: collIndex.includes(index) ? '340px' : '70px',
+                  maxHeight: collIndex.includes(index) ? '340px' : 'auto',
                   transition: collIndex.includes(index)
                     ? '500ms ease-in-out'
                     : '500ms ease-out',
