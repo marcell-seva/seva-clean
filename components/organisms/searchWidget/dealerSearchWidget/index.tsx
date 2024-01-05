@@ -111,22 +111,12 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
         }`,
       ).then((res: any) => {
         setDealerCityList(res.data)
-        if (intialLoad) {
-          saveFunnelWidget({
-            ...funnelWidget,
-            brand: brandSelected,
-            city: citySelected,
-          })
-          setCitySelected(citySelected)
-          setInitialLoad(false)
-        } else {
-          saveFunnelWidget({
-            ...funnelWidget,
-            brand: brandSelected,
-            city: '',
-          })
-          setCitySelected('')
-        }
+        saveFunnelWidget({
+          ...funnelWidget,
+          brand: brandSelected,
+          city: '',
+        })
+        setCitySelected('')
       })
     }
   }, [brandSelected])
