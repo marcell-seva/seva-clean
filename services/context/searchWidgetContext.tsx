@@ -10,6 +10,7 @@ const initEmptyDataWidget = {
   age: '',
   monthlyIncome: '',
   city: '',
+  dealerBrand: '',
 }
 
 export type SearchWidgetContextType = {

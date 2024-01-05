@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styles from 'styles/components/molecules/dealerBrand.module.scss'
 import Space from 'antd/lib/space'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
@@ -8,6 +8,7 @@ import { dealerBrandUrl } from 'utils/helpers/routes'
 import { useRouter } from 'next/router'
 import { useUtils } from 'services/context/utilsContext'
 import { BrandList } from 'utils/types/utils'
+import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
 
 const LogoToyota = '/revamp/icon/logo-toyota.webp'
 const LogoDaihatsu = '/revamp/icon/logo-daihatsu.webp'
@@ -34,6 +35,9 @@ interface CarButtonProps {
 
 export const DealerBrands = ({ isButtonClick }: DealerBrandProps) => {
   const router = useRouter()
+  const { funnelWidget, saveFunnelWidget } = useContext(
+    SearchWidgetContext,
+  ) as SearchWidgetContextType
   const { brand } = useUtils()
 
   const logoList = {
@@ -75,7 +79,8 @@ export const DealerBrands = ({ isButtonClick }: DealerBrandProps) => {
 
   const onClick = (key: string) => {
     const brandCarRoute = dealerBrandUrl.replace(':brand', key).toLowerCase()
-    router.push(brandCarRoute)
+
+    window.location.href = brandCarRoute
   }
 
   return (

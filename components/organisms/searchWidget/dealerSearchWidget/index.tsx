@@ -32,10 +32,12 @@ const BrandUsedCarWidget = dynamic(
 
 interface DealerSearchWidgetProps {
   cityList: any
+  onPage?: string
 }
 
-const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
+const DealerSearchWidget = ({ cityList, onPage }: DealerSearchWidgetProps) => {
   const router = useRouter()
+  const getUrlBrand = router.query.brand?.toString() ?? ''
   const getUrlLocation =
     router.query.location?.toString().replace('-', ' ') ?? ''
   const [dealerCityList, setDealerCityList] = useState([])
@@ -49,7 +51,7 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
   const [intialLoad, setInitialLoad] = useState(true)
 
   const [brandSelected, setBrandSelected] = useState(
-    funnelWidget.brand ? funnelWidget.brand : [],
+    getUrlBrand ? getUrlBrand : '',
   )
   const [citySelected, setCitySelected] = useState(
     getUrlLocation ? capitalizeWords(getUrlLocation) : '',
@@ -75,11 +77,6 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
         .replace(':brand', brand[0])
         .replace(':location', city!.replace(/ /g, '-').toLowerCase())
         .toLowerCase()
-      saveFunnelWidget({
-        ...funnelWidget,
-        brand: brandSelected,
-        city: citySelected,
-      })
       window.location.href = brandCityDealerRoute
     } else if (brand.length > 0) {
       const brandDealerRoute = dealerBrandUrl
@@ -97,8 +94,31 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
   }
 
   useEffect(() => {
+    if (onPage === 'main') {
+      setBrandSelected('')
+      setCitySelected('')
+      saveFunnelWidget({ ...funnelWidget, dealerBrand: '', city: '' })
+      setInitialLoad(false)
+    }
+  }, [onPage])
+
+  useEffect(() => {
+    if (getUrlBrand !== '') {
+      setBrandSelected(
+        getUrlBrand === 'bmw'
+          ? getUrlBrand.toUpperCase()
+          : capitalizeWords(getUrlBrand),
+      )
+    }
+  }, [getUrlBrand])
+
+  useEffect(() => {
     saveFunnelWidget({ ...funnelWidget, city: citySelected })
     patchFunnelQuery({ filterFincap: false })
+    if (getUrlBrand === '') {
+      setBrandSelected('')
+      saveFunnelWidget({ ...funnelWidget, dealerBrand: '' })
+    }
   }, [])
 
   useEffect(() => {
@@ -113,7 +133,7 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
         setDealerCityList(res.data)
         saveFunnelWidget({
           ...funnelWidget,
-          brand: brandSelected,
+          dealerBrand: brandSelected,
           city: '',
         })
         setCitySelected('')

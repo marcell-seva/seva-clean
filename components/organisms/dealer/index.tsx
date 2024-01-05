@@ -196,6 +196,9 @@ const Dealer = ({ dataRecommendation, ssr, page, dealerCount }: any) => {
     } else {
       saveRecommendation(dataRecommendation)
     }
+    if (page === 'main') {
+      saveFunnelWidget({ ...funnelWidget, dealerBrand: '', city: '' })
+    }
   }, [])
 
   const scrollToLeadsForm = () => {
@@ -237,10 +240,6 @@ const Dealer = ({ dataRecommendation, ssr, page, dealerCount }: any) => {
           : getUrlBrand.toUpperCase()
       }`
     }
-  }
-
-  const getInfoText = () => {
-    return `Toyota Raize adalah mobil dengan 5 Kursi SUV yang tersedia dalam kisaran harga Rp 233 - 306 juta di Indonesia. Mobil ini tersedia dalam 12 pilihan warna, 10 tipe mobil, dan 2 opsi transmisi: Manual dan Otomatis di Indonesia. Mobil ini memiliki dimensi sebagai berikut: 3995 mm L x 1695 mm W x 1620 mm H. Cicilan kredit mobil Toyota Raize dimulai dari Rp 6.16 juta selama 60 bulan.`
   }
 
   const listFaqMain = [
@@ -516,7 +515,7 @@ const Dealer = ({ dataRecommendation, ssr, page, dealerCount }: any) => {
           })}
           defaultChecked
         >
-          <DealerSearchWidget cityList={dealerCityList} />
+          <DealerSearchWidget cityList={dealerCityList} onPage={page} />
         </CardShadow>
       </div>
       <Gap height={24} />

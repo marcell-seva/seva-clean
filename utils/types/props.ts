@@ -580,6 +580,7 @@ export interface FunnelWidget {
   age: string
   monthlyIncome: string
   city?: string
+  dealerBrand?: string
 }
 
 export interface UsedCarFunnelWidget {
