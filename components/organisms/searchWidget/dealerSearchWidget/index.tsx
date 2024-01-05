@@ -44,6 +44,8 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
     SearchWidgetContext,
   ) as SearchWidgetContextType
 
+  const [intialLoad, setInitialLoad] = useState(true)
+
   const [brandSelected, setBrandSelected] = useState(
     funnelWidget.brand ? funnelWidget.brand : [],
   )
@@ -102,18 +104,30 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
         }`,
       ).then((res: any) => {
         setDealerCityList(res.data)
-        saveFunnelWidget({
-          ...funnelWidget,
-          brand: brandSelected,
-          city: '',
-        })
-        setCitySelected('')
+        if (intialLoad) {
+          saveFunnelWidget({
+            ...funnelWidget,
+            brand: brandSelected,
+            city: citySelected || '',
+          })
+          setCitySelected(citySelected || '')
+          setInitialLoad(false)
+        } else {
+          saveFunnelWidget({
+            ...funnelWidget,
+            brand: brandSelected,
+            city: '',
+          })
+          setCitySelected('')
+        }
       })
-      if (funnelWidget.city) {
-        setCitySelected(funnelWidget.city)
-      }
     }
   }, [brandSelected])
+
+  // useEffect(() => {
+  //   setBrandSelected(funnelWidget.brand)
+  //   setCitySelected(funnelWidget.city!)
+  // }, [funnelWidget])
 
   useEffect(() => {
     saveFunnelWidget({ ...funnelWidget, city: citySelected })

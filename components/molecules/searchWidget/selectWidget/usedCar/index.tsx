@@ -32,6 +32,7 @@ import { LocalStorageKey } from 'utils/enum'
 import { defaultCity as defaultCityOtr, saveCity } from 'utils/hooks/useGetCity'
 import { useUtils } from 'services/context/utilsContext'
 import { DealerBrand } from 'utils/types/utils'
+import Fuse from 'fuse.js'
 
 const BottomSheetUsedCar = dynamic(
   () => import('components/atoms/bottomSheet/usedCar'),
@@ -66,6 +67,13 @@ interface SelectWidgetProps {
   dealerList?: DealerBrand[]
   setCitySelected?: any
   cityValue?: string
+}
+
+const searchOption = {
+  keys: ['cityName'],
+  isCaseSensitive: true,
+  includeScore: true,
+  threshold: 0.1,
 }
 
 const forwardSelectWidgetUsedCar = (
@@ -119,8 +127,20 @@ const forwardSelectWidgetUsedCar = (
 
   const onChangeInputHandler = (value: string) => {
     if (isDealer) {
-      setCitySelected(value)
-      setInputValue(value)
+      setCitySelected(
+        value
+          .toLowerCase()
+          .split(' ')
+          .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+          .join(' '),
+      )
+      setInputValue(
+        value
+          .toLowerCase()
+          .split(' ')
+          .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+          .join(' '),
+      )
       saveFunnelWidgetNewCar({ ...funnelWidgetNewCar, city: value })
     } else {
       setInputValue(
@@ -188,6 +208,35 @@ const forwardSelectWidgetUsedCar = (
     }
   }
 
+  useEffect(() => {
+    console.log('ini input', inputValue)
+    console.log('ini dealer list', dealerList)
+    if (inputValue === '') {
+      setSuggestionsLists(dealerList)
+      return
+    }
+
+    const fuse = new Fuse(suggestionsLists, searchOption)
+    const suggestion = fuse.search(inputValue)
+    const result = suggestion.map((obj: any) => obj.item)
+    console.log('ini result sug', suggestion)
+    console.log('ini result filter', result)
+    // sort alphabetically
+    // result.sort((a: any, b: any) => a.label.localeCompare(b.label))
+
+    // sort based on input
+    // const sorted = result.sort((a: any, b: any) => {
+    //   if (a.label.startsWith(inputValue) && b.label.startsWith(inputValue))
+    //     return a.label.localeCompare(b.label)
+    //   else if (a.label.startsWith(inputValue)) return -1
+    //   else if (b.label.startsWith(inputValue)) return 1
+
+    //   return a.label.localeCompare(b.label)
+    // })
+
+    setSuggestionsLists(result)
+  }, [inputValue, dealerList])
+
   return (
     <>
       <div
@@ -242,6 +291,7 @@ const forwardSelectWidgetUsedCar = (
               <div className={styles.inputSelectWrapper}>
                 <InputSelect
                   isDealer
+                  // showValueAsLabel
                   ref={inputRef}
                   value={inputValue}
                   options={suggestionsLists}
