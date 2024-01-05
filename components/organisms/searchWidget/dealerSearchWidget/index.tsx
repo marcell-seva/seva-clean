@@ -94,15 +94,6 @@ const DealerSearchWidget = ({ cityList, onPage }: DealerSearchWidgetProps) => {
   }
 
   useEffect(() => {
-    if (onPage === 'main') {
-      setBrandSelected('')
-      setCitySelected('')
-      saveFunnelWidget({ ...funnelWidget, dealerBrand: '', city: '' })
-      setInitialLoad(false)
-    }
-  }, [onPage])
-
-  useEffect(() => {
     if (getUrlBrand !== '') {
       setBrandSelected(
         getUrlBrand === 'bmw'
@@ -111,6 +102,14 @@ const DealerSearchWidget = ({ cityList, onPage }: DealerSearchWidgetProps) => {
       )
     }
   }, [getUrlBrand])
+
+  useEffect(() => {
+    if (getUrlLocation !== '') {
+      setCitySelected(capitalizeWords(getUrlLocation))
+    }
+    console.log(getUrlLocation)
+    console.log(citySelected)
+  }, [getUrlLocation])
 
   useEffect(() => {
     saveFunnelWidget({ ...funnelWidget, city: citySelected })
@@ -131,12 +130,17 @@ const DealerSearchWidget = ({ cityList, onPage }: DealerSearchWidgetProps) => {
         }`,
       ).then((res: any) => {
         setDealerCityList(res.data)
-        saveFunnelWidget({
-          ...funnelWidget,
-          dealerBrand: brandSelected,
-          city: '',
-        })
-        setCitySelected('')
+        if (intialLoad) {
+          setCitySelected(capitalizeWords(getUrlLocation))
+          setInitialLoad(false)
+        } else {
+          setCitySelected('')
+          saveFunnelWidget({
+            ...funnelWidget,
+            dealerBrand: brandSelected,
+            city: '',
+          })
+        }
       })
     }
   }, [brandSelected])
