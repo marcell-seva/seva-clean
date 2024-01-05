@@ -450,10 +450,11 @@ export const SummaryTab = ({
         <Info isWithIcon headingText="Tentang Mobil" descText={getInfoText()} />
         <div className={styles.gap} />
         <Info
-          headingText={`Membeli Mobil ${summaryInfo.brand} ${summaryInfo.model}? Seperti Ini Cara Perawatannya!`}
+          headingText={`Harga Kredit & Cicilan Mobil Baru ${summaryInfo.brand} ${summaryInfo.model} Terbaru di SEVA Astra`}
           descText={getSeoFooterTextDescription(
             summaryInfo.brand,
             summaryInfo.model,
+            summaryInfo.type,
           )}
           isUsingSetInnerHtmlDescText={true}
         />
