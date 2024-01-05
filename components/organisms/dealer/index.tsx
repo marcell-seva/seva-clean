@@ -340,7 +340,7 @@ const Dealer = ({ dataRecommendation, ssr, page, dealerCount }: any) => {
           : getUrlBrand !== 'bmw'
           ? capitalizeFirstLetter(getUrlBrand)
           : getUrlBrand.toUpperCase()
-      } yang terpercaya ${
+      } yang terpercaya${
         page === 'main'
           ? ''
           : page === 'brand'
@@ -396,7 +396,7 @@ const Dealer = ({ dataRecommendation, ssr, page, dealerCount }: any) => {
           : getUrlBrand !== 'bmw'
           ? capitalizeFirstLetter(getUrlBrand)
           : getUrlBrand.toUpperCase()
-      } di bulan ${currentMonth} ${todayDate.getFullYear()} ini ${
+      } di bulan ${currentMonth} ${todayDate.getFullYear()} ini${
         page === 'main'
           ? ''
           : page === 'brand'
@@ -428,7 +428,7 @@ const Dealer = ({ dataRecommendation, ssr, page, dealerCount }: any) => {
           : getUrlBrand !== 'bmw'
           ? capitalizeFirstLetter(getUrlBrand)
           : getUrlBrand.toUpperCase()
-      } di dealer atau showroom ${
+      } di dealer atau showroom${
         page === 'main'
           ? ''
           : page === 'brand'
@@ -608,7 +608,6 @@ const Dealer = ({ dataRecommendation, ssr, page, dealerCount }: any) => {
           )}
           isUsingSetInnerHtmlDescText={true}
         />
-        <Gap height={24} />
       </div>
       <FooterMobile />
       <CitySelectorModal

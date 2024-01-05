@@ -97,7 +97,6 @@ const BannerDealerLP = ({ onPage }: BannerProps) => {
               src={main}
               alt="supergraphic"
               priority
-              fill
             />
           </>
         ) : (
@@ -111,7 +110,6 @@ const BannerDealerLP = ({ onPage }: BannerProps) => {
                   : getUrlBrand.toUpperCase()
               }`}
               priority
-              fill
             />
           </>
         )}

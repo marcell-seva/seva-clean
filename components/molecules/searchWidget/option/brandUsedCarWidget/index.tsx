@@ -176,7 +176,7 @@ const BrandUsedCarWidget = ({
   const submit = () => {
     saveFunnelWidget({ ...funnelWidget, brand: isCheckedBrandQuery })
     if (isDealer) {
-      setBrandSelected(isCheckedBrandQuery)
+      setBrandSelected(isCheckedBrandQuery[0])
 
       saveFunnelWidgetNewCar({
         ...funnelWidgetNewCar,

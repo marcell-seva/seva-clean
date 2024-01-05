@@ -172,7 +172,8 @@ const forwardSelectWidgetUsedCar = (
     }
   }
 
-  const onResetHandler = (event: any) => {
+  const onResetHandler = (event: any, fn: any) => {
+    if (inputValue === '') return fn
     event.preventDefault()
     inputRef.current?.focus()
     if (isDealer) {
@@ -187,6 +188,7 @@ const forwardSelectWidgetUsedCar = (
   }, [dealerList])
 
   useEffect(() => {
+    setLastChoosenValue(cityValue || '')
     setInputValue(cityValue || '')
   }, [cityValue])
 
@@ -284,8 +286,8 @@ const forwardSelectWidgetUsedCar = (
                     if (state.isOpen) {
                       return (
                         <div
-                          onMouseDown={onResetHandler}
-                          onClick={onResetHandler}
+                          onMouseDown={(e) => onResetHandler(e, onBlurHandler)}
+                          onClick={(e) => onResetHandler(e, onBlurHandler)}
                           style={{ cursor: 'pointer' }}
                         >
                           <IconRemove

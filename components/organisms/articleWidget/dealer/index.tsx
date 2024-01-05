@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styles from 'styles/components/organisms/articleWidget.module.scss'
+import styles from 'styles/components/organisms/dealerArticleWidget.module.scss'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import { Article } from 'utils/types'

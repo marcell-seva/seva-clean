@@ -18,7 +18,7 @@ import { getDealer } from 'services/api'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { useAfterInteractive } from 'utils/hooks/useAfterInteractive'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
-import { capitalizeWords } from 'utils/stringUtils'
+import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
 import dynamic from 'next/dynamic'
 import { useUtils } from 'services/context/utilsContext'
 import { useRouter } from 'next/router'
@@ -107,8 +107,6 @@ const DealerSearchWidget = ({ cityList, onPage }: DealerSearchWidgetProps) => {
     if (getUrlLocation !== '') {
       setCitySelected(capitalizeWords(getUrlLocation))
     }
-    console.log(getUrlLocation)
-    console.log(citySelected)
   }, [getUrlLocation])
 
   useEffect(() => {
@@ -121,12 +119,12 @@ const DealerSearchWidget = ({ cityList, onPage }: DealerSearchWidgetProps) => {
   }, [])
 
   useEffect(() => {
-    if (brandSelected?.length > 0) {
+    if (brandSelected !== '') {
       getDealer(
         `?brand=${
-          brandSelected[0] === 'bmw'
-            ? brandSelected[0].toUpperCase()
-            : capitalizeWords(brandSelected[0])
+          brandSelected === 'bmw'
+            ? brandSelected.toUpperCase()
+            : capitalizeWords(brandSelected)
         }`,
       ).then((res: any) => {
         setDealerCityList(res.data)
