@@ -125,13 +125,6 @@ const forwardSelectWidgetUsedCar = (
 
   const onChangeInputHandler = (value: string) => {
     if (isDealer) {
-      setCitySelected(
-        value
-          .toLowerCase()
-          .split(' ')
-          .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-          .join(' '),
-      )
       setInputValue(
         value
           .toLowerCase()
@@ -139,14 +132,6 @@ const forwardSelectWidgetUsedCar = (
           .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
           .join(' '),
       )
-      saveFunnelWidgetNewCar({
-        ...funnelWidgetNewCar,
-        city: value
-          .toLowerCase()
-          .split(' ')
-          .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-          .join(' '),
-      })
     } else {
       setInputValue(
         value
@@ -178,8 +163,13 @@ const forwardSelectWidgetUsedCar = (
     onClose()
   }
 
-  const onChooseHandler = (item: Option<FormControlValue>) => {
-    setLastChoosenValue(item.label)
+  const onChooseHandler = (item: any) => {
+    if (isDealer) {
+      setCitySelected(item.cityName)
+      setLastChoosenValue(item.cityName)
+    } else {
+      setLastChoosenValue(item.label)
+    }
   }
 
   const onResetHandler = (event: any) => {
@@ -187,6 +177,7 @@ const forwardSelectWidgetUsedCar = (
     inputRef.current?.focus()
     if (isDealer) {
       saveFunnelWidgetNewCar({ ...funnelWidgetNewCar, city: '' })
+      setCitySelected('')
     }
     setInputValue('')
   }

@@ -4,6 +4,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useEffect } from 'react'
 import {
   getCities,
+  getDealer,
   getMobileFooterMenu,
   getMobileHeaderMenu,
   getNewCarBrand,
@@ -21,6 +22,7 @@ const DealerLandingPage = ({
   dataFooterMenu,
   dataBrandList,
   dataArticles,
+  dataDealerCount,
   ssr,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const metaTitle = `Temukan Dealer Mobil Baru Rekanan SEVA di Indonesia | SEVA`
@@ -43,7 +45,12 @@ const DealerLandingPage = ({
   return (
     <div>
       <Seo title={metaTitle} description={metaDesc} image={defaultSeoImage} />
-      <Dealer dataRecommendation={dataRecommendation} ssr={ssr} page="main" />
+      <Dealer
+        dataRecommendation={dataRecommendation}
+        ssr={ssr}
+        page="main"
+        dealerCount={dataDealerCount}
+      />
     </div>
   )
 }
@@ -62,6 +69,7 @@ export const getServerSideProps = async (context: any) => {
       footerMenuRes,
       brandList,
       articles,
+      dealerCountRes,
     ]: any = await Promise.all([
       getRecommendation(params),
       getMobileHeaderMenu(),
@@ -69,6 +77,7 @@ export const getServerSideProps = async (context: any) => {
       getMobileFooterMenu(),
       getNewCarBrand(),
       getSubArticle(972),
+      getDealer(''),
     ])
 
     const [
@@ -78,6 +87,7 @@ export const getServerSideProps = async (context: any) => {
       dataFooterMenu,
       dataBrandList,
       dataArticles,
+      dataDealerCount,
     ] = await Promise.all([
       recommendationRes.carRecommendations,
       menuMobileRes.data,
@@ -85,6 +95,7 @@ export const getServerSideProps = async (context: any) => {
       footerMenuRes.data,
       brandList,
       articles,
+      dealerCountRes.meta,
     ])
     return {
       props: {
@@ -94,6 +105,7 @@ export const getServerSideProps = async (context: any) => {
         dataFooterMenu,
         dataBrandList,
         dataArticles,
+        dataDealerCount,
         ssr: 'success',
       },
     }

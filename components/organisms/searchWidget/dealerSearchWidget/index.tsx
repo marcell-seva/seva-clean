@@ -36,6 +36,8 @@ interface DealerSearchWidgetProps {
 
 const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
   const router = useRouter()
+  const getUrlLocation =
+    router.query.location?.toString().replace('-', ' ') ?? ''
   const [dealerCityList, setDealerCityList] = useState([])
   const [isError, setIsError] = useState(false)
   const { patchFunnelQuery, clearQueryFilter }: any =
@@ -50,7 +52,7 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
     funnelWidget.brand ? funnelWidget.brand : [],
   )
   const [citySelected, setCitySelected] = useState(
-    funnelWidget.city ? funnelWidget.city : '',
+    getUrlLocation ? capitalizeWords(getUrlLocation) : '',
   )
 
   const brandPlaceholder = () => {
@@ -73,7 +75,12 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
         .replace(':brand', brand[0])
         .replace(':location', city!.replace(/ /g, '-').toLowerCase())
         .toLowerCase()
-      router.push(brandCityDealerRoute).then(() => router.reload())
+      saveFunnelWidget({
+        ...funnelWidget,
+        brand: brandSelected,
+        city: citySelected,
+      })
+      window.location.href = brandCityDealerRoute
     } else if (brand.length > 0) {
       const brandDealerRoute = dealerBrandUrl
         .replace(
@@ -83,7 +90,7 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
             : capitalizeWords(brand[0]),
         )
         .toLowerCase()
-      router.push(brandDealerRoute).then(() => router.reload())
+      window.location.href = brandDealerRoute
     } else {
       setIsError(true)
     }
@@ -108,9 +115,9 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
           saveFunnelWidget({
             ...funnelWidget,
             brand: brandSelected,
-            city: citySelected || '',
+            city: citySelected,
           })
-          setCitySelected(citySelected || '')
+          setCitySelected(citySelected)
           setInitialLoad(false)
         } else {
           saveFunnelWidget({
@@ -123,11 +130,6 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
       })
     }
   }, [brandSelected])
-
-  // useEffect(() => {
-  //   setBrandSelected(funnelWidget.brand)
-  //   setCitySelected(funnelWidget.city!)
-  // }, [funnelWidget])
 
   useEffect(() => {
     saveFunnelWidget({ ...funnelWidget, city: citySelected })

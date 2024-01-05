@@ -24,7 +24,7 @@ import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { Article, CityOtrOption } from 'utils/types'
 import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { getLocalStorage } from 'utils/handler/localStorage'
-import { countDaysDifference } from 'utils/handler/date'
+import { countDaysDifference, monthId } from 'utils/handler/date'
 import { useInView } from 'react-intersection-observer'
 import { alephArticleCategoryList } from 'config/articles.config'
 import {
@@ -40,12 +40,17 @@ import clsx from 'clsx'
 import { Faq } from 'components/molecules/section/faq'
 import { useRouter } from 'next/router'
 import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
-import { getSeoFooterTextDescription } from 'utils/config/carVariantList.config'
+import {
+  getSeoFooterDealerTextDescription,
+  getSeoFooterTextDescription,
+} from 'utils/config/carVariantList.config'
 import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
 import { getCity } from 'utils/hooks/useGetCity'
 import { DealerBrand } from 'utils/types/utils'
 
-const Dealer = ({ dataRecommendation, ssr, page }: any) => {
+const Dealer = ({ dataRecommendation, ssr, page, dealerCount }: any) => {
+  const todayDate = new Date()
+  const currentMonth = monthId(todayDate.getMonth())
   const router = useRouter()
   const getUrlBrand = router.query.brand?.toString() ?? ''
   const getUrlLocation =
@@ -206,25 +211,244 @@ const Dealer = ({ dataRecommendation, ssr, page }: any) => {
     }
   }
 
-  const getInfoText = (): string => {
+  const getInfoTitle = () => {
+    if (page === 'main') {
+      return 'Dealer & Showroom Mobil SEVA : Pilihan Terbaik untuk Pembelian Mobil Baru'
+    } else if (page === 'brand') {
+      return `Dealer ${
+        getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      }: Pilihan Terbaik untuk Pembelian Mobil Baru ${
+        getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      }`
+    } else {
+      return `Auto 2000 ${
+        getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      } ${capitalizeWords(
+        getUrlLocation,
+      )}: Pilihan Terbaik untuk Pembelian Mobil Baru ${
+        getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      }`
+    }
+  }
+
+  const getInfoText = () => {
     return `Toyota Raize adalah mobil dengan 5 Kursi SUV yang tersedia dalam kisaran harga Rp 233 - 306 juta di Indonesia. Mobil ini tersedia dalam 12 pilihan warna, 10 tipe mobil, dan 2 opsi transmisi: Manual dan Otomatis di Indonesia. Mobil ini memiliki dimensi sebagai berikut: 3995 mm L x 1695 mm W x 1620 mm H. Cicilan kredit mobil Toyota Raize dimulai dari Rp 6.16 juta selama 60 bulan.`
   }
 
   const listFaqMain = [
     {
-      question: 'Ada berapa banyak dealer di Indonesia?',
-      answer:
-        'Cicilan / kredit bulanan terendah untuk Toyota Raize dimulai dari Rp314,9 juta untuk 60 bulan dengan DP Rp31,5 juta.',
+      question: `Ada berapa banyak dealer atau showroom mobil ${
+        page === 'main'
+          ? ''
+          : getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      } yang ada di ${
+        page === 'main'
+          ? 'SEVA'
+          : page === 'brand'
+          ? 'SEVA'
+          : capitalizeWords(getUrlLocation)
+      }?`,
+      answer: `Terdapat ${dealerCount?.dealerCount} dealer mobil ${
+        page === 'main'
+          ? ''
+          : getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      } di SEVA dan tersebar di ${
+        page === 'main'
+          ? 'Indonesia'
+          : page === 'brand'
+          ? 'Indonesia'
+          : capitalizeWords(getUrlLocation)
+      }.`,
     },
     {
-      question: 'Apakah dealer menawarkan layanan pinjaman?',
-      answer:
-        'Cicilan / kredit bulanan terendah untuk Toyota Raize dimulai dari Rp314,9 juta untuk 60 bulan dengan DP Rp31,5 juta.',
+      question: `Apakah ada promo diskon di dealer atau showroom mobil ${
+        page === 'main'
+          ? ''
+          : getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      } ${
+        page === 'main'
+          ? ''
+          : page === 'brand'
+          ? ''
+          : ` di ${capitalizeWords(getUrlLocation)}`
+      } yang dikelola oleh SEVA?`,
+      answer: `Sebagian besar dealer atau showroom ${
+        page === 'main'
+          ? ''
+          : getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      } ${
+        page === 'main'
+          ? ''
+          : page === 'brand'
+          ? ''
+          : ` di ${capitalizeWords(getUrlLocation)}`
+      } yang bekerjasama dengan SEVA memberikan promo diskon mobil ${
+        page === 'main'
+          ? ''
+          : getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      }.`,
     },
     {
-      question: 'Apakah dealer memiliki service center?',
-      answer:
-        'Cicilan / kredit bulanan terendah untuk Toyota Raize dimulai dari Rp314,9 juta untuk 60 bulan dengan DP Rp31,5 juta.',
+      question: `Apakah dealer atau showroom mobil ${
+        page === 'main'
+          ? ''
+          : getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      } ${
+        page === 'main'
+          ? ''
+          : page === 'brand'
+          ? ''
+          : ` di ${capitalizeWords(getUrlLocation)}`
+      } memiliki service center?`,
+      answer: `Beberapa dealer atau showroom mobil ${
+        page === 'main'
+          ? ''
+          : getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      } ${
+        page === 'main'
+          ? ''
+          : page === 'brand'
+          ? ''
+          : ` di ${capitalizeWords(getUrlLocation)}`
+      } memiliki layanan service untuk kendaraan, tetapi sebagian besar diler memiliki pusat layanan terpisah.`,
+    },
+    {
+      question: `Bagaimana cara memilih dealer mobil ${
+        page === 'main'
+          ? ''
+          : getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      } yang terpercaya ${
+        page === 'main'
+          ? ''
+          : page === 'brand'
+          ? ''
+          : ` di ${capitalizeWords(getUrlLocation)}`
+      }?`,
+      answer: `Anda dapat memilih dealer mobil ${
+        page === 'main'
+          ? ''
+          : getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      } ${
+        page === 'main'
+          ? ''
+          : page === 'brand'
+          ? ''
+          : ` di ${capitalizeWords(getUrlLocation)}`
+      } yang terpercaya melalui SEVA, karena dealer atau showroom mobil kami sudah terverifikasi.`,
+    },
+    {
+      question: `Adakah program asuransi yang ditawarkan oleh dealer mobil ${
+        page === 'main'
+          ? ''
+          : getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      } ${
+        page === 'main'
+          ? ''
+          : page === 'brand'
+          ? ''
+          : ` di ${capitalizeWords(getUrlLocation)}`
+      } untuk pembelian baru?`,
+      answer: `Ya ada, setiap pembelian mobil ${
+        page === 'main'
+          ? ''
+          : getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      } ${
+        page === 'main'
+          ? ''
+          : page === 'brand'
+          ? ''
+          : ` di ${capitalizeWords(getUrlLocation)}`
+      } baru di dealer atau showroom mobil di SEVA, sudah termasuk dengan Asuransi mobil.`,
+    },
+    {
+      question: `Apakah ada promo atau diskon khusus untuk pembelian mobil ${
+        page === 'main'
+          ? ''
+          : getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      } di bulan ${currentMonth} ${todayDate.getFullYear()} ini ${
+        page === 'main'
+          ? ''
+          : page === 'brand'
+          ? ''
+          : ` di dealer ${
+              getUrlBrand !== 'bmw'
+                ? capitalizeFirstLetter(getUrlBrand)
+                : getUrlBrand.toUpperCase()
+            } ${capitalizeWords(getUrlLocation)}`
+      }?`,
+      answer: `Di dealer atau showroom ${
+        page === 'main'
+          ? ''
+          : getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      } ${
+        page === 'main'
+          ? ''
+          : page === 'brand'
+          ? ''
+          : ` ${capitalizeWords(getUrlLocation)}`
+      } kami, selalu memberikan promo atau diskon khusus untuk para konsumen setia SEVA.`,
+    },
+    {
+      question: `Bagaimana proses pengajuan kredit atau cicilan untuk membeli mobil ${
+        page === 'main'
+          ? ''
+          : getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      } di dealer atau showroom ${
+        page === 'main'
+          ? ''
+          : page === 'brand'
+          ? ''
+          : ` di ${capitalizeWords(getUrlLocation)}`
+      }?`,
+      answer: `Untuk pengajuan kredit mobil ${
+        page === 'main'
+          ? ''
+          : getUrlBrand !== 'bmw'
+          ? capitalizeFirstLetter(getUrlBrand)
+          : getUrlBrand.toUpperCase()
+      } ${
+        page === 'main'
+          ? ''
+          : page === 'brand'
+          ? ''
+          : ` di ${capitalizeWords(getUrlLocation)}`
+      } dan estimasi cicilan, bisa anda akses di calculator kredit seva. Dan sales kami akan membantu anda dalam proses kredit mobil.`,
     },
   ]
 
@@ -314,7 +538,7 @@ const Dealer = ({ dataRecommendation, ssr, page }: any) => {
                     : getUrlBrand.toUpperCase()
                 } di ${capitalizeWords(getUrlLocation)}`
           }
-          descText={page === 'main' ? listFaqMain : listFaqBrand}
+          descText={listFaqMain}
         />
       </div>
 
@@ -333,14 +557,17 @@ const Dealer = ({ dataRecommendation, ssr, page }: any) => {
         <Info isWithIcon headingText="Tentang Mobil" descText={getInfoText()} />
         <Gap height={24} />
         <Info
-          headingText={`Membeli Mobil ${
-            getUrlBrand !== 'bmw'
-              ? capitalizeFirstLetter(getUrlBrand)
-              : getUrlBrand.toUpperCase()
-          }? Seperti Ini Cara Perawatannya!`}
-          descText={getSeoFooterTextDescription(getUrlBrand)}
+          isWithIcon
+          headingText={getInfoTitle()}
+          descText={getSeoFooterDealerTextDescription(
+            page,
+            getUrlBrand,
+            dealerCount,
+            getUrlLocation,
+          )}
           isUsingSetInnerHtmlDescText={true}
         />
+        <Gap height={24} />
       </div>
       <FooterMobile />
       <CitySelectorModal
