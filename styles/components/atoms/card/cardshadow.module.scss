@@ -6,3 +6,9 @@
   box-shadow: 0px 6px 14px 1px rgba(76, 82, 95, 0.08);
   border-radius: 8px;
 }
+
+.alternativeCardShadow {
+  border-radius: 8px;
+  background: #{$primary-white};
+  box-shadow: 0px 8px 40px 1px rgba(0, 0, 0, 0.08);
+}

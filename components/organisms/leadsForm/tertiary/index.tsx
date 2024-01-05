@@ -31,16 +31,30 @@ import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getToken } from 'utils/handler/auth'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { postUnverifiedLeadsNew } from 'services/api'
-import { trackMoengageSubmitLeads } from 'utils/handler/lead'
+import {
+  createUnverifiedLeadDealer,
+  trackMoengageSubmitLeads,
+} from 'utils/handler/lead'
+import { capitalizeWords } from 'utils/stringUtils'
 
 interface PropsLeadsForm {
   otpStatus?: any
   onVerify?: (e: any) => void
   onFailed?: (e: any) => void
+  onPage?: string
+  cityId?: number
+  isDealer?: boolean
 }
 
-const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
+const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({
+  onPage,
+  isDealer,
+  cityId,
+}: any) => {
   const router = useRouter()
+  const getUrlBrand = router.query.brand?.toString() ?? ''
+  const getUrlLocation =
+    router.query.location?.toString().replace('-', ' ') ?? ''
   const { funnelQuery } = useContext(
     FunnelQueryContext,
   ) as FunnelQueryContextType
@@ -150,18 +164,54 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
   }
 
   const sendUnverifiedLeads = async (): Promise<void> => {
-    const data = {
-      platform,
-      name,
-      phoneNumber: phone,
-      origination: UnverifiedLeadSubCategory.SEVA_NEW_CAR_LP_LEADS_FORM,
-      ...(cityOtr?.id && { cityId: cityOtr.id }),
-      ...(funnelQuery.downPaymentAmount && {
-        dp: parseInt(funnelQuery.downPaymentAmount as string),
-      }),
-      ...(funnelQuery.monthlyInstallment && {
-        monthlyInstallment: parseInt(funnelQuery.monthlyInstallment as string),
-      }),
+    let data
+
+    if (onPage === 'main' && isDealer) {
+      data = {
+        platform,
+        name,
+        phoneNumber: phone,
+        origination: UnverifiedLeadSubCategory.DEALER_LEADS_FORM,
+      }
+    } else if (onPage === 'brand' && isDealer) {
+      data = {
+        platform,
+        name,
+        phoneNumber: phone,
+        carBrand:
+          getUrlBrand === 'bmw'
+            ? getUrlBrand.toUpperCase()
+            : capitalizeWords(getUrlBrand),
+        origination: UnverifiedLeadSubCategory.DEALER_LEADS_FORM,
+      }
+    } else if (onPage === 'location' && isDealer) {
+      data = {
+        platform,
+        name,
+        phoneNumber: phone,
+        carBrand:
+          getUrlBrand === 'bmw'
+            ? getUrlBrand.toUpperCase()
+            : capitalizeWords(getUrlBrand),
+        cityId: cityId,
+        origination: UnverifiedLeadSubCategory.DEALER_LEADS_FORM,
+      }
+    } else {
+      data = {
+        platform,
+        name,
+        phoneNumber: phone,
+        origination: UnverifiedLeadSubCategory.SEVA_NEW_CAR_LP_LEADS_FORM,
+        ...(cityOtr?.id && { cityId: cityOtr.id }),
+        ...(funnelQuery.downPaymentAmount && {
+          dp: parseInt(funnelQuery.downPaymentAmount as string),
+        }),
+        ...(funnelQuery.monthlyInstallment && {
+          monthlyInstallment: parseInt(
+            funnelQuery.monthlyInstallment as string,
+          ),
+        }),
+      }
     }
     try {
       let temanSevaStatus = 'No'
@@ -173,11 +223,9 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
           temanSevaStatus = 'Yes'
         }
       }
-      await postUnverifiedLeadsNew(data)
-      sendAmplitudeData(AmplitudeEventName.WEB_LEADS_FORM_SUCCESS, {
-        Page_Origination: PageOriginationName.LPLeadsForm,
-        ...(cityOtr && { City: cityOtr.cityName }),
-      })
+      isDealer
+        ? await createUnverifiedLeadDealer(data)
+        : await postUnverifiedLeadsNew(data)
       trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SUCCESS_VIEW, {
         PAGE_ORIGINATION: 'Homepage - Bottom Section',
         LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',

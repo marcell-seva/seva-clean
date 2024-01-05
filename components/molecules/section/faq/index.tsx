@@ -15,7 +15,7 @@ import { CountlyEventNames } from 'helpers/countly/eventNames'
 type FaqProps = {
   question: string
   answer: string
-  testid: string
+  testid?: string
 }
 export interface PropsInfo {
   isWithIcon?: boolean

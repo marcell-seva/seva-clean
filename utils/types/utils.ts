@@ -404,6 +404,18 @@ export interface BrandList {
   logoUrl: string | null
 }
 
+export interface DealerBrand {
+  cityName: string
+  cityId: string
+  makeName: string
+  cityCode: string
+  totalBranch: number
+}
+export interface DealerBrandLocation {
+  dealerName: string
+  dealerAddress: string
+  dealerSlug: string
+}
 export interface CarModelBasicInfo {
   id: string
   brand: string

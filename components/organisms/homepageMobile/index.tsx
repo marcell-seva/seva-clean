@@ -95,8 +95,9 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
   const [isLoginModalOpened, setIsLoginModalOpened] = useState(false)
   const [carOfTheMonthData, setCarOfTheMonthData] =
     useState<COMData[]>(dataCarofTheMonth)
-  const { articles } = useUtils()
-  const [articlesTabList, setArticlesTabList] = useState<Article[]>(articles)
+  const { dealerArticles } = useUtils()
+  const [articlesTabList, setArticlesTabList] =
+    useState<Article[]>(dealerArticles)
   const [isModalOpenend, setIsModalOpened] = useState<boolean>(false)
   const [selectedCarOfTheMonth, setSelectedCarOfTheMonth] =
     useState<COMDataTracking>()
@@ -104,8 +105,8 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
     getCurrentEnvironment.featureToggles.enableAnnouncementBoxAleph
 
   useEffect(() => {
-    setArticlesTabList(articles)
-  }, [articles])
+    setArticlesTabList(dealerArticles)
+  }, [dealerArticles])
 
   const router = useRouter()
 
@@ -376,7 +377,7 @@ const HomepageMobile = ({ dataReccomendation, ssr }: any) => {
           <SubProduct />
           <TestimonyWidget />
           <ArticleWidget
-            articles={articles}
+            articles={dealerArticles}
             onClickCategory={(value: string) => onClickCategory(value)}
             articlesTabList={articlesTabList}
           />

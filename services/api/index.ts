@@ -93,11 +93,18 @@ const getAgent = () => get(collections.utils.salesAgent)
 const getTestimony = () => get(collections.utils.testimonials)
 const getRecommendation = (params?: string, config?: AxiosRequestConfig) =>
   get(collections.product.recommendation + params, config)
+const getNewCarBrand = () => get(collections.dealer.listBrandNewCar)
 const getUsage = () => get(collections.utils.usage)
 const getMetaTagData = (carModel: string) =>
   get(collections.utils.metaTag + carModel)
 const getMainArticle = (params: string) =>
   get(collections.article.mainArticle + params, {
+    headers: {
+      'Content-Type': 'text/plain',
+    },
+  })
+const getTagArticle = (params: string) =>
+  get(collections.article.tagArticle + params, {
     headers: {
       'Content-Type': 'text/plain',
     },
@@ -176,6 +183,17 @@ const getRefinancingCarsYear = () => {
 const getCarCollection = (cityId: string) => {
   return get(collections.product.carCollection + `?cityId=${cityId}`)
 }
+const getTemanSevaProfile = (config: AxiosRequestConfig) =>
+  get(collections.temanSeva.profile, config)
+
+const getTemanSevaCommission = (code: string) =>
+  get(collections.temanSeva.totalKomisi + `/${code}/sum`)
+
+const getTemanSevaTotalReferee = (code: string) =>
+  get(collections.temanSeva.totalReferee + code)
+
+const getDealer = (params: string, config?: AxiosRequestConfig) =>
+  get(collections.dealer.dealerBranch + params, config)
 
 const getPromoBanner = () => {
   return get(collections.utils.promoBanner)
@@ -209,6 +227,22 @@ const postUnverifiedLeadsNew = (body: any) => {
   ).toString()
 
   return post(collections.leads.unverifiedLeadNew, encryptedPayload, config)
+}
+
+const postUnverifiedLeadsDealer = (body: any) => {
+  const config = {
+    headers: {
+      'torq-api-key': environments.unverifiedLeadApiKey,
+      'Content-Type': 'text/plain',
+    },
+  }
+
+  const encryptedPayload = AES.encrypt(
+    JSON.stringify(body),
+    process.env.NEXT_PUBLIC_LEAD_PAYLOAD_ENCRYPTION_KEY ?? '',
+  ).toString()
+
+  return post(collections.leads.unverifiedLeadDealer, encryptedPayload, config)
 }
 
 const postUnverifiedLeadsNewUsedCar = (body: any) => {
@@ -415,9 +449,12 @@ export {
   getAgent,
   getTestimony,
   getRecommendation,
+  getNewCarBrand,
+  getDealer,
   getUsage,
   getMetaTagData,
   getMainArticle,
+  getTagArticle,
   getSubArticle,
   getCarModelDetails,
   getCarVariantDetails,
@@ -464,6 +501,7 @@ export {
   postUpdateLeadsOTO,
   postUnverifiedLeadsNew,
   postUnverifiedLeadsNewUsedCar,
+  postUnverifiedLeadsDealer,
   postRefreshToken,
   postSendSMSGeneration,
   postVerifyOTPGeneration,

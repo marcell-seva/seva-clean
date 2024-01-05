@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from 'styles/components/organisms/articleListCard.module.scss'
 import Image from 'next/image'
 import { Article } from 'utils/types'

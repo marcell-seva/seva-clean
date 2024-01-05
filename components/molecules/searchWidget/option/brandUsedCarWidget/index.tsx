@@ -15,7 +15,9 @@ import { initDataWidget } from 'components/organisms/searchWidget'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { useFunnelQueryUsedCarData } from 'services/context/funnelQueryUsedCarContext'
 import { CarButtonProps } from 'utils/types/context'
-import { getBrandList } from 'services/api'
+import { getBrandList, getDealer, getNewCarBrand } from 'services/api'
+import { useUtils } from 'services/context/utilsContext'
+import { capitalizeWords } from 'utils/stringUtils'
 
 const LogoToyota = '/revamp/icon/logo-toyota.webp'
 const LogoDaihatsu = '/revamp/icon/logo-daihatsu.webp'
@@ -35,26 +37,51 @@ interface BrandList {
 }
 
 interface FilterMobileProps {
+  isDealer?: boolean
   onClose: () => void
+  setBrandSelected?: any
 }
 
-const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
+const BrandUsedCarWidget = ({
+  onClose,
+  isDealer,
+  setBrandSelected,
+}: FilterMobileProps) => {
+  const { brand, saveDealerBrand } = useUtils()
   const { funnelWidget, saveFunnelWidget } = useContext(
     SearchUsedCarWidgetContext,
   ) as SearchUsedCarWidgetContextType
 
+  const {
+    funnelWidget: funnelWidgetNewCar,
+    saveFunnelWidget: saveFunnelWidgetNewCar,
+  } = useContext(SearchWidgetContext) as SearchWidgetContextType
+
   const [isCheckedBrandQuery, setIsCheckedBrandQuery] = useState<string[]>(
-    funnelWidget.brand ? funnelWidget.brand : [],
+    isDealer
+      ? funnelWidgetNewCar.brand
+        ? funnelWidgetNewCar.brand
+        : []
+      : funnelWidget.brand
+      ? funnelWidget.brand
+      : [],
   )
   const [brandList, setBrandList] = useState([])
+  const [newCarBrandList, setNewCarBrandList] = useState([])
 
   const getListBrand = async () => {
     const response = await getBrandList('')
     setBrandList(response.data)
   }
 
+  const getListNewBrand = async () => {
+    const response = await getNewCarBrand()
+    setNewCarBrandList(response)
+  }
+
   useEffect(() => {
     getListBrand()
+    getListNewBrand()
   }, [])
 
   const logoList = {
@@ -79,7 +106,9 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
     Mitsubishi: '26,15',
     Suzuki: '21,14.25',
   }
-  const carList: CarButtonProps[] = brandList.map((obj: BrandList) => {
+  const carList: CarButtonProps[] = (
+    isDealer ? newCarBrandList : brandList
+  ).map((obj: BrandList) => {
     return {
       key: obj.makeName,
       icon: (
@@ -116,7 +145,7 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
     if (isCheckedBrandQuery.includes(value)) {
       setIsCheckedBrandQuery(isCheckedBrandQuery.filter((x) => x !== value))
     } else {
-      setIsCheckedBrandQuery((prev) => [...prev, value])
+      setIsCheckedBrandQuery([value])
     }
   }
 
@@ -132,6 +161,10 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
   const clear = () => {
     if (funnelWidget.brand.length > 0) {
       saveFunnelWidget({ ...funnelWidget, brand: [] })
+      if (isDealer) {
+        setBrandSelected([])
+        saveFunnelWidgetNewCar({ ...funnelWidgetNewCar, brand: [] })
+      }
       setIsCheckedBrandQuery([])
       setDisableActionButton(true)
     } else {
@@ -142,6 +175,15 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
 
   const submit = () => {
     saveFunnelWidget({ ...funnelWidget, brand: isCheckedBrandQuery })
+    if (isDealer) {
+      setBrandSelected(isCheckedBrandQuery)
+
+      saveFunnelWidgetNewCar({
+        ...funnelWidgetNewCar,
+        brand: isCheckedBrandQuery,
+      })
+    }
+
     onClose()
   }
 
@@ -180,7 +222,9 @@ const BrandUsedCarWidget = ({ onClose }: FilterMobileProps) => {
                   </div>
                 ) : (
                   <div
-                    onClick={() => onClick(value)}
+                    onClick={() => {
+                      isDealer ? onChooseOption(value) : onClick(value)
+                    }}
                     key={key}
                     className={
                       !isChecked ? styles.boxFilter : styles.boxOnclickFilter

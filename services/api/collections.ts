@@ -54,8 +54,14 @@ const usedCar = {
   getCarCreditsSk: `${baseUrl}/used-car/get-car-credits-sk`,
 }
 
+const dealer = {
+  dealerBranch: `${baseUrl}/dealer`,
+  listBrandNewCar: `${baseUrl}/new-car/get-list-brand`,
+}
+
 const leads = {
   unverifiedLeadNew: `${baseUrl}/unverifiedLeads/new`,
+  unverifiedLeadDealer: `${baseUrl}/unverifiedLeads/dealer-pages`,
   customerAssistantDetails: `${baseUrl}/unverifiedLeads/csaDetails`,
   paIaInfo: `${baseUrl}${urls.internalUrls.paaIAInfo}`,
 }
@@ -86,6 +92,7 @@ const loanCalculator = {
 const article = {
   mainArticle: `https://seva.id/wp-json/foodicious/latest-posts/`,
   subArticle: `https://seva.id/wp-json/seva/latest-posts/`,
+  tagArticle: `https://seva.id/wp-json/seva-api/v1/post`,
 }
 
 const upload = {
@@ -116,7 +123,11 @@ const profile = {
 }
 
 const temanSeva = {
+  register: `${baseUrlTemanSeva}/auth/registration`,
   checkTemanSeva: `${baseUrlTemanSeva}/auth/is-teman-seva`,
+  profile: `${baseUrlTemanSeva}/auth/profile`,
+  totalKomisi: `${baseUrlTemanSeva}/transaction/`,
+  totalReferee: `${baseUrlTemanSeva}/total-referee/`,
 }
 
 const refinancing = {
@@ -149,4 +160,5 @@ export const collections = {
   temanSeva,
   refinancing,
   search,
+  dealer,
 }

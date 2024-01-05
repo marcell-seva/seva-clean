@@ -6,7 +6,13 @@ import {
   OptionWithText,
   Option,
 } from 'utils/types'
-import React, { ChangeEvent, ForwardedRef, forwardRef, useState } from 'react'
+import React, {
+  ChangeEvent,
+  ForwardedRef,
+  forwardRef,
+  useEffect,
+  useState,
+} from 'react'
 import styles from '../../../styles/components/atoms/inputSelect.module.scss'
 import Image from 'next/image'
 
@@ -43,6 +49,9 @@ interface Props<T extends FormControlValue> {
   optionTestid?: string
   prefix?: string
   onShowDropdown?: () => void
+  additionalContainerClassname?: string
+  browserAutocomplete?: 'on' | 'off'
+  isDealer?: boolean
 }
 
 const forwardedInputSelect = <T extends FormControlValue>(
@@ -77,12 +86,15 @@ const forwardedInputSelect = <T extends FormControlValue>(
     optionTestid,
     prefix,
     onShowDropdown,
+    additionalContainerClassname,
+    browserAutocomplete,
+    isDealer,
   }: Props<T>,
   ref?: ForwardedRef<HTMLInputElement>,
 ) => {
   const [isOpenDropdown, setIsOpenDropdown] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
-  const [currentValue, setCurrentValue] = useState('')
+  const [currentValue, setCurrentValue] = useState(isDealer ? value : '')
 
   const openDropdown = () => {
     return {
@@ -100,11 +112,13 @@ const forwardedInputSelect = <T extends FormControlValue>(
     onReset && onReset()
   }
 
-  const onChooseItem = (item: Option<T>) => {
-    // onChange(item.label)
+  const onChooseItem = (item: Option<T> | any) => {
     if (showValueAsLabel) {
       setCurrentValue(item.value as string)
       onChange(item.value as string)
+    } else if (isDealer) {
+      setCurrentValue(item.cityName)
+      onChange(item.cityName)
     } else {
       setCurrentValue(item.label)
       onChange(item.label)
@@ -141,7 +155,9 @@ const forwardedInputSelect = <T extends FormControlValue>(
 
   const inputValue = () => {
     if (showValueAsLabel) {
-      return options.find((item) => item.value === value)?.label || ''
+      return (
+        options.find((item: Option<T>) => item.value === value)?.label || ''
+      )
     }
     return value
   }
@@ -167,7 +183,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
     <div className={styles.container}>
       <div
         className={clsx({
-          [styles.inputArea]: true,
+          [isDealer ? styles.alternativeInputArea : styles.inputArea]: true,
           [styles.disabled]: disabled,
           [styles.error]: !isFocused && isError,
           ['shake-animation-X']: isError,
@@ -179,7 +195,9 @@ const forwardedInputSelect = <T extends FormControlValue>(
           value={inputValue()}
           type={inputType}
           onChange={onChangeHandler}
-          className={styles.inputField}
+          className={
+            isDealer ? styles.alternativeInputField : styles.inputField
+          }
           placeholder={placeholderText}
           onFocus={(e) => {
             setIsFocused(true)
@@ -201,7 +219,8 @@ const forwardedInputSelect = <T extends FormControlValue>(
             [styles.disableClick]: disableIconClick && !isOpenDropdown,
           })}
         >
-          {value.length > 0 && isClearable ? (
+          {(isDealer ? value !== undefined : value.length > 0) &&
+          isClearable ? (
             // use onMouseDown & preventDefault to keep input focus
             <div
               onMouseDown={onClickReset}
@@ -236,7 +255,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
         }}
       >
         {options.length > 0
-          ? options.map((item, index) => (
+          ? options.map((item: any, index) => (
               <div
                 className={clsx({
                   [styles.dropdownItem]: true,
@@ -282,7 +301,7 @@ const forwardedInputSelect = <T extends FormControlValue>(
                       ?.disabled,
                   })}
                 >
-                  {item?.label}
+                  {isDealer ? item?.cityName : item?.label}
                   {(item as OptionWithImage<string>)?.disabled && (
                     <p
                       className={clsx({

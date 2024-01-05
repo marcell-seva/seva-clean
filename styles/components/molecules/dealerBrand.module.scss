@@ -1,0 +1,84 @@
+@import '../../abstract/colors';
+@import '../../abstract/mixins';
+
+.container {
+  padding: 16px 16px;
+  width: 100%;
+}
+
+.title {
+  color: #{$primary-dark-blue};
+  font-family: var(--kanyon);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+  margin-bottom: 16px;
+}
+
+.wrapperContainer {
+  display: grid;
+  grid-template-columns: 48.21% 48.21%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.boxFilter {
+  cursor: pointer;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 12px 16px;
+  gap: 8px;
+  // width: 155.5px;
+  height: 48px;
+  //background: #F3F9FD;
+  //border: 2px solid #51A8DB;
+  background: white;
+  border: 1px solid #{$shades-grey-10};
+
+  border-radius: 8px;
+  flex: 1;
+  // align-self: stretch;
+  order: 0;
+  flex-grow: 1;
+}
+
+.boxOnclickFilter {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 11px 16px;
+  gap: 8px;
+  // width: 155.5px;
+  height: 48px;
+  background: #{$shades-sky-blue-5};
+  border: 2px solid #{$secondary-sky-blue};
+
+  border-radius: 8px;
+  flex: 1;
+  order: 0;
+  flex-grow: 1;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 4px;
+  height: 24px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  font-size: 14px;
+
+  span {
+    padding-bottom: 2px;
+  }
+}
