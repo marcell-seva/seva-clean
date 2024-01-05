@@ -492,6 +492,70 @@ const Dealer = ({ dataRecommendation, ssr, page, dealerCount }: any) => {
     }
   }
 
+  const renderFaqCarRecommendation = () => {
+    switch (page) {
+      case 'main':
+        return (
+          <>
+            <LpCarRecommendations
+              dataReccomendation={dataRecommendation}
+              page={page}
+              onClickOpenCityModal={() => setOpenCitySelectorModal(true)}
+            />
+            <div
+              className={
+                page === 'main' ? styles.infoWrapperWhite : styles.infoWrapper
+              }
+            >
+              <Faq
+                isWithIcon
+                headingText={
+                  page === 'main'
+                    ? `Apa yang Orang Tanyakan tentang Dealer Mobil di Indonesia`
+                    : `Apa yang Orang Tanyakan tentang Dealer ${
+                        getUrlBrand !== 'bmw'
+                          ? capitalizeFirstLetter(getUrlBrand)
+                          : getUrlBrand.toUpperCase()
+                      } di ${capitalizeWords(getUrlLocation)}`
+                }
+                descText={listFaqMain}
+              />
+            </div>
+          </>
+        )
+
+      default:
+        return (
+          <>
+            <div
+              className={
+                page === 'main' ? styles.infoWrapperWhite : styles.infoWrapper
+              }
+            >
+              <Faq
+                isWithIcon
+                headingText={
+                  page === 'main'
+                    ? `Apa yang Orang Tanyakan tentang Dealer Mobil di Indonesia`
+                    : `Apa yang Orang Tanyakan tentang Dealer ${
+                        getUrlBrand !== 'bmw'
+                          ? capitalizeFirstLetter(getUrlBrand)
+                          : getUrlBrand.toUpperCase()
+                      } di ${capitalizeWords(getUrlLocation)}`
+                }
+                descText={listFaqMain}
+              />
+            </div>
+            <LpCarRecommendations
+              dataReccomendation={dataRecommendation}
+              page={page}
+              onClickOpenCityModal={() => setOpenCitySelectorModal(true)}
+            />
+          </>
+        )
+    }
+  }
+
   return (
     <div
       className={clsx({
@@ -520,27 +584,7 @@ const Dealer = ({ dataRecommendation, ssr, page, dealerCount }: any) => {
       </div>
       <Gap height={24} />
       {renderCarouselWidget()}
-      <LpCarRecommendations
-        dataReccomendation={dataRecommendation}
-        page={page}
-        onClickOpenCityModal={() => setOpenCitySelectorModal(true)}
-      />
-      <div className={styles.infoWrapper}>
-        <Faq
-          isWithIcon
-          headingText={
-            page === 'main'
-              ? `Apa yang Orang Tanyakan tentang Dealer Mobil di Indonesia`
-              : `Apa yang Orang Tanyakan tentang Dealer ${
-                  getUrlBrand !== 'bmw'
-                    ? capitalizeFirstLetter(getUrlBrand)
-                    : getUrlBrand.toUpperCase()
-                } di ${capitalizeWords(getUrlLocation)}`
-          }
-          descText={listFaqMain}
-        />
-      </div>
-
+      {renderFaqCarRecommendation()}
       <div
         ref={landingPageLeadsFormSectionRef}
         id="landing-page-leads-form-section"
