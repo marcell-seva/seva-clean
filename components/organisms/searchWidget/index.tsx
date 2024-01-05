@@ -109,12 +109,14 @@ const SearchWidget = () => {
 
   const fetchMinMaxPrice = () => {
     const params = getCity().cityCode
-    getMinMaxPrice(`?city=${params}`).then((response: any) => {
-      setLimitPrice({
-        min: response.minPriceValue,
-        max: response.maxPriceValue,
-      })
-    })
+    getMinMaxPrice(`?city=${params}&cityId=${getCity().id}`).then(
+      (response: any) => {
+        setLimitPrice({
+          min: response.minPriceValue,
+          max: response.maxPriceValue,
+        })
+      },
+    )
   }
 
   const formatPriceRangePlaceholder = useMemo(() => {
