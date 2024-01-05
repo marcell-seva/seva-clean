@@ -299,13 +299,15 @@
 
 .cardTitle {
   color: #{$primary-black};
-  font-family: var(--open-sans);
+  font-family: var(--open-sans-semi-bold);
+  font-style: normal;
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
 }
 
 .cardDesc {
+  font-family: var(--open-sans-bold);
   color: #{$shades-grey-75};
   font-size: 11px;
   font-style: normal;
