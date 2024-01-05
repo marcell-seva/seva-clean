@@ -113,7 +113,6 @@ const forwardedInputSelect = <T extends FormControlValue>(
   }
 
   const onChooseItem = (item: Option<T> | any) => {
-    // onChange(item.label)
     if (showValueAsLabel) {
       setCurrentValue(item.value as string)
       onChange(item.value as string)

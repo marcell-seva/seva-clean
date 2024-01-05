@@ -73,7 +73,7 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
         .replace(':brand', brand[0])
         .replace(':location', city!.replace(/ /g, '-').toLowerCase())
         .toLowerCase()
-      router.push(brandCityDealerRoute)
+      router.push(brandCityDealerRoute).then(() => router.reload())
     } else if (brand.length > 0) {
       const brandDealerRoute = dealerBrandUrl
         .replace(
@@ -83,7 +83,7 @@ const DealerSearchWidget = ({ cityList }: DealerSearchWidgetProps) => {
             : capitalizeWords(brand[0]),
         )
         .toLowerCase()
-      router.push(brandDealerRoute)
+      router.push(brandDealerRoute).then(() => router.reload())
     } else {
       setIsError(true)
     }

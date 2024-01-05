@@ -121,9 +121,7 @@ const forwardSelectWidgetUsedCar = (
     onClose,
   }
 
-  const [suggestionsLists, setSuggestionsLists] = useState<any>([
-    dealerList || [],
-  ])
+  const [suggestionsLists, setSuggestionsLists] = useState<any>([])
 
   const onChangeInputHandler = (value: string) => {
     if (isDealer) {
@@ -141,7 +139,14 @@ const forwardSelectWidgetUsedCar = (
           .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
           .join(' '),
       )
-      saveFunnelWidgetNewCar({ ...funnelWidgetNewCar, city: value })
+      saveFunnelWidgetNewCar({
+        ...funnelWidgetNewCar,
+        city: value
+          .toLowerCase()
+          .split(' ')
+          .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+          .join(' '),
+      })
     } else {
       setInputValue(
         value
@@ -209,32 +214,15 @@ const forwardSelectWidgetUsedCar = (
   }
 
   useEffect(() => {
-    console.log('ini input', inputValue)
-    console.log('ini dealer list', dealerList)
     if (inputValue === '') {
       setSuggestionsLists(dealerList)
       return
     }
 
-    const fuse = new Fuse(suggestionsLists, searchOption)
-    const suggestion = fuse.search(inputValue)
-    const result = suggestion.map((obj: any) => obj.item)
-    console.log('ini result sug', suggestion)
-    console.log('ini result filter', result)
-    // sort alphabetically
-    // result.sort((a: any, b: any) => a.label.localeCompare(b.label))
-
-    // sort based on input
-    // const sorted = result.sort((a: any, b: any) => {
-    //   if (a.label.startsWith(inputValue) && b.label.startsWith(inputValue))
-    //     return a.label.localeCompare(b.label)
-    //   else if (a.label.startsWith(inputValue)) return -1
-    //   else if (b.label.startsWith(inputValue)) return 1
-
-    //   return a.label.localeCompare(b.label)
-    // })
-
-    setSuggestionsLists(result)
+    const suggestion = dealerList?.filter((item: any) =>
+      item.cityName.includes(inputValue),
+    )
+    setSuggestionsLists(suggestion)
   }, [inputValue, dealerList])
 
   return (
@@ -291,7 +279,6 @@ const forwardSelectWidgetUsedCar = (
               <div className={styles.inputSelectWrapper}>
                 <InputSelect
                   isDealer
-                  // showValueAsLabel
                   ref={inputRef}
                   value={inputValue}
                   options={suggestionsLists}
