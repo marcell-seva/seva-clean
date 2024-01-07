@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react'
 import styles from 'styles/components/molecules/dealerCarousel.module.scss'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import type { Swiper as SwiperType } from 'swiper'
 import { FreeMode, Thumbs, Navigation } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/free-mode'
@@ -12,7 +11,6 @@ import { useRouter } from 'next/router'
 import { DealerBrand } from 'utils/types/utils'
 
 interface PropsCarousel {
-  //items -> Dealer Type (Final)
   items: DealerBrand[]
   brand: string
 }

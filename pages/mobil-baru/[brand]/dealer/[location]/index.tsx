@@ -10,6 +10,7 @@ import {
   getMobileHeaderMenu,
   getRecommendation,
   getTagArticle,
+  getUsedCarSearch,
 } from 'services/api'
 import { useUtils } from 'services/context/utilsContext'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
@@ -25,11 +26,12 @@ const DealerBrandLocation = ({
   dataFooterMenu,
   dataDealerBranch,
   dataTagArticle,
+  dataSearchUsedCar,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const getUrlBrand = router.query.brand?.toString() ?? ''
   const getUrlLocation =
-    router.query.location?.toString().replace('-', ' ') ?? ''
+    router.query.location?.toString().replaceAll('-', ' ') ?? ''
 
   const metaTitle = `Temukan ${dataDealerBranch.length.toString()} Dealer Mobil ${
     getUrlBrand.toLowerCase() === 'bmw'
@@ -52,6 +54,7 @@ const DealerBrandLocation = ({
     saveMobileWebFooterMenus,
     saveDealerBrandLocation,
     saveDealerArticles,
+    saveDataSearchUsedCar,
   } = useUtils()
   useEffect(() => {
     saveMobileWebTopMenus(dataMobileMenu)
@@ -59,6 +62,7 @@ const DealerBrandLocation = ({
     saveMobileWebFooterMenus(dataFooterMenu)
     saveDealerBrandLocation(dataDealerBranch)
     saveDealerArticles(dataTagArticle)
+    saveDataSearchUsedCar(dataSearchUsedCar)
   }, [])
 
   return (
@@ -88,6 +92,7 @@ export const getServerSideProps = async (context: any) => {
       footerMenuRes,
       dealerBrandRes,
       tagArticleRes,
+      dataSearchRes,
     ]: any = await Promise.all([
       getRecommendation(params),
       getMobileHeaderMenu(),
@@ -99,6 +104,7 @@ export const getServerSideProps = async (context: any) => {
         }`,
       ),
       getTagArticle(`?tag_name=${brand.toLowerCase()}`),
+      getUsedCarSearch(''),
     ])
 
     const [
@@ -108,6 +114,7 @@ export const getServerSideProps = async (context: any) => {
       dataFooterMenu,
       dataDealerBrand,
       dataTagArticle,
+      dataSearchUsedCar,
     ] = await Promise.all([
       recommendationRes.carRecommendations,
       menuMobileRes.data,
@@ -115,6 +122,7 @@ export const getServerSideProps = async (context: any) => {
       footerMenuRes.data,
       dealerBrandRes.data,
       tagArticleRes,
+      dataSearchRes.data,
     ])
 
     const checkCityByCityCode = (index: string) => {
@@ -145,6 +153,7 @@ export const getServerSideProps = async (context: any) => {
         dataFooterMenu,
         dataDealerBranch,
         dataTagArticle,
+        dataSearchUsedCar,
       },
     }
   } catch (error: any) {

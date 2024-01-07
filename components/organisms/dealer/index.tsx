@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useUtils } from 'services/context/utilsContext'
 import {
-  ArticleWidget,
   BannerDealerLP,
   DealerArticleWidget,
   DealerBrands,
@@ -21,12 +20,11 @@ import styles from 'styles/pages/dealer.module.scss'
 import { CSAButton, CardShadow, Gap } from 'components/atoms'
 import { useCar } from 'services/context/carContext'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
-import { Article, CityOtrOption } from 'utils/types'
+import { CityOtrOption } from 'utils/types'
 import { LocalStorageKey, SessionStorageKey } from 'utils/enum'
 import { getLocalStorage } from 'utils/handler/localStorage'
 import { countDaysDifference, monthId } from 'utils/handler/date'
 import { useInView } from 'react-intersection-observer'
-import { alephArticleCategoryList } from 'config/articles.config'
 import {
   getAnnouncementBox as gab,
   getDealer,
@@ -35,16 +33,11 @@ import {
 import { getSessionStorage } from 'utils/handler/sessionStorage'
 import { getToken } from 'utils/handler/auth'
 import { useAnnouncementBoxContext } from 'services/context/announcementBoxContext'
-import { delayedExec } from 'utils/handler/delayed'
 import clsx from 'clsx'
 import { Faq } from 'components/molecules/section/faq'
 import { useRouter } from 'next/router'
 import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
-import {
-  getSeoFooterDealerTextDescription,
-  getSeoFooterTextDescription,
-} from 'utils/config/carVariantList.config'
-import { SearchWidgetContext, SearchWidgetContextType } from 'services/context'
+import { getSeoFooterDealerTextDescription } from 'utils/config/carVariantList.config'
 import { getCity } from 'utils/hooks/useGetCity'
 import { DealerBrand } from 'utils/types/utils'
 
@@ -54,25 +47,14 @@ const Dealer = ({ dataRecommendation, ssr, page, dealerCount }: any) => {
   const router = useRouter()
   const getUrlBrand = router.query.brand?.toString() ?? ''
   const getUrlLocation =
-    router.query.location?.toString().replace('-', ' ') ?? 'Indonesia'
+    router.query.location?.toString().replaceAll('-', ' ') ?? 'Indonesia'
   const { saveRecommendation } = useCar()
-  const {
-    mobileWebTopMenus,
-    cities,
-    dealerArticles,
-    dataAnnouncementBox,
-    dealerBrand,
-  } = useUtils()
-  const { funnelWidget, saveFunnelWidget } = useContext(
-    SearchWidgetContext,
-  ) as SearchWidgetContextType
+  const { cities, dataAnnouncementBox } = useUtils()
   const [dealerCityList, setDealerCityList] = useState([])
   const [startScroll, setStartScroll] = useState(false)
   const [showSidebar, setShowSidebar] = useState(false)
   const [openCitySelectorModal, setOpenCitySelectorModal] = useState(false)
   const [selectedCityId, setSelectedCityId] = useState<number>()
-  const [articlesTabList, setArticlesTabList] =
-    useState<Article[]>(dealerArticles)
   const [cityOtr] = useLocalStorage<CityOtrOption | null>(
     LocalStorageKey.CityOtr,
     null,
@@ -147,18 +129,7 @@ const Dealer = ({ dataRecommendation, ssr, page, dealerCount }: any) => {
     cityHandler()
 
     getAnnouncementBox()
-    if (getUrlBrand !== '' && getUrlLocation) {
-      saveFunnelWidget({
-        ...funnelWidget,
-        brand: getUrlBrand.split(' '),
-        city: getUrlLocation,
-      })
-    }
   }, [])
-
-  useEffect(() => {
-    setArticlesTabList(dealerArticles)
-  }, [dealerArticles])
 
   useEffect(() => {
     if (getUrlBrand !== '') {
@@ -195,9 +166,6 @@ const Dealer = ({ dataRecommendation, ssr, page, dealerCount }: any) => {
       loadCarRecommendation()
     } else {
       saveRecommendation(dataRecommendation)
-    }
-    if (page === 'main') {
-      saveFunnelWidget({ ...funnelWidget, dealerBrand: '', city: '' })
     }
   }, [])
 
@@ -603,7 +571,7 @@ const Dealer = ({ dataRecommendation, ssr, page, dealerCount }: any) => {
           descText={getSeoFooterDealerTextDescription(
             page,
             getUrlBrand,
-            dealerCount,
+            dealerCount?.dealerCount,
             getUrlLocation,
           )}
           isUsingSetInnerHtmlDescText={true}

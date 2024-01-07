@@ -54,7 +54,7 @@ const LpCarRecommendations = ({
   const router = useRouter()
   const getUrlBrand = router.query.brand?.toString() ?? ''
   const getUrlLocation =
-    router.query.location?.toString().replace('-', ' ') ?? 'Indonesia'
+    router.query.location?.toString().replaceAll('-', ' ') ?? 'Indonesia'
   const { saveDataLeads } = useUtils()
   const swiperRef = useRef<SwiperType>()
   const { recommendation } = useCar()

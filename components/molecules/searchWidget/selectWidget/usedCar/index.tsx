@@ -233,7 +233,6 @@ const forwardSelectWidgetUsedCar = (
               FILTER_TYPE: getFilterType(),
             },
           )
-          // setOpenOption(isDealer ? false : true)
           setOpenOption(true)
         }}
         data-testid={datatestid}

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styles from 'styles/components/organisms/dealerArticleWidget.module.scss'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import { Article } from 'utils/types'
 import elementId from 'utils/helpers/trackerId'
-import { alephArticleCategoryList } from 'utils/config/articles.config'
 import ArticleWidgetListCard from '../list'
 import { useUtils } from 'services/context/utilsContext'
 

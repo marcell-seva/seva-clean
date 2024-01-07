@@ -10,6 +10,7 @@ import {
   getNewCarBrand,
   getRecommendation,
   getSubArticle,
+  getUsedCarSearch,
 } from 'services/api'
 import { useUtils } from 'services/context/utilsContext'
 import { serverSideManualNavigateToErrorPage } from 'utils/handler/navigateErrorPage'
@@ -23,6 +24,7 @@ const DealerLandingPage = ({
   dataBrandList,
   dataArticles,
   dataDealerCount,
+  dataSearchUsedCar,
   ssr,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const metaTitle = `Temukan Dealer Mobil Baru Rekanan SEVA di Indonesia | SEVA`
@@ -33,6 +35,7 @@ const DealerLandingPage = ({
     saveMobileWebFooterMenus,
     saveBrand,
     saveDealerArticles,
+    saveDataSearchUsedCar,
   } = useUtils()
   useEffect(() => {
     saveMobileWebTopMenus(dataMobileMenu)
@@ -40,6 +43,7 @@ const DealerLandingPage = ({
     saveMobileWebFooterMenus(dataFooterMenu)
     saveBrand(dataBrandList)
     saveDealerArticles(dataArticles)
+    saveDataSearchUsedCar(dataSearchUsedCar)
   }, [])
 
   return (
@@ -70,6 +74,7 @@ export const getServerSideProps = async (context: any) => {
       brandList,
       articles,
       dealerCountRes,
+      dataSearchRes,
     ]: any = await Promise.all([
       getRecommendation(params),
       getMobileHeaderMenu(),
@@ -78,6 +83,7 @@ export const getServerSideProps = async (context: any) => {
       getNewCarBrand(),
       getSubArticle(972),
       getDealer(''),
+      getUsedCarSearch(''),
     ])
 
     const [
@@ -88,6 +94,7 @@ export const getServerSideProps = async (context: any) => {
       dataBrandList,
       dataArticles,
       dataDealerCount,
+      dataSearchUsedCar,
     ] = await Promise.all([
       recommendationRes.carRecommendations,
       menuMobileRes.data,
@@ -96,6 +103,7 @@ export const getServerSideProps = async (context: any) => {
       brandList,
       articles,
       dealerCountRes.meta,
+      dataSearchRes.data,
     ])
     return {
       props: {
@@ -106,6 +114,7 @@ export const getServerSideProps = async (context: any) => {
         dataBrandList,
         dataArticles,
         dataDealerCount,
+        dataSearchUsedCar,
         ssr: 'success',
       },
     }

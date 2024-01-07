@@ -1,13 +1,5 @@
-import { Button } from 'components/atoms'
-import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
 import styles from 'styles/components/organisms/bannerDealerLP.module.scss'
-import elementId from 'utils/helpers/trackerId'
-import { CityOtrOption } from 'utils/types'
-import { HeaderMobile } from '../headerMobile'
-import MainHeroImage from '/public/revamp/illustration/main-hero-raize-cencored.webp'
-import SupergraphicImage from '/public/revamp/illustration/supergraphic-secondary-large.webp'
 import DealerBanner from '/public/revamp/images/banner/dealerBanner.webp'
 import Toyota from '/public/revamp/images/banner/toyotaBanner.webp'
 import Hyundai from '/public/revamp/images/banner/hyundaiBanner.webp'
@@ -15,9 +7,6 @@ import Peugeot from '/public/revamp/images/banner/peugeotBanner.webp'
 import Daihatsu from '/public/revamp/images/banner/daihatsuBanner.webp'
 import BMW from '/public/revamp/images/banner/bmwBanner.webp'
 import Isuzu from '/public/revamp/images/banner/isuzuBanner.webp'
-import { useUtils } from 'services/context/utilsContext'
-import clsx from 'clsx'
-import { getCities } from 'services/api'
 import { useRouter } from 'next/router'
 import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
 
@@ -37,7 +26,7 @@ const BannerDealerLP = ({ onPage }: BannerProps) => {
   const router = useRouter()
   const getUrlBrand = router.query.brand?.toString() ?? ''
   const getUrlLocation =
-    router.query.location?.toString().replace('-', ' ') ?? 'Indonesia'
+    router.query.location?.toString().replaceAll('-', ' ') ?? 'Indonesia'
 
   const logoList = {
     toyota: toyota,
@@ -47,8 +36,6 @@ const BannerDealerLP = ({ onPage }: BannerProps) => {
     peugeot: peugeot,
     hyundai: hyundai,
   }
-
-  useEffect(() => {}, [])
 
   return (
     <>

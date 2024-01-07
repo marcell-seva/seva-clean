@@ -1,4 +1,3 @@
-import { Gap } from 'components/atoms'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import styles from 'styles/components/molecules/dealerLocationWidget.module.scss'
@@ -12,7 +11,7 @@ function DealerLocationWidget() {
   const router = useRouter()
   const getUrlBrand = router.query.brand?.toString() ?? ''
   const getUrlLocation =
-    router.query.location?.toString().replace('-', ' ') ?? 'Indonesia'
+    router.query.location?.toString().replaceAll('-', ' ') ?? 'Indonesia'
   const descText = `Kami siap menawarkan pengalaman terbaik dan membantu dalam pembelian mobil baru kamu. Dapatkan berbagai promo dan diskon di setiap pembelian mobil baru melalui dealer rekanan SEVA. Temukan pilihan mobil paling lengkap di dealer ${
     getUrlBrand !== 'bmw'
       ? capitalizeFirstLetter(getUrlBrand)

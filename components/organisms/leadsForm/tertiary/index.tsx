@@ -55,7 +55,7 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({
   const router = useRouter()
   const getUrlBrand = router.query.brand?.toString() ?? ''
   const getUrlLocation =
-    router.query.location?.toString().replace('-', ' ') ?? ''
+    router.query.location?.toString().replaceAll('-', ' ') ?? ''
   const { funnelQuery } = useContext(
     FunnelQueryContext,
   ) as FunnelQueryContextType

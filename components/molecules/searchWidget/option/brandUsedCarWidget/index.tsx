@@ -39,12 +39,14 @@ interface BrandList {
 interface FilterMobileProps {
   isDealer?: boolean
   onClose: () => void
+  brandSelected?: string
   setBrandSelected?: any
 }
 
 const BrandUsedCarWidget = ({
   onClose,
   isDealer,
+  brandSelected,
   setBrandSelected,
 }: FilterMobileProps) => {
   const { brand, saveDealerBrand } = useUtils()
@@ -52,15 +54,10 @@ const BrandUsedCarWidget = ({
     SearchUsedCarWidgetContext,
   ) as SearchUsedCarWidgetContextType
 
-  const {
-    funnelWidget: funnelWidgetNewCar,
-    saveFunnelWidget: saveFunnelWidgetNewCar,
-  } = useContext(SearchWidgetContext) as SearchWidgetContextType
-
   const [isCheckedBrandQuery, setIsCheckedBrandQuery] = useState<string[]>(
     isDealer
-      ? funnelWidgetNewCar.brand
-        ? funnelWidgetNewCar.brand
+      ? brandSelected
+        ? brandSelected.split('#')
         : []
       : funnelWidget.brand
       ? funnelWidget.brand
@@ -159,12 +156,14 @@ const BrandUsedCarWidget = ({
   }
 
   const clear = () => {
+    if (isDealer) {
+      setBrandSelected('')
+      setIsCheckedBrandQuery([])
+      setDisableActionButton(true)
+      return
+    }
     if (funnelWidget.brand.length > 0) {
       saveFunnelWidget({ ...funnelWidget, brand: [] })
-      if (isDealer) {
-        setBrandSelected([])
-        saveFunnelWidgetNewCar({ ...funnelWidgetNewCar, brand: [] })
-      }
       setIsCheckedBrandQuery([])
       setDisableActionButton(true)
     } else {
@@ -177,11 +176,6 @@ const BrandUsedCarWidget = ({
     saveFunnelWidget({ ...funnelWidget, brand: isCheckedBrandQuery })
     if (isDealer) {
       setBrandSelected(isCheckedBrandQuery[0])
-
-      saveFunnelWidgetNewCar({
-        ...funnelWidgetNewCar,
-        brand: isCheckedBrandQuery,
-      })
     }
 
     onClose()
