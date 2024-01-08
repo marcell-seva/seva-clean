@@ -58,27 +58,24 @@ export const lowerSectionNavigationTab = [
   },
 ]
 
-export const getSeoFooterTextDescription = (brand?: string, model?: string) => {
+export const getSeoFooterTextDescription = (
+  brand?: string,
+  model?: string,
+  bodyType?: string,
+) => {
   const currentYear: number = new Date().getFullYear()
-  return `<p>Pada era modern ini, mobil telah menjadi bagian penting dari kehidupan sehari-hari kita. Mobil tidak hanya berfungsi sebagai alat transportasi yang memudahkan perjalanan, tetapi juga merupakan simbol status dan gaya hidup.
+  return `<p>Bagi anda yang ingin memiliki mobil baru dengan harga dan cicilan terjangkau? ${model} adalah pilihan yang tepat. SEVA, platform resmi dari Astra, memberikan kemudahan dalam proses pembelian mobil ${brand} ${model}. Dengan penawaran harga kompetitif, promo dan diskon yang menarik, serta fasilitas kredit yang mudah.
   <br /><br />
-  Setiap tahun, produsen mobil di seluruh dunia terus berinovasi dan menghadirkan berbagai model mobil baru dengan teknologi canggih dan desain yang menarik. Setiap mobil ${brand} terbaru, tentunya memiliki kelebihannya di masing-masing model.
+  ${brand} ${model} telah lama menjadi pilihan populer di segmen ${bodyType} di Indonesia, dari segi eksterior ${model} menampilkan tampilan modern yang menarik, Gril depan yang menonjol memberikan kesan tangguh dan maskulin. Lampu depan yang stylish dilengkapi dengan LED yang memberikan pencahayaan optimal.
   <br /><br />
-  Tahun ${currentYear} juga menjadi momen penting dalam sejarah perkembangan mobil ${brand}, dengan munculnya beberapa model yang sangat dinanti-nantikan.
+  Interior ${model} dirancang dengan fokus pada ruang dan fungsionalitas. Material berkualitas tinggi yang digunakan dalam pembuatan interior menjadikan ${model} nyaman dan tahan lama. Sistem suspensi yang disesuaikan dengan baik mengurangi getaran jalan dan memberikan perjalanan yang halus, bahkan di medan yang tidak rata. 
   <br /><br />
-  Desain eksterior dan interior menjadi faktor penting dalam menarik minat konsumen terhadap model mobil ${brand} ${model}. Produsen mobil saat ini berfokus pada desain yang menggoda dengan garis-garis yang aerodinamis, lampu LED yang elegan, dan detail yang halus. 
+  Harga mobil baru ${brand} ${model} dijamin sangat kompetitif, terutama dengan adanya diskon khusus dan penawaran kredit yang menguntungkan konsumen. Astra, melalui SEVA, menyediakan kemudahan dengan proses pembelian yang cepat dan transparan, serta memudahkan konsumen untuk mendapatkan informasi terkini seputar harga dan promo yang sedang berlangsung.
   <br /><br />
-  Desain mobil ${brand} ${model} terbaru juga mengalami perubahan yang signifikan. Dari mobil-mobil berbentuk kotak pada era awal, kita sekarang melihat mobil dengan desain aerodinamis yang elegan dan futuristik. 
+  SEVA juga menawarkan keistimewaan dengan program Instant Approval untuk kredit pembelian mobil baru. Konsumen dapat dengan cepat mengetahui persetujuan kredit mereka, memungkinkan untuk segera memiliki ${brand} ${model} impian mereka tanpa menunggu waktu yang lama.
   <br /><br />
-  Setiap produsen mobil umumnya memiliki berbagai model mobil yang mencakup berbagai segmen, seperti mobil keluarga, SUV, sedan, <i>hatchback</i>, dan lain sebagainya. Selain itu, Astra juga mempunyai beberapa mobil yang ada saat ini di antaranya adalah Toyota, Daihatsu, Peugeot, sampai BMW. 
-  <br /><br />
-  Mobil telah memiliki dampak yang besar dalam kehidupan kita. Kebebasan dan fleksibilitas yang ditawarkan oleh mobil memungkinkan kita untuk bepergian ke tempat-tempat yang lebih jauh dengan lebih mudah.
-  <br /><br />
-  Untuk mengetahui berbagai model mobil ${brand} ${model} yang ada saat ini, bisa mencari tahunya di SEVA.  SEVA merupakan sebuah <i>platform</i> pencarian mobil baru dari Astra Financial. Melalui SEVA, kamu bisa mendapatkan mobil impian yang sesuai dengan kemampuan finansial. 
-  <br /><br />
-  Selain pencarian mobil, SEVA juga memiliki dukungan keuangan untuk lebih memudahkan proses <a href="https://www.seva.id/blog/step-by-step-cara-beli-mobil-online-032022-kg/">pembelian mobil</a>. Dengan begitu, pembelian mobil akan menjadi lebih aman dan nyaman.
-  <br /><br />
-  Mengusung <i>tagline</i>&nbsp;<b>#JelasDariAwal</b>, pengguna <b>SEVA</b> dapat menemukan mobil baru, memilih skema pembiayaan yang tepat, hingga melakukan transaksi pembayaran dalam satu <i>platform</i> digital. Tunggu apalagi, beli mobil di <b>SEVA</b> yuk dari sekarang.</p>`
+  Bagi para konsumen atau pecinta mobil ${model} yang tengah mencari mobil baru, tidak ada salahnya untuk cek penawaran menarik yang ditawarkan oleh Astra melalui SEVA. Dapatkan keistimewaan promo diskon, penawaran kredit yang menguntungkan, serta proses pembelian yang cepat dan transparan untuk memiliki ${brand} ${model} impian Anda.
+  </p>`
 }
 export const getSeoFooterDealerTextDescription = (
   onPage?: string,
