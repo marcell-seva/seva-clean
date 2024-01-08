@@ -604,6 +604,22 @@ export const CreditTabV1 = () => {
     setFlagMoengage(TrackerFlag.Sent)
   }
 
+  const trackMoengageLoanCalc = (data: any) => {
+    const obj = {
+      brand: forms?.model?.brandName,
+      model: removeFirstWordFromString(forms?.model?.modelName ?? ''),
+      price: forms?.variant?.otr.split('Rp')[1].split('.').join(''),
+      variants: forms?.variant?.variantName,
+      monthly_installment: data?.installment,
+      downpayment: data?.dpAmount,
+      loan_tenure: data?.tenure,
+      est_monthly_income: forms.monthlyIncome,
+      age:
+        storedFilter && storedFilter?.age?.length > 0 ? storedFilter?.age : '',
+    }
+    setTrackEventMoEngage(MoengageEventName.view_loan_calculator_result, obj)
+  }
+
   const getDimenssion = (payload: any) => {
     return payload.filter((car: any) => car.id === carModelDetails?.id)[0]
   }
@@ -1211,6 +1227,7 @@ export const CreditTabV1 = () => {
               b: SpecialRateListWithPromoType,
             ) => b.tenure - a.tenure,
           )[0] ?? null
+        trackMoengageLoanCalc(selectedLoanInitialValue)
         setSelectedLoan(selectedLoanInitialValue)
         saveDefaultTenureCarForLoginPageView(
           selectedLoanInitialValue.tenure,

@@ -10,7 +10,11 @@ import {
 } from 'components/atoms'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
-import { capitalizeWords, filterNonDigitCharacters } from 'utils/stringUtils'
+import {
+  capitalizeWords,
+  filterNonDigitCharacters,
+  replaceIndex0,
+} from 'utils/stringUtils'
 import { onlyLettersAndSpaces } from 'utils/handler/regex'
 import { useLocalStorage } from 'utils/hooks/useLocalStorage'
 import { useFunnelQueryData } from 'services/context/funnelQueryContext'
@@ -49,7 +53,10 @@ import {
   saveDataForCountlyTrackerPageViewLC,
 } from 'utils/navigate'
 import Image from 'next/image'
-import { createUnverifiedLeadNew } from 'utils/handler/lead'
+import {
+  createUnverifiedLeadNew,
+  trackMoengageSubmitLeads,
+} from 'utils/handler/lead'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 
 const SupergraphicLeft = '/revamp/illustration/supergraphic-small.webp'
@@ -113,8 +120,17 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({
       checkInputValue(name, phoneNumberTemp)
     } else if (payload !== '0' && payload !== '6') {
       const phoneNumberTemp = filterNonDigitCharacters(temp)
-      setPhone(phoneNumberTemp)
-      checkInputValue(name, phoneNumberTemp)
+      if (payload.length < phone.length) {
+        if (payload.length === 1) {
+          setPhone(replaceIndex0(phoneNumberTemp, ''))
+          checkInputValue(name, replaceIndex0(phoneNumberTemp, ''))
+        }
+        setPhone(phoneNumberTemp)
+        checkInputValue(name, phoneNumberTemp)
+      } else {
+        setPhone(replaceIndex0(phoneNumberTemp, '8'))
+        checkInputValue(name, replaceIndex0(phoneNumberTemp, '8'))
+      }
     }
   }
 
@@ -291,11 +307,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({
     try {
       await createUnverifiedLeadNew(isOTO ? dataOTO : data)
       setModalOpened('success-toast')
-      trackLeadsFormAction(
-        TrackingEventName.WEB_LEADS_FORM_SUCCESS,
-        trackLeads(),
-      )
-
+      trackMoengageSubmitLeads(name, phone)
       trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SUCCESS_VIEW, {
         PAGE_ORIGINATION: 'PDP - ' + valueMenuTabCategory(),
         LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
@@ -447,7 +459,7 @@ export const LeadsFormSecondary: React.FC<PropsLeadsForm> = ({
             <InputPhone
               dataTestId={elementId.Field.PhoneNumber}
               disabled={isUserLoggedIn}
-              placeholder="Masukkan nomor HP"
+              placeholder="Contoh: 812345678"
               title="Nomor Handphone"
               value={phone}
               onChange={(e: any) => handleInputPhone(e.target.value)}

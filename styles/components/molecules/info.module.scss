@@ -42,10 +42,33 @@
 }
 
 .textHeading {
+  font-family: var(--kanyon-medium);
   color: #{$primary-black};
   font-size: 16px;
   line-height: 24px;
   font-weight: 500;
+}
+
+.alternativeWrapper {
+  padding: 16px 0px;
+}
+
+.alternativeTextHeading {
+  color: #{$primary-dark-blue};
+  font-family: var(--kanyon);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+  margin-bottom: 8px;
+}
+
+.alternativeTextDesc {
+  color: #{$shades-grey-75};
+  font-family: var(--open-sans);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
 }
 
 .textDesc {

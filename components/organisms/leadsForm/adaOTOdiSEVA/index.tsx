@@ -26,6 +26,7 @@ import { InputVersionType, LocalStorageKey } from 'utils/enum'
 import { CityOtrOption } from 'utils/types'
 import { ButtonSize, ButtonVersion } from 'components/atoms/button'
 import { postUnverifiedLeadsNew } from 'services/api'
+import { replaceIndex0 } from 'utils/stringUtils'
 
 interface PropsLeadsForm {
   otpStatus?: any
@@ -75,8 +76,17 @@ const LeadsFormAdaOTOdiSEVA: React.FC<PropsLeadsForm> = ({}: any) => {
       checkInputValue(name, phoneNumberTemp)
     } else if (payload !== '0' && payload !== '6') {
       const phoneNumberTemp = filterNonDigitCharacters(temp)
-      setPhone(phoneNumberTemp)
-      checkInputValue(name, phoneNumberTemp)
+      if (payload.length < phone.length) {
+        if (payload.length === 1) {
+          setPhone(replaceIndex0(phoneNumberTemp, ''))
+          checkInputValue(name, replaceIndex0(phoneNumberTemp, ''))
+        }
+        setPhone(phoneNumberTemp)
+        checkInputValue(name, phoneNumberTemp)
+      } else {
+        setPhone(replaceIndex0(phoneNumberTemp, '8'))
+        checkInputValue(name, replaceIndex0(phoneNumberTemp, '8'))
+      }
     }
   }
 
@@ -254,7 +264,7 @@ const LeadsFormAdaOTOdiSEVA: React.FC<PropsLeadsForm> = ({}: any) => {
                   : elementId.PDP.LeadsForm.phone
               }
               disabled={isUserLoggedIn}
-              placeholder="Masukkan nomor HP"
+              placeholder="Contoh: 812345678"
               title="Nomor Handphone"
               value={phone}
               onChange={(e: any) => handleInputPhone(e.target.value)}

@@ -262,6 +262,17 @@ export const CreditUsedCarTab = () => {
     })
   }
 
+  const trackMoengageLoanCalc = (data: any) => {
+    const obj = {
+      product_name: usedCarModelDetailsRes?.variantTitle,
+      price: usedCarModelDetailsRes?.priceValue.split('.')[0],
+      monthly_installment: data?.totalInstallment,
+      downpayment: data?.totalDP,
+      loan_tenure: data?.tenor,
+    }
+    setTrackEventMoEngage(MoengageEventName.view_loan_calculator_result, obj)
+  }
+
   const defaultValueCalculcator = async () => {
     const priceValue = parseInt(usedCarModelDetailsRes.priceValue.split('.')[0])
     const initialDpValue = Math.round((priceValue * 20) / 100)
@@ -288,6 +299,7 @@ export const CreditUsedCarTab = () => {
         const filteredResult = getFilteredCalculationResults(result)
         setDefaultCalculationResult(filteredResult)
         const selectedLoanInitialValue = filteredResult[0] ?? null
+        trackMoengageLoanCalc(selectedLoanInitialValue)
         setSelectedLoan(selectedLoanInitialValue)
         setCalculationApiPayload(payloadUsedCar)
         scrollToResult()
@@ -678,6 +690,7 @@ export const CreditUsedCarTab = () => {
 
         // // select loan with the longest tenure as default
         const selectedLoanInitialValue = filteredResult[0] ?? null
+        trackMoengageLoanCalc(selectedLoanInitialValue)
         setSelectedLoan(selectedLoanInitialValue)
         setCalculationApiPayload(payloadUsedCar)
         saveDefaultTenureCarForLoginPageView(

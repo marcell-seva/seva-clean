@@ -60,6 +60,10 @@ import { LoginAlertModal } from './loginAlertModal'
 import { DiscussionRefiForm } from './discussionRefiForm'
 import { RefinancingFormHeader } from './refinancingFormHeader'
 import { SelectWidgetUsedCar } from './searchWidget/selectWidget/usedCar'
+import DealerCarousel from './dealerCarousel'
+import DealerLocationWidget from './dealerLocationWidget'
+import { CityOptionWidget } from './searchWidget/option/cityOptionWidget'
+
 export {
   HowToUseSection,
   Testimony,
@@ -123,4 +127,7 @@ export {
   RefinancingFormHeader,
   SearchComponent,
   SelectWidgetUsedCar,
+  DealerCarousel,
+  DealerLocationWidget,
+  CityOptionWidget,
 }

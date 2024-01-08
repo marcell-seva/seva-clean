@@ -31,15 +31,31 @@ import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getToken } from 'utils/handler/auth'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
 import { postUnverifiedLeadsNew } from 'services/api'
+import {
+  createUnverifiedLeadDealer,
+  trackMoengageSubmitLeads,
+} from 'utils/handler/lead'
+import { capitalizeWords } from 'utils/stringUtils'
+import { replaceIndex0 } from 'utils/stringUtils'
 
 interface PropsLeadsForm {
   otpStatus?: any
   onVerify?: (e: any) => void
   onFailed?: (e: any) => void
+  onPage?: string
+  cityId?: number
+  isDealer?: boolean
 }
 
-const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
+const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({
+  onPage,
+  isDealer,
+  cityId,
+}: any) => {
   const router = useRouter()
+  const getUrlBrand = router.query.brand?.toString() ?? ''
+  const getUrlLocation =
+    router.query.location?.toString().replaceAll('-', ' ') ?? ''
   const { funnelQuery } = useContext(
     FunnelQueryContext,
   ) as FunnelQueryContextType
@@ -82,8 +98,17 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
       checkInputValue(name, phoneNumberTemp)
     } else if (payload !== '0' && payload !== '6') {
       const phoneNumberTemp = filterNonDigitCharacters(temp)
-      setPhone(phoneNumberTemp)
-      checkInputValue(name, phoneNumberTemp)
+      if (payload.length < phone.length) {
+        if (payload.length === 1) {
+          setPhone(replaceIndex0(phoneNumberTemp, ''))
+          checkInputValue(name, replaceIndex0(phoneNumberTemp, ''))
+        }
+        setPhone(phoneNumberTemp)
+        checkInputValue(name, phoneNumberTemp)
+      } else {
+        setPhone(replaceIndex0(phoneNumberTemp, '8'))
+        checkInputValue(name, replaceIndex0(phoneNumberTemp, '8'))
+      }
     }
   }
 
@@ -149,18 +174,54 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
   }
 
   const sendUnverifiedLeads = async (): Promise<void> => {
-    const data = {
-      platform,
-      name,
-      phoneNumber: phone,
-      origination: UnverifiedLeadSubCategory.SEVA_NEW_CAR_LP_LEADS_FORM,
-      ...(cityOtr?.id && { cityId: cityOtr.id }),
-      ...(funnelQuery.downPaymentAmount && {
-        dp: parseInt(funnelQuery.downPaymentAmount as string),
-      }),
-      ...(funnelQuery.monthlyInstallment && {
-        monthlyInstallment: parseInt(funnelQuery.monthlyInstallment as string),
-      }),
+    let data
+
+    if (onPage === 'main' && isDealer) {
+      data = {
+        platform,
+        name,
+        phoneNumber: phone,
+        origination: UnverifiedLeadSubCategory.DEALER_LEADS_FORM,
+      }
+    } else if (onPage === 'brand' && isDealer) {
+      data = {
+        platform,
+        name,
+        phoneNumber: phone,
+        carBrand:
+          getUrlBrand === 'bmw'
+            ? getUrlBrand.toUpperCase()
+            : capitalizeWords(getUrlBrand),
+        origination: UnverifiedLeadSubCategory.DEALER_LEADS_FORM,
+      }
+    } else if (onPage === 'location' && isDealer) {
+      data = {
+        platform,
+        name,
+        phoneNumber: phone,
+        carBrand:
+          getUrlBrand === 'bmw'
+            ? getUrlBrand.toUpperCase()
+            : capitalizeWords(getUrlBrand),
+        cityId: cityId,
+        origination: UnverifiedLeadSubCategory.DEALER_LEADS_FORM,
+      }
+    } else {
+      data = {
+        platform,
+        name,
+        phoneNumber: phone,
+        origination: UnverifiedLeadSubCategory.SEVA_NEW_CAR_LP_LEADS_FORM,
+        ...(cityOtr?.id && { cityId: cityOtr.id }),
+        ...(funnelQuery.downPaymentAmount && {
+          dp: parseInt(funnelQuery.downPaymentAmount as string),
+        }),
+        ...(funnelQuery.monthlyInstallment && {
+          monthlyInstallment: parseInt(
+            funnelQuery.monthlyInstallment as string,
+          ),
+        }),
+      }
     }
     try {
       let temanSevaStatus = 'No'
@@ -172,11 +233,9 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
           temanSevaStatus = 'Yes'
         }
       }
-      await postUnverifiedLeadsNew(data)
-      sendAmplitudeData(AmplitudeEventName.WEB_LEADS_FORM_SUCCESS, {
-        Page_Origination: PageOriginationName.LPLeadsForm,
-        ...(cityOtr && { City: cityOtr.cityName }),
-      })
+      isDealer
+        ? await createUnverifiedLeadDealer(data)
+        : await postUnverifiedLeadsNew(data)
       trackEventCountly(CountlyEventNames.WEB_LEADS_FORM_SUCCESS_VIEW, {
         PAGE_ORIGINATION: 'Homepage - Bottom Section',
         LOGIN_STATUS: isUserLoggedIn ? 'Yes' : 'No',
@@ -184,6 +243,7 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
         PHONE_NUMBER: '+62' + phone,
       })
       setModalOpened('success-toast')
+      trackMoengageSubmitLeads(name, phone)
       setIsLoading(false)
       onSubmitLeadSuccess()
       setTimeout(() => setModalOpened('none'), 5000)
@@ -308,7 +368,7 @@ const LeadsFormTertiary: React.FC<PropsLeadsForm> = ({}: any) => {
                   : elementId.PDP.LeadsForm.phone
               }
               disabled={isUserLoggedIn}
-              placeholder="Masukkan nomor HP"
+              placeholder="Contoh: 812345678"
               title="Nomor Handphone"
               value={phone}
               onChange={(e: any) => handleInputPhone(e.target.value)}

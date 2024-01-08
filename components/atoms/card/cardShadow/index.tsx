@@ -6,7 +6,13 @@ const forwardCardShadow = (
   ref?: ForwardedRef<HTMLDivElement>,
 ) => {
   return (
-    <div ref={ref} className={`${className} ${styles.cardShadow}`} {...props}>
+    <div
+      ref={ref}
+      className={`${className} ${
+        props.defaultChecked ? styles.alternativeCardShadow : styles.cardShadow
+      }`}
+      {...props}
+    >
       {children}
     </div>
   )

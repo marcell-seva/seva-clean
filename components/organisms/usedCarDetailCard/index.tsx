@@ -96,10 +96,10 @@ export const UsedCarDetailCard = ({
   )
 
   const onClickSeeDetail = () => {
-    router.push(detailCarRoute)
+    window.location.href = detailCarRoute
   }
   const onClickScrollDetail = () => {
-    router.push(detailCarScrollRoute)
+    window.location.href = detailCarScrollRoute
   }
 
   const transmisi = recommendation?.carSpecifications?.find(

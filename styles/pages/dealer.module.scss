@@ -1,0 +1,42 @@
+@import '../abstract/colors';
+@import '../abstract/mixins';
+
+.stickypadding {
+  padding-top: 57px;
+}
+
+.container {
+  max-width: 570px;
+  margin: 0% auto;
+  overflow: hidden;
+}
+
+.infoWrapper {
+  background-color: #{$shades-grey-5};
+  padding: 24px 16px;
+}
+
+.infoWrapperWhite {
+  background-color: #fff;
+  padding: 0px 16px;
+}
+
+.showAAnnouncementBox {
+  top: 54px !important;
+}
+
+.searchContainer {
+  position: relative;
+  width: 100%;
+  // margin-top: 24px;
+  padding: 24px 16px;
+}
+
+.cardContainer {
+  display: flex;
+  height: 265px;
+  padding: 16px 8px;
+  align-items: flex-start;
+  gap: 8px;
+  flex-shrink: 0;
+}

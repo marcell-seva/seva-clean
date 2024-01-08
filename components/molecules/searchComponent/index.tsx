@@ -262,7 +262,7 @@ export const SearchComponent = ({
     )
     setValueSearch('')
     handleCloseModal()
-    router.push(urlDestination)
+    window.location.href = urlDestination
   }
 
   const onClickRecommendationList = (item: any) => {
@@ -274,7 +274,7 @@ export const SearchComponent = ({
     // simpan pencarian ke dalam local storage
     saveHistoryToLocal(urlDestination, item.name)
     handleCloseModal()
-    router.push(urlDestination + `/${getCityUrl()}`)
+    window.location.href = urlDestination + `/${getCityUrl()}`
   }
 
   const clickList = (item: SearchUsedCar) => {
@@ -294,7 +294,7 @@ export const SearchComponent = ({
     saveHistoryToLocal(item.sevaUrl, item.carName)
     handleCloseModal()
     setValueSearch('')
-    router.push(urlDestination)
+    window.location.href = urlDestination
   }
 
   if (isError) return null
@@ -607,7 +607,7 @@ export const SearchComponent = ({
     clearQueryFilterData()
     const url = `${carResultsUrl}?search=${search}`
     saveHistoryToLocal(url, search)
-    if (window.location.pathname === '/mobil-baru/c') {
+    if (window.location.pathname === '/mobil-baru') {
       patchFunnelQueryData({ search: search })
       router
         .push({

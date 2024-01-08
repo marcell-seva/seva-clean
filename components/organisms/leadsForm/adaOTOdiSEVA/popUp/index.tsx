@@ -11,7 +11,7 @@ import {
 import { LocalStorageKey, UnverifiedLeadSubCategory } from 'utils/enum'
 import { getLocalStorage, saveLocalStorage } from 'utils/handler/localStorage'
 import { decryptValue, encryptValue } from 'utils/encryptionUtils'
-import { filterNonDigitCharacters } from 'utils/stringUtils'
+import { filterNonDigitCharacters, replaceIndex0 } from 'utils/stringUtils'
 import elementId from 'helpers/elementIds'
 import { Modal } from 'components/atoms'
 import {
@@ -34,7 +34,10 @@ import {
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { getToken } from 'utils/handler/auth'
 import { getCustomerInfoSeva } from 'utils/handler/customer'
-import { createUnverifiedLeadNew } from 'utils/handler/lead'
+import {
+  createUnverifiedLeadNew,
+  trackMoengageSubmitLeads,
+} from 'utils/handler/lead'
 import { useCar } from 'services/context/carContext'
 import { useUtils } from 'services/context/utilsContext'
 
@@ -93,8 +96,17 @@ export const AdaOTOdiSEVALeadsForm: React.FC<PropsLeadsForm> = ({
       checkInputValue(name, phoneNumberTemp)
     } else if (payload !== '0' && payload !== '6') {
       const phoneNumberTemp = filterNonDigitCharacters(temp)
-      setPhone(phoneNumberTemp)
-      checkInputValue(name, phoneNumberTemp)
+      if (payload.length < phone.length) {
+        if (payload.length === 1) {
+          setPhone(replaceIndex0(phoneNumberTemp, ''))
+          checkInputValue(name, replaceIndex0(phoneNumberTemp, ''))
+        }
+        setPhone(phoneNumberTemp)
+        checkInputValue(name, phoneNumberTemp)
+      } else {
+        setPhone(replaceIndex0(phoneNumberTemp, '8'))
+        checkInputValue(name, replaceIndex0(phoneNumberTemp, '8'))
+      }
     }
   }
 
@@ -280,6 +292,7 @@ export const AdaOTOdiSEVALeadsForm: React.FC<PropsLeadsForm> = ({
         PHONE_NUMBER: '+62' + phone,
       })
       setIsLoading(false)
+      trackMoengageSubmitLeads(name, phone)
       setModalOpened('success-toast')
       setTimeout(() => {
         setModalOpened('none')
@@ -383,7 +396,7 @@ export const AdaOTOdiSEVALeadsForm: React.FC<PropsLeadsForm> = ({
                 <InputPhone
                   dataTestId={elementId.PLP.LeadsForm.PhoneNumber}
                   disabled={isUserLoggedIn}
-                  placeholder="Masukkan nomor HP"
+                  placeholder="Contoh: 812345678"
                   title="Nomor HP"
                   value={phone}
                   onChange={(e: any) => handleInputPhone(e.target.value)}

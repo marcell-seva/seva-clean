@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from 'styles/components/organisms/articleListCard.module.scss'
 import Image from 'next/image'
 import { Article } from 'utils/types'
@@ -20,54 +20,47 @@ const ArticleWidgetListCard = ({
   articleOrder,
 }: ArticlesWidgetProps) => {
   return (
-    <div>
-      <div
-        className={styles.cardArticle}
-        onClick={() => {
-          sendAmplitudeData(AmplitudeEventName.WEB_LP_ARTICLE_CLICK, {
-            Article_Category: currentTab,
-            Article_Title: article.title,
-            Article_URL: article.url,
-          })
-          trackEventCountly(CountlyEventNames.WEB_ARTICLE_CLICK, {
-            PAGE_ORIGINATION: 'Homepage',
-            ARTICLE_SECTION: 'Carousel',
-            ARTICLE_ORDER: articleOrder + 1,
-            ARTICLE_CATEGORY: currentTab.replace('&', 'dan'),
-            PAGE_DIRECTION_URL: article.url,
-          })
-          window.location.href = article.url
+    <div
+      className={styles.cardArticle}
+      onClick={() => {
+        trackEventCountly(CountlyEventNames.WEB_ARTICLE_CLICK, {
+          PAGE_ORIGINATION: 'Homepage',
+          ARTICLE_SECTION: 'Carousel',
+          ARTICLE_ORDER: articleOrder + 1,
+          ARTICLE_CATEGORY: currentTab.replace('&', 'dan'),
+          PAGE_DIRECTION_URL: article.url,
+        })
+        window.location.href = article.url
+      }}
+    >
+      <Image
+        alt="list-article-seva"
+        src={article.featured_image}
+        width={143}
+        height={108}
+        style={{
+          borderTopLeftRadius: '8px',
+          borderBottomLeftRadius: '8px',
+          height: '108px',
+          width: '143px',
+          objectFit: 'cover',
         }}
-      >
-        <Image
-          alt="list-article-seva"
-          src={article.featured_image}
-          width={143}
-          height={108}
-          style={{
-            borderTopLeftRadius: '8px',
-            borderBottomLeftRadius: '8px',
-            height: '108px',
-            width: '143px',
-            objectFit: 'cover',
-          }}
-          loading="lazy"
-        />
-        {article.category && (
-          <div className={styles.categoryTextWrapper}>
-            <p>
-              {article.category.length > 19
-                ? article.category.slice(0, 16) + '...'
-                : article.category}
-            </p>
-          </div>
-        )}
-        <div className={styles.descriptionWrapper}>
-          <p className={styles.textDate}>
-            {articleDateFormat(new Date(article.publish_date), LanguageCode.id)}
+        loading="lazy"
+      />
+      {article.category && (
+        <div className={styles.categoryTextWrapper}>
+          <p>
+            {article.category.length > 19
+              ? article.category.slice(0, 16) + '...'
+              : article.category}
           </p>
-          <h4 className={styles.textTitle}>{article.title}</h4>
         </div>
+      )}
+      <div className={styles.descriptionWrapper}>
+        <p className={styles.textDate}>
+          {articleDateFormat(new Date(article.publish_date), LanguageCode.id)}
+        </p>
+        <h4 className={styles.textTitle}>{article.title}</h4>
       </div>
     </div>
   )

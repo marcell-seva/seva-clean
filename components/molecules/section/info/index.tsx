@@ -26,6 +26,7 @@ export interface PropsInfo {
   headingText: string
   descText: string
   isUsingSetInnerHtmlDescText?: boolean
+  isDealer?: boolean
 }
 
 export const Info: React.FC<PropsInfo> = ({
@@ -33,6 +34,7 @@ export const Info: React.FC<PropsInfo> = ({
   headingText,
   descText,
   isUsingSetInnerHtmlDescText = false,
+  isDealer,
 }): JSX.Element => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
   const [isDoneDelayedExpand, setIsDoneDelayedExpand] = useState<boolean>(false)
@@ -83,7 +85,7 @@ export const Info: React.FC<PropsInfo> = ({
   }
 
   return (
-    <div className={styles.wrapper}>
+    <div className={isDealer ? styles.alternativeWrapper : styles.wrapper}>
       <div className={styles.heading}>
         {isWithIcon && (
           <div className={styles.iconInfo}>
@@ -96,7 +98,9 @@ export const Info: React.FC<PropsInfo> = ({
           </div>
         )}
         <h2
-          className={styles.textHeading}
+          className={
+            isDealer ? styles.alternativeTextHeading : styles.textHeading
+          }
           data-testid={elementId.Text + 'tentang-mobil'}
         >
           {headingText}
@@ -119,7 +123,7 @@ export const Info: React.FC<PropsInfo> = ({
         ) : (
           <p
             className={clsx({
-              [styles.textDesc]: true,
+              [isDealer ? styles.alternativeTextDesc : styles.textDesc]: true,
               [styles.collapsed]: !isExpanded,
               // ellipsis text needs to be delayed because it makes transition broken
               [styles.elipsedParagraph]: !isExpanded && !isDoneDelayedExpand,

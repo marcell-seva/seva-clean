@@ -20,6 +20,10 @@ import { temanSevaUrlPath } from 'utils/types/props'
 import { FormReferralCode } from '../form/formReferralCode'
 import ErrorImg from '/public/revamp/images/refinancing/Alert-info.svg'
 import Image from 'next/image'
+import { default as customAxiosGet } from 'services/api/get'
+import { trackMoengageSubmitLeads } from 'utils/handler/lead'
+import { replaceIndex0 } from 'utils/stringUtils'
+import { filterNonDigitCharacters } from 'utils/handler/stringManipulation'
 
 interface Props {
   onButtonClick?: boolean
@@ -122,14 +126,18 @@ export const DiscussionRefiForm = ({ onButtonClick }: Props) => {
       'SEVA_REFINANCING_LEADS',
       getToken() !== null ? true : false,
       referralCodeInput || '',
-    ).then((result) => {
-      saveLocalStorage(
-        LocalStorageKey.IdCustomerRefi,
-        encryptValue(result?.data.id),
-      )
-    })
-    setLoading(false)
-    router.push(refinancingFormUrl)
+    )
+      .then((result) => {
+        saveLocalStorage(
+          LocalStorageKey.IdCustomerRefi,
+          encryptValue(result?.data.id),
+        )
+        trackMoengageSubmitLeads(formField?.fullName, formField?.phoneNumber)
+        router.push(refinancingFormUrl)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   const verified = () => {
@@ -312,14 +320,31 @@ export const DiscussionRefiForm = ({ onButtonClick }: Props) => {
     }
   }
   const onChangePhoneNumber = (event: ChangeEvent<HTMLInputElement>) => {
+    const temp = filterNonDigitCharacters(event.target.value)
     if (
       event.target.value.length <= 14 &&
       event.target.value.substring(0) !== 'init'
     ) {
-      setFormField({ ...formField, phoneNumber: event.target.value })
-      event.target.value.length
+      if (event.target.value.length < formField.phoneNumber.length) {
+        if (event.target.value.length === 1) {
+          setFormField({
+            ...formField,
+            phoneNumber: replaceIndex0(temp, ''),
+          })
+        }
+        setFormField({
+          ...formField,
+          phoneNumber: temp,
+        })
+      } else {
+        setFormField({
+          ...formField,
+          phoneNumber: replaceIndex0(temp, '8'),
+        })
+        event.target.value.length
+      }
     }
-    if (event.target.value.length > 3 && event.target.value.length < 14) {
+    if (event.target.value.length > 8 && event.target.value.length < 14) {
       setErrorEmptyPhoneNumber('init')
     }
   }

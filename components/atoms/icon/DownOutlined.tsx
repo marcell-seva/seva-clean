@@ -22,7 +22,6 @@ export const DownOutlined = ({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       style={{ width, height, marginBottom }}
-      {...restProps}
     >
       <path
         d="M15 1L8.03683 7.96317L1.07366 0.999999"

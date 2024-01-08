@@ -1279,6 +1279,22 @@ export const CreditTabV2 = () => {
     }
   }
 
+  const trackMoengageLoanCalc = (data: any) => {
+    const obj = {
+      brand: forms?.model?.brandName,
+      model: removeFirstWordFromString(forms?.model?.modelName ?? ''),
+      price: forms?.variant?.otr.split('Rp')[1].split('.').join(''),
+      variants: forms?.variant?.variantName,
+      monthly_installment: data?.installment,
+      downpayment: data?.dpAmount,
+      loan_tenure: data?.tenure,
+      est_monthly_income: forms.monthlyIncome,
+      age:
+        storedFilter && storedFilter?.age?.length > 0 ? storedFilter?.age : '',
+    }
+    setTrackEventMoEngage(MoengageEventName.view_loan_calculator_result, obj)
+  }
+
   const onClickCalculate = async () => {
     validateFormFields()
 
@@ -1334,6 +1350,8 @@ export const CreditTabV2 = () => {
 
     postLoanPermutationIncludePromo(payload)
       .then((response) => {
+        console.log('KEPANGGIL')
+
         const result = response.data.reverse()
         const filteredResult = getFilteredCalculationResults(result)
         setCalculationResult(filteredResult)
@@ -1354,6 +1372,7 @@ export const CreditTabV2 = () => {
           selectedLoanInitialValue.loanRank,
         )
         setIsDataSubmitted(true)
+        trackMoengageLoanCalc(selectedLoanInitialValue)
         setCalculationApiPayload(payload)
         // scrollToResult()
       })

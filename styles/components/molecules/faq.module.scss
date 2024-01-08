@@ -9,7 +9,7 @@
 
 .heading {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .iconInfo {
@@ -37,6 +37,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
+  cursor: pointer;
 
   h4 {
     font-family: var(--open-sans-semi-bold);
@@ -97,7 +98,7 @@
   color: #13131b;
 }
 .divider {
-  height: 1px;
+  height: 2px;
   background: #eef6fb;
   margin-top: 16px;
 }

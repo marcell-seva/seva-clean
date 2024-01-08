@@ -36,19 +36,25 @@ import { trackEventCountly } from 'helpers/countly/countly'
 import { CountlyEventNames } from 'helpers/countly/eventNames'
 import { useCar } from 'services/context/carContext'
 import { useUtils } from 'services/context/utilsContext'
+import { capitalizeFirstLetter, capitalizeWords } from 'utils/stringUtils'
 
 type LPCarRecommendationsProps = {
   dataReccomendation: any
   onClickOpenCityModal: () => void
+  page?: string
   isOTO?: boolean
 }
 
 const LpCarRecommendations = ({
   dataReccomendation,
   onClickOpenCityModal,
+  page = 'main',
   isOTO = false,
 }: LPCarRecommendationsProps) => {
   const router = useRouter()
+  const getUrlBrand = router.query.brand?.toString() ?? ''
+  const getUrlLocation =
+    router.query.location?.toString().replaceAll('-', ' ') ?? 'Indonesia'
   const { saveDataLeads } = useUtils()
   const swiperRef = useRef<SwiperType>()
   const { recommendation } = useCar()
@@ -215,28 +221,49 @@ const LpCarRecommendations = ({
 
   if (load) return <LPCRSkeleton />
 
+  const title = () => {
+    switch (page) {
+      case 'main':
+        return 'Rekomendasi'
+      case 'brand':
+        return 'Rekomendasi Mobil Populer'
+      case 'location':
+        return `Rekomendasi Mobil ${
+          getUrlBrand !== 'bmw'
+            ? capitalizeFirstLetter(getUrlBrand)
+            : getUrlBrand.toUpperCase()
+        } OTR ${capitalizeWords(getUrlLocation)}`
+
+      default:
+        return 'Rekomendasi'
+    }
+  }
+
   return (
     <>
-      <div className={`${stylex.container}`}>
+      <div
+        className={`${
+          page === 'main' ? stylex.container : stylex.containerDealer
+        }`}
+      >
         <h2 className={stylex.title} style={{ marginBottom: 16 }}>
-          Rekomendasi
+          {title()}
         </h2>
-        <NavigationTabV2
-          itemList={brandList}
-          onPage={isOTO ? 'OTO' : 'PDP'}
-          onSelectTab={(value: any) => {
-            sendAmplitudeData(
-              AmplitudeEventName.WEB_LP_BRANDRECOMMENDATION_LOGO_CLICK,
-              { Car_Brand: value || 'Semua' },
-            )
-            setSelectedBrand(value)
-            swiperRef.current?.slideTo(0)
-            trackCountlyClickTab(value)
-          }}
-          isShowAnnouncementBox={false}
-          className={stylep.tab}
-          autoScroll={isOTO}
-        />
+        {page === 'main' && (
+          <NavigationTabV2
+            itemList={brandList}
+            onPage={isOTO ? 'OTO' : 'PDP'}
+            onSelectTab={(value: any) => {
+              setSelectedBrand(value)
+              swiperRef.current?.slideTo(0)
+              trackCountlyClickTab(value)
+            }}
+            isShowAnnouncementBox={false}
+            className={stylep.tab}
+            autoScroll={isOTO}
+            initialTab={''}
+          />
+        )}
         <div>
           {recommendationList.length === 0 ? (
             <div

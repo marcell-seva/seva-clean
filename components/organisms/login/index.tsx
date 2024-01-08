@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from 'styles/components/organisms/login.module.scss'
-import { filterNonDigitCharacters } from 'utils/stringUtils'
+import { filterNonDigitCharacters, replaceIndex0 } from 'utils/stringUtils'
 import Image from 'next/image'
 import { encryptValue } from 'utils/encryptionUtils'
 import {
@@ -179,8 +179,17 @@ export const Login = () => {
       checkInputValue(phoneNumberTemp)
     } else if (payload !== '0' && payload !== '6') {
       const phoneNumberTemp = filterNonDigitCharacters(temp)
-      setPhone(phoneNumberTemp)
-      checkInputValue(phoneNumberTemp)
+      if (payload.length < phone.length) {
+        if (payload.length === 1) {
+          setPhone(replaceIndex0(phoneNumberTemp, ''))
+          checkInputValue(replaceIndex0(phoneNumberTemp, ''))
+        }
+        setPhone(phoneNumberTemp)
+        checkInputValue(phoneNumberTemp)
+      } else {
+        setPhone(replaceIndex0(phoneNumberTemp, '8'))
+        checkInputValue(replaceIndex0(phoneNumberTemp, '8'))
+      }
     }
   }
 
@@ -364,7 +373,7 @@ export const Login = () => {
             </p>
             <div className={styles.inputPhone}>
               <InputPhone
-                placeholder="Masukkan nomor HP"
+                placeholder="Contoh: 812345678"
                 value={phone}
                 onChange={(e: any) => handleInputPhone(e.target.value)}
                 data-testid={elementId.Input.PhoneNumber}
